@@ -40,7 +40,24 @@
         <item name="cardElevation">36dp</item>
     </style>
 
-    <style name="FabriikTextInputStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+    <style name="FabriikTextInputStyle" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="android:foreground">@drawable/bg_input_view</item>
+        <item name="boxStrokeColor">@android:color/transparent</item>
+        <item name="boxStrokeWidth">0dp</item>
+        <item name="boxStrokeWidthFocused">0dp</item>
+        <item name="boxCollapsedPaddingTop">6dp</item>
+        <item name="boxBackgroundColor">@android:color/transparent</item>
+        <item name="materialThemeOverlay">@style/FabriikTextInputStyle.ThemeOverlay</item>
+    </style>
 
+    <style name="FabriikTextInputStyle.ThemeOverlay" parent="ThemeOverlay.MaterialComponents.TextInputEditText.FilledBox">
+        <item name="editTextStyle">@style/FabriikEditTextStyle</item>
+    </style>
+
+    <style name="FabriikEditTextStyle" parent="Widget.MaterialComponents.TextInputEditText.FilledBox">
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingBottom">6dp</item>
+        <item name="android:paddingTop">22dp</item>
     </style>
 </resources>
