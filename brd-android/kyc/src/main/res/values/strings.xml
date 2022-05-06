@@ -34,4 +34,11 @@
     <string name="ExposedPerson.Email">Email</string>
     <string name="ExposedPerson.Confirm">Confirm</string>
 
+    <!-- Proof of identity screen -->
+    <string name="ProofOfIdentity.Title">Proof of Identity</string>
+    <string name="ProofOfIdentity.InfoText"><u>Why are we asking this?</u></string>
+    <string name="ProofOfIdentity.Section">Select one of the following options:</string>
+    <string name="ProofOfIdentity.Passport">Passport</string>
+    <string name="ProofOfIdentity.NationalIdCard">National ID card</string>
+    <string name="ProofOfIdentity.DrivingLicence">Driver’s license</string>
 </resources>

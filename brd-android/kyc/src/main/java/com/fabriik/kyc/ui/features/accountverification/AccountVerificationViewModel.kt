@@ -21,9 +21,10 @@ class AccountVerificationViewModel(
                     AccountVerificationContract.Effect.GoToPersonalInfo
                 }
 
-            is AccountVerificationContract.Event.UnlimitedClicked -> {
-                //todo: define flow
-            }
+            is AccountVerificationContract.Event.UnlimitedClicked ->
+                setEffect {
+                    AccountVerificationContract.Effect.GoToProofOfIdentity
+                }
 
             is AccountVerificationContract.Event.InfoClicked -> {
                 //todo: show dialog?

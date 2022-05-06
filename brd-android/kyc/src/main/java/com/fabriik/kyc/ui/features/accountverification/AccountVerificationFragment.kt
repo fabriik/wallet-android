@@ -79,6 +79,11 @@ class AccountVerificationFragment : Fragment(),
                 findNavController().navigate(
                     AccountVerificationFragmentDirections.actionToPersonalInfo()
                 )
+
+            is AccountVerificationContract.Effect.GoToProofOfIdentity ->
+                findNavController().navigate(
+                    AccountVerificationFragmentDirections.actionToProofOfIdentity()
+                )
         }
     }
 }

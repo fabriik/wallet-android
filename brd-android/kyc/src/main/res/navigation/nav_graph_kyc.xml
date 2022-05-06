@@ -14,11 +14,23 @@
             android:id="@+id/action_to_personal_info"
             app:destination="@id/fragmentPersonalInformation" />
 
+        <action
+            android:id="@+id/action_to_proof_of_identity"
+            app:destination="@id/fragmentProofOfIdentity" />
+
     </fragment>
 
     <fragment
         android:id="@+id/fragmentPersonalInformation"
         android:name="com.fabriik.kyc.ui.features.personalinformation.PersonalInformationFragment"
-        tools:layout="@layout/fragment_personal_information" />
+        tools:layout="@layout/fragment_personal_information">
 
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragmentProofOfIdentity"
+        android:name="com.fabriik.kyc.ui.features.proofofidentity.ProofOfIdentityFragment"
+        tools:layout="@layout/fragment_proof_of_identity">
+
+    </fragment>
 </navigation>
