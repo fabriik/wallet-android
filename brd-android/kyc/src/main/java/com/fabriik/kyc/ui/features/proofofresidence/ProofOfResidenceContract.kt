@@ -15,6 +15,7 @@ interface ProofOfResidenceContract {
     sealed class Effect : FabriikContract.Effect {
         object GoBack : Effect()
         object Dismiss : Effect()
+        object GoToProofUpload : Effect()
     }
 
     class State() : FabriikContract.State //todo: data class

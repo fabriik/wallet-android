@@ -81,6 +81,11 @@ class ProofOfResidenceFragment : Fragment(),
 
             is ProofOfResidenceContract.Effect.Dismiss ->
                 requireActivity().finish()
+
+            is ProofOfResidenceContract.Effect.GoToProofUpload ->
+                findNavController().navigate(
+                    ProofOfResidenceFragmentDirections.actionToProofUpload()
+                )
         }
     }
 }

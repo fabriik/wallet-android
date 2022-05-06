@@ -20,6 +20,11 @@ class ProofOfResidenceViewModel(
                 setEffect {
                     ProofOfResidenceContract.Effect.Dismiss
                 }
+
+            is ProofOfResidenceContract.Event.NoClicked ->
+                setEffect {
+                    ProofOfResidenceContract.Effect.GoToProofUpload
+                }
         }
     }
 }

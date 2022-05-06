@@ -56,9 +56,16 @@
         android:name="com.fabriik.kyc.ui.features.proofofresidence.ProofOfResidenceFragment"
         tools:layout="@layout/fragment_proof_of_residence">
 
+        <action
+            android:id="@+id/action_to_proof_upload"
+            app:destination="@id/fragmentCompleted" /> <!-- todo: change destination -->
     </fragment>
 
     <!-- todo: proof of residence upload -->
 
-    <!-- todo: completed -->
+    <fragment
+        android:id="@+id/fragmentCompleted"
+        android:name="com.fabriik.kyc.ui.features.completed.CompletedFragment"
+        tools:layout="@layout/fragment_completed"/>
+
 </navigation>

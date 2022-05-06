@@ -59,4 +59,9 @@
     <string name="ProofOfResidence.Question">Does the ID that you submitted have your address on it?</string>
     <string name="ProofOfResidence.Yes">Yes</string>
     <string name="ProofOfResidence.No">No</string>
+
+    <!-- Completed screen -->
+    <string name="Completed.Title">Thanks for submitting your information!</string>
+    <string name="Completed.Description">We are reviewing your documents and will let you know when your account has been verified.</string>
+    <string name="Completed.GotIt">Got it!</string>
 </resources>
