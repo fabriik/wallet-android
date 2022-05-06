@@ -11,7 +11,15 @@ class PersonalInformationViewModel(
 
     override fun handleEvent(event: PersonalInformationContract.Event) {
         when (event) {
+            is PersonalInformationContract.Event.BackClicked ->
+                setEffect {
+                    PersonalInformationContract.Effect.GoBack
+                }
 
+            is PersonalInformationContract.Event.DismissClicked ->
+                setEffect {
+                    PersonalInformationContract.Effect.Dismiss
+                }
         }
     }
 }

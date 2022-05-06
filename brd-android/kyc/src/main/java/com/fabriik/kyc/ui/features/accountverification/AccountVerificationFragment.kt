@@ -7,12 +7,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.fabriik.common.ui.base.FabriikView
 import com.fabriik.kyc.R
 import com.fabriik.kyc.databinding.FragmentAccountVerificationBinding
 import kotlinx.coroutines.flow.collect
 
-class AccountVerificationFragment : Fragment(), FabriikView<AccountVerificationContract.State, AccountVerificationContract.Effect> {
+class AccountVerificationFragment : Fragment(),
+    FabriikView<AccountVerificationContract.State, AccountVerificationContract.Effect> {
 
     private lateinit var binding: FragmentAccountVerificationBinding
     private val viewModel: AccountVerificationViewModel by lazy {
@@ -30,9 +32,22 @@ class AccountVerificationFragment : Fragment(), FabriikView<AccountVerificationC
         binding = FragmentAccountVerificationBinding.bind(view)
 
         with(binding) {
-            // todo: setuo
-        }
+            toolbar.setBackButtonClickListener {
+                viewModel.setEvent(AccountVerificationContract.Event.BackClicked)
+            }
 
+            tvInfo.setOnClickListener {
+                viewModel.setEvent(AccountVerificationContract.Event.InfoClicked)
+            }
+
+            cvBasic.setOnClickListener {
+                viewModel.setEvent(AccountVerificationContract.Event.BasicClicked)
+            }
+
+            cvUnlimited.setOnClickListener {
+                viewModel.setEvent(AccountVerificationContract.Event.UnlimitedClicked)
+            }
+        }
 
         // collect UI state
         lifecycleScope.launchWhenStarted {
@@ -57,7 +72,13 @@ class AccountVerificationFragment : Fragment(), FabriikView<AccountVerificationC
 
     override fun handleEffect(effect: AccountVerificationContract.Effect) {
         when (effect) {
+            is AccountVerificationContract.Effect.GoBack ->
+                findNavController().popBackStack()
 
+            is AccountVerificationContract.Effect.GoToPersonalInfo ->
+                findNavController().navigate(
+                    AccountVerificationFragmentDirections.actionToPersonalInfo()
+                )
         }
     }
 }

@@ -11,7 +11,23 @@ class AccountVerificationViewModel(
 
     override fun handleEvent(event: AccountVerificationContract.Event) {
         when (event) {
+            is AccountVerificationContract.Event.BackClicked ->
+                setEffect {
+                    AccountVerificationContract.Effect.GoBack
+                }
 
+            is AccountVerificationContract.Event.BasicClicked ->
+                setEffect {
+                    AccountVerificationContract.Effect.GoToPersonalInfo
+                }
+
+            is AccountVerificationContract.Event.UnlimitedClicked -> {
+                //todo: define flow
+            }
+
+            is AccountVerificationContract.Event.InfoClicked -> {
+                //todo: show dialog?
+            }
         }
     }
 }

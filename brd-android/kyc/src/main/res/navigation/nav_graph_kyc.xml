@@ -3,12 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph_kyc"
-    app:startDestination="@id/fragmentPersonalInformation">
+    app:startDestination="@id/fragmentAccountVerification">
 
     <fragment
         android:id="@+id/fragmentAccountVerification"
         android:name="com.fabriik.kyc.ui.features.accountverification.AccountVerificationFragment"
-        tools:layout="@layout/fragment_account_verification" />
+        tools:layout="@layout/fragment_account_verification">
+
+        <action
+            android:id="@+id/action_to_personal_info"
+            app:destination="@id/fragmentPersonalInformation" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/fragmentPersonalInformation"

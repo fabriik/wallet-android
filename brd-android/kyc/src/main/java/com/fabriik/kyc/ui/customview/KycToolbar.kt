@@ -6,6 +6,7 @@ import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
 import androidx.core.view.isInvisible
 import com.fabriik.kyc.R
 import com.fabriik.kyc.databinding.PartialKycToolbarBinding
@@ -42,6 +43,14 @@ class KycToolbar @JvmOverloads constructor(
 
     fun setShowDismissButton(show: Boolean) {
         binding.btnDismiss.isInvisible = !show
+    }
+
+    fun setBackButtonClickListener(listener: OnClickListener) {
+        binding.btnBack.setOnClickListener(listener)
+    }
+
+    fun setDismissButtonClickListener(listener: OnClickListener) {
+        binding.btnDismiss.setOnClickListener(listener)
     }
 
     private fun parseAttributes(attrs: AttributeSet?) {

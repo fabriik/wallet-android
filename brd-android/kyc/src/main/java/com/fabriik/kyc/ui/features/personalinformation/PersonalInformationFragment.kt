@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.fabriik.common.ui.base.FabriikView
 import com.fabriik.kyc.R
 import com.fabriik.kyc.databinding.FragmentPersonalInformationBinding
@@ -30,7 +31,25 @@ class PersonalInformationFragment : Fragment(), FabriikView<PersonalInformationC
         binding = FragmentPersonalInformationBinding.bind(view)
 
         with(binding) {
-            // todo: setuo
+            toolbar.setBackButtonClickListener {
+                viewModel.setEvent(PersonalInformationContract.Event.BackClicked)
+            }
+
+            toolbar.setDismissButtonClickListener {
+                viewModel.setEvent(PersonalInformationContract.Event.DismissClicked)
+            }
+
+            tvInfo.setOnClickListener {
+                viewModel.setEvent(PersonalInformationContract.Event.ScreenInfoClicked)
+            }
+
+            tvSection3Info.setOnClickListener {
+                viewModel.setEvent(PersonalInformationContract.Event.ExposedPersonInfoClicked)
+            }
+
+            btnConfirm.setOnClickListener {
+                viewModel.setEvent(PersonalInformationContract.Event.ConfirmClicked)
+            }
         }
 
 
@@ -57,7 +76,11 @@ class PersonalInformationFragment : Fragment(), FabriikView<PersonalInformationC
 
     override fun handleEffect(effect: PersonalInformationContract.Effect) {
         when (effect) {
+            is PersonalInformationContract.Effect.GoBack ->
+                findNavController().popBackStack()
 
+            is PersonalInformationContract.Effect.Dismiss ->
+                requireActivity().finish()
         }
     }
 }
