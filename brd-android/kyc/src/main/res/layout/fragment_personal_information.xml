@@ -169,7 +169,7 @@
                         android:id="@+id/rg_exposed_person"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
+                        android:layout_marginTop="16dp"
                         android:orientation="horizontal"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -179,6 +179,7 @@
                             android:id="@+id/rb_yes"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:minHeight="0dp"
                             android:text="@string/PersonalInformation.Section3.Yes" />
 
                         <RadioButton
@@ -186,6 +187,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="24dp"
+                            android:minHeight="0dp"
                             android:text="@string/PersonalInformation.Section3.No" />
 
                     </RadioGroup>
@@ -194,7 +196,7 @@
                         android:id="@+id/btn_confirm"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
+                        android:layout_marginTop="16dp"
                         android:text="@string/PersonalInformation.Confirm"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
