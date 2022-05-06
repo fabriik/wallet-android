@@ -1,0 +1,46 @@
+h<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Light colors -->
+    <color name="light_background_01">#5F6368</color>
+    <color name="light_background_02">#1E1E1E</color>
+    <color name="light_background_03">#3C4043</color>
+    <color name="light_primary">#2C78FF</color>
+    <color name="light_secondary">#122348</color>
+    <color name="light_tertiary">#DDE9FE</color>
+    <color name="light_text_01">#FFFFFF</color>
+    <color name="light_text_02">#DADCE0</color>
+    <color name="light_error">#FF7F89</color>
+    <color name="light_success">#00A86E</color>
+    <color name="light_link_01">#FFFFFF</color>
+    <color name="light_link_02">#0053E7</color>
+    <color name="light_contrast_01">#2E3134</color>
+    <color name="light_contrast_02">#FFFFFF</color>
+    <color name="light_contrast_03">#2E3134</color>
+    <color name="light_outline_01">#80868B</color>
+    <color name="light_outline_02">#5F6368</color>
+    <color name="light_outline_03">#9AA0A6</color>
+    <color name="light_icons_01">#FFFFFF</color>
+    <color name="light_icons_02">#DADCE0</color>
+
+    <!-- Inverse colors -->
+    <color name="light_inverse_background_01">#FFFFFF</color>
+    <color name="light_inverse_text_01">#3C4043</color>
+    <color name="light_inverse_text_02">#5F6368</color>
+    <color name="light_inverse_error">#D72431</color>
+    <color name="light_inverse_success">#00A86E</color>
+    <color name="light_inverse_contrast_03">#FFFFFF</color>
+    <color name="light_inverse_link_01">#3C4043</color>
+    <color name="light_inverse_outline_01">#BDC1C6</color>
+    <color name="light_inverse_outline_02">#DADCE0</color>
+    <color name="light_inverse_outline_03">#9AA0A6</color>
+    <color name="light_inverse_icons_01">#3C4043</color>
+    <color name="light_inverse_icons_02">#5F6368</color>
+
+    <!-- Interaction colors -->
+    <color name="light_interaction_primary_hover">#0861FF</color>
+    <color name="light_interaction_primary_pressed">#0053E7</color>
+    <color name="light_interaction_primary_selected">#0053E7</color>
+    <color name="light_interaction_primary_focused">#2C78FF</color>
+    <color name="light_interaction_primary_disabled">#5F6368</color>
+    <color name="light_interaction_listing_hover">#3C4043</color>
+</resources>
