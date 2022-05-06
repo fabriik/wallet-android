@@ -1,22 +1,20 @@
-package com.fabriik.kyc.ui.features.proofofidentity
+package com.fabriik.kyc.ui.features.proofofresidence
 
 import com.fabriik.common.ui.base.FabriikContract
 
-interface ProofOfIdentityContract {
+interface ProofOfResidenceContract {
 
     sealed class Event : FabriikContract.Event {
         object BackClicked : Event()
         object InfoClicked : Event()
         object DismissClicked : Event()
-        object IdCardClicked : Event()
-        object PassportClicked : Event()
-        object DrivingLicenceClicked : Event()
+        object YesClicked : Event()
+        object NoClicked : Event()
     }
 
     sealed class Effect : FabriikContract.Effect {
         object GoBack : Effect()
         object Dismiss : Effect()
-        object GoToDocumentUpload : Effect()
     }
 
     class State() : FabriikContract.State //todo: data class

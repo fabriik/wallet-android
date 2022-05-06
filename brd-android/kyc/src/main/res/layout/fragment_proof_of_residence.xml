@@ -9,7 +9,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:title="@string/ProofOfIdentity.Title" />
+        app:title="@string/ProofOfResidence.Title" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -30,7 +30,7 @@
                 style="@style/Common.Info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/ProofOfIdentity.InfoText" />
+                android:text="@string/ProofOfResidence.InfoText" />
 
             <TextView
                 android:id="@+id/tv_section"
@@ -38,10 +38,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:text="@string/ProofOfIdentity.Section" />
+                android:text="@string/ProofOfResidence.Question" />
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cv_passport"
+                android:id="@+id/cv_yes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp">
@@ -50,15 +50,13 @@
                     style="@style/TextStyle.Title6"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawablePadding="10dp"
-                    android:gravity="center_vertical"
-                    android:text="@string/ProofOfIdentity.Passport"
-                    app:drawableStartCompat="@drawable/ic_passport" />
+                    android:gravity="center"
+                    android:text="@string/ProofOfResidence.Yes" />
 
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cv_id_card"
+                android:id="@+id/cv_no"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp">
@@ -67,27 +65,8 @@
                     style="@style/TextStyle.Title6"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawablePadding="10dp"
-                    android:gravity="center_vertical"
-                    android:text="@string/ProofOfIdentity.NationalIdCard"
-                    app:drawableStartCompat="@drawable/ic_national_id_card" />
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cv_driving_licence"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp">
-
-                <TextView
-                    style="@style/TextStyle.Title6"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawablePadding="10dp"
-                    android:gravity="center_vertical"
-                    android:text="@string/ProofOfIdentity.DrivingLicence"
-                    app:drawableStartCompat="@drawable/ic_driving_licence" />
+                    android:gravity="center"
+                    android:text="@string/ProofOfResidence.No" />
 
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>

@@ -41,4 +41,22 @@
     <string name="ProofOfIdentity.Passport">Passport</string>
     <string name="ProofOfIdentity.NationalIdCard">National ID card</string>
     <string name="ProofOfIdentity.DrivingLicence">Driver’s license</string>
+
+    <!-- Address information screen -->
+    <string name="AddressInformation.Title">Where do you live?</string>
+    <string name="AddressInformation.InfoText"><u>Why are we asking this?</u></string>
+    <string name="AddressInformation.Country">Country</string>
+    <string name="AddressInformation.State">State / Province</string>
+    <string name="AddressInformation.City">City</string>
+    <string name="AddressInformation.Zip">ZIP / Postal Code</string>
+    <string name="AddressInformation.Address">Address</string>
+    <string name="AddressInformation.Address2">Address 2 (optional)</string>
+    <string name="AddressInformation.Confirm">Confirm</string>
+
+    <!-- Proof of residence screen -->
+    <string name="ProofOfResidence.Title">Proof of Residence</string>
+    <string name="ProofOfResidence.InfoText"><u>Why are we asking this?</u></string>
+    <string name="ProofOfResidence.Question">Does the ID that you submitted have your address on it?</string>
+    <string name="ProofOfResidence.Yes">Yes</string>
+    <string name="ProofOfResidence.No">No</string>
 </resources>

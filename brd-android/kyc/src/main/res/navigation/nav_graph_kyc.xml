@@ -32,5 +32,33 @@
         android:name="com.fabriik.kyc.ui.features.proofofidentity.ProofOfIdentityFragment"
         tools:layout="@layout/fragment_proof_of_identity">
 
+        <action
+            android:id="@+id/action_to_proof_of_identity_upload"
+            app:destination="@id/fragmentAddressInformation" /> <!-- todo: change destination -->
+
     </fragment>
+
+    <!-- todo: proof of identity upload -->
+
+    <fragment
+        android:id="@+id/fragmentAddressInformation"
+        android:name="com.fabriik.kyc.ui.features.addressinformation.AddressInformationFragment"
+        tools:layout="@layout/fragment_address_information">
+
+        <action
+            android:id="@+id/action_to_proof_of_residence"
+            app:destination="@id/fragmentProofOfResidence" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragmentProofOfResidence"
+        android:name="com.fabriik.kyc.ui.features.proofofresidence.ProofOfResidenceFragment"
+        tools:layout="@layout/fragment_proof_of_residence">
+
+    </fragment>
+
+    <!-- todo: proof of residence upload -->
+
+    <!-- todo: completed -->
 </navigation>

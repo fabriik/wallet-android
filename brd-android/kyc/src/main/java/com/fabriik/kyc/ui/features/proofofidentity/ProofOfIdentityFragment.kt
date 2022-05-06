@@ -10,7 +10,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.fabriik.common.ui.base.FabriikView
 import com.fabriik.kyc.R
-import com.fabriik.kyc.databinding.FragmentPersonalInformationBinding
 import com.fabriik.kyc.databinding.FragmentProofOfIdentityBinding
 import kotlinx.coroutines.flow.collect
 
@@ -38,6 +37,10 @@ class ProofOfIdentityFragment : Fragment(), FabriikView<ProofOfIdentityContract.
 
             toolbar.setDismissButtonClickListener {
                 viewModel.setEvent(ProofOfIdentityContract.Event.DismissClicked)
+            }
+
+            tvInfo.setOnClickListener {
+                viewModel.setEvent(ProofOfIdentityContract.Event.InfoClicked)
             }
 
             cvIdCard.setOnClickListener {
@@ -81,6 +84,11 @@ class ProofOfIdentityFragment : Fragment(), FabriikView<ProofOfIdentityContract.
 
             is ProofOfIdentityContract.Effect.Dismiss ->
                 requireActivity().finish()
+
+            is ProofOfIdentityContract.Effect.GoToDocumentUpload ->
+                findNavController().navigate(
+                    ProofOfIdentityFragmentDirections.actionToProofOfIdentityUpload()
+                )
         }
     }
 }

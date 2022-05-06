@@ -5,7 +5,9 @@ import com.fabriik.common.ui.base.FabriikViewModel
 
 class ProofOfIdentityViewModel(
     application: Application
-) : FabriikViewModel<ProofOfIdentityContract.State, ProofOfIdentityContract.Event, ProofOfIdentityContract.Effect>(application) {
+) : FabriikViewModel<ProofOfIdentityContract.State, ProofOfIdentityContract.Event, ProofOfIdentityContract.Effect>(
+    application
+) {
 
     override fun createInitialState() = ProofOfIdentityContract.State()
 
@@ -19,6 +21,13 @@ class ProofOfIdentityViewModel(
             is ProofOfIdentityContract.Event.DismissClicked ->
                 setEffect {
                     ProofOfIdentityContract.Effect.Dismiss
+                }
+
+            is ProofOfIdentityContract.Event.IdCardClicked,
+            ProofOfIdentityContract.Event.PassportClicked,
+            ProofOfIdentityContract.Event.DrivingLicenceClicked ->
+                setEffect {
+                    ProofOfIdentityContract.Effect.GoToDocumentUpload
                 }
         }
     }
