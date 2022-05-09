@@ -17,5 +17,8 @@ interface AccountVerificationContract {
         object GoToProofOfIdentity : Effect()
     }
 
-    class State() : FabriikContract.State //todo: data class
+    data class State(
+        val basicBoxEnabled : Boolean = false,
+        val unlimitedBoxEnabled : Boolean = false
+    ) : FabriikContract.State
 }

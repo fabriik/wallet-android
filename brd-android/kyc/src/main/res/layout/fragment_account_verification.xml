@@ -40,7 +40,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                app:strokeColor="#F7AE14">
+                app:strokeColor="@color/basic_box_border">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -76,7 +76,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                app:strokeColor="#2C78FF">
+                app:strokeColor="@color/unlimited_box_border">
 
                 <LinearLayout
                     android:layout_width="match_parent"

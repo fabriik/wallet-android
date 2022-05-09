@@ -65,14 +65,15 @@ class AccountVerificationFragment : Fragment(),
 
     override fun render(state: AccountVerificationContract.State) {
         with(binding) {
-
+            cvBasic.isEnabled = state.basicBoxEnabled
+            cvUnlimited.isEnabled = state.unlimitedBoxEnabled
         }
     }
 
     override fun handleEffect(effect: AccountVerificationContract.Effect) {
         when (effect) {
             is AccountVerificationContract.Effect.GoBack ->
-                findNavController().popBackStack()
+                requireActivity().finish()
 
             is AccountVerificationContract.Effect.GoToPersonalInfo ->
                 findNavController().navigate(

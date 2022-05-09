@@ -18,5 +18,7 @@ interface PersonalInformationContract {
         object GoToExposedPerson : Effect()
     }
 
-    class State() : FabriikContract.State //todo: data class
+    data class State(
+        val confirmEnabled: Boolean = false
+    ) : FabriikContract.State
 }

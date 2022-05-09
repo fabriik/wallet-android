@@ -7,7 +7,9 @@ class AccountVerificationViewModel(
     application: Application
 ) : FabriikViewModel<AccountVerificationContract.State, AccountVerificationContract.Event, AccountVerificationContract.Effect>(application) {
 
-    override fun createInitialState() = AccountVerificationContract.State()
+    override fun createInitialState() = AccountVerificationContract.State(
+        basicBoxEnabled = true
+    )
 
     override fun handleEvent(event: AccountVerificationContract.Event) {
         when (event) {

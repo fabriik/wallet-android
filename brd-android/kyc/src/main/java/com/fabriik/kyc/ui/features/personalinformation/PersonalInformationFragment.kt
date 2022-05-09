@@ -68,7 +68,7 @@ class PersonalInformationFragment : Fragment(), FabriikView<PersonalInformationC
 
     override fun render(state: PersonalInformationContract.State) {
         with(binding) {
-
+            btnConfirm.isEnabled = state.confirmEnabled
         }
     }
 
