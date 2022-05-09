@@ -4,20 +4,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.fabriik.common.ui.base.FabriikView
+import com.fabriik.common.utils.textOrEmpty
 import com.fabriik.kyc.R
 import com.fabriik.kyc.databinding.FragmentAddressInformationBinding
-import com.fabriik.kyc.ui.features.accountverification.AccountVerificationContract
-import com.fabriik.kyc.ui.features.accountverification.AccountVerificationFragment
-import com.fabriik.kyc.ui.features.accountverification.AccountVerificationFragmentDirections
 import kotlinx.coroutines.flow.collect
 
-class AddressInformationFragment : Fragment(), FabriikView<AddressInformationContract.State, AddressInformationContract.Effect> {
+class AddressInformationFragment : Fragment(),
+    FabriikView<AddressInformationContract.State, AddressInformationContract.Effect> {
 
     private lateinit var binding: FragmentAddressInformationBinding
     private val viewModel: AddressInformationViewModel by viewModels()
@@ -48,6 +47,42 @@ class AddressInformationFragment : Fragment(), FabriikView<AddressInformationCon
             btnConfirm.setOnClickListener {
                 viewModel.setEvent(AddressInformationContract.Event.ConfirmClicked)
             }
+
+            etCountry.doAfterTextChanged {
+                viewModel.setEvent(
+                    AddressInformationContract.Event.CountryChanged(it.textOrEmpty())
+                )
+            }
+
+            etState.doAfterTextChanged {
+                viewModel.setEvent(
+                    AddressInformationContract.Event.StateChanged(it.textOrEmpty())
+                )
+            }
+
+            etCity.doAfterTextChanged {
+                viewModel.setEvent(
+                    AddressInformationContract.Event.CityChanged(it.textOrEmpty())
+                )
+            }
+
+            etZip.doAfterTextChanged {
+                viewModel.setEvent(
+                    AddressInformationContract.Event.ZipChanged(it.textOrEmpty())
+                )
+            }
+
+            etAddress1.doAfterTextChanged {
+                viewModel.setEvent(
+                    AddressInformationContract.Event.AddressLine1Changed(it.textOrEmpty())
+                )
+            }
+
+            etAddress2.doAfterTextChanged {
+                viewModel.setEvent(
+                    AddressInformationContract.Event.AddressLine2Changed(it.textOrEmpty())
+                )
+            }
         }
 
         // collect UI state
@@ -67,7 +102,7 @@ class AddressInformationFragment : Fragment(), FabriikView<AddressInformationCon
 
     override fun render(state: AddressInformationContract.State) {
         with(binding) {
-
+            btnConfirm.isEnabled = state.confirmEnabled
         }
     }
 

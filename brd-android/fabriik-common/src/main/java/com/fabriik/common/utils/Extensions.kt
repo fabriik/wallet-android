@@ -17,4 +17,4 @@ fun SavedStateHandle.toBundle() = bundleOf(
     }.toTypedArray()
 )
 
-fun Editable?.toStringSafe() = if (isNullOrEmpty()) "" else toString()
+fun Editable?.textOrEmpty() = if (isNullOrEmpty()) "" else toString()

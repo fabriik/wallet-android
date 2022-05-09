@@ -75,7 +75,7 @@ class UploadProofOfIdentityFragment : Fragment(),
 
     override fun render(state: UploadProofOfIdentityContract.State) {
         with(binding) {
-            btnConfirm.isEnabled = state.confirmEnabled
+            //btnConfirm.isEnabled = state.confirmEnabled // todo: revert
             tvDescription.text = state.description
             btnAddPassport.isVisible = state.addPassportPhotoVisible
             layoutIdButtons.isVisible = state.addIdPhotosVisible

@@ -33,19 +33,13 @@ class UploadProofOfIdentityViewModel(
     override fun handleEvent(event: UploadProofOfIdentityContract.Event) {
         when (event) {
             is UploadProofOfIdentityContract.Event.BackClicked ->
-                setEffect {
-                    UploadProofOfIdentityContract.Effect.GoBack
-                }
+                setEffect { UploadProofOfIdentityContract.Effect.GoBack }
 
             is UploadProofOfIdentityContract.Event.DismissClicked ->
-                setEffect {
-                    UploadProofOfIdentityContract.Effect.Dismiss
-                }
+                setEffect { UploadProofOfIdentityContract.Effect.Dismiss }
 
             is UploadProofOfIdentityContract.Event.ConfirmClicked ->
-                setEffect {
-                    UploadProofOfIdentityContract.Effect.GoToAddress
-                }
+                setEffect { UploadProofOfIdentityContract.Effect.GoToAddress }
         }
     }
 

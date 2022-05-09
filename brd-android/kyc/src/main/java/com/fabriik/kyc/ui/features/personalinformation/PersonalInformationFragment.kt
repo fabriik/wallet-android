@@ -10,7 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.fabriik.common.ui.base.FabriikView
-import com.fabriik.common.utils.toStringSafe
+import com.fabriik.common.utils.textOrEmpty
 import com.fabriik.kyc.R
 import com.fabriik.kyc.databinding.FragmentPersonalInformationBinding
 import kotlinx.coroutines.flow.collect
@@ -55,7 +55,7 @@ class PersonalInformationFragment : Fragment(),
             etName.doAfterTextChanged {
                 viewModel.setEvent(
                     PersonalInformationContract.Event.NameChanged(
-                        it.toStringSafe()
+                        it.textOrEmpty()
                     )
                 )
             }
@@ -63,7 +63,7 @@ class PersonalInformationFragment : Fragment(),
             etLastName.doAfterTextChanged {
                 viewModel.setEvent(
                     PersonalInformationContract.Event.LastNameChanged(
-                        it.toStringSafe()
+                        it.textOrEmpty()
                     )
                 )
             }
@@ -71,7 +71,7 @@ class PersonalInformationFragment : Fragment(),
             etCountry.doAfterTextChanged {
                 viewModel.setEvent(
                     PersonalInformationContract.Event.CountryChanged(
-                        it.toStringSafe()
+                        it.textOrEmpty()
                     )
                 )
             }
