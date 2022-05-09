@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -18,9 +19,7 @@ class ResetPasswordCompletedFragment : Fragment(),
     FabriikView<ResetPasswordCompletedContract.State, ResetPasswordCompletedContract.Effect> {
 
     private lateinit var binding: FragmentResetPasswordCompletedBinding
-    private val viewModel: ResetPasswordCompletedViewModel by lazy {
-        ViewModelProvider(this).get(ResetPasswordCompletedViewModel::class.java)
-    }
+    private val viewModel: ResetPasswordCompletedViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?

@@ -2,16 +2,23 @@ package com.fabriik.common.ui.base
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 abstract class FabriikViewModel<State : FabriikContract.State, Event : FabriikContract.Event, Effect : FabriikContract.Effect>(
-    application: Application
+    application: Application,
+    val savedStateHandle: SavedStateHandle? = null
 ) : AndroidViewModel(application) {
 
-    private val initialState : State by lazy { createInitialState() }
+    private val initialState : State by lazy {
+        if (savedStateHandle != null) {
+            parseArguments(savedStateHandle)
+        }
+        return@lazy createInitialState()
+    }
 
     private val _event: MutableSharedFlow<Event> = MutableSharedFlow()
     val event = _event.asSharedFlow()
@@ -42,6 +49,10 @@ abstract class FabriikViewModel<State : FabriikContract.State, Event : FabriikCo
     protected fun setState(reduce: State.() -> State) {
         val newState = currentState.reduce()
         _state.value = newState
+    }
+
+    protected open fun parseArguments(savedStateHandle: SavedStateHandle) {
+        //empty
     }
 
     private fun subscribeEvents() {

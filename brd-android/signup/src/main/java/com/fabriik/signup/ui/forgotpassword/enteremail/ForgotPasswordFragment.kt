@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -22,9 +23,7 @@ class ForgotPasswordFragment : Fragment(),
     FabriikView<ForgotPasswordContract.State, ForgotPasswordContract.Effect> {
 
     private lateinit var binding: FragmentForgotPasswordBinding
-    private val viewModel: ForgotPasswordViewModel by lazy {
-        ViewModelProvider(this).get(ForgotPasswordViewModel::class.java)
-    }
+    private val viewModel: ForgotPasswordViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?

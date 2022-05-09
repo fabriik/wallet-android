@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -17,9 +18,7 @@ class AccountVerificationFragment : Fragment(),
     FabriikView<AccountVerificationContract.State, AccountVerificationContract.Effect> {
 
     private lateinit var binding: FragmentAccountVerificationBinding
-    private val viewModel: AccountVerificationViewModel by lazy {
-        ViewModelProvider(this).get(AccountVerificationViewModel::class.java)
-    }
+    private val viewModel: AccountVerificationViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?

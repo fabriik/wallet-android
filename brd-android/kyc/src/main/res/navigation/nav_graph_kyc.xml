@@ -34,11 +34,24 @@
 
         <action
             android:id="@+id/action_to_proof_of_identity_upload"
-            app:destination="@id/fragmentAddressInformation" /> <!-- todo: change destination -->
+            app:destination="@id/fragmentUploadProofOfIdentity" />
 
     </fragment>
 
-    <!-- todo: proof of identity upload -->
+    <fragment
+        android:id="@+id/fragmentUploadProofOfIdentity"
+        android:name="com.fabriik.kyc.ui.features.proofofidentityupload.UploadProofOfIdentityFragment"
+        tools:layout="@layout/fragment_upload_proof_of_identity">
+
+        <argument
+            android:name="documentType"
+            app:argType="com.fabriik.kyc.data.enums.DocumentType" />
+
+        <action
+            android:id="@+id/action_to_address"
+            app:destination="@id/fragmentAddressInformation" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/fragmentAddressInformation"

@@ -23,12 +23,6 @@ import androidx.lifecycle.SavedStateHandle
 import com.fabriik.signup.R
 import com.fabriik.signup.utils.validators.Validator
 
-internal fun SavedStateHandle.toBundle() = bundleOf(
-    *keys().map {
-        Pair(it, get(it) as Any?)
-    }.toTypedArray()
-)
-
 internal fun TextView.underline() {
     paintFlags = paintFlags or Paint.UNDERLINE_TEXT_FLAG
 }
@@ -92,8 +86,4 @@ internal fun EditText.setValidationState(valid: Boolean) {
     setCompoundDrawablesRelativeWithIntrinsicBounds(
         0, 0, drawable ?: 0, 0
     )
-}
-
-internal fun AndroidViewModel.getString(@StringRes string: Int) : String {
-    return getApplication<Application>().applicationContext.getString(string)
 }

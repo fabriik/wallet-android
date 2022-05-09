@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:orientation="vertical"
     tools:gravity="center"
+    tools:orientation="vertical"
     tools:parentTag="LinearLayout">
 
     <androidx.appcompat.widget.AppCompatImageView
@@ -16,7 +16,10 @@
         style="@style/TextStyle.Subtitle2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        android:gravity="center"
         tools:text="@string/UploadProofOfResidence.AddDocument" />
 
     <androidx.appcompat.widget.AppCompatImageView

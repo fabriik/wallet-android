@@ -42,6 +42,20 @@
     <string name="ProofOfIdentity.NationalIdCard">National ID card</string>
     <string name="ProofOfIdentity.DrivingLicence">Driver’s license</string>
 
+    <!-- Upload proof of identity screen -->
+    <string name="UploadProofOfIdentity.Title">Proof of Identity</string>
+    <string name="UploadProofOfIdentity.Description">Upload an image of your %s. Make sure to include all four corners of the page in the photo.</string>
+    <string name="UploadProofOfIdentity.Description.IdCard">National ID Card</string>
+    <string name="UploadProofOfIdentity.Description.PassportPage">Passport ID page</string>
+    <string name="UploadProofOfIdentity.Description.DrivingLicence">Driver’s license</string>
+    <string name="UploadProofOfIdentity.AddDocument.Back">Add the back of your ID here</string>
+    <string name="UploadProofOfIdentity.AddDocument.Front">Add the front of your ID here</string>
+    <string name="UploadProofOfIdentity.AddDocument.Passport">Add the ID page of your passport here</string>
+    <string name="UploadProofOfIdentity.CheckItem1">Make sure the ID you choose is not expired.</string>
+    <string name="UploadProofOfIdentity.CheckItem2">It must be a full-color, original, unedited photograph.</string>
+    <string name="UploadProofOfIdentity.CheckItem3">All information must be captured in the photo.</string>
+    <string name="UploadProofOfIdentity.Confirm">Confirm</string>
+
     <!-- Address information screen -->
     <string name="AddressInformation.Title">Where do you live?</string>
     <string name="AddressInformation.InfoText"><u>Why are we asking this?</u></string>

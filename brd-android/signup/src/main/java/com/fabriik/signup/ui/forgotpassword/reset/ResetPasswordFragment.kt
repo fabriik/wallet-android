@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -22,9 +23,7 @@ class ResetPasswordFragment : Fragment(),
     FabriikView<ResetPasswordContract.State, ResetPasswordContract.Effect> {
 
     private lateinit var binding: FragmentResetPasswordBinding
-    private val viewModel: ResetPasswordViewModel by lazy {
-        ViewModelProvider(this).get(ResetPasswordViewModel::class.java)
-    }
+    private val viewModel: ResetPasswordViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?

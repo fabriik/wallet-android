@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -13,12 +14,11 @@ import com.fabriik.kyc.R
 import com.fabriik.kyc.databinding.FragmentProofOfIdentityBinding
 import kotlinx.coroutines.flow.collect
 
-class ProofOfIdentityFragment : Fragment(), FabriikView<ProofOfIdentityContract.State, ProofOfIdentityContract.Effect> {
+class ProofOfIdentityFragment : Fragment(),
+    FabriikView<ProofOfIdentityContract.State, ProofOfIdentityContract.Effect> {
 
     private lateinit var binding: FragmentProofOfIdentityBinding
-    private val viewModel: ProofOfIdentityViewModel by lazy {
-        ViewModelProvider(this).get(ProofOfIdentityViewModel::class.java)
-    }
+    private val viewModel: ProofOfIdentityViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -87,7 +87,9 @@ class ProofOfIdentityFragment : Fragment(), FabriikView<ProofOfIdentityContract.
 
             is ProofOfIdentityContract.Effect.GoToDocumentUpload ->
                 findNavController().navigate(
-                    ProofOfIdentityFragmentDirections.actionToProofOfIdentityUpload()
+                    ProofOfIdentityFragmentDirections.actionToProofOfIdentityUpload(
+                        effect.documentType
+                    )
                 )
         }
     }

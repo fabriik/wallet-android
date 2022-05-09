@@ -6,7 +6,7 @@ import com.fabriik.signup.R
 import com.fabriik.common.data.Status
 import com.fabriik.signup.data.UserApi
 import com.fabriik.common.ui.base.FabriikViewModel
-import com.fabriik.signup.utils.getString
+import com.fabriik.common.utils.getString
 import com.fabriik.signup.utils.validators.ConfirmationCodeValidator
 import com.fabriik.signup.utils.validators.PasswordValidator
 import kotlinx.coroutines.Dispatchers

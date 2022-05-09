@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -18,9 +19,7 @@ class CompletedFragment : Fragment(),
     FabriikView<CompletedContract.State, CompletedContract.Effect> {
 
     private lateinit var binding: FragmentCompletedBinding
-    private val viewModel: CompletedViewModel by lazy {
-        ViewModelProvider(this).get(CompletedViewModel::class.java)
-    }
+    private val viewModel: CompletedViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?

@@ -1,6 +1,7 @@
 package com.fabriik.kyc.ui.features.proofofidentity
 
 import com.fabriik.common.ui.base.FabriikContract
+import com.fabriik.kyc.data.enums.DocumentType
 
 interface ProofOfIdentityContract {
 
@@ -16,7 +17,7 @@ interface ProofOfIdentityContract {
     sealed class Effect : FabriikContract.Effect {
         object GoBack : Effect()
         object Dismiss : Effect()
-        object GoToDocumentUpload : Effect()
+        class GoToDocumentUpload(val documentType: DocumentType) : Effect()
     }
 
     class State() : FabriikContract.State //todo: data class
