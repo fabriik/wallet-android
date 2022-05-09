@@ -15,6 +15,7 @@ interface PersonalInformationContract {
     sealed class Effect : FabriikContract.Effect {
         object GoBack : Effect()
         object Dismiss : Effect()
+        object GoToExposedPerson : Effect()
     }
 
     class State() : FabriikContract.State //todo: data class

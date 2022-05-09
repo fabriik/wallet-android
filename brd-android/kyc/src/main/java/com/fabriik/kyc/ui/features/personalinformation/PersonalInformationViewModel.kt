@@ -20,6 +20,11 @@ class PersonalInformationViewModel(
                 setEffect {
                     PersonalInformationContract.Effect.Dismiss
                 }
+
+            is PersonalInformationContract.Event.ConfirmClicked ->
+                setEffect {
+                    PersonalInformationContract.Effect.GoToExposedPerson
+                }
         }
     }
 }

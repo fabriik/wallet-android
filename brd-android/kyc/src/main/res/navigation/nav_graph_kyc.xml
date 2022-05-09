@@ -25,6 +25,17 @@
         android:name="com.fabriik.kyc.ui.features.personalinformation.PersonalInformationFragment"
         tools:layout="@layout/fragment_personal_information">
 
+        <action
+            android:id="@+id/action_to_exposed_person"
+            app:destination="@id/fragmentExposedPerson" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragmentExposedPerson"
+        android:name="com.fabriik.kyc.ui.features.exposedperson.ExposedPersonFragment"
+        tools:layout="@layout/fragment_exposed_person">
+
     </fragment>
 
     <fragment
