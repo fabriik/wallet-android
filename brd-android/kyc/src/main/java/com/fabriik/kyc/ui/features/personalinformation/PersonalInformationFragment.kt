@@ -4,16 +4,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.fabriik.common.ui.base.FabriikView
+import com.fabriik.common.utils.toStringSafe
 import com.fabriik.kyc.R
 import com.fabriik.kyc.databinding.FragmentPersonalInformationBinding
 import kotlinx.coroutines.flow.collect
 
-class PersonalInformationFragment : Fragment(), FabriikView<PersonalInformationContract.State, PersonalInformationContract.Effect> {
+class PersonalInformationFragment : Fragment(),
+    FabriikView<PersonalInformationContract.State, PersonalInformationContract.Effect> {
 
     private lateinit var binding: FragmentPersonalInformationBinding
     private val viewModel: PersonalInformationViewModel by viewModels()
@@ -48,8 +51,39 @@ class PersonalInformationFragment : Fragment(), FabriikView<PersonalInformationC
             btnConfirm.setOnClickListener {
                 viewModel.setEvent(PersonalInformationContract.Event.ConfirmClicked)
             }
-        }
 
+            etName.doAfterTextChanged {
+                viewModel.setEvent(
+                    PersonalInformationContract.Event.NameChanged(
+                        it.toStringSafe()
+                    )
+                )
+            }
+
+            etLastName.doAfterTextChanged {
+                viewModel.setEvent(
+                    PersonalInformationContract.Event.LastNameChanged(
+                        it.toStringSafe()
+                    )
+                )
+            }
+
+            etCountry.doAfterTextChanged {
+                viewModel.setEvent(
+                    PersonalInformationContract.Event.CountryChanged(
+                        it.toStringSafe()
+                    )
+                )
+            }
+
+            rgExposedPerson.setOnCheckedChangeListener { _, checkedId ->
+                viewModel.setEvent(
+                    PersonalInformationContract.Event.ExposedPersonChanged(
+                        checkedId == R.id.rb_yes
+                    )
+                )
+            }
+        }
 
         // collect UI state
         lifecycleScope.launchWhenStarted {

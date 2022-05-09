@@ -1,6 +1,7 @@
 package com.fabriik.common.utils
 
 import android.app.Application
+import android.text.Editable
 import androidx.annotation.StringRes
 import androidx.core.os.bundleOf
 import androidx.lifecycle.AndroidViewModel
@@ -15,3 +16,5 @@ fun SavedStateHandle.toBundle() = bundleOf(
         Pair(it, get(it) as Any?)
     }.toTypedArray()
 )
+
+fun Editable?.toStringSafe() = if (isNullOrEmpty()) "" else toString()
