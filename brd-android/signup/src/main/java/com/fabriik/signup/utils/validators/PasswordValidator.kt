@@ -1,5 +1,6 @@
 package com.fabriik.signup.utils.validators
 
+import com.fabriik.common.utils.validators.Validator
 import java.util.regex.Pattern
 
 object PasswordValidator : Validator {

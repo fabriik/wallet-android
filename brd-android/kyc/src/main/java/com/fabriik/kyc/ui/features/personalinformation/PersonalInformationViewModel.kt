@@ -2,12 +2,15 @@ package com.fabriik.kyc.ui.features.personalinformation
 
 import android.app.Application
 import com.fabriik.common.ui.base.FabriikViewModel
+import com.fabriik.common.utils.validators.TextValidator
 
 class PersonalInformationViewModel(
     application: Application
 ) : FabriikViewModel<PersonalInformationContract.State, PersonalInformationContract.Event, PersonalInformationContract.Effect>(
     application
 ) {
+
+    private val textValidator = TextValidator
 
     override fun createInitialState() = PersonalInformationContract.State()
 
@@ -41,7 +44,9 @@ class PersonalInformationViewModel(
     }
 
     private fun PersonalInformationContract.State.validate() = copy(
-        confirmEnabled = exposedPerson != null && name.isNotBlank() && lastName.isNotBlank()
-                && country.isNotBlank()
+        confirmEnabled = exposedPerson != null
+                && textValidator(name)
+                && textValidator(lastName)
+                && textValidator(country)
     )
 }

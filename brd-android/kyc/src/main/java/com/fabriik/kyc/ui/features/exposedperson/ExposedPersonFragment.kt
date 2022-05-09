@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.fabriik.common.ui.base.FabriikView
+import com.fabriik.common.utils.toStringSafe
 import com.fabriik.kyc.R
 import com.fabriik.kyc.databinding.FragmentCompletedBinding
 import com.fabriik.kyc.databinding.FragmentExposedPersonBinding
@@ -33,6 +35,12 @@ class ExposedPersonFragment : Fragment(),
             btnConfirm.setOnClickListener {
                 viewModel.setEvent(ExposedPersonContract.Event.ConfirmClicked)
             }
+
+            etEmail.doAfterTextChanged {
+                viewModel.setEvent(
+                    ExposedPersonContract.Event.EmailChanged(it.toStringSafe())
+                )
+            }
         }
 
         // collect UI state
@@ -52,7 +60,7 @@ class ExposedPersonFragment : Fragment(),
 
     override fun render(state: ExposedPersonContract.State) {
         with(binding) {
-
+            btnConfirm.isEnabled = state.confirmEnabled
         }
     }
 
