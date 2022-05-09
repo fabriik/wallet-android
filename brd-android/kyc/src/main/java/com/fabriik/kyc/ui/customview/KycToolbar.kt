@@ -54,12 +54,10 @@ class KycToolbar @JvmOverloads constructor(
     }
 
     private fun parseAttributes(attrs: AttributeSet?) {
-        attrs?.let {
-            val typedArray = context.obtainStyledAttributes(attrs, R.styleable.KycToolbar)
-            setTitle(typedArray.getString(R.styleable.KycToolbar_title))
-            setShowBackButton(typedArray.getBoolean(R.styleable.KycToolbar_showBack, true))
-            setShowDismissButton(typedArray.getBoolean(R.styleable.KycToolbar_showDismiss, true))
-            typedArray.recycle()
-        }
+        val typedArray = context.obtainStyledAttributes(attrs, R.styleable.KycToolbar)
+        setTitle(typedArray.getString(R.styleable.KycToolbar_title))
+        setShowBackButton(typedArray.getBoolean(R.styleable.KycToolbar_showBack, true))
+        setShowDismissButton(typedArray.getBoolean(R.styleable.KycToolbar_showDismiss, true))
+        typedArray.recycle()
     }
 }

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:orientation="vertical"
+    tools:gravity="center"
+    tools:parentTag="LinearLayout">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:src="@drawable/ic_add_proof" />
+
+    <TextView
+        android:id="@+id/tv_text"
+        style="@style/TextStyle.Subtitle2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        tools:text="@string/UploadProofOfResidence.AddDocument" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_bottom"
+        android:layout_width="28dp"
+        android:layout_height="18dp"
+        android:layout_marginTop="10dp"
+        tools:src="@drawable/ic_id_front" />
+</merge>

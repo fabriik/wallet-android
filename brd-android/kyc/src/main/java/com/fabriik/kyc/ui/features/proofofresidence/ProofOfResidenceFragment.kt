@@ -84,7 +84,7 @@ class ProofOfResidenceFragment : Fragment(),
 
             is ProofOfResidenceContract.Effect.GoToProofUpload ->
                 findNavController().navigate(
-                    ProofOfResidenceFragmentDirections.actionToProofUpload()
+                    ProofOfResidenceFragmentDirections.actionToUploadProof()
                 )
         }
     }
