@@ -62,6 +62,10 @@
             android:id="@+id/action_to_address"
             app:destination="@id/fragmentAddressInformation" />
 
+        <action
+            android:id="@+id/action_open_photo_source_picker"
+            app:destination="@id/bottomSheetPhotoSourcePicker" />
+
     </fragment>
 
     <fragment
@@ -95,11 +99,26 @@
             android:id="@+id/action_to_completed"
             app:destination="@id/fragmentCompleted" />
 
+        <action
+            android:id="@+id/action_open_photo_source_picker"
+            app:destination="@id/bottomSheetPhotoSourcePicker" />
+
     </fragment>
 
     <fragment
         android:id="@+id/fragmentCompleted"
         android:name="com.fabriik.kyc.ui.features.completed.CompletedFragment"
         tools:layout="@layout/fragment_completed" />
+
+    <dialog
+        android:id="@+id/bottomSheetPhotoSourcePicker"
+        android:name="com.fabriik.kyc.ui.dialogs.PhotoSourcePickerBottomSheet"
+        tools:layout="@layout/bottom_sheet_photo_source_picker">
+
+        <argument
+            android:name="requestKey"
+            app:argType="string" />
+
+    </dialog>
 
 </navigation>

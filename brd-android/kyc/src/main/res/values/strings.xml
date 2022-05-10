@@ -88,4 +88,8 @@
     <string name="Completed.Title">Thanks for submitting your information!</string>
     <string name="Completed.Description">We are reviewing your documents and will let you know when your account has been verified.</string>
     <string name="Completed.GotIt">Got it!</string>
+
+    <!-- Photo source picker -->
+    <string name="PhotoSourcePicker.Camera">Open your camera</string>
+    <string name="PhotoSourcePicker.Gallery">Upload an image from your phone</string>
 </resources>

@@ -16,6 +16,7 @@ interface UploadProofOfResidenceContract {
         object GoBack : Effect()
         object Dismiss : Effect()
         object GoToCompleted : Effect()
+        class OpenPhotoSourcePicker(val requestKey: String) : Effect()
     }
 
     class State() : FabriikContract.State //todo: data class

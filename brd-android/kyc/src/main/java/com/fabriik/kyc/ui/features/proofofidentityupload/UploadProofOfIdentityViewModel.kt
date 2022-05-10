@@ -9,6 +9,7 @@ import com.fabriik.common.utils.toBundle
 import com.fabriik.common.utils.toSpannableString
 import com.fabriik.kyc.R
 import com.fabriik.kyc.data.enums.DocumentType
+import com.fabriik.kyc.ui.dialogs.PhotoSourcePickerBottomSheet
 
 class UploadProofOfIdentityViewModel(
     application: Application,
@@ -40,6 +41,59 @@ class UploadProofOfIdentityViewModel(
 
             is UploadProofOfIdentityContract.Event.ConfirmClicked ->
                 setEffect { UploadProofOfIdentityContract.Effect.GoToAddress }
+
+            is UploadProofOfIdentityContract.Event.AddIdBackClicked ->
+                setEffect {
+                    UploadProofOfIdentityContract.Effect.OpenPhotoSourcePicker(
+                        REQUEST_KEY_BACK_SIDE
+                    )
+                }
+
+            is UploadProofOfIdentityContract.Event.AddIdFrontClicked ->
+                setEffect {
+                    UploadProofOfIdentityContract.Effect.OpenPhotoSourcePicker(
+                        REQUEST_KEY_FRONT_SIDE
+                    )
+                }
+
+            is UploadProofOfIdentityContract.Event.AddPassportClicked ->
+                setEffect {
+                    UploadProofOfIdentityContract.Effect.OpenPhotoSourcePicker(
+                        REQUEST_KEY_PASSPORT
+                    )
+                }
+
+            is UploadProofOfIdentityContract.Event.CameraPermissionGranted ->
+                setEffect {
+                    UploadProofOfIdentityContract.Effect.OpenCamera(
+                        requestKey = event.requestKey,
+                        fileName = event.requestKey
+                    )
+                }
+
+            is UploadProofOfIdentityContract.Event.PhotoSourceSelected -> {
+                when (event.resultKey) {
+                    PhotoSourcePickerBottomSheet.RESULT_CAMERA ->
+                        setEffect {
+                            UploadProofOfIdentityContract.Effect.RequestCameraPermission(
+                                requestKey = event.requestKey
+                            )
+                        }
+
+                    PhotoSourcePickerBottomSheet.RESULT_GALLERY ->
+                        setEffect { UploadProofOfIdentityContract.Effect.OpenGallery(event.requestKey) }
+                }
+            }
+
+            is UploadProofOfIdentityContract.Event.PhotoReady ->
+                setState {
+                    when (event.requestCode) {
+                        REQUEST_KEY_PASSPORT -> copy(passportImage = event.imageUri).validate()
+                        REQUEST_KEY_BACK_SIDE -> copy(idBackImage = event.imageUri).validate()
+                        REQUEST_KEY_FRONT_SIDE -> copy(idFrontImage = event.imageUri).validate()
+                        else -> this
+                    }
+                }
         }
     }
 
@@ -60,5 +114,15 @@ class UploadProofOfIdentityViewModel(
         val startIndex = description.indexOf(documentName)
         val endIndex = startIndex + documentName.length
         return spannableString.bold(startIndex, endIndex)
+    }
+
+    private fun UploadProofOfIdentityContract.State.validate() = copy(
+        confirmEnabled = (passportImage != null) || (idBackImage != null && idFrontImage != null)
+    )
+
+    companion object {
+        const val REQUEST_KEY_PASSPORT = "passport"
+        const val REQUEST_KEY_BACK_SIDE = "idBackSide"
+        const val REQUEST_KEY_FRONT_SIDE = "idFrontSide"
     }
 }
