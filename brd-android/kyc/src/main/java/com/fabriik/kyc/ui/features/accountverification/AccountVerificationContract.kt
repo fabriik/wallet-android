@@ -1,5 +1,6 @@
 package com.fabriik.kyc.ui.features.accountverification
 
+import androidx.annotation.StringRes
 import com.fabriik.common.ui.base.FabriikContract
 
 interface AccountVerificationContract {
@@ -15,10 +16,11 @@ interface AccountVerificationContract {
         object GoBack : Effect()
         object GoToPersonalInfo : Effect()
         object GoToProofOfIdentity : Effect()
+        class ShowInfo(@StringRes val title: Int, @StringRes val description: Int) : Effect()
     }
 
     data class State(
-        val basicBoxEnabled : Boolean = false,
-        val unlimitedBoxEnabled : Boolean = false
+        val basicBoxEnabled: Boolean = false,
+        val unlimitedBoxEnabled: Boolean = false
     ) : FabriikContract.State
 }

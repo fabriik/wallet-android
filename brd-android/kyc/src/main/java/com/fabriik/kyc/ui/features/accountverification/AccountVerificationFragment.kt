@@ -4,14 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ListPopupWindow
+import android.widget.PopupWindow
+import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.fabriik.common.ui.base.FabriikView
 import com.fabriik.kyc.R
 import com.fabriik.kyc.databinding.FragmentAccountVerificationBinding
+import com.fabriik.kyc.ui.dialogs.InfoPopup
 import kotlinx.coroutines.flow.collect
 
 class AccountVerificationFragment : Fragment(),
@@ -84,6 +88,32 @@ class AccountVerificationFragment : Fragment(),
                 findNavController().navigate(
                     AccountVerificationFragmentDirections.actionToProofOfIdentity()
                 )
+
+            is AccountVerificationContract.Effect.ShowInfo ->
+                InfoPopup.showPopupWindow(
+                    anchorView = binding.toolbar,
+                    parentView = binding.root,
+                    title = effect.title,
+                    description = effect.description,
+                )
         }
+    }
+
+    private fun showPopup(message: String) {
+
+
+        val context = requireContext()
+
+        val tv = TextView(context)
+        tv.text = message
+
+        val popupWindow = PopupWindow(context)
+        popupWindow.width = 300
+        popupWindow.contentView = tv
+        popupWindow.setBackgroundDrawable(
+            ContextCompat.getDrawable(requireContext(), R.drawable.bg_info_prompt)
+        )
+        // popupWindow.promptPosition = ListPopupWindow.POSITION_PROMPT_BELOW
+        popupWindow.showAsDropDown(binding.toolbar)
     }
 }
