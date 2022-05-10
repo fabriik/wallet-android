@@ -76,7 +76,7 @@ class UploadProofOfIdentityViewModel(
                     PhotoSourcePickerBottomSheet.RESULT_CAMERA ->
                         setEffect {
                             UploadProofOfIdentityContract.Effect.RequestCameraPermission(
-                                requestKey = event.requestKey
+                                event.requestKey
                             )
                         }
 

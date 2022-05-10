@@ -264,7 +264,7 @@ class SettingsScreenHandler(
             SettingsItem(
                 context.getString(R.string.MenuButton_scan),
                 SettingsOption.SCAN_QR,
-                R.drawable.ic_camera
+                R.drawable.ic_kyc_camera
             ),
             SettingsItem(
                 "Registration",

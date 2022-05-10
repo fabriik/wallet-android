@@ -26,7 +26,7 @@
         android:paddingEnd="24dp"
         android:paddingBottom="10dp"
         android:text="@string/PhotoSourcePicker.Camera"
-        app:drawableStartCompat="@drawable/ic_camera"
+        app:drawableStartCompat="@drawable/ic_kyc_camera"
         app:layout_constraintTop_toBottomOf="@id/iv_dismiss" />
 
     <View
@@ -52,7 +52,7 @@
         android:paddingEnd="24dp"
         android:paddingBottom="10dp"
         android:text="@string/PhotoSourcePicker.Gallery"
-        app:drawableStartCompat="@drawable/ic_gallery"
+        app:drawableStartCompat="@drawable/ic_kyc_gallery"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view_separator" />
 

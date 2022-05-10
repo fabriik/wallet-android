@@ -110,6 +110,7 @@ class UploadProofOfIdentityFragment : Fragment(),
             }
         }
 
+        // bind fragment result listeners
         lifecycleScope.launchWhenStarted {
             bindFragmentResultListener(UploadProofOfIdentityViewModel.REQUEST_KEY_PASSPORT)
             bindFragmentResultListener(UploadProofOfIdentityViewModel.REQUEST_KEY_BACK_SIDE)
