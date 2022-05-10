@@ -12,19 +12,16 @@ class ProofOfResidenceViewModel(
     override fun handleEvent(event: ProofOfResidenceContract.Event) {
         when (event) {
             is ProofOfResidenceContract.Event.BackClicked ->
-                setEffect {
-                    ProofOfResidenceContract.Effect.GoBack
-                }
+                setEffect { ProofOfResidenceContract.Effect.GoBack }
 
             is ProofOfResidenceContract.Event.DismissClicked ->
-                setEffect {
-                    ProofOfResidenceContract.Effect.Dismiss
-                }
+                setEffect { ProofOfResidenceContract.Effect.Dismiss }
+
+            is ProofOfResidenceContract.Event.YesClicked ->
+                setEffect { ProofOfResidenceContract.Effect.GoToCompleted }
 
             is ProofOfResidenceContract.Event.NoClicked ->
-                setEffect {
-                    ProofOfResidenceContract.Effect.GoToProofUpload
-                }
+                setEffect { ProofOfResidenceContract.Effect.GoToProofUpload }
         }
     }
 }

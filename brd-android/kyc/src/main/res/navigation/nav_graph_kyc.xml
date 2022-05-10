@@ -88,6 +88,10 @@
             android:id="@+id/action_to_upload_proof"
             app:destination="@id/fragmentUploadProofOfResidence" />
 
+        <action
+            android:id="@+id/action_to_completed"
+            app:destination="@id/fragmentCompleted" />
+
     </fragment>
 
     <fragment

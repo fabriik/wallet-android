@@ -15,14 +15,10 @@ class ProofOfIdentityViewModel(
     override fun handleEvent(event: ProofOfIdentityContract.Event) {
         when (event) {
             is ProofOfIdentityContract.Event.BackClicked ->
-                setEffect {
-                    ProofOfIdentityContract.Effect.GoBack
-                }
+                setEffect { ProofOfIdentityContract.Effect.GoBack }
 
             is ProofOfIdentityContract.Event.DismissClicked ->
-                setEffect {
-                    ProofOfIdentityContract.Effect.Dismiss
-                }
+                setEffect { ProofOfIdentityContract.Effect.Dismiss }
 
             is ProofOfIdentityContract.Event.IdCardClicked ->
                 setEffect {
