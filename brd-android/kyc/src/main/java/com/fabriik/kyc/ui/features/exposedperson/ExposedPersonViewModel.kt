@@ -15,9 +15,7 @@ class ExposedPersonViewModel(
     override fun handleEvent(event: ExposedPersonContract.Event) {
         when (event) {
             is ExposedPersonContract.Event.ConfirmClicked ->
-                setEffect {
-                    ExposedPersonContract.Effect.Dismiss
-                }
+                setEffect { ExposedPersonContract.Effect.Dismiss }
 
             is ExposedPersonContract.Event.EmailChanged ->
                 setState { copy(email = event.email).validate() }

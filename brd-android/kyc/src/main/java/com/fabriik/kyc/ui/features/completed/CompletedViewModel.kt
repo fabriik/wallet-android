@@ -12,9 +12,7 @@ class CompletedViewModel(
     override fun handleEvent(event: CompletedContract.Event) {
         when (event) {
             is CompletedContract.Event.GotItClicked ->
-                setEffect {
-                    CompletedContract.Effect.Dismiss
-                }
+                setEffect { CompletedContract.Effect.Dismiss }
         }
     }
 }
