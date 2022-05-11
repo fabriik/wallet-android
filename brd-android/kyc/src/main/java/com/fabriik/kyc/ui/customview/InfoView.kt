@@ -40,7 +40,7 @@ class InfoView @JvmOverloads constructor(
 
     private fun showPopupWindow() {
         val parentView = rootView as ViewGroup
-        val inflater = LayoutInflater.from(context)
+        val inflater = LayoutInflater.from(context.applicationContext) // applicationContext is used to remove parent textview attributes
 
         val binding = PartialInfoPopupBinding.inflate(inflater, parentView, false).apply {
             tvTitle.text = popupTitle
