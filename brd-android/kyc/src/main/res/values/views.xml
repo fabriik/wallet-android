@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Common.Info" parent="TextStyle.Body2">
+    <style name="InfoView" parent="TextStyle.Body2">
         <item name="android:textColor">@color/light_link_01</item>
         <item name="android:drawableStart">@drawable/ic_info_black</item>
         <item name="android:drawablePadding">4dp</item>

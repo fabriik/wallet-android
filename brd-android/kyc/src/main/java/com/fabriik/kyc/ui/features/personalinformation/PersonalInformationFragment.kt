@@ -40,14 +40,6 @@ class PersonalInformationFragment : Fragment(),
                 viewModel.setEvent(PersonalInformationContract.Event.DismissClicked)
             }
 
-            tvInfo.setOnClickListener {
-                viewModel.setEvent(PersonalInformationContract.Event.ScreenInfoClicked)
-            }
-
-            tvSection3Info.setOnClickListener {
-                viewModel.setEvent(PersonalInformationContract.Event.ExposedPersonInfoClicked)
-            }
-
             btnConfirm.setOnClickListener {
                 viewModel.setEvent(PersonalInformationContract.Event.ConfirmClicked)
             }

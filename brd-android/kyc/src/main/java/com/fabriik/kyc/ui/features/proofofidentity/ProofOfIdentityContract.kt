@@ -7,7 +7,6 @@ interface ProofOfIdentityContract {
 
     sealed class Event : FabriikContract.Event {
         object BackClicked : Event()
-        object InfoClicked : Event()
         object DismissClicked : Event()
         object IdCardClicked : Event()
         object PassportClicked : Event()

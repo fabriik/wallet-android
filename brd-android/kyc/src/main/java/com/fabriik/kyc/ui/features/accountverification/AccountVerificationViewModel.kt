@@ -2,7 +2,6 @@ package com.fabriik.kyc.ui.features.accountverification
 
 import android.app.Application
 import com.fabriik.common.ui.base.FabriikViewModel
-import com.fabriik.kyc.R
 
 class AccountVerificationViewModel(
     application: Application
@@ -11,6 +10,7 @@ class AccountVerificationViewModel(
 ) {
 
     override fun createInitialState() = AccountVerificationContract.State(
+        basicBoxEnabled = true, // todo: set from API
         unlimitedBoxEnabled = true // todo: set from API
     )
 
@@ -24,14 +24,6 @@ class AccountVerificationViewModel(
 
             is AccountVerificationContract.Event.UnlimitedClicked ->
                 setEffect { AccountVerificationContract.Effect.GoToProofOfIdentity }
-
-            is AccountVerificationContract.Event.InfoClicked ->
-                setEffect {
-                    AccountVerificationContract.Effect.ShowInfo(
-                        title = R.string.AccountVerification_InfoTitle,
-                        description = R.string.AccountVerification_InfoDescription
-                    )
-                }
         }
     }
 }

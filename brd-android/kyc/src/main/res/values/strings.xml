@@ -3,8 +3,8 @@
     <!-- Account verification screen -->
     <string name="AccountVerification.Title">Account Verification</string>
     <string name="AccountVerification.InfoText"><u>What is this?</u></string>
-    <string name="AccountVerification.InfoTitle">Account Verification</string>
-    <string name="AccountVerification.InfoDescription">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip</string>
+    <string name="AccountVerification.InfoPopup.Title">Account Verification</string>
+    <string name="AccountVerification.InfoPopup.Description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip</string>
     <string name="AccountVerification.BasicPlan.Title">Basic</string>
     <string name="AccountVerification.BasicPlan.CheckListItem1">Personal information</string>
     <string name="AccountVerification.BasicPlan.Tag">Account limit: $1,000/day ($10,000 lifetime)</string>
@@ -18,6 +18,10 @@
     <!-- Personal information screen -->
     <string name="PersonalInformation.Title">Personal Information</string>
     <string name="PersonalInformation.InfoText"><u>Why are we asking this?</u></string>
+    <string name="PersonalInformation.ScreenInfoPopup.Title">Personal information</string>
+    <string name="PersonalInformation.ScreenInfoPopup.Description">We need to verify your personal information for identity purposes. This information won’t be shared with outside sources unless required by law.</string>
+    <string name="PersonalInformation.ExposedPersonInfoPopup.Title">Politically exposed person</string>
+    <string name="PersonalInformation.ExposedPersonInfoPopup.Description">A politically exposed person (PEP) is a person (or a close relative or associate of a person) holding a public position or a prominent, high-ranking role in any international organization.</string>
     <string name="PersonalInformation.Section1">What’s your name?</string>
     <string name="PersonalInformation.Section1.Subtitle">Write your name as it appears on your ID</string>
     <string name="PersonalInformation.Name">*Name</string>
@@ -39,6 +43,8 @@
     <!-- Proof of identity screen -->
     <string name="ProofOfIdentity.Title">Proof of Identity</string>
     <string name="ProofOfIdentity.InfoText"><u>Why are we asking this?</u></string>
+    <string name="ProofOfIdentity.InfoPopup.Title">Proof of Identity</string>
+    <string name="ProofOfIdentity.InfoPopup.Description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</string>
     <string name="ProofOfIdentity.Section">Select one of the following options:</string>
     <string name="ProofOfIdentity.Passport">Passport</string>
     <string name="ProofOfIdentity.NationalIdCard">National ID card</string>
@@ -61,6 +67,8 @@
     <!-- Address information screen -->
     <string name="AddressInformation.Title">Where do you live?</string>
     <string name="AddressInformation.InfoText"><u>Why are we asking this?</u></string>
+    <string name="AddressInformation.InfoPopup.Title">Address verification</string>
+    <string name="AddressInformation.InfoPopup.Description">We need to verify your residential address for identity purposes. This information won’t be shared with outside sources unless a legal request is made.</string>
     <string name="AddressInformation.Country">Country</string>
     <string name="AddressInformation.State">State / Province</string>
     <string name="AddressInformation.City">City</string>
@@ -72,6 +80,8 @@
     <!-- Proof of residence screen -->
     <string name="ProofOfResidence.Title">Proof of Residence</string>
     <string name="ProofOfResidence.InfoText"><u>Why are we asking this?</u></string>
+    <string name="ProofOfResidence.InfoPopup.Title">Proof of Residence</string>
+    <string name="ProofOfResidence.InfoPopup.Description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</string>
     <string name="ProofOfResidence.Question">Does the ID that you submitted have your address on it?</string>
     <string name="ProofOfResidence.Yes">Yes</string>
     <string name="ProofOfResidence.No">No</string>
@@ -79,6 +89,8 @@
     <!-- Upload proof of residence screen -->
     <string name="UploadProofOfResidence.Title">Proof of Residence</string>
     <string name="UploadProofOfResidence.InfoText"><u>Why are we asking this?</u></string>
+    <string name="UploadProofOfResidence.InfoPopup.Title">Proof of Residence</string>
+    <string name="UploadProofOfResidence.InfoPopup.Description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</string>
     <string name="UploadProofOfResidence.Description">You need to upload a document to validate the address of your current residence. It could be a bill, bank statement, or your ID if that includes your address.</string>
     <string name="UploadProofOfResidence.AddDocument">Add a document with your address here</string>
     <string name="UploadProofOfResidence.CheckItem1">Make sure the document you choose is not recent.</string>

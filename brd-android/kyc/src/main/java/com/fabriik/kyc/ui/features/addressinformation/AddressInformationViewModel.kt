@@ -3,7 +3,6 @@ package com.fabriik.kyc.ui.features.addressinformation
 import android.app.Application
 import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.common.utils.validators.TextValidator
-import com.fabriik.kyc.ui.features.exposedperson.ExposedPersonContract
 
 class AddressInformationViewModel(
     application: Application

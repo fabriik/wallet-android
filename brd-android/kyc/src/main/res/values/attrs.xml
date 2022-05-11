@@ -6,6 +6,11 @@
         <attr name="showDismiss" format="boolean" />
     </declare-styleable>
 
+    <declare-styleable name="InfoView">
+        <attr name="popupTitle" format="string" />
+        <attr name="popupDescription" format="string" />
+    </declare-styleable>
+
     <declare-styleable name="AddProofButton">
         <attr name="android:text" />
         <attr name="iconTop" format="reference" />

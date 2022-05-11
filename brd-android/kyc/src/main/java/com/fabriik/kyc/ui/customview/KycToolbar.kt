@@ -6,7 +6,6 @@ import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.view.View
 import androidx.core.view.isInvisible
 import com.fabriik.kyc.R
 import com.fabriik.kyc.databinding.PartialKycToolbarBinding

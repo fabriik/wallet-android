@@ -25,16 +25,17 @@
             android:paddingStart="16dp"
             android:paddingEnd="16dp">
 
-            <TextView
-                android:id="@+id/tv_info"
-                style="@style/Common.Info"
+            <com.fabriik.kyc.ui.customview.InfoView
+                android:id="@+id/view_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/PersonalInformation.InfoText"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:popupDescription="@string/PersonalInformation.ScreenInfoPopup.Description"
+                app:popupTitle="@string/PersonalInformation.ScreenInfoPopup.Title" />
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
@@ -152,9 +153,8 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/til_country" />
 
-                    <TextView
-                        android:id="@+id/tv_section_3_info"
-                        style="@style/Common.Info"
+                    <com.fabriik.kyc.ui.customview.InfoView
+                        android:id="@+id/view_section_3_info"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
@@ -163,7 +163,9 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_section_3" />
+                        app:layout_constraintTop_toBottomOf="@id/tv_section_3"
+                        app:popupDescription="@string/PersonalInformation.ExposedPersonInfoPopup.Description"
+                        app:popupTitle="@string/PersonalInformation.ExposedPersonInfoPopup.Title" />
 
                     <RadioGroup
                         android:id="@+id/rg_exposed_person"
@@ -173,7 +175,7 @@
                         android:orientation="horizontal"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_section_3_info">
+                        app:layout_constraintTop_toBottomOf="@id/view_section_3_info">
 
                         <RadioButton
                             android:id="@+id/rb_yes"

@@ -40,10 +40,6 @@ class AddressInformationFragment : Fragment(),
                 viewModel.setEvent(AddressInformationContract.Event.DismissClicked)
             }
 
-            tvInfo.setOnClickListener {
-                viewModel.setEvent(AddressInformationContract.Event.InfoClicked)
-            }
-
             btnConfirm.setOnClickListener {
                 viewModel.setEvent(AddressInformationContract.Event.ConfirmClicked)
             }

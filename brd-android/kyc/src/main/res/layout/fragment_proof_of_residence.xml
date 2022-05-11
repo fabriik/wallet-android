@@ -25,12 +25,13 @@
             android:paddingStart="16dp"
             android:paddingEnd="16dp">
 
-            <TextView
-                android:id="@+id/tv_info"
-                style="@style/Common.Info"
+            <com.fabriik.kyc.ui.customview.InfoView
+                android:id="@+id/view_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/ProofOfResidence.InfoText" />
+                android:text="@string/ProofOfResidence.InfoText"
+                app:popupTitle="@string/ProofOfResidence.InfoPopup.Title"
+                app:popupDescription="@string/ProofOfResidence.InfoPopup.Description"/>
 
             <TextView
                 android:id="@+id/tv_section"

@@ -6,7 +6,6 @@ interface ProofOfResidenceContract {
 
     sealed class Event : FabriikContract.Event {
         object BackClicked : Event()
-        object InfoClicked : Event()
         object DismissClicked : Event()
         object YesClicked : Event()
         object NoClicked : Event()

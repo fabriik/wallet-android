@@ -78,10 +78,6 @@ class UploadProofOfResidenceFragment : Fragment(),
                 viewModel.setEvent(UploadProofOfResidenceContract.Event.DismissClicked)
             }
 
-            tvInfo.setOnClickListener {
-                viewModel.setEvent(UploadProofOfResidenceContract.Event.InfoClicked)
-            }
-
             btnAddDocument.setOnClickListener {
                 viewModel.setEvent(UploadProofOfResidenceContract.Event.AddDocumentClicked)
             }

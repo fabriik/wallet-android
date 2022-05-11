@@ -8,7 +8,6 @@ interface AddressInformationContract {
         object BackClicked : Event()
         object ConfirmClicked : Event()
         object DismissClicked : Event()
-        object InfoClicked : Event()
 
         class ZipChanged(val zip: String) : Event()
         class CityChanged(val city: String) : Event()

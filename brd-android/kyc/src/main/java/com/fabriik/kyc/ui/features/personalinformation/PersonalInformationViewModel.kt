@@ -25,10 +25,6 @@ class PersonalInformationViewModel(
             is PersonalInformationContract.Event.ConfirmClicked ->
                 setEffect { PersonalInformationContract.Effect.GoToExposedPerson }
 
-            is PersonalInformationContract.Event.ScreenInfoClicked -> {} //todo:
-
-            is PersonalInformationContract.Event.ExposedPersonInfoClicked -> {} //todo:
-
             is PersonalInformationContract.Event.NameChanged ->
                 setState { copy(name = event.name).validate() }
 

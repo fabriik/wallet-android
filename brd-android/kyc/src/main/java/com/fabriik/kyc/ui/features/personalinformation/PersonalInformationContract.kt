@@ -8,8 +8,6 @@ interface PersonalInformationContract {
         object BackClicked : Event()
         object ConfirmClicked : Event()
         object DismissClicked : Event()
-        object ScreenInfoClicked : Event()
-        object ExposedPersonInfoClicked : Event()
 
         class NameChanged(val name: String) : PersonalInformationContract.Event()
         class CountryChanged(val country: String) : PersonalInformationContract.Event()
