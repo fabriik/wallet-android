@@ -42,8 +42,7 @@
                 <com.fabriik.kyc.ui.customview.AddProofButton
                     android:id="@+id/btn_add_passport"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:minHeight="200dp"
+                    android:layout_height="200dp"
                     android:text="@string/UploadProofOfIdentity.AddDocument.Passport"
                     android:visibility="gone"
                     app:iconBottom="@drawable/ic_id_front"
@@ -53,9 +52,8 @@
                 <LinearLayout
                     android:id="@+id/layout_id_buttons"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="150dp"
                     android:orientation="horizontal"
-                    android:minHeight="150dp"
                     android:visibility="gone"
                     android:weightSum="1"
                     tools:visibility="invisible">

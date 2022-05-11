@@ -51,7 +51,7 @@ class AddProofButton @JvmOverloads constructor(
         binding.ivBottom.isVisible = image == null
         binding.ivPreviewPhoto.isVisible = image != null
 
-        Glide.with(context)
+        Glide.with(this)
             .load(image)
             .transform(CenterCrop(), RoundedCorners(cornersRadius))
             .into(binding.ivPreviewPhoto)
