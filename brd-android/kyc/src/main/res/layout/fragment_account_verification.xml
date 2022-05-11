@@ -36,11 +36,10 @@
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cv_basic"
-                style="@style/AccountVerification.CardView.Border"
+                style="@style/CardView.Border.Basic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                app:strokeColor="@color/basic_box_border">
+                android:layout_marginTop="24dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -54,14 +53,14 @@
                         android:text="@string/AccountVerification.BasicPlan.Title" />
 
                     <TextView
-                        style="@style/AccountVerification.CardView.CheckListItem"
+                        style="@style/CheckItemView.Dark"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="14dp"
                         android:text="@string/AccountVerification.BasicPlan.CheckListItem1" />
 
                     <TextView
-                        style="@style/Common.Tag"
+                        style="@style/TagView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
@@ -72,7 +71,7 @@
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cv_unlimited"
-                style="@style/AccountVerification.CardView.Border"
+                style="@style/CardView.Border.Unlimited"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -90,28 +89,28 @@
                         android:text="@string/AccountVerification.UnlimitedPlan.Title" />
 
                     <TextView
-                        style="@style/AccountVerification.CardView.CheckListItem"
+                        style="@style/CheckItemView.Dark"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="14dp"
                         android:text="@string/AccountVerification.UnlimitedPlan.CheckListItem1" />
 
                     <TextView
-                        style="@style/AccountVerification.CardView.CheckListItem"
+                        style="@style/CheckItemView.Dark"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="@string/AccountVerification.UnlimitedPlan.CheckListItem2" />
 
                     <TextView
-                        style="@style/AccountVerification.CardView.CheckListItem"
+                        style="@style/CheckItemView.Dark"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="@string/AccountVerification.UnlimitedPlan.CheckListItem3" />
 
                     <TextView
-                        style="@style/Common.Tag"
+                        style="@style/TagView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
@@ -126,12 +125,14 @@
 
                         <TextView
                             android:id="@+id/tv_unlimited_bullet_points"
-                            style="@style/AccountVerification.CardView.BulletPoints"
+                            style="@style/TextStyle.Body2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="16dp"
                             android:layout_toStartOf="@+id/iv_stars"
-                            android:text="@string/AccountVerification.UnlimitedPlan.BulletPoints" />
+                            android:paddingStart="4dp"
+                            android:text="@string/AccountVerification.UnlimitedPlan.BulletPoints"
+                            android:textColor="@color/light_text_02" />
 
                         <androidx.appcompat.widget.AppCompatImageView
                             android:id="@+id/iv_stars"

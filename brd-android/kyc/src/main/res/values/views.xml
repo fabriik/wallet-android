@@ -7,7 +7,7 @@
         <item name="android:drawablePadding">4dp</item>
     </style>
 
-    <style name="Common.Tag" parent="TextStyle.Body2">
+    <style name="TagView" parent="TextStyle.Body2">
         <item name="android:textColor">@color/light_inverse_text_01</item>
         <item name="android:background">@drawable/bg_tag_black</item>
         <item name="android:gravity">center</item>
@@ -17,18 +17,30 @@
         <item name="android:paddingBottom">2dp</item>
     </style>
 
-    <style name="AccountVerification.CardView.Border" parent="">
-        <item name="strokeWidth">1.5dp</item>
-    </style>
-
-    <style name="AccountVerification.CardView.CheckListItem" parent="TextStyle.Body2">
-        <item name="android:textColor">@color/fabriik_shuttle_grey</item>
+    <style name="CheckItemView.Dark" parent="TextStyle.Body2">
+        <item name="android:textColor">@color/light_text_02</item>
         <item name="android:drawableStart">@drawable/ic_check_gray</item>
         <item name="android:drawablePadding">8dp</item>
         <item name="android:gravity">center</item>
     </style>
 
-    <style name="AccountVerification.CardView.BulletPoints" parent="TextStyle.Body2">
-        <item name="android:paddingStart">4dp</item>
+    <style name="CheckItemView.Light" parent="TextStyle.Caption">
+        <item name="android:textColor">@color/light_text_01</item>
+        <item name="android:drawableStart">@drawable/ic_check_light_gray</item>
+        <item name="android:drawablePadding">8dp</item>
+        <item name="android:gravity">center</item>
     </style>
+
+    <style name="CardView.Border" parent="">
+        <item name="strokeWidth">1.5dp</item>
+    </style>
+
+    <style name="CardView.Border.Basic">
+        <item name="strokeColor">@color/basic_box_border</item>
+    </style>
+
+    <style name="CardView.Border.Unlimited">
+        <item name="strokeColor">@color/unlimited_box_border</item>
+    </style>
+
 </resources>

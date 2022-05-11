@@ -84,21 +84,21 @@
             </FrameLayout>
 
             <TextView
-                style="@style/AccountVerification.CardView.CheckListItem"
+                style="@style/CheckItemView.Light"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:text="@string/UploadProofOfIdentity.CheckItem1" />
 
             <TextView
-                style="@style/AccountVerification.CardView.CheckListItem"
+                style="@style/CheckItemView.Light"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="@string/UploadProofOfIdentity.CheckItem2" />
 
             <TextView
-                style="@style/AccountVerification.CardView.CheckListItem"
+                style="@style/CheckItemView.Light"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
