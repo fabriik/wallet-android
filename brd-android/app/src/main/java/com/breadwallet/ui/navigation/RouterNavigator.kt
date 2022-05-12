@@ -53,6 +53,7 @@ import com.breadwallet.ui.login.LoginController
 import com.breadwallet.ui.notification.InAppNotificationActivity
 import com.breadwallet.ui.onboarding.OnBoardingController
 import com.breadwallet.ui.pin.InputPinController
+import com.breadwallet.ui.profile.ProfileController
 import com.breadwallet.ui.provekey.PaperKeyProveController
 import com.breadwallet.ui.receive.ReceiveController
 import com.breadwallet.ui.scanner.ScannerController
@@ -84,7 +85,6 @@ import com.breadwallet.util.CryptoUriParser
 import com.breadwallet.util.isBrd
 import com.fabriik.buy.ui.BuyWebViewActivity
 import com.fabriik.kyc.ui.KycActivity
-import com.fabriik.signup.ui.SignupActivity
 import com.fabriik.support.CashSupport
 import com.fabriik.support.pages.Topic
 import com.fabriik.trade.ui.TradeWebViewLauncher
@@ -200,7 +200,11 @@ class RouterNavigator(
     }
 
     override fun profile() {
-        //todo: open profile screen
+        router.pushController(
+            RouterTransaction.with(ProfileController())
+                .popChangeHandler(VerticalChangeHandler())
+                .pushChangeHandler(VerticalChangeHandler())
+        )
     }
 
     override fun menu(effect: NavigationTarget.Menu) {
