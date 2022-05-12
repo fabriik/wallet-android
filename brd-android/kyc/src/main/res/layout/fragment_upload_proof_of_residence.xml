@@ -44,9 +44,8 @@
             <com.fabriik.kyc.ui.customview.AddProofButton
                 android:id="@+id/btn_add_document"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="200dp"
                 android:layout_marginTop="24dp"
-                android:minHeight="200dp"
                 android:text="@string/UploadProofOfResidence.AddDocument"
                 app:iconTop="@drawable/ic_add_proof"/>
 
