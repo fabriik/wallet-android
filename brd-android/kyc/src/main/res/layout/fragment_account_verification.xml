@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
@@ -41,32 +42,64 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp">
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/tv_basic_title"
                         style="@style/TextStyle.Title5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/AccountVerification.BasicPlan.Title" />
+                        android:text="@string/AccountVerification.BasicPlan.Title"
+                        app:layout_constrainedWidth="true"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
+                        android:id="@+id/tv_basic_check_item"
                         style="@style/CheckItemView.Dark"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="14dp"
-                        android:text="@string/AccountVerification.BasicPlan.CheckListItem1" />
+                        android:text="@string/AccountVerification.BasicPlan.CheckListItem1"
+                        app:layout_constrainedWidth="true"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_basic_title" />
 
                     <TextView
+                        android:id="@+id/tv_basic_tag"
                         style="@style/TagView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:text="@string/AccountVerification.BasicPlan.Tag" />
+                        android:text="@string/AccountVerification.BasicPlan.Tag"
+                        app:layout_constrainedWidth="true"
+                        app:layout_constraintEnd_toStartOf="@id/iv_basic_completed"
+                        app:layout_constraintHorizontal_bias="0"
+                        app:layout_constraintHorizontal_chainStyle="packed"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_basic_check_item" />
 
-                </LinearLayout>
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/iv_basic_completed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:src="@drawable/ic_kyc_tag_completed"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0"
+                        app:layout_constraintStart_toEndOf="@id/tv_basic_tag"
+                        app:layout_constraintTop_toTopOf="@id/tv_basic_tag"
+                        tools:visibility="visible" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
@@ -77,73 +110,128 @@
                 android:layout_marginTop="16dp"
                 app:strokeColor="@color/unlimited_box_border">
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/tv_unlimited_title"
                         style="@style/TextStyle.Title5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/AccountVerification.UnlimitedPlan.Title" />
+                        android:text="@string/AccountVerification.UnlimitedPlan.Title"
+                        app:layout_constrainedWidth="true"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
+                        android:id="@+id/tv_unlimited_check_item_1"
                         style="@style/CheckItemView.Dark"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="14dp"
-                        android:text="@string/AccountVerification.UnlimitedPlan.CheckListItem1" />
+                        android:text="@string/AccountVerification.UnlimitedPlan.CheckListItem1"
+                        app:layout_constrainedWidth="true"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_unlimited_title" />
 
                     <TextView
+                        android:id="@+id/tv_unlimited_check_item_2"
                         style="@style/CheckItemView.Dark"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="@string/AccountVerification.UnlimitedPlan.CheckListItem2" />
+                        android:text="@string/AccountVerification.UnlimitedPlan.CheckListItem2"
+                        app:layout_constrainedWidth="true"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_unlimited_check_item_1" />
 
                     <TextView
+                        android:id="@+id/tv_unlimited_check_item_3"
                         style="@style/CheckItemView.Dark"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="@string/AccountVerification.UnlimitedPlan.CheckListItem3" />
+                        android:text="@string/AccountVerification.UnlimitedPlan.CheckListItem3"
+                        app:layout_constrainedWidth="true"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_unlimited_check_item_2" />
 
                     <TextView
+                        android:id="@+id/tv_unlimited_tag"
                         style="@style/TagView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:text="@string/AccountVerification.UnlimitedPlan.Tag" />
+                        android:text="@string/AccountVerification.UnlimitedPlan.Tag"
+                        app:layout_constrainedWidth="true"
+                        app:layout_constraintEnd_toStartOf="@id/iv_unlimited_completed"
+                        app:layout_constraintHorizontal_bias="0"
+                        app:layout_constraintHorizontal_chainStyle="packed"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_unlimited_check_item_3" />
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/iv_unlimited_completed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:src="@drawable/ic_kyc_tag_completed"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0"
+                        app:layout_constraintStart_toEndOf="@id/tv_unlimited_tag"
+                        app:layout_constraintTop_toTopOf="@id/tv_unlimited_tag"
+                        tools:visibility="visible" />
+
+                    <View
+                        android:id="@+id/bg_unlimited_bullet_points"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:background="@drawable/bg_semitransparent_blue_rounded"
+                        app:layout_constraintBottom_toBottomOf="@+id/tv_unlimited_bullet_points"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/tv_unlimited_bullet_points" />
+
+                    <TextView
+                        android:id="@+id/tv_unlimited_bullet_points"
+                        style="@style/TextStyle.Body2"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:background="@drawable/bg_semitransparent_blue_rounded"
-                        android:padding="16dp">
+                        android:layout_marginEnd="16dp"
+                        android:layout_toStartOf="@+id/iv_stars"
+                        android:paddingStart="26dp"
+                        android:paddingTop="16dp"
+                        android:paddingBottom="16dp"
+                        android:text="@string/AccountVerification.UnlimitedPlan.BulletPoints"
+                        android:textColor="@color/light_text_02"
+                        app:layout_constraintEnd_toStartOf="@+id/iv_stars"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_unlimited_tag"
+                        tools:ignore="RtlSymmetry" />
 
-                        <TextView
-                            android:id="@+id/tv_unlimited_bullet_points"
-                            style="@style/TextStyle.Body2"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="16dp"
-                            android:layout_toStartOf="@+id/iv_stars"
-                            android:paddingStart="4dp"
-                            android:text="@string/AccountVerification.UnlimitedPlan.BulletPoints"
-                            android:textColor="@color/light_text_02" />
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/iv_stars"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="14dp"
+                        android:src="@drawable/ic_stars_green"
+                        app:layout_constraintBottom_toBottomOf="@+id/tv_unlimited_bullet_points"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/tv_unlimited_bullet_points" />
 
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/iv_stars"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"
-                            android:src="@drawable/ic_stars_green" />
-
-                    </RelativeLayout>
-                </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

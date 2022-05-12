@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -60,8 +61,21 @@ class AccountVerificationFragment : Fragment(),
 
     override fun render(state: AccountVerificationContract.State) {
         with(binding) {
+            // basic item configuration
             cvBasic.isEnabled = state.basicBoxEnabled
+            cvBasic.elevation = if (state.basicBoxCompleted) 0f else cvBasic.elevation
+            tvBasicTag.isActivated = state.basicBoxCompleted
+            ivBasicCompleted.isVisible = state.basicBoxCompleted
+            tvBasicCheckItem.isActivated = state.basicBoxCompleted
+
+            // unlimited item configuration
             cvUnlimited.isEnabled = state.unlimitedBoxEnabled
+            cvUnlimited.elevation = if (state.unlimitedBoxCompleted) 0f else cvUnlimited.elevation
+            tvUnlimitedTag.isActivated = state.unlimitedBoxCompleted
+            ivUnlimitedCompleted.isVisible = state.unlimitedBoxCompleted
+            tvUnlimitedCheckItem1.isActivated = state.unlimitedBoxCompleted
+            tvUnlimitedCheckItem2.isActivated = state.unlimitedBoxCompleted
+            tvUnlimitedCheckItem3.isActivated = state.unlimitedBoxCompleted
         }
     }
 

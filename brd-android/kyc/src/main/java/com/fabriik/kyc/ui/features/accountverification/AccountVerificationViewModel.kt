@@ -11,7 +11,9 @@ class AccountVerificationViewModel(
 
     override fun createInitialState() = AccountVerificationContract.State(
         basicBoxEnabled = true, // todo: set from API
-        unlimitedBoxEnabled = true // todo: set from API
+        basicBoxCompleted = false, // todo: set from API
+        unlimitedBoxEnabled = true, // todo: set from API
+        unlimitedBoxCompleted = false // todo: set from API
     )
 
     override fun handleEvent(event: AccountVerificationContract.Event) {

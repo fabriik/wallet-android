@@ -8,9 +8,9 @@
     </style>
 
     <style name="TagView" parent="TextStyle.Body2">
-        <item name="android:textColor">@color/light_inverse_text_01</item>
+        <item name="android:textColor">@color/tag_view_text_color</item>
         <item name="android:background">@drawable/bg_tag_black</item>
-        <item name="android:gravity">center</item>
+        <item name="android:gravity">center_vertical|start</item>
         <item name="android:paddingStart">8dp</item>
         <item name="android:paddingTop">2dp</item>
         <item name="android:paddingEnd">8dp</item>

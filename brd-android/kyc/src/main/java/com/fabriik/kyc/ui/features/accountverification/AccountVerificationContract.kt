@@ -18,6 +18,8 @@ interface AccountVerificationContract {
 
     data class State(
         val basicBoxEnabled: Boolean = false,
-        val unlimitedBoxEnabled: Boolean = false
+        val basicBoxCompleted: Boolean = false,
+        val unlimitedBoxEnabled: Boolean = false,
+        val unlimitedBoxCompleted: Boolean = false
     ) : FabriikContract.State
 }

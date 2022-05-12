@@ -13,7 +13,7 @@
     <string name="AccountVerification.UnlimitedPlan.CheckListItem2">Address verification</string>
     <string name="AccountVerification.UnlimitedPlan.CheckListItem3">Two-factor authentication</string>
     <string name="AccountVerification.UnlimitedPlan.Tag">Unlimited transaction amounts</string>
-    <string name="AccountVerification.UnlimitedPlan.BulletPoints">\u2022  Unlimited deposits/withdraws\n\u2022  Full asset support\n\u2022  Buy crypto with card/bank</string>
+    <string name="AccountVerification.UnlimitedPlan.BulletPoints">\u2022&#160;&#160;Unlimited deposits/withdraws\n\u2022&#160;&#160;Full asset support\n\u2022&#160;&#160;Buy crypto with card/bank</string>
 
     <!-- Personal information screen -->
     <string name="PersonalInformation.Title">Personal Information</string>
