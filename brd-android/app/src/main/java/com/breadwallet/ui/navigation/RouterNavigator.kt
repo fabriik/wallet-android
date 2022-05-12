@@ -59,6 +59,7 @@ import com.breadwallet.ui.receive.ReceiveController
 import com.breadwallet.ui.scanner.ScannerController
 import com.breadwallet.ui.send.SendSheetController
 import com.breadwallet.ui.settings.SettingsController
+import com.breadwallet.ui.settings.SettingsSection
 import com.breadwallet.ui.settings.about.AboutController
 import com.breadwallet.ui.settings.analytics.ShareDataController
 import com.breadwallet.ui.settings.currency.DisplayCurrencyController
@@ -201,7 +202,7 @@ class RouterNavigator(
 
     override fun profile() {
         router.pushController(
-            RouterTransaction.with(ProfileController())
+            RouterTransaction.with(ProfileController(SettingsSection.HOME))
                 .popChangeHandler(VerticalChangeHandler())
                 .pushChangeHandler(VerticalChangeHandler())
         )
