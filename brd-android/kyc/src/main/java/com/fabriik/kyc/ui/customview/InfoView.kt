@@ -20,6 +20,9 @@ class InfoView @JvmOverloads constructor(
     private var popupDescription: String? = null
 
     init {
+        setCompoundDrawablesRelativeWithIntrinsicBounds(
+            R.drawable.ic_info_black, 0, 0, 0
+        )
         parseAttributes(attrs)
 
         super.setOnClickListener {
@@ -40,7 +43,7 @@ class InfoView @JvmOverloads constructor(
 
     private fun showPopupWindow() {
         val parentView = rootView as ViewGroup
-        val inflater = LayoutInflater.from(context.applicationContext) // applicationContext is used to remove parent textview attributes
+        val inflater = LayoutInflater.from(context)
 
         val binding = PartialInfoPopupBinding.inflate(inflater, parentView, false).apply {
             tvTitle.text = popupTitle
@@ -61,7 +64,7 @@ class InfoView @JvmOverloads constructor(
             binding.root, width, height, true
         )
 
-        binding.ivDismiss.setOnClickListener {
+        binding.btnDismiss.setOnClickListener {
             popupWindow.dismiss()
         }
 
