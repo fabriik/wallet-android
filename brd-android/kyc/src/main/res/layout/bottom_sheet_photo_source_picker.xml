@@ -4,12 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/iv_dismiss"
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/btn_dismiss"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="12dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
         android:src="@drawable/ic_kyc_dismiss"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -19,15 +20,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:background="?attr/selectableItemBackground"
         android:drawablePadding="16dp"
         android:gravity="center_vertical"
-        android:paddingStart="24dp"
+        android:paddingStart="8dp"
         android:paddingTop="10dp"
-        android:paddingEnd="24dp"
+        android:paddingEnd="8dp"
         android:paddingBottom="10dp"
         android:text="@string/PhotoSourcePicker.Camera"
         app:drawableStartCompat="@drawable/ic_kyc_camera"
-        app:layout_constraintTop_toBottomOf="@id/iv_dismiss" />
+        app:layout_constraintTop_toBottomOf="@id/btn_dismiss" />
 
     <View
         android:id="@+id/view_separator"
@@ -45,11 +49,14 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:background="?attr/selectableItemBackground"
         android:drawablePadding="16dp"
         android:gravity="center_vertical"
-        android:paddingStart="24dp"
+        android:paddingStart="8dp"
         android:paddingTop="10dp"
-        android:paddingEnd="24dp"
+        android:paddingEnd="8dp"
         android:paddingBottom="10dp"
         android:text="@string/PhotoSourcePicker.Gallery"
         app:drawableStartCompat="@drawable/ic_kyc_gallery"

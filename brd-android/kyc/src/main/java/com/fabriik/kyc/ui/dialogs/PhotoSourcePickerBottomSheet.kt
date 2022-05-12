@@ -29,7 +29,7 @@ class PhotoSourcePickerBottomSheet : BottomSheetDialogFragment() {
         )
 
         with(binding) {
-            ivDismiss.setOnClickListener {
+            btnDismiss.setOnClickListener {
                 dismissAllowingStateLoss()
             }
 
