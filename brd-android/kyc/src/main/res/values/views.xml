@@ -2,6 +2,7 @@
 <resources>
 
     <style name="InfoView" parent="TextStyle.Body2">
+        <item name="android:background">?selectableItemBackground</item>
         <item name="android:textColor">@color/light_link_01</item>
         <item name="android:drawablePadding">4dp</item>
     </style>
