@@ -23,7 +23,14 @@ class PersonalInformationViewModel(
                 setEffect { PersonalInformationContract.Effect.Dismiss }
 
             is PersonalInformationContract.Event.ConfirmClicked ->
-                setEffect { PersonalInformationContract.Effect.GoToExposedPerson }
+                // todo: call API
+                setEffect {
+                    if (currentState.exposedPerson == true) {
+                        PersonalInformationContract.Effect.GoToExposedPerson
+                    } else {
+                        PersonalInformationContract.Effect.GoToAccountVerification
+                    }
+                }
 
             is PersonalInformationContract.Event.NameChanged ->
                 setState { copy(name = event.name).validate() }

@@ -29,6 +29,13 @@
             android:id="@+id/action_to_exposed_person"
             app:destination="@id/fragmentExposedPerson" />
 
+        <action
+            android:id="@+id/action_to_account_verification"
+            app:destination="@id/fragmentAccountVerification"
+            app:launchSingleTop="true"
+            app:popUpTo="@+id/nav_graph_kyc"
+            app:popUpToInclusive="true" />
+
     </fragment>
 
     <fragment

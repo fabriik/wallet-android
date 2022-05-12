@@ -19,6 +19,7 @@ interface PersonalInformationContract {
         object GoBack : Effect()
         object Dismiss : Effect()
         object GoToExposedPerson : Effect()
+        object GoToAccountVerification : Effect()
     }
 
     data class State(

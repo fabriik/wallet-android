@@ -110,6 +110,11 @@ class PersonalInformationFragment : Fragment(),
                 findNavController().navigate(
                     PersonalInformationFragmentDirections.actionToExposedPerson()
                 )
+
+            is PersonalInformationContract.Effect.GoToAccountVerification ->
+                findNavController().navigate(
+                    PersonalInformationFragmentDirections.actionToAccountVerification()
+                )
         }
     }
 }
