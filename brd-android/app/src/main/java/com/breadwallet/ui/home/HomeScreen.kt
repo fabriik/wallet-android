@@ -77,6 +77,7 @@ object HomeScreen {
         object OnBuyClicked : E()
         object OnTradeClicked : E()
         object OnMenuClicked : E()
+        object OnProfileClicked : E()
 
         data class OnDeepLinkProvided(val url: String) : E()
         data class OnInAppNotificationProvided(val inAppMessage: InAppMessage) : E()
@@ -133,6 +134,10 @@ object HomeScreen {
 
         data class GoToTrade(val currencies: List<String>) : F(), NavigationEffect {
             override val navigationTarget = NavigationTarget.Trade(currencies)
+        }
+
+        object GoToProfile : F(), NavigationEffect {
+            override val navigationTarget = NavigationTarget.Profile
         }
 
         object GoToMenu : F(), NavigationEffect {

@@ -199,6 +199,10 @@ class RouterNavigator(
         }
     }
 
+    override fun profile() {
+        //todo: open profile screen
+    }
+
     override fun menu(effect: NavigationTarget.Menu) {
         router.pushController(
             RouterTransaction.with(SettingsController(effect.settingsOption))

@@ -124,7 +124,7 @@
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:padding="8dp"
-            android:stretchColumns="0,1,2"
+            android:stretchColumns="0,1,2,3"
             app:layout_constraintBottom_toBottomOf="parent">
 
             <TableRow>
@@ -205,6 +205,33 @@
                         android:fontFamily="@font/mobile_font_book"
                         android:gravity="bottom"
                         android:text="@string/HomeScreen.trade"
+                        android:textColor="@color/navigation_menu_item_tint" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/profile_layout"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="bottom"
+                    android:gravity="bottom"
+                    android:orientation="vertical"
+                    android:paddingBottom="4dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="4dp"
+                        android:src="@drawable/ic_menu_person"
+                        app:tint="@color/navigation_menu_item_tint" />
+
+                    <com.breadwallet.legacy.presenter.customviews.BaseTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="bottom"
+                        android:text="@string/HomeScreen.profile"
                         android:textColor="@color/navigation_menu_item_tint" />
                 </LinearLayout>
 

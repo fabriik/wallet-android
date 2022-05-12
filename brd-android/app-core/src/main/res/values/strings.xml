@@ -365,6 +365,8 @@
     <string name="HomeScreen.buyAndSell">Buy &amp; Sell</string>
     <!-- Menu button on the home screen toolbar -->
     <string name="HomeScreen.menu">Menu</string>
+    <!-- Profile button on the home screen toolbar -->
+    <string name="HomeScreen.profile">Profile</string>
     <!-- This section lists the users wallets -->
     <string name="HomeScreen.portfolio">Wallets</string>
     <!-- Label for the total balance of all the user's assets (style is all lower case if your language permits) -->

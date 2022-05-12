@@ -31,6 +31,7 @@ interface NavigationTargetHandlerSpec {
         NavigationTarget.QRScanner -> qRScanner()
         NavigationTarget.BrdLogin -> brdLogin()
         NavigationTarget.Home -> home()
+        NavigationTarget.Profile -> profile()
         NavigationTarget.Buy -> buy()
         is NavigationTarget.Trade -> trade(effect.currencies)
         NavigationTarget.AddWallet -> addWallet()
@@ -93,6 +94,8 @@ interface NavigationTargetHandlerSpec {
     fun brdLogin(): Unit
 
     fun home(): Unit
+
+    fun profile(): Unit
 
     fun buy(): Unit
 
