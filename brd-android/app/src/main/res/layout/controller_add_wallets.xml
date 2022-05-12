@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/fabriik_background">
@@ -19,7 +20,7 @@
                 android:id="@+id/back_arrow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="?attr/toolbar_back_arrow_dark"/>
+                android:background="?attr/toolbar_back_arrow_dark" />
 
             <com.breadwallet.legacy.presenter.customviews.BaseTextView
                 android:id="@+id/add_wallets_label"
@@ -57,14 +58,43 @@
         android:textCursorDrawable="@null"
         android:textSize="14sp" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/token_list"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/search_edit"
-        android:clipToPadding="false"
         android:layout_marginTop="8dp"
+        android:clipToPadding="false"
         android:paddingTop="8dp"
-        android:paddingBottom="16dp" />
+        android:paddingBottom="16dp">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/token_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"
+                android:paddingBottom="8dp"
+                tools:itemCount="9"
+                tools:listitem="@layout/wallet_list_item" />
+
+            <TextView
+                android:id="@+id/tv_footer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"
+                android:drawablePadding="6dp"
+                android:padding="16dp"
+                android:text="@string/AddWallet.footer"
+                android:textColor="@color/fabriik_gray_2"
+                android:textSize="18sp"
+                app:drawableEndCompat="@drawable/ic_info_grey" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 </RelativeLayout>

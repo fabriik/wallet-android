@@ -24,6 +24,7 @@
  */
 package com.breadwallet.ui.addwallets
 
+import com.breadwallet.ui.ViewEffect
 import com.breadwallet.ui.navigation.NavigationEffect
 import com.breadwallet.ui.navigation.NavigationTarget
 import dev.zacsweers.redacted.annotations.Redacted
@@ -46,6 +47,7 @@ object AddWallets {
         data class OnAddWalletClicked(val token: Token) : E()
         data class OnRemoveWalletClicked(val token: Token) : E()
         object OnBackClicked : E()
+        object OnFooterClicked : E()
     }
 
     sealed class F {
@@ -53,6 +55,7 @@ object AddWallets {
         data class AddWallet(val token: Token) : F()
         data class RemoveWallet(val token: Token) : F()
 
+        object ShowLimitedAssetsDialog : F(), ViewEffect
         object GoBack : F(), NavigationEffect {
             override val navigationTarget = NavigationTarget.Back
         }

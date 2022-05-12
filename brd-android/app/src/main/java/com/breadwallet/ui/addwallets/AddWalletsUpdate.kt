@@ -45,6 +45,14 @@ object AddWalletsUpdate : Update<M, E, F>, AddWalletsUpdateSpec {
         )
     }
 
+    override fun onFooterClicked(model: M): Next<M, F> {
+        return dispatch(
+            effects(
+                F.ShowLimitedAssetsDialog
+            )
+        )
+    }
+
     override fun onSearchQueryChanged(
         model: M,
         event: E.OnSearchQueryChanged

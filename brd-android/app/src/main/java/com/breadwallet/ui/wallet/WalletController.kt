@@ -193,9 +193,7 @@ open class WalletController(args: Bundle) : BaseMobiusController<M, E, F>(args),
 
             appbar.addOnOffsetChangedListener(this@WalletController)
 
-            if (currencyCode.isBitcoin()) {
-                giftButton.visibility = View.VISIBLE
-            }
+            giftButton.visibility = View.GONE
         }
     }
 

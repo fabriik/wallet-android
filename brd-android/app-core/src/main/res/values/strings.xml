@@ -457,7 +457,7 @@
     <string name="MarketData.volume">Trading Volume</string>
     <!-- "Add [a] Wallet [to the home screen]" -->
     <string name="MenuButton.addWallet">Add Wallet</string>
-    <string name="MenuButton.manageAssets">Manage assets</string>
+    <string name="MenuButton.manageAssets">Manage Assets</string>
     <!-- Menu button title -->
     <string name="MenuButton.lock">Lock Wallet</string>
     <!-- (Click here to) manage (your list of) wallets -->
@@ -1466,6 +1466,10 @@
     <string name="WritePaperPhrase.previous">Previous</string>
     <!-- 1 of 3 -->
     <string name="WritePaperPhrase.step">%1$d of %2$d</string>
+
+    <string name="AddWallet.footer">Trouble finding assets?</string>
+    <string name="AddWallet.limitedAssetsDialogTitle">Limited assets</string>
+    <string name="AddWallet.limitedAssetsDialogMessage">We currently support BSV, BTC, BCH, ETH, and USDT. Other assets cannot be accessed through this wallet at the moment.</string>
 
     <string name="Scanner.noCamera" translatable="false">No camera found</string>
 

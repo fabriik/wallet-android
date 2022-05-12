@@ -25,19 +25,21 @@
 package com.breadwallet.ui.addwallets
 
 import android.graphics.Rect
+import android.view.ContextThemeWrapper
 import android.view.View
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.breadwallet.R
 import com.breadwallet.databinding.ControllerAddWalletsBinding
 import com.breadwallet.tools.util.Utils
 import com.breadwallet.ui.BaseMobiusController
+import com.breadwallet.ui.ViewEffect
 import com.breadwallet.ui.addwallets.AddWallets.E
 import com.breadwallet.ui.addwallets.AddWallets.F
 import com.breadwallet.ui.addwallets.AddWallets.M
 import com.breadwallet.ui.flowbind.clicks
 import com.breadwallet.ui.flowbind.textChanges
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -66,6 +68,12 @@ class AddWalletsController : BaseMobiusController<M, E, F>() {
         Utils.hideKeyboard(activity)
     }
 
+    override fun handleViewEffect(effect: ViewEffect) {
+        when (effect) {
+            is F.ShowLimitedAssetsDialog -> showLimitedAssetsDialog()
+        }
+    }
+
     override fun bindView(modelFlow: Flow<M>): Flow<E> {
         return with(binding) {
             tokenList.layoutManager = LinearLayoutManager(checkNotNull(activity))
@@ -78,6 +86,7 @@ class AddWalletsController : BaseMobiusController<M, E, F>() {
             merge(
                 searchEdit.textChanges().map { E.OnSearchQueryChanged(it) },
                 backArrow.clicks().map { E.OnBackClicked },
+                tvFooter.clicks().map { E.OnFooterClicked },
                 bindTokenList(modelFlow)
             )
         }
@@ -112,5 +121,16 @@ class AddWalletsController : BaseMobiusController<M, E, F>() {
             binding.tokenList.adapter = null
             binding.tokenList.removeItemDecoration(itemDecoration)
         }
+    }
+
+    private fun showLimitedAssetsDialog() {
+        val act = checkNotNull(activity)
+
+        MaterialAlertDialogBuilder(act, R.style.FabriikTheme_Dialog_Alert)
+            .setTitle(R.string.AddWallet_limitedAssetsDialogTitle)
+            .setMessage(R.string.AddWallet_limitedAssetsDialogMessage)
+            .setPositiveButton(R.string.Button_ok) {_, _ -> }
+            .create()
+            .show()
     }
 }

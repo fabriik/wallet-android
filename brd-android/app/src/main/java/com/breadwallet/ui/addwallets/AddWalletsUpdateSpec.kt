@@ -29,6 +29,7 @@ import com.spotify.mobius.Next
 interface AddWalletsUpdateSpec {
     fun patch(model: AddWallets.M, event: AddWallets.E): Next<AddWallets.M, AddWallets.F> = when (event) {
         AddWallets.E.OnBackClicked -> onBackClicked(model)
+        AddWallets.E.OnFooterClicked -> onFooterClicked(model)
         is AddWallets.E.OnSearchQueryChanged -> onSearchQueryChanged(model, event)
         is AddWallets.E.OnTokensChanged -> onTokensChanged(model, event)
         is AddWallets.E.OnAddWalletClicked -> onAddWalletClicked(model, event)
@@ -36,6 +37,8 @@ interface AddWalletsUpdateSpec {
     }
 
     fun onBackClicked(model: AddWallets.M): Next<AddWallets.M, AddWallets.F>
+
+    fun onFooterClicked(model: AddWallets.M): Next<AddWallets.M, AddWallets.F>
 
     fun onSearchQueryChanged(model: AddWallets.M, event: AddWallets.E.OnSearchQueryChanged): Next<AddWallets.M, AddWallets.F>
 

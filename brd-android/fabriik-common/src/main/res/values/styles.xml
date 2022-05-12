@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="FabriikTheme.Dialog.Alert" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="materialAlertDialogTitleTextStyle">@style/FabriikTheme.Dialog.Alert.Title</item>
+        <item name="materialAlertDialogBodyTextStyle">@style/FabriikTheme.Dialog.Alert.Body</item>
+        <item name="buttonBarPositiveButtonStyle">@style/FabriikTheme.Dialog.Alert.PositiveButton</item>
+    </style>
+
+    <style name="FabriikTheme.Dialog.Alert.Title" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
+        <item name="android:textColor">@color/fabriik_black</item>
+        <item name="android:textAppearance">@style/FabriikTheme.Dialog.Alert.Title.Appearance</item>
+    </style>
+
+    <style name="FabriikTheme.Dialog.Alert.Title.Appearance" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:textSize">20sp</item>
+        <item name="fontFamily">@font/mobile_font_medium</item>
+    </style>
+
+    <style name="FabriikTheme.Dialog.Alert.Body" parent="MaterialAlertDialog.MaterialComponents.Body.Text">
+        <item name="android:textColor">#8A000000</item>
+        <item name="android:textAppearance">@style/FabriikTheme.Dialog.Alert.Body.Appearance</item>
+    </style>
+
+    <style name="FabriikTheme.Dialog.Alert.Body.Appearance" parent="TextAppearance.MaterialComponents.Body2">
+        <item name="android:textSize">16sp</item>
+        <item name="fontFamily">@font/mobile_font</item>
+    </style>
+
+    <style name="FabriikTheme.Dialog.Alert.PositiveButton" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/fabriik_blue_700</item>
+    </style>
+</resources>
