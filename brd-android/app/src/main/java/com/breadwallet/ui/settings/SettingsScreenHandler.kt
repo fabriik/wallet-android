@@ -267,21 +267,6 @@ class SettingsScreenHandler(
                 R.drawable.ic_kyc_camera
             ),
             SettingsItem(
-                "Registration",
-                SettingsOption.KYC,
-                R.drawable.ic_account_plus
-            ),
-            SettingsItem(
-                context.getString(R.string.Settings_preferences),
-                SettingsOption.PREFERENCES,
-                R.drawable.ic_preferences
-            ),
-            SettingsItem(
-                context.getString(R.string.MenuButton_security),
-                SettingsOption.SECURITY_SETTINGS,
-                R.drawable.ic_security_settings
-            ),
-            SettingsItem(
                 context.getString(R.string.Settings_feedback),
                 SettingsOption.FEEDBACK,
                 R.drawable.ic_feedback
@@ -312,13 +297,7 @@ class SettingsScreenHandler(
                     )
                 )
             }
-            add(
-                SettingsItem(
-                    context.getString(R.string.Settings_exportTransfers),
-                    SettingsOption.EXPORT_TRANSACTIONS,
-                    R.drawable.ic_export
-                )
-            )
+
             if (BuildConfig.DEBUG) {
                 add(
                     SettingsItem(

@@ -265,14 +265,9 @@ class SettingsScreenHandler(
     private fun getHomeOptions(): List<SettingsItem> {
         return mutableListOf(
             SettingsItem(
-                context.getString(R.string.MenuButton_scan),
-                SettingsOption.SCAN_QR,
-                R.drawable.ic_kyc_camera
-            ),
-            SettingsItem(
-                "Registration",
-                SettingsOption.KYC,
-                R.drawable.ic_account_plus
+                context.getString(R.string.MenuButton_security),
+                SettingsOption.SECURITY_SETTINGS,
+                R.drawable.ic_security_settings
             ),
             SettingsItem(
                 context.getString(R.string.Settings_preferences),
@@ -280,57 +275,11 @@ class SettingsScreenHandler(
                 R.drawable.ic_preferences
             ),
             SettingsItem(
-                context.getString(R.string.MenuButton_security),
-                SettingsOption.SECURITY_SETTINGS,
-                R.drawable.ic_security_settings
-            ),
-            SettingsItem(
-                context.getString(R.string.Settings_feedback),
-                SettingsOption.FEEDBACK,
-                R.drawable.ic_feedback
-            ),
-            SettingsItem(
-                context.getString(R.string.MenuButton_support),
-                SettingsOption.SUPPORT,
-                R.drawable.ic_support
-            ),
-            SettingsItem(
-                context.getString(R.string.Settings_review),
-                SettingsOption.SUBMIT_REVIEW,
-                R.drawable.ic_review
-            ),
-            SettingsItem(
-                context.getString(R.string.Settings_about),
-                SettingsOption.ABOUT,
-                R.drawable.ic_about
+                context.getString(R.string.Settings_exportTransfers),
+                SettingsOption.EXPORT_TRANSACTIONS,
+                R.drawable.ic_export
             )
-        ).apply {
-            if (experimentsRepository.isExperimentActive(Experiments.ATM_MAP)) {
-                add(
-                    SettingsItem(
-                        context.getString(R.string.Settings_atmMapMenuItemTitle),
-                        SettingsOption.ATM_FINDER,
-                        R.drawable.ic_atm_finder,
-                        subHeader = context.getString(R.string.Settings_atmMapMenuItemSubtitle)
-                    )
-                )
-            }
-            add(
-                SettingsItem(
-                    context.getString(R.string.Settings_exportTransfers),
-                    SettingsOption.EXPORT_TRANSACTIONS,
-                    R.drawable.ic_export
-                )
-            )
-            if (BuildConfig.DEBUG) {
-                add(
-                    SettingsItem(
-                        DEVELOPER_OPTIONS_TITLE,
-                        SettingsOption.DEVELOPER_OPTIONS
-                    )
-                )
-            }
-        }
+        )
     }
 
     private val preferences get() = listOf(
