@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_intro_set_pit"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -17,53 +17,151 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <ImageButton
+            <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/back_button"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_centerVertical="true"
-                android:background="?attr/toolbar_back_arrow_dark"
-                android:visibility="gone" />
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="?attr/toolbar_back_arrow_dark"
+                android:visibility="gone"
+                tools:visibility="visible" />
 
             <com.breadwallet.legacy.presenter.customviews.BaseTextView
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
+                android:layout_centerInParent="true"
                 android:layout_marginStart="@dimen/bread_margin"
                 android:layout_marginTop="@dimen/bread_margin"
                 android:layout_marginEnd="@dimen/bread_margin"
                 android:fontFamily="@font/mobile_font_bold"
-                android:text="@string/MenuViewController.modalTitle"
                 android:textColor="@color/fabriik_black"
                 android:textSize="20sp" />
 
-            <ImageButton
+            <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/close_button"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="16dp"
-                android:background="@null"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 android:src="@drawable/ic_close_blue_24dp"
                 android:visibility="gone"
-                app:tint="@color/fabriik_black" />
+                app:tint="@color/fabriik_black"
+                tools:visibility="visible" />
 
         </RelativeLayout>
-
     </androidx.appcompat.widget.Toolbar>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/profile_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_profile_image"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/ic_profile_default"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_profile_name"
+            style="@style/TextStyle.Title4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:text="@string/ProfileController.myAccount"
+            android:textColor="@color/light_text_01"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_profile_image" />
+
+        <View
+            android:id="@+id/view_profile_access_bg"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/bg_info_prompt"
+            app:layout_constraintBottom_toBottomOf="@id/barrier_bottom"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_profile_name" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btn_profile_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="8dp"
+            android:src="@drawable/ic_info_black"
+            android:tint="@color/light_inverse_icons_01"
+            app:layout_constraintEnd_toEndOf="@id/view_profile_access_bg"
+            app:layout_constraintTop_toTopOf="@id/view_profile_access_bg" />
+
+        <TextView
+            android:id="@+id/tv_get_full_access"
+            style="@style/TextStyle.Subtitle2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/ProfileController.getFullAccess"
+            android:textColor="@color/light_inverse_text_01"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toEndOf="@id/btn_verify_account"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="@id/btn_verify_account"
+            app:layout_constraintTop_toTopOf="@id/view_profile_access_bg" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_verify_account"
+            style="@style/FabriikButtonStyle.Dense"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="32dp"
+            android:text="@string/ProfileController.verifyAccount"
+            app:icon="@drawable/ic_profile_small"
+            app:iconGravity="textStart"
+            app:iconPadding="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_get_full_access" />
+
+        <View
+            android:id="@+id/barrier_bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_verify_account" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/settings_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/toolbar"
-        android:layout_marginTop="2dp"
+        android:layout_below="@id/profile_layout"
+        android:layout_marginTop="8dp"
         android:footerDividersEnabled="true"
         android:headerDividersEnabled="true"
-        tools:listitem="@layout/settings_list_item"/>
+        tools:listitem="@layout/settings_list_item" />
 
     <include
         android:id="@+id/loading_view"

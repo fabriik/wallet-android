@@ -480,6 +480,10 @@
     <string name="MenuViewController.modalTitle">Menu</string>
     <!-- button label -->
     <string name="MenuViewController.recoverButton">Recover Wallet</string>
+
+    <string name="ProfileController.getFullAccess">Get full access to Fabriik Wallet</string>
+    <string name="ProfileController.verifyAccount">Verify my account</string>
+    <string name="ProfileController.myAccount">My account</string>
     <!-- Paper Key Skip modal body (Android-version) -->
     <string name="Modal.PaperKeySkip.Body.Android">Your recovery phrase is required to open your wallet if you change the security settings on your phone.\n\nAre you sure you want to set up your recovery phrase later?</string>
     <!-- Paper Key Skip modal Continue Set Up button -->

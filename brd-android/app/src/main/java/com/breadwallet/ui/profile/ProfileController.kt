@@ -145,7 +145,7 @@ class ProfileController(
         with(binding) {
             ifChanged(M::section) {
                 title.text = when (section) {
-                    SettingsSection.HOME -> act.getString(R.string.Settings_title)
+                    SettingsSection.HOME -> null
                     SettingsSection.PREFERENCES -> act.getString(R.string.Settings_preferences)
                     SettingsSection.HIDDEN,
                     SettingsSection.DEVELOPER_OPTION -> "Developer Options"
