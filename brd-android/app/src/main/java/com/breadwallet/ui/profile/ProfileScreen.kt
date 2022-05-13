@@ -59,6 +59,7 @@ object ProfileScreen {
 
         object OnBackClicked : E()
         object OnCloseClicked : E()
+        object OnVerifyProfileClicked : E()
 
         object OnAuthenticated : E()
 

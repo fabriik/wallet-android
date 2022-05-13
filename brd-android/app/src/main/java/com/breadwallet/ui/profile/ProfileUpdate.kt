@@ -53,6 +53,9 @@ object ProfileUpdate : Update<M, E, F>, ProfileScreenUpdateSpec {
     override fun onCloseClicked(model: M): Next<M, F> =
         dispatch(setOf(F.GoBack))
 
+    override fun onVerifyProfileClicked(model: M): Next<M, F> =
+        dispatch(setOf(F.GoToKyc))
+
     override fun setApiServer(
         model: M,
         event: E.SetApiServer

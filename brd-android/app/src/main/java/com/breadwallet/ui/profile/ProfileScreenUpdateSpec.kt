@@ -30,6 +30,7 @@ interface ProfileScreenUpdateSpec {
     fun patch(model: ProfileScreen.M, event: ProfileScreen.E): Next<ProfileScreen.M, ProfileScreen.F> = when (event) {
         ProfileScreen.E.OnBackClicked -> onBackClicked(model)
         ProfileScreen.E.OnCloseClicked -> onCloseClicked(model)
+        ProfileScreen.E.OnVerifyProfileClicked -> onVerifyProfileClicked(model)
         ProfileScreen.E.OnAuthenticated -> onAuthenticated(model)
         ProfileScreen.E.OnWalletsUpdated -> onWalletsUpdated(model)
         ProfileScreen.E.ShowHiddenOptions -> showHiddenOptions(model)
@@ -51,6 +52,8 @@ interface ProfileScreenUpdateSpec {
     fun onBackClicked(model: ProfileScreen.M): Next<ProfileScreen.M, ProfileScreen.F>
 
     fun onCloseClicked(model: ProfileScreen.M): Next<ProfileScreen.M, ProfileScreen.F>
+
+    fun onVerifyProfileClicked(model: ProfileScreen.M): Next<ProfileScreen.M, ProfileScreen.F>
 
     fun onAuthenticated(model: ProfileScreen.M): Next<ProfileScreen.M, ProfileScreen.F>
 
