@@ -43,7 +43,7 @@
         android:launchMode="singleTask"
         android:networkSecurityConfig="@xml/network_security_config"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.Dark"
+        android:theme="@style/AppTheme.FabriikWallet"
         android:windowSoftInputMode="stateVisible|adjustResize">
         <provider
             android:name="androidx.core.content.FileProvider"

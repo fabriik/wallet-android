@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppTheme.FabriikWallet" parent="AppTheme.Dark">
+        <item name="android:colorControlHighlight">@color/fabriik_ripple_color</item>
+        <item name="colorControlHighlight">@color/fabriik_ripple_color</item>
+    </style>
+</resources>
