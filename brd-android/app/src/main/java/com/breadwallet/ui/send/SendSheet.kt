@@ -172,6 +172,7 @@ object SendSheet {
 
         /**  */
         val isSendingMax: Boolean = false,
+        val isXrpMinAmountInfoVisible: Boolean = false,
 
         val transferFields: List<TransferField> = emptyList()
     ) {

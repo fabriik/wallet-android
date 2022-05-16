@@ -429,6 +429,10 @@ class SendSheetController(args: Bundle? = null) :
                 }
             }
 
+            ifChanged(M::isXrpMinAmountInfoVisible) {
+                buttonXrpBalanceInfo.isVisible = it
+            }
+
             ifChanged(M::targetString) {
                 if (textInputAddress.text.toString() != targetString) {
                     textInputAddress.setText(targetString, TextView.BufferType.EDITABLE)
