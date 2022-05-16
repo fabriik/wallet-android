@@ -159,12 +159,14 @@ fun createHomeScreenHandler(
     }
 
     addFunction<F.LoadIsBuyAlertNeeded> {
-        val isBuyAlertNeeded = true // todo
+        val isBuyAlertNeeded = BRSharedPrefs.buyNotePromptShouldPrompt
+        BRSharedPrefs.buyNotePromptShouldPrompt = false
         E.OnBuyAlertNeededLoaded(isBuyAlertNeeded)
     }
 
     addFunction<F.LoadIsTradeAlertNeeded> {
-        val isTradeAlertNeeded = true // todo
+        val isTradeAlertNeeded = BRSharedPrefs.tradeNotePromptShouldPrompt
+        BRSharedPrefs.tradeNotePromptShouldPrompt = false
         E.OnTradeAlertNeededLoaded(isTradeAlertNeeded)
     }
 
