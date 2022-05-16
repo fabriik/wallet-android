@@ -96,6 +96,7 @@ class SendSheetController(args: Bundle? = null) :
 
     companion object {
         const val DIALOG_NO_ETH_FOR_TOKEN_TRANSFER = "adjust_for_fee"
+        const val DIALOG_MIN_XRP_AMOUNT = "min_xrp_amount"
         const val DIALOG_PAYMENT_ERROR = "payment_error"
     }
 
@@ -237,7 +238,8 @@ class SendSheetController(args: Bundle? = null) :
                 buttonRegular.clicks().map { E.OnTransferSpeedChanged(TransferSpeedInput.REGULAR) },
                 buttonEconomy.clicks().map { E.OnTransferSpeedChanged(TransferSpeedInput.ECONOMY) },
                 buttonPriority.clicks().map { E.OnTransferSpeedChanged(TransferSpeedInput.PRIORITY) },
-                labelBalanceValue.clicks().map { E.OnSendMaxClicked }
+                labelBalanceValue.clicks().map { E.OnSendMaxClicked },
+                buttonXrpBalanceInfo.clicks().map { E.OnXrpMinAmountInfoClicked }
             )
         }
     }

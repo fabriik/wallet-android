@@ -874,6 +874,8 @@
     <string name="Send.insufficientGasMessage">You must have at least %1$s in your wallet in order to transfer this type of token. Would you like to go to your Ethereum wallet now?</string>
     <!-- Your ethereum balance is insufficient to complete this action. -->
     <string name="Send.insufficientGasTitle">Insufficient Ethereum Balance</string>
+    <string name="Send.minXrpAmountTitle">XRP Balance</string>
+    <string name="Send.minXrpAmountDescription">Ripple requires each wallet to have a minimum balance of 10 XRP, so the balance displayed here is always 10 XRP less than your actual balance.</string>
     <!-- e.g. The destination is not a valid (bitcoin) address. -->
     <string name="Send.invalidAddressMessage">The destination address is not a valid %1$s address.</string>
     <!-- Invalid address on pasteboard message -->

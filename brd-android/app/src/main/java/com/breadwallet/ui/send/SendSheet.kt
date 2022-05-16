@@ -431,6 +431,7 @@ object SendSheet {
         object OnAmountEditClicked : E()
         object OnAmountEditDismissed : E()
         object OnSendMaxClicked : E()
+        object OnXrpMinAmountInfoClicked : E()
 
         object OnToggleCurrencyClicked : E()
 
@@ -489,6 +490,15 @@ object SendSheet {
             @Redacted val address: String,
             val type: AddressType.Resolvable
         ) : F()
+
+        object ShowXrpMinAmountInfo : F(), NavigationEffect {
+            override val navigationTarget = NavigationTarget.AlertDialog(
+                dialogId = SendSheetController.DIALOG_MIN_XRP_AMOUNT,
+                titleResId = R.string.Send_minXrpAmountTitle,
+                messageResId = R.string.Send_minXrpAmountDescription,
+                positiveButtonResId = R.string.Button_continueAction
+            )
+        }
 
         data class ShowEthTooLowForTokenFee(
             val currencyCode: CurrencyCode,
