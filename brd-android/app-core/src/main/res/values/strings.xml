@@ -371,6 +371,9 @@
     <string name="HomeScreen.totalAssets">Total Assets</string>
     <!-- (Tap here to) trade (your assets for other assets) -->
     <string name="HomeScreen.trade">Swap</string>
+    <string name="HomeScreen.partnershipNoteTitle">Partnership note</string>
+    <string name="HomeScreen.partnershipNoteBuyDescription">Fabriik is providing Buy functionality through Wyre, a third-party API provider.</string>
+    <string name="HomeScreen.partnershipNoteSwapDescription">Fabriik is providing Swap functionality through Changelly, a third-party API provider.</string>
     <!-- Checking private key balance progress view text -->
     <string name="Import.checking">Checking private key balance...</string>
     <!-- Sweep private key confirmation message -->

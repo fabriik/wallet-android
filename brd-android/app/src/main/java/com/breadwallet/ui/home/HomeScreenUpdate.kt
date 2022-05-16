@@ -25,6 +25,7 @@
 package com.breadwallet.ui.home
 
 import com.breadwallet.tools.util.EventUtils
+import com.breadwallet.R
 import com.breadwallet.ui.home.HomeScreen.E
 import com.breadwallet.ui.home.HomeScreen.F
 import com.breadwallet.ui.home.HomeScreen.M
@@ -35,6 +36,8 @@ import com.spotify.mobius.Next.noChange
 import com.spotify.mobius.Update
 
 const val MAX_CRYPTO_DIGITS = 8
+const val DIALOG_PARTNERSHIP_NOTE_BUY = "buy_part_note"
+const val DIALOG_PARTNERSHIP_NOTE_SWAP = "swap_part_note"
 
 val HomeScreenUpdate = Update<M, E, F> { model, event ->
     when (event) {
@@ -47,6 +50,8 @@ val HomeScreenUpdate = Update<M, E, F> { model, event ->
             setOf(F.UpdateWalletOrder(event.displayOrder))
         )
         is E.OnBuyBellNeededLoaded -> next(model.copy(isBuyBellNeeded = event.isBuyBellNeeded))
+        is E.OnBuyAlertNeededLoaded -> next(model.copy(isBuyAlertNeeded = event.isBuyAlertNeeded))
+        is E.OnTradeAlertNeededLoaded -> next(model.copy(isTradeAlertNeeded = event.isTradeAlertNeeded))
         is E.OnEnabledWalletsUpdated -> {
             next(
                 model.copy(
@@ -86,8 +91,42 @@ val HomeScreenUpdate = Update<M, E, F> { model, event ->
             }
         }
         is E.OnAddWalletsClicked -> dispatch(effects(F.GoToAddWallet))
-        E.OnBuyClicked -> dispatch(effects(F.GoToBuy))
-        E.OnTradeClicked -> dispatch(effects(F.LoadSwapCurrencies))
+        E.OnBuyClicked -> {
+            val isBuyAlertNeeded = model.isBuyAlertNeeded
+
+            next<M, F>(
+                model.copy(isBuyAlertNeeded = false),
+                effects(
+                    if (isBuyAlertNeeded) {
+                        F.ShowPartnershipNote(
+                            dialogId = DIALOG_PARTNERSHIP_NOTE_BUY,
+                            messageResId = R.string.HomeScreen_partnershipNoteBuyDescription
+                        )
+                    } else {
+                        F.GoToBuy
+                    }
+                )
+            )
+        }
+        E.OnTradeClicked -> {
+            val isTradeAlertNeeded = model.isTradeAlertNeeded
+
+            next<M, F>(
+                model.copy(isTradeAlertNeeded = false),
+                effects(
+                    if (isTradeAlertNeeded) {
+                        F.ShowPartnershipNote(
+                            dialogId = DIALOG_PARTNERSHIP_NOTE_SWAP,
+                            messageResId = R.string.HomeScreen_partnershipNoteSwapDescription
+                        )
+                    } else {
+                        F.LoadSwapCurrencies
+                    }
+                )
+            )
+        }
+        E.OnBuyNoteSeen -> dispatch(effects(F.GoToBuy))
+        E.OnTradeNoteSeen -> dispatch(effects(F.LoadSwapCurrencies))
         E.OnMenuClicked -> dispatch(effects(F.GoToMenu))
         is E.OnPromptLoaded -> next(model.copy(promptId = event.promptId))
         is E.OnDeepLinkProvided -> dispatch(
