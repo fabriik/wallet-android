@@ -88,6 +88,7 @@ fun createReceiveHandler(
                 }
                 E.OnWalletInfoLoaded(
                     minBalance = wallet.balanceMinimum.orNull()?.toBigDecimal(),
+                    balance = wallet.balance.toBigDecimal(),
                     walletName = wallet.currency.name,
                     address = receiveAddress.toString(),
                     sanitizedAddress = receiveAddress.toSanitizedString()

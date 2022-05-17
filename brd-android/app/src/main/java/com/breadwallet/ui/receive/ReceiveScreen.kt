@@ -44,6 +44,7 @@ object ReceiveScreen {
         val fiatCurrencyCode: String,
         /** The name of the Wallet's currency. */
         val walletName: String = "",
+        val balance: BigDecimal = BigDecimal.ZERO,
         val minBalance: BigDecimal? = null,
         /** The network compatible address for transactions. */
         @Redacted val receiveAddress: String = "",
@@ -107,7 +108,8 @@ object ReceiveScreen {
                 }
             }
 
-            val invalidXrpAmount = currencyCode.isRipple() && newAmount < minBalance
+            val invalidXrpAmount =
+                currencyCode.isRipple() && newAmount < minBalance && balance.isZero()
 
             return copy(
                 rawAmount = newRawAmount,
@@ -131,6 +133,7 @@ object ReceiveScreen {
 
         data class OnWalletInfoLoaded(
             val walletName: String,
+            val balance: BigDecimal,
             val minBalance: BigDecimal?,
             @Redacted val address: String,
             @Redacted val sanitizedAddress: String
