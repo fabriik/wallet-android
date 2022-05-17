@@ -49,6 +49,8 @@ object ReceiveUpdate : Update<M, E, F>, ReceiveScreenUpdateSpec {
     override fun onWalletInfoLoaded(model: M, event: E.OnWalletInfoLoaded): Next<M, F> =
         next(
             model.copy(
+                balance = event.balance,
+                minBalance = event.minBalance,
                 receiveAddress = event.address,
                 sanitizedAddress = event.sanitizedAddress,
                 walletName = event.walletName

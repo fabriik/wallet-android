@@ -27,6 +27,7 @@ package com.breadwallet.ui.receive
 import android.content.Context
 import com.breadwallet.breadbox.BreadBox
 import com.breadwallet.breadbox.isBitcoin
+import com.breadwallet.breadbox.toBigDecimal
 import com.breadwallet.breadbox.toSanitizedString
 import com.breadwallet.crypto.AddressScheme
 import com.breadwallet.repository.RatesRepository
@@ -86,6 +87,8 @@ fun createReceiveHandler(
                     wallet.target
                 }
                 E.OnWalletInfoLoaded(
+                    minBalance = wallet.balanceMinimum.orNull()?.toBigDecimal(),
+                    balance = wallet.balance.toBigDecimal(),
                     walletName = wallet.currency.name,
                     address = receiveAddress.toString(),
                     sanitizedAddress = receiveAddress.toSanitizedString()
