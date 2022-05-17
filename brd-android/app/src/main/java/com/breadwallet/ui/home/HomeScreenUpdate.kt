@@ -26,6 +26,7 @@ package com.breadwallet.ui.home
 
 import com.breadwallet.tools.util.EventUtils
 import com.breadwallet.R
+import com.breadwallet.tools.manager.BRSharedPrefs
 import com.breadwallet.ui.home.HomeScreen.E
 import com.breadwallet.ui.home.HomeScreen.F
 import com.breadwallet.ui.home.HomeScreen.M
@@ -93,6 +94,7 @@ val HomeScreenUpdate = Update<M, E, F> { model, event ->
         is E.OnAddWalletsClicked -> dispatch(effects(F.GoToAddWallet))
         E.OnBuyClicked -> {
             val isBuyAlertNeeded = model.isBuyAlertNeeded
+            BRSharedPrefs.buyNotePromptShouldPrompt = false
 
             next<M, F>(
                 model.copy(isBuyAlertNeeded = false),
@@ -110,6 +112,7 @@ val HomeScreenUpdate = Update<M, E, F> { model, event ->
         }
         E.OnTradeClicked -> {
             val isTradeAlertNeeded = model.isTradeAlertNeeded
+            BRSharedPrefs.tradeNotePromptShouldPrompt = false
 
             next<M, F>(
                 model.copy(isTradeAlertNeeded = false),
