@@ -654,6 +654,7 @@
     <string name="Receive.textButton">Text Message</string>
     <!-- Receive modal title -->
     <string name="Receive.title">Receive</string>
+    <string name="Receive.xrpMinAmount">The minimum required amount is %d XRP.</string>
     <!-- Done button text -->
     <string name="RecoverWallet.done">Done</string>
     <!-- Recover wallet header -->

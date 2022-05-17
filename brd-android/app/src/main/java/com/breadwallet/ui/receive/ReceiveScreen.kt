@@ -24,6 +24,7 @@
  */
 package com.breadwallet.ui.receive
 
+import com.breadwallet.crypto.Amount
 import com.breadwallet.ext.isZero
 import com.breadwallet.tools.util.BRConstants
 import com.breadwallet.ui.ViewEffect
@@ -31,6 +32,7 @@ import com.breadwallet.ui.navigation.NavigationEffect
 import com.breadwallet.ui.navigation.NavigationTarget
 import com.breadwallet.ui.send.MAX_DIGITS
 import com.breadwallet.util.CurrencyCode
+import com.breadwallet.util.isRipple
 import dev.zacsweers.redacted.annotations.Redacted
 import java.math.BigDecimal
 
@@ -42,6 +44,7 @@ object ReceiveScreen {
         val fiatCurrencyCode: String,
         /** The name of the Wallet's currency. */
         val walletName: String = "",
+        val minBalance: BigDecimal? = null,
         /** The network compatible address for transactions. */
         @Redacted val receiveAddress: String = "",
         /** The address without network specific decoration. */
@@ -56,9 +59,15 @@ object ReceiveScreen {
         val fiatPricePerUnit: BigDecimal = BigDecimal.ZERO,
         /** True if an amount key pad should be displayed. */
         val isAmountEditVisible: Boolean = false,
+        /** An error with the current [rawAmount]. */
+        val amountInputError: InputError? = null,
         /** Is the user entering a crypto (true) or fiat (false) amount. */
         val isAmountCrypto: Boolean = true
     ) {
+
+        sealed class InputError {
+            class XrpBalanceTooLow(val minBalance: BigDecimal) : InputError()
+        }
 
         /** True if the currency supports requesting an amount. */
         val isRequestAmountSupported: Boolean = true
@@ -66,6 +75,7 @@ object ReceiveScreen {
         fun withNewRawAmount(newRawAmount: String): M {
             if (newRawAmount.isBlank() || BigDecimal(newRawAmount).isZero()) {
                 return copy(
+                    amountInputError = null,
                     rawAmount = newRawAmount,
                     amount = BigDecimal.ZERO,
                     fiatAmount = BigDecimal.ZERO
@@ -97,10 +107,13 @@ object ReceiveScreen {
                 }
             }
 
+            val invalidXrpAmount = currencyCode.isRipple() && newAmount < minBalance
+
             return copy(
                 rawAmount = newRawAmount,
                 amount = newAmount,
-                fiatAmount = newFiatAmount
+                fiatAmount = newFiatAmount,
+                amountInputError = if (invalidXrpAmount) InputError.XrpBalanceTooLow(minBalance!!) else null
             )
         }
 
@@ -118,6 +131,7 @@ object ReceiveScreen {
 
         data class OnWalletInfoLoaded(
             val walletName: String,
+            val minBalance: BigDecimal?,
             @Redacted val address: String,
             @Redacted val sanitizedAddress: String
         ) : E()
