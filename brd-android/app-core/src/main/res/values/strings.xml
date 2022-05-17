@@ -1469,7 +1469,7 @@
 
     <string name="AddWallet.footer">Trouble finding assets?</string>
     <string name="AddWallet.limitedAssetsDialogTitle">Limited assets</string>
-    <string name="AddWallet.limitedAssetsDialogMessage">We currently support BSV, BTC, BCH, ETH, and USDT. Other assets cannot be accessed through this wallet at the moment.</string>
+    <string name="AddWallet.limitedAssetsDialogMessage">We currently only support the assets that are listed here. You cannot access other assets through this wallet at the moment.</string>
 
     <string name="Scanner.noCamera" translatable="false">No camera found</string>
 
