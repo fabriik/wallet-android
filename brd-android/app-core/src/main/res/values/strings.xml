@@ -371,6 +371,9 @@
     <string name="HomeScreen.totalAssets">Total Assets</string>
     <!-- (Tap here to) trade (your assets for other assets) -->
     <string name="HomeScreen.trade">Swap</string>
+    <string name="HomeScreen.partnershipNoteTitle">Partnership note</string>
+    <string name="HomeScreen.partnershipNoteBuyDescription">Fabriik is providing Buy functionality through Wyre, a third-party API provider.</string>
+    <string name="HomeScreen.partnershipNoteSwapDescription">Fabriik is providing Swap functionality through Changelly, a third-party API provider.</string>
     <!-- Checking private key balance progress view text -->
     <string name="Import.checking">Checking private key balance...</string>
     <!-- Sweep private key confirmation message -->
@@ -1471,7 +1474,7 @@
 
     <string name="AddWallet.footer">Trouble finding assets?</string>
     <string name="AddWallet.limitedAssetsDialogTitle">Limited assets</string>
-    <string name="AddWallet.limitedAssetsDialogMessage">We currently support BSV, BTC, BCH, ETH, and USDT. Other assets cannot be accessed through this wallet at the moment.</string>
+    <string name="AddWallet.limitedAssetsDialogMessage">We currently only support the assets that are listed here. You cannot access other assets through this wallet at the moment.</string>
 
     <string name="Scanner.noCamera" translatable="false">No camera found</string>
 
