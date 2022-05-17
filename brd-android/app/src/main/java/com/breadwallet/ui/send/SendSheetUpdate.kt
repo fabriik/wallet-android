@@ -961,6 +961,10 @@ object SendSheetUpdate : Update<M, E, F>, SendSheetUpdateSpec {
         }
     }
 
+    override fun onXrpMinAmountInfoClicked(model: M): Next<M, F> {
+        return dispatch(setOf(F.ShowXrpMinAmountInfo))
+    }
+
     override fun onMaxEstimated(model: M, event: E.OnMaxEstimated): Next<M, F> = when {
         model.isSendingMax -> {
             val fiatAmount = (event.amount * model.fiatPricePerUnit).setScale(2, RoundingMode.HALF_DOWN)

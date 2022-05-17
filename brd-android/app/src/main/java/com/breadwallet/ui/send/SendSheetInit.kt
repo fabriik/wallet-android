@@ -26,6 +26,7 @@ package com.breadwallet.ui.send
 
 import com.breadwallet.ui.send.SendSheet.F
 import com.breadwallet.ui.send.SendSheet.M
+import com.breadwallet.util.isRipple
 import com.spotify.mobius.First
 import com.spotify.mobius.Init
 
@@ -49,7 +50,10 @@ object SendSheetInit : Init<M, F> {
         }
 
         return First.first(
-            model.copy(isFetchingPayment = isPaymentProtocolRequest),
+            model.copy(
+                isFetchingPayment = isPaymentProtocolRequest,
+                isXrpMinAmountInfoVisible = model.currencyCode.isRipple()
+            ),
             effects + setOf(
                 F.LoadBalance(model.currencyCode),
                 F.LoadExchangeRate(model.currencyCode, model.fiatCode),
