@@ -241,11 +241,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="32dp"
                 android:background="@android:color/transparent"
-                android:hint="@string/Send.destinationTag_optional"
+                android:hint="@string/Send.destinationTag"
                 android:imeOptions="flagNoPersonalizedLearning"
                 android:inputType="numberSigned|textNoSuggestions"
                 android:singleLine="true" />
         </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageButton
+            android:id="@+id/buttonFaqDestination"
+            android:layout_width="@dimen/faq_dimen"
+            android:layout_height="@dimen/faq_dimen"
+            android:layout_marginEnd="@dimen/bread_margin"
+            android:background="@drawable/faq_question_black"
+            app:layout_constraintBottom_toBottomOf="@+id/separator1"
+            app:layout_constraintEnd_toEndOf = "parent"
+            app:layout_constraintTop_toTopOf="@+id/separator"
+            app:layout_constraintStart_toStartOf = "parent"
+            app:layout_constraintHorizontal_bias = "1.0" />
 
         <View
             android:id="@+id/separator1"
@@ -588,7 +600,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone"
-            app:constraint_referenced_ids="separator,inputLayoutDestinationTag" />
+            app:constraint_referenced_ids="separator,inputLayoutDestinationTag, buttonFaqDestination" />
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/groupHederaMemo"

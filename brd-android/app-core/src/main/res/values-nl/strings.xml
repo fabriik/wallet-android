@@ -848,7 +848,7 @@
     <!-- Description for sending money label -->
     <string name="Send.descriptionLabel">Memo</string>
     <!-- Optional Destination Tag label -->
-    <string name="Send.destinationTag_optional">Bestemmingstag (optioneel)</string>
+    <string name="Send.destinationTag">Bestemmingstag (optioneel)</string>
     <!-- Required Destination Tag label -->
     <string name="Send.destinationTag_required">Bestemmingstag (verplicht)</string>
     <string name="Send.destinationTag_required_error">Een geldige Destination Tag is vereist voor het doeladres.</string>

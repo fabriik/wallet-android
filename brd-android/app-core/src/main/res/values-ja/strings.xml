@@ -848,7 +848,7 @@
     <!-- Description for sending money label -->
     <string name="Send.descriptionLabel">メモ</string>
     <!-- Optional Destination Tag label -->
-    <string name="Send.destinationTag_optional">宛先タグ（オプション）</string>
+    <string name="Send.destinationTag">宛先タグ（オプション）</string>
     <!-- Required Destination Tag label -->
     <string name="Send.destinationTag_required">宛先タグ（必須）</string>
     <string name="Send.destinationTag_required_error">ターゲットアドレスには有効な宛先タグが必要です。</string>

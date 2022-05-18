@@ -848,7 +848,7 @@
     <!-- Description for sending money label -->
     <string name="Send.descriptionLabel">备忘录</string>
     <!-- Optional Destination Tag label -->
-    <string name="Send.destinationTag_optional">目标标记（可选）</string>
+    <string name="Send.destinationTag">目标标记（可选）</string>
     <!-- Required Destination Tag label -->
     <string name="Send.destinationTag_required">目标标记（必填）</string>
     <string name="Send.destinationTag_required_error">目标地址需要有效的目标标记。</string>

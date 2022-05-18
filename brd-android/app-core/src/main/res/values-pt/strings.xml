@@ -848,7 +848,7 @@
     <!-- Description for sending money label -->
     <string name="Send.descriptionLabel">Nota</string>
     <!-- Optional Destination Tag label -->
-    <string name="Send.destinationTag_optional">Etiqueta de Destino (Opcional)</string>
+    <string name="Send.destinationTag">Etiqueta de Destino (Opcional)</string>
     <!-- Required Destination Tag label -->
     <string name="Send.destinationTag_required">Etiqueta de Destino (Obrigatório)</string>
     <string name="Send.destinationTag_required_error">Uma etiqueta de destino válida é necessária para o endereço de destino.</string>

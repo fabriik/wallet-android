@@ -848,7 +848,7 @@
     <!-- Description for sending money label -->
     <string name="Send.descriptionLabel">Mémo</string>
     <!-- Optional Destination Tag label -->
-    <string name="Send.destinationTag_optional">Étiquette de destination (facultatif)</string>
+    <string name="Send.destinationTag">Étiquette de destination (facultatif)</string>
     <!-- Required Destination Tag label -->
     <string name="Send.destinationTag_required">Étiquette de destination (obligatoire)</string>
     <string name="Send.destinationTag_required_error">Une balise de destination valide est requise pour l\'adresse cible.</string>
