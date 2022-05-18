@@ -65,7 +65,7 @@ jobs:
       - run:
           name: Run unit tests
           command: |
-            ./gradlew  --console=plain  testBrdTestnetDebugUnitTest
+            ./gradlew  --console=plain  testDevelopmentTestnetDebugUnitTest
 
       # Generate Jacoco report
       - run:
@@ -93,21 +93,21 @@ jobs:
       - run:
           name: Build release apk
           command: |
-            ./gradlew --console=plain brd-android:app:assembleBrdRelease  -Pandroid.injected.signing.store.file='/home/circleci/key/keystore' -Pandroid.injected.signing.store.password=$release_password -Pandroid.injected.signing.key.alias='key0' -Pandroid.injected.signing.key.password=$release_sign_password
+            ./gradlew --console=plain brd-android:app:assembleProductionMainnetRelease  -Pandroid.injected.signing.store.file='/home/circleci/key/keystore' -Pandroid.injected.signing.store.password=$release_password -Pandroid.injected.signing.key.alias='key0' -Pandroid.injected.signing.key.password=$release_sign_password
 
       # Build app bundles
       - run:
           name: Build release aab
           command: |
-            ./gradlew --console=plain brd-android:app:bundleBrdRelease  -Pandroid.injected.signing.store.file='/home/circleci/key/keystore' -Pandroid.injected.signing.store.password=$release_password -Pandroid.injected.signing.key.alias='key0' -Pandroid.injected.signing.key.password=$release_sign_password
+            ./gradlew --console=plain brd-android:app:bundleProductionMainnetRelease  -Pandroid.injected.signing.store.file='/home/circleci/key/keystore' -Pandroid.injected.signing.store.password=$release_password -Pandroid.injected.signing.key.alias='key0' -Pandroid.injected.signing.key.password=$release_sign_password
 
       # Prepare artifacts
       - run:
           name: Prepare artifacts
           command: |
             mkdir -p ~/atrifacts
-            cp -r ./app/build/outputs/apk/brd/release ~/atrifacts;
-            cp -r ./app/build/outputs/bundle/brdRelease ~/atrifacts;
+            cp -r ./app/build/outputs/apk/productionMainnet/release ~/atrifacts;
+            cp -r ./app/build/outputs/bundle/productionMainnetRelease ~/atrifacts;
           when: always
 
       # Upload artifacts
