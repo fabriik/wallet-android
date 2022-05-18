@@ -205,6 +205,15 @@ class ReceiveController(args: Bundle) : BaseMobiusController<M, E, F>(args) {
                 }
             }
 
+            ifChanged(M::amountInputError) {
+                inputLayoutAmount.isErrorEnabled = amountInputError != null
+                inputLayoutAmount.error = when (amountInputError) {
+                    is M.InputError.XrpBalanceTooLow ->
+                        res.getString(R.string.Receive_xrpMinAmount, amountInputError.minBalance.toInt())
+                    else -> null
+                }
+            }
+
             ifChanged(M::currencyCode) {
                 title.text = "%s %s".format(
                     res.getString(R.string.Receive_title),

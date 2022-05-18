@@ -60,9 +60,12 @@ interface SendSheetUpdateSpec {
         is SendSheet.E.PaymentProtocol -> paymentProtocol(model, event)
         is SendSheet.E.OnMaxEstimated -> onMaxEstimated(model, event)
         SendSheet.E.OnMaxEstimateFailed -> onMaxEstimateFailed(model)
+        SendSheet.E.OnXrpMinAmountInfoClicked -> onXrpMinAmountInfoClicked(model)
     }
 
     fun onSendMaxClicked(model: SendSheet.M): Next<SendSheet.M, SendSheet.F>
+
+    fun onXrpMinAmountInfoClicked(model: SendSheet.M): Next<SendSheet.M, SendSheet.F>
 
     fun onMaxEstimated(model: SendSheet.M, event: SendSheet.E.OnMaxEstimated): Next<SendSheet.M, SendSheet.F>
 

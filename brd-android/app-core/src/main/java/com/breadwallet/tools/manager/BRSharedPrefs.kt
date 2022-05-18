@@ -112,6 +112,8 @@ object BRSharedPrefs {
     private const val APP_RATE_PROMPT_DONT_ASK_AGAIN = "app-rate-prompt-dont-ask-again"
     private const val APP_RATE_PROMPT_SHOULD_PROMPT = "app-rate-prompt-should-prompt"
     private const val APP_RATE_PROMPT_SHOULD_PROMPT_DEBUG = "app-rate-prompt-should-prompt-debug"
+    private const val BUY_NOTE_PROMPT_SHOULD_PROMPT = "buy-note-prompt-should-prompt"
+    private const val TRADE_NOTE_PROMPT_SHOULD_PROMPT = "trade-note-prompt-should-prompt"
     const val APP_FOREGROUNDED_COUNT = "appForegroundedCount"
     const val APP_RATE_PROMPT_HAS_RATED = "appReviewPromptHasRated"
 
@@ -596,6 +598,14 @@ object BRSharedPrefs {
         }
         _trackedConversionChanges.value = getTrackedConversions()
     }
+
+    var buyNotePromptShouldPrompt: Boolean
+        get() = brdPrefs.getBoolean(BUY_NOTE_PROMPT_SHOULD_PROMPT, true)
+        set(value) = brdPrefs.edit { putBoolean(BUY_NOTE_PROMPT_SHOULD_PROMPT, value) }
+
+    var tradeNotePromptShouldPrompt: Boolean
+        get() = brdPrefs.getBoolean(TRADE_NOTE_PROMPT_SHOULD_PROMPT, true)
+        set(value) = brdPrefs.edit { putBoolean(TRADE_NOTE_PROMPT_SHOULD_PROMPT, value) }
 
     var appRatePromptShouldPrompt: Boolean
         get() = brdPrefs.getBoolean(APP_RATE_PROMPT_SHOULD_PROMPT, false)
