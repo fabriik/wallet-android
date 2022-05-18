@@ -8,6 +8,8 @@ plugins {
     id("androidx.navigation.safeargs.kotlin")
 }
 
+apply(from = rootProject.file("gradle/flavors.gradle"))
+
 android {
     compileSdkVersion(BrdRelease.ANDROID_COMPILE_SDK)
     buildToolsVersion(BrdRelease.ANDROID_BUILD_TOOLS)
