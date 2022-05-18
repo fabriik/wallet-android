@@ -9,6 +9,8 @@ plugins {
     id("kotlin-kapt")
 }
 
+apply(from = rootProject.file("gradle/flavors.gradle"))
+
 redacted {
     replacementString.set("***")
 }

@@ -1,8 +1,10 @@
 package com.fabriik.common.data
 
+import com.fabriik.common.BuildConfig
+
 object FabriikApiConstants {
 
-    const val HOST = "api.fabriikw.com/blocksatoshi"
+    const val HOST = "${BuildConfig.SERVER_HOST}/blocksatoshi"
 
     private const val BASE_URL = "https://$HOST"
 
