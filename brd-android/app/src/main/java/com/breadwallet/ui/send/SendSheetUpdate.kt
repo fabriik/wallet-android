@@ -41,6 +41,7 @@ import com.breadwallet.ui.send.SendSheet.E.OnAmountChange.Delete
 import com.breadwallet.ui.send.SendSheet.F
 import com.breadwallet.ui.send.SendSheet.M
 import com.breadwallet.util.isEthereum
+import com.fabriik.support.pages.Topic
 import com.spotify.mobius.Effects.effects
 import com.spotify.mobius.Next
 import com.spotify.mobius.Next.dispatch
@@ -868,6 +869,15 @@ object SendSheetUpdate : Update<M, E, F>, SendSheetUpdateSpec {
         }
     }
 
+    override fun onDestinationTagFaqClicked(model: M, event: E): Next<M, F> {
+        return when (event) {
+            is E.OnDestinationTagFaqClicked -> {
+                dispatch(effects(F.ShowSupportDialog(topic = Topic.SEND_DESTINATION_TAG)))
+            }
+            else -> noChange()
+        }
+    }
+
     override fun onTransferFieldsUpdated(
         model: M,
         event: E.OnTransferFieldsUpdated
@@ -959,6 +969,10 @@ object SendSheetUpdate : Update<M, E, F>, SendSheetUpdateSpec {
                 )
             )
         }
+    }
+
+    override fun onXrpMinAmountInfoClicked(model: M): Next<M, F> {
+        return dispatch(setOf(F.ShowXrpMinAmountInfo))
     }
 
     override fun onMaxEstimated(model: M, event: E.OnMaxEstimated): Next<M, F> = when {

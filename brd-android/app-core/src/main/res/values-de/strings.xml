@@ -848,7 +848,7 @@
     <!-- Description for sending money label -->
     <string name="Send.descriptionLabel">Vermerk</string>
     <!-- Optional Destination Tag label -->
-    <string name="Send.destinationTag_optional">Ziel-Tag (optional)</string>
+    <string name="Send.destinationTag">Ziel-Tag (optional)</string>
     <!-- Required Destination Tag label -->
     <string name="Send.destinationTag_required">Ziel-Tag (erforderlich)</string>
     <string name="Send.destinationTag_required_error">Für die Zieladresse ist ein gültiges Ziel-Tag erforderlich.</string>

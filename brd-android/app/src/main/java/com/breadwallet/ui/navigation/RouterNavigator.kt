@@ -693,6 +693,12 @@ class RouterNavigator(
         router.pushController(RouterTransaction.with(SelectBakersController(effect.bakers)))
     }
 
+    override fun showSupportDialog(effect: NavigationTarget.SupportDialog) {
+        router.fragmentManager()?.let {
+            CashSupport.Builder().detail(effect.topic).build().show(it)
+        }
+    }
+
     private inline fun <reified T : Controller> pushSingleInstance(
         crossinline controller: () -> T
     ) {

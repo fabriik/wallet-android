@@ -29,6 +29,7 @@ import com.breadwallet.model.InAppMessage
 import com.breadwallet.tools.util.Link
 import com.breadwallet.ui.auth.AuthMode
 import com.breadwallet.ui.settings.SettingsSection
+import com.fabriik.support.pages.Topic
 import dev.zacsweers.redacted.annotations.Redacted
 import java.math.BigDecimal
 
@@ -63,6 +64,10 @@ sealed class NavigationTarget : INavigationTarget {
     data class SupportPage(
         val articleId: String,
         val currencyCode: String? = null
+    ) : NavigationTarget()
+
+    data class SupportDialog(
+        val topic: Topic
     ) : NavigationTarget()
 
     data class SetPin(

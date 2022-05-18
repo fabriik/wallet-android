@@ -42,6 +42,7 @@ import com.breadwallet.util.CurrencyCode
 import com.breadwallet.util.isBitcoin
 import com.breadwallet.util.isErc20
 import com.breadwallet.util.isEthereum
+import com.fabriik.support.pages.Topic
 import dev.zacsweers.redacted.annotations.Redacted
 import kotlinx.parcelize.Parcelize
 import java.math.BigDecimal
@@ -172,6 +173,7 @@ object SendSheet {
 
         /**  */
         val isSendingMax: Boolean = false,
+        val isXrpMinAmountInfoVisible: Boolean = false,
 
         val transferFields: List<TransferField> = emptyList()
     ) {
@@ -431,8 +433,11 @@ object SendSheet {
         object OnAmountEditClicked : E()
         object OnAmountEditDismissed : E()
         object OnSendMaxClicked : E()
+        object OnXrpMinAmountInfoClicked : E()
 
         object OnToggleCurrencyClicked : E()
+
+        object OnDestinationTagFaqClicked : E()
 
         data class OnAuthenticationSettingsUpdated(internal val isFingerprintEnable: Boolean) :
             E()
@@ -489,6 +494,15 @@ object SendSheet {
             @Redacted val address: String,
             val type: AddressType.Resolvable
         ) : F()
+
+        object ShowXrpMinAmountInfo : F(), NavigationEffect {
+            override val navigationTarget = NavigationTarget.AlertDialog(
+                dialogId = SendSheetController.DIALOG_MIN_XRP_AMOUNT,
+                titleResId = R.string.Send_minXrpAmountTitle,
+                messageResId = R.string.Send_minXrpAmountDescription,
+                positiveButtonResId = R.string.Button_continueAction
+            )
+        }
 
         data class ShowEthTooLowForTokenFee(
             val currencyCode: CurrencyCode,
@@ -557,6 +571,12 @@ object SendSheet {
                 message = message,
                 positiveButtonResId = R.string.Button_ok
             )
+        }
+
+        data class ShowSupportDialog(
+            val topic: Topic
+        ) : F(), NavigationEffect {
+            override val navigationTarget = NavigationTarget.SupportDialog(topic)
         }
 
         object ShowTransferFailed : F(), NavigationEffect {

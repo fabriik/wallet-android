@@ -371,6 +371,9 @@
     <string name="HomeScreen.totalAssets">Total Assets</string>
     <!-- (Tap here to) trade (your assets for other assets) -->
     <string name="HomeScreen.trade">Swap</string>
+    <string name="HomeScreen.partnershipNoteTitle">Partnership note</string>
+    <string name="HomeScreen.partnershipNoteBuyDescription">Fabriik is providing Buy functionality through Wyre, a third-party API provider.</string>
+    <string name="HomeScreen.partnershipNoteSwapDescription">Fabriik is providing Swap functionality through Changelly, a third-party API provider.</string>
     <!-- Checking private key balance progress view text -->
     <string name="Import.checking">Checking private key balance...</string>
     <!-- Sweep private key confirmation message -->
@@ -654,6 +657,7 @@
     <string name="Receive.textButton">Text Message</string>
     <!-- Receive modal title -->
     <string name="Receive.title">Receive</string>
+    <string name="Receive.xrpMinAmount">The minimum required amount is %d XRP.</string>
     <!-- Done button text -->
     <string name="RecoverWallet.done">Done</string>
     <!-- Recover wallet header -->
@@ -853,7 +857,7 @@
     <!-- Description for sending money label -->
     <string name="Send.descriptionLabel">Memo</string>
     <!-- Optional Destination Tag label -->
-    <string name="Send.destinationTag_optional">Destination Tag (Optional)</string>
+    <string name="Send.destinationTag">Destination Tag</string>
     <!-- Required Destination Tag label -->
     <string name="Send.destinationTag_required">Destination Tag (Required)</string>
     <string name="Send.destinationTag_required_error">A valid Destination Tag is required for the target address.</string>
@@ -874,6 +878,8 @@
     <string name="Send.insufficientGasMessage">You must have at least %1$s in your wallet in order to transfer this type of token. Would you like to go to your Ethereum wallet now?</string>
     <!-- Your ethereum balance is insufficient to complete this action. -->
     <string name="Send.insufficientGasTitle">Insufficient Ethereum Balance</string>
+    <string name="Send.minXrpAmountTitle">XRP Balance</string>
+    <string name="Send.minXrpAmountDescription">Ripple requires each wallet to have a minimum balance of 10 XRP, so the balance displayed here is always 10 XRP less than your actual balance.</string>
     <!-- e.g. The destination is not a valid (bitcoin) address. -->
     <string name="Send.invalidAddressMessage">The destination address is not a valid %1$s address.</string>
     <!-- Invalid address on pasteboard message -->
@@ -1469,7 +1475,7 @@
 
     <string name="AddWallet.footer">Trouble finding assets?</string>
     <string name="AddWallet.limitedAssetsDialogTitle">Limited assets</string>
-    <string name="AddWallet.limitedAssetsDialogMessage">We currently support BSV, BTC, BCH, ETH, and USDT. Other assets cannot be accessed through this wallet at the moment.</string>
+    <string name="AddWallet.limitedAssetsDialogMessage">We currently only support the assets that are listed here. You cannot access other assets through this wallet at the moment.</string>
 
     <string name="Scanner.noCamera" translatable="false">No camera found</string>
 

@@ -96,6 +96,7 @@ class SendSheetController(args: Bundle? = null) :
 
     companion object {
         const val DIALOG_NO_ETH_FOR_TOKEN_TRANSFER = "adjust_for_fee"
+        const val DIALOG_MIN_XRP_AMOUNT = "min_xrp_amount"
         const val DIALOG_PAYMENT_ERROR = "payment_error"
     }
 
@@ -184,6 +185,7 @@ class SendSheetController(args: Bundle? = null) :
     }
 
     override fun bindView(modelFlow: Flow<M>): Flow<E> {
+        //TODO - Use showSupportDialog in routerNavigator instead
         binding.buttonFaq.setOnClickListener {
             router.fragmentManager()?.let {
                 when(currencyCode) {
@@ -237,7 +239,9 @@ class SendSheetController(args: Bundle? = null) :
                 buttonRegular.clicks().map { E.OnTransferSpeedChanged(TransferSpeedInput.REGULAR) },
                 buttonEconomy.clicks().map { E.OnTransferSpeedChanged(TransferSpeedInput.ECONOMY) },
                 buttonPriority.clicks().map { E.OnTransferSpeedChanged(TransferSpeedInput.PRIORITY) },
-                labelBalanceValue.clicks().map { E.OnSendMaxClicked }
+                labelBalanceValue.clicks().map { E.OnSendMaxClicked },
+                buttonXrpBalanceInfo.clicks().map { E.OnXrpMinAmountInfoClicked },
+                buttonFaqDestination.clicks().map { E.OnDestinationTagFaqClicked }
             )
         }
     }
@@ -427,6 +431,10 @@ class SendSheetController(args: Bundle? = null) :
                 }
             }
 
+            ifChanged(M::isXrpMinAmountInfoVisible) {
+                buttonXrpBalanceInfo.isVisible = it
+            }
+
             ifChanged(M::targetString) {
                 if (textInputAddress.text.toString() != targetString) {
                     textInputAddress.setText(targetString, TextView.BufferType.EDITABLE)
@@ -512,7 +520,7 @@ class SendSheetController(args: Bundle? = null) :
                         when {
                             destinationTag.required ->
                                 R.string.Send_destinationTag_required
-                            else -> R.string.Send_destinationTag_optional
+                            else -> R.string.Send_destinationTag
                         }
                     )
 
