@@ -6,7 +6,6 @@
 </div>
 
 BRD is the best way to get started with bitcoin.
-Our simple, streamlined design is easy for beginners, yet powerful enough for experienced users.
 
 ### Fastsync
 [Fastsync](https://brd.com/blog/fastsync-explained) is a new feature in the BRD app that makes Bitcoin wallets sync in seconds, while also keeping BRD technology ahead of the curve as SPV slowly phases out.
