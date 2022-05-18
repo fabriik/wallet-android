@@ -848,7 +848,7 @@
     <!-- Description for sending money label -->
     <string name="Send.descriptionLabel">Promemoria</string>
     <!-- Optional Destination Tag label -->
-    <string name="Send.destinationTag_optional">Tag di destinazione (opzionale)</string>
+    <string name="Send.destinationTag">Tag di destinazione (opzionale)</string>
     <!-- Required Destination Tag label -->
     <string name="Send.destinationTag_required">Tag di destinazione (obbligatorio)</string>
     <string name="Send.destinationTag_required_error">Per l\'indirizzo di destinazione è necessario un tag di destinazione valido.</string>

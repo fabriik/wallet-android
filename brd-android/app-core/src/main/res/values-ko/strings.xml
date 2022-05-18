@@ -848,7 +848,7 @@
     <!-- Description for sending money label -->
     <string name="Send.descriptionLabel">메모</string>
     <!-- Optional Destination Tag label -->
-    <string name="Send.destinationTag_optional">대상 태그 (선택 사항)</string>
+    <string name="Send.destinationTag">대상 태그 (선택 사항)</string>
     <!-- Required Destination Tag label -->
     <string name="Send.destinationTag_required">대상 태그 (필수)</string>
     <string name="Send.destinationTag_required_error">대상 주소에 유효한 대상 태그가 필요합니다.</string>

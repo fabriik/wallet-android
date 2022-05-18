@@ -42,6 +42,7 @@ import com.breadwallet.util.CurrencyCode
 import com.breadwallet.util.isBitcoin
 import com.breadwallet.util.isErc20
 import com.breadwallet.util.isEthereum
+import com.fabriik.support.pages.Topic
 import dev.zacsweers.redacted.annotations.Redacted
 import kotlinx.parcelize.Parcelize
 import java.math.BigDecimal
@@ -436,6 +437,8 @@ object SendSheet {
 
         object OnToggleCurrencyClicked : E()
 
+        object OnDestinationTagFaqClicked : E()
+
         data class OnAuthenticationSettingsUpdated(internal val isFingerprintEnable: Boolean) :
             E()
 
@@ -568,6 +571,12 @@ object SendSheet {
                 message = message,
                 positiveButtonResId = R.string.Button_ok
             )
+        }
+
+        data class ShowSupportDialog(
+            val topic: Topic
+        ) : F(), NavigationEffect {
+            override val navigationTarget = NavigationTarget.SupportDialog(topic)
         }
 
         object ShowTransferFailed : F(), NavigationEffect {

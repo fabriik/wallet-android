@@ -185,6 +185,7 @@ class SendSheetController(args: Bundle? = null) :
     }
 
     override fun bindView(modelFlow: Flow<M>): Flow<E> {
+        //TODO - Use showSupportDialog in routerNavigator instead
         binding.buttonFaq.setOnClickListener {
             router.fragmentManager()?.let {
                 when(currencyCode) {
@@ -239,7 +240,8 @@ class SendSheetController(args: Bundle? = null) :
                 buttonEconomy.clicks().map { E.OnTransferSpeedChanged(TransferSpeedInput.ECONOMY) },
                 buttonPriority.clicks().map { E.OnTransferSpeedChanged(TransferSpeedInput.PRIORITY) },
                 labelBalanceValue.clicks().map { E.OnSendMaxClicked },
-                buttonXrpBalanceInfo.clicks().map { E.OnXrpMinAmountInfoClicked }
+                buttonXrpBalanceInfo.clicks().map { E.OnXrpMinAmountInfoClicked },
+                buttonFaqDestination.clicks().map { E.OnDestinationTagFaqClicked }
             )
         }
     }
@@ -518,7 +520,7 @@ class SendSheetController(args: Bundle? = null) :
                         when {
                             destinationTag.required ->
                                 R.string.Send_destinationTag_required
-                            else -> R.string.Send_destinationTag_optional
+                            else -> R.string.Send_destinationTag
                         }
                     )
 
