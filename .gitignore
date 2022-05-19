@@ -15,6 +15,7 @@ libcore.jnilib
 *.iml
 local.properties
 .idea/
+external/walletkit/.idea
 
 # Created by https://www.gitignore.io/api/jetbrains
 
