@@ -85,6 +85,7 @@ import com.breadwallet.ui.uigift.ShareGiftController
 import com.breadwallet.util.CryptoUriParser
 import com.breadwallet.util.isBrd
 import com.fabriik.buy.ui.BuyWebViewActivity
+import com.fabriik.common.ui.dialog.FabriikGenericDialog
 import com.fabriik.kyc.ui.KycActivity
 import com.fabriik.support.CashSupport
 import com.fabriik.support.pages.Topic
@@ -706,6 +707,13 @@ class RouterNavigator(
     override fun showSupportDialog(effect: NavigationTarget.SupportDialog) {
         router.fragmentManager()?.let {
             CashSupport.Builder().detail(effect.topic).build().show(it)
+        }
+    }
+
+    override fun showFabriikGenericDialog(effect: NavigationTarget.ShowFabriikGenericDialog) {
+        router.fragmentManager()?.let {
+            FabriikGenericDialog.newInstance(effect.args)
+                .show(it)
         }
     }
 

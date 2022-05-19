@@ -24,6 +24,7 @@
  */
 package com.breadwallet.ui.profile
 
+import com.breadwallet.R
 import com.breadwallet.tools.util.bch
 import com.breadwallet.tools.util.btc
 import com.breadwallet.ui.settings.SettingsOption
@@ -31,6 +32,7 @@ import com.breadwallet.ui.profile.ProfileScreen.E
 import com.breadwallet.ui.profile.ProfileScreen.F
 import com.breadwallet.ui.profile.ProfileScreen.M
 import com.breadwallet.ui.settings.SettingsSection
+import com.fabriik.common.ui.dialog.FabriikGenericDialogArgs
 import com.spotify.mobius.Next
 import com.spotify.mobius.Next.dispatch
 import com.spotify.mobius.Next.next
@@ -55,6 +57,28 @@ object ProfileUpdate : Update<M, E, F>, ProfileScreenUpdateSpec {
 
     override fun onVerifyProfileClicked(model: M): Next<M, F> =
         dispatch(setOf(F.GoToKyc))
+
+    override fun onProfileVerificationInfoClicked(model: M): Next<M, F> =
+        dispatch(
+            setOf(
+                F.ShowFabriikGenericDialog(
+                    FabriikGenericDialogArgs(
+                        requestKey = "request_test",
+                        title = "Test title",
+                        description = "Test description",
+                        positive = FabriikGenericDialogArgs.ButtonData(
+                            icon = R.drawable.ic_profile_small,
+                            title = "Delete",
+                            resultKey = "result_test_positive"
+                        ),
+                        negative = FabriikGenericDialogArgs.ButtonData(
+                            title = "Cancel",
+                            resultKey = "result_test_negative"
+                        )
+                    )
+                )
+            )
+        )
 
     override fun setApiServer(
         model: M,
@@ -111,7 +135,10 @@ object ProfileUpdate : Update<M, E, F>, ProfileScreenUpdateSpec {
             setOf(F.GenerateTransactionsExportFile)
         )
 
-    override fun onTransactionsExportFileGenerated(model: M, event: E.OnTransactionsExportFileGenerated): Next<M, F> =
+    override fun onTransactionsExportFileGenerated(
+        model: M,
+        event: E.OnTransactionsExportFileGenerated
+    ): Next<M, F> =
         next(
             model.copy(isLoading = false),
             setOf(F.ExportTransactions(event.uri))

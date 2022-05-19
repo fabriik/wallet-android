@@ -34,6 +34,8 @@ import com.breadwallet.ui.settings.SettingsItem
 import com.breadwallet.ui.settings.SettingsOption
 import com.breadwallet.ui.settings.SettingsSection
 import com.breadwallet.util.CurrencyCode
+import com.fabriik.common.ui.dialog.FabriikGenericDialog
+import com.fabriik.common.ui.dialog.FabriikGenericDialogArgs
 import dev.zacsweers.redacted.annotations.Redacted
 
 object ProfileScreen {
@@ -60,6 +62,7 @@ object ProfileScreen {
         object OnBackClicked : E()
         object OnCloseClicked : E()
         object OnVerifyProfileClicked : E()
+        object OnProfileVerificationInfoClicked : E()
 
         object OnAuthenticated : E()
 
@@ -237,6 +240,10 @@ object ProfileScreen {
                     negativeButtonResId = R.string.ExportConfirmation_cancel,
                     dialogId = CONFIRM_EXPORT_TRANSACTIONS_DIALOG
                 )
+        }
+
+        class ShowFabriikGenericDialog(args: FabriikGenericDialogArgs) : F(), NavigationEffect {
+            override val navigationTarget = NavigationTarget.ShowFabriikGenericDialog(args)
         }
 
         object GenerateTransactionsExportFile: F()

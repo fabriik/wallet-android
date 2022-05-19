@@ -29,6 +29,7 @@ import com.breadwallet.model.InAppMessage
 import com.breadwallet.tools.util.Link
 import com.breadwallet.ui.auth.AuthMode
 import com.breadwallet.ui.settings.SettingsSection
+import com.fabriik.common.ui.dialog.FabriikGenericDialogArgs
 import com.fabriik.support.pages.Topic
 import dev.zacsweers.redacted.annotations.Redacted
 import java.math.BigDecimal
@@ -87,6 +88,10 @@ sealed class NavigationTarget : INavigationTarget {
         val negativeButtonResId: Int? = null,
         val textInputPlaceholder: String? = null,
         val textInputPlaceholderResId: Int? = null
+    ) : NavigationTarget()
+
+    data class ShowFabriikGenericDialog(
+        val args: FabriikGenericDialogArgs
     ) : NavigationTarget()
 
     object BrdLogin : NavigationTarget()

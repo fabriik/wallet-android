@@ -31,6 +31,7 @@ interface ProfileScreenUpdateSpec {
         ProfileScreen.E.OnBackClicked -> onBackClicked(model)
         ProfileScreen.E.OnCloseClicked -> onCloseClicked(model)
         ProfileScreen.E.OnVerifyProfileClicked -> onVerifyProfileClicked(model)
+        ProfileScreen.E.OnProfileVerificationInfoClicked -> onProfileVerificationInfoClicked(model)
         ProfileScreen.E.OnAuthenticated -> onAuthenticated(model)
         ProfileScreen.E.OnWalletsUpdated -> onWalletsUpdated(model)
         ProfileScreen.E.ShowHiddenOptions -> showHiddenOptions(model)
@@ -54,6 +55,8 @@ interface ProfileScreenUpdateSpec {
     fun onCloseClicked(model: ProfileScreen.M): Next<ProfileScreen.M, ProfileScreen.F>
 
     fun onVerifyProfileClicked(model: ProfileScreen.M): Next<ProfileScreen.M, ProfileScreen.F>
+
+    fun onProfileVerificationInfoClicked(model: ProfileScreen.M): Next<ProfileScreen.M, ProfileScreen.F>
 
     fun onAuthenticated(model: ProfileScreen.M): Next<ProfileScreen.M, ProfileScreen.F>
 
