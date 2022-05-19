@@ -19,6 +19,7 @@ object TradeUrlBuilder {
             .appendQueryParameter("theme", "default")
             .appendQueryParameter("merchant_id", merchantId)
             .appendQueryParameter("v", "3")
+            .appendQueryParameter("ref_id", "m3RudWCT8RWVKSrp")
             .build()
     }
 }
