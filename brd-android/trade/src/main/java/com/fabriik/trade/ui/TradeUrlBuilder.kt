@@ -7,6 +7,7 @@ object TradeUrlBuilder {
     fun build(supportedCurrencies: List<String>): Uri {
         val merchantId = "NGVQYXnFp13iKtj1"
         val currencies = supportedCurrencies.joinToString(",")
+        val refId = "m3RudWCT8RWVKSrp"
 
         return Uri.Builder()
             .scheme("https")
@@ -19,7 +20,7 @@ object TradeUrlBuilder {
             .appendQueryParameter("theme", "default")
             .appendQueryParameter("merchant_id", merchantId)
             .appendQueryParameter("v", "3")
-            .appendQueryParameter("ref_id", "m3RudWCT8RWVKSrp")
+            .appendQueryParameter("ref_id", refId)
             .build()
     }
 }
