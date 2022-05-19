@@ -80,7 +80,7 @@ public final class ServerBundlesHelper {
 
     private static final String WEB_BUNDLE_NAME = BRD_WEB;
     private static final String TOKEN_ASSETS_BUNDLE_NAME = BRD_TOKEN_ASSETS;
-    private static final String[] BUNDLE_NAMES = {WEB_BUNDLE_NAME, TOKEN_ASSETS_BUNDLE_NAME};
+    private static final String[] BUNDLE_NAMES = {TOKEN_ASSETS_BUNDLE_NAME};
 
     /**
      * Available server bundle types.
@@ -136,15 +136,7 @@ public final class ServerBundlesHelper {
      * @return Server bundles to be used.
      */
     public static String[] getBundleNames() {
-        if (BuildConfig.DEBUG) {
-            String[] debugBundles = {
-                    getBundle(Type.TOKEN),
-                    getBundle(Type.WEB)
-            };
-            return debugBundles;
-        } else {
-            return BUNDLE_NAMES;
-        }
+        return BUNDLE_NAMES;
     }
 
     /**
