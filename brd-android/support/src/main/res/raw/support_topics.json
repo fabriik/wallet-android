@@ -261,6 +261,12 @@
       "title": "How do I receive Bitcoin Cash?",
       "content":"If you would like to receive bitcoin cash from someone, you will need to give them your bitcoin cash address. There are a few ways to do this:\n\n    Show them the \"Receive Money\" screen in your BRD app, and let them scan your QR code.\n    Press the \"Share\" button under the QR code to send them your address via email or text message.\n    Tap the QR code to copy your address to your device's memory. You can now paste your address into a website or other app.\n\nThe bitcoin cash address shown on your receive address will change every time you receive money, but old addresses will continue to work.\n\nThe BRD wallet uses the \"CashAddr\" format for BCH addresses to protect customers from loss of funds. If the wallet you are using to send bitcoin cash does not support this format yet, you may need to request for it or use an online resource to convert the CashAddr to a legacy address.\n\nImportant: If bitcoin cash is sent to the wrong address, it can not be refunded. When sharing your address, always check to make sure the address you give out is the same as the one shown under your QR code (comparing the first 5 or 6 digits is usually sufficient to make sure you are using the correct address).",
       "category_id": "MISCELLANEOUS"
+    },
+    {
+      "id": "SEND_DESTINATION_TAG",
+      "title": "What is a destination tag?",
+      "content":"Some receiving addresses (exchanges usually) require additional identifying information provided with a Destination Tag.\n\nIf the recipient's address is accompanied by a destination tag, make sure to include it. Also, we strongly suggest you send a small amount of cryptocurrency as a test before attempting to send a significant amount.",
+      "category_id": "MISCELLANEOUS"
     }
   ]
 }

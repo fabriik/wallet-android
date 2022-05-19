@@ -8,6 +8,8 @@ plugins {
     id("dev.zacsweers.redacted")
 }
 
+apply(from = rootProject.file("gradle/flavors.gradle"))
+
 redacted {
     replacementString.set("***")
 }

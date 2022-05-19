@@ -848,7 +848,7 @@
     <!-- Description for sending money label -->
     <string name="Send.descriptionLabel">Записка</string>
     <!-- Optional Destination Tag label -->
-    <string name="Send.destinationTag_optional">Тег назначения (необязательно)</string>
+    <string name="Send.destinationTag">Тег назначения (необязательно)</string>
     <!-- Required Destination Tag label -->
     <string name="Send.destinationTag_required">Метка назначения (обязательно)</string>
     <string name="Send.destinationTag_required_error">Для целевого адреса требуется действительный тег назначения.</string>

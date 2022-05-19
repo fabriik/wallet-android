@@ -1,0 +1,37 @@
+android {
+    final def isAppModule = project.getName() == "app"
+
+    flavorDimensions "environment"
+    productFlavors {
+        productionMainnet {
+            dimension "environment"
+            resValue "string", "app_name", "Fabriik"
+            buildConfigField "String", "SERVER_HOST", "\"api.fabriikw.com\""
+            buildConfigField "boolean", "BITCOIN_TESTNET", "false"
+
+            if (isAppModule) {
+                applicationId "com.fabriik.app"
+            }
+        }
+        developmentMainnet {
+            dimension "environment"
+            resValue "string", "app_name", "Fabriik Dev Mainnet"
+            buildConfigField "String", "SERVER_HOST", "\"one-dev.moneybutton.io\""
+            buildConfigField "boolean", "BITCOIN_TESTNET", "false"
+
+            if (isAppModule) {
+                applicationId "com.fabriik.app.dev.mainnet"
+            }
+        }
+        developmentTestnet {
+            dimension "environment"
+            resValue "string", "app_name", "Fabriik Dev Testnet"
+            buildConfigField "String", "SERVER_HOST", "\"one-dev.moneybutton.io\""
+            buildConfigField "boolean", "BITCOIN_TESTNET", "true"
+
+            if (isAppModule) {
+                applicationId "com.fabriik.app.dev.testnet"
+            }
+        }
+    }
+}

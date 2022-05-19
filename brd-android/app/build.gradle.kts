@@ -17,6 +17,7 @@ plugins {
 
 plugins.apply(AppetizePlugin::class)
 apply(from = rootProject.file("gradle/jacoco.gradle"))
+apply(from = rootProject.file("gradle/flavors.gradle"))
 apply(from = rootProject.file("gradle/google-services.gradle"))
 apply(from = rootProject.file("gradle/copy-font-files.gradle"))
 
@@ -63,23 +64,6 @@ android {
     }
     packagingOptions {
         exclude("META-INF/*.kotlin_module")
-    }
-    // Specifies two flavor dimensions.
-    flavorDimensions("mode")
-    productFlavors {
-        create("brd") {
-            applicationId = "com.fabriik.app"
-            dimension = "mode"
-            resValue("string", "app_name", "Fabriik")
-            buildConfigField("boolean", "BITCOIN_TESTNET", "false")
-
-        }
-        create("brdTestnet") {
-            applicationId = "com.fabriik.app.testnet"
-            dimension = "mode"
-            resValue("string", "app_name", "Fabriik Testnet")
-            buildConfigField("boolean", "BITCOIN_TESTNET", "true")
-        }
     }
     lintOptions {
         lintConfig = file("lint.xml")
