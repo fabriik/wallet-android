@@ -13,6 +13,16 @@ android {
                 applicationId "com.fabriik.app"
             }
         }
+        stagingMainnet {
+            dimension "environment"
+            resValue "string", "app_name", "Fabriik Stg Mainnet"
+            buildConfigField "String", "SERVER_HOST", "\"api-stg.fabriikw.com\""
+            buildConfigField "boolean", "BITCOIN_TESTNET", "false"
+
+            if (isAppModule) {
+                applicationId "com.fabriik.app.stg.mainnet"
+            }
+        }
         developmentMainnet {
             dimension "environment"
             resValue "string", "app_name", "Fabriik Dev Mainnet"
