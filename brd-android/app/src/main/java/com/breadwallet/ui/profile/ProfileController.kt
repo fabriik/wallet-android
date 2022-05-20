@@ -45,15 +45,13 @@ import com.breadwallet.ui.ViewEffect
 import com.breadwallet.ui.auth.AuthenticationController
 import com.breadwallet.ui.controllers.AlertDialogController
 import com.breadwallet.ui.flowbind.clicks
-import com.breadwallet.ui.navigation.fragmentManager
+import com.breadwallet.ui.flowbind.dialogResult
 import com.breadwallet.ui.scanner.ScannerController
 import com.breadwallet.ui.settings.SettingsAdapter
 import com.breadwallet.ui.profile.ProfileScreen.E
 import com.breadwallet.ui.profile.ProfileScreen.F
 import com.breadwallet.ui.profile.ProfileScreen.M
 import com.breadwallet.ui.settings.SettingsSection
-import com.fabriik.common.ui.dialog.FabriikGenericDialog
-import com.fabriik.support.lifeCycleOwner
 import com.platform.APIClient
 import com.spotify.mobius.Connectable
 import com.spotify.mobius.First
@@ -131,15 +129,6 @@ class ProfileController(
     }
 
     override fun bindView(modelFlow: Flow<M>): Flow<E> {
-        /*router.activity?.lifeCycleOwner()?.let {
-            router.fragmentManager()?.setFragmentResultListener(DIALOG_RESULT_VERIFY_ACCOUNT, it) { _, bundle ->
-                val resultKey = bundle.getString(FabriikGenericDialog.EXTRA_RESULT)
-                if (resultKey == DIALOG_RESULT_VERIFY_ACCOUNT) {
-                    eventConsumer.accept(E.OnVerifyProfileClicked)
-                }
-            }
-        }*/
-
         return with(binding) {
             merge(
                 btnProfileInfo.clicks().map { E.OnProfileVerificationInfoClicked },
@@ -149,7 +138,9 @@ class ProfileController(
                 title.clicks()
                     .dropWhile { currentModel.section != SettingsSection.HOME }
                     .drop(HIDDEN_MENU_CLICKS)
-                    .map { E.ShowHiddenOptions }
+                    .map { E.ShowHiddenOptions },
+                router.dialogResult(DIALOG_ID_VERIFY_ACCOUNT_INFO)
+                    .map { E.OnProfileVerificationInfoResult(it) }
             )
         }
     }
@@ -178,7 +169,7 @@ class ProfileController(
                 settingsList.adapter = adapter
             }
             ifChanged(M::isLoading) {
-                loadingView.root.visibility = if(isLoading) View.VISIBLE else View.GONE
+                loadingView.root.visibility = if (isLoading) View.VISIBLE else View.GONE
             }
         }
     }
@@ -195,7 +186,7 @@ class ProfileController(
             F.ShowPlatformBundleDialog -> showPlatformBundleDialog(
                 ServerBundlesHelper.getBundle(ServerBundlesHelper.Type.WEB)
             )
-            is F.ExportTransactions ->  exportTransactions(effect.uri)
+            is F.ExportTransactions -> exportTransactions(effect.uri)
         }
     }
 

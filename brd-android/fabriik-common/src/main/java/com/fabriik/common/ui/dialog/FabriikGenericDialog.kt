@@ -77,7 +77,7 @@ class FabriikGenericDialog : DialogFragment() {
     private fun notifyListeners(result: String) {
         dismissAllowingStateLoss()
 
-        parentFragmentManager.setFragmentResult(
+        requireActivity().supportFragmentManager.setFragmentResult(
             args.requestKey, bundleOf(EXTRA_RESULT to result)
         )
     }

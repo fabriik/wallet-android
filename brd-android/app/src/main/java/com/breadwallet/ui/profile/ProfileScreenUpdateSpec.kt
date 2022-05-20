@@ -47,7 +47,7 @@ interface ProfileScreenUpdateSpec {
         is ProfileScreen.E.SetTokenBundle -> setTokenBundle(model, event)
         is ProfileScreen.E.OnATMMapClicked -> onATMMapClicked(model, event)
         is ProfileScreen.E.OnTransactionsExportFileGenerated -> onTransactionsExportFileGenerated(model, event)
-
+        is ProfileScreen.E.OnProfileVerificationInfoResult -> onProfileVerificationInfoResult(event)
     }
 
     fun onBackClicked(model: ProfileScreen.M): Next<ProfileScreen.M, ProfileScreen.F>
@@ -67,6 +67,8 @@ interface ProfileScreenUpdateSpec {
     fun onCloseHiddenMenu(model: ProfileScreen.M): Next<ProfileScreen.M, ProfileScreen.F>
 
     fun onLinkScanned(model: ProfileScreen.M, event: ProfileScreen.E.OnLinkScanned): Next<ProfileScreen.M, ProfileScreen.F>
+
+    fun onProfileVerificationInfoResult(event: ProfileScreen.E.OnProfileVerificationInfoResult): Next<ProfileScreen.M, ProfileScreen.F>
 
     fun onOptionClicked(model: ProfileScreen.M, event: ProfileScreen.E.OnOptionClicked): Next<ProfileScreen.M, ProfileScreen.F>
 

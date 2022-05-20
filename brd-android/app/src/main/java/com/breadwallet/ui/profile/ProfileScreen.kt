@@ -25,6 +25,7 @@
 package com.breadwallet.ui.profile
 
 import android.net.Uri
+import android.os.Bundle
 import com.breadwallet.R
 import com.breadwallet.tools.util.Link
 import com.breadwallet.ui.ViewEffect
@@ -63,6 +64,7 @@ object ProfileScreen {
         object OnCloseClicked : E()
         object OnVerifyProfileClicked : E()
         object OnProfileVerificationInfoClicked : E()
+        data class OnProfileVerificationInfoResult(val bundle: Bundle) : E()
 
         object OnAuthenticated : E()
 

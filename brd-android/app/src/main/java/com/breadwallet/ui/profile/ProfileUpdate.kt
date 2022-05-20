@@ -32,10 +32,10 @@ import com.breadwallet.ui.profile.ProfileScreen.E
 import com.breadwallet.ui.profile.ProfileScreen.F
 import com.breadwallet.ui.profile.ProfileScreen.M
 import com.breadwallet.ui.settings.SettingsSection
+import com.fabriik.common.ui.dialog.FabriikGenericDialog
 import com.fabriik.common.ui.dialog.FabriikGenericDialogArgs
 import com.spotify.mobius.Next
-import com.spotify.mobius.Next.dispatch
-import com.spotify.mobius.Next.next
+import com.spotify.mobius.Next.*
 import com.spotify.mobius.Update
 
 object ProfileUpdate : Update<M, E, F>, ProfileScreenUpdateSpec {
@@ -76,6 +76,16 @@ object ProfileUpdate : Update<M, E, F>, ProfileScreenUpdateSpec {
                 )
             )
         )
+
+    override fun onProfileVerificationInfoResult(event: E.OnProfileVerificationInfoResult): Next<M, F> {
+        val resultKey = event.bundle.getString(FabriikGenericDialog.EXTRA_RESULT)
+
+        return if (resultKey == DIALOG_RESULT_VERIFY_ACCOUNT) {
+            dispatch(setOf(F.GoToKyc))
+        } else {
+            noChange()
+        }
+    }
 
     override fun setApiServer(
         model: M,

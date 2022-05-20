@@ -27,6 +27,7 @@ package com.breadwallet.ui.navigation
 import android.content.Intent
 import android.net.Uri
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.bluelinelabs.conductor.Controller
 import com.bluelinelabs.conductor.ControllerChangeHandler
 import com.bluelinelabs.conductor.Router
@@ -711,9 +712,9 @@ class RouterNavigator(
     }
 
     override fun showFabriikGenericDialog(effect: NavigationTarget.ShowFabriikGenericDialog) {
-        router.fragmentManager()?.let {
+        router.fragmentManager()?.let { fm ->
             FabriikGenericDialog.newInstance(effect.args)
-                .show(it)
+                .show(fm)
         }
     }
 
