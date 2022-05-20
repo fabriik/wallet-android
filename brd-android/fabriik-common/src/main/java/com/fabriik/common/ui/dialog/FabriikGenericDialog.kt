@@ -17,9 +17,11 @@ class FabriikGenericDialog : DialogFragment() {
     private lateinit var args: FabriikGenericDialogArgs
     private lateinit var binding: DialogFabriikGenericBinding
 
+    override fun getTheme() = R.style.FabriikGenericDialogStyle
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         return inflater.inflate(R.layout.dialog_fabriik_generic, container, false)
     }
 
@@ -31,6 +33,8 @@ class FabriikGenericDialog : DialogFragment() {
             ?: throw IllegalStateException()
 
         with(binding) {
+
+            // setup views
             tvTitle.text = args.title
             tvTitle.isVisible = args.title != null
 
@@ -44,6 +48,21 @@ class FabriikGenericDialog : DialogFragment() {
             btnNegative.text = args.negative?.title
             btnNegative.isVisible = args.negative != null
             args.negative?.icon?.let { btnNegative.setIconResource(it) }
+
+            // setup listeners
+            btnDismiss.setOnClickListener {
+                notifyListeners(RESULT_KEY_DISMISSED)
+            }
+
+            btnPositive.setOnClickListener {
+                val resultKey = args.positive?.resultKey ?: return@setOnClickListener
+                notifyListeners(resultKey)
+            }
+
+            btnNegative.setOnClickListener {
+                val resultKey = args.negative?.resultKey ?: return@setOnClickListener
+                notifyListeners(resultKey)
+            }
         }
     }
 
@@ -51,12 +70,23 @@ class FabriikGenericDialog : DialogFragment() {
         show(manager, TAG)
     }
 
+    private fun notifyListeners(result: String) {
+        dismissAllowingStateLoss()
+
+        parentFragmentManager.setFragmentResult(
+            args.requestKey, bundleOf(EXTRA_RESULT to result)
+        )
+    }
+
     companion object {
         private const val TAG = "Fabriik-Generic-Dialog"
         private const val EXTRA_ARGS = "args"
+        private const val EXTRA_RESULT = "result"
+        private const val RESULT_KEY_DISMISSED = "result_dismissed"
 
         fun newInstance(args: FabriikGenericDialogArgs): FabriikGenericDialog {
             val dialog = FabriikGenericDialog()
+            dialog.isCancelable = false
             dialog.arguments = bundleOf(EXTRA_ARGS to args)
             return dialog
         }

@@ -12,17 +12,38 @@
         <item name="colorControlHighlight">@color/fabriik_ripple_color</item>
     </style>
 
-    <style name="FabriikButtonStyle" parent="Widget.MaterialComponents.Button">
+    <style name="FabriikGenericDialogStyle" parent="Theme.MaterialComponents.Light.Dialog.MinWidth">
+        <item name="dialogCornerRadius">16dp</item>
+        <item name="dialogPreferredPadding">24dp</item>
+    </style>
+
+    <style name="FabriikButtonStyle.Outlined" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:minHeight">0dp</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:textColor">@color/light_link_01</item>
+        <item name="android:textAppearance">@style/TextStyle.Button</item>
+        <item name="strokeColor">@color/light_primary</item>
+        <item name="rippleColor">@color/light_tertiary</item>
+        <item name="cornerRadius">12dp</item>
+    </style>
+
+    <style name="FabriikButtonStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="android:minHeight">0dp</item>
         <item name="android:padding">12dp</item>
         <item name="android:insetTop">0dp</item>
         <item name="android:insetBottom">0dp</item>
         <item name="android:textColor">@color/light_contrast_02</item>
         <item name="android:textAppearance">@style/TextStyle.Button</item>
+        <item name="rippleColor">@color/light_interaction_primary_pressed</item>
         <item name="backgroundTint">@color/bg_button_tint</item>
         <item name="cornerRadius">12dp</item>
-        <item name="rippleColor">@null</item>
-        <item name="elevation">0dp</item>
+    </style>
+
+    <style name="FabriikButtonStyle.Icon">
+        <item name="iconTint">@color/light_contrast_02</item>
+        <item name="iconGravity">textStart</item>
     </style>
 
     <style name="FabriikButtonStyle.Dense">
