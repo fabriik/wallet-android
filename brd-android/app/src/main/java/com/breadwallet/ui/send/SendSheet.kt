@@ -442,6 +442,8 @@ object SendSheet {
         data class OnAuthenticationSettingsUpdated(internal val isFingerprintEnable: Boolean) :
             E()
 
+        object OnSendFaqClicked: E()
+
         sealed class PaymentProtocol : E() {
             data class OnPaymentLoaded(
                 val paymentRequest: PaymentProtocolRequest,
