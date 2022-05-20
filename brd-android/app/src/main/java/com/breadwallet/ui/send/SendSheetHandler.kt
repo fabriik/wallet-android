@@ -221,10 +221,10 @@ object SendSheetHandler {
             val address = wallet.addressFor(effect.address) ?: return@mapNotNull null
             if (wallet.containsAddress(address))
                 return@mapNotNull null
-
             val amount = Amount.create(effect.amount.toDouble(), wallet.unit)
             val networkFee = wallet.feeForSpeed(effect.transferSpeed)
-
+            null
+            /*
             try {
                 val data = wallet.estimateFee(address, amount, networkFee)
                 val fee = data.fee.toBigDecimal()
@@ -237,6 +237,7 @@ object SendSheetHandler {
                 logError("Failed get fee estimate", e)
                 E.OnNetworkFeeError
             }
+             */
         }
     }
 
