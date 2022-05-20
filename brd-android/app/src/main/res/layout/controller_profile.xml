@@ -102,7 +102,7 @@
             android:id="@+id/btn_profile_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:padding="8dp"
@@ -112,8 +112,8 @@
             app:layout_constraintTop_toTopOf="@id/view_profile_access_bg" />
 
         <TextView
-            android:id="@+id/tv_get_full_access"
-            style="@style/TextStyle.Subtitle2"
+            android:id="@+id/tv_title"
+            style="@style/TextStyle.Overline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -125,13 +125,27 @@
             app:layout_constraintStart_toStartOf="@id/btn_verify_account"
             app:layout_constraintTop_toTopOf="@id/view_profile_access_bg" />
 
+        <TextView
+            android:id="@+id/tv_get_full_access"
+            style="@style/TextStyle.Subtitle2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/ProfileController.getFullAccess"
+            android:textColor="@color/light_inverse_text_01"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toEndOf="@id/btn_verify_account"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="@id/btn_verify_account"
+            app:layout_constraintTop_toBottomOf="@id/tv_title" />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_verify_account"
             style="@style/FabriikButtonStyle.Dense"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="32dp"
             android:text="@string/ProfileController.verifyAccount"
             app:icon="@drawable/ic_profile_small"
