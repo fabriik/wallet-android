@@ -100,7 +100,6 @@ jobs:
           name: Prepare artifacts
           command: |
             mkdir -p ~/artifacts
-            cmd
             cp -r ./app/build/outputs/apk/productionMainnet/release ~/artifacts;
             cp -r ./app/build/outputs/bundle/productionMainnetRelease ~/artifacts;
           when: always
