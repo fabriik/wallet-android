@@ -59,6 +59,7 @@ interface SendSheetUpdateSpec {
         is SendSheet.E.OnAddressValidated -> onAddressValidated(model, event)
         is SendSheet.E.PaymentProtocol -> paymentProtocol(model, event)
         is SendSheet.E.OnMaxEstimated -> onMaxEstimated(model, event)
+        is SendSheet.E.OnSendFaqClicked -> onSendFaqClicked(model, event)
         SendSheet.E.OnMaxEstimateFailed -> onMaxEstimateFailed(model)
         SendSheet.E.OnXrpMinAmountInfoClicked -> onXrpMinAmountInfoClicked(model)
         SendSheet.E.OnDestinationTagFaqClicked -> onDestinationTagFaqClicked(model, event)
@@ -131,4 +132,6 @@ interface SendSheetUpdateSpec {
     fun paymentProtocol(model: SendSheet.M, event: SendSheet.E.PaymentProtocol): Next<SendSheet.M, SendSheet.F>
 
     fun onDestinationTagFaqClicked(model: SendSheet.M, event: SendSheet.E): Next<SendSheet.M, SendSheet.F>
+
+    fun onSendFaqClicked(model: SendSheet.M, event: SendSheet.E.OnSendFaqClicked): Next<SendSheet.M, SendSheet.F>
 }
