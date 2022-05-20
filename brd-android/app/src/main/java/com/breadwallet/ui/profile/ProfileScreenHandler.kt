@@ -92,6 +92,8 @@ import java.util.Locale
 import java.util.logging.Level
 import kotlin.text.Charsets.UTF_8
 
+const val DIALOG_ID_VERIFY_ACCOUNT_INFO = "request_verify_profile_info"
+const val DIALOG_RESULT_VERIFY_ACCOUNT = "result_verify_profile"
 private const val DEVELOPER_OPTIONS_TITLE = "Developer Options"
 private const val DETAILED_LOGGING_MESSAGE = "Detailed logging is enabled for this session."
 private const val CLEAR_BLOCKCHAIN_DATA_MESSAGE = "Clearing blockchain data"

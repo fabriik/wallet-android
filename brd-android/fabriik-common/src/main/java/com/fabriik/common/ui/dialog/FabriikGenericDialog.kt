@@ -35,17 +35,21 @@ class FabriikGenericDialog : DialogFragment() {
         with(binding) {
 
             // setup views
-            tvTitle.text = args.title
-            tvTitle.isVisible = args.title != null
+            val title = if (args.titleRes != null) getString(args.titleRes!!) else args.title
+            tvTitle.text = title
+            tvTitle.isVisible = title != null
 
-            tvDescription.text = args.description
-            tvDescription.isVisible = args.description != null
+            val description = if (args.descriptionRes != null) getString(args.descriptionRes!!) else args.description
+            tvDescription.text = description
+            tvDescription.isVisible = description != null
 
-            btnPositive.text = args.positive?.title
+            val positiveText = if (args.positive?.titleRes != null) getString(args.positive?.titleRes!!) else args.positive?.title
+            btnPositive.text = positiveText
             btnPositive.isVisible = args.positive != null
             args.positive?.icon?.let { btnPositive.setIconResource(it) }
 
-            btnNegative.text = args.negative?.title
+            val negativeText = if (args.negative?.titleRes != null) getString(args.negative?.titleRes!!) else args.negative?.title
+            btnNegative.text = negativeText
             btnNegative.isVisible = args.negative != null
             args.negative?.icon?.let { btnNegative.setIconResource(it) }
 
@@ -81,7 +85,7 @@ class FabriikGenericDialog : DialogFragment() {
     companion object {
         private const val TAG = "Fabriik-Generic-Dialog"
         private const val EXTRA_ARGS = "args"
-        private const val EXTRA_RESULT = "result"
+        const val EXTRA_RESULT = "result"
         private const val RESULT_KEY_DISMISSED = "result_dismissed"
 
         fun newInstance(args: FabriikGenericDialogArgs): FabriikGenericDialog {

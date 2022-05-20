@@ -39,6 +39,7 @@ import com.spotify.mobius.Next.next
 import com.spotify.mobius.Update
 
 object ProfileUpdate : Update<M, E, F>, ProfileScreenUpdateSpec {
+
     override fun update(
         model: M,
         event: E
@@ -63,17 +64,13 @@ object ProfileUpdate : Update<M, E, F>, ProfileScreenUpdateSpec {
             setOf(
                 F.ShowFabriikGenericDialog(
                     FabriikGenericDialogArgs(
-                        requestKey = "request_test",
-                        title = "Test title",
-                        description = "Test description",
+                        requestKey = DIALOG_ID_VERIFY_ACCOUNT_INFO,
+                        titleRes = R.string.ProfileController_verifyDialogTitle,
+                        descriptionRes = R.string.ProfileController_verifyDialogDescription,
                         positive = FabriikGenericDialogArgs.ButtonData(
                             icon = R.drawable.ic_profile_small,
-                            title = "Delete",
-                            resultKey = "result_test_positive"
-                        ),
-                        negative = FabriikGenericDialogArgs.ButtonData(
-                            title = "Cancel",
-                            resultKey = "result_test_negative"
+                            titleRes = R.string.ProfileController_verifyAccount,
+                            resultKey = DIALOG_RESULT_VERIFY_ACCOUNT
                         )
                     )
                 )
