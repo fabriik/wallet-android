@@ -185,20 +185,6 @@ class SendSheetController(args: Bundle? = null) :
     }
 
     override fun bindView(modelFlow: Flow<M>): Flow<E> {
-        //TODO - Use showSupportDialog in routerNavigator instead
-        binding.buttonFaq.setOnClickListener {
-            router.fragmentManager()?.let {
-                when(currencyCode) {
-                    //TODO "bsv"
-                    "btc" -> CashSupport.Builder().detail(Topic.SEND).build().show(it)
-                    "eth" -> CashSupport.Builder().detail(Topic.SEND_ETHER).build().show(it)
-                    "bch" -> CashSupport.Builder().detail(Topic.SEND_BTC_CASH).build().show(it)
-                    "usdt" -> CashSupport.Builder().detail(Topic.WHAT_IS_ERC20).build().show(it)
-                    else -> CashSupport.Builder().detail(Topic.SEND).build().show(it)
-                }
-            }
-        }
-
         return with(binding) {
             merge(
                 keyboard.bindInput(),
@@ -241,7 +227,8 @@ class SendSheetController(args: Bundle? = null) :
                 buttonPriority.clicks().map { E.OnTransferSpeedChanged(TransferSpeedInput.PRIORITY) },
                 labelBalanceValue.clicks().map { E.OnSendMaxClicked },
                 buttonXrpBalanceInfo.clicks().map { E.OnXrpMinAmountInfoClicked },
-                buttonFaqDestination.clicks().map { E.OnDestinationTagFaqClicked }
+                buttonFaqDestination.clicks().map { E.OnDestinationTagFaqClicked },
+                buttonFaq.clicks().map { E.OnSendFaqClicked }
             )
         }
     }
