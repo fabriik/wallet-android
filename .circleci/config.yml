@@ -91,28 +91,23 @@ jobs:
 
       # Build apk
       - run:
-          name: Build release apk
+          name: Build release apk - ProductionMainnet
           command: |
-            ./gradlew --console=plain brd-android:app:assembleProductionMainnetRelease  -Pandroid.injected.signing.store.file='/home/circleci/key/keystore' -Pandroid.injected.signing.store.password=$release_password -Pandroid.injected.signing.key.alias='key0' -Pandroid.injected.signing.key.password=$release_sign_password
-
-      # Build app bundles
-      - run:
-          name: Build release aab
-          command: |
-            ./gradlew --console=plain brd-android:app:bundleProductionMainnetRelease  -Pandroid.injected.signing.store.file='/home/circleci/key/keystore' -Pandroid.injected.signing.store.password=$release_password -Pandroid.injected.signing.key.alias='key0' -Pandroid.injected.signing.key.password=$release_sign_password
+            ./gradlew --console=plain brd-android:app:assembleProductionMainnetRelease
 
       # Prepare artifacts
       - run:
           name: Prepare artifacts
           command: |
-            mkdir -p ~/atrifacts
-            cp -r ./app/build/outputs/apk/productionMainnet/release ~/atrifacts;
-            cp -r ./app/build/outputs/bundle/productionMainnetRelease ~/atrifacts;
+            mkdir -p ~/artifacts
+            cmd
+            cp -r ./app/build/outputs/apk/productionMainnet/release ~/artifacts;
+            cp -r ./app/build/outputs/bundle/productionMainnetRelease ~/artifacts;
           when: always
 
       # Upload artifacts
       - store_artifacts:
-          path: ~/atrifacts
+          path: ~/artifacts
 workflows:
   test_and_build:
     jobs:
