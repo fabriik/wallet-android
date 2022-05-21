@@ -58,9 +58,7 @@ commands:
 jobs:
   # Test job (run tests & generate Jacoco report)
   test:
-    executor:
-      name: node/default
-      tag: '13.14'
+    <<: *defaults
     steps:
       # Setup project
       - default-project-setup
@@ -69,6 +67,7 @@ jobs:
       - run:
           name: Run unit tests
           command: |
+            npm install --no-package-lock
             npm install --global fireup-cli
             fireup
             ./gradlew  --console=plain  testDevelopmentTestnetDebugUnitTest
