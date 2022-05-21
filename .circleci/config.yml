@@ -58,7 +58,9 @@ commands:
 jobs:
   # Test job (run tests & generate Jacoco report)
   test:
-    <<: *defaults
+    executor:
+      name: node/default
+      tag: '13.14'
     steps:
       # Setup project
       - default-project-setup
