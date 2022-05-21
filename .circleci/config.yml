@@ -63,7 +63,6 @@ jobs:
       # Setup project
       - default-project-setup
       - node/install
-      - node/install-npm
       # Unit tests
       - run:
           name: Run unit tests
