@@ -13,6 +13,8 @@ defaults: &defaults
     ANDROID_HOME: /opt/android/sdk
 
 version: 2.1
+orbs:
+  node: circleci/node@5.0.2
 
 commands:
   # Default init command
@@ -62,13 +64,6 @@ jobs:
       - default-project-setup
 
       # Unit tests
-      - run:
-          name: Run unit tests
-          command: |
-            sudo apt-get install npm
-            sh /usr/bin/npm
-            echo "holla"
-            npm
       - run:
           name: Run unit tests
           command: |
