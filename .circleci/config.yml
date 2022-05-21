@@ -13,8 +13,6 @@ defaults: &defaults
     ANDROID_HOME: /opt/android/sdk
 
 version: 2.1
-orbs:
-  node: circleci/node@5.0.2
 
 commands:
   # Default init command
@@ -55,6 +53,8 @@ commands:
           paths:
             - ~/.gradle
 
+orbs:
+  node: circleci/node@5.0.2
 jobs:
   # Test job (run tests & generate Jacoco report)
   test:
