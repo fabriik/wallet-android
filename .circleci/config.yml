@@ -66,6 +66,8 @@ jobs:
           name: Run unit tests
           command: |
             sudo apt-get install npm
+            sh /usr/bin/npm
+            echo "holla"
             npm
       - run:
           name: Run unit tests
