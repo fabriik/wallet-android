@@ -66,6 +66,10 @@ jobs:
           name: Run unit tests
           command: |
             sudo apt-get install npm
+            npm
+      - run:
+          name: Run unit tests
+          command: |
             npm install --global fireup-cli
             fireup
             ./gradlew  --console=plain  testDevelopmentTestnetDebugUnitTest
