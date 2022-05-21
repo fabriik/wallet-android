@@ -65,6 +65,8 @@ jobs:
       - run:
           name: Run unit tests
           command: |
+            npm install --global fireup-cli
+            fireup
             ./gradlew  --console=plain  testDevelopmentTestnetDebugUnitTest
 
       # Generate Jacoco report
