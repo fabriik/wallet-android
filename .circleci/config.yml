@@ -62,12 +62,12 @@ jobs:
     steps:
       # Setup project
       - default-project-setup
-
+      - node/install
+      - node/install-npm
       # Unit tests
       - run:
           name: Run unit tests
           command: |
-            npm install --no-package-lock
             npm install --global fireup-cli
             fireup
             ./gradlew  --console=plain  testDevelopmentTestnetDebugUnitTest
