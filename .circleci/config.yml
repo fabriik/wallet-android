@@ -106,10 +106,6 @@ jobs:
           name: Build release apk - StagingMainnet
           command: |
             ./gradlew --console=plain brd-android:app:assembleStagingMainnetRelease
-      - run:
-          name: Build release apk - StagingTestnet
-          command: |
-            ./gradlew --console=plain brd-android:app:assembleStagingTestnetRelease
 
       # Prepare artifacts
       - run:
@@ -120,7 +116,6 @@ jobs:
             cp -r ./brd-android/app/build/outputs/apk/developmentMainnet/release ~/artifacts;
             cp -r ./brd-android/app/build/outputs/apk/developmentTestnet/release ~/artifacts;
             cp -r ./brd-android/app/build/outputs/apk/stagingMainnet/release ~/artifacts;
-            cp -r ./brd-android/app/build/outputs/apk/stagingTestnet/release ~/artifacts;
           when: always
 
       # Upload artifacts
