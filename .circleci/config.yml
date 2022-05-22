@@ -71,7 +71,8 @@ jobs:
             fireup config:set storage.bucket $STORAGE_BUCKET_ID
             echo "$FIREBASE_ADMIN_SERVICE" | base64 --decode > serviceAccount.json
             fireup config:set service.account serviceAccount.json
-            fireup local.properties -pc
+            echo "hola" > david.json
+            fireup up david.json -pc
             ./gradlew  --console=plain  testDevelopmentTestnetDebugUnitTest
 
       # Generate Jacoco report
