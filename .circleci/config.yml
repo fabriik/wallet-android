@@ -69,7 +69,7 @@ jobs:
           command: |
             npm install --global fireup-cli
             fireup config:set storage.bucket $STORAGE_BUCKET_ID
-            echo $SERVICE_ACCOINT > serviceAccount.json
+            echo $SERVICE_ACCOUNT > serviceAccount.json
             fireup config:set service.account serviceAccount.json
             fireup up local.properties -pc
             ./gradlew  --console=plain  testDevelopmentTestnetDebugUnitTest
