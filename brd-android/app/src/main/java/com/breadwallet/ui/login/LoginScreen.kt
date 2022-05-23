@@ -27,6 +27,7 @@ package com.breadwallet.ui.login
 import com.breadwallet.ui.ViewEffect
 import com.breadwallet.ui.navigation.NavigationEffect
 import com.breadwallet.ui.navigation.NavigationTarget
+import com.breadwallet.ui.recovery.RecoveryKey
 import dev.zacsweers.redacted.annotations.Redacted
 
 object LoginScreen {
@@ -91,6 +92,12 @@ object LoginScreen {
             val currencyCode: String
         ) : F(), NavigationEffect {
             override val navigationTarget = NavigationTarget.Wallet(currencyCode)
+        }
+
+        data class GoToRecoveryKey(
+            val resetPin: RecoveryKey.Mode
+        ) : F(), NavigationEffect {
+            override val navigationTarget = NavigationTarget.RecoveryKeyScreen(resetPin)
         }
     }
 }

@@ -28,6 +28,7 @@ import com.breadwallet.tools.util.EventUtils
 import com.breadwallet.ui.login.LoginScreen.E
 import com.breadwallet.ui.login.LoginScreen.F
 import com.breadwallet.ui.login.LoginScreen.M
+import com.breadwallet.ui.recovery.RecoveryKey
 import com.spotify.mobius.Next
 import com.spotify.mobius.Next.dispatch
 import com.spotify.mobius.Next.next
@@ -63,7 +64,7 @@ object LoginUpdate : Update<M, E, F>, LoginScreenUpdateSpec {
         dispatch(setOf(F.GoToDisableScreen))
 
     override fun onResetPinClicked(model: M): Next<M, F> =
-        dispatch(setOf(F.GoToResetPin))
+        dispatch(setOf(F.GoToRecoveryKey(RecoveryKey.Mode.RESET_PIN)))
 
     override fun onUnlockAnimationEnd(model: M): Next<M, F> {
         val effect = when {

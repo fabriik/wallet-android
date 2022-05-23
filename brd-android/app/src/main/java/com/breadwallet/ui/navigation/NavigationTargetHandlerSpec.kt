@@ -75,6 +75,7 @@ interface NavigationTargetHandlerSpec {
         is NavigationTarget.SelectBakerScreen -> selectBaker(effect)
         is NavigationTarget.GoToKYC -> openKyc()
         is NavigationTarget.GoToFeedback -> openFeedback()
+        is NavigationTarget.RecoveryKeyScreen -> recoveryKeyScreen(effect)
     }
 
     fun openKyc(): Unit
@@ -174,4 +175,6 @@ interface NavigationTargetHandlerSpec {
     fun selectBaker(effect: NavigationTarget.SelectBakerScreen): Unit
 
     fun showSupportDialog(effect: NavigationTarget.SupportDialog): Unit
+
+    fun recoveryKeyScreen(effect: NavigationTarget.RecoveryKeyScreen): Unit
 }
