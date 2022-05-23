@@ -681,6 +681,8 @@
     <!-- Next button accessibility label -->
     <string name="RecoverWallet.rightArrow">Right Arrow</string>
     <!-- Recover wallet sub-header -->
+    <string name="RecoverWallet.subtitle">Enter your Recovery Phrase</string>
+    <string name="RecoverWallet.description">Type your 12 Word Phrase</string>
     <string name="RecoverWallet.subheader">Enter the recovery phrase for the wallet you want to recover.</string>
     <!-- Reset PIN with paper key: sub-header -->
     <string name="RecoverWallet.subheader_reset_pin">To reset your PIN, enter the words from your recovery phrase into the boxes below.</string>

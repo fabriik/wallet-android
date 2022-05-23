@@ -129,6 +129,7 @@ object RecoveryKey {
         object OnRecoveryComplete : E()
         object OnFaqClicked : E()
         object OnNextClicked : E()
+        object OnBackClicked : E()
 
         object OnRequestWipeWallet : E()
         object OnWipeWalletConfirmed : E()
@@ -138,6 +139,10 @@ object RecoveryKey {
     }
 
     sealed class F {
+
+        object GoBack : F(), NavigationEffect {
+            override val navigationTarget = NavigationTarget.Back
+        }
 
         object GoToRecoveryKeyFaq : F(), NavigationEffect {
             override val navigationTarget = NavigationTarget.SupportPage(BRConstants.FAQ_PAPER_KEY)

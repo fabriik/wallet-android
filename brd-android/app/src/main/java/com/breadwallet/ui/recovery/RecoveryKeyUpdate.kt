@@ -78,6 +78,10 @@ object RecoveryKeyUpdate : Update<M, E, F>, RecoveryKeyUpdateSpec {
         }
     }
 
+    override fun onBackClicked(model: M): Next<M, F> {
+        return dispatch(setOf(F.GoBack))
+    }
+
     override fun onPhraseValidated(model: M, event: E.OnPhraseValidated): Next<M, F> {
         return when {
             event.errors.none { it } -> {

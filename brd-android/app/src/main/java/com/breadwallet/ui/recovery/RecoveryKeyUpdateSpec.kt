@@ -37,6 +37,7 @@ interface RecoveryKeyUpdateSpec {
         RecoveryKey.E.OnRecoveryComplete -> onRecoveryComplete(model)
         RecoveryKey.E.OnFaqClicked -> onFaqClicked(model)
         RecoveryKey.E.OnNextClicked -> onNextClicked(model)
+        RecoveryKey.E.OnBackClicked -> onBackClicked(model)
         RecoveryKey.E.OnRequestWipeWallet -> onRequestWipeWallet(model)
         RecoveryKey.E.OnWipeWalletConfirmed -> onWipeWalletConfirmed(model)
         RecoveryKey.E.OnWipeWalletCancelled -> onWipeWalletCancelled(model)
@@ -66,6 +67,8 @@ interface RecoveryKeyUpdateSpec {
     fun onFaqClicked(model: RecoveryKey.M): Next<RecoveryKey.M, RecoveryKey.F>
 
     fun onNextClicked(model: RecoveryKey.M): Next<RecoveryKey.M, RecoveryKey.F>
+
+    fun onBackClicked(model: RecoveryKey.M): Next<RecoveryKey.M, RecoveryKey.F>
 
     fun onRequestWipeWallet(model: RecoveryKey.M): Next<RecoveryKey.M, RecoveryKey.F>
 

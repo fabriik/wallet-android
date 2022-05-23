@@ -42,10 +42,13 @@ import com.breadwallet.ui.BaseController
 import com.breadwallet.ui.changehandlers.BottomSheetChangeHandler
 import com.breadwallet.ui.login.LoginController
 import com.breadwallet.ui.navigation.NavigationTarget
+import com.breadwallet.ui.navigation.RouterNavigator
 import com.breadwallet.ui.navigation.asSupportUrl
 import com.breadwallet.ui.recovery.RecoveryKey
 import com.breadwallet.ui.recovery.RecoveryKeyController
 import com.breadwallet.ui.web.WebController
+import com.fabriik.support.pages.Topic
+import drewcarlson.mobius.flow.dispatch
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
@@ -57,16 +60,14 @@ class DisabledController(args: Bundle? = null) : BaseController(args) {
 
     private val userManager by instance<BrdUserManager>()
     private val binding by viewBinding(ControllerDisabledBinding::inflate)
+    private val navigator = RouterNavigator { router }
 
     override fun onCreateView(view: View) {
         super.onCreateView(view)
 
         binding.btnFaq.setOnClickListener {
-            val url = NavigationTarget.SupportPage(BRConstants.FAQ_WALLET_DISABLE).asSupportUrl()
-            router.pushController(
-                RouterTransaction.with(WebController(url))
-                    .popChangeHandler(BottomSheetChangeHandler())
-                    .pushChangeHandler(BottomSheetChangeHandler())
+            navigator.showSupportDialog(
+                NavigationTarget.SupportDialog(Topic.WALLET_DISABLED)
             )
         }
 

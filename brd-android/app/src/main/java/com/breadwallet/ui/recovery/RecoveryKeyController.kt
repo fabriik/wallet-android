@@ -42,10 +42,8 @@ import androidx.core.view.isVisible
 import com.breadwallet.R
 import com.breadwallet.app.BreadApp
 import com.breadwallet.databinding.ControllerRecoveryKeyBinding
-import com.breadwallet.legacy.presenter.customviews.BREdit
 import com.breadwallet.tools.animation.BRDialog
 import com.breadwallet.tools.animation.SpringAnimator
-import com.breadwallet.tools.manager.BRClipboardManager
 import com.breadwallet.tools.util.Utils
 import com.breadwallet.ui.BaseMobiusController
 import com.breadwallet.ui.ViewEffect
@@ -146,43 +144,27 @@ class RecoveryKeyController(
         with(binding) {
             when (currentModel.mode) {
                 RecoveryKey.Mode.WIPE -> {
-                    title.text = resources.getString(R.string.RecoveryKeyFlow_enterRecoveryKey)
-                    description.text = resources.getString(R.string.WipeWallet_instruction)
+                    tvTitle.text = resources.getString(R.string.RecoveryKeyFlow_enterRecoveryKey)
                 }
                 RecoveryKey.Mode.RESET_PIN -> {
-                    title.text = resources.getString(R.string.RecoverWallet_header_reset_pin)
-                    description.text =
-                        resources.getString(R.string.RecoverWallet_subheader_reset_pin)
+                    tvTitle.text = resources.getString(R.string.RecoverWallet_header_reset_pin)
                 }
                 RecoveryKey.Mode.RECOVER -> Unit
             }
 
-            faqButton.setOnClickListener {
+            btnFaq.setOnClickListener {
                 output.accept(E.OnFaqClicked)
             }
-            sendButton.setOnClickListener {
+            btnNext.setOnClickListener {
                 output.accept(E.OnNextClicked)
+            }
+            btnBack.setOnClickListener {
+                output.accept(E.OnBackClicked)
             }
             buttonContactSupport.setOnClickListener {
                 output.accept(E.OnContactSupportClicked)
             }
         }
-
-        // Bind paste event
-        /*wordInputs.first().addEditTextEventListener { event ->
-            if (event == BREdit.EditTextEvent.PASTE) {
-                val clipboardText = BRClipboardManager.getClipboard()
-                output.accept(E.OnTextPasted(clipboardText))
-
-                val phrase = clipboardText.split("\\s+".toRegex())
-                if (phrase.isNotEmpty()) {
-                    wordInputs.zip(phrase)
-                        .forEach { (input, word) ->
-                            input.setText(word, TextView.BufferType.EDITABLE)
-                        }
-                }
-            }
-        }*/
 
         // Bind keyboard enter event
         wordInputs.last().setOnEditorActionListener { _, actionId, event ->
