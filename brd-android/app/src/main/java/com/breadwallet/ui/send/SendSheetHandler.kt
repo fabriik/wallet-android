@@ -223,8 +223,7 @@ object SendSheetHandler {
                 return@mapNotNull null
             val amount = Amount.create(effect.amount.toDouble(), wallet.unit)
             val networkFee = wallet.feeForSpeed(effect.transferSpeed)
-            null
-            /*
+
             try {
                 val data = wallet.estimateFee(address, amount, networkFee)
                 val fee = data.fee.toBigDecimal()
@@ -232,12 +231,11 @@ object SendSheetHandler {
                 E.OnNetworkFeeUpdated(effect.address, effect.amount, fee, data)
             } catch (e: FeeEstimationError) {
                 logError("Failed get fee estimate", e)
-                E.OnNetworkFeeError
+                E.OnInsufficientBalance
             } catch (e: IllegalStateException) {
                 logError("Failed get fee estimate", e)
                 E.OnNetworkFeeError
             }
-             */
         }
     }
 
