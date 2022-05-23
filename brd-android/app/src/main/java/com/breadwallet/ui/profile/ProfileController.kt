@@ -131,8 +131,8 @@ class ProfileController(
     override fun bindView(modelFlow: Flow<M>): Flow<E> {
         return with(binding) {
             merge(
-                btnProfileInfo.clicks().map { E.OnProfileVerificationInfoClicked },
-                btnVerifyAccount.clicks().map { E.OnVerifyProfileClicked },
+                /*btnProfileInfo.clicks().map { E.OnProfileVerificationInfoClicked },
+                btnVerifyAccount.clicks().map { E.OnVerifyProfileClicked },*/
                 closeButton.clicks().map { E.OnCloseClicked },
                 backButton.clicks().map { E.OnBackClicked },
                 title.clicks()

@@ -85,85 +85,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/iv_profile_image" />
 
-        <View
-            android:id="@+id/view_profile_access_bg"
+        <com.fabriik.kyc.ui.customview.AccountVerificationStatusView
+            android:id="@+id/view_profile_status"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="32dp"
             android:layout_marginEnd="16dp"
-            android:background="@drawable/bg_info_prompt"
-            app:layout_constraintBottom_toBottomOf="@id/barrier_bottom"
+            app:layout_constraintTop_toBottomOf="@+id/tv_profile_name"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_profile_name" />
-
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/btn_profile_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:padding="8dp"
-            android:src="@drawable/ic_info_black"
-            android:tint="@color/light_inverse_icons_01"
-            app:layout_constraintEnd_toEndOf="@id/view_profile_access_bg"
-            app:layout_constraintTop_toTopOf="@id/view_profile_access_bg" />
-
-        <TextView
-            android:id="@+id/tv_title"
-            style="@style/TextStyle.Overline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/ProfileController.getFullAccess"
-            android:textColor="@color/light_inverse_text_01"
-            app:layout_constrainedWidth="true"
-            app:layout_constraintEnd_toEndOf="@id/btn_verify_account"
-            app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintStart_toStartOf="@id/btn_verify_account"
-            app:layout_constraintTop_toTopOf="@id/view_profile_access_bg" />
-
-        <TextView
-            android:id="@+id/tv_get_full_access"
-            style="@style/TextStyle.Subtitle2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/ProfileController.getFullAccess"
-            android:textColor="@color/light_inverse_text_01"
-            app:layout_constrainedWidth="true"
-            app:layout_constraintEnd_toEndOf="@id/btn_verify_account"
-            app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintStart_toStartOf="@id/btn_verify_account"
-            app:layout_constraintTop_toBottomOf="@id/tv_title" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_verify_account"
-            style="@style/FabriikButtonStyle.Dense"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="32dp"
-            android:text="@string/ProfileController.verifyAccount"
-            app:icon="@drawable/ic_profile_small"
-            app:iconGravity="textStart"
-            app:iconPadding="4dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_get_full_access" />
-
-        <View
-            android:id="@+id/barrier_bottom"
-            android:layout_width="wrap_content"
-            android:layout_height="1dp"
-            android:layout_marginTop="16dp"
-            android:visibility="invisible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_verify_account" />
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

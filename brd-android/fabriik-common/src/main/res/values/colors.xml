@@ -13,6 +13,7 @@
     <color name="light_text_02">#5F6368</color>
     <color name="light_error">#D72431</color>
     <color name="light_success">#00A86E</color>
+    <color name="light_pending">#F8BA37</color>
     <color name="light_link_01">#122348</color>
     <color name="light_link_02">#0053E7</color>
     <color name="light_contrast_01">#2E3134</color>
