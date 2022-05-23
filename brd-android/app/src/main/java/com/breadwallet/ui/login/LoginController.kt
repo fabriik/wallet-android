@@ -24,11 +24,8 @@
  */
 package com.breadwallet.ui.login
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
 import android.view.View
-import android.view.animation.AccelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
@@ -47,7 +44,6 @@ import com.breadwallet.ui.login.LoginScreen.F
 import com.breadwallet.ui.login.LoginScreen.M
 import drewcarlson.mobius.flow.FlowTransformer
 import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -55,13 +51,11 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import org.kodein.di.direct
 import org.kodein.di.erased.instance
 
 private const val EXTRA_URL = "PENDING_URL"
 private const val EXTRA_SHOW_HOME = "SHOW_HOME"
-private const val UNLOCKED_DELAY_MS = 200L
 
 class LoginController(args: Bundle? = null) :
     BaseMobiusController<M, E, F>(args),
@@ -116,11 +110,12 @@ class LoginController(args: Bundle? = null) :
             modelFlow.map { it.fingerprintEnable }
                 .distinctUntilChanged()
                 .onEach { fingerprintEnable ->
-                    fingerprintIcon.isVisible = fingerprintEnable
+                    btnFingerprint.isVisible = fingerprintEnable
                 }
                 .launchIn(uiBindScope)
             merge(
-                fingerprintIcon.clicks().map { E.OnFingerprintClicked },
+                btnFingerprint.clicks().map { E.OnFingerprintClicked },
+                tvReset.clicks().map { E.OnResetPinClicked },
                 pinDigits.bindInput()
             )
         }
@@ -143,19 +138,19 @@ class LoginController(args: Bundle? = null) :
                 )
             }
         }
-        setup(binding.brkeyboard, pinListener)
+        setup(binding.keyboard, pinListener)
         awaitClose { cleanUp() }
     }
 
     override fun onCreateView(view: View) {
         super.onCreateView(view)
         with(binding) {
-            brkeyboard.setShowDecimal(false)
-            brkeyboard.setDeleteButtonBackgroundColor(resources!!.getColor(android.R.color.transparent))
-            brkeyboard.setDeleteImage(R.drawable.ic_delete_black)
+            keyboard.setShowDecimal(false)
+            keyboard.setDeleteButtonBackgroundColor(resources!!.getColor(android.R.color.transparent))
+            keyboard.setDeleteImage(R.drawable.ic_delete_black)
 
             val pinDigitButtonColor = ContextCompat.getColor(root.context, R.color.fabriik_black)
-            brkeyboard.setButtonTextColor(pinDigitButtonColor)
+            keyboard.setButtonTextColor(pinDigitButtonColor)
         }
     }
 
@@ -184,23 +179,7 @@ class LoginController(args: Bundle? = null) :
     }
 
     private fun unlockWallet() {
-        with(binding) {
-            fingerprintIcon.visibility = View.INVISIBLE
-            pinDigits.animate().translationY(-com.breadwallet.R.dimen.animation_long.toFloat())
-                .setInterpolator(AccelerateInterpolator())
-            brkeyboard.animate().translationY(com.breadwallet.R.dimen.animation_long.toFloat())
-                .setInterpolator(AccelerateInterpolator())
-            unlockedImage.animate().alpha(1f)
-                .setListener(object : AnimatorListenerAdapter() {
-                    override fun onAnimationEnd(animation: Animator) {
-                        super.onAnimationEnd(animation)
-                        controllerScope.launch {
-                            delay(UNLOCKED_DELAY_MS)
-                            eventConsumer.accept(E.OnUnlockAnimationEnd)
-                        }
-                    }
-                })
-        }
+        eventConsumer.accept(E.OnUnlockAnimationEnd)
     }
 
     private fun showError() {

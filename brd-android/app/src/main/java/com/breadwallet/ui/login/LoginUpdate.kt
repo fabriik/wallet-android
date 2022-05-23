@@ -62,6 +62,9 @@ object LoginUpdate : Update<M, E, F>, LoginScreenUpdateSpec {
     override fun onPinLocked(model: M): Next<M, F> =
         dispatch(setOf(F.GoToDisableScreen))
 
+    override fun onResetPinClicked(model: M): Next<M, F> =
+        dispatch(setOf(F.GoToResetPin))
+
     override fun onUnlockAnimationEnd(model: M): Next<M, F> {
         val effect = when {
             model.extraUrl.isNotBlank() ->

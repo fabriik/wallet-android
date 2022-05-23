@@ -51,6 +51,7 @@ object LoginScreen {
     sealed class E {
         object OnFingerprintClicked : E()
         object OnPinLocked : E()
+        object OnResetPinClicked : E()
         object OnUnlockAnimationEnd : E()
         data class OnFingerprintEnabled(val enabled: Boolean) : E()
 
@@ -77,6 +78,9 @@ object LoginScreen {
         object ShowFingerprintController : F(), ViewEffect
         object GoToDisableScreen : F(), NavigationEffect {
             override val navigationTarget = NavigationTarget.DisabledScreen
+        }
+        object GoToResetPin : F(), NavigationEffect {
+            override val navigationTarget = NavigationTarget.SetPin()
         }
         data class GoToDeepLink(
             @Redacted val url: String
