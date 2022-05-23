@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="TextStyle"/>
+
+    <style name="TextStyle.Title1">
+        <item name="android:textSize">36sp</item>
+        <item name="fontFamily">@font/degular_semibold</item>
+    </style>
+
+    <style name="TextStyle.Title2">
+        <item name="android:textSize">32sp</item>
+        <item name="fontFamily">@font/degular_semibold</item>
+    </style>
+
+    <style name="TextStyle.Title3">
+        <item name="android:textSize">28sp</item>
+        <item name="fontFamily">@font/degular_semibold</item>
+    </style>
+
+    <style name="TextStyle.Title4">
+        <item name="android:textSize">24sp</item>
+        <item name="fontFamily">@font/degular_semibold</item>
+    </style>
+
+    <style name="TextStyle.Title5">
+        <item name="android:textSize">20sp</item>
+        <item name="fontFamily">@font/degular_semibold</item>
+    </style>
+
+    <style name="TextStyle.Title6">
+        <item name="android:textSize">16sp</item>
+        <item name="fontFamily">@font/degular_semibold</item>
+    </style>
+
+    <style name="TextStyle.Subtitle1">
+        <item name="android:textSize">16sp</item>
+        <item name="fontFamily">@font/roboto_medium</item>
+    </style>
+
+    <style name="TextStyle.Subtitle2">
+        <item name="android:textSize">14sp</item>
+        <item name="fontFamily">@font/roboto_medium</item>
+    </style>
+
+    <style name="TextStyle.Body1">
+        <item name="android:textSize">16sp</item>
+        <item name="fontFamily">@font/roboto_regular</item>
+    </style>
+
+    <style name="TextStyle.Body2">
+        <item name="android:textSize">14sp</item>
+        <item name="fontFamily">@font/roboto_regular</item>
+    </style>
+
+    <style name="TextStyle.Caption">
+        <item name="android:textSize">12sp</item>
+        <item name="fontFamily">@font/roboto_regular</item>
+    </style>
+
+    <style name="TextStyle.Button">
+        <item name="android:textSize">16sp</item>
+        <item name="fontFamily">@font/degular_semibold</item>
+    </style>
+
+    <style name="TextStyle.Overline">
+        <item name="android:textSize">12sp</item>
+        <item name="fontFamily">@font/roboto_regular</item>
+    </style>
+
+</resources>

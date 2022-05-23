@@ -61,7 +61,7 @@ class DisabledController(args: Bundle? = null) : BaseController(args) {
     override fun onCreateView(view: View) {
         super.onCreateView(view)
 
-        binding.faqButton.setOnClickListener {
+        binding.btnFaq.setOnClickListener {
             val url = NavigationTarget.SupportPage(BRConstants.FAQ_WALLET_DISABLE).asSupportUrl()
             router.pushController(
                 RouterTransaction.with(WebController(url))
@@ -70,7 +70,7 @@ class DisabledController(args: Bundle? = null) : BaseController(args) {
             )
         }
 
-        binding.resetButton.setOnClickListener {
+        binding.btnResetPin.setOnClickListener {
             val controller = RecoveryKeyController(RecoveryKey.Mode.RESET_PIN)
             router.pushController(
                 RouterTransaction.with(controller)
@@ -98,14 +98,14 @@ class DisabledController(args: Bundle? = null) : BaseController(args) {
     override fun handleBack(): Boolean {
         val isDisabled = userManager.getState() is BrdUserState.Disabled
         if (isDisabled) {
-            SpringAnimator.failShakeAnimation(activity, binding.disabled)
+            SpringAnimator.failShakeAnimation(activity, binding.tvTitle)
         }
 
         return isDisabled
     }
 
     private fun walletDisabled(seconds: Int) {
-        binding.untilLabel.text = String.format(
+        binding.tvCounter.text = String.format(
             Locale.ROOT,
             "%02d:%02d:%02d",
             seconds / 3600,
