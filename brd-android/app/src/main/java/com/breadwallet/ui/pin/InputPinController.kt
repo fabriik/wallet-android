@@ -97,7 +97,7 @@ class InputPinController(args: Bundle) : BaseMobiusController<M, E, F>(args) {
 
     override fun bindView(modelFlow: Flow<M>): Flow<E> {
         return merge(
-            binding.faqButton.clicks().map { E.OnFaqClicked },
+            binding.btnFaq.clicks().map { E.OnFaqClicked },
             binding.pinDigits.bindInput()
         )
     }
@@ -118,7 +118,7 @@ class InputPinController(args: Bundle) : BaseMobiusController<M, E, F>(args) {
 
     override fun M.render() {
         ifChanged(M::mode) {
-            binding.title.setText(
+            binding.tvTitle.setText(
                 when (mode) {
                     M.Mode.VERIFY -> R.string.UpdatePin_enterCurrent
                     M.Mode.NEW -> if (pinUpdateMode) {
