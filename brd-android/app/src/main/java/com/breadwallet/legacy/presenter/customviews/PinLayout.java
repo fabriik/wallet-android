@@ -150,10 +150,10 @@ public class PinLayout extends LinearLayout implements BRKeyboard.OnInsertListen
                 public void run() {
                     String pin = mPinStringBuilder.toString();
                     if (mUserManager.hasPinCode() && mUserManager.verifyPinCode(pin)) {
-                        mOnPinInsertedListener.onPinInserted(pin, true);
+                        mOnPinInsertedListener.onValidPinInserted(pin);
                         useNewDigitLimit(true);
                     } else {
-                        mOnPinInsertedListener.onPinInserted(pin, false);
+                        mOnPinInsertedListener.onInvalidPinInserted(mUserManager.getRemainingPinAttempts());
                         if (!mIsPinUpdating) {
                             authFailed();
                         }
@@ -232,18 +232,11 @@ public class PinLayout extends LinearLayout implements BRKeyboard.OnInsertListen
     }
 
     public interface PinLayoutListener {
-        /**
-         * Callback to notify the pin that has been entered.
-         *
-         * @param pin          The PIN that has been entered.
-         * @param isPinCorrect True if the PIN is correct.
-         */
-        void onPinInserted(String pin, boolean isPinCorrect);
 
-        /**
-         * Callback for when the PIN has been locked.
-         */
+        void onValidPinInserted(String pin);
+
         void onPinLocked();
-    }
 
+        void onInvalidPinInserted(int attemptsLeft);
+    }
 }

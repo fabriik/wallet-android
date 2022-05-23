@@ -95,7 +95,7 @@ class LoginController(args: Bundle? = null) :
                 override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
                     // Defer to pin authentication on error
                     if (errorCode != BiometricPrompt.ERROR_CANCELED) {
-                        eventConsumer.accept(E.OnAuthenticationFailed)
+                        eventConsumer.accept(E.OnAuthenticationFailed(null))
                     }
                 }
 
@@ -128,14 +128,12 @@ class LoginController(args: Bundle? = null) :
                 channel.offer(E.OnPinLocked)
             }
 
-            override fun onPinInserted(pin: String?, isPinCorrect: Boolean) {
-                channel.offer(
-                    if (isPinCorrect) {
-                        E.OnAuthenticationSuccess
-                    } else {
-                        E.OnAuthenticationFailed
-                    }
-                )
+            override fun onInvalidPinInserted(attemptsLeft: Int) {
+                channel.offer(E.OnAuthenticationFailed(attemptsLeft))
+            }
+
+            override fun onValidPinInserted(pin: String?) {
+                channel.offer(E.OnAuthenticationSuccess)
             }
         }
         setup(binding.keyboard, pinListener)
@@ -161,7 +159,7 @@ class LoginController(args: Bundle? = null) :
     override fun handleViewEffect(effect: ViewEffect) {
         when (effect) {
             F.AuthenticationSuccess -> unlockWallet()
-            F.AuthenticationFailed -> showError()
+            is F.AuthenticationFailed -> showError(effect.attemptsLeft)
             F.ShowFingerprintController -> {
                 biometricPrompt.authenticate(
                     BiometricPrompt.PromptInfo.Builder()
@@ -182,7 +180,11 @@ class LoginController(args: Bundle? = null) :
         eventConsumer.accept(E.OnUnlockAnimationEnd)
     }
 
-    private fun showError() {
+    private fun showError(attemptsLeft: Int?) {
         SpringAnimator.failShakeAnimation(applicationContext, binding.pinDigits)
+
+        if (attemptsLeft != null) {
+            //todo: show error popup
+        }
     }
 }

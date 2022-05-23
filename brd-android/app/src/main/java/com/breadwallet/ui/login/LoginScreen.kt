@@ -57,14 +57,18 @@ object LoginScreen {
         data class OnFingerprintEnabled(val enabled: Boolean) : E()
 
         object OnAuthenticationSuccess : E()
-        object OnAuthenticationFailed : E()
+        data class OnAuthenticationFailed(val attemptsLeft: Int?) : E()
     }
 
     sealed class F {
         object UnlockBrdUser : F()
         object CheckFingerprintEnable : F()
         object AuthenticationSuccess : F(), ViewEffect
-        object AuthenticationFailed : F(), ViewEffect
+
+        data class AuthenticationFailed(
+            val attemptsLeft: Int?
+        ) : F(), ViewEffect
+
         data class TrackEvent(
             val eventName: String,
             val attributes: Map<String, String>? = null
@@ -79,9 +83,6 @@ object LoginScreen {
         object ShowFingerprintController : F(), ViewEffect
         object GoToDisableScreen : F(), NavigationEffect {
             override val navigationTarget = NavigationTarget.DisabledScreen
-        }
-        object GoToResetPin : F(), NavigationEffect {
-            override val navigationTarget = NavigationTarget.SetPin()
         }
         data class GoToDeepLink(
             @Redacted val url: String

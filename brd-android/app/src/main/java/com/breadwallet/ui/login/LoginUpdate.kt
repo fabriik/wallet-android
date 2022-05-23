@@ -52,10 +52,10 @@ object LoginUpdate : Update<M, E, F>, LoginScreenUpdateSpec {
             )
         )
 
-    override fun onAuthenticationFailed(model: M): Next<M, F> =
+    override fun onAuthenticationFailed(model: M, event: E.OnAuthenticationFailed): Next<M, F> =
         dispatch(
             setOf(
-                F.AuthenticationFailed,
+                F.AuthenticationFailed(event.attemptsLeft),
                 F.TrackEvent(EventUtils.EVENT_LOGIN_FAILED)
             )
         )

@@ -50,6 +50,7 @@ interface BrdUserManager {
     suspend fun configurePinCode(pinCode: String)
     suspend fun clearPinCode(phrase: ByteArray)
     fun verifyPinCode(pinCode: String): Boolean
+    fun getRemainingPinAttempts(): Int
     fun hasPinCode(): Boolean
     fun pinCodeNeedsUpgrade(): Boolean
 
