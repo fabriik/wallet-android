@@ -90,6 +90,251 @@
                 android:orientation="horizontal"
                 android:weightSum="3">
 
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_word1"
+                    style="@style/FabriikTextInputStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="fill_horizontal"
+                    android:layout_marginEnd="4dp"
+                    android:layout_weight="1"
+                    android:hint="01"
+                    tools:ignore="HardcodedText">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/et_word1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_word2"
+                    style="@style/FabriikTextInputStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="fill_horizontal"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_weight="1"
+                    android:hint="02"
+                    tools:ignore="HardcodedText">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/et_word2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_word3"
+                    style="@style/FabriikTextInputStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="fill_horizontal"
+                    android:layout_marginStart="4dp"
+                    android:layout_weight="1"
+                    android:hint="03"
+                    tools:ignore="HardcodedText">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/et_word3"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal"
+                android:weightSum="3">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_word4"
+                    style="@style/FabriikTextInputStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="fill_horizontal"
+                    android:layout_marginEnd="4dp"
+                    android:layout_weight="1"
+                    android:hint="04"
+                    tools:ignore="HardcodedText">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/et_word4"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_word5"
+                    style="@style/FabriikTextInputStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="fill_horizontal"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_weight="1"
+                    android:hint="05"
+                    tools:ignore="HardcodedText">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/et_word5"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_word6"
+                    style="@style/FabriikTextInputStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="fill_horizontal"
+                    android:layout_marginStart="4dp"
+                    android:layout_weight="1"
+                    android:hint="06"
+                    tools:ignore="HardcodedText">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/et_word6"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal"
+                android:weightSum="3">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_word7"
+                    style="@style/FabriikTextInputStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="fill_horizontal"
+                    android:layout_marginEnd="4dp"
+                    android:layout_weight="1"
+                    android:hint="07"
+                    tools:ignore="HardcodedText">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/et_word7"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_word8"
+                    style="@style/FabriikTextInputStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="fill_horizontal"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_weight="1"
+                    android:hint="08"
+                    tools:ignore="HardcodedText">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/et_word8"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_word9"
+                    style="@style/FabriikTextInputStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="fill_horizontal"
+                    android:layout_marginStart="4dp"
+                    android:layout_weight="1"
+                    android:hint="09"
+                    tools:ignore="HardcodedText">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/et_word9"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal"
+                android:weightSum="3">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_word10"
+                    style="@style/FabriikTextInputStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="fill_horizontal"
+                    android:layout_marginEnd="4dp"
+                    android:layout_weight="1"
+                    android:hint="10"
+                    tools:ignore="HardcodedText">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/et_word10"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_word11"
+                    style="@style/FabriikTextInputStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="fill_horizontal"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_weight="1"
+                    android:hint="11"
+                    tools:ignore="HardcodedText">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/et_word11"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_word12"
+                    style="@style/FabriikTextInputStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="fill_horizontal"
+                    android:layout_marginStart="4dp"
+                    android:layout_weight="1"
+                    android:hint="12"
+                    tools:ignore="HardcodedText">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/et_word12"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
@@ -473,7 +718,7 @@
                         android:gravity="center"
                         android:text="12"
                         android:textColor="@color/fabriik_black" />
-                </LinearLayout>
+                </LinearLayout>-->
             </LinearLayout>
         </GridLayout>
 

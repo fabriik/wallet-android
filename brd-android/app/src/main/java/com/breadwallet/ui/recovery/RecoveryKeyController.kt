@@ -97,13 +97,13 @@ class RecoveryKeyController(
 
     private val binding by viewBinding(ControllerRecoveryKeyBinding::inflate)
 
-    private val wordInputs: List<BREdit>
+    private val wordInputs: List<EditText>
         get() = with(binding) {
             listOf(
-                word1, word2, word3,
-                word4, word5, word6,
-                word7, word8, word9,
-                word10, word11, word12
+                etWord1, etWord2, etWord3,
+                etWord4, etWord5, etWord6,
+                etWord7, etWord8, etWord9,
+                etWord10, etWord11, etWord12
             )
         }
 
@@ -169,7 +169,7 @@ class RecoveryKeyController(
         }
 
         // Bind paste event
-        wordInputs.first().addEditTextEventListener { event ->
+        /*wordInputs.first().addEditTextEventListener { event ->
             if (event == BREdit.EditTextEvent.PASTE) {
                 val clipboardText = BRClipboardManager.getClipboard()
                 output.accept(E.OnTextPasted(clipboardText))
@@ -182,7 +182,7 @@ class RecoveryKeyController(
                         }
                 }
             }
-        }
+        }*/
 
         // Bind keyboard enter event
         wordInputs.last().setOnEditorActionListener { _, actionId, event ->
