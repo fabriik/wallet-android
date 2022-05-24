@@ -125,15 +125,10 @@ jobs:
           name: Prepare artifacts
           command: |
             mkdir -p ~/artifacts
-#                     production mainnet release
-#                         staging mainnet release
-#                         development mainnet release
-#                         development mainnet debug
             cp -r ./brd-android/app/build/outputs/apk/productionMainnet/release ~/artifacts;
             cp -r ./brd-android/app/build/outputs/apk/developmentMainnet/release ~/artifacts;
 #            cp -r ./brd-android/app/build/outputs/apk/developmentTestnet/release ~/artifacts;
             cp -r ./brd-android/app/build/outputs/apk/stagingMainnet/release ~/artifacts;
-            for file in ~/artifacts/*; do echo $file; done
           when: always
 
 #      - run:
