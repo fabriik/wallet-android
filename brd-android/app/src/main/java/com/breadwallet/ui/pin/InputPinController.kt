@@ -97,7 +97,7 @@ class InputPinController(args: Bundle) : BaseMobiusController<M, E, F>(args) {
 
     override fun bindView(modelFlow: Flow<M>): Flow<E> {
         return merge(
-            binding.btnFaq.clicks().map { E.OnFaqClicked },
+            binding.faqButton.clicks().map { E.OnFaqClicked },
             binding.pinDigits.bindInput()
         )
     }
@@ -105,12 +105,12 @@ class InputPinController(args: Bundle) : BaseMobiusController<M, E, F>(args) {
     private fun PinLayout.bindInput() = callbackFlow<E> {
         val channel = channel
         setup(binding.brkeyboard, object : PinLayoutListener {
-            override fun onInvalidPinInserted(pin: String, attemptsLeft: Int) {
-                channel.offer(E.OnPinEntered(pin, false))
-            }
-
             override fun onValidPinInserted(pin: String) {
                 channel.offer(E.OnPinEntered(pin, true))
+            }
+
+            override fun onInvalidPinInserted(pin: String, attemptsLeft: Int) {
+                channel.offer(E.OnPinEntered(pin, false))
             }
 
             override fun onPinLocked() {
@@ -122,7 +122,7 @@ class InputPinController(args: Bundle) : BaseMobiusController<M, E, F>(args) {
 
     override fun M.render() {
         ifChanged(M::mode) {
-            binding.tvTitle.setText(
+            binding.title.setText(
                 when (mode) {
                     M.Mode.VERIFY -> R.string.UpdatePin_enterCurrent
                     M.Mode.NEW -> if (pinUpdateMode) {
