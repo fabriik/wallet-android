@@ -36,6 +36,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
@@ -52,6 +53,8 @@ import com.breadwallet.ui.recovery.RecoveryKey.E
 import com.breadwallet.ui.recovery.RecoveryKey.F
 import com.breadwallet.ui.recovery.RecoveryKey.M
 import com.breadwallet.util.DefaultTextWatcher
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.spotify.mobius.disposables.Disposable
 import com.spotify.mobius.functions.Consumer
 import drewcarlson.mobius.flow.FlowTransformer
@@ -95,7 +98,7 @@ class RecoveryKeyController(
 
     private val binding by viewBinding(ControllerRecoveryKeyBinding::inflate)
 
-    private val wordInputs: List<EditText>
+    private val wordInputs: List<TextInputEditText>
         get() = with(binding) {
             listOf(
                 etWord1, etWord2, etWord3,
@@ -105,18 +108,9 @@ class RecoveryKeyController(
             )
         }
 
-    private val inputTextColorValue = TypedValue()
-    private var errorTextColor: Int = -1
-    private var normalTextColor: Int = -1
-
     override fun onCreateView(view: View) {
         super.onCreateView(view)
-        val theme = view.context.theme
         val resources = resources!!
-
-        theme.resolveAttribute(R.attr.input_words_text_color, inputTextColorValue, true)
-        errorTextColor = resources.getColor(R.color.red_text, theme)
-        normalTextColor = resources.getColor(R.color.fabriik_black, theme)
 
         // TODO: This needs a better home
         if (Utils.isUsingCustomInputMethod(applicationContext)) {
@@ -213,13 +207,11 @@ class RecoveryKeyController(
         ifChanged(M::errors) { errors ->
             wordInputs.zip(errors)
                 .forEach { (input, error) ->
-                    if (error) {
-                        if (input.currentTextColor != errorTextColor)
-                            input.setTextColor(errorTextColor)
-                    } else {
-                        if (input.currentTextColor != normalTextColor)
-                            input.setTextColor(normalTextColor)
-                    }
+                    (input.parent.parent as TextInputLayout).foreground =
+                        ContextCompat.getDrawable(
+                            requireContext(),
+                            if (error) R.drawable.bg_input_view_error else R.drawable.bg_input_view
+                        )
                 }
         }
     }

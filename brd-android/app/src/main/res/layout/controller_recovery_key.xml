@@ -132,7 +132,7 @@
                     android:hint="01"
                     tools:ignore="HardcodedText">
 
-                    <androidx.appcompat.widget.AppCompatEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_word1"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
@@ -150,7 +150,7 @@
                     android:hint="02"
                     tools:ignore="HardcodedText">
 
-                    <androidx.appcompat.widget.AppCompatEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_word2"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
@@ -167,7 +167,7 @@
                     android:hint="03"
                     tools:ignore="HardcodedText">
 
-                    <androidx.appcompat.widget.AppCompatEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_word3"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
@@ -193,7 +193,7 @@
                     android:hint="04"
                     tools:ignore="HardcodedText">
 
-                    <androidx.appcompat.widget.AppCompatEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_word4"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
@@ -211,7 +211,7 @@
                     android:hint="05"
                     tools:ignore="HardcodedText">
 
-                    <androidx.appcompat.widget.AppCompatEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_word5"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
@@ -228,7 +228,7 @@
                     android:hint="06"
                     tools:ignore="HardcodedText">
 
-                    <androidx.appcompat.widget.AppCompatEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_word6"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
@@ -254,7 +254,7 @@
                     android:hint="07"
                     tools:ignore="HardcodedText">
 
-                    <androidx.appcompat.widget.AppCompatEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_word7"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
@@ -272,7 +272,7 @@
                     android:hint="08"
                     tools:ignore="HardcodedText">
 
-                    <androidx.appcompat.widget.AppCompatEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_word8"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
@@ -289,7 +289,7 @@
                     android:hint="09"
                     tools:ignore="HardcodedText">
 
-                    <androidx.appcompat.widget.AppCompatEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_word9"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
@@ -315,7 +315,7 @@
                     android:hint="10"
                     tools:ignore="HardcodedText">
 
-                    <androidx.appcompat.widget.AppCompatEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_word10"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
@@ -333,7 +333,7 @@
                     android:hint="11"
                     tools:ignore="HardcodedText">
 
-                    <androidx.appcompat.widget.AppCompatEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_word11"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
@@ -350,7 +350,7 @@
                     android:hint="12"
                     tools:ignore="HardcodedText">
 
-                    <androidx.appcompat.widget.AppCompatEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_word12"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
