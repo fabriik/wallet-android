@@ -131,6 +131,7 @@ jobs:
       - run:
           name: Upload Artifacts
           command: |
+            for %%f in (~/artifacts*) do ( echo "fullname: %%f" )
             fireup up /artifacts/developmentMainnet-release-4.11.1.32.apk -pc > release.txt
             cp -r release.txt ~/artifacts;
           when: always
