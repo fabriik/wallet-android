@@ -1492,6 +1492,9 @@
     <string name="LoginController.resetPin"><u>Reset PIN</u></string>
     <string name="LoginController.invalidPinError">Incorrect PIN. The wallet will get disabled for 6 minutes after %d more failed %s.</string>
 
+    <string name="PinResetCompleted.title">Your PIN was reset successfully!</string>
+    <string name="PinResetCompleted.button">Go to dashboard</string>
+
     <plurals name="attempts">
         <item quantity="one">attempt</item>
         <item quantity="other">attempts</item>

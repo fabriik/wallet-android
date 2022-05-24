@@ -99,6 +99,9 @@ object InputPin {
         object GoToHome : F(), NavigationEffect {
             override val navigationTarget = NavigationTarget.Home
         }
+        object GoToResetCompleted : F(), NavigationEffect {
+            override val navigationTarget = NavigationTarget.PinResetCompleted
+        }
         object GoToFaq : F(), NavigationEffect {
             override val navigationTarget = NavigationTarget.SupportPage(BRConstants.FAQ_SET_PIN)
         }

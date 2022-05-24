@@ -76,6 +76,7 @@ interface NavigationTargetHandlerSpec {
         is NavigationTarget.GoToKYC -> openKyc()
         is NavigationTarget.GoToFeedback -> openFeedback()
         is NavigationTarget.RecoveryKeyScreen -> recoveryKeyScreen(effect)
+        is NavigationTarget.PinResetCompleted -> pinResetCompleted()
     }
 
     fun openKyc(): Unit
@@ -177,4 +178,6 @@ interface NavigationTargetHandlerSpec {
     fun showSupportDialog(effect: NavigationTarget.SupportDialog): Unit
 
     fun recoveryKeyScreen(effect: NavigationTarget.RecoveryKeyScreen): Unit
+
+    fun pinResetCompleted(): Unit
 }
