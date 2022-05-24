@@ -97,6 +97,7 @@ sealed class NavigationTarget : INavigationTarget {
         val messageResId: Int? = null
     ) : NavigationTarget()
 
+    object PinReset : NavigationTarget()
     object PinResetCompleted : NavigationTarget()
     object Home : NavigationTarget()
     object Buy : NavigationTarget()

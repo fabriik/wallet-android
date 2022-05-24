@@ -160,7 +160,7 @@ object RecoveryKey {
         }
 
         object SetPinForReset : F(), NavigationEffect {
-            override val navigationTarget = NavigationTarget.SetPin()
+            override val navigationTarget = NavigationTarget.PinReset
         }
 
         object GoToPhraseError : F(), NavigationEffect {

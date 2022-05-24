@@ -1492,6 +1492,11 @@
     <string name="LoginController.resetPin"><u>Reset PIN</u></string>
     <string name="LoginController.invalidPinError">Incorrect PIN. The wallet will get disabled for 6 minutes after %d more failed %s.</string>
 
+    <string name="ResetPin.title">Reset PIN</string>
+    <string name="ResetPin.subtitleNewPin">Set your new PIN</string>
+    <string name="ResetPin.subtitleConfirmNewPin">Confirm your new PIN</string>
+    <string name="ResetPin.description">Your PIN will be used to unlock your Fabriik Wallet and send money</string>
+
     <string name="PinResetCompleted.title">Your PIN was reset successfully!</string>
     <string name="PinResetCompleted.button">Go to dashboard</string>
 
