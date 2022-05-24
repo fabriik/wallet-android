@@ -67,12 +67,6 @@ jobs:
       - run:
           name: Run unit tests
           command: |
-            npm install --global fireup-cli
-            fireup config:set storage.bucket $STORAGE_BUCKET_ID
-            echo "$FIREBASE_ADMIN_SERVICE" | base64 --decode > serviceAccount.json
-            fireup config:set service.account serviceAccount.json
-            echo "hola" > david.json
-            fireup up david.json -pc
             ./gradlew  --console=plain  testDevelopmentTestnetDebugUnitTest
 
       # Generate Jacoco report
@@ -80,6 +74,14 @@ jobs:
           name: Generate Jacoco report
           command: |
             ./gradlew  --console=plain :brd-android:app:jacocoTestReport
+
+      # Install fireup
+      - run:
+          name: Install fireup
+          command: |
+            npm install --global fireup-cli
+            fireup config:set storage.bucket $STORAGE_BUCKET_ID
+            echo "$FIREBASE_ADMIN_SERVICE" | base64 --decode > serviceAccount.json
 
   # Release job (build apk and aab)
   release:
@@ -126,6 +128,12 @@ jobs:
             cp -r ./brd-android/app/build/outputs/apk/stagingMainnet/release ~/artifacts;
           when: always
 
+      - run:
+          name: Upload Artifacts
+          command: |
+            fireup up /artifacts/developmentMainnet-release*.apk -pc > release.txt
+            cp -r release.txt ~/artifacts;
+          when: always
       # Upload artifacts
       - store_artifacts:
           path: ~/artifacts
