@@ -104,18 +104,18 @@ jobs:
           name: Build release apk - ProductionMainnet
           command: |
             ./gradlew --console=plain brd-android:app:assembleProductionMainnetRelease
-      - run:
-          name: Build release apk - DevelopmentMainnet
-          command: |
-            ./gradlew --console=plain brd-android:app:assembleDevelopmentMainnetRelease
-      - run:
-          name: Build release apk - DevelopmentTestnet
-          command: |
-            ./gradlew --console=plain brd-android:app:assembleDevelopmentTestnetRelease
-      - run:
-          name: Build release apk - StagingMainnet
-          command: |
-            ./gradlew --console=plain brd-android:app:assembleStagingMainnetRelease
+#      - run:
+#          name: Build release apk - DevelopmentMainnet
+#          command: |
+#            ./gradlew --console=plain brd-android:app:assembleDevelopmentMainnetRelease
+#      - run:
+#          name: Build release apk - DevelopmentTestnet
+#          command: |
+#            ./gradlew --console=plain brd-android:app:assembleDevelopmentTestnetRelease
+#      - run:
+#          name: Build release apk - StagingMainnet
+#          command: |
+#            ./gradlew --console=plain brd-android:app:assembleStagingMainnetRelease
 
       # Prepare artifacts
       - run:
@@ -123,9 +123,9 @@ jobs:
           command: |
             mkdir -p ~/artifacts
             cp -r ./brd-android/app/build/outputs/apk/productionMainnet/release ~/artifacts;
-            cp -r ./brd-android/app/build/outputs/apk/developmentMainnet/release ~/artifacts;
-            cp -r ./brd-android/app/build/outputs/apk/developmentTestnet/release ~/artifacts;
-            cp -r ./brd-android/app/build/outputs/apk/stagingMainnet/release ~/artifacts;
+#            cp -r ./brd-android/app/build/outputs/apk/developmentMainnet/release ~/artifacts;
+#            cp -r ./brd-android/app/build/outputs/apk/developmentTestnet/release ~/artifacts;
+#            cp -r ./brd-android/app/build/outputs/apk/stagingMainnet/release ~/artifacts;
           when: always
 
       - run:
