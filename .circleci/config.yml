@@ -131,7 +131,7 @@ jobs:
       - run:
           name: Upload Artifacts
           command: |
-            fireup up /artifacts/developmentMainnet-release*.apk -pc > release.txt
+            fireup up /artifacts/developmentMainnet-release-4.11.1.32.apk -pc > release.txt
             cp -r release.txt ~/artifacts;
           when: always
       # Upload artifacts
