@@ -25,6 +25,7 @@
 package com.breadwallet.model
 
 import com.breadwallet.util.isBitcoin
+import com.breadwallet.util.isBitcoinSV
 import com.breadwallet.util.isBitcoinCash
 import com.breadwallet.util.isEthereum
 import com.breadwallet.util.isRipple
@@ -48,6 +49,7 @@ data class TokenItem(
         symbol.isEthereum() || type == "erc20" -> "ethereum"
         symbol.isRipple() -> "xrp"
         symbol.isBitcoin() -> "bitcoin"
+        symbol.isBitcoinSV() -> "bitcoinsv"
         symbol.isBitcoinCash() -> when {
             testnet -> "bchtest"
             else -> "bitcoincash"
