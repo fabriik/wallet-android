@@ -351,6 +351,8 @@ object SendSheet {
 
         object OnNetworkFeeError : E()
 
+        object OnInsufficientBalance: E()
+
         data class OnNetworkFeeUpdated(
             @Redacted val targetAddress: String,
             val amount: BigDecimal,

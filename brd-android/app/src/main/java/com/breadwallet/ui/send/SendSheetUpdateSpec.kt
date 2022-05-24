@@ -48,6 +48,7 @@ interface SendSheetUpdateSpec {
         is SendSheet.E.OnExchangeRateUpdated -> onExchangeRateUpdated(model, event)
         is SendSheet.E.OnBalanceUpdated -> onBalanceUpdated(model, event)
         is SendSheet.E.OnNetworkFeeUpdated -> onNetworkFeeUpdated(model, event)
+        is SendSheet.E.OnInsufficientBalance -> onInsufficientBalance(model, event)
         is SendSheet.E.OnTransferSpeedChanged -> onTransferSpeedChanged(model, event)
         is SendSheet.E.OnTargetStringChanged -> onTargetStringChanged(model, event)
         is SendSheet.E.OnMemoChanged -> onMemoChanged(model, event)
@@ -134,4 +135,6 @@ interface SendSheetUpdateSpec {
     fun onDestinationTagFaqClicked(model: SendSheet.M, event: SendSheet.E): Next<SendSheet.M, SendSheet.F>
 
     fun onSendFaqClicked(model: SendSheet.M, event: SendSheet.E.OnSendFaqClicked): Next<SendSheet.M, SendSheet.F>
+
+    fun onInsufficientBalance(model: SendSheet.M, event: SendSheet.E.OnInsufficientBalance): Next<SendSheet.M,SendSheet.F>
 }
