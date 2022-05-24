@@ -111,10 +111,6 @@ jobs:
                 name: Build debug apk - DevelopmentMainnet
                 command: |
                   ./gradlew --console=plain brd-android:app:assembleDevelopmentMainnetDebug
-#      - run:
-#          name: Build release apk - DevelopmentTestnet
-#          command: |
-#            ./gradlew --console=plain brd-android:app:assembleDevelopmentTestnetRelease
       - run:
           name: Build release apk - StagingMainnet
           command: |
@@ -127,7 +123,6 @@ jobs:
             mkdir -p ~/artifacts
             cp -r ./brd-android/app/build/outputs/apk/productionMainnet/release ~/artifacts;
             cp -r ./brd-android/app/build/outputs/apk/developmentMainnet/release ~/artifacts;
-#            cp -r ./brd-android/app/build/outputs/apk/developmentTestnet/release ~/artifacts;
             cp -r ./brd-android/app/build/outputs/apk/stagingMainnet/release ~/artifacts;
           when: always
 
