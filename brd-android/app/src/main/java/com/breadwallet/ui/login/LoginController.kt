@@ -128,11 +128,11 @@ class LoginController(args: Bundle? = null) :
                 channel.offer(E.OnPinLocked)
             }
 
-            override fun onInvalidPinInserted(attemptsLeft: Int) {
+            override fun onInvalidPinInserted(pin: String, attemptsLeft: Int) {
                 channel.offer(E.OnAuthenticationFailed(attemptsLeft))
             }
 
-            override fun onValidPinInserted(pin: String?) {
+            override fun onValidPinInserted(pin: String) {
                 channel.offer(E.OnAuthenticationSuccess)
             }
         }
@@ -183,8 +183,12 @@ class LoginController(args: Bundle? = null) :
     private fun showError(attemptsLeft: Int?) {
         SpringAnimator.failShakeAnimation(applicationContext, binding.pinDigits)
 
-        if (attemptsLeft != null) {
-            //todo: show error popup
+        binding.tvError.isVisible = attemptsLeft != null && attemptsLeft > 0
+        if (attemptsLeft != null && resources != null) {
+            val attemptsText = resources!!.getQuantityText(R.plurals.attempts, attemptsLeft)
+            binding.tvError.text = resources!!.getString(
+                R.string.LoginController_invalidPinError, attemptsLeft, attemptsText
+            )
         }
     }
 }

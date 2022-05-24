@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Handler;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import android.util.AttributeSet;
@@ -153,7 +154,10 @@ public class PinLayout extends LinearLayout implements BRKeyboard.OnInsertListen
                         mOnPinInsertedListener.onValidPinInserted(pin);
                         useNewDigitLimit(true);
                     } else {
-                        mOnPinInsertedListener.onInvalidPinInserted(mUserManager.getRemainingPinAttempts());
+                        mOnPinInsertedListener.onInvalidPinInserted(
+                            pin, mUserManager.getRemainingPinAttempts()
+                        );
+
                         if (!mIsPinUpdating) {
                             authFailed();
                         }
@@ -233,10 +237,10 @@ public class PinLayout extends LinearLayout implements BRKeyboard.OnInsertListen
 
     public interface PinLayoutListener {
 
-        void onValidPinInserted(String pin);
+        void onValidPinInserted(@NonNull String pin);
 
         void onPinLocked();
 
-        void onInvalidPinInserted(int attemptsLeft);
+        void onInvalidPinInserted(@NonNull String pin, int attemptsLeft);
     }
 }

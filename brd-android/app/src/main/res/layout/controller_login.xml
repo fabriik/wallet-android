@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_pit"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -71,10 +72,10 @@
         android:layout_marginTop="32dp"
         android:text="@string/LoginController.resetPin"
         android:textColor="@color/light_link_01"
+        app:layout_constraintBottom_toTopOf="@id/keyboard"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pin_digits"
-        app:layout_constraintBottom_toTopOf="@id/keyboard"/>
+        app:layout_constraintTop_toBottomOf="@+id/pin_digits" />
 
     <com.breadwallet.legacy.presenter.customviews.BRKeyboard
         android:id="@+id/keyboard"
@@ -97,5 +98,21 @@
         app:layout_constraintBottom_toBottomOf="@+id/keyboard"
         app:layout_constraintEnd_toEndOf="parent"
         app:tint="@color/light_text_01" />
+
+    <TextView
+        android:id="@+id/tv_error"
+        style="@style/TextStyle.Body2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:background="@drawable/bg_login_error"
+        android:padding="16dp"
+        android:textColor="@color/white"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible"
+        tools:text="Error description"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
