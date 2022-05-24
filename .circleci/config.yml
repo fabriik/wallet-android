@@ -125,14 +125,15 @@ jobs:
 #            cp -r ./brd-android/app/build/outputs/apk/developmentMainnet/release ~/artifacts;
 #            cp -r ./brd-android/app/build/outputs/apk/developmentTestnet/release ~/artifacts;
 #            cp -r ./brd-android/app/build/outputs/apk/stagingMainnet/release ~/artifacts;
+             for file in ~/artifacts/*; do echo $(pwd)/$file; done
           when: always
 
       - run:
           name: Upload Artifacts
           command: |
-            for file in ~/artifacts/*.apk; do echo $(pwd)/$file; done
-            fireup up ~/artifacts/developmentMainnet-release-4.11.1.32.apk -pc > release.txt
-            cp -r release.txt ~/artifacts;
+#            for file in ~/artifacts/*.apk; do echo $(pwd)/$file; done
+#            fireup up ~/artifacts/developmentMainnet-release-4.11.1.32.apk -pc > release.txt
+#            cp -r release.txt ~/artifacts;
           when: always
       # Upload artifacts
       - store_artifacts:
