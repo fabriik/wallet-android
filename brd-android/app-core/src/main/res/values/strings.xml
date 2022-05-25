@@ -671,7 +671,7 @@
     <!-- Recover wallet intro -->
     <string name="RecoverWallet.intro">Recover your Fabriik with your recovery phrase.</string>
     <!-- Invalid paper key message -->
-    <string name="RecoverWallet.invalid">The recovery phrase you entered is invalid. Please double-check each word and try again.</string>
+    <string name="RecoverWallet.invalid">Invalid recovery phrase. Please double-check each word and try again.</string>
     <!-- Previous button accessibility label -->
     <string name="RecoverWallet.leftArrow">Left Arrow</string>
     <!-- Next button label -->

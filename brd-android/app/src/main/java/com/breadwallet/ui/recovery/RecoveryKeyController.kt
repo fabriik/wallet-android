@@ -205,6 +205,10 @@ class RecoveryKeyController(
             binding.buttonContactSupport.isVisible = it
         }
 
+        ifChanged(M::showInvalidPhraseError) {
+            binding.viewErrorBubble.isVisible = it
+        }
+
         ifChanged(M::errors) { errors ->
             wordInputs.zip(errors)
                 .forEach { (input, error) ->
