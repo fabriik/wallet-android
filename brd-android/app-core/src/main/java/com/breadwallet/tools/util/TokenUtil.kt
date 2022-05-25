@@ -132,6 +132,7 @@ object TokenUtil {
             .header(BRConstants.HEADER_CONTENT_TYPE, BRConstants.CONTENT_TYPE_JSON_CHARSET_UTF8)
             .header(BRConstants.HEADER_ACCEPT, BRConstants.CONTENT_TYPE_JSON)
             .build()
+        //noinspection deprecation
         return getInstance(context).sendRequest(request, false)
     }
 
