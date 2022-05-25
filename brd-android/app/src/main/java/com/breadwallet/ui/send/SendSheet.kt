@@ -351,6 +351,8 @@ object SendSheet {
 
         object OnNetworkFeeError : E()
 
+        object OnInsufficientBalance: E()
+
         data class OnNetworkFeeUpdated(
             @Redacted val targetAddress: String,
             val amount: BigDecimal,
@@ -441,6 +443,8 @@ object SendSheet {
 
         data class OnAuthenticationSettingsUpdated(internal val isFingerprintEnable: Boolean) :
             E()
+
+        object OnSendFaqClicked: E()
 
         sealed class PaymentProtocol : E() {
             data class OnPaymentLoaded(

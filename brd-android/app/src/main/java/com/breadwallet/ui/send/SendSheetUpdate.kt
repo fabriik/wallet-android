@@ -878,6 +878,28 @@ object SendSheetUpdate : Update<M, E, F>, SendSheetUpdateSpec {
         }
     }
 
+    override fun onSendFaqClicked(model: M, event: E.OnSendFaqClicked): Next<M, F> {
+        //TODO "bsv
+        val topic =  when (model.currencyCode) {
+            "btc" -> Topic.SEND
+            "eth" -> Topic.SEND_ETHER
+            "bch" -> Topic.SEND_BTC_CASH
+            "usdt" -> Topic.WHAT_IS_ERC20
+            else -> Topic.SEND
+        }
+
+        return dispatch(effects(F.ShowSupportDialog(topic)))
+    }
+
+    override fun onInsufficientBalance(model: M, event: E.OnInsufficientBalance): Next<M, F> {
+        return next(
+            model.copy(
+                feeEstimateFailed = true,
+                amountInputError = M.InputError.BalanceTooLow
+            )
+        )
+    }
+
     override fun onTransferFieldsUpdated(
         model: M,
         event: E.OnTransferFieldsUpdated
