@@ -52,6 +52,7 @@ import com.breadwallet.ui.profile.ProfileScreen.E
 import com.breadwallet.ui.profile.ProfileScreen.F
 import com.breadwallet.ui.profile.ProfileScreen.M
 import com.breadwallet.ui.settings.SettingsSection
+import com.fabriik.kyc.ui.customview.AccountVerificationStatusView
 import com.platform.APIClient
 import com.spotify.mobius.Connectable
 import com.spotify.mobius.First
@@ -130,9 +131,17 @@ class ProfileController(
 
     override fun bindView(modelFlow: Flow<M>): Flow<E> {
         return with(binding) {
+            viewProfileStatus.setCallback(object : AccountVerificationStatusView.Callback {
+                override fun onVerifyProfileClicked() {
+                    eventConsumer.accept(E.OnVerifyProfileClicked)
+                }
+
+                override fun onVerifyProfileInfoClicked() {
+                    eventConsumer.accept(E.OnProfileVerificationInfoClicked)
+                }
+            })
+
             merge(
-                /*btnProfileInfo.clicks().map { E.OnProfileVerificationInfoClicked },
-                btnVerifyAccount.clicks().map { E.OnVerifyProfileClicked },*/
                 closeButton.clicks().map { E.OnCloseClicked },
                 backButton.clicks().map { E.OnBackClicked },
                 title.clicks()

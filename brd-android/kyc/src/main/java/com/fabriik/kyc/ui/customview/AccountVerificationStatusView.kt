@@ -16,6 +16,7 @@ class AccountVerificationStatusView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : ConstraintLayout(context, attrs) {
 
+    private var callback: Callback? = null
     private val binding: PartialVerificationStatusBinding
 
     init {
@@ -23,6 +24,15 @@ class AccountVerificationStatusView @JvmOverloads constructor(
         binding = PartialVerificationStatusBinding.inflate(
             LayoutInflater.from(context), this
         )
+
+        with(binding) {
+            btnProfileInfo.setOnClickListener { callback?.onVerifyProfileInfoClicked() }
+            btnVerifyAccount.setOnClickListener { callback?.onVerifyProfileClicked() }
+        }
+    }
+
+    fun setCallback(callback: Callback) {
+        this.callback = callback
     }
 
     fun setStatus(status: AccountVerificationStatus) {
@@ -50,6 +60,11 @@ class AccountVerificationStatusView @JvmOverloads constructor(
         }
 
         // todo: set state to binding
+    }
+
+    interface Callback {
+        fun onVerifyProfileClicked()
+        fun onVerifyProfileInfoClicked()
     }
 
     private sealed class UiState(
