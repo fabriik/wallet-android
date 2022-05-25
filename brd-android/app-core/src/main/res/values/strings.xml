@@ -142,6 +142,7 @@
     <string name="Button.confirm">Confirm</string>
     <!-- Button label to open a email compose window with our support email in the to field. -->
     <string name="Button.contactSupport.android">Contact Support</string>
+    <string name="Button.contactSupport.android.underlined"><u>Contact Support</u></string>
     <!-- prompt continue button -->
     <string name="Button.continueAction">Continue</string>
     <!-- prompt dismiss button -->

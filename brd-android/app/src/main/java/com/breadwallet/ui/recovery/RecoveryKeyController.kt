@@ -156,7 +156,7 @@ class RecoveryKeyController(
             btnBack.setOnClickListener {
                 output.accept(E.OnBackClicked)
             }
-            buttonContactSupport.setOnClickListener {
+            btnContactSupport.setOnClickListener {
                 output.accept(E.OnContactSupportClicked)
             }
         }
@@ -202,7 +202,7 @@ class RecoveryKeyController(
         }
 
         ifChanged(M::showContactSupport) {
-            binding.buttonContactSupport.isVisible = it
+            binding.btnContactSupport.isVisible = it
         }
 
         ifChanged(M::showInvalidPhraseError) {
