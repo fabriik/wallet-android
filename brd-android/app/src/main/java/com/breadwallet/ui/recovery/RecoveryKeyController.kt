@@ -53,6 +53,7 @@ import com.breadwallet.ui.recovery.RecoveryKey.E
 import com.breadwallet.ui.recovery.RecoveryKey.F
 import com.breadwallet.ui.recovery.RecoveryKey.M
 import com.breadwallet.util.DefaultTextWatcher
+import com.fabriik.common.data.showErrorState
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.spotify.mobius.disposables.Disposable
@@ -207,11 +208,7 @@ class RecoveryKeyController(
         ifChanged(M::errors) { errors ->
             wordInputs.zip(errors)
                 .forEach { (input, error) ->
-                    (input.parent.parent as TextInputLayout).foreground =
-                        ContextCompat.getDrawable(
-                            requireContext(),
-                            if (error) R.drawable.bg_input_view_error else R.drawable.bg_input_view
-                        )
+                    (input.parent.parent as TextInputLayout).showErrorState(error)
                 }
         }
     }
