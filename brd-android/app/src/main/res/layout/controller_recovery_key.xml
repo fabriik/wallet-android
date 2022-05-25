@@ -386,15 +386,12 @@
 
         <Button
             android:id="@+id/btn_contact_support"
+            style="@style/FabriikTextButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:background="@null"
-            android:elevation="10dp"
             android:text="@string/Button.contactSupport.android.underlined"
-            android:textColor="@color/fabriik_shuttle_grey"
-            android:textSize="14sp"
             android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/btn_next"
             app:layout_constraintEnd_toEndOf="parent"
