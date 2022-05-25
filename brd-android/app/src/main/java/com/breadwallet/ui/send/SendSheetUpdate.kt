@@ -891,6 +891,15 @@ object SendSheetUpdate : Update<M, E, F>, SendSheetUpdateSpec {
         return dispatch(effects(F.ShowSupportDialog(topic)))
     }
 
+    override fun onInsufficientBalance(model: M, event: E.OnInsufficientBalance): Next<M, F> {
+        return next(
+            model.copy(
+                feeEstimateFailed = true,
+                amountInputError = M.InputError.BalanceTooLow
+            )
+        )
+    }
+
     override fun onTransferFieldsUpdated(
         model: M,
         event: E.OnTransferFieldsUpdated

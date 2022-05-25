@@ -28,6 +28,7 @@ import com.fabriik.common.data.FabriikApiConstants
 import java.math.RoundingMode
 
 const val btc = "btc"
+const val bsv = "bsv"
 const val eth = "eth"
 const val bch = "bch"
 const val hbar = "hbar"
