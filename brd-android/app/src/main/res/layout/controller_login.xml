@@ -99,20 +99,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:tint="@color/light_text_01" />
 
-    <TextView
-        android:id="@+id/tv_error"
-        style="@style/TextStyle.Body2"
+    <com.fabriik.common.ui.views.ErrorBubbleView
+        android:id="@+id/view_error_bubble"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:background="@drawable/bg_login_error"
-        android:padding="16dp"
-        android:textColor="@color/white"
-        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="visible"
-        tools:text="Error description"/>
+        tools:text="Error description"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

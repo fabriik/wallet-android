@@ -44,7 +44,10 @@ object LoginUpdate : Update<M, E, F>, LoginScreenUpdateSpec {
 
     override fun onAuthenticationSuccess(model: M): Next<M, F> =
         next(
-            model.copy(isUnlocked = true),
+            model.copy(
+                isUnlocked = true,
+                invalidPinError = null
+            ),
             setOf(
                 F.AuthenticationSuccess,
                 F.UnlockBrdUser,
@@ -53,7 +56,12 @@ object LoginUpdate : Update<M, E, F>, LoginScreenUpdateSpec {
         )
 
     override fun onAuthenticationFailed(model: M, event: E.OnAuthenticationFailed): Next<M, F> =
-        dispatch(
+        next(
+            model.copy(
+                invalidPinError = event.attemptsLeft?.let {
+                    LoginScreen.InvalidPinError(event.attemptsLeft)
+                }
+            ),
             setOf(
                 F.AuthenticationFailed(event.attemptsLeft),
                 F.TrackEvent(EventUtils.EVENT_LOGIN_FAILED)

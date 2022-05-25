@@ -30,6 +30,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import com.breadwallet.R
 import com.breadwallet.databinding.ControllerLoginBinding
@@ -152,6 +153,18 @@ class LoginController(args: Bundle? = null) :
         }
     }
 
+    override fun M.render() {
+        ifChanged(M::invalidPinError) {
+            binding.viewErrorBubble.isGone = it == null
+            it?.let {
+                val attemptsText = resources!!.getQuantityText(R.plurals.attempts, it.attemptsLeft)
+                binding.viewErrorBubble.text = resources!!.getString(
+                    R.string.LoginController_invalidPinError, it.attemptsLeft, attemptsText
+                )
+            }
+        }
+    }
+
     override fun handleBack() =
         (router.backstackSize > 1 && !currentModel.isUnlocked) ||
             activity?.isTaskRoot == false
@@ -159,7 +172,7 @@ class LoginController(args: Bundle? = null) :
     override fun handleViewEffect(effect: ViewEffect) {
         when (effect) {
             F.AuthenticationSuccess -> unlockWallet()
-            is F.AuthenticationFailed -> showError(effect.attemptsLeft)
+            is F.AuthenticationFailed -> { /* empty */ }
             F.ShowFingerprintController -> {
                 biometricPrompt.authenticate(
                     BiometricPrompt.PromptInfo.Builder()
@@ -178,17 +191,5 @@ class LoginController(args: Bundle? = null) :
 
     private fun unlockWallet() {
         eventConsumer.accept(E.OnUnlockAnimationEnd)
-    }
-
-    private fun showError(attemptsLeft: Int?) {
-        SpringAnimator.failShakeAnimation(applicationContext, binding.pinDigits)
-
-        binding.tvError.isVisible = attemptsLeft != null && attemptsLeft > 0
-        if (attemptsLeft != null && resources != null) {
-            val attemptsText = resources!!.getQuantityText(R.plurals.attempts, attemptsLeft)
-            binding.tvError.text = resources!!.getString(
-                R.string.LoginController_invalidPinError, attemptsLeft, attemptsText
-            )
-        }
     }
 }

@@ -359,6 +359,17 @@
             </LinearLayout>
         </GridLayout>
 
+        <com.fabriik.common.ui.views.ErrorBubbleView
+            android:id="@+id/view_error_bubble"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Error description"
+            tools:visibility="visible" />
+
         <include
             android:id="@+id/loading_view"
             layout="@layout/loading_overlay"

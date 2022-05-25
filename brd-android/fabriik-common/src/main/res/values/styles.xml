@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="FabriikTheme.Dialog.Alert" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
         <item name="materialAlertDialogTitleTextStyle">@style/FabriikTheme.Dialog.Alert.Title</item>
         <item name="materialAlertDialogBodyTextStyle">@style/FabriikTheme.Dialog.Alert.Body</item>
-        <item name="buttonBarPositiveButtonStyle">@style/FabriikTheme.Dialog.Alert.PositiveButton</item>
+        <item name="buttonBarPositiveButtonStyle">@style/FabriikTheme.Dialog.Alert.PositiveButton
+        </item>
     </style>
 
     <style name="FabriikTheme.Dialog.Alert.Title" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
@@ -28,5 +30,12 @@
 
     <style name="FabriikTheme.Dialog.Alert.PositiveButton" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
         <item name="android:textColor">@color/fabriik_blue_700</item>
+    </style>
+
+    <style name="FabriikErrorBubbleView" parent="TextStyle.Body2">
+        <item name="android:background">@drawable/bg_error_bubble</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:visibility">gone</item>
     </style>
 </resources>

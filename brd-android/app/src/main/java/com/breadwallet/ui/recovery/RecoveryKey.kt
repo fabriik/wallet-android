@@ -62,7 +62,8 @@ object RecoveryKey {
         val isLoading: Boolean = false,
         /** The list index of the currently selected word input or -1 if none is selected. */
         val focusedWordIndex: Int = 0,
-        val showContactSupport: Boolean = false
+        val showContactSupport: Boolean = false,
+        val showInvalidPhraseError: Boolean = false
     ) {
 
         companion object {
@@ -161,13 +162,6 @@ object RecoveryKey {
 
         object SetPinForReset : F(), NavigationEffect {
             override val navigationTarget = NavigationTarget.PinReset
-        }
-
-        object GoToPhraseError : F(), NavigationEffect {
-            override val navigationTarget = NavigationTarget.AlertDialog(
-                titleResId = R.string.RecoverWallet_invalid,
-                negativeButtonResId = R.string.AccessibilityLabels_close
-            )
         }
 
         object GoToWipeWallet : F(), NavigationEffect {

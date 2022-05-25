@@ -86,6 +86,7 @@ import com.breadwallet.ui.uigift.ShareGiftController
 import com.breadwallet.util.CryptoUriParser
 import com.breadwallet.util.isBrd
 import com.fabriik.buy.ui.BuyWebViewActivity
+import com.fabriik.common.ui.views.ErrorBubbleView
 import com.fabriik.signup.ui.SignupActivity
 import com.fabriik.support.CashSupport
 import com.fabriik.support.pages.Topic

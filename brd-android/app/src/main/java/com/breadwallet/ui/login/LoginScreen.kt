@@ -36,7 +36,8 @@ object LoginScreen {
         val fingerprintEnable: Boolean = false,
         val showHomeScreen: Boolean = true,
         @Redacted val extraUrl: String,
-        val isUnlocked: Boolean = false
+        val isUnlocked: Boolean = false,
+        val invalidPinError: InvalidPinError? = null
     ) {
         companion object {
             fun createDefault(
@@ -101,4 +102,6 @@ object LoginScreen {
             override val navigationTarget = NavigationTarget.RecoveryKeyScreen(resetPin)
         }
     }
+
+    data class InvalidPinError(val attemptsLeft: Int)
 }
