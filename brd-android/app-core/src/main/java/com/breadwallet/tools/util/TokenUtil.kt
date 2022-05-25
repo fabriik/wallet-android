@@ -113,11 +113,10 @@ object TokenUtil {
             } catch (e: IOException) {
                 BRReportsManager.error("Failed to read res/raw/tokens.json", e)
             }
-        } else {
-            initLock.tryLock()
-            fetchTokensFromServer()
-            initLock.unlock()
         }
+        initLock.tryLock()
+        fetchTokensFromServer()
+        initLock.unlock()
     }
 
     /**
@@ -133,7 +132,8 @@ object TokenUtil {
             .header(BRConstants.HEADER_CONTENT_TYPE, BRConstants.CONTENT_TYPE_JSON_CHARSET_UTF8)
             .header(BRConstants.HEADER_ACCEPT, BRConstants.CONTENT_TYPE_JSON)
             .build()
-        return getInstance(context).sendRequest(request, true)
+        //noinspection deprecation
+        return getInstance(context).sendRequest(request, false)
     }
 
     @Synchronized
