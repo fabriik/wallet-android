@@ -12,7 +12,9 @@ import androidx.navigation.fragment.findNavController
 import com.fabriik.common.ui.base.FabriikView
 import com.fabriik.common.utils.textOrEmpty
 import com.fabriik.kyc.R
+import com.fabriik.kyc.data.model.Country
 import com.fabriik.kyc.databinding.FragmentPersonalInformationBinding
+import com.fabriik.kyc.ui.features.countryselection.CountrySelectionFragment
 import kotlinx.coroutines.flow.collect
 
 class PersonalInformationFragment : Fragment(),
@@ -60,14 +62,6 @@ class PersonalInformationFragment : Fragment(),
                 )
             }
 
-            /*etCountry.doAfterTextChanged {
-                viewModel.setEvent(
-                    PersonalInformationContract.Event.CountryChanged(
-                        it.textOrEmpty()
-                    )
-                )
-            }*/
-
             etCountry.isFocusable = false
             etCountry.setOnClickListener {
                 findNavController().navigate(
@@ -83,6 +77,15 @@ class PersonalInformationFragment : Fragment(),
                         checkedId == R.id.rb_yes
                     )
                 )
+            }
+
+            parentFragmentManager.setFragmentResultListener("request_key_country", this@PersonalInformationFragment) { _, bundle ->
+                val country = bundle.getParcelable(CountrySelectionFragment.EXTRA_SELECTED_COUNTRY) as Country?
+                if (country != null) {
+                    viewModel.setEvent(
+                        PersonalInformationContract.Event.CountryChanged(country)
+                    )
+                }
             }
         }
 
@@ -104,6 +107,7 @@ class PersonalInformationFragment : Fragment(),
     override fun render(state: PersonalInformationContract.State) {
         with(binding) {
             btnConfirm.isEnabled = state.confirmEnabled
+            etCountry.setText(state.country?.name)
         }
     }
 

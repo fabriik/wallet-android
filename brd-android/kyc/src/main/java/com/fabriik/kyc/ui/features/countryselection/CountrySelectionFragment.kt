@@ -1,15 +1,16 @@
 package com.fabriik.kyc.ui.features.countryselection
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fabriik.common.ui.base.FabriikView
 import com.fabriik.kyc.R
@@ -47,9 +48,19 @@ class CountrySelectionFragment : Fragment(),
                 viewModel.setEvent(CountrySelectionContract.Event.DismissClicked)
             }
 
+            etSearch.doAfterTextChanged {
+                viewModel.setEvent(CountrySelectionContract.Event.SearchChanged(it?.toString()))
+            }
+
+            val layoutManager = LinearLayoutManager(context)
             rvCountries.adapter = adapter
+            rvCountries.layoutManager = layoutManager
             rvCountries.setHasFixedSize(true)
-            rvCountries.layoutManager = LinearLayoutManager(context)
+            rvCountries.addItemDecoration(
+                DividerItemDecoration(
+                    context, layoutManager.orientation
+                )
+            )
         }
 
         // collect UI state
@@ -72,7 +83,7 @@ class CountrySelectionFragment : Fragment(),
     }
 
     override fun render(state: CountrySelectionContract.State) {
-        adapter.submitList(state.countries)
+        adapter.submitList(state.adapterItems)
     }
 
     override fun handleEffect(effect: CountrySelectionContract.Effect) {

@@ -7,10 +7,10 @@ interface CountrySelectionContract {
 
     sealed class Event : FabriikContract.Event {
         object BackClicked : Event()
-        object DismissClicked : Event()
         object LoadCountries : Event()
+        object DismissClicked : Event()
+        data class SearchChanged(val query: String?) : Event()
         data class CountrySelected(val country: Country) : Event()
-        data class SearchCountries(val query: String?) : Event()
     }
 
     sealed class Effect : FabriikContract.Effect {
@@ -24,7 +24,9 @@ interface CountrySelectionContract {
     }
 
     data class State(
+        val search: String = "",
         val countries: List<Country> = emptyList(),
-        val selectedCountry: Country? = null
+        val adapterItems: List<CountrySelectionAdapter.Item> = emptyList(),
+        val selectedCountryCode: String? = null
     ) : FabriikContract.State
 }

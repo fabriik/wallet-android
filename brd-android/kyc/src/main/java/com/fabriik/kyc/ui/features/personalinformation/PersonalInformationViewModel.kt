@@ -48,8 +48,8 @@ class PersonalInformationViewModel(
 
     private fun PersonalInformationContract.State.validate() = copy(
         confirmEnabled = exposedPerson != null
+                && country != null
                 && textValidator(name)
                 && textValidator(lastName)
-                && textValidator(country)
     )
 }

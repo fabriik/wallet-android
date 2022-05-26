@@ -2,14 +2,17 @@ package com.fabriik.kyc.ui.features.countryselection
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isInvisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.fabriik.kyc.data.model.Country
 import com.fabriik.kyc.databinding.ListItemCountryBinding
 
-class CountrySelectionAdapter(val callback: (Country) -> Unit) :
-    ListAdapter<Country, CountrySelectionAdapter.ViewHolder>(CountryDiffCallback) {
+class CountrySelectionAdapter(private val callback: (Country) -> Unit) :
+    ListAdapter<CountrySelectionAdapter.Item, CountrySelectionAdapter.ViewHolder>(
+        CountryDiffCallback
+    ) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -20,21 +23,35 @@ class CountrySelectionAdapter(val callback: (Country) -> Unit) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(
+            item = getItem(position),
+            callback = callback
+        )
     }
+
+    data class Item(
+        val icon: Int,
+        val country: Country,
+        val selected: Boolean = false
+    )
 
     class ViewHolder(val binding: ListItemCountryBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: Country) {
-            binding.tvTitle.text = item.name
+        fun bind(item: Item, callback: (Country) -> Unit) {
+            with(binding) {
+                ivLogo.setImageResource(item.icon)
+                tvTitle.text = item.country.name
+                ivCheckmark.isInvisible = !item.selected
+                root.setOnClickListener { callback(item.country) }
+            }
         }
     }
 
-    object CountryDiffCallback : DiffUtil.ItemCallback<Country>() {
-        override fun areItemsTheSame(oldItem: Country, newItem: Country) =
-            oldItem.code == newItem.code
+    object CountryDiffCallback : DiffUtil.ItemCallback<Item>() {
+        override fun areItemsTheSame(oldItem: Item, newItem: Item) =
+            oldItem.country.code == newItem.country.code
 
-        override fun areContentsTheSame(oldItem: Country, newItem: Country) =
-            oldItem.name == newItem.name
+        override fun areContentsTheSame(oldItem: Item, newItem: Item) =
+            oldItem.country.name == newItem.country.name && oldItem.selected == newItem.selected
     }
 }
