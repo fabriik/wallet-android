@@ -39,6 +39,23 @@
     </fragment>
 
     <fragment
+        android:id="@+id/fragmentCountrySelection"
+        android:name="com.fabriik.kyc.ui.features.countryselection.CountrySelectionFragment"
+        tools:layout="@layout/fragment_country_selection">
+
+        <argument
+            android:name="requestKey"
+            app:argType="string" />
+
+        <argument
+            android:name="selectedCountry"
+            android:defaultValue="@null"
+            app:argType="com.fabriik.kyc.data.model.Country"
+            app:nullable="true" />
+
+    </fragment>
+
+    <fragment
         android:id="@+id/fragmentExposedPerson"
         android:name="com.fabriik.kyc.ui.features.exposedperson.ExposedPersonFragment"
         tools:layout="@layout/fragment_exposed_person">
