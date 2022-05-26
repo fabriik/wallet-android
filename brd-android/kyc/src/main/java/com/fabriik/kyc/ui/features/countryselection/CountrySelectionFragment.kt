@@ -39,6 +39,14 @@ class CountrySelectionFragment : Fragment(),
         binding = FragmentCountrySelectionBinding.bind(view)
 
         with(binding) {
+            btnBack.setOnClickListener {
+                viewModel.setEvent(CountrySelectionContract.Event.BackClicked)
+            }
+
+            btnDismiss.setOnClickListener {
+                viewModel.setEvent(CountrySelectionContract.Event.DismissClicked)
+            }
+
             rvCountries.adapter = adapter
             rvCountries.setHasFixedSize(true)
             rvCountries.layoutManager = LinearLayoutManager(context)
@@ -57,6 +65,10 @@ class CountrySelectionFragment : Fragment(),
                 handleEffect(it)
             }
         }
+
+        viewModel.setEvent(
+            CountrySelectionContract.Event.LoadCountries
+        )
     }
 
     override fun render(state: CountrySelectionContract.State) {

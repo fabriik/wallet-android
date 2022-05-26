@@ -36,27 +36,16 @@
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>
 
-    <com.breadwallet.legacy.presenter.customviews.BREdit
+    <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/search_edit"
+        style="@style/FabriikSearchEditTextStyle"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
         android:layout_below="@id/toolbar"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:background="@drawable/search_border"
-        android:drawableStart="@drawable/ic_search_gray_18dp"
-        android:drawablePadding="8dp"
-        android:fontFamily="@font/mobile_font_book"
         android:hint="@string/Search.searchAssets"
-        android:inputType="textPersonName"
-        android:maxEms="20"
-        android:maxLines="1"
-        android:paddingLeft="16dp"
-        android:textColor="@color/fabriik_black"
-        android:textColorHint="@color/fabriik_black"
-        android:textCursorDrawable="@null"
-        android:textSize="14sp" />
+        android:inputType="textPersonName"/>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"

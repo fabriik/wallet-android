@@ -30,6 +30,10 @@
             app:destination="@id/fragmentExposedPerson" />
 
         <action
+            android:id="@+id/action_to_country_selection"
+            app:destination="@id/fragmentCountrySelection" />
+
+        <action
             android:id="@+id/action_to_account_verification"
             app:destination="@id/fragmentAccountVerification"
             app:launchSingleTop="true"

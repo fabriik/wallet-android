@@ -7,9 +7,10 @@ import com.fabriik.common.utils.toBundle
 import com.fabriik.kyc.data.model.Country
 
 class CountrySelectionViewModel(
-    application: Application
+    application: Application,
+    savedStateHandle: SavedStateHandle
 ) : FabriikViewModel<CountrySelectionContract.State, CountrySelectionContract.Event, CountrySelectionContract.Effect>(
-    application
+    application, savedStateHandle
 ) {
 
     private lateinit var arguments: CountrySelectionFragmentArgs
@@ -63,6 +64,9 @@ class CountrySelectionViewModel(
                         selectedCountry = currentState.selectedCountry
                     )
                 }
+
+            is CountrySelectionContract.Event.DismissClicked ->
+                setEffect { CountrySelectionContract.Effect.Dismiss }
         }
     }
 }

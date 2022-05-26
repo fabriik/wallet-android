@@ -60,10 +60,19 @@ class PersonalInformationFragment : Fragment(),
                 )
             }
 
-            etCountry.doAfterTextChanged {
+            /*etCountry.doAfterTextChanged {
                 viewModel.setEvent(
                     PersonalInformationContract.Event.CountryChanged(
                         it.textOrEmpty()
+                    )
+                )
+            }*/
+
+            etCountry.isFocusable = false
+            etCountry.setOnClickListener {
+                findNavController().navigate(
+                    PersonalInformationFragmentDirections.actionToCountrySelection(
+                        "request_key_country", null
                     )
                 )
             }
