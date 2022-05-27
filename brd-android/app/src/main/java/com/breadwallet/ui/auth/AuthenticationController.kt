@@ -144,8 +144,9 @@ class AuthenticationController(
                 bindingPin.pinDigits.setup(
                     bindingPin.brkeyboard,
                     object : PinLayout.PinLayoutListener {
-                        override fun onInvalidPinInserted(pin: String, attemptsLeft: Int) {
-                            // ignored
+                        override fun onPinLocked() {
+                            findListener<Listener>()?.onAuthenticationFailed()
+                            router.popCurrentController()
                         }
 
                         override fun onValidPinInserted(pin: String) {
@@ -153,9 +154,8 @@ class AuthenticationController(
                             router.popCurrentController()
                         }
 
-                        override fun onPinLocked() {
-                            findListener<Listener>()?.onAuthenticationFailed()
-                            router.popCurrentController()
+                        override fun onInvalidPinInserted(pin: String, attemptsLeft: Int) {
+                            //ignored
                         }
                     })
             }

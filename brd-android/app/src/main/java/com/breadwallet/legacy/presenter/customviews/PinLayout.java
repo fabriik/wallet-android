@@ -236,11 +236,8 @@ public class PinLayout extends LinearLayout implements BRKeyboard.OnInsertListen
     }
 
     public interface PinLayoutListener {
-
-        void onValidPinInserted(@NonNull String pin);
-
         void onPinLocked();
-
+        void onValidPinInserted(@NonNull String pin);
         void onInvalidPinInserted(@NonNull String pin, int attemptsLeft);
     }
 }

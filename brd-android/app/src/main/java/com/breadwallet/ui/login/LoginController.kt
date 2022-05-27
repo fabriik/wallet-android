@@ -129,12 +129,12 @@ class LoginController(args: Bundle? = null) :
                 channel.offer(E.OnPinLocked)
             }
 
-            override fun onInvalidPinInserted(pin: String, attemptsLeft: Int) {
-                channel.offer(E.OnAuthenticationFailed(attemptsLeft))
-            }
-
             override fun onValidPinInserted(pin: String) {
                 channel.offer(E.OnAuthenticationSuccess)
+            }
+
+            override fun onInvalidPinInserted(pin: String, attemptsLeft: Int) {
+                channel.offer(E.OnAuthenticationFailed(attemptsLeft))
             }
         }
         setup(binding.keyboard, pinListener)

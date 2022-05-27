@@ -1,27 +1,3 @@
-/**
- * BreadWallet
- *
- * Created by Pablo Budelli <pablo.budelli@breadwallet.com> on 9/23/19.
- * Copyright (c) 2019 breadwallet LLC
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
 package com.breadwallet.ui.resetpin
 
 import android.os.Bundle
@@ -59,7 +35,7 @@ class ResetPinInputController(args: Bundle? = null) : BaseMobiusController<M, E,
     override fun onCreateView(view: View) {
         super.onCreateView(view)
 
-        val pinDigitButtonColor = ContextCompat.getColor(view.context, R.color.fabriik_black)
+        val pinDigitButtonColor = ContextCompat.getColor(view.context, R.color.light_text_01)
         binding.keyboard.setButtonTextColor(pinDigitButtonColor)
         binding.keyboard.setShowDecimal(false)
         binding.keyboard.setDeleteImage(R.drawable.ic_delete_black)
