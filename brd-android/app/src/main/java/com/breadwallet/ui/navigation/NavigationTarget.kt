@@ -99,6 +99,7 @@ sealed class NavigationTarget : INavigationTarget {
 
     object PinReset : NavigationTarget()
     object PinResetCompleted : NavigationTarget()
+
     object Home : NavigationTarget()
     object Buy : NavigationTarget()
     data class Trade(
