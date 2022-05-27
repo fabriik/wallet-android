@@ -75,6 +75,7 @@ interface NavigationTargetHandlerSpec {
         is NavigationTarget.SelectBakerScreen -> selectBaker(effect)
         is NavigationTarget.GoToKYC -> openKyc()
         is NavigationTarget.GoToFeedback -> openFeedback()
+        is NavigationTarget.PinReset -> pinReset()
         is NavigationTarget.PinResetCompleted -> pinResetCompleted()
     }
 
@@ -175,6 +176,8 @@ interface NavigationTargetHandlerSpec {
     fun selectBaker(effect: NavigationTarget.SelectBakerScreen): Unit
 
     fun showSupportDialog(effect: NavigationTarget.SupportDialog): Unit
+
+    fun pinReset(): Unit
 
     fun pinResetCompleted(): Unit
 }

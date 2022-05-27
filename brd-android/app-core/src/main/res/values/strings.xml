@@ -1484,6 +1484,11 @@
     <string name="Feedback.subject">Fabriik - Feedback</string>
     <string name="Feedback.noEmailClient">Email client not found</string>
 
+    <string name="ResetPin.title">Reset PIN</string>
+    <string name="ResetPin.subtitleNewPin">Set your new PIN</string>
+    <string name="ResetPin.subtitleConfirmNewPin">Confirm your new PIN</string>
+    <string name="ResetPin.description">Your PIN will be used to unlock your Fabriik Wallet and send money</string>
+
     <string name="PinResetCompleted.title">Your PIN was reset successfully!</string>
     <string name="PinResetCompleted.button">Go to dashboard</string>
 </resources>

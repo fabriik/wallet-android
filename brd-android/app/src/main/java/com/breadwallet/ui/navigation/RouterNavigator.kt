@@ -55,6 +55,7 @@ import com.breadwallet.ui.onboarding.OnBoardingController
 import com.breadwallet.ui.pin.InputPinController
 import com.breadwallet.ui.provekey.PaperKeyProveController
 import com.breadwallet.ui.receive.ReceiveController
+import com.breadwallet.ui.resetpin.ResetPinInputController
 import com.breadwallet.ui.resetpin.completed.PinResetCompletedController
 import com.breadwallet.ui.scanner.ScannerController
 import com.breadwallet.ui.send.SendSheetController
@@ -698,6 +699,14 @@ class RouterNavigator(
         router.fragmentManager()?.let {
             CashSupport.Builder().detail(effect.topic).build().show(it)
         }
+    }
+
+    override fun pinReset() {
+        router.pushController(
+            RouterTransaction.with(
+                ResetPinInputController()
+            )
+        )
     }
 
     override fun pinResetCompleted() {
