@@ -1483,4 +1483,7 @@
 
     <string name="Feedback.subject">Fabriik - Feedback</string>
     <string name="Feedback.noEmailClient">Email client not found</string>
+
+    <string name="PinResetCompleted.title">Your PIN was reset successfully!</string>
+    <string name="PinResetCompleted.button">Go to dashboard</string>
 </resources>
