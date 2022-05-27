@@ -36,16 +36,15 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import com.breadwallet.R
 import com.breadwallet.app.BreadApp
 import com.breadwallet.databinding.ControllerRecoveryKeyBinding
-import com.breadwallet.legacy.presenter.customviews.BREdit
 import com.breadwallet.tools.animation.BRDialog
 import com.breadwallet.tools.animation.SpringAnimator
-import com.breadwallet.tools.manager.BRClipboardManager
 import com.breadwallet.tools.util.Utils
 import com.breadwallet.ui.BaseMobiusController
 import com.breadwallet.ui.ViewEffect
@@ -54,6 +53,9 @@ import com.breadwallet.ui.recovery.RecoveryKey.E
 import com.breadwallet.ui.recovery.RecoveryKey.F
 import com.breadwallet.ui.recovery.RecoveryKey.M
 import com.breadwallet.util.DefaultTextWatcher
+import com.fabriik.common.data.showErrorState
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.spotify.mobius.disposables.Disposable
 import com.spotify.mobius.functions.Consumer
 import drewcarlson.mobius.flow.FlowTransformer
@@ -97,28 +99,19 @@ class RecoveryKeyController(
 
     private val binding by viewBinding(ControllerRecoveryKeyBinding::inflate)
 
-    private val wordInputs: List<BREdit>
+    private val wordInputs: List<TextInputEditText>
         get() = with(binding) {
             listOf(
-                word1, word2, word3,
-                word4, word5, word6,
-                word7, word8, word9,
-                word10, word11, word12
+                etWord1, etWord2, etWord3,
+                etWord4, etWord5, etWord6,
+                etWord7, etWord8, etWord9,
+                etWord10, etWord11, etWord12
             )
         }
 
-    private val inputTextColorValue = TypedValue()
-    private var errorTextColor: Int = -1
-    private var normalTextColor: Int = -1
-
     override fun onCreateView(view: View) {
         super.onCreateView(view)
-        val theme = view.context.theme
         val resources = resources!!
-
-        theme.resolveAttribute(R.attr.input_words_text_color, inputTextColorValue, true)
-        errorTextColor = resources.getColor(R.color.red_text, theme)
-        normalTextColor = resources.getColor(R.color.fabriik_black, theme)
 
         // TODO: This needs a better home
         if (Utils.isUsingCustomInputMethod(applicationContext)) {
@@ -146,41 +139,25 @@ class RecoveryKeyController(
         with(binding) {
             when (currentModel.mode) {
                 RecoveryKey.Mode.WIPE -> {
-                    title.text = resources.getString(R.string.RecoveryKeyFlow_enterRecoveryKey)
-                    description.text = resources.getString(R.string.WipeWallet_instruction)
+                    tvTitle.text = resources.getString(R.string.RecoveryKeyFlow_enterRecoveryKey)
                 }
                 RecoveryKey.Mode.RESET_PIN -> {
-                    title.text = resources.getString(R.string.RecoverWallet_header_reset_pin)
-                    description.text =
-                        resources.getString(R.string.RecoverWallet_subheader_reset_pin)
+                    tvTitle.text = resources.getString(R.string.RecoverWallet_header_reset_pin)
                 }
                 RecoveryKey.Mode.RECOVER -> Unit
             }
 
-            faqButton.setOnClickListener {
+            btnFaq.setOnClickListener {
                 output.accept(E.OnFaqClicked)
             }
-            sendButton.setOnClickListener {
+            btnNext.setOnClickListener {
                 output.accept(E.OnNextClicked)
             }
-            buttonContactSupport.setOnClickListener {
-                output.accept(E.OnContactSupportClicked)
+            btnBack.setOnClickListener {
+                output.accept(E.OnBackClicked)
             }
-        }
-
-        // Bind paste event
-        wordInputs.first().addEditTextEventListener { event ->
-            if (event == BREdit.EditTextEvent.PASTE) {
-                val clipboardText = BRClipboardManager.getClipboard()
-                output.accept(E.OnTextPasted(clipboardText))
-
-                val phrase = clipboardText.split("\\s+".toRegex())
-                if (phrase.isNotEmpty()) {
-                    wordInputs.zip(phrase)
-                        .forEach { (input, word) ->
-                            input.setText(word, TextView.BufferType.EDITABLE)
-                        }
-                }
+            btnContactSupport.setOnClickListener {
+                output.accept(E.OnContactSupportClicked)
             }
         }
 
@@ -225,19 +202,17 @@ class RecoveryKeyController(
         }
 
         ifChanged(M::showContactSupport) {
-            binding.buttonContactSupport.isVisible = it
+            binding.btnContactSupport.isVisible = it
+        }
+
+        ifChanged(M::showInvalidPhraseError) {
+            binding.viewErrorBubble.isVisible = it
         }
 
         ifChanged(M::errors) { errors ->
             wordInputs.zip(errors)
                 .forEach { (input, error) ->
-                    if (error) {
-                        if (input.currentTextColor != errorTextColor)
-                            input.setTextColor(errorTextColor)
-                    } else {
-                        if (input.currentTextColor != normalTextColor)
-                            input.setTextColor(normalTextColor)
-                    }
+                    (input.parent.parent as TextInputLayout).showErrorState(error)
                 }
         }
     }

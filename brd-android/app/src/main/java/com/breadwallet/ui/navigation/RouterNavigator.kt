@@ -55,6 +55,7 @@ import com.breadwallet.ui.onboarding.OnBoardingController
 import com.breadwallet.ui.pin.InputPinController
 import com.breadwallet.ui.provekey.PaperKeyProveController
 import com.breadwallet.ui.receive.ReceiveController
+import com.breadwallet.ui.recovery.RecoveryKeyController
 import com.breadwallet.ui.resetpin.ResetPinInputController
 import com.breadwallet.ui.resetpin.completed.PinResetCompletedController
 import com.breadwallet.ui.scanner.ScannerController
@@ -85,6 +86,7 @@ import com.breadwallet.ui.uigift.ShareGiftController
 import com.breadwallet.util.CryptoUriParser
 import com.breadwallet.util.isBrd
 import com.fabriik.buy.ui.BuyWebViewActivity
+import com.fabriik.common.ui.views.ErrorBubbleView
 import com.fabriik.signup.ui.SignupActivity
 import com.fabriik.support.CashSupport
 import com.fabriik.support.pages.Topic
@@ -699,6 +701,14 @@ class RouterNavigator(
         router.fragmentManager()?.let {
             CashSupport.Builder().detail(effect.topic).build().show(it)
         }
+    }
+
+    override fun recoveryKeyScreen(effect: NavigationTarget.RecoveryKeyScreen) {
+        router.pushController(
+            RouterTransaction.with(
+                RecoveryKeyController(effect.mode)
+            )
+        )
     }
 
     override fun pinReset() {

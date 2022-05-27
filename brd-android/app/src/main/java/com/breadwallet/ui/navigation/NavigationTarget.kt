@@ -28,6 +28,7 @@ import com.brd.bakerapi.models.Baker
 import com.breadwallet.model.InAppMessage
 import com.breadwallet.tools.util.Link
 import com.breadwallet.ui.auth.AuthMode
+import com.breadwallet.ui.recovery.RecoveryKey
 import com.breadwallet.ui.settings.SettingsSection
 import com.fabriik.support.pages.Topic
 import dev.zacsweers.redacted.annotations.Redacted
@@ -104,6 +105,7 @@ sealed class NavigationTarget : INavigationTarget {
     data class Trade(
         val currencies: List<String>
     ) : NavigationTarget()
+
     object AddWallet : NavigationTarget()
     object DisabledScreen : NavigationTarget()
     object NativeApiExplorer : NavigationTarget()
@@ -140,6 +142,7 @@ sealed class NavigationTarget : INavigationTarget {
         val scanned: Boolean = false,
         val gift: Boolean = false,
     ) : NavigationTarget()
+
     object BitcoinNodeSelector : NavigationTarget()
     object EnableSegWit : NavigationTarget()
     object LegacyAddress : NavigationTarget()
@@ -183,5 +186,9 @@ sealed class NavigationTarget : INavigationTarget {
 
     data class SelectBakerScreen(
         val bakers: List<Baker>
+    ) : NavigationTarget()
+
+    data class RecoveryKeyScreen(
+        val mode: RecoveryKey.Mode
     ) : NavigationTarget()
 }
