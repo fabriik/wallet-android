@@ -29,23 +29,20 @@ import android.view.View
 import com.bluelinelabs.conductor.RouterTransaction
 import com.bluelinelabs.conductor.changehandler.FadeChangeHandler
 import com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler
-import com.breadwallet.R
 import com.breadwallet.databinding.ControllerDisabledBinding
 import com.breadwallet.logger.logDebug
 import com.breadwallet.logger.logError
 import com.breadwallet.tools.animation.SpringAnimator
 import com.breadwallet.tools.security.BrdUserManager
 import com.breadwallet.tools.security.BrdUserState
-import com.breadwallet.tools.util.BRConstants
 import com.breadwallet.tools.util.EventUtils
 import com.breadwallet.ui.BaseController
-import com.breadwallet.ui.changehandlers.BottomSheetChangeHandler
 import com.breadwallet.ui.login.LoginController
 import com.breadwallet.ui.navigation.NavigationTarget
-import com.breadwallet.ui.navigation.asSupportUrl
+import com.breadwallet.ui.navigation.RouterNavigator
 import com.breadwallet.ui.recovery.RecoveryKey
 import com.breadwallet.ui.recovery.RecoveryKeyController
-import com.breadwallet.ui.web.WebController
+import com.fabriik.support.pages.Topic
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
@@ -57,20 +54,18 @@ class DisabledController(args: Bundle? = null) : BaseController(args) {
 
     private val userManager by instance<BrdUserManager>()
     private val binding by viewBinding(ControllerDisabledBinding::inflate)
+    private val navigator = RouterNavigator { router }
 
     override fun onCreateView(view: View) {
         super.onCreateView(view)
 
-        binding.faqButton.setOnClickListener {
-            val url = NavigationTarget.SupportPage(BRConstants.FAQ_WALLET_DISABLE).asSupportUrl()
-            router.pushController(
-                RouterTransaction.with(WebController(url))
-                    .popChangeHandler(BottomSheetChangeHandler())
-                    .pushChangeHandler(BottomSheetChangeHandler())
+        binding.btnFaq.setOnClickListener {
+            navigator.showSupportDialog(
+                NavigationTarget.SupportDialog(Topic.WALLET_DISABLED)
             )
         }
 
-        binding.resetButton.setOnClickListener {
+        binding.btnResetPin.setOnClickListener {
             val controller = RecoveryKeyController(RecoveryKey.Mode.RESET_PIN)
             router.pushController(
                 RouterTransaction.with(controller)
@@ -98,14 +93,14 @@ class DisabledController(args: Bundle? = null) : BaseController(args) {
     override fun handleBack(): Boolean {
         val isDisabled = userManager.getState() is BrdUserState.Disabled
         if (isDisabled) {
-            SpringAnimator.failShakeAnimation(activity, binding.disabled)
+            SpringAnimator.failShakeAnimation(activity, binding.tvTitle)
         }
 
         return isDisabled
     }
 
     private fun walletDisabled(seconds: Int) {
-        binding.untilLabel.text = String.format(
+        binding.tvCounter.text = String.format(
             Locale.ROOT,
             "%02d:%02d:%02d",
             seconds / 3600,

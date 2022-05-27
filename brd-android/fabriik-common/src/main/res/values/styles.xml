@@ -29,4 +29,16 @@
     <style name="FabriikTheme.Dialog.Alert.PositiveButton" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
         <item name="android:textColor">@color/fabriik_blue_700</item>
     </style>
+
+    <style name="FabriikButtonStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:minHeight">0dp</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:textColor">@color/light_contrast_02</item>
+        <item name="android:textAppearance">@style/TextStyle.Button</item>
+        <item name="rippleColor">@color/light_interaction_primary_pressed</item>
+        <item name="backgroundTint">@color/bg_button_tint</item>
+        <item name="cornerRadius">12dp</item>
+    </style>
 </resources>
