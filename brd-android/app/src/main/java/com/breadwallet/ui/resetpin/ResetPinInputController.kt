@@ -35,7 +35,7 @@ class ResetPinInputController(args: Bundle? = null) : BaseMobiusController<M, E,
     override fun onCreateView(view: View) {
         super.onCreateView(view)
 
-        val pinDigitButtonColor = ContextCompat.getColor(view.context, R.color.fabriik_black)
+        val pinDigitButtonColor = ContextCompat.getColor(view.context, R.color.light_text_01)
         binding.keyboard.setButtonTextColor(pinDigitButtonColor)
         binding.keyboard.setShowDecimal(false)
         binding.keyboard.setDeleteImage(R.drawable.ic_delete_black)
