@@ -260,6 +260,7 @@ class RouterNavigator(
     }
 
     override fun supportPage(effect: NavigationTarget.SupportPage) {
+        // TODO - Check if we still need web support
         if (effect.articleId.isBlank()) {
             val supportPage = BRConstants.URL_SUPPORT_PAGE
             router.pushController(
@@ -272,26 +273,13 @@ class RouterNavigator(
         }
 
         router.fragmentManager()?.let {
-            when (effect.articleId) {
-                BRConstants.FAQ_SET_PIN -> {
-                    CashSupport.Builder().detail(Topic.PIN).build().show(it)
-                }
-                BRConstants.FAQ_IMPORT_WALLET -> {
-                    CashSupport.Builder().detail(Topic.IMPORT_WALLET).build().show(it)
-                }
-                BRConstants.FAQ_ENABLE_FINGERPRINT -> {
-                    CashSupport.Builder().detail(Topic.FINGERPRINT).build().show(it)
-                }
-                BRConstants.FAQ_RESCAN -> {
-                    CashSupport.Builder().detail(Topic.SYNC_BITCOIN_BLOCK_CHAIN).build().show(it)
-                }
-                BRConstants.FAQ_PAPER_KEY -> {
-                    CashSupport.Builder().detail(Topic.RECOVERY_KEY).build().show(it)
-                }
-                else -> {
-                    CashSupport.Builder().build().show(it)
-                }
-            }
+            CashSupport.Builder().build().show(it)
+        }
+    }
+
+    override fun showSupportPage(effect: NavigationTarget.SupportDialog) {
+        router.fragmentManager()?.let {
+            CashSupport.Builder().detail(effect.topic).build().show(it)
         }
     }
 
@@ -691,12 +679,6 @@ class RouterNavigator(
 
     override fun selectBaker(effect: NavigationTarget.SelectBakerScreen) {
         router.pushController(RouterTransaction.with(SelectBakersController(effect.bakers)))
-    }
-
-    override fun showSupportDialog(effect: NavigationTarget.SupportDialog) {
-        router.fragmentManager()?.let {
-            CashSupport.Builder().detail(effect.topic).build().show(it)
-        }
     }
 
     private inline fun <reified T : Controller> pushSingleInstance(

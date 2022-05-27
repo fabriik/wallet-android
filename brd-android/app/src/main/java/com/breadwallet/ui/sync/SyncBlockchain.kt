@@ -25,10 +25,10 @@
 package com.breadwallet.ui.sync
 
 import com.breadwallet.R
-import com.breadwallet.tools.util.BRConstants
 import com.breadwallet.ui.navigation.NavigationEffect
 import com.breadwallet.ui.navigation.NavigationTarget
 import com.breadwallet.util.CurrencyCode
+import com.fabriik.support.pages.Topic
 
 object SyncBlockchain {
     data class M(val currencyCode: CurrencyCode)
@@ -64,7 +64,7 @@ object SyncBlockchain {
 
             data class GoToSyncFaq(
                 val currencyCode: CurrencyCode
-            ) : Nav(NavigationTarget.SupportPage(BRConstants.FAQ_RESCAN))
+            ) : Nav(NavigationTarget.SupportDialog(Topic.SYNC_BITCOIN_BLOCK_CHAIN))
         }
     }
 }

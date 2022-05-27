@@ -24,9 +24,9 @@
  */
 package com.breadwallet.ui.settings.currency
 
-import com.breadwallet.tools.util.BRConstants
 import com.breadwallet.ui.navigation.NavigationEffect
 import com.breadwallet.ui.navigation.NavigationTarget
+import com.fabriik.support.pages.Topic
 
 object DisplayCurrency {
 
@@ -56,7 +56,7 @@ object DisplayCurrency {
         ) : F(), NavigationEffect {
             object GoBack : Nav(NavigationTarget.Back)
             object GoToFaq : Nav(
-                NavigationTarget.SupportPage(BRConstants.FAQ_DISPLAY_CURRENCY)
+                NavigationTarget.SupportDialog(Topic.HOW_CHANGE_CURRENCY)
             )
         }
     }

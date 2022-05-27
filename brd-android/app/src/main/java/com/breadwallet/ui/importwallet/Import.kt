@@ -26,11 +26,11 @@ package com.breadwallet.ui.importwallet
 
 import com.breadwallet.R
 import com.breadwallet.crypto.Amount
-import com.breadwallet.tools.util.BRConstants.FAQ_IMPORT_WALLET
 import com.breadwallet.ui.ViewEffect
 import com.breadwallet.ui.navigation.NavigationEffect
 import com.breadwallet.ui.navigation.NavigationTarget
 import com.breadwallet.util.CurrencyCode
+import com.fabriik.support.pages.Topic
 import dev.zacsweers.redacted.annotations.Redacted
 import java.math.BigDecimal
 
@@ -225,7 +225,7 @@ object Import {
             override val navigationTarget: NavigationTarget
         ) : F(), NavigationEffect {
             object GoBack : Nav(NavigationTarget.Back)
-            object GoToFaq : Nav(NavigationTarget.SupportPage(FAQ_IMPORT_WALLET))
+            object GoToFaq : Nav(NavigationTarget.SupportDialog(Topic.IMPORT_WALLET))
             object GoToScan : Nav(NavigationTarget.QRScanner)
         }
 
