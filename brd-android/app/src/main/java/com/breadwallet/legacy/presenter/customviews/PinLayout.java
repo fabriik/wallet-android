@@ -155,7 +155,7 @@ public class PinLayout extends LinearLayout implements BRKeyboard.OnInsertListen
                         useNewDigitLimit(true);
                     } else {
                         mOnPinInsertedListener.onInvalidPinInserted(
-                                pin, mUserManager.getRemainingPinAttempts()
+                            pin, mUserManager.getRemainingPinAttempts()
                         );
 
                         if (!mIsPinUpdating) {

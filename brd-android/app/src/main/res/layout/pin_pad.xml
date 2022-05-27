@@ -10,6 +10,7 @@
 
     <com.breadwallet.legacy.presenter.customviews.BRButton
         android:id="@+id/num1"
+        style="@style/TextStyle.Title4"
         android:layout_column="0"
         android:layout_columnWeight="1"
         android:layout_gravity="fill_horizontal"
@@ -21,12 +22,11 @@
         android:gravity="center"
         android:paddingBottom="8dp"
         android:text="1"
-        android:textColor="@color/pin_pad_text"
-        android:textSize="@dimen/pin_par_text_size"
-        android:fontFamily="@font/mobile_font_book" />
+        android:textColor="@color/light_text_01" />
 
     <com.breadwallet.legacy.presenter.customviews.BRButton
         android:id="@+id/num2"
+        style="@style/TextStyle.Title4"
         android:layout_column="1"
         android:layout_columnWeight="1"
         android:layout_gravity="fill_horizontal"
@@ -37,12 +37,11 @@
         android:gravity="center"
         android:paddingBottom="8dp"
         android:text="2"
-        android:textColor="@color/pin_pad_text"
-        android:textSize="@dimen/pin_par_text_size"
-        android:fontFamily="@font/mobile_font_book" />
+        android:textColor="@color/light_text_01" />
 
     <com.breadwallet.legacy.presenter.customviews.BRButton
         android:id="@+id/num3"
+        style="@style/TextStyle.Title4"
         android:layout_column="2"
         android:layout_columnWeight="1"
         android:layout_gravity="fill_horizontal"
@@ -53,12 +52,11 @@
         android:gravity="center"
         android:paddingBottom="8dp"
         android:text="3"
-        android:textColor="@color/pin_pad_text"
-        android:textSize="@dimen/pin_par_text_size"
-        android:fontFamily="@font/mobile_font_book" />
+        android:textColor="@color/light_text_01" />
 
     <com.breadwallet.legacy.presenter.customviews.BRButton
         android:id="@+id/num4"
+        style="@style/TextStyle.Title4"
         android:layout_column="0"
         android:layout_gravity="fill_horizontal"
         android:layout_margin="2px"
@@ -68,12 +66,11 @@
         android:gravity="center"
         android:paddingBottom="8dp"
         android:text="4"
-        android:textColor="@color/pin_pad_text"
-        android:textSize="@dimen/pin_par_text_size"
-        android:fontFamily="@font/mobile_font_book" />
+        android:textColor="@color/light_text_01" />
 
     <com.breadwallet.legacy.presenter.customviews.BRButton
         android:id="@+id/num5"
+        style="@style/TextStyle.Title4"
         android:layout_column="1"
         android:layout_gravity="fill_horizontal"
         android:layout_margin="2px"
@@ -83,12 +80,11 @@
         android:gravity="center"
         android:paddingBottom="8dp"
         android:text="5"
-        android:textColor="@color/pin_pad_text"
-        android:textSize="@dimen/pin_par_text_size"
-        android:fontFamily="@font/mobile_font_book" />
+        android:textColor="@color/light_text_01" />
 
     <com.breadwallet.legacy.presenter.customviews.BRButton
         android:id="@+id/num6"
+        style="@style/TextStyle.Title4"
         android:layout_column="2"
         android:layout_gravity="fill_horizontal"
         android:layout_margin="2px"
@@ -98,12 +94,11 @@
         android:gravity="center"
         android:paddingBottom="8dp"
         android:text="6"
-        android:textColor="@color/pin_pad_text"
-        android:textSize="@dimen/pin_par_text_size"
-        android:fontFamily="@font/mobile_font_book" />
+        android:textColor="@color/light_text_01" />
 
     <com.breadwallet.legacy.presenter.customviews.BRButton
         android:id="@+id/num7"
+        style="@style/TextStyle.Title4"
         android:layout_column="0"
         android:layout_gravity="fill_horizontal"
         android:layout_margin="2px"
@@ -113,12 +108,11 @@
         android:gravity="center"
         android:paddingBottom="8dp"
         android:text="7"
-        android:textColor="@color/pin_pad_text"
-        android:textSize="@dimen/pin_par_text_size"
-        android:fontFamily="@font/mobile_font_book" />
+        android:textColor="@color/light_text_01" />
 
     <com.breadwallet.legacy.presenter.customviews.BRButton
         android:id="@+id/num8"
+        style="@style/TextStyle.Title4"
         android:layout_column="1"
         android:layout_gravity="fill_horizontal"
         android:layout_margin="2px"
@@ -128,12 +122,11 @@
         android:gravity="center"
         android:paddingBottom="8dp"
         android:text="8"
-        android:textColor="@color/pin_pad_text"
-        android:textSize="@dimen/pin_par_text_size"
-        android:fontFamily="@font/mobile_font_book" />
+        android:textColor="@color/light_text_01" />
 
     <com.breadwallet.legacy.presenter.customviews.BRButton
         android:id="@+id/num9"
+        style="@style/TextStyle.Title4"
         android:layout_column="2"
         android:layout_gravity="fill_horizontal"
         android:layout_margin="2px"
@@ -143,12 +136,11 @@
         android:gravity="center"
         android:paddingBottom="8dp"
         android:text="9"
-        android:textColor="@color/pin_pad_text"
-        android:textSize="@dimen/pin_par_text_size"
-        android:fontFamily="@font/mobile_font_book" />
+        android:textColor="@color/light_text_01" />
 
     <com.breadwallet.legacy.presenter.customviews.BRButton
         android:id="@+id/decimal"
+        style="@style/TextStyle.Title4"
         android:layout_column="2"
         android:layout_gravity="fill_horizontal"
         android:layout_margin="2px"
@@ -158,12 +150,11 @@
         android:gravity="center"
         android:paddingBottom="8dp"
         android:text="."
-        android:textColor="@color/pin_pad_text"
-        android:textSize="@dimen/pin_par_text_size"
-        android:fontFamily="@font/mobile_font_book" />
+        android:textColor="@color/light_text_01" />
 
     <com.breadwallet.legacy.presenter.customviews.BRButton
         android:id="@+id/num0"
+        style="@style/TextStyle.Title4"
         android:layout_column="1"
         android:layout_gravity="fill_horizontal|fill_vertical"
         android:layout_margin="2px"
@@ -173,9 +164,7 @@
         android:gravity="center"
         android:paddingBottom="8dp"
         android:text="0"
-        android:textColor="@color/pin_pad_text"
-        android:textSize="@dimen/pin_par_text_size"
-        android:fontFamily="@font/mobile_font_book" />
+        android:textColor="@color/light_text_01" />
 
     <ImageButton
         android:id="@+id/delete"
@@ -190,7 +179,7 @@
         android:paddingBottom="8dp"
         android:src="?attr/pin_pad_delete_src"
         android:text=""
-        android:textColor="@color/pin_pad_text"
+        android:textColor="@color/light_text_01"
         android:textSize="@dimen/pin_par_text_size" />
 
 </GridLayout>

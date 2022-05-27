@@ -1487,6 +1487,11 @@
     <string name="Feedback.subject">Fabriik - Feedback</string>
     <string name="Feedback.noEmailClient">Email client not found</string>
 
+    <string name="LoginController.title">Secured wallet</string>
+    <string name="LoginController.subtitle">Enter your PIN</string>
+    <string name="LoginController.resetPin"><u>Reset PIN</u></string>
+    <string name="LoginController.invalidPinError">Incorrect PIN. The wallet will get disabled for 6 minutes after %d more failed %s.</string>
+
     <string name="ResetPin.title">Reset PIN</string>
     <string name="ResetPin.subtitleNewPin">Set your new PIN</string>
     <string name="ResetPin.subtitleConfirmNewPin">Confirm your new PIN</string>
@@ -1494,4 +1499,10 @@
 
     <string name="PinResetCompleted.title">Your PIN was reset successfully!</string>
     <string name="PinResetCompleted.button">Go to dashboard</string>
+
+    <plurals name="attempts">
+        <item quantity="one">attempt</item>
+        <item quantity="other">attempts</item>
+    </plurals>
+
 </resources>
