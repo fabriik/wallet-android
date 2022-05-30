@@ -201,5 +201,11 @@
         <item name="trackTint">@color/switch_track_tint</item>
         <item name="thumbTint">@color/switch_thumb_tint</item>
     </style>
+    
+    <style name="AppTheme.BottomTabText">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/light_blue</item>
+        <item name="fontFamily">@font/mobile_font_medium</item>
+    </style>
 
 </resources>
