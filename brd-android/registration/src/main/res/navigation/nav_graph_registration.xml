@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/fragmentEnterEmail"
-        android:name="com.fabriik.registration.ui.enteremail.RegistrationEnterEmailFragment"
+        android:name="com.fabriik.registration.ui.features.enteremail.RegistrationEnterEmailFragment"
         tools:layout="@layout/fragment_registration_enter_email">
 
         <action
@@ -18,7 +18,13 @@
 
     <fragment
         android:id="@+id/fragmentVerifyEmail"
-        android:name="com.fabriik.registration.ui.verifyemail.RegistrationVerifyEmailFragment"
-        tools:layout="@layout/fragment_registration_verify_email" />
+        android:name="com.fabriik.registration.ui.features.verifyemail.RegistrationVerifyEmailFragment"
+        tools:layout="@layout/fragment_registration_verify_email" >
+
+        <argument
+            android:name="email"
+            app:argType="string"/>
+
+    </fragment>
 
 </navigation>

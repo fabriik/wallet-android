@@ -1,14 +1,12 @@
 package com.fabriik.signup.utils
 
 import android.app.Application
-import android.content.Context
 import android.graphics.Paint
 import android.text.Spanned
 import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
 import androidx.annotation.StringRes
@@ -16,12 +14,10 @@ import androidx.core.os.bundleOf
 import androidx.core.text.toSpannable
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.SavedStateHandle
 import com.fabriik.signup.R
-import com.fabriik.signup.utils.validators.Validator
 
 internal fun SavedStateHandle.toBundle() = bundleOf(
     *keys().map {

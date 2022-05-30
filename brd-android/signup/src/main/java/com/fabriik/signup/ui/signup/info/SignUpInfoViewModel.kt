@@ -8,7 +8,7 @@ import com.fabriik.signup.R
 import com.fabriik.signup.data.UserApi
 import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.signup.utils.getString
-import com.fabriik.signup.utils.validators.*
+import com.fabriik.common.utils.validators.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
