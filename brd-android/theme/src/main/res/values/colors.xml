@@ -102,6 +102,7 @@
     <color name="wallet_balance_fiat_syncing">#4dffffff</color>
     <color name="sync_text">#ffffff</color>
     <color name="rewards_text">#441E36</color>
+    <color name="light_blue">#2C78FF</color>
 
     // Wallet Screen
     <color name="sync_toolbar">#e5e5e5</color>
