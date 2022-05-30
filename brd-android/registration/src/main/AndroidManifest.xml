@@ -2,4 +2,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.fabriik.registration">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <application
+        android:allowBackup="false"
+        android:usesCleartextTraffic="false">
+
+        <activity
+            android:name=".ui.RegistrationActivity"
+            android:theme="@style/AppTheme.Light"/>
+
+    </application>
 </manifest>

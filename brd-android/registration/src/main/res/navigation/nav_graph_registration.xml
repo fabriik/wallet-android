@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/nav_graph_registration">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_registration"
+    app:startDestination="@id/fragmentEnterEmail">
+
+    <fragment
+        android:id="@+id/fragmentEnterEmail"
+        android:name="com.fabriik.registration.ui.enteremail.RegistrationEnterEmailFragment"
+        tools:layout="@layout/fragment_registration_enter_email">
+
+        <action
+            android:id="@+id/action_verify_email"
+            app:destination="@+id/fragmentVerifyEmail" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragmentVerifyEmail"
+        android:name="com.fabriik.registration.ui.verifyemail.RegistrationVerifyEmailFragment"
+        tools:layout="@layout/fragment_registration_verify_email" />
 
 </navigation>
