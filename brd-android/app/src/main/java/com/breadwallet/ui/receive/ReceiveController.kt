@@ -139,11 +139,6 @@ class ReceiveController(args: Bundle) : BaseMobiusController<M, E, F>(args) {
     }
 
     override fun bindView(modelFlow: Flow<M>): Flow<E> {
-        binding.faqButton.setOnClickListener {
-            router.fragmentManager()?.let {
-                CashSupport.Builder().detail(Topic.RECEIVE).build().show(it)
-            }
-        }
 
         return with(binding) {
             merge(
@@ -154,7 +149,8 @@ class ReceiveController(args: Bundle) : BaseMobiusController<M, E, F>(args) {
                 backgroundLayout.clicks().map { E.OnCloseClicked },
                 addressText.clicks().map { E.OnCopyAddressClicked },
                 isoButton.clicks().map { E.OnToggleCurrencyClicked },
-                keyboard.bindInput()
+                keyboard.bindInput(),
+                faqButton.clicks().map { E.OnFaqClicked }
             )
         }
     }
