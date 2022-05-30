@@ -83,6 +83,7 @@ import com.breadwallet.ui.uigift.ShareGiftController
 import com.breadwallet.util.CryptoUriParser
 import com.breadwallet.util.isBrd
 import com.fabriik.buy.ui.BuyWebViewActivity
+import com.fabriik.registration.ui.RegistrationActivity
 import com.fabriik.signup.ui.SignupActivity
 import com.fabriik.support.CashSupport
 import com.fabriik.support.pages.Topic
@@ -148,7 +149,7 @@ class RouterNavigator(
     override fun openKyc() {
         router.activity?.let {
             it.startActivity(
-                SignupActivity.getStartIntent(it)
+                RegistrationActivity.getStartIntent(it)
             )
         }
     }
