@@ -1,7 +1,7 @@
 package com.fabriik.signup.ui.kyc.completed
 
 import android.app.Application
-import com.fabriik.signup.ui.base.FabriikViewModel
+import com.fabriik.common.ui.base.FabriikViewModel
 
 class KycCompletedViewModel(
     application: Application

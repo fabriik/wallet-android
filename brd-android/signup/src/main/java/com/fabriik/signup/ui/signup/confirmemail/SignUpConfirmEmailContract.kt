@@ -1,6 +1,6 @@
 package com.fabriik.signup.ui.signup.confirmemail
 
-import com.fabriik.signup.ui.base.FabriikContract
+import com.fabriik.common.ui.base.FabriikContract
 
 interface SignUpConfirmEmailContract {
 

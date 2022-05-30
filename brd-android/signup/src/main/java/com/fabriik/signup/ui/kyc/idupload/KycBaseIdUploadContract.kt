@@ -2,7 +2,7 @@ package com.fabriik.signup.ui.kyc.idupload
 
 import android.net.Uri
 import androidx.camera.lifecycle.ProcessCameraProvider
-import com.fabriik.signup.ui.base.FabriikContract
+import com.fabriik.common.ui.base.FabriikContract
 
 interface KycBaseIdUploadContract {
 

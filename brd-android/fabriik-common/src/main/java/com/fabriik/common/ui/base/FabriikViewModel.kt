@@ -1,4 +1,4 @@
-package com.fabriik.signup.ui.base
+package com.fabriik.common.ui.base
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

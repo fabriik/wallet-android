@@ -10,7 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.fabriik.signup.R
 import com.fabriik.signup.databinding.FragmentResetPasswordCompletedBinding
-import com.fabriik.signup.ui.base.FabriikView
+import com.fabriik.common.ui.base.FabriikView
 import com.fabriik.signup.utils.hideKeyboard
 import kotlinx.coroutines.flow.collect
 

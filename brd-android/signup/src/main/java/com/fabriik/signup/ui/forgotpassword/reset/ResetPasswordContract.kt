@@ -1,6 +1,6 @@
 package com.fabriik.signup.ui.forgotpassword.reset
 
-import com.fabriik.signup.ui.base.FabriikContract
+import com.fabriik.common.ui.base.FabriikContract
 
 interface ResetPasswordContract {
 
