@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme.Fabriik" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:windowBackground">#FFFFFF</item>
+        <item name="android:textColor">@color/light_text_01</item>
+        <item name="textInputStyle">@style/FabriikTextInputStyle</item>
+        <item name="radioButtonStyle">@style/FabriikRadioButtonStyle</item>
+        <item name="materialButtonStyle">@style/FabriikButtonStyle</item>
+        <item name="materialCardViewStyle">@style/FabriikCardViewStyle</item>
+        <item name="android:colorControlHighlight">@color/fabriik_ripple_color</item>
+        <item name="colorControlHighlight">@color/fabriik_ripple_color</item>
+    </style>
+
+</resources>

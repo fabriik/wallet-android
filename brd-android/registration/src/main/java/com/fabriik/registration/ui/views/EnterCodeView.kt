@@ -77,10 +77,7 @@ class EnterCodeView @JvmOverloads constructor(
                 val startX = paddingStart + (boxSize + marginBetweenBoxes) * it
 
                 RectF(
-                    startX,
-                    paddingTop.toFloat(),
-                    startX + boxSize,
-                    paddingTop + boxSize
+                    startX, paddingTop.toFloat(), startX + boxSize, paddingTop + boxSize
                 )
             }
             .toTypedArray()

@@ -10,7 +10,7 @@
 
         <activity
             android:name=".ui.RegistrationActivity"
-            android:theme="@style/AppTheme.Light"/>
+            android:theme="@style/AppTheme.Fabriik"/>
 
     </application>
 </manifest>
