@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -72,7 +73,12 @@ class RegistrationVerifyEmailFragment : Fragment(),
     }
 
     override fun render(state: RegistrationVerifyEmailContract.State) {
-        binding.tvSubtitle.text = state.subtitle
+        with (binding) {
+            tvSubtitle.text = state.subtitle
+            btnConfirm.isEnabled = state.confirmEnabled
+            viewOverlay.isVisible = state.verifiedOverlayVisible
+            ivEmailVerified.isVisible = state.verifiedOverlayVisible
+        }
     }
 
     override fun handleEffect(effect: RegistrationVerifyEmailContract.Effect) {

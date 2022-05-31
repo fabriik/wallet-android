@@ -61,7 +61,7 @@
         app:layout_constrainedWidth="true"
         app:layout_constraintEnd_toEndOf="@id/btn_confirm"
         app:layout_constraintStart_toStartOf="@id/btn_confirm"
-        app:layout_constraintTop_toBottomOf="@id/tv_subtitle"/>
+        app:layout_constraintTop_toBottomOf="@id/tv_subtitle" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_confirm"
@@ -102,5 +102,28 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toEndOf="@id/btn_resend" />
+
+    <View
+        android:id="@+id/view_overlay"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:alpha="0.8"
+        android:background="@color/white"
+        android:focusable="true"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_email_verified"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_email_verified"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/tv_subtitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

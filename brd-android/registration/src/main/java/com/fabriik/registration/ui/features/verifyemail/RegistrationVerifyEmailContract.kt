@@ -19,6 +19,7 @@ interface RegistrationVerifyEmailContract {
     data class State(
         val code: String = "",
         val subtitle: String,
-        val confirmEnabled: Boolean = false
+        val confirmEnabled: Boolean = false,
+        val verifiedOverlayVisible: Boolean = false
     ): FabriikContract.State
 }
