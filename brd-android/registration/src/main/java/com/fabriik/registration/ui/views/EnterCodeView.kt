@@ -2,12 +2,17 @@ package com.fabriik.registration.ui.views
 
 import android.content.Context
 import android.graphics.*
+import android.text.InputFilter
+import android.text.InputType
 import android.util.AttributeSet
 import android.view.inputmethod.EditorInfo
 import androidx.appcompat.widget.AppCompatEditText
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.setPadding
 import com.fabriik.common.utils.dp
 import com.fabriik.common.utils.sp
+import com.fabriik.registration.R
 
 class EnterCodeView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
@@ -18,25 +23,37 @@ class EnterCodeView @JvmOverloads constructor(
     private val strokeWidth = 1.dp.toFloat()
     private val marginBetweenBoxes = 8.dp.toFloat()
 
-    private var boxes = arrayOf<RectF>()
-
     private val paintText = Paint().apply {
-        color = Color.BLACK
+        color = ContextCompat.getColor(context, R.color.light_text_01)
         textSize = 16.sp.toFloat()
+        typeface = ResourcesCompat.getFont(context, R.font.roboto_medium)
     }
 
-    private val paintBackground = Paint().apply {
+    private val paintBackgroundDefault = Paint().apply {
         strokeWidth = this@EnterCodeView.strokeWidth
-        color = Color.BLACK
         style = Paint.Style.STROKE
+        color = ContextCompat.getColor(context, R.color.light_outline_01)
+    }
+
+    private val paintBackgroundError = Paint().apply {
+        strokeWidth = this@EnterCodeView.strokeWidth
+        style = Paint.Style.STROKE
+        color = ContextCompat.getColor(context, R.color.light_error)
     }
 
     private val textBounds = Rect()
 
+    private var boxes = arrayOf<RectF>()
+    private var showErrorState: Boolean = false
+
     init {
         setPadding(2.dp)
+        setBackgroundResource(0)
+
         isCursorVisible = false
         imeOptions = EditorInfo.IME_ACTION_DONE
+        filters = arrayOf(InputFilter.LengthFilter(pinLength))
+        inputType = InputType.TYPE_CLASS_NUMBER
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -69,7 +86,7 @@ class EnterCodeView @JvmOverloads constructor(
         // draw boxes
         for (box in boxes) {
             canvas.drawRoundRect(
-                box, boxRadius, boxRadius, paintBackground
+                box, boxRadius, boxRadius, if (showErrorState) paintBackgroundError else paintBackgroundDefault
             )
         }
 
@@ -92,4 +109,9 @@ class EnterCodeView @JvmOverloads constructor(
     }
 
     fun getPin() = text.toString()
+
+    fun setErrorState(error: Boolean) {
+        showErrorState = error
+        invalidate()
+    }
 }
