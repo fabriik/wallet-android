@@ -183,12 +183,6 @@ class HomeController(
                     isGone = hasInternet
                     if (hasInternet) bringToFront()
                 }
-                tvBuySell.setText(
-                    when {
-                        showBuyAndSell -> R.string.HomeScreen_buyAndSell
-                        else -> R.string.HomeScreen_buy
-                    }
-                )
             }
         }
     }
