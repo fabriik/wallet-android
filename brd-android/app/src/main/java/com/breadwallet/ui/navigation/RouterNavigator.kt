@@ -193,7 +193,7 @@ class RouterNavigator(
 
     override fun profile() {
         router.pushController(
-            RouterTransaction.with(ProfileController(SettingsSection.HOME))
+            RouterTransaction.with(ProfileController())
                 .popChangeHandler(VerticalChangeHandler())
                 .pushChangeHandler(VerticalChangeHandler())
         )
