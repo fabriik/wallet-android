@@ -29,23 +29,20 @@ import android.view.View
 import com.bluelinelabs.conductor.RouterTransaction
 import com.bluelinelabs.conductor.changehandler.FadeChangeHandler
 import com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler
-import com.breadwallet.R
 import com.breadwallet.databinding.ControllerDisabledBinding
 import com.breadwallet.logger.logDebug
 import com.breadwallet.logger.logError
 import com.breadwallet.tools.animation.SpringAnimator
 import com.breadwallet.tools.security.BrdUserManager
 import com.breadwallet.tools.security.BrdUserState
-import com.breadwallet.tools.util.BRConstants
 import com.breadwallet.tools.util.EventUtils
 import com.breadwallet.ui.BaseController
-import com.breadwallet.ui.changehandlers.BottomSheetChangeHandler
 import com.breadwallet.ui.login.LoginController
-import com.breadwallet.ui.navigation.NavigationTarget
-import com.breadwallet.ui.navigation.asSupportUrl
+import com.breadwallet.ui.navigation.fragmentManager
 import com.breadwallet.ui.recovery.RecoveryKey
 import com.breadwallet.ui.recovery.RecoveryKeyController
-import com.breadwallet.ui.web.WebController
+import com.fabriik.support.CashSupport
+import com.fabriik.support.pages.Topic
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
@@ -62,12 +59,9 @@ class DisabledController(args: Bundle? = null) : BaseController(args) {
         super.onCreateView(view)
 
         binding.faqButton.setOnClickListener {
-            val url = NavigationTarget.SupportPage(BRConstants.FAQ_WALLET_DISABLE).asSupportUrl()
-            router.pushController(
-                RouterTransaction.with(WebController(url))
-                    .popChangeHandler(BottomSheetChangeHandler())
-                    .pushChangeHandler(BottomSheetChangeHandler())
-            )
+            router.fragmentManager()?.let {
+                CashSupport.Builder().detail(Topic.WALLET_DISABLED).build().show(it)
+            }
         }
 
         binding.resetButton.setOnClickListener {

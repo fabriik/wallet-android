@@ -170,15 +170,6 @@ object ReceiveScreen {
         }
 
         data class GoToFaq(
-            val currencyCode: CurrencyCode
-        ) : F(), NavigationEffect {
-            override val navigationTarget = NavigationTarget.SupportPage(
-                BRConstants.FAQ_RECEIVE,
-                currencyCode
-            )
-        }
-
-        data class OpenSupportPage(
             val topic: Topic
         ) : F(), NavigationEffect {
             override val navigationTarget = NavigationTarget.SupportDialog(topic)
