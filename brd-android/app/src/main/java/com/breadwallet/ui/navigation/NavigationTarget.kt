@@ -98,6 +98,7 @@ sealed class NavigationTarget : INavigationTarget {
 
     object Home : NavigationTarget()
     object Buy : NavigationTarget()
+    object Profile : NavigationTarget()
     data class Trade(
         val currencies: List<String>
     ) : NavigationTarget()

@@ -83,6 +83,7 @@ object HomeScreen {
         object OnTradeClicked : E()
         object OnTradeNoteSeen : E()
         object OnMenuClicked : E()
+        object OnProfileClicked : E()
 
         data class OnDeepLinkProvided(val url: String) : E()
         data class OnInAppNotificationProvided(val inAppMessage: InAppMessage) : E()
@@ -145,6 +146,10 @@ object HomeScreen {
 
         object GoToMenu : F(), NavigationEffect {
             override val navigationTarget = NavigationTarget.Menu(SettingsSection.HOME)
+        }
+
+        object GoToProfile : F(), NavigationEffect {
+            override val navigationTarget = NavigationTarget.Profile
         }
 
         object GoToFingerprintSettings : F(), NavigationEffect {
