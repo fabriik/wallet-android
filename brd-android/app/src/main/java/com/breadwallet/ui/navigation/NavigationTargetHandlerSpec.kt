@@ -76,9 +76,12 @@ interface NavigationTargetHandlerSpec {
         is NavigationTarget.SelectBakerScreen -> selectBaker(effect)
         is NavigationTarget.GoToKYC -> openKyc()
         is NavigationTarget.GoToFeedback -> openFeedback()
+        is NavigationTarget.GoToRegistration -> openRegistration()
     }
 
     fun openKyc(): Unit
+
+    fun openRegistration(): Unit
 
     fun openFeedback(): Unit
 
