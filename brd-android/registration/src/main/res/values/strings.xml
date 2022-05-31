@@ -6,8 +6,8 @@
     <string name="Registration.EnterEmail.Next">Next</string>
 
     <string name="Registration.VerifyEmail.Title">Verify your email</string>
-    <string name="Registration.VerifyEmail.Subtitle">Please enter the code we’ve sent to:\n<b>%s</b></string>
+    <string name="Registration.VerifyEmail.Subtitle">Please enter the code we’ve sent to:\n%s</string>
     <string name="Registration.VerifyEmail.Confirm">Confirm</string>
-    <string name="Registration.VerifyEmail.Resend"><u>Re-send my code</u></string>
-    <string name="Registration.VerifyEmail.ChangeEmail"><u>Change my email</u></string>
+    <string name="Registration.VerifyEmail.Resend">Re-send my code</string>
+    <string name="Registration.VerifyEmail.ChangeEmail">Change my email</string>
 </resources>

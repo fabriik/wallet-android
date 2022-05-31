@@ -1,6 +1,9 @@
 package com.fabriik.registration.ui.features.verifyemail
 
 import android.app.Application
+import android.graphics.Typeface
+import android.text.style.StyleSpan
+import androidx.core.text.toSpannable
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.fabriik.common.ui.base.FabriikViewModel
@@ -28,7 +31,7 @@ class RegistrationVerifyEmailViewModel(
     }
 
     override fun createInitialState() = RegistrationVerifyEmailContract.State(
-        subtitle = getString(R.string.Registration_VerifyEmail_Subtitle, arguments.email)
+        subtitle = createSubtitle()
     )
 
     override fun handleEvent(event: RegistrationVerifyEmailContract.Event) {
@@ -39,9 +42,11 @@ class RegistrationVerifyEmailViewModel(
             is RegistrationVerifyEmailContract.Event.CodeChanged ->
                 setState { copy(code = event.code).validate() }
 
-            is RegistrationVerifyEmailContract.Event.ResendEmailClicked -> {} // todo
+            is RegistrationVerifyEmailContract.Event.ResendEmailClicked ->
+                resendEmail()
 
-            is RegistrationVerifyEmailContract.Event.ChangeEmailClicked -> {} // todo
+            is RegistrationVerifyEmailContract.Event.ChangeEmailClicked ->
+                setEffect { RegistrationVerifyEmailContract.Effect.Back }
 
             is RegistrationVerifyEmailContract.Event.ConfirmClicked -> {
                 //todo: API call
@@ -53,6 +58,19 @@ class RegistrationVerifyEmailViewModel(
                 }
             }
         }
+    }
+
+    private fun resendEmail() {
+        // todo: call API
+    }
+
+    private fun createSubtitle(): CharSequence {
+        val email = arguments.email
+        val fullText = getString(R.string.Registration_VerifyEmail_Subtitle, email)
+        val startIndex = fullText.indexOf(email)
+        val spannable = fullText.toSpannable()
+        spannable.setSpan(StyleSpan(Typeface.BOLD), startIndex, startIndex + email.length,0)
+        return spannable
     }
 
     private fun RegistrationVerifyEmailContract.State.validate() =

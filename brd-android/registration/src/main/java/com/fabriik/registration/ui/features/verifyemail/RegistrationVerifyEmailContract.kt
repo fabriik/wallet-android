@@ -13,12 +13,13 @@ interface RegistrationVerifyEmailContract {
     }
 
     sealed class Effect : FabriikContract.Effect {
+        object Back: Effect()
         object Dismiss: Effect()
     }
 
     data class State(
         val code: String = "",
-        val subtitle: String,
+        val subtitle: CharSequence,
         val confirmEnabled: Boolean = false,
         val verifiedOverlayVisible: Boolean = false
     ): FabriikContract.State

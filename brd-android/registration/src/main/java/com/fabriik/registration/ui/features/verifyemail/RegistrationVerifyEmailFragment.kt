@@ -9,8 +9,10 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.fabriik.common.ui.base.FabriikView
 import com.fabriik.common.utils.textOrEmpty
+import com.fabriik.common.utils.underline
 import com.fabriik.registration.R
 import com.fabriik.registration.databinding.FragmentRegistrationVerifyEmailBinding
 import kotlinx.coroutines.flow.collect
@@ -32,6 +34,9 @@ class RegistrationVerifyEmailFragment : Fragment(),
         binding = FragmentRegistrationVerifyEmailBinding.bind(view)
 
         with(binding) {
+            btnResend.underline()
+            btnChangeEmail.underline()
+
             btnConfirm.setOnClickListener {
                 viewModel.setEvent(RegistrationVerifyEmailContract.Event.ConfirmClicked)
             }
@@ -83,6 +88,9 @@ class RegistrationVerifyEmailFragment : Fragment(),
 
     override fun handleEffect(effect: RegistrationVerifyEmailContract.Effect) {
         when (effect) {
+            is RegistrationVerifyEmailContract.Effect.Back ->
+                findNavController().popBackStack()
+
             is RegistrationVerifyEmailContract.Effect.Dismiss ->
                 requireActivity().finish()
         }
