@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:background="@drawable/bg_info_prompt"
+    tools:layout_height="wrap_content"
+    tools:layout_width="match_parent"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/btn_profile_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:padding="8dp"
+        android:src="@drawable/ic_info_black"
+        android:tint="@color/light_inverse_icons_01"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_status"
+        style="@style/TextStyle.Body2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:paddingStart="8dp"
+        android:paddingTop="3dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="3dp"
+        android:textColor="@color/light_contrast_01"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_profile_info"
+        app:layout_constraintEnd_toStartOf="@+id/btn_profile_info"
+        app:layout_constraintTop_toTopOf="@+id/btn_profile_info"
+        tools:text="Pending"
+        tools:background="@drawable/bg_status"
+        tools:backgroundTint="@color/light_pending"/>
+
+    <TextView
+        android:id="@+id/tv_title"
+        style="@style/TextStyle.Overline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/ProfileStatusView.accountLimits"
+        android:textColor="@color/light_inverse_text_01"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintEnd_toEndOf="@id/btn_verify_account"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Title"/>
+
+    <TextView
+        android:id="@+id/tv_subtitle"
+        style="@style/TextStyle.Subtitle2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/ProfileStatusView.getFullAccess"
+        android:textColor="@color/light_inverse_text_01"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_title"
+        app:layout_constraintBottom_toBottomOf="@id/barrier_buttons"
+        tools:text="Description" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier_buttons"
+        app:barrierDirection="top"
+        app:constraint_referenced_ids="btn_declined_verification_more_info,btn_upgrade_limits,btn_verify_account"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_verify_account"
+        style="@style/FabriikButtonStyle.Dense"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/ProfileStatusView.verifyAccount"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_subtitle" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_upgrade_limits"
+        style="@style/FabriikButtonStyle.Dense"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/ProfileStatusView.upgradeLimits"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_subtitle" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_declined_verification_more_info"
+        style="@style/FabriikButtonStyle.Dense"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/ProfileStatusView.declinedVerificationButton"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_subtitle" />
+
+</merge>

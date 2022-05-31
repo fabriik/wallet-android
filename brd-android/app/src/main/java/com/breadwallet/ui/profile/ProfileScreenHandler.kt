@@ -7,6 +7,7 @@ import com.breadwallet.ui.profile.ProfileScreen.F
 import com.breadwallet.util.errorHandler
 import com.breadwallet.ui.settings.SettingsItem
 import com.breadwallet.ui.settings.SettingsOption
+import com.fabriik.kyc.data.enums.AccountVerificationStatus
 import com.spotify.mobius.Connection
 import com.spotify.mobius.functions.Consumer
 import kotlinx.coroutines.CoroutineScope
@@ -34,7 +35,8 @@ class ProfileScreenHandler(
 
     private fun loadProfileData() {
         val profileData = ProfileScreen.ProfileData(
-            email = "test@test.com"
+            email = "test@test.com",
+            verificationStatus = AccountVerificationStatus.NONE
         )
         output.accept(E.OnProfileDataLoaded(profileData))
     }

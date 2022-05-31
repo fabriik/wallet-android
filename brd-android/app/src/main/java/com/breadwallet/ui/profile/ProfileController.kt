@@ -87,6 +87,7 @@ class ProfileController(
             ifChanged(M::profileData) { data ->
                 data?.let {
                     tvProfileName.text = it.email
+                    viewProfileStatus.setStatus(it.verificationStatus)
                 }
             }
         }

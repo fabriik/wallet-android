@@ -5,6 +5,7 @@ import com.breadwallet.ui.navigation.NavigationTarget
 import com.breadwallet.ui.settings.SettingsItem
 import com.breadwallet.ui.settings.SettingsOption
 import com.breadwallet.ui.settings.SettingsSection
+import com.fabriik.kyc.data.enums.AccountVerificationStatus
 import dev.zacsweers.redacted.annotations.Redacted
 
 object ProfileScreen {
@@ -41,6 +42,7 @@ object ProfileScreen {
     }
 
     data class ProfileData(
-        val email: String
+        val email: String,
+        val verificationStatus: AccountVerificationStatus = AccountVerificationStatus.NONE
     )
 }
