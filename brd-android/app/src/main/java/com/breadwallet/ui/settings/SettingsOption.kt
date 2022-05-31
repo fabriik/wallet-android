@@ -28,6 +28,7 @@ enum class SettingsOption {
     // HOME
     SCAN_QR,
     KYC,
+    REGISTRATION,
     FEEDBACK,
     PREFERENCES,
     SECURITY_SETTINGS,
