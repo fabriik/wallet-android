@@ -148,7 +148,7 @@
 
                     <TextView
                         android:id="@+id/tv_balance"
-                        style="@style/AppTheme.BottomTabText"
+                        style="@style/TextStyle.BottomTab.Active"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
@@ -173,11 +173,11 @@
 
                     <TextView
                         android:id="@+id/tv_trade"
+                        style="@style/TextStyle.BottomTab"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="@string/HomeScreen.trade"
-                        android:textColor="@color/navigation_menu_item_tint" />
+                        android:text="@string/HomeScreen.trade" />
 
                 </LinearLayout>
 
@@ -198,11 +198,11 @@
 
                     <TextView
                         android:id="@+id/tv_buy_sell"
+                        style="@style/TextStyle.BottomTab"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="@string/HomeScreen.buyAndSell"
-                        android:textColor="@color/navigation_menu_item_tint" />
+                        android:text="@string/HomeScreen.buyAndSell" />
 
                 </LinearLayout>
 
@@ -223,11 +223,11 @@
 
                     <TextView
                         android:id="@+id/tv_profile"
+                        style="@style/TextStyle.BottomTab"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="@string/HomeScreen.profile"
-                        android:textColor="@color/navigation_menu_item_tint" />
+                        android:text="@string/HomeScreen.profile" />
 
                 </LinearLayout>
 
