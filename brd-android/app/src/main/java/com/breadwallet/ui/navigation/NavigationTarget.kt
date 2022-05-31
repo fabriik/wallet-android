@@ -48,6 +48,7 @@ sealed class NavigationTarget : INavigationTarget {
     object Back : NavigationTarget()
     object ReviewBrd : NavigationTarget()
     object GoToKYC : NavigationTarget()
+    object GoToRegistration : NavigationTarget()
     object GoToFeedback : NavigationTarget()
     object QRScanner : NavigationTarget()
     object LogcatViewer : NavigationTarget()

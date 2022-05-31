@@ -267,11 +267,6 @@ class SettingsScreenHandler(
                 R.drawable.ic_camera
             ),
             SettingsItem(
-                "Registration",
-                SettingsOption.KYC,
-                R.drawable.ic_account_plus
-            ),
-            SettingsItem(
                 context.getString(R.string.Settings_preferences),
                 SettingsOption.PREFERENCES,
                 R.drawable.ic_preferences
@@ -324,6 +319,20 @@ class SettingsScreenHandler(
                     SettingsItem(
                         DEVELOPER_OPTIONS_TITLE,
                         SettingsOption.DEVELOPER_OPTIONS
+                    )
+                )
+
+                add(
+                    SettingsItem(
+                        "Registration",
+                        SettingsOption.REGISTRATION
+                    )
+                )
+
+                add(
+                    SettingsItem(
+                        "Kyc",
+                        SettingsOption.KYC
                     )
                 )
             }

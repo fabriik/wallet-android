@@ -12,6 +12,7 @@ include(
 include(
     "brd-android:app",
     "brd-android:app-core",
+    "brd-android:kyc",
     "brd-android:buy",
     "brd-android:trade",
     "brd-android:signup",
