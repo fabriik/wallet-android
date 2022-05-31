@@ -1,6 +1,7 @@
 package com.fabriik.common.utils
 
 import android.app.Application
+import android.content.res.Resources
 import android.text.Editable
 import androidx.annotation.StringRes
 import androidx.core.os.bundleOf
@@ -18,3 +19,9 @@ fun SavedStateHandle.toBundle() = bundleOf(
 )
 
 fun Editable?.textOrEmpty() = if (isNullOrEmpty()) "" else toString()
+
+val Int.dp: Int
+    get() = (this * Resources.getSystem().displayMetrics.density).toInt()
+
+val Int.sp: Int
+    get() = (this * Resources.getSystem().displayMetrics.scaledDensity).toInt()

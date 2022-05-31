@@ -47,7 +47,7 @@ class RegistrationVerifyEmailFragment : Fragment(),
                 viewModel.setEvent(RegistrationVerifyEmailContract.Event.DismissClicked)
             }
 
-            etEmail.doAfterTextChanged {
+            viewEnterCode.doAfterTextChanged {
                 viewModel.setEvent(
                     RegistrationVerifyEmailContract.Event.CodeChanged(
                         it.textOrEmpty()

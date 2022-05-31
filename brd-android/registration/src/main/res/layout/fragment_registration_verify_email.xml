@@ -53,23 +53,16 @@
         app:layout_constraintStart_toStartOf="@id/btn_confirm"
         app:layout_constraintTop_toBottomOf="@id/tv_title" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_email"
+    <com.fabriik.registration.ui.views.EnterCodeView
+        android:id="@+id/view_enter_code"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:background="@null"
+        android:layout_height="48dp"
         android:layout_marginTop="16dp"
-        android:hint="@string/Registration.EnterEmail.Email"
         app:layout_constrainedWidth="true"
         app:layout_constraintEnd_toEndOf="@id/btn_confirm"
         app:layout_constraintStart_toStartOf="@id/btn_confirm"
-        app:layout_constraintTop_toBottomOf="@id/tv_subtitle">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-    </com.google.android.material.textfield.TextInputLayout>
+        app:layout_constraintTop_toBottomOf="@id/tv_subtitle"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_confirm"
@@ -82,7 +75,7 @@
         android:text="@string/Registration.VerifyEmail.Confirm"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/til_email" />
+        app:layout_constraintTop_toBottomOf="@id/view_enter_code" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_resend"
