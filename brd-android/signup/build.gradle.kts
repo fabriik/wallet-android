@@ -38,20 +38,11 @@ android {
 dependencies {
     implementation(project(":brd-android:fabriik-common"))
 
-    implementation(Libs.Androidx.AppCompat)
-    implementation(Libs.Androidx.CoreKtx)
-    implementation(Libs.Androidx.LifecycleLiveDataKtx)
-    implementation(Libs.Androidx.LifecycleViewModelKtx)
-    implementation(Libs.Androidx.NavigationUI)
-    implementation(Libs.Androidx.NavigationFragment)
-
     implementation(Libs.AndroidxCamera.Core)
     implementation(Libs.AndroidxCamera.Camera2)
     implementation(Libs.AndroidxCamera.Lifecycle)
     implementation(Libs.AndroidxCamera.View)
     implementation(Libs.AndroidxCamera.Extensions)
-
-    implementation(Libs.Coroutines.Core)
 
     implementation(Libs.Material.Core)
 

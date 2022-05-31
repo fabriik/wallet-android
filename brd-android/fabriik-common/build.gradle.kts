@@ -32,6 +32,13 @@ android {
 
 dependencies {
     implementation(project(":brd-android:theme"))
-    implementation(brd.Libs.Androidx.AppCompat)
-    implementation(brd.Libs.Material.Core)
+
+    api(brd.Libs.Androidx.AppCompat)
+    api(brd.Libs.Androidx.CoreKtx)
+    api(brd.Libs.Androidx.LifecycleLiveDataKtx)
+    api(brd.Libs.Androidx.LifecycleViewModelKtx)
+    api(brd.Libs.Androidx.NavigationUI)
+    api(brd.Libs.Androidx.NavigationFragment)
+    api(brd.Libs.Material.Core)
+    api(brd.Libs.Coroutines.Core)
 }
