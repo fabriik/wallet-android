@@ -56,8 +56,7 @@
     <com.fabriik.registration.ui.views.EnterCodeView
         android:id="@+id/view_enter_code"
         android:layout_width="0dp"
-        android:background="@null"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         app:layout_constrainedWidth="true"
         app:layout_constraintEnd_toEndOf="@id/btn_confirm"

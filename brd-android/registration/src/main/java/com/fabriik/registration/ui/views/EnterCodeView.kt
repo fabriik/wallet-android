@@ -58,25 +58,29 @@ class EnterCodeView @JvmOverloads constructor(
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        initBoxes()
-    }
 
-    private fun initBoxes() {
-        val viewRect = Rect(
-            paddingStart, paddingTop, measuredWidth - paddingEnd - paddingStart, measuredHeight - paddingBottom
+        val availableWidth = measuredWidth - paddingEnd - paddingStart
+        val boxSize = (availableWidth - marginBetweenBoxes * (pinLength - 1)) / pinLength
+        val newHeight = boxSize + paddingTop + paddingBottom
+
+        // change height to create square rectangles
+        setMeasuredDimension(
+            measuredWidth, newHeight.toInt()
         )
 
-        val boxWidth = (viewRect.width() - marginBetweenBoxes * (pinLength - 1)) / pinLength
+        initBoxes(boxSize)
+    }
 
+    private fun initBoxes(boxSize: Float) {
         boxes = IntRange(0, pinLength)
             .map {
-                val startX = paddingStart + (boxWidth + marginBetweenBoxes) * it
+                val startX = paddingStart + (boxSize + marginBetweenBoxes) * it
 
                 RectF(
                     startX,
-                    viewRect.top.toFloat(),
-                    startX + boxWidth,
-                    viewRect.bottom.toFloat()
+                    paddingTop.toFloat(),
+                    startX + boxSize,
+                    paddingTop + boxSize
                 )
             }
             .toTypedArray()
