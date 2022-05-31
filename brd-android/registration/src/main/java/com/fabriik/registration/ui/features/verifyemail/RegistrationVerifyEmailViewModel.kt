@@ -40,7 +40,12 @@ class RegistrationVerifyEmailViewModel(
                 setEffect { RegistrationVerifyEmailContract.Effect.Dismiss }
 
             is RegistrationVerifyEmailContract.Event.CodeChanged ->
-                setState { copy(code = event.code).validate() }
+                setState {
+                    copy(
+                        code = event.code,
+                        codeErrorVisible = false
+                    ).validate()
+                }
 
             is RegistrationVerifyEmailContract.Event.ResendEmailClicked ->
                 resendEmail()
@@ -50,11 +55,17 @@ class RegistrationVerifyEmailViewModel(
 
             is RegistrationVerifyEmailContract.Event.ConfirmClicked -> {
                 //todo: API call
-                viewModelScope.launch(Dispatchers.IO) {
-                    setState { copy(verifiedOverlayVisible = true) }
-                    delay(1000)
-                    setState { copy(verifiedOverlayVisible = false) }
-                    setEffect { RegistrationVerifyEmailContract.Effect.Dismiss }
+
+                // todo: remove after API integration, added only for testing
+                if (currentState.code == "111111") {
+                    setState { copy(codeErrorVisible = true).validate() }
+                } else {
+                    viewModelScope.launch(Dispatchers.IO) {
+                        setState { copy(verifiedOverlayVisible = true) }
+                        delay(1000)
+                        setState { copy(verifiedOverlayVisible = false) }
+                        setEffect { RegistrationVerifyEmailContract.Effect.Dismiss }
+                    }
                 }
             }
         }
@@ -69,10 +80,10 @@ class RegistrationVerifyEmailViewModel(
         val fullText = getString(R.string.Registration_VerifyEmail_Subtitle, email)
         val startIndex = fullText.indexOf(email)
         val spannable = fullText.toSpannable()
-        spannable.setSpan(StyleSpan(Typeface.BOLD), startIndex, startIndex + email.length,0)
+        spannable.setSpan(StyleSpan(Typeface.BOLD), startIndex, startIndex + email.length, 0)
         return spannable
     }
 
     private fun RegistrationVerifyEmailContract.State.validate() =
-        copy(confirmEnabled = ConfirmationCodeValidator(code))
+        copy(confirmEnabled = ConfirmationCodeValidator(code) && !codeErrorVisible)
 }
