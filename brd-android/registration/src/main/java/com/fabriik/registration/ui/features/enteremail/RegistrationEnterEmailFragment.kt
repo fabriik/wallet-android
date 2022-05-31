@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.fabriik.common.ui.base.FabriikView
+import com.fabriik.common.utils.showKeyboard
 import com.fabriik.common.utils.textOrEmpty
 import com.fabriik.registration.R
 import com.fabriik.registration.databinding.FragmentRegistrationEnterEmailBinding
@@ -40,6 +41,7 @@ class RegistrationEnterEmailFragment : Fragment(),
                 viewModel.setEvent(RegistrationEnterEmailContract.Event.DismissClicked)
             }
 
+            etEmail.showKeyboard()
             etEmail.doAfterTextChanged {
                 viewModel.setEvent(
                     RegistrationEnterEmailContract.Event.EmailChanged(
