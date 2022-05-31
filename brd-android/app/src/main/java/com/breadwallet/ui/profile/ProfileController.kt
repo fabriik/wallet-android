@@ -26,6 +26,7 @@ class ProfileController(
         First.first(
             model, setOf(
                 F.LoadOptions,
+                F.LoadProfileData
             )
         )
     }
@@ -64,7 +65,8 @@ class ProfileController(
             })*/
 
             merge(
-                btnClose.clicks().map { E.OnCloseClicked }
+                btnClose.clicks().map { E.OnCloseClicked },
+                btnChangeEmail.clicks().map { E.OnChangeEmailClicked }
                 /*router.dialogResult(DIALOG_ID_VERIFY_ACCOUNT_INFO)
                     .map { E.OnProfileVerificationInfoResult(it) }*/
             )
@@ -81,6 +83,11 @@ class ProfileController(
             }
             ifChanged(M::isLoading) {
                 loadingView.root.visibility = if (isLoading) View.VISIBLE else View.GONE
+            }
+            ifChanged(M::profileData) { data ->
+                data?.let {
+                    tvProfileName.text = it.email
+                }
             }
         }
     }

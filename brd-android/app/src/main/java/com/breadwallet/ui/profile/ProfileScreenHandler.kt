@@ -24,11 +24,19 @@ class ProfileScreenHandler(
     override fun accept(value: F) {
         when (value) {
             F.LoadOptions -> loadOptions()
+            F.LoadProfileData -> loadProfileData()
         }
     }
 
     override fun dispose() {
         coroutineContext.cancel()
+    }
+
+    private fun loadProfileData() {
+        val profileData = ProfileScreen.ProfileData(
+            email = "test@test.com"
+        )
+        output.accept(E.OnProfileDataLoaded(profileData))
     }
 
     private fun loadOptions() {

@@ -19,6 +19,8 @@ object ProfileUpdate : Update<M, E, F>, ProfileScreenUpdateSpec {
     override fun onCloseClicked(model: M): Next<M, F> =
         dispatch(setOf(F.GoBack))
 
+    override fun onChangeEmailClicked(model: M): Next<M, F> = dispatch(emptySet()) //todo: call registration flow
+
     override fun onOptionsLoaded(
         model: M,
         event: E.OnOptionsLoaded
@@ -31,4 +33,7 @@ object ProfileUpdate : Update<M, E, F>, ProfileScreenUpdateSpec {
             else -> dispatch(emptySet())
         }
     }
+
+    override fun onProfileDataLoaded(model: M, event: E.OnProfileDataLoaded): Next<M, F> =
+        next(model.copy(profileData = event.data))
 }
