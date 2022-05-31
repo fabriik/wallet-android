@@ -1,4 +1,4 @@
-package com.fabriik.signup.utils.validators
+package com.fabriik.common.utils.validators
 
 import java.util.regex.Pattern
 

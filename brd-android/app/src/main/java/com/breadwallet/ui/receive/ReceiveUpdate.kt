@@ -68,7 +68,7 @@ object ReceiveUpdate : Update<M, E, F>, ReceiveScreenUpdateSpec {
             else -> Topic.RECEIVE
         }
 
-        return dispatch(setOf(F.OpenSupportPage(topic)))
+        return dispatch(setOf(F.GoToFaq(topic)))
     }
 
     override fun onCopyAddressClicked(model: M): Next<M, F> =

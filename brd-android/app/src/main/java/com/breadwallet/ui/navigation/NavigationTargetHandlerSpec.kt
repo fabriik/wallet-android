@@ -49,7 +49,7 @@ interface NavigationTargetHandlerSpec {
         NavigationTarget.BitcoinNodeSelector -> bitcoinNodeSelector()
         NavigationTarget.EnableSegWit -> enableSegWit()
         NavigationTarget.LegacyAddress -> legacyAddress()
-        is NavigationTarget.SupportDialog -> showSupportDialog(effect)
+        is NavigationTarget.SupportDialog -> showSupportPage(effect)
         is NavigationTarget.SendSheet -> sendSheet(effect)
         is NavigationTarget.ReceiveSheet -> receiveSheet(effect)
         is NavigationTarget.ViewTransaction -> viewTransaction(effect)
@@ -176,5 +176,5 @@ interface NavigationTargetHandlerSpec {
 
     fun selectBaker(effect: NavigationTarget.SelectBakerScreen): Unit
 
-    fun showSupportDialog(effect: NavigationTarget.SupportDialog): Unit
+    fun showSupportPage(effect: NavigationTarget.SupportDialog): Unit
 }

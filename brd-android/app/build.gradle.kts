@@ -147,6 +147,7 @@ dependencies {
     implementation(project(":brd-android:trade"))
     implementation(project(":brd-android:support"))
     implementation(project(":brd-android:signup"))
+    implementation(project(":brd-android:registration"))
     implementation(project(":brd-android:fabriik-common"))
     implementation(Libs.WalletKit.CoreAndroid)
 

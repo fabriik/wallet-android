@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.fabriik.signup.R
-import com.fabriik.signup.ui.base.FabriikViewModel
+import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.signup.utils.getString
 import com.fabriik.signup.utils.toBundle
 import kotlinx.coroutines.Dispatchers

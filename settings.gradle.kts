@@ -17,6 +17,7 @@ include(
     "brd-android:signup",
     "brd-android:support",
     "brd-android:theme",
+    "brd-android:registration",
     "brd-android:fabriik-common"
 )
 

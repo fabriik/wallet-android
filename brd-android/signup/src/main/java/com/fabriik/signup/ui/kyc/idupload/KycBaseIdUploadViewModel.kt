@@ -12,7 +12,7 @@ import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.viewModelScope
 import com.fabriik.signup.R
-import com.fabriik.signup.ui.base.FabriikViewModel
+import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.signup.utils.getString
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

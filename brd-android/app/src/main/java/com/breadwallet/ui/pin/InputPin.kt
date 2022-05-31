@@ -24,11 +24,11 @@
  */
 package com.breadwallet.ui.pin
 
-import com.breadwallet.tools.util.BRConstants
 import com.breadwallet.ui.ViewEffect
 import com.breadwallet.ui.navigation.NavigationEffect
 import com.breadwallet.ui.navigation.NavigationTarget
 import com.breadwallet.ui.navigation.OnCompleteAction
+import com.fabriik.support.pages.Topic
 import dev.zacsweers.redacted.annotations.Redacted
 
 private const val PIN_LENGTH = 6
@@ -100,7 +100,7 @@ object InputPin {
             override val navigationTarget = NavigationTarget.Home
         }
         object GoToFaq : F(), NavigationEffect {
-            override val navigationTarget = NavigationTarget.SupportPage(BRConstants.FAQ_SET_PIN)
+            override val navigationTarget = NavigationTarget.SupportDialog(Topic.PIN)
         }
         object GoToDisabledScreen : F(), NavigationEffect {
             override val navigationTarget = NavigationTarget.DisabledScreen

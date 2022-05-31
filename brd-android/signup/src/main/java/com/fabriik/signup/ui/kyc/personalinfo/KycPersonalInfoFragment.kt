@@ -13,7 +13,7 @@ import androidx.navigation.fragment.findNavController
 import com.fabriik.signup.R
 import com.fabriik.signup.databinding.FragmentKycPersonalInfoBinding
 import com.fabriik.signup.ui.SignupActivity
-import com.fabriik.signup.ui.base.FabriikView
+import com.fabriik.common.ui.base.FabriikView
 import com.fabriik.signup.utils.SnackBarUtils
 import com.fabriik.signup.utils.hideKeyboard
 import kotlinx.coroutines.flow.collect

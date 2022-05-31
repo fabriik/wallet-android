@@ -5,9 +5,9 @@ import androidx.lifecycle.viewModelScope
 import com.fabriik.signup.R
 import com.fabriik.common.data.Status
 import com.fabriik.signup.data.UserApi
-import com.fabriik.signup.ui.base.FabriikViewModel
+import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.signup.utils.getString
-import com.fabriik.signup.utils.validators.EmailValidator
+import com.fabriik.common.utils.validators.EmailValidator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
