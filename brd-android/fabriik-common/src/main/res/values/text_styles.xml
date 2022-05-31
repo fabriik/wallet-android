@@ -67,4 +67,12 @@
         <item name="fontFamily">@font/roboto_regular</item>
     </style>
 
+    <style name="TextStyle.BottomTab" parent="TextStyle.Subtitle2">
+        <item name="android:textColor">@color/navigation_menu_item_tint</item>
+    </style>
+
+    <style name="TextStyle.BottomTab.Active">
+        <item name="android:textColor">@color/light_primary</item>
+    </style>
+
 </resources>

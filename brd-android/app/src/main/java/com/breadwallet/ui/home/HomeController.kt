@@ -178,25 +178,17 @@ class HomeController(
                 }
             }
 
-            ifChanged(M::isBuyBellNeeded) {
-                buyBell.isVisible = isBuyBellNeeded
-            }
-
             ifChanged(M::hasInternet) {
                 notificationBar.apply {
                     isGone = hasInternet
                     if (hasInternet) bringToFront()
                 }
-                buyTextView.setText(
+                tvBuySell.setText(
                     when {
                         showBuyAndSell -> R.string.HomeScreen_buyAndSell
                         else -> R.string.HomeScreen_buy
                     }
                 )
-            }
-
-            ifChanged(M::isBuyBellNeeded) {
-                buyBell.isVisible = isBuyBellNeeded
             }
         }
     }
