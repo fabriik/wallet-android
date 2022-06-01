@@ -76,6 +76,8 @@
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier_buttons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:barrierDirection="top"
         app:constraint_referenced_ids="btn_declined_verification_more_info,btn_upgrade_limits,btn_verify_account"/>
 

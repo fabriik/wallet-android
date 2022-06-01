@@ -26,7 +26,7 @@ class AccountVerificationStatusView @JvmOverloads constructor(
         )
 
         with(binding) {
-            btnProfileInfo.setOnClickListener {
+            btnVerifyAccount.setOnClickListener {
                 callback?.onButtonClicked(StatusButton.VERIFY_ACCOUNT)
             }
 
