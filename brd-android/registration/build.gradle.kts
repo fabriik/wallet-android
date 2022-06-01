@@ -36,5 +36,16 @@ android {
 }
 
 dependencies {
+    implementation(project(":brd-android:app-core"))
     implementation(project(":brd-android:fabriik-common"))
+
+    // Kodein DI
+    implementation(Libs.Kodein.CoreErasedJvm)
+    implementation(Libs.Kodein.FrameworkAndroidX)
+
+    implementation(Libs.Networking.Retrofit)
+    implementation(Libs.Networking.RetrofitMoshiConverter)
+
+    implementation(Libs.Networking.Moshi)
+    kapt(Libs.Networking.MoshiCodegen)
 }
