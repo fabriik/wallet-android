@@ -36,7 +36,7 @@ class ProfileScreenHandler(
     private fun loadProfileData() {
         val profileData = ProfileScreen.ProfileData(
             email = "test@test.com",
-            verificationStatus = AccountVerificationStatus.LEVEL1_VERIFIED
+            verificationStatus = AccountVerificationStatus.DEFAULT
         )
         output.accept(E.OnProfileDataLoaded(profileData))
     }

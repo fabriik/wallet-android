@@ -46,7 +46,7 @@ class AccountVerificationStatusView @JvmOverloads constructor(
 
     fun setStatus(status: AccountVerificationStatus) {
         val state = when (status) {
-            AccountVerificationStatus.NONE -> State.Default
+            AccountVerificationStatus.DEFAULT -> State.Default
             AccountVerificationStatus.LEVEL1_VERIFIED -> State.Level1Verified
             AccountVerificationStatus.LEVEL2_PENDING -> State.Level2Pending
             AccountVerificationStatus.LEVEL2_DECLINED -> State.Level2Declined

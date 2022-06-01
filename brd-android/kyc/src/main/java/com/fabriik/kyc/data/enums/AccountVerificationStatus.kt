@@ -1,7 +1,7 @@
 package com.fabriik.kyc.data.enums
 
 enum class AccountVerificationStatus {
-    NONE,
+    DEFAULT,
     LEVEL1_VERIFIED,
     LEVEL2_PENDING,
     LEVEL2_VERIFIED,

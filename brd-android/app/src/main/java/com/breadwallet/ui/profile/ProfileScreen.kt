@@ -51,6 +51,6 @@ object ProfileScreen {
 
     data class ProfileData(
         val email: String,
-        val verificationStatus: AccountVerificationStatus = AccountVerificationStatus.NONE
+        val verificationStatus: AccountVerificationStatus = AccountVerificationStatus.DEFAULT
     )
 }
