@@ -9,9 +9,18 @@ interface ProfileScreenUpdateSpec {
         is ProfileScreen.E.OnOptionsLoaded -> onOptionsLoaded(model, event)
         is ProfileScreen.E.OnProfileDataLoaded -> onProfileDataLoaded(model, event)
         is ProfileScreen.E.OnChangeEmailClicked -> onChangeEmailClicked(model)
+        is ProfileScreen.E.OnVerifyProfileClicked -> onVerifyProfileClicked(model)
+        is ProfileScreen.E.OnUpgradeLimitsClicked -> onUpgradeLimitsClicked(model)
+        is ProfileScreen.E.OnVerificationDeclinedInfoClicked -> onVerificationDeclinedInfoClicked(model)
     }
 
     fun onCloseClicked(model: ProfileScreen.M): Next<ProfileScreen.M, ProfileScreen.F>
+
+    fun onVerifyProfileClicked(model: ProfileScreen.M): Next<ProfileScreen.M, ProfileScreen.F>
+
+    fun onUpgradeLimitsClicked(model: ProfileScreen.M): Next<ProfileScreen.M, ProfileScreen.F>
+
+    fun onVerificationDeclinedInfoClicked(model: ProfileScreen.M): Next<ProfileScreen.M, ProfileScreen.F>
 
     fun onChangeEmailClicked(model: ProfileScreen.M): Next<ProfileScreen.M, ProfileScreen.F>
 

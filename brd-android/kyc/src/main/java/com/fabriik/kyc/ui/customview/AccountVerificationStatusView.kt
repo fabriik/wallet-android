@@ -26,13 +26,18 @@ class AccountVerificationStatusView @JvmOverloads constructor(
         )
 
         with(binding) {
-            btnProfileInfo.setOnClickListener { callback?.onVerifyProfileInfoClicked() }
-            btnVerifyAccount.setOnClickListener { callback?.onVerifyProfileClicked() }
-        }
-    }
+            btnProfileInfo.setOnClickListener {
+                callback?.onButtonClicked(StatusButton.VERIFY_ACCOUNT)
+            }
 
-    fun setCallback(callback: Callback) {
-        this.callback = callback
+            btnUpgradeLimits.setOnClickListener {
+                callback?.onButtonClicked(StatusButton.UPGRADE_LIMITS)
+            }
+
+            btnDeclinedVerificationMoreInfo.setOnClickListener {
+                callback?.onButtonClicked(StatusButton.VERIFICATION_DECLINED_INFO)
+            }
+        }
     }
 
     fun setStatus(status: AccountVerificationStatus) {
@@ -69,9 +74,12 @@ class AccountVerificationStatusView @JvmOverloads constructor(
         }
     }
 
+    fun setCallback(callback: Callback?) {
+        this.callback = callback
+    }
+
     interface Callback {
-        fun onVerifyProfileClicked()
-        fun onVerifyProfileInfoClicked()
+        fun onButtonClicked(button: StatusButton)
     }
 
     private sealed class StatusViewState(
@@ -146,5 +154,11 @@ class AccountVerificationStatusView @JvmOverloads constructor(
             subtitle = R.string.ProfileStatusView_statusSubtitleLevel2Verified,
             statusView = StatusViewState.Verified
         )
+    }
+
+    enum class StatusButton {
+        VERIFY_ACCOUNT,
+        UPGRADE_LIMITS,
+        VERIFICATION_DECLINED_INFO
     }
 }

@@ -11,6 +11,7 @@ import com.breadwallet.ui.settings.SettingsAdapter
 import com.breadwallet.ui.profile.ProfileScreen.E
 import com.breadwallet.ui.profile.ProfileScreen.F
 import com.breadwallet.ui.profile.ProfileScreen.M
+import com.fabriik.kyc.ui.customview.AccountVerificationStatusView
 import com.spotify.mobius.Connectable
 import com.spotify.mobius.First
 import com.spotify.mobius.Init
@@ -54,21 +55,26 @@ class ProfileController(
 
     override fun bindView(modelFlow: Flow<M>): Flow<E> {
         return with(binding) {
-            /*viewProfileStatus.setCallback(object : AccountVerificationStatusView.Callback {
-                override fun onVerifyProfileClicked() {
-                    eventConsumer.accept(E.OnVerifyProfileClicked)
-                }
+            viewProfileStatus.setCallback(object : AccountVerificationStatusView.Callback {
+                override fun onButtonClicked(button: AccountVerificationStatusView.StatusButton) {
+                    eventConsumer.accept(
+                        when (button) {
+                            AccountVerificationStatusView.StatusButton.VERIFY_ACCOUNT ->
+                                E.OnVerifyProfileClicked
 
-                override fun onVerifyProfileInfoClicked() {
-                    eventConsumer.accept(E.OnProfileVerificationInfoClicked)
+                            AccountVerificationStatusView.StatusButton.UPGRADE_LIMITS ->
+                                E.OnUpgradeLimitsClicked
+
+                            AccountVerificationStatusView.StatusButton.VERIFICATION_DECLINED_INFO ->
+                                E.OnVerificationDeclinedInfoClicked
+                        }
+                    )
                 }
-            })*/
+            })
 
             merge(
                 btnClose.clicks().map { E.OnCloseClicked },
                 btnChangeEmail.clicks().map { E.OnChangeEmailClicked }
-                /*router.dialogResult(DIALOG_ID_VERIFY_ACCOUNT_INFO)
-                    .map { E.OnProfileVerificationInfoResult(it) }*/
             )
         }
     }

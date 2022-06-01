@@ -23,6 +23,9 @@ object ProfileScreen {
     sealed class E {
         object OnCloseClicked : E()
         object OnChangeEmailClicked : E()
+        object OnVerifyProfileClicked : E()
+        object OnUpgradeLimitsClicked : E()
+        object OnVerificationDeclinedInfoClicked : E()
         data class OnOptionClicked(val option: SettingsOption) : E()
         data class OnOptionsLoaded(@Redacted val options: List<SettingsItem>) : E()
         data class OnProfileDataLoaded(val data: ProfileData) : E()
@@ -34,6 +37,10 @@ object ProfileScreen {
 
         object GoBack : F(), NavigationEffect {
             override val navigationTarget = NavigationTarget.Back
+        }
+
+        object GoToKyc : F(), NavigationEffect {
+            override val navigationTarget = NavigationTarget.GoToKYC
         }
 
         data class GoToSettings(val section: SettingsSection) : F(), NavigationEffect {
