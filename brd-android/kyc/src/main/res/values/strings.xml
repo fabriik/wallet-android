@@ -10,4 +10,8 @@
     <string name="ProfileStatusView.statusSubtitleLevel2Verified">Congratulations! You now have full access to your Fabriik wallet.</string>
     <string name="ProfileStatusView.statusSubtitleLevel2Failure">Oops! We had some issues processing your data</string>
     <string name="ProfileStatusView.declinedVerificationButton">Why is my verification declined?</string>
+    <string name="ProfileStatusView.statusPending">Pending</string>
+    <string name="ProfileStatusView.statusVerified">Verified</string>
+    <string name="ProfileStatusView.statusResubmit">Resubmit</string>
+    <string name="ProfileStatusView.statusDeclined">Declined</string>
 </resources>

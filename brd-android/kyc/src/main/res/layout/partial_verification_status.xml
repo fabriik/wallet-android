@@ -23,6 +23,7 @@
     <TextView
         android:id="@+id/tv_status"
         style="@style/TextStyle.Body2"
+        android:background="@drawable/bg_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -34,8 +35,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/btn_profile_info"
         app:layout_constraintEnd_toStartOf="@+id/btn_profile_info"
         app:layout_constraintTop_toTopOf="@+id/btn_profile_info"
-        tools:text="Pending"
-        tools:background="@drawable/bg_status"
+        tools:text="@string/ProfileStatusView.statusPending"
         tools:backgroundTint="@color/light_pending"/>
 
     <TextView

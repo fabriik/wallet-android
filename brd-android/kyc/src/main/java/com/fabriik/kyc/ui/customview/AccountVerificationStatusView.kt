@@ -65,6 +65,7 @@ class AccountVerificationStatusView @JvmOverloads constructor(
                     context, state.statusView.backgroundTint
                 )
 
+                tvStatus.setText(it.text)
                 tvStatus.setTextColor(
                     ContextCompat.getColor(
                         context, state.statusView.textColor
@@ -83,27 +84,32 @@ class AccountVerificationStatusView @JvmOverloads constructor(
     }
 
     private sealed class StatusViewState(
+        @StringRes val text: Int,
         @ColorRes val textColor: Int,
         @ColorRes val backgroundTint: Int
     ) {
 
         object Pending : StatusViewState(
-            textColor = R.color.light_contrast_02,
+            text = R.string.ProfileStatusView_statusPending,
+            textColor = R.color.light_contrast_01,
             backgroundTint = R.color.light_pending
         )
 
         object Verified : StatusViewState(
-            textColor = R.color.light_contrast_01,
+            text = R.string.ProfileStatusView_statusVerified,
+            textColor = R.color.light_contrast_02,
             backgroundTint = R.color.light_success
         )
 
         object Resubmit : StatusViewState(
-            textColor = R.color.light_contrast_01,
+            text = R.string.ProfileStatusView_statusResubmit,
+            textColor = R.color.light_contrast_02,
             backgroundTint = R.color.light_error
         )
 
         object Declined : StatusViewState(
-            textColor = R.color.light_contrast_01,
+            text = R.string.ProfileStatusView_statusDeclined,
+            textColor = R.color.light_contrast_02,
             backgroundTint = R.color.light_error
         )
     }
