@@ -29,6 +29,7 @@ import com.breadwallet.util.isBitcoinSV
 import com.breadwallet.util.isBitcoinCash
 import com.breadwallet.util.isEthereum
 import com.breadwallet.util.isRipple
+import com.breadwallet.util.isStellar
 
 data class TokenItem(
     val address: String?,
@@ -48,6 +49,7 @@ data class TokenItem(
     fun urlScheme(testnet: Boolean): String? = when {
         symbol.isEthereum() || type == "erc20" -> "ethereum"
         symbol.isRipple() -> "xrp"
+        symbol.isStellar() -> "xlm"
         symbol.isBitcoin() -> "bitcoin"
         symbol.isBitcoinSV() -> "bitcoinsv"
         symbol.isBitcoinCash() -> when {
