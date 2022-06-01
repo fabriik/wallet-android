@@ -11,6 +11,7 @@ interface ProfileScreenUpdateSpec {
         is ProfileScreen.E.OnChangeEmailClicked -> onChangeEmailClicked(model)
         is ProfileScreen.E.OnVerifyProfileClicked -> onVerifyProfileClicked(model)
         is ProfileScreen.E.OnUpgradeLimitsClicked -> onUpgradeLimitsClicked(model)
+        is ProfileScreen.E.OnVerificationMoreInfoClicked -> onVerificationMoreInfoClicked(model)
         is ProfileScreen.E.OnVerificationDeclinedInfoClicked -> onVerificationDeclinedInfoClicked(model)
     }
 
@@ -19,6 +20,8 @@ interface ProfileScreenUpdateSpec {
     fun onVerifyProfileClicked(model: ProfileScreen.M): Next<ProfileScreen.M, ProfileScreen.F>
 
     fun onUpgradeLimitsClicked(model: ProfileScreen.M): Next<ProfileScreen.M, ProfileScreen.F>
+
+    fun onVerificationMoreInfoClicked(model: ProfileScreen.M): Next<ProfileScreen.M, ProfileScreen.F>
 
     fun onVerificationDeclinedInfoClicked(model: ProfileScreen.M): Next<ProfileScreen.M, ProfileScreen.F>
 

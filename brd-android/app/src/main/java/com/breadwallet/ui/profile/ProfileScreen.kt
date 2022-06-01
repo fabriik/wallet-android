@@ -25,6 +25,7 @@ object ProfileScreen {
         object OnChangeEmailClicked : E()
         object OnVerifyProfileClicked : E()
         object OnUpgradeLimitsClicked : E()
+        object OnVerificationMoreInfoClicked : E()
         object OnVerificationDeclinedInfoClicked : E()
         data class OnOptionClicked(val option: SettingsOption) : E()
         data class OnOptionsLoaded(@Redacted val options: List<SettingsItem>) : E()

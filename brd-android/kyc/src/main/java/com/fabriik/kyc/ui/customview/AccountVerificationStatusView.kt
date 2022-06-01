@@ -26,6 +26,10 @@ class AccountVerificationStatusView @JvmOverloads constructor(
         )
 
         with(binding) {
+            btnProfileInfo.setOnClickListener {
+                callback?.onButtonClicked(StatusButton.VERIFICATION_MORE_INFO)
+            }
+
             btnVerifyAccount.setOnClickListener {
                 callback?.onButtonClicked(StatusButton.VERIFY_ACCOUNT)
             }
@@ -165,6 +169,7 @@ class AccountVerificationStatusView @JvmOverloads constructor(
     enum class StatusButton {
         VERIFY_ACCOUNT,
         UPGRADE_LIMITS,
-        VERIFICATION_DECLINED_INFO
+        VERIFICATION_MORE_INFO,
+        VERIFICATION_DECLINED_INFO,
     }
 }

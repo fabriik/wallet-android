@@ -25,6 +25,9 @@ object ProfileUpdate : Update<M, E, F>, ProfileScreenUpdateSpec {
     override fun onUpgradeLimitsClicked(model: M): Next<M, F> =
         dispatch(setOf(F.GoToKyc))
 
+    override fun onVerificationMoreInfoClicked(model: M): Next<M, F> =
+        dispatch(setOf(F.GoToKyc)) // TODO: open dialog instead
+
     override fun onVerificationDeclinedInfoClicked(model: M): Next<M, F> =
         dispatch(setOf(F.GoToKyc))
 

@@ -65,6 +65,9 @@ class ProfileController(
                             AccountVerificationStatusView.StatusButton.UPGRADE_LIMITS ->
                                 E.OnUpgradeLimitsClicked
 
+                            AccountVerificationStatusView.StatusButton.VERIFICATION_MORE_INFO ->
+                                E.OnVerificationMoreInfoClicked
+
                             AccountVerificationStatusView.StatusButton.VERIFICATION_DECLINED_INFO ->
                                 E.OnVerificationDeclinedInfoClicked
                         }
