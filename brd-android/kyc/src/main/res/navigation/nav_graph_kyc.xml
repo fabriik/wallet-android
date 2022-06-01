@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/nav_graph_kyc">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_kyc"
+    app:startDestination="@id/fragmentProofOfIdentity">
+
+    <fragment
+        android:id="@+id/fragmentProofOfIdentity"
+        android:name="com.fabriik.kyc.ui.features.proofofidentity.ProofOfIdentityFragment"
+        tools:layout="@layout/fragment_proof_of_identity">
+
+    </fragment>
 
 </navigation>
