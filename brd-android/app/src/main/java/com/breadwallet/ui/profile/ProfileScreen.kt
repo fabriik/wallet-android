@@ -2,8 +2,6 @@ package com.breadwallet.ui.profile
 
 import com.breadwallet.ui.navigation.NavigationEffect
 import com.breadwallet.ui.navigation.NavigationTarget
-import com.breadwallet.ui.settings.SettingsItem
-import com.breadwallet.ui.settings.SettingsOption
 import com.breadwallet.ui.settings.SettingsSection
 import com.fabriik.kyc.data.enums.AccountVerificationStatus
 import dev.zacsweers.redacted.annotations.Redacted
@@ -13,7 +11,7 @@ object ProfileScreen {
     data class M(
         val isLoading: Boolean = false,
         val profileData: ProfileData? = null,
-        @Redacted val items: List<SettingsItem> = listOf()
+        @Redacted val items: List<ProfileItem> = listOf()
     ) {
         companion object {
             fun createDefault() = M()
@@ -27,8 +25,8 @@ object ProfileScreen {
         object OnUpgradeLimitsClicked : E()
         object OnVerificationMoreInfoClicked : E()
         object OnVerificationDeclinedInfoClicked : E()
-        data class OnOptionClicked(val option: SettingsOption) : E()
-        data class OnOptionsLoaded(@Redacted val options: List<SettingsItem>) : E()
+        data class OnOptionClicked(val option: ProfileOption) : E()
+        data class OnOptionsLoaded(@Redacted val options: List<ProfileItem>) : E()
         data class OnProfileDataLoaded(val data: ProfileData) : E()
     }
 

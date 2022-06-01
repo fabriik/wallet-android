@@ -43,15 +43,15 @@ class ProfileScreenHandler(
 
     private fun loadOptions() {
         val items = listOf(
-            SettingsItem(
-                context.getString(R.string.MenuButton_security),
-                SettingsOption.SECURITY_SETTINGS,
-                R.drawable.ic_security_settings
+            ProfileItem(
+                title = context.getString(R.string.MenuButton_security),
+                option = ProfileOption.SECURITY_SETTINGS,
+                iconResId = R.drawable.ic_security_settings
             ),
-            SettingsItem(
-                context.getString(R.string.Settings_preferences),
-                SettingsOption.PREFERENCES,
-                R.drawable.ic_preferences
+            ProfileItem(
+                title = context.getString(R.string.Settings_preferences),
+                option = ProfileOption.PREFERENCES,
+                iconResId = R.drawable.ic_preferences
             )
         )
         output.accept(E.OnOptionsLoaded(items))

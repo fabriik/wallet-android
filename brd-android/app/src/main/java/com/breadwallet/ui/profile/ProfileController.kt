@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.breadwallet.databinding.ControllerProfileBinding
 import com.breadwallet.ui.BaseMobiusController
 import com.breadwallet.ui.flowbind.clicks
-import com.breadwallet.ui.settings.SettingsAdapter
 import com.breadwallet.ui.profile.ProfileScreen.E
 import com.breadwallet.ui.profile.ProfileScreen.F
 import com.breadwallet.ui.profile.ProfileScreen.M
@@ -85,7 +84,7 @@ class ProfileController(
     override fun M.render() {
         with(binding) {
             ifChanged(M::items) {
-                val adapter = SettingsAdapter(items) { option ->
+                val adapter = ProfileAdapter(items) { option ->
                     eventConsumer.accept(E.OnOptionClicked(option))
                 }
                 settingsList.adapter = adapter
