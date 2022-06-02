@@ -131,6 +131,7 @@ val HomeScreenUpdate = Update<M, E, F> { model, event ->
         E.OnBuyNoteSeen -> dispatch(effects(F.GoToBuy))
         E.OnTradeNoteSeen -> dispatch(effects(F.LoadSwapCurrencies))
         E.OnMenuClicked -> dispatch(effects(F.GoToMenu))
+        E.OnProfileClicked -> dispatch(effects(F.GoToProfile))
         is E.OnPromptLoaded -> next(model.copy(promptId = event.promptId))
         is E.OnDeepLinkProvided -> dispatch(
             effects(

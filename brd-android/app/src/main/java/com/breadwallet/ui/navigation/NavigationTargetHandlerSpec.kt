@@ -32,6 +32,7 @@ interface NavigationTargetHandlerSpec {
         NavigationTarget.BrdLogin -> brdLogin()
         NavigationTarget.Home -> home()
         NavigationTarget.Buy -> buy()
+        NavigationTarget.Profile -> profile()
         is NavigationTarget.Trade -> trade(effect.currencies)
         NavigationTarget.AddWallet -> addWallet()
         NavigationTarget.DisabledScreen -> disabledScreen()
@@ -99,6 +100,8 @@ interface NavigationTargetHandlerSpec {
     fun home(): Unit
 
     fun buy(): Unit
+
+    fun profile(): Unit
 
     fun trade(currencies: List<String>): Unit
 
