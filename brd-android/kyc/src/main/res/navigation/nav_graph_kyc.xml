@@ -53,6 +53,17 @@
             android:name="com.fabriik.kyc.ui.features.proofofidentity.ProofOfIdentityFragment"
             tools:layout="@layout/fragment_proof_of_identity">
 
+            <action
+                android:id="@+id/action_proofOfIdentity_to_camera"
+                app:destination="@+id/fragmentPostValidation" />
+
+        </fragment>
+
+        <fragment
+            android:id="@+id/fragmentPostValidation"
+            android:name="com.fabriik.kyc.ui.features.postvalidation.PostValidationFragment"
+            tools:layout="@layout/fragment_post_validation">
+
         </fragment>
     </navigation>
 </navigation>

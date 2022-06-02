@@ -48,4 +48,12 @@
     <string name="PreValidation.CheckedItem1">Prepare a valid government-issued identity document (Passport, National ID card or Drivers license)</string>
     <string name="PreValidation.CheckedItem2">Make sure you are in a well-lit room</string>
     <string name="PreValidation.CheckedItem3">Be prepared to take a selfie and photos of your ID</string>
+
+    <!-- Post validation screen -->
+    <string name="PostValidation.Title">Your ID verification is in progress</string>
+    <string name="PostValidation.Subtitle">We are reviewing your documents and will let you know when your account has been verified.</string>
+    <string name="PostValidation.CheckedItem1">Uploading your photos</string>
+    <string name="PostValidation.CheckedItem2">Checking for errors</string>
+    <string name="PostValidation.CheckedItem3">Sending your data for verification</string>
+    <string name="PostValidation.CheckedItem4">Verifying you</string>
 </resources>

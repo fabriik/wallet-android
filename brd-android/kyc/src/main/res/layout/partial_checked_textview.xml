@@ -3,7 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:orientation="horizontal"
-    tools:parentTag="LinearLayout">
+    tools:parentTag="LinearLayout"
+    android:id="@+id/item_1">
 
     <ImageView
         android:id="@+id/ic_checked"
