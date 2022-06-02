@@ -3,12 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph_kyc"
-    app:startDestination="@id/fragmentProofOfIdentity">
+    app:startDestination="@id/fragmentPreValidation">
 
     <fragment
         android:id="@+id/fragmentProofOfIdentity"
         android:name="com.fabriik.kyc.ui.features.proofofidentity.ProofOfIdentityFragment"
         tools:layout="@layout/fragment_proof_of_identity">
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragmentPreValidation"
+        android:name="com.fabriik.kyc.ui.features.prevalidation.PreValidationFragment"
+        tools:layout="@layout/fragment_pre_validation">
 
     </fragment>
 
