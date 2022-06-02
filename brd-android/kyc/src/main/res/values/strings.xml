@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Common -->
+    <string name="KYC.ConfirmButton">Confirm</string>
+
+    <!-- Profile status view -->
     <string name="ProfileStatusView.accountLimits">Account limits</string>
     <string name="ProfileStatusView.getFullAccess">Get full access to Fabriik Wallet</string>
     <string name="ProfileStatusView.verifyAccount">Verify your account</string>
@@ -14,4 +18,18 @@
     <string name="ProfileStatusView.statusVerified">Verified</string>
     <string name="ProfileStatusView.statusResubmit">Resubmit</string>
     <string name="ProfileStatusView.statusDeclined">Declined</string>
+
+    <!-- Proof of identity screen -->
+    <string name="ProofOfIdentity.Title">Proof of Identity</string>
+    <string name="ProofOfIdentity.Section">Select one of the following options:</string>
+    <string name="ProofOfIdentity.Passport">Passport</string>
+    <string name="ProofOfIdentity.NationalIdCard">National ID card</string>
+    <string name="ProofOfIdentity.DrivingLicence">Driver’s license</string>
+
+    <!-- Pre validation screen -->
+    <string name="PreValidation.Title">We need to confirm your ID</string>
+    <string name="PreValidation.Subtitle">Before you start, please:</string>
+    <string name="PreValidation.CheckedItem1">Prepare a valid government-issued identity document (Passport, National ID card or Drivers license)</string>
+    <string name="PreValidation.CheckedItem2">Make sure you are in a well-lit room</string>
+    <string name="PreValidation.CheckedItem3">Be prepared to take a selfie and photos of your ID</string>
 </resources>

@@ -50,6 +50,7 @@
     <style name="TextStyle.Body2">
         <item name="android:textSize">14sp</item>
         <item name="fontFamily">@font/roboto_regular</item>
+        <item name="lineHeight">20dp</item>
     </style>
 
     <style name="TextStyle.Caption">
