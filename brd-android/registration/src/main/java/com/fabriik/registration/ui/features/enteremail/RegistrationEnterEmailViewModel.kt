@@ -42,7 +42,7 @@ class RegistrationEnterEmailViewModel(
 
             is RegistrationEnterEmailContract.Event.NextClicked -> {
 
-                val dateFormat = SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z", Locale.US)
+                val dateFormat = SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.US)
                 dateFormat.timeZone = TimeZone.getTimeZone("GMT")
 
                 val key = authKey?: return
@@ -53,17 +53,20 @@ class RegistrationEnterEmailViewModel(
                 val signature = CryptoHelper.signBasicDer(signatureSha256, key)
                 val signatureEncoded = Base64.encode(signature, Base64.NO_WRAP)
                 val dateHeader = dateFormat.format(Date())
-                    .run { substring(0, indexOf("GMT") + "GMT".length) }
 
                 viewModelScope.launch(Dispatchers.IO) {
-                    val response = registrationApi.associateAccount(
-                        email = email,
-                        token = token,
-                        dateHeader = dateHeader,
-                        signature = String(signatureEncoded).trim()
-                    )
+                    try {
+                        val response = registrationApi.associateAccount(
+                            email = email,
+                            token = token,
+                            dateHeader = dateHeader,
+                            signature = String(signatureEncoded).trim()
+                        )
 
-                    Log.i("test", "test")
+                        Log.i("test_api", response.string())
+                    } catch (ex: Exception) {
+                        Log.i("test_api", ex.message ?: "unknown error")
+                    }
                 }
             }
                 /*setEffect {

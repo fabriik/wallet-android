@@ -13,9 +13,11 @@ class RegistrationApi(private val service: RegistrationService) {
             email = email,
             token = token
         ),
-        sessionKey = "qvrphn76s49t9j3tmff4jm24a7m116dc5k6t41cd",
-        dateHeader = dateHeader,
-        signatureHeader = signature
+        headers = mapOf(
+            Pair("Authorization", "qvrphn76s49t9j3tmff4jm24a7m116dc5k6t41cd"),
+            Pair("Date", dateHeader),
+            Pair("Signature", signature)
+        )
     )
 
     companion object {
@@ -30,7 +32,7 @@ class RegistrationApi(private val service: RegistrationService) {
                         .connectTimeout(30, TimeUnit.SECONDS)
                         .build()
                 )
-                .baseUrl(/*FabriikApiConstants.HOST_AUTH_API*/"https://567f-2a00-ee2-2607-1300-61a3-8d21-5842-cb14.ngrok.io/blocksatoshi/one/auth/")
+                .baseUrl(/*FabriikApiConstants.HOST_AUTH_API*/"https://3144-2a00-ee2-2607-1300-61a3-8d21-5842-cb14.ngrok.io/blocksatoshi/one/auth/")
                 .addConverterFactory(MoshiConverterFactory.create())
                 .build()
                 .create(RegistrationService::class.java)

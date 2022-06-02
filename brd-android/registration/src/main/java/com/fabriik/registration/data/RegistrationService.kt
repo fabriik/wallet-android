@@ -8,9 +8,7 @@ interface RegistrationService {
 
     @POST("associate")
     suspend fun associateAccount(
-        @Header("Date") dateHeader: String,
-        @Header("Authorization") sessionKey: String,
-        @Header("Signature") signatureHeader: String,
+        @HeaderMap headers: Map<String, String>,
         @Body request: AssociateRequest
     ) : ResponseBody
 }
