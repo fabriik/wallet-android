@@ -79,6 +79,10 @@ class ProofOfIdentityFragment : Fragment(),
 
             is ProofOfIdentityContract.Effect.GoToDocumentUpload -> {
                 Toast.makeText(context, "Work in progress", Toast.LENGTH_LONG).show()
+
+                findNavController().navigate(
+                    ProofOfIdentityFragmentDirections.actionProofOfIdentityToCamera()
+                )
             } //todo: navigate to camera screen
         }
     }
