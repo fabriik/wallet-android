@@ -31,6 +31,10 @@
     <string name="PersonalInformation.Month">MM</string>
     <string name="PersonalInformation.Year">YYYY</string>
 
+    <!-- CountrySelection screen -->
+    <string name="CountrySelection.Title">Country</string>
+    <string name="CountrySelection.SearchHint">Search</string>
+
     <!-- Proof of identity screen -->
     <string name="ProofOfIdentity.Title">Proof of Identity</string>
     <string name="ProofOfIdentity.Section">Select one of the following options:</string>

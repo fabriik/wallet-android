@@ -22,8 +22,8 @@ interface PersonalInformationContract {
     sealed class Effect : FabriikContract.Effect {
         object GoBack : Effect()
         object Dismiss : Effect()
+        object CountrySelection : Effect()
         data class DateSelection(val date: Calendar?) : Effect()
-        data class CountrySelection(val country: Country?) : Effect()
     }
 
     data class State(
