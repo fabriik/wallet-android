@@ -105,8 +105,9 @@ class HomeController(
     override fun bindView(output: Consumer<E>): Disposable {
         return with (binding) {
             buyLayout.setOnClickListener { output.accept(E.OnBuyClicked) }
-            tradeLayout.setOnClickListener { output.accept(E.OnTradeClicked) }
             menuLayout.setOnClickListener { output.accept(E.OnMenuClicked) }
+            tradeLayout.setOnClickListener { output.accept(E.OnTradeClicked) }
+            profileLayout.setOnClickListener { output.accept(E.OnProfileClicked) }
 
             val fastAdapter = checkNotNull(fastAdapter)
             fastAdapter.onClickListener = { _, _, item, _ ->

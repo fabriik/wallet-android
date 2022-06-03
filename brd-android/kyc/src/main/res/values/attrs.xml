@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="KycToolbar">
+        <attr name="title" format="string" />
+        <attr name="showBack" format="boolean" />
+        <attr name="showDismiss" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="CheckedTextView">
+        <attr name="contentText" format="string"/>
+        <attr name="iconImage" format="reference"/>
+    </declare-styleable>
+</resources>
