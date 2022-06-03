@@ -64,41 +64,28 @@ class PersonalInformationFragment : Fragment(),
                 )
             }
 
-            etDay.isFocusable = false
-            etDay.isCursorVisible = false
             etDay.setOnClickListener {
                 viewModel.setEvent(
                     PersonalInformationContract.Event.DateClicked
                 )
             }
 
-            etYear.isFocusable = false
-            etYear.isCursorVisible = false
             etYear.setOnClickListener {
                 viewModel.setEvent(
                     PersonalInformationContract.Event.DateClicked
                 )
             }
 
-            etMonth.isFocusable = false
-            etMonth.isCursorVisible = false
             etMonth.setOnClickListener {
                 viewModel.setEvent(
                     PersonalInformationContract.Event.DateClicked
                 )
             }
 
-            etCountry.isFocusable = false
-            etCountry.isCursorVisible = false
             etCountry.setOnClickListener {
                 viewModel.setEvent(
                     PersonalInformationContract.Event.CountryClicked
                 )
-                /*findNavController().navigate(
-                    PersonalInformationFragmentDirections.actionToCountrySelection(
-                        "request_key_country", null
-                    ) //todo: merge country selection first
-                )*/
             }
 
             /*parentFragmentManager.setFragmentResultListener("request_key_country", this@PersonalInformationFragment) { _, bundle ->
@@ -163,7 +150,13 @@ class PersonalInformationFragment : Fragment(),
                picker.show(childFragmentManager, "date_of_birth_picker")
             }
 
-            is PersonalInformationContract.Effect.CountrySelection -> {}
+            is PersonalInformationContract.Effect.CountrySelection -> {
+                /*findNavController().navigate(
+                   PersonalInformationFragmentDirections.actionToCountrySelection(
+                       "request_key_country", null
+                   ) //todo: merge country selection first
+               )*/
+            }
         }
     }
 }

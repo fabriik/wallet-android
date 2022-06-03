@@ -61,9 +61,9 @@
                             android:id="@+id/et_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="textCapWords"
                             android:imeOptions="actionNext"
-                            android:nextFocusForward="@id/et_last_name"/>
+                            android:inputType="textCapWords"
+                            android:nextFocusForward="@id/et_last_name" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -81,25 +81,25 @@
                             android:id="@+id/et_last_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="textCapWords"
-                            android:imeOptions="actionDone" />
+                            android:imeOptions="actionDone"
+                            android:inputType="textCapWords" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/til_country"
+                        style="@style/FabriikTextInputStyle.Chevron"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:hint="@string/PersonalInformation.Country"
-                        app:endIconMode="custom"
-                        app:endIconDrawable="@drawable/ic_chevron_down"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/til_name">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_country"
+                            style="@style/FabriikEditTextStyle.Clickable"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="textCapWords" />
@@ -133,6 +133,7 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_month"
+                            style="@style/FabriikEditTextStyle.Clickable"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="number"
@@ -155,6 +156,7 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_day"
+                            style="@style/FabriikEditTextStyle.Clickable"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="number"
@@ -175,6 +177,7 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_year"
+                            style="@style/FabriikEditTextStyle.Clickable"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="number"
