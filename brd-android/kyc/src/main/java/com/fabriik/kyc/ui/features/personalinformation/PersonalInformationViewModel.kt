@@ -24,9 +24,7 @@ class PersonalInformationViewModel(
                 setEffect { PersonalInformationContract.Effect.Dismiss }
 
             is PersonalInformationContract.Event.CountryClicked ->
-                setEffect {
-                    PersonalInformationContract.Effect.CountrySelection(currentState.country)
-                }
+                setEffect { PersonalInformationContract.Effect.CountrySelection }
 
             PersonalInformationContract.Event.DateClicked ->
                 setEffect {

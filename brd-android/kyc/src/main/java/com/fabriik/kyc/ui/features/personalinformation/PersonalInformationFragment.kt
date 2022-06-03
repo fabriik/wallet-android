@@ -12,7 +12,9 @@ import androidx.navigation.fragment.findNavController
 import com.fabriik.common.ui.base.FabriikView
 import com.fabriik.common.utils.textOrEmpty
 import com.fabriik.kyc.R
+import com.fabriik.kyc.data.model.Country
 import com.fabriik.kyc.databinding.FragmentPersonalInformationBinding
+import com.fabriik.kyc.ui.features.countryselection.CountrySelectionFragment
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
 //import com.fabriik.kyc.ui.features.countryselection.CountrySelectionFragment
@@ -88,14 +90,14 @@ class PersonalInformationFragment : Fragment(),
                 )
             }
 
-            /*parentFragmentManager.setFragmentResultListener("request_key_country", this@PersonalInformationFragment) { _, bundle ->
+            parentFragmentManager.setFragmentResultListener(REQUEST_KEY_COUNTRY_SELECTION, this@PersonalInformationFragment) { _, bundle ->
                 val country = bundle.getParcelable(CountrySelectionFragment.EXTRA_SELECTED_COUNTRY) as Country?
                 if (country != null) {
                     viewModel.setEvent(
                         PersonalInformationContract.Event.CountryChanged(country)
                     )
-                } //todo: merge country selection first
-            }*/
+                }
+            }
         }
 
         // collect UI state
@@ -143,20 +145,25 @@ class PersonalInformationFragment : Fragment(),
                     .setSelection(effect.date?.timeInMillis)
                     .build()
 
-               picker.addOnPositiveButtonClickListener {
-                   viewModel.setEvent(PersonalInformationContract.Event.DateChanged(it))
-               }
+                picker.addOnPositiveButtonClickListener {
+                    viewModel.setEvent(PersonalInformationContract.Event.DateChanged(it))
+                }
 
-               picker.show(childFragmentManager, "date_of_birth_picker")
+                picker.show(childFragmentManager, TAG_DATE_PICKER)
             }
 
             is PersonalInformationContract.Effect.CountrySelection -> {
-                /*findNavController().navigate(
-                   PersonalInformationFragmentDirections.actionToCountrySelection(
-                       "request_key_country", null
-                   ) //todo: merge country selection first
-               )*/
+                findNavController().navigate(
+                    PersonalInformationFragmentDirections.actionCountrySelection(
+                        REQUEST_KEY_COUNTRY_SELECTION
+                    )
+                )
             }
         }
+    }
+
+    companion object {
+        const val TAG_DATE_PICKER = "date_of_birth_picker"
+        const val REQUEST_KEY_COUNTRY_SELECTION = "request_key_country"
     }
 }
