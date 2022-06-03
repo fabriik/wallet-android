@@ -11,7 +11,7 @@ import com.fabriik.kyc.databinding.PartialCheckedTextviewBinding
 
 class CheckedTextView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
-) : LinearLayout(context) {
+) : LinearLayout(context, attrs) {
     private val binding: PartialCheckedTextviewBinding
 
     init {

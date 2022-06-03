@@ -45,14 +45,7 @@ class AccountVerificationStatusView @JvmOverloads constructor(
     }
 
     fun setStatus(status: AccountVerificationStatus) {
-        val state = when (status) {
-            AccountVerificationStatus.DEFAULT -> State.Default
-            AccountVerificationStatus.LEVEL1_VERIFIED -> State.Level1Verified
-            AccountVerificationStatus.LEVEL2_PENDING -> State.Level2Pending
-            AccountVerificationStatus.LEVEL2_DECLINED -> State.Level2Declined
-            AccountVerificationStatus.LEVEL2_RESUBMIT -> State.Level2Resubmit
-            AccountVerificationStatus.LEVEL2_VERIFIED -> State.Level2Verified
-        }
+        val state = mapToState(status)
 
         with(binding) {
             tvTitle.setText(state.title)
@@ -83,11 +76,20 @@ class AccountVerificationStatusView @JvmOverloads constructor(
         this.callback = callback
     }
 
+    fun mapToState(status: AccountVerificationStatus) = when (status) {
+        AccountVerificationStatus.DEFAULT -> State.Default
+        AccountVerificationStatus.LEVEL1_VERIFIED -> State.Level1Verified
+        AccountVerificationStatus.LEVEL2_PENDING -> State.Level2Pending
+        AccountVerificationStatus.LEVEL2_DECLINED -> State.Level2Declined
+        AccountVerificationStatus.LEVEL2_RESUBMIT -> State.Level2Resubmit
+        AccountVerificationStatus.LEVEL2_VERIFIED -> State.Level2Verified
+    }
+
     interface Callback {
         fun onButtonClicked(button: StatusButton)
     }
 
-    private sealed class StatusViewState(
+    sealed class StatusViewState(
         @StringRes val text: Int,
         @ColorRes val textColor: Int,
         @ColorRes val backgroundTint: Int
@@ -118,7 +120,7 @@ class AccountVerificationStatusView @JvmOverloads constructor(
         )
     }
 
-    private sealed class State(
+    sealed class State(
         @StringRes val title: Int,
         @StringRes val subtitle: Int,
         val statusView: StatusViewState? = null,
