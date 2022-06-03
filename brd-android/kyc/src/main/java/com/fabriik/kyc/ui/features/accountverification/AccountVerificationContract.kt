@@ -7,14 +7,13 @@ interface AccountVerificationContract {
 
     sealed class Event : FabriikContract.Event {
         object BackClicked : Event()
-        object BasicClicked : Event()
-        object UnlimitedClicked : Event()
+        object Level1Clicked : Event()
+        object Level2Clicked : Event()
     }
 
     sealed class Effect : FabriikContract.Effect {
         object GoBack : Effect()
         object GoToPersonalInfo : Effect()
-        object GoToProofOfIdentity : Effect()
     }
 
     data class State(

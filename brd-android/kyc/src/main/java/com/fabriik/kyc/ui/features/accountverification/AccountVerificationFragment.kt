@@ -40,13 +40,13 @@ class AccountVerificationFragment : Fragment(),
                 viewModel.setEvent(AccountVerificationContract.Event.BackClicked)
             }
 
-            /*cvBasic.setOnClickListener {
-                viewModel.setEvent(AccountVerificationContract.Event.BasicClicked)
+            cvLevel1.setOnClickListener {
+                viewModel.setEvent(AccountVerificationContract.Event.Level1Clicked)
             }
 
-            cvUnlimited.setOnClickListener {
-                viewModel.setEvent(AccountVerificationContract.Event.UnlimitedClicked)
-            }*/
+            cvLevel2.setOnClickListener {
+                viewModel.setEvent(AccountVerificationContract.Event.Level2Clicked)
+            }
         }
 
         // collect UI state

@@ -25,11 +25,10 @@ class AccountVerificationViewModel(
             is AccountVerificationContract.Event.BackClicked ->
                 setEffect { AccountVerificationContract.Effect.GoBack }
 
-            is AccountVerificationContract.Event.BasicClicked ->
+            is AccountVerificationContract.Event.Level1Clicked ->
                 setEffect { AccountVerificationContract.Effect.GoToPersonalInfo }
 
-            is AccountVerificationContract.Event.UnlimitedClicked ->
-                setEffect { AccountVerificationContract.Effect.GoToProofOfIdentity }
+            is AccountVerificationContract.Event.Level2Clicked -> {} //todo
         }
     }
 
