@@ -7,38 +7,42 @@
 
     <navigation
         android:id="@+id/nav_graph_kyc_level1"
-        app:startDestination="@id/fragmentAccountVerification">
+        app:startDestination="@id/nav_graph_kyc_level1">
 
-        <fragment
-            android:id="@+id/fragmentAccountVerification"
-            android:name="com.fabriik.kyc.ui.features.accountverification.AccountVerificationFragment"
-            tools:layout="@layout/fragment_account_verification">
+        <navigation
+            android:id="@+id/nav_graph_kyc_level1"
+            app:startDestination="@id/fragmentAccountVerification">
 
-            <action
-                android:id="@+id/actionPersonalInfo"
-                app:destination="@id/fragmentPersonalInfo" />
+            <fragment
+                android:id="@+id/fragmentAccountVerification"
+                android:name="com.fabriik.kyc.ui.features.accountverification.AccountVerificationFragment"
+                tools:layout="@layout/fragment_account_verification">
 
-        </fragment>
+                <action
+                    android:id="@+id/actionPersonalInfo"
+                    app:destination="@id/fragmentPersonalInfo" />
 
-        <fragment
-            android:id="@+id/fragmentPersonalInfo"
-            android:name="com.fabriik.kyc.ui.features.personalinformation.PersonalInformationFragment"
-            tools:layout="@layout/fragment_personal_information">
+            </fragment>
 
-            <action
-                android:id="@+id/actionCountrySelection"
-                app:destination="@id/fragmentCountrySelection" />
+            <fragment
+                android:id="@+id/fragmentPersonalInfo"
+                android:name="com.fabriik.kyc.ui.features.personalinformation.PersonalInformationFragment"
+                tools:layout="@layout/fragment_personal_information">
 
-        </fragment>
+                <action
+                    android:id="@+id/actionCountrySelection"
+                    app:destination="@id/fragmentCountrySelection" />
 
-        <fragment
-            android:id="@+id/fragmentCountrySelection"
-            android:name="com.fabriik.kyc.ui.features.countryselection.CountrySelectionFragment"
-            tools:layout="@layout/fragment_country_selection">
+            </fragment>
 
-            <argument
-                android:name="requestKey"
-                app:argType="string" />
+            <fragment
+                android:id="@+id/fragmentCountrySelection"
+                android:name="com.fabriik.kyc.ui.features.countryselection.CountrySelectionFragment"
+                tools:layout="@layout/fragment_country_selection">
+
+                <argument
+                    android:name="requestKey"
+                    app:argType="string" />
 
         </fragment>
 
@@ -66,4 +70,4 @@
 
         </fragment>
     </navigation>
-</navigation>
+        </navigation>
