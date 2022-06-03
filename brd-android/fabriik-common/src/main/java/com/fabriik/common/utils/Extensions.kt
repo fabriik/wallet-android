@@ -1,6 +1,5 @@
 package com.fabriik.common.utils
 
-import android.R.attr.button
 import android.app.Application
 import android.content.Context
 import android.content.res.Resources
@@ -13,7 +12,6 @@ import androidx.annotation.StringRes
 import androidx.core.os.bundleOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.SavedStateHandle
-
 
 fun AndroidViewModel.getString(@StringRes string: Int, vararg formatArgs: Any?): String {
     return getApplication<Application>().applicationContext.getString(string, *formatArgs)
@@ -44,6 +42,8 @@ fun EditText.hideKeyboard() {
 }
 
 fun Editable?.textOrEmpty() = if (isNullOrEmpty()) "" else toString()
+
+fun Editable?.asInt() = if (isNullOrEmpty()) null else toString().toInt()
 
 val Int.dp: Int
     get() = (this * Resources.getSystem().displayMetrics.density).toInt()

@@ -3,9 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph_kyc"
-    app:startDestination="@id/nav_graph_kyc_level2">
+    app:startDestination="@id/nav_graph_kyc_level1">
 
-    <navigation android:id="@+id/nav_graph_kyc_level2"
+    <navigation
+        android:id="@+id/nav_graph_kyc_level1"
+        app:startDestination="@id/fragmentPersonalInfo">
+
+        <fragment
+            android:id="@+id/fragmentPersonalInfo"
+            android:name="com.fabriik.kyc.ui.features.personalinformation.PersonalInformationFragment"
+            tools:layout="@layout/fragment_personal_information" />
+
+    </navigation>
+
+    <navigation
+        android:id="@+id/nav_graph_kyc_level2"
         app:startDestination="@id/fragmentPreValidation">
 
         <fragment
