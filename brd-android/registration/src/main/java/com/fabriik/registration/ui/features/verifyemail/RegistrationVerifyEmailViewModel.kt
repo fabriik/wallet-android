@@ -3,6 +3,7 @@ package com.fabriik.registration.ui.features.verifyemail
 import android.app.Application
 import android.graphics.Typeface
 import android.text.style.StyleSpan
+import android.util.Log
 import androidx.core.text.toSpannable
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
@@ -11,6 +12,7 @@ import com.fabriik.common.utils.getString
 import com.fabriik.common.utils.toBundle
 import com.fabriik.common.utils.validators.ConfirmationCodeValidator
 import com.fabriik.registration.R
+import com.fabriik.registration.data.RegistrationApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -21,6 +23,7 @@ class RegistrationVerifyEmailViewModel(
 ) : FabriikViewModel<RegistrationVerifyEmailContract.State, RegistrationVerifyEmailContract.Event, RegistrationVerifyEmailContract.Effect>(
     application, savedStateHandle
 ) {
+    private val registrationApi = RegistrationApi.create()
 
     private lateinit var arguments: RegistrationVerifyEmailFragmentArgs
 
@@ -54,10 +57,10 @@ class RegistrationVerifyEmailViewModel(
                 setEffect { RegistrationVerifyEmailContract.Effect.Back }
 
             is RegistrationVerifyEmailContract.Event.ConfirmClicked -> {
-                //todo: API call
+                verifyEmail()
 
                 // todo: remove after API integration, added only for testing
-                if (currentState.code == "111111") {
+                /*if (currentState.code == "111111") {
                     setState { copy(codeErrorVisible = true).validate() }
                 } else {
                     viewModelScope.launch(Dispatchers.IO) {
@@ -66,13 +69,33 @@ class RegistrationVerifyEmailViewModel(
                         setState { copy(verifiedOverlayVisible = false) }
                         setEffect { RegistrationVerifyEmailContract.Effect.Dismiss }
                     }
-                }
+                }*/
+            }
+        }
+    }
+
+    private fun verifyEmail() {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val response = registrationApi.associateAccountConfirm(
+                    currentState.code
+                )
+                Log.i("test_api", response.string())
+            } catch (ex: Exception) {
+                Log.i("test_api", ex.message ?: "unknown error")
             }
         }
     }
 
     private fun resendEmail() {
-        // todo: call API
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val response = registrationApi.resendAssociateAccountChallenge()
+                Log.i("test_api", response.string())
+            } catch (ex: Exception) {
+                Log.i("test_api", ex.message ?: "unknown error")
+            }
+        }
     }
 
     private fun createSubtitle(): CharSequence {

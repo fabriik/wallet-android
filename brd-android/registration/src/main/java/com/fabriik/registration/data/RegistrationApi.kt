@@ -1,5 +1,6 @@
 package com.fabriik.registration.data
 
+import com.fabriik.registration.data.requests.AssociateConfirmRequest
 import com.fabriik.registration.data.requests.AssociateRequest
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -19,6 +20,12 @@ class RegistrationApi(private val service: RegistrationService) {
             Pair("Signature", signature)
         )
     )
+
+    suspend fun associateAccountConfirm(code: String) = service.associateAccountConfirm(
+        request = AssociateConfirmRequest(code)
+    )
+
+    suspend fun resendAssociateAccountChallenge = service.resendAssociateAccountChallenge()
 
     companion object {
 
