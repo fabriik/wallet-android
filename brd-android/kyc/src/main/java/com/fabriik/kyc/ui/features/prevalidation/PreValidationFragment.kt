@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.fabriik.common.ui.base.FabriikView
 import com.fabriik.kyc.R
@@ -66,7 +67,7 @@ class PreValidationFragment : Fragment(),
 
             is PreValidationContract.Effect.GoForward ->
                 findNavController().navigate(
-                    PreValidationFragmentDirections.actionPreValidationToProofOfIdentity()
+                    PreValidationFragmentDirections.actionProofOfIdentity()
                 )
         }
     }
