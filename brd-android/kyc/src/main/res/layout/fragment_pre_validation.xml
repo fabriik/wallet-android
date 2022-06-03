@@ -22,25 +22,27 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="24dp">
+            android:paddingTop="24dp"
+            android:paddingBottom="16dp">
 
             <TextView
                 android:id="@+id/tv_subtitle"
-                style="@style/TextStyle.Title5"
+                style="@style/TextStyle.Title6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginStart="24dp"
                 android:text="@string/PreValidation.Subtitle"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.fabriik.kyc.ui.customview.CheckedTextView
+                android:id="@+id/checked_item_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="40dp"
                 android:layout_marginTop="32dp"
+                android:layout_marginEnd="84dp"
                 app:contentText="@string/PreValidation.CheckedItem1"
                 app:iconImage="@drawable/ic_check_blue"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -48,30 +50,35 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_subtitle" />
 
             <com.fabriik.kyc.ui.customview.CheckedTextView
+                android:id="@+id/checked_item_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="108dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="84dp"
                 app:contentText="@string/PreValidation.CheckedItem2"
                 app:iconImage="@drawable/ic_check_blue"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_subtitle" />
+                app:layout_constraintTop_toBottomOf="@+id/checked_item_1" />
 
             <com.fabriik.kyc.ui.customview.CheckedTextView
+                android:id="@+id/checked_item_3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="144dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="84dp"
                 app:contentText="@string/PreValidation.CheckedItem3"
                 app:iconImage="@drawable/ic_check_blue"
-                app:layout_constraintTop_toBottomOf="@id/tv_subtitle" />
+                app:layout_constraintTop_toBottomOf="@id/checked_item_2" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_confirm"
                 style="@style/ConfirmButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
                 android:height="48dp"
                 android:text="@string/KYC.ConfirmButton"
                 app:layout_constraintBottom_toBottomOf="parent" />
