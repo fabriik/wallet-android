@@ -3,20 +3,56 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph_kyc"
-    app:startDestination="@id/fragmentPreValidation">
+    app:startDestination="@id/nav_graph_kyc_level1">
 
-    <fragment
-        android:id="@+id/fragmentProofOfIdentity"
-        android:name="com.fabriik.kyc.ui.features.proofofidentity.ProofOfIdentityFragment"
-        tools:layout="@layout/fragment_proof_of_identity">
+    <navigation
+        android:id="@+id/nav_graph_kyc_level1"
+        app:startDestination="@id/fragmentPersonalInfo">
 
-    </fragment>
+        <fragment
+            android:id="@+id/fragmentPersonalInfo"
+            android:name="com.fabriik.kyc.ui.features.personalinformation.PersonalInformationFragment"
+            tools:layout="@layout/fragment_personal_information">
 
-    <fragment
-        android:id="@+id/fragmentPreValidation"
-        android:name="com.fabriik.kyc.ui.features.prevalidation.PreValidationFragment"
-        tools:layout="@layout/fragment_pre_validation">
+            <action
+                android:id="@+id/actionCountrySelection"
+                app:destination="@id/fragmentCountrySelection" />
 
-    </fragment>
+        </fragment>
 
+        <fragment
+            android:id="@+id/fragmentCountrySelection"
+            android:name="com.fabriik.kyc.ui.features.countryselection.CountrySelectionFragment"
+            tools:layout="@layout/fragment_country_selection">
+
+            <argument
+                android:name="requestKey"
+                app:argType="string" />
+
+        </fragment>
+
+    </navigation>
+
+    <navigation
+        android:id="@+id/nav_graph_kyc_level2"
+        app:startDestination="@id/fragmentPreValidation">
+
+        <fragment
+            android:id="@+id/fragmentPreValidation"
+            android:name="com.fabriik.kyc.ui.features.prevalidation.PreValidationFragment"
+            tools:layout="@layout/fragment_pre_validation">
+
+            <action
+                android:id="@+id/actionProofOfIdentity"
+                app:destination="@id/fragmentProofOfIdentity" />
+
+        </fragment>
+
+        <fragment
+            android:id="@+id/fragmentProofOfIdentity"
+            android:name="com.fabriik.kyc.ui.features.proofofidentity.ProofOfIdentityFragment"
+            tools:layout="@layout/fragment_proof_of_identity">
+
+        </fragment>
+    </navigation>
 </navigation>

@@ -110,6 +110,11 @@
         <item name="materialThemeOverlay">@style/FabriikTextInputStyle.ThemeOverlay</item>
     </style>
 
+    <style name="FabriikTextInputStyle.Chevron">
+        <item name="endIconMode">custom</item>
+        <item name="endIconDrawable">@drawable/ic_chevron_down</item>
+    </style>
+
     <style name="FabriikTextInputStyle.ThemeOverlay" parent="ThemeOverlay.MaterialComponents.TextInputEditText.FilledBox">
         <item name="editTextStyle">@style/FabriikEditTextStyle</item>
     </style>
@@ -123,11 +128,33 @@
         <item name="android:textCursorDrawable">@null</item>
     </style>
 
+    <style name="FabriikEditTextStyle.Clickable">
+        <item name="android:focusable">false</item>
+        <item name="android:cursorVisible">false</item>
+    </style>
+
     <style name="FabriikErrorBubbleView" parent="TextStyle.Body2">
         <item name="android:background">@drawable/bg_error_bubble</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:padding">16dp</item>
         <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="FabriikSearchEditTextStyle">
+        <item name="android:layout_height">50dp</item>
+        <item name="android:background">@drawable/search_border</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:drawablePadding">8dp</item>
+        <item name="android:drawableStart">@drawable/ic_search_gray_18dp</item>
+        <item name="android:textColor">@color/light_text_01</item>
+        <item name="android:textColorHint">@color/light_text_01</item>
+        <item name="android:textAppearance">@style/TextStyle.Body2</item>
+        <item name="android:textCursorDrawable">@null</item>
+        <item name="android:maxEms">20</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:inputType">text</item>
     </style>
 
     <style name="ConfirmButton" parent="@style/FabriikButtonStyle.Dense">
