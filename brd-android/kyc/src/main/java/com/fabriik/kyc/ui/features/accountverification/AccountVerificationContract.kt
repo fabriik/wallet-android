@@ -1,8 +1,6 @@
 package com.fabriik.kyc.ui.features.accountverification
 
 import com.fabriik.common.ui.base.FabriikContract
-import com.fabriik.kyc.R
-import com.fabriik.kyc.data.enums.AccountVerificationStatus
 import com.fabriik.kyc.ui.customview.AccountVerificationStatusView
 
 interface AccountVerificationContract {

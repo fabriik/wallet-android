@@ -11,17 +11,14 @@ class AccountVerificationViewModel(
     application
 ) {
 
-    override fun createInitialState() = AccountVerificationContract.State(
-        level1State = AccountVerificationContract.Level1State(
-            isEnabled = true,
-            statusState = AccountVerificationStatusView.StatusViewState.Verified
-        ),
-        level2State = AccountVerificationContract.Level2State(
-            isEnabled = true,
-            statusState = AccountVerificationStatusView.StatusViewState.Declined,
-            verificationError = "Test error message"
+    override fun createInitialState() : AccountVerificationContract.State {
+        val status = AccountVerificationStatus.DEFAULT
+
+        return AccountVerificationContract.State(
+            level1State = mapStatusToLevel1State(status),
+            level2State = mapStatusToLevel2State(status)
         )
-    )
+    }
 
     override fun handleEvent(event: AccountVerificationContract.Event) {
         when (event) {
@@ -33,6 +30,48 @@ class AccountVerificationViewModel(
 
             is AccountVerificationContract.Event.UnlimitedClicked ->
                 setEffect { AccountVerificationContract.Effect.GoToProofOfIdentity }
+        }
+    }
+
+    private fun mapStatusToLevel1State(status: AccountVerificationStatus): AccountVerificationContract.Level1State {
+        val state = when (status) {
+            AccountVerificationStatus.DEFAULT -> null
+            else -> AccountVerificationStatusView.StatusViewState.Verified
+        }
+
+        return AccountVerificationContract.Level1State(
+            isEnabled = true,
+            statusState = state
+        )
+    }
+
+    private fun mapStatusToLevel2State(status: AccountVerificationStatus): AccountVerificationContract.Level2State {
+        return when (status) {
+            AccountVerificationStatus.DEFAULT -> AccountVerificationContract.Level2State(
+                isEnabled = false,
+                statusState = null
+            )
+            AccountVerificationStatus.LEVEL1_VERIFIED -> AccountVerificationContract.Level2State(
+                isEnabled = true
+            )
+            AccountVerificationStatus.LEVEL2_DECLINED -> AccountVerificationContract.Level2State(
+                isEnabled = true,
+                statusState = AccountVerificationStatusView.StatusViewState.Declined,
+                verificationError = "Test error message"
+            )
+            AccountVerificationStatus.LEVEL2_RESUBMIT -> AccountVerificationContract.Level2State(
+                isEnabled = true,
+                statusState = AccountVerificationStatusView.StatusViewState.Resubmit,
+                verificationError = "Test error message"
+            )
+            AccountVerificationStatus.LEVEL2_PENDING -> AccountVerificationContract.Level2State(
+                isEnabled = true,
+                statusState = AccountVerificationStatusView.StatusViewState.Pending
+            )
+            AccountVerificationStatus.LEVEL2_VERIFIED -> AccountVerificationContract.Level2State(
+                isEnabled = true,
+                statusState = AccountVerificationStatusView.StatusViewState.Verified
+            )
         }
     }
 }
