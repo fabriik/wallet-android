@@ -10,11 +10,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.fabriik.common.ui.base.FabriikView
-import com.fabriik.common.utils.InputFilterMinMax
-import com.fabriik.common.utils.asInt
 import com.fabriik.common.utils.textOrEmpty
 import com.fabriik.kyc.R
-import com.fabriik.kyc.data.model.Country
 import com.fabriik.kyc.databinding.FragmentPersonalInformationBinding
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -68,6 +65,7 @@ class PersonalInformationFragment : Fragment(),
             }
 
             etDay.isFocusable = false
+            etDay.isCursorVisible = false
             etDay.setOnClickListener {
                 viewModel.setEvent(
                     PersonalInformationContract.Event.DateClicked
@@ -75,6 +73,7 @@ class PersonalInformationFragment : Fragment(),
             }
 
             etYear.isFocusable = false
+            etYear.isCursorVisible = false
             etYear.setOnClickListener {
                 viewModel.setEvent(
                     PersonalInformationContract.Event.DateClicked
@@ -82,6 +81,7 @@ class PersonalInformationFragment : Fragment(),
             }
 
             etMonth.isFocusable = false
+            etMonth.isCursorVisible = false
             etMonth.setOnClickListener {
                 viewModel.setEvent(
                     PersonalInformationContract.Event.DateClicked
@@ -89,6 +89,7 @@ class PersonalInformationFragment : Fragment(),
             }
 
             etCountry.isFocusable = false
+            etCountry.isCursorVisible = false
             etCountry.setOnClickListener {
                 viewModel.setEvent(
                     PersonalInformationContract.Event.CountryClicked
