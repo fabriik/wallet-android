@@ -15,7 +15,6 @@ class CheckedTextView @JvmOverloads constructor(
     private val binding: PartialCheckedTextviewBinding
 
     init {
-        fitsSystemWindows = true
         setBackgroundColor(Color.TRANSPARENT)
 
         binding = PartialCheckedTextviewBinding.inflate(
