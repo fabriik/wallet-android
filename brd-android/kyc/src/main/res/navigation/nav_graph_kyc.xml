@@ -3,20 +3,27 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph_kyc"
-    app:startDestination="@id/fragmentPreValidation">
+    app:startDestination="@id/nav_graph_kyc_level2">
 
-    <fragment
-        android:id="@+id/fragmentProofOfIdentity"
-        android:name="com.fabriik.kyc.ui.features.proofofidentity.ProofOfIdentityFragment"
-        tools:layout="@layout/fragment_proof_of_identity">
+    <navigation android:id="@+id/nav_graph_kyc_level2"
+        app:startDestination="@id/fragmentPreValidation">
 
-    </fragment>
+        <fragment
+            android:id="@+id/fragmentPreValidation"
+            android:name="com.fabriik.kyc.ui.features.prevalidation.PreValidationFragment"
+            tools:layout="@layout/fragment_pre_validation">
 
-    <fragment
-        android:id="@+id/fragmentPreValidation"
-        android:name="com.fabriik.kyc.ui.features.prevalidation.PreValidationFragment"
-        tools:layout="@layout/fragment_pre_validation">
+            <action
+                android:id="@+id/actionProofOfIdentity"
+                app:destination="@id/fragmentProofOfIdentity" />
 
-    </fragment>
+        </fragment>
 
+        <fragment
+            android:id="@+id/fragmentProofOfIdentity"
+            android:name="com.fabriik.kyc.ui.features.proofofidentity.ProofOfIdentityFragment"
+            tools:layout="@layout/fragment_proof_of_identity">
+
+        </fragment>
+    </navigation>
 </navigation>

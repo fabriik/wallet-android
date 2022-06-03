@@ -6,10 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.fabriik.common.ui.base.FabriikView
 import com.fabriik.kyc.R
 import com.fabriik.kyc.databinding.FragmentPreValidationBinding
+import kotlinx.coroutines.flow.collect
 
 class PreValidationFragment : Fragment(),
     FabriikView<PreValidationContract.State, PreValidationContract.Effect> {
@@ -38,20 +40,35 @@ class PreValidationFragment : Fragment(),
                 viewModel.setEvent(PreValidationContract.Event.ConfirmClicked)
             }
         }
+
+        // collect UI state
+        lifecycleScope.launchWhenStarted {
+            viewModel.state.collect {
+                render(it)
+            }
+        }
+
+        // collect UI effect
+        lifecycleScope.launchWhenStarted {
+            viewModel.effect.collect {
+                handleEffect(it)
+            }
+        }
     }
 
     override fun render(state: PreValidationContract.State) {
-        TODO("Not yet implemented")
+        // empty
     }
 
     override fun handleEffect(effect: PreValidationContract.Effect) {
         when (effect) {
-            is PreValidationContract.Effect.GoBack -> {
+            is PreValidationContract.Effect.GoBack ->
                 findNavController().popBackStack()
-            }
-            is PreValidationContract.Effect.GoForward -> {
-                //TODO - Navigate to next screen
-            }
+
+            is PreValidationContract.Effect.GoForward ->
+                findNavController().navigate(
+                    PreValidationFragmentDirections.actionProofOfIdentity()
+                )
         }
     }
 }
