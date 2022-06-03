@@ -45,22 +45,6 @@
     <string name="CountrySelection.Title">Country</string>
     <string name="CountrySelection.SearchHint">Search</string>
 
-    <!-- Personal info screen -->
-    <string name="PersonalInformation.Title">Personal Information</string>
-    <string name="PersonalInformation.FirstName">First Name</string>
-    <string name="PersonalInformation.LastName">Last Name</string>
-    <string name="PersonalInformation.Confirm">Confirm</string>
-    <string name="PersonalInformation.Country">Country</string>
-    <string name="PersonalInformation.Section1">Write your name as it appears on your ID</string>
-    <string name="PersonalInformation.Section2">Date of birth</string>
-    <string name="PersonalInformation.Day">DD</string>
-    <string name="PersonalInformation.Month">MM</string>
-    <string name="PersonalInformation.Year">YYYY</string>
-
-    <!-- CountrySelection screen -->
-    <string name="CountrySelection.Title">Country</string>
-    <string name="CountrySelection.SearchHint">Search</string>
-
     <!-- Proof of identity screen -->
     <string name="ProofOfIdentity.Title">Proof of Identity</string>
     <string name="ProofOfIdentity.Section">Select one of the following options:</string>
