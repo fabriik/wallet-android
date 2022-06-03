@@ -10,13 +10,17 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.fabriik.common.ui.base.FabriikView
+import com.fabriik.common.utils.InputFilterMinMax
 import com.fabriik.common.utils.asInt
 import com.fabriik.common.utils.textOrEmpty
 import com.fabriik.kyc.R
 import com.fabriik.kyc.data.model.Country
 import com.fabriik.kyc.databinding.FragmentPersonalInformationBinding
+import com.google.android.material.datepicker.CalendarConstraints
+import com.google.android.material.datepicker.MaterialDatePicker
 //import com.fabriik.kyc.ui.features.countryselection.CountrySelectionFragment
 import kotlinx.coroutines.flow.collect
+import java.util.*
 
 class PersonalInformationFragment : Fragment(),
     FabriikView<PersonalInformationContract.State, PersonalInformationContract.Effect> {
@@ -63,32 +67,32 @@ class PersonalInformationFragment : Fragment(),
                 )
             }
 
-            etDay.doAfterTextChanged {
+            etDay.isFocusable = false
+            etDay.setOnClickListener {
                 viewModel.setEvent(
-                    PersonalInformationContract.Event.DayChanged(
-                        it.asInt()
-                    )
+                    PersonalInformationContract.Event.DateClicked
                 )
             }
 
-            etYear.doAfterTextChanged {
+            etYear.isFocusable = false
+            etYear.setOnClickListener {
                 viewModel.setEvent(
-                    PersonalInformationContract.Event.YearChanged(
-                        it.asInt()
-                    )
+                    PersonalInformationContract.Event.DateClicked
                 )
             }
 
-            etMonth.doAfterTextChanged {
+            etMonth.isFocusable = false
+            etMonth.setOnClickListener {
                 viewModel.setEvent(
-                    PersonalInformationContract.Event.MonthChanged(
-                        it.asInt()
-                    )
+                    PersonalInformationContract.Event.DateClicked
                 )
             }
 
             etCountry.isFocusable = false
             etCountry.setOnClickListener {
+                viewModel.setEvent(
+                    PersonalInformationContract.Event.CountryClicked
+                )
                 /*findNavController().navigate(
                     PersonalInformationFragmentDirections.actionToCountrySelection(
                         "request_key_country", null
@@ -125,6 +129,11 @@ class PersonalInformationFragment : Fragment(),
         with(binding) {
             btnConfirm.isEnabled = state.confirmEnabled
             etCountry.setText(state.country?.name)
+
+            val date = state.dateOfBirth
+            etDay.setText(date?.get(Calendar.DAY_OF_MONTH)?.toString())
+            etYear.setText(date?.get(Calendar.YEAR)?.toString())
+            etMonth.setText(date?.get(Calendar.MONTH)?.plus(1)?.toString())
         }
     }
 
@@ -135,6 +144,25 @@ class PersonalInformationFragment : Fragment(),
 
             is PersonalInformationContract.Effect.Dismiss ->
                 requireActivity().finish()
+
+            is PersonalInformationContract.Effect.DateSelection -> {
+                val constraints = CalendarConstraints.Builder()
+                    .setEnd(MaterialDatePicker.todayInUtcMilliseconds())
+                    .build()
+
+                val picker = MaterialDatePicker.Builder.datePicker()
+                    .setCalendarConstraints(constraints)
+                    .setSelection(effect.date?.timeInMillis)
+                    .build()
+
+               picker.addOnPositiveButtonClickListener {
+                   viewModel.setEvent(PersonalInformationContract.Event.DateChanged(it))
+               }
+
+               picker.show(childFragmentManager, "date_of_birth_picker")
+            }
+
+            is PersonalInformationContract.Effect.CountrySelection -> {}
         }
     }
 }

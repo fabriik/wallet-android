@@ -3,6 +3,7 @@ package com.fabriik.kyc.ui.features.personalinformation
 import android.app.Application
 import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.common.utils.validators.TextValidator
+import java.util.*
 
 class PersonalInformationViewModel(
     application: Application
@@ -22,6 +23,16 @@ class PersonalInformationViewModel(
             is PersonalInformationContract.Event.DismissClicked ->
                 setEffect { PersonalInformationContract.Effect.Dismiss }
 
+            is PersonalInformationContract.Event.CountryClicked ->
+                setEffect {
+                    PersonalInformationContract.Effect.CountrySelection(currentState.country)
+                }
+
+            PersonalInformationContract.Event.DateClicked ->
+                setEffect {
+                    PersonalInformationContract.Effect.DateSelection(currentState.dateOfBirth)
+                }
+
             is PersonalInformationContract.Event.ConfirmClicked ->
                 // todo: call API
                 setEffect { PersonalInformationContract.Effect.Dismiss }
@@ -35,21 +46,16 @@ class PersonalInformationViewModel(
             is PersonalInformationContract.Event.CountryChanged ->
                 setState { copy(country = event.country).validate() }
 
-            is PersonalInformationContract.Event.DayChanged ->
-                setState { copy(day = event.day).validate() }
-
-            is PersonalInformationContract.Event.YearChanged ->
-                setState { copy(year = event.year).validate() }
-
-            is PersonalInformationContract.Event.MonthChanged ->
-                setState { copy(month = event.month).validate() }
+            is PersonalInformationContract.Event.DateChanged -> {
+                val calendar = Calendar.getInstance()
+                calendar.timeInMillis = event.date
+                setState { copy(dateOfBirth = calendar).validate() }
+            }
         }
     }
 
     private fun PersonalInformationContract.State.validate() = copy(
-        confirmEnabled = day != null
-                && month != null
-                && year != null
+        confirmEnabled = dateOfBirth != null
                 && country != null
                 && textValidator(name)
                 && textValidator(lastName)
