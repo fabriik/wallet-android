@@ -75,11 +75,13 @@
         app:layout_constraintStart_toStartOf="parent"
         tools:text="@string/TakePhoto.Passport.Description" />
 
-    <com.google.android.material.button.MaterialButton
+    <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/btn_take_photo"
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_marginBottom="32dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_photo_shutter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
