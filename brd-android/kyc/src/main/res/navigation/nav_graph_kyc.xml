@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph_kyc"
-    app:startDestination="@id/nav_graph_kyc_level1">
+    app:startDestination="@id/nav_graph_kyc_level2">
 
     <navigation
         android:id="@+id/nav_graph_kyc_level1"
@@ -63,6 +63,25 @@
             android:id="@+id/fragmentProofOfIdentity"
             android:name="com.fabriik.kyc.ui.features.proofofidentity.ProofOfIdentityFragment"
             tools:layout="@layout/fragment_proof_of_identity">
+
+            <action
+                android:id="@+id/actionTakePhoto"
+                app:destination="@id/fragmentTakePhoto" />
+
+        </fragment>
+
+        <fragment
+            android:id="@+id/fragmentTakePhoto"
+            android:name="com.fabriik.kyc.ui.features.takephoto.TakePhotoFragment"
+            tools:layout="@layout/fragment_take_photo">
+
+            <argument
+                android:name="documentSide"
+                app:argType="com.fabriik.kyc.data.enums.DocumentSide" />
+
+            <argument
+                android:name="documentType"
+                app:argType="com.fabriik.kyc.data.enums.DocumentType" />
 
         </fragment>
     </navigation>
