@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         app:showBack="true"
         app:showDismiss="true"
-        app:title="@string/PreValidation.Title" />
+        app:title="@string/PostValidation.Title" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -22,6 +22,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:orientation="vertical"
             android:paddingTop="24dp"
             android:paddingBottom="16dp">
 
@@ -31,7 +32,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                android:text="@string/PreValidation.Subtitle"
+                android:layout_marginEnd="40dp"
+                android:text="@string/PostValidation.Subtitle"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -41,9 +43,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="40dp"
-                android:layout_marginTop="32dp"
-                android:layout_marginEnd="84dp"
-                app:contentText="@string/PreValidation.CheckedItem1"
+                android:layout_marginTop="22dp"
+                app:contentText="@string/PostValidation.CheckedItem1"
                 app:iconImage="@drawable/ic_check_blue"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -55,8 +56,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="40dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="84dp"
-                app:contentText="@string/PreValidation.CheckedItem2"
+                app:contentText="@string/PostValidation.CheckedItem2"
                 app:iconImage="@drawable/ic_check_blue"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -68,10 +68,19 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="40dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="84dp"
-                app:contentText="@string/PreValidation.CheckedItem3"
+                app:contentText="@string/PostValidation.CheckedItem3"
                 app:iconImage="@drawable/ic_check_blue"
                 app:layout_constraintTop_toBottomOf="@id/checked_item_2" />
+
+            <com.fabriik.kyc.ui.customview.CheckedTextView
+                android:id="@+id/checked_item_4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="16dp"
+                app:contentText="@string/PostValidation.CheckedItem4"
+                app:iconImage="@drawable/ic_check_blue"
+                app:layout_constraintTop_toBottomOf="@id/checked_item_3" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_confirm"
