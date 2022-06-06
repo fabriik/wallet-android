@@ -14,6 +14,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <com.fabriik.kyc.ui.customview.DocumentFinderView
+        android:id="@+id/view_document_finder"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/view_guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <com.fabriik.kyc.ui.customview.KycToolbar
         android:id="@+id/toolbar"
         android:layout_width="0dp"
@@ -22,7 +31,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:showTitle="false"
-        app:tintColor="@color/light_inverse_icons_01"/>
+        app:tintColor="@color/light_inverse_icons_01" />
 
     <View
         android:id="@+id/view_guideline"
