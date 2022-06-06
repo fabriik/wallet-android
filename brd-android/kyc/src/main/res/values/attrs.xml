@@ -3,6 +3,7 @@
     <declare-styleable name="KycToolbar">
         <attr name="title" format="string" />
         <attr name="showBack" format="boolean" />
+        <attr name="showTitle" format="boolean" />
         <attr name="showDismiss" format="boolean" />
     </declare-styleable>
 

@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import com.fabriik.kyc.R
 import com.fabriik.kyc.databinding.PartialKycToolbarBinding
 import com.google.android.material.appbar.AppBarLayout
@@ -39,6 +40,10 @@ class KycToolbar @JvmOverloads constructor(
         binding.btnBack.isInvisible = !show
     }
 
+    fun setShowTitleButton(show: Boolean) {
+        binding.tvTitle.isVisible = !show
+    }
+
     fun setShowDismissButton(show: Boolean) {
         binding.btnDismiss.isInvisible = !show
     }
@@ -55,6 +60,7 @@ class KycToolbar @JvmOverloads constructor(
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.KycToolbar)
         setTitle(typedArray.getString(R.styleable.KycToolbar_title))
         setShowBackButton(typedArray.getBoolean(R.styleable.KycToolbar_showBack, true))
+        setShowTitleButton(typedArray.getBoolean(R.styleable.KycToolbar_showTitle, true))
         setShowDismissButton(typedArray.getBoolean(R.styleable.KycToolbar_showDismiss, true))
         typedArray.recycle()
     }
