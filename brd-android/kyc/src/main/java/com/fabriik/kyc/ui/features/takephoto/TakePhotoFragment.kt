@@ -125,7 +125,9 @@ class TakePhotoFragment : Fragment(),
                 permissionsLauncher.launch(Manifest.permission.CAMERA)
 
             is TakePhotoContract.Effect.SetupCamera ->
-                binding.viewPreview.post { setUpCamera() }
+                binding.viewPreview.post {
+                    setUpCamera(effect.preferredLensFacing)
+                }
 
             is TakePhotoContract.Effect.GoToPreview ->
                 findNavController().navigate(
@@ -149,7 +151,7 @@ class TakePhotoFragment : Fragment(),
         }
     }
 
-    private fun setUpCamera() {
+    private fun setUpCamera(preferredLensFacing: Int) {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
         cameraProviderFuture.addListener({
 
@@ -157,11 +159,7 @@ class TakePhotoFragment : Fragment(),
             cameraProvider = cameraProviderFuture.get()
 
             // Select lensFacing depending on the available cameras
-            lensFacing = when {
-                viewModel.hasBackCamera(cameraProvider) -> CameraSelector.LENS_FACING_BACK
-                viewModel.hasFrontCamera(cameraProvider) -> CameraSelector.LENS_FACING_FRONT
-                else -> throw IllegalStateException("Back and front camera are unavailable")
-            }
+            lensFacing = preferredLensFacing
 
             // Build and bind the camera use cases
             bindCameraUseCases()

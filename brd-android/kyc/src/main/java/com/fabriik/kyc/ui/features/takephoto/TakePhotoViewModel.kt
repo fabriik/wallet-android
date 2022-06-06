@@ -41,7 +41,11 @@ class TakePhotoViewModel(
         ),
         documentSide = arguments.documentSide,
         documentType = arguments.documentType,
-        finderViewType = when(arguments.documentType) {
+        preferredLensFacing = when (arguments.documentType) {
+            DocumentType.SELFIE -> CameraSelector.LENS_FACING_FRONT
+            else -> CameraSelector.LENS_FACING_BACK
+        },
+        finderViewType = when (arguments.documentType) {
             DocumentType.SELFIE -> PhotoFinderView.Type.SELFIE
             else -> PhotoFinderView.Type.DOCUMENT
         }
@@ -58,7 +62,9 @@ class TakePhotoViewModel(
             is TakePhotoContract.Event.CameraPermissionResult ->
                 setEffect {
                     if (event.granted) {
-                        TakePhotoContract.Effect.SetupCamera
+                        TakePhotoContract.Effect.SetupCamera(
+                            currentState.preferredLensFacing
+                        )
                     } else {
                         TakePhotoContract.Effect.RequestCameraPermission
                     }
@@ -100,7 +106,9 @@ class TakePhotoViewModel(
 
         setEffect {
             if (cameraPerm == PackageManager.PERMISSION_GRANTED) {
-                TakePhotoContract.Effect.SetupCamera
+                TakePhotoContract.Effect.SetupCamera(
+                    currentState.preferredLensFacing
+                )
             } else {
                 TakePhotoContract.Effect.RequestCameraPermission
             }

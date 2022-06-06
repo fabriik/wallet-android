@@ -1,6 +1,7 @@
 package com.fabriik.kyc.ui.features.takephoto
 
 import android.net.Uri
+import androidx.camera.core.CameraSelector
 import androidx.camera.lifecycle.ProcessCameraProvider
 import com.fabriik.common.ui.base.FabriikContract
 import com.fabriik.kyc.data.enums.DocumentSide
@@ -21,10 +22,10 @@ interface TakePhotoContract {
     sealed class Effect : FabriikContract.Effect {
         object Back : Effect()
         object Dismiss : Effect()
-        object SetupCamera : Effect()
         object RequestCameraPermission : Effect()
         class ShowSnackBar(val message: String) : Effect()
         class ShowLoading(val show: Boolean) : Effect()
+        class SetupCamera(val preferredLensFacing: Int) : Effect()
 
         class TakePhoto(
             val fileName: String
@@ -44,6 +45,7 @@ interface TakePhotoContract {
         val documentType: DocumentType,
         val documentSide: DocumentSide,
         val takePhotoEnabled: Boolean = true,
-        val finderViewType: PhotoFinderView.Type
+        val finderViewType: PhotoFinderView.Type,
+        val preferredLensFacing: Int
     ) : FabriikContract.State
 }
