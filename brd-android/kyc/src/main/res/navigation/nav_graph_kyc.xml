@@ -7,7 +7,18 @@
 
     <navigation
         android:id="@+id/nav_graph_kyc_level1"
-        app:startDestination="@id/fragmentPersonalInfo">
+        app:startDestination="@id/fragmentAccountVerification">
+
+        <fragment
+            android:id="@+id/fragmentAccountVerification"
+            android:name="com.fabriik.kyc.ui.features.accountverification.AccountVerificationFragment"
+            tools:layout="@layout/fragment_account_verification">
+
+            <action
+                android:id="@+id/actionPersonalInfo"
+                app:destination="@id/fragmentPersonalInfo" />
+
+        </fragment>
 
         <fragment
             android:id="@+id/fragmentPersonalInfo"
