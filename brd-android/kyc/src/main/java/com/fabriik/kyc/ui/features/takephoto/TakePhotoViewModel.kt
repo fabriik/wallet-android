@@ -13,6 +13,7 @@ import com.fabriik.common.utils.toBundle
 import com.fabriik.kyc.R
 import com.fabriik.kyc.data.enums.DocumentSide
 import com.fabriik.kyc.data.enums.DocumentType
+import com.fabriik.kyc.ui.customview.PhotoFinderView
 
 class TakePhotoViewModel(
     application: Application,
@@ -40,6 +41,10 @@ class TakePhotoViewModel(
         ),
         documentSide = arguments.documentSide,
         documentType = arguments.documentType,
+        finderViewType = when(arguments.documentType) {
+            DocumentType.SELFIE -> PhotoFinderView.Type.SELFIE
+            else -> PhotoFinderView.Type.DOCUMENT
+        }
     )
 
     override fun handleEvent(event: TakePhotoContract.Event) {
@@ -115,6 +120,7 @@ class TakePhotoViewModel(
 
     private fun getTitle(documentType: DocumentType, documentSide: DocumentSide) =
         when (documentType) {
+            DocumentType.SELFIE -> R.string.TakePhoto_Selfie_Title
             DocumentType.PASSPORT -> R.string.TakePhoto_Passport_Title
             else -> when (documentSide) {
                 DocumentSide.BACK -> R.string.TakePhoto_IdBack_Title
@@ -124,6 +130,7 @@ class TakePhotoViewModel(
 
     private fun getDescription(documentType: DocumentType, documentSide: DocumentSide) =
         when (documentType) {
+            DocumentType.SELFIE -> R.string.TakePhoto_Selfie_Description
             DocumentType.PASSPORT -> R.string.TakePhoto_Passport_Description
             else -> when (documentSide) {
                 DocumentSide.BACK -> R.string.TakePhoto_IdBack_Description

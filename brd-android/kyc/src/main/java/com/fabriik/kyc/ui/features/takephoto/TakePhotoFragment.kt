@@ -106,6 +106,7 @@ class TakePhotoFragment : Fragment(),
 
     override fun render(state: TakePhotoContract.State) {
         with(binding) {
+            viewPhotoFinder.setType(state.finderViewType)
             tvDocumentTitle.setText(state.title)
             tvDocumentDescription.setText(state.description)
             btnTakePhoto.isEnabled = state.takePhotoEnabled
@@ -131,6 +132,7 @@ class TakePhotoFragment : Fragment(),
                     TakePhotoFragmentDirections.actionPhotoPreview(
                         documentSide = effect.documentSide,
                         documentType = effect.documentType,
+                        imageUri = effect.imageUri
                     )
                 )
 

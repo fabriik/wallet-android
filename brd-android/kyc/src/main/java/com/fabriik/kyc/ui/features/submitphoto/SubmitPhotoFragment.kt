@@ -26,7 +26,7 @@ class SubmitPhotoFragment : Fragment(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.setEvent(SubmitPhotoContract.Event.OnCreate(args.documentType, args.imageUri))
+        viewModel.setEvent(SubmitPhotoContract.Event.OnCreate(args.documentType, args.documentSide, args.imageUri))
     }
 
     override fun onCreateView(
@@ -44,6 +44,10 @@ class SubmitPhotoFragment : Fragment(),
         with(binding) {
             toolbar.setBackButtonClickListener {
                 viewModel.setEvent(SubmitPhotoContract.Event.BackClicked)
+            }
+
+            toolbar.setDismissButtonClickListener {
+                viewModel.setEvent(SubmitPhotoContract.Event.DismissClicked)
             }
 
             btnConfirm.setOnClickListener {
@@ -86,15 +90,23 @@ class SubmitPhotoFragment : Fragment(),
 
     override fun handleEffect(effect: SubmitPhotoContract.Effect) {
         when (effect) {
-            is SubmitPhotoContract.Effect.GoBack -> {
+            is SubmitPhotoContract.Effect.Back ->
                 findNavController().popBackStack()
-            }
-            is SubmitPhotoContract.Effect.GoToCamera -> {
-                // TODO - navigate to camera
-            }
-            is SubmitPhotoContract.Effect.GoForward -> {
+
+            is SubmitPhotoContract.Effect.Dismiss ->
+                requireActivity().finish()
+
+            is SubmitPhotoContract.Effect.TakePhoto ->
                 findNavController().navigate(
-                    SubmitPhotoFragmentDirections.actionSubmitPhotoToPostValidation()
+                    SubmitPhotoFragmentDirections.actionTakePhoto(
+                        documentSide = effect.documentSide,
+                        documentType = effect.documentType
+                    )
+                )
+
+            is SubmitPhotoContract.Effect.PostValidation -> {
+                findNavController().navigate(
+                    SubmitPhotoFragmentDirections.actionPostValidation()
                 )
             }
         }
