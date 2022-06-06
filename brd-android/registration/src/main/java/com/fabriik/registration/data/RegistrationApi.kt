@@ -1,5 +1,6 @@
 package com.fabriik.registration.data
 
+import com.fabriik.common.data.FabriikApiConstants
 import com.fabriik.registration.data.requests.AssociateConfirmRequest
 import com.fabriik.registration.data.requests.AssociateRequest
 import okhttp3.OkHttpClient
@@ -15,7 +16,6 @@ class RegistrationApi(private val service: RegistrationService) {
             token = token
         ),
         headers = mapOf(
-            Pair("Authorization", "qvrphn76s49t9j3tmff4jm24a7m116dc5k6t41cd"),
             Pair("Date", dateHeader),
             Pair("Signature", signature)
         )
@@ -25,7 +25,7 @@ class RegistrationApi(private val service: RegistrationService) {
         request = AssociateConfirmRequest(code)
     )
 
-    suspend fun resendAssociateAccountChallenge = service.resendAssociateAccountChallenge()
+    suspend fun resendAssociateAccountChallenge() = service.resendAssociateAccountChallenge()
 
     companion object {
 
@@ -39,7 +39,7 @@ class RegistrationApi(private val service: RegistrationService) {
                         .connectTimeout(30, TimeUnit.SECONDS)
                         .build()
                 )
-                .baseUrl(/*FabriikApiConstants.HOST_AUTH_API*/"https://3144-2a00-ee2-2607-1300-61a3-8d21-5842-cb14.ngrok.io/blocksatoshi/one/auth/")
+                .baseUrl(FabriikApiConstants.HOST_AUTH_API)
                 .addConverterFactory(MoshiConverterFactory.create())
                 .build()
                 .create(RegistrationService::class.java)

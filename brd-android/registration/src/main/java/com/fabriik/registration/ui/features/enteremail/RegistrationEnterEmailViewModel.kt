@@ -13,6 +13,7 @@ import com.fabriik.registration.data.RegistrationApi
 import com.platform.tools.TokenHolder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
 import org.kodein.di.erased.instance
@@ -63,15 +64,16 @@ class RegistrationEnterEmailViewModel(
                             signature = String(signatureEncoded).trim()
                         )
 
-                        Log.i("test_api", response.string())
+                        setEffect {
+                            RegistrationEnterEmailContract.Effect.GoToVerifyEmail(
+                                currentState.email
+                            )
+                        }
                     } catch (ex: Exception) {
                         Log.i("test_api", ex.message ?: "unknown error")
                     }
                 }
             }
-                /*setEffect {
-                    RegistrationEnterEmailContract.Effect.GoToVerifyEmail(currentState.email)
-                }*/
         }
     }
 
