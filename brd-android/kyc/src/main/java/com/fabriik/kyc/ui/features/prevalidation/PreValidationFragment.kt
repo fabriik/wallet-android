@@ -36,6 +36,10 @@ class PreValidationFragment : Fragment(),
                 viewModel.setEvent(PreValidationContract.Event.BackClicked)
             }
 
+            toolbar.setDismissButtonClickListener {
+                viewModel.setEvent(PreValidationContract.Event.DismissCLicked)
+            }
+
             btnConfirm.setOnClickListener {
                 viewModel.setEvent(PreValidationContract.Event.ConfirmClicked)
             }
@@ -62,10 +66,13 @@ class PreValidationFragment : Fragment(),
 
     override fun handleEffect(effect: PreValidationContract.Effect) {
         when (effect) {
-            is PreValidationContract.Effect.GoBack ->
+            is PreValidationContract.Effect.Back ->
                 findNavController().popBackStack()
 
-            is PreValidationContract.Effect.GoForward ->
+            is PreValidationContract.Effect.Dismiss ->
+                requireActivity().finish()
+
+            is PreValidationContract.Effect.ProofOfIdentity ->
                 findNavController().navigate(
                     PreValidationFragmentDirections.actionProofOfIdentity()
                 )
