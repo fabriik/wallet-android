@@ -10,14 +10,8 @@ interface SubmitPhotoContract {
     sealed class Event : FabriikContract.Event {
         object BackClicked : Event()
         object RetakeClicked : Event()
-        object DismissClicked : Event()
         object ConfirmClicked : Event()
-
-        data class OnCreate(
-            val documentType: DocumentType,
-            val documentSide: DocumentSide,
-            val image: Uri,
-        ) : Event()
+        object DismissClicked : Event()
     }
 
     sealed class Effect : FabriikContract.Effect {
@@ -31,8 +25,8 @@ interface SubmitPhotoContract {
     }
 
     data class State(
-        val documentType: DocumentType? = null,
-        val documentSide: DocumentSide? = null,
-        val image: Uri? = null,
+        val documentType: DocumentType,
+        val documentSide: DocumentSide,
+        val image: Uri
     ) : FabriikContract.State
 }

@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.fabriik.common.ui.base.FabriikView
 import com.fabriik.kyc.R
@@ -22,12 +21,6 @@ class SubmitPhotoFragment : Fragment(),
 
     private lateinit var binding: FragmentSubmitPhotoBinding
     private val viewModel: SubmitPhotoViewModel by viewModels()
-    private val args by navArgs<SubmitPhotoFragmentArgs>()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel.setEvent(SubmitPhotoContract.Event.OnCreate(args.documentType, args.documentSide, args.imageUri))
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -76,15 +69,13 @@ class SubmitPhotoFragment : Fragment(),
 
     override fun render(state: SubmitPhotoContract.State) {
         with(binding) {
-            if (state.documentType != null) {
-                val isSelfie = state.documentType == DocumentType.SELFIE
-                ivSelfie.isVisible = isSelfie
-                ivDocument.isVisible = !isSelfie
+            val isSelfie = state.documentType == DocumentType.SELFIE
+            ivSelfie.isVisible = isSelfie
+            ivDocument.isVisible = !isSelfie
 
-                Glide.with(requireContext())
-                    .load(state.image)
-                    .into(if (isSelfie) ivSelfie else ivDocument)
-            }
+            Glide.with(requireContext())
+                .load(state.image)
+                .into(if (isSelfie) ivSelfie else ivDocument)
         }
     }
 
