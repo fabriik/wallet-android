@@ -66,4 +66,8 @@
     <string name="PostValidation.CheckedItem2">Checking for errors</string>
     <string name="PostValidation.CheckedItem3">Sending your data for verification</string>
     <string name="PostValidation.CheckedItem4">Verifying you</string>
+
+    <!-- Submit photo screen -->
+    <string name="SubmitPhoto.Title">Submit your photo</string>
+    <string name="SubmitPhoto.RetakeButton">Retake photo</string>
 </resources>
