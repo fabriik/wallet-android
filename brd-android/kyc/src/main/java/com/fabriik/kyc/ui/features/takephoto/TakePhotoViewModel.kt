@@ -110,7 +110,11 @@ class TakePhotoViewModel(
                         getString(R.string.TakePhoto_DefaultErrorMessage)
                     )
                 } else {
-                    TakePhotoContract.Effect.GoToNextStep
+                    TakePhotoContract.Effect.GoToPreview(
+                        documentType = currentState.documentType,
+                        documentSide = currentState.documentSide,
+                        imageUri = currentState.imageUri!!
+                    )
                 }
             }
         }

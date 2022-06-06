@@ -83,6 +83,10 @@
                 android:name="documentType"
                 app:argType="com.fabriik.kyc.data.enums.DocumentType" />
 
+            <action
+                android:id="@+id/actionPhotoPreview"
+                app:destination="@id/fragmentTakePhoto" />
+
         </fragment>
     </navigation>
 </navigation>

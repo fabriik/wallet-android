@@ -63,7 +63,7 @@ class TakePhotoFragment : Fragment(),
                 )
             }
 
-            toolbar.setDismissButtonClickListener() {
+            toolbar.setDismissButtonClickListener {
                 viewModel.setEvent(
                     TakePhotoContract.Event.DismissClicked
                 )
@@ -126,9 +126,13 @@ class TakePhotoFragment : Fragment(),
             is TakePhotoContract.Effect.SetupCamera ->
                 binding.viewPreview.post { setUpCamera() }
 
-            is TakePhotoContract.Effect.GoToNextStep -> {
-                // todo:
-            } //goToNextScreen()
+            is TakePhotoContract.Effect.GoToPreview ->
+                findNavController().navigate(
+                    TakePhotoFragmentDirections.actionPhotoPreview(
+                        documentSide = effect.documentSide,
+                        documentType = effect.documentType,
+                    )
+                )
 
             is TakePhotoContract.Effect.TakePhoto ->
                 takePhoto(/*effect.type*/)
