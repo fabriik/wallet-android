@@ -77,4 +77,8 @@
     <string name="TakePhoto.Selfie.Title">Please take a selfie</string>
     <string name="TakePhoto.Selfie.Description">Make sure your face is in the frame and it’s clearly visible.</string>
     <string name="TakePhoto.DefaultErrorMessage">Something went wrong! Please try again later.</string>
+
+    <!-- Submit photo screen -->
+    <string name="SubmitPhoto.Title">Submit your photo</string>
+    <string name="SubmitPhoto.RetakeButton">Retake photo</string>
 </resources>
