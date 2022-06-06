@@ -13,8 +13,6 @@ import com.fabriik.common.utils.toBundle
 import com.fabriik.kyc.R
 import com.fabriik.kyc.data.enums.DocumentSide
 import com.fabriik.kyc.data.enums.DocumentType
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class TakePhotoViewModel(
     application: Application,
@@ -68,11 +66,23 @@ class TakePhotoViewModel(
                     )
                 }
 
-            is TakePhotoContract.Event.TakePhotoCompleted -> {} //todo:
+            is TakePhotoContract.Event.TakePhotoCompleted ->
+                setEffect {
+                    TakePhotoContract.Effect.GoToPreview(
+                        imageUri = event.uri,
+                        documentSide = currentState.documentSide,
+                        documentType = currentState.documentType
+                    )
+                }
 
             is TakePhotoContract.Event.TakePhotoClicked ->
                 setEffect {
-                    TakePhotoContract.Effect.TakePhoto(/*currentState.photoType*/)
+                    TakePhotoContract.Effect.TakePhoto(
+                        generateFileName(
+                            type = currentState.documentType,
+                            side = currentState.documentSide
+                        )
+                    )
                 }
         }
     }
@@ -92,33 +102,8 @@ class TakePhotoViewModel(
         }
     }
 
-    private fun onNextClicked() {
-        viewModelScope.launch(Dispatchers.IO) {
-            setEffect {
-                TakePhotoContract.Effect.ShowLoading(true)
-            }
-
-            Thread.sleep(2000) // todo: call API
-
-            setEffect {
-                TakePhotoContract.Effect.ShowLoading(false)
-            }
-
-            setEffect {
-                if (currentState.imageUri == null) {
-                    TakePhotoContract.Effect.ShowSnackBar(
-                        getString(R.string.TakePhoto_DefaultErrorMessage)
-                    )
-                } else {
-                    TakePhotoContract.Effect.GoToPreview(
-                        documentType = currentState.documentType,
-                        documentSide = currentState.documentSide,
-                        imageUri = currentState.imageUri!!
-                    )
-                }
-            }
-        }
-    }
+    private fun generateFileName(type: DocumentType, side: DocumentSide) =
+        "image_${type.id}_${side.id}"
 
     internal fun hasBackCamera(cameraProvider: ProcessCameraProvider?): Boolean {
         return cameraProvider?.hasCamera(CameraSelector.DEFAULT_BACK_CAMERA) ?: false

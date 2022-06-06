@@ -24,7 +24,11 @@ interface TakePhotoContract {
         object RequestCameraPermission : Effect()
         class ShowSnackBar(val message: String) : Effect()
         class ShowLoading(val show: Boolean) : Effect()
-        class TakePhoto(/*val type: KycUploadPhotoType*/) : Effect()
+
+        class TakePhoto(
+            val fileName: String
+        ) : Effect()
+
         class GoToPreview(
             val documentSide: DocumentSide,
             val documentType: DocumentType,

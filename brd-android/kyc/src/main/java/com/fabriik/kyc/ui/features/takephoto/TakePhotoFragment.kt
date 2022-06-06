@@ -135,7 +135,7 @@ class TakePhotoFragment : Fragment(),
                 )
 
             is TakePhotoContract.Effect.TakePhoto ->
-                takePhoto(/*effect.type*/)
+                takePhoto(effect.fileName)
 
             is TakePhotoContract.Effect.ShowLoading -> {
                 // todo:
@@ -200,9 +200,8 @@ class TakePhotoFragment : Fragment(),
         }
     }
 
-    private fun takePhoto(/*type: KycUploadPhotoType*/) {
-        //val file = File.createTempFile("image_${type.id}", ".jpg")
-        val file = File.createTempFile("image_test", ".jpg")
+    private fun takePhoto(fileName: String) {
+        val file = File.createTempFile(fileName, ".jpg")
         val options = ImageCapture.OutputFileOptions
             .Builder(file)
             .build()
