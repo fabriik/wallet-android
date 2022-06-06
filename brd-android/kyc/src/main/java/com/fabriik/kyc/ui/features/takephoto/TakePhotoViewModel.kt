@@ -115,9 +115,6 @@ class TakePhotoViewModel(
         }
     }
 
-    private fun generateFileName(type: DocumentType, side: DocumentSide) =
-        "image_${type.id}_${side.id}"
-
     internal fun hasBackCamera(cameraProvider: ProcessCameraProvider?): Boolean {
         return cameraProvider?.hasCamera(CameraSelector.DEFAULT_BACK_CAMERA) ?: false
     }
@@ -125,6 +122,9 @@ class TakePhotoViewModel(
     internal fun hasFrontCamera(cameraProvider: ProcessCameraProvider?): Boolean {
         return cameraProvider?.hasCamera(CameraSelector.DEFAULT_FRONT_CAMERA) ?: false
     }
+
+    private fun generateFileName(type: DocumentType, side: DocumentSide) =
+        "image_${type.id}_${side.id}"
 
     private fun getTitle(documentType: DocumentType, documentSide: DocumentSide) =
         when (documentType) {

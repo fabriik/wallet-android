@@ -158,8 +158,15 @@ class TakePhotoFragment : Fragment(),
             // CameraProvider
             cameraProvider = cameraProviderFuture.get()
 
+            val backCamera = viewModel.hasBackCamera(cameraProvider)
+            val frontCamera = viewModel.hasFrontCamera(cameraProvider)
+
             // Select lensFacing depending on the available cameras
-            lensFacing = preferredLensFacing
+            lensFacing = when {
+                backCamera && frontCamera -> preferredLensFacing
+                frontCamera -> CameraSelector.LENS_FACING_FRONT
+                else -> CameraSelector.LENS_FACING_BACK
+            }
 
             // Build and bind the camera use cases
             bindCameraUseCases()
