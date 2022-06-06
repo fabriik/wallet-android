@@ -1,27 +1,38 @@
 package com.fabriik.kyc.ui.features.submitphoto
 
 import android.app.Application
+import androidx.lifecycle.SavedStateHandle
 import com.fabriik.common.ui.base.FabriikViewModel
+import com.fabriik.common.utils.toBundle
 
 class SubmitPhotoViewModel(
-    application: Application
+    application: Application,
+    savedStateHandle: SavedStateHandle
 
 ) : FabriikViewModel<SubmitPhotoContract.State, SubmitPhotoContract.Event, SubmitPhotoContract.Effect>(
-    application
+    application, savedStateHandle
 ) {
+    lateinit var arguments: SubmitPhotoFragmentArgs
+    override fun parseArguments(savedStateHandle: SavedStateHandle) {
+        arguments = SubmitPhotoFragmentArgs.fromBundle(savedStateHandle.toBundle())
+        super.parseArguments(savedStateHandle)
+    }
 
-    override fun createInitialState() = SubmitPhotoContract.State()
+    override fun createInitialState() = SubmitPhotoContract.State(
+        documentType = arguments.documentType,
+        image = arguments.imageUri,
+    )
 
     override fun handleEvent(event: SubmitPhotoContract.Event) {
         when (event) {
             is SubmitPhotoContract.Event.BackClicked ->
-                setEffect { SubmitPhotoContract.Effect.GoBack }
+                setEffect { SubmitPhotoContract.Effect.Back }
+            is SubmitPhotoContract.Event.DismissClicked ->
+                setEffect { SubmitPhotoContract.Effect.Dismiss }
             is SubmitPhotoContract.Event.RetakeClicked ->
-                setEffect { SubmitPhotoContract.Effect.GoToCamera }
+                setEffect { SubmitPhotoContract.Effect.TakePhoto }
             is SubmitPhotoContract.Event.ConfirmClicked ->
-                setEffect { SubmitPhotoContract.Effect.GoForward }
-            is SubmitPhotoContract.Event.OnCreate ->
-                setState { copy(documentType = event.documentType, image = event.image) }
+                setEffect { SubmitPhotoContract.Effect.PostValidation }
         }
     }
 }

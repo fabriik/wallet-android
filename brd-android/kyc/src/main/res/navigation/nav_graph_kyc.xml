@@ -84,11 +84,11 @@
                 app:argType="android.net.Uri" />
 
             <action
-                android:id="@+id/action_submitPhoto_to_camera"
+                android:id="@+id/actionTakePhoto"
                 app:destination="@id/fragmentPostValidation" />
 
             <action
-                android:id="@+id/action_submitPhoto_to_postValidation"
+                android:id="@+id/actionPostValidation"
                 app:destination="@id/fragmentPostValidation" />
 
         </fragment>
