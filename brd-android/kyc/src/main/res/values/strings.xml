@@ -58,4 +58,14 @@
     <string name="PreValidation.CheckedItem1">Prepare a valid government-issued identity document (Passport, National ID card or Drivers license)</string>
     <string name="PreValidation.CheckedItem2">Make sure you are in a well-lit room</string>
     <string name="PreValidation.CheckedItem3">Be prepared to take a selfie and photos of your ID</string>
+
+    <!-- Take photo screen -->
+    <string name="TakePhoto.Passport.Title">Please take a photo of your passport.</string>
+    <string name="TakePhoto.Passport.Description">Make sure your passport is clear and readable and fits fully in the frame.</string>
+    <string name="TakePhoto.IdBack.Title">Please take a photo of your ID’s back page</string>
+    <string name="TakePhoto.IdBack.Description">Make sure your ID is clear and readable and fits fully in the frame</string>
+    <string name="TakePhoto.IdFront.Title">Please take a photo of your ID’s front page</string>
+    <string name="TakePhoto.IdFront.Description">Make sure your ID is clear and readable and fits fully in the frame</string>
+    <string name="TakePhoto.Selfie.Title">Please take a selfie</string>
+    <string name="TakePhoto.Selfie.Description">Make sure your face is in the frame and it’s clearly visible.</string>
 </resources>
