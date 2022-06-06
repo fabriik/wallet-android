@@ -158,6 +158,7 @@
     </style>
 
     <style name="ConfirmButton" parent="@style/FabriikButtonStyle.Dense">
+        <item name="height">48dp</item>
         <item name="color">@color/light_primary</item>
         <item name="android:textAppearance">@style/TextStyle.Subtitle1</item>
     </style>
