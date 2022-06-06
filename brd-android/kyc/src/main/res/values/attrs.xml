@@ -12,4 +12,11 @@
         <attr name="contentText" format="string"/>
         <attr name="iconImage" format="reference"/>
     </declare-styleable>
+
+    <declare-styleable name="PhotoFinderView">
+        <attr name="type" format="enum">
+            <enum name="selfie" value="0"/>
+            <enum name="document" value="1"/>
+        </attr>
+    </declare-styleable>
 </resources>

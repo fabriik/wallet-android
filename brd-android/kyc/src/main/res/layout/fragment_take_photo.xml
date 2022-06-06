@@ -14,14 +14,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.fabriik.kyc.ui.customview.DocumentFinderView
-        android:id="@+id/view_document_finder"
+    <com.fabriik.kyc.ui.customview.PhotoFinderView
+        android:id="@+id/view_photo_finder"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@id/view_guideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:type="document"/>
 
     <com.fabriik.kyc.ui.customview.KycToolbar
         android:id="@+id/toolbar"
