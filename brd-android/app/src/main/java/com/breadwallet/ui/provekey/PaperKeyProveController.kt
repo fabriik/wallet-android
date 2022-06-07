@@ -75,8 +75,8 @@ class PaperKeyProveController(args: Bundle) :
         return with(binding) {
             merge(
                 submitBtn.clicks().map { E.OnSubmitClicked },
-                firstWord.textChanges().map { E.OnFirstWordChanged(it.normalize()) },
-                secondWord.textChanges().map { E.OnSecondWordChanged(it.normalize()) }
+                firstWord.textChanges().map { E.OnFirstWordChanged(it.normalize().trim()) },
+                secondWord.textChanges().map { E.OnSecondWordChanged(it.normalize().trim()) }
             )
         }
     }

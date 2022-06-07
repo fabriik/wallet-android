@@ -3,20 +3,124 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph_kyc"
-    app:startDestination="@id/fragmentPreValidation">
+    app:startDestination="@id/nav_graph_kyc_level2">
 
-    <fragment
-        android:id="@+id/fragmentProofOfIdentity"
-        android:name="com.fabriik.kyc.ui.features.proofofidentity.ProofOfIdentityFragment"
-        tools:layout="@layout/fragment_proof_of_identity">
+    <navigation
+        android:id="@+id/nav_graph_kyc_level1"
+        app:startDestination="@id/fragmentAccountVerification">
 
-    </fragment>
+        <fragment
+            android:id="@+id/fragmentAccountVerification"
+            android:name="com.fabriik.kyc.ui.features.accountverification.AccountVerificationFragment"
+            tools:layout="@layout/fragment_account_verification">
 
-    <fragment
-        android:id="@+id/fragmentPreValidation"
-        android:name="com.fabriik.kyc.ui.features.prevalidation.PreValidationFragment"
-        tools:layout="@layout/fragment_pre_validation">
+            <action
+                android:id="@+id/actionPersonalInfo"
+                app:destination="@id/fragmentPersonalInfo" />
 
-    </fragment>
+        </fragment>
 
+        <fragment
+            android:id="@+id/fragmentPersonalInfo"
+            android:name="com.fabriik.kyc.ui.features.personalinformation.PersonalInformationFragment"
+            tools:layout="@layout/fragment_personal_information">
+
+            <action
+                android:id="@+id/actionCountrySelection"
+                app:destination="@id/fragmentCountrySelection" />
+
+        </fragment>
+
+        <fragment
+            android:id="@+id/fragmentCountrySelection"
+            android:name="com.fabriik.kyc.ui.features.countryselection.CountrySelectionFragment"
+            tools:layout="@layout/fragment_country_selection">
+
+            <argument
+                android:name="requestKey"
+                app:argType="string" />
+
+        </fragment>
+
+    </navigation>
+
+    <navigation
+        android:id="@+id/nav_graph_kyc_level2"
+        app:startDestination="@id/fragmentPreValidation">
+
+        <fragment
+            android:id="@+id/fragmentPreValidation"
+            android:name="com.fabriik.kyc.ui.features.prevalidation.PreValidationFragment"
+            tools:layout="@layout/fragment_pre_validation">
+
+            <action
+                android:id="@+id/actionProofOfIdentity"
+                app:destination="@id/fragmentProofOfIdentity" />
+
+        </fragment>
+
+        <fragment
+            android:id="@+id/fragmentProofOfIdentity"
+            android:name="com.fabriik.kyc.ui.features.proofofidentity.ProofOfIdentityFragment"
+            tools:layout="@layout/fragment_proof_of_identity">
+
+            <action
+                android:id="@+id/actionTakePhoto"
+                app:destination="@id/fragmentTakePhoto" />
+
+        </fragment>
+
+        <fragment
+            android:id="@+id/fragmentTakePhoto"
+            android:name="com.fabriik.kyc.ui.features.takephoto.TakePhotoFragment"
+            tools:layout="@layout/fragment_take_photo">
+
+            <argument
+                android:name="documentSide"
+                app:argType="com.fabriik.kyc.data.enums.DocumentSide" />
+
+            <argument
+                android:name="documentType"
+                app:argType="com.fabriik.kyc.data.enums.DocumentType" />
+
+            <action
+                android:id="@+id/actionPhotoPreview"
+                app:destination="@id/fragmentSubmitPhoto" />
+
+        </fragment>
+
+        <fragment
+            android:id="@+id/fragmentSubmitPhoto"
+            android:name="com.fabriik.kyc.ui.features.submitphoto.SubmitPhotoFragment"
+            tools:layout="@layout/fragment_submit_photo">
+
+            <argument
+                android:name="documentSide"
+                app:argType="com.fabriik.kyc.data.enums.DocumentSide" />
+
+            <argument
+                android:name="documentType"
+                app:argType="com.fabriik.kyc.data.enums.DocumentType" />
+
+            <argument
+                android:name="imageUri"
+                app:argType="android.net.Uri" />
+
+            <action
+                android:id="@+id/actionTakePhoto"
+                app:destination="@id/fragmentTakePhoto" />
+
+            <action
+                android:id="@+id/actionPostValidation"
+                app:destination="@id/fragmentPostValidation" />
+
+        </fragment>
+
+        <fragment
+            android:id="@+id/fragmentPostValidation"
+            android:name="com.fabriik.kyc.ui.features.postvalidation.PostValidationFragment"
+            tools:layout="@layout/fragment_post_validation">
+
+        </fragment>
+    </navigation>
 </navigation>

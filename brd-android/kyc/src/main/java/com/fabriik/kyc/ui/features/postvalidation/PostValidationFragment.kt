@@ -1,4 +1,4 @@
-package com.fabriik.kyc.ui.features.prevalidation
+package com.fabriik.kyc.ui.features.postvalidation
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,38 +10,38 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.fabriik.common.ui.base.FabriikView
 import com.fabriik.kyc.R
-import com.fabriik.kyc.databinding.FragmentPreValidationBinding
+import com.fabriik.kyc.databinding.FragmentPostValidationBinding
 import kotlinx.coroutines.flow.collect
 
-class PreValidationFragment : Fragment(),
-    FabriikView<PreValidationContract.State, PreValidationContract.Effect> {
+class PostValidationFragment : Fragment(),
+    FabriikView<PostValidationContract.State, PostValidationContract.Effect> {
 
-    private lateinit var binding: FragmentPreValidationBinding
-    private val viewModel: PreValidationViewModel by viewModels()
+    private lateinit var binding: FragmentPostValidationBinding
+    private val viewModel: PostValidationViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_pre_validation, container, false)
+        return inflater.inflate(R.layout.fragment_post_validation, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentPreValidationBinding.bind(view)
+        binding = FragmentPostValidationBinding.bind(view)
 
         with(binding) {
             toolbar.setBackButtonClickListener {
-                viewModel.setEvent(PreValidationContract.Event.BackClicked)
+                viewModel.setEvent(PostValidationContract.Event.BackClicked)
             }
 
             toolbar.setDismissButtonClickListener {
-                viewModel.setEvent(PreValidationContract.Event.DismissCLicked)
+                viewModel.setEvent(PostValidationContract.Event.DismissClicked)
             }
 
             btnConfirm.setOnClickListener {
-                viewModel.setEvent(PreValidationContract.Event.ConfirmClicked)
+                viewModel.setEvent(PostValidationContract.Event.ConfirmClicked)
             }
         }
 
@@ -60,22 +60,22 @@ class PreValidationFragment : Fragment(),
         }
     }
 
-    override fun render(state: PreValidationContract.State) {
-        // empty
+    override fun render(state: PostValidationContract.State) {
     }
 
-    override fun handleEffect(effect: PreValidationContract.Effect) {
+    override fun handleEffect(effect: PostValidationContract.Effect) {
         when (effect) {
-            is PreValidationContract.Effect.Back ->
+            is PostValidationContract.Effect.Back -> {
                 findNavController().popBackStack()
+            }
 
-            is PreValidationContract.Effect.Dismiss ->
+            is PostValidationContract.Effect.Dismiss -> {
                 requireActivity().finish()
+            }
 
-            is PreValidationContract.Effect.ProofOfIdentity ->
-                findNavController().navigate(
-                    PreValidationFragmentDirections.actionProofOfIdentity()
-                )
+            is PostValidationContract.Effect.Profile -> {
+                //TODO - Navigate to next screen
+            }
         }
     }
 }

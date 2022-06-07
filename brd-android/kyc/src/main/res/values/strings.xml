@@ -19,6 +19,32 @@
     <string name="ProfileStatusView.statusResubmit">Resubmit</string>
     <string name="ProfileStatusView.statusDeclined">Declined</string>
 
+    <!-- Account verification screen -->
+    <string name="AccountVerification.Title">Account Verification</string>
+    <string name="AccountVerification.Level1">Level 1</string>
+    <string name="AccountVerification.Level1.Tag">Swap limit: $1,000/day ($10,000 lifetime)</string>
+    <string name="AccountVerification.Level1.CheckedItem1">Personal Information</string>
+    <string name="AccountVerification.Level2">Level 2</string>
+    <string name="AccountVerification.Level2.Tag">Swap limit: $10,000 per Swap, no lifetime limit</string>
+    <string name="AccountVerification.Level2.CheckedItem1">ID Verification</string>
+    <string name="AccountVerification.Level2.CheckedItem2">Proof of life</string>
+
+    <!-- Personal info screen -->
+    <string name="PersonalInformation.Title">Personal Information</string>
+    <string name="PersonalInformation.FirstName">First Name</string>
+    <string name="PersonalInformation.LastName">Last Name</string>
+    <string name="PersonalInformation.Confirm">Confirm</string>
+    <string name="PersonalInformation.Country">Country</string>
+    <string name="PersonalInformation.Section1">Write your name as it appears on your ID</string>
+    <string name="PersonalInformation.Section2">Date of birth</string>
+    <string name="PersonalInformation.Day">DD</string>
+    <string name="PersonalInformation.Month">MM</string>
+    <string name="PersonalInformation.Year">YYYY</string>
+
+    <!-- CountrySelection screen -->
+    <string name="CountrySelection.Title">Country</string>
+    <string name="CountrySelection.SearchHint">Search</string>
+
     <!-- Proof of identity screen -->
     <string name="ProofOfIdentity.Title">Proof of Identity</string>
     <string name="ProofOfIdentity.Section">Select one of the following options:</string>
@@ -32,4 +58,27 @@
     <string name="PreValidation.CheckedItem1">Prepare a valid government-issued identity document (Passport, National ID card or Drivers license)</string>
     <string name="PreValidation.CheckedItem2">Make sure you are in a well-lit room</string>
     <string name="PreValidation.CheckedItem3">Be prepared to take a selfie and photos of your ID</string>
+
+    <!-- Post validation screen -->
+    <string name="PostValidation.Title">Your ID verification is in progress</string>
+    <string name="PostValidation.Subtitle">We are reviewing your documents and will let you know when your account has been verified.</string>
+    <string name="PostValidation.CheckedItem1">Uploading your photos</string>
+    <string name="PostValidation.CheckedItem2">Checking for errors</string>
+    <string name="PostValidation.CheckedItem3">Sending your data for verification</string>
+    <string name="PostValidation.CheckedItem4">Verifying you</string>
+
+    <!-- Take photo screen -->
+    <string name="TakePhoto.Passport.Title">Please take a photo of your passport.</string>
+    <string name="TakePhoto.Passport.Description">Make sure your passport is clear and readable and fits fully in the frame.</string>
+    <string name="TakePhoto.IdBack.Title">Please take a photo of your ID’s back page</string>
+    <string name="TakePhoto.IdBack.Description">Make sure your ID is clear and readable and fits fully in the frame</string>
+    <string name="TakePhoto.IdFront.Title">Please take a photo of your ID’s front page</string>
+    <string name="TakePhoto.IdFront.Description">Make sure your ID is clear and readable and fits fully in the frame</string>
+    <string name="TakePhoto.Selfie.Title">Please take a selfie</string>
+    <string name="TakePhoto.Selfie.Description">Make sure your face is in the frame and it’s clearly visible.</string>
+    <string name="TakePhoto.DefaultErrorMessage">Something went wrong! Please try again later.</string>
+
+    <!-- Submit photo screen -->
+    <string name="SubmitPhoto.Title">Submit your photo</string>
+    <string name="SubmitPhoto.RetakeButton">Retake photo</string>
 </resources>
