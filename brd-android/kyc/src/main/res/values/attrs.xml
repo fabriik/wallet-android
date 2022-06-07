@@ -6,6 +6,7 @@
         <attr name="showBack" format="boolean" />
         <attr name="showTitle" format="boolean" />
         <attr name="showDismiss" format="boolean" />
+        <attr name="showInfo" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="CheckedTextView">
