@@ -14,28 +14,20 @@ class RegistrationApi(
     private val service: RegistrationService
 ) {
 
-    suspend fun associateAccount(
-        email: String,
-        token: String,
-        headers: Map<String, String?>
-    ) = service.associateAccount(
-        request = AssociateRequest(
-            email = email,
-            token = token
-        ),
-        headers = headers
-    )
-
-    suspend fun associateAccountConfirm(code: String, sessionKey: String) =
-        service.associateAccountConfirm(
-            request = AssociateConfirmRequest(code),
-            headers = mapOf(Pair("Authorization", sessionKey))
+    suspend fun associateAccount(email: String, token: String, headers: Map<String, String?>) =
+        service.associateAccount(
+            request = AssociateRequest(
+                email = email,
+                token = token
+            ),
+            headers = headers
         )
 
-    suspend fun resendAssociateAccountChallenge(sessionKey: String) =
-        service.resendAssociateAccountChallenge(
-            headers = mapOf(Pair("Authorization", sessionKey))
-        )
+    suspend fun associateAccountConfirm(code: String) =
+        service.associateAccountConfirm(AssociateConfirmRequest(code))
+
+    suspend fun resendAssociateAccountChallenge() =
+        service.resendAssociateAccountChallenge()
 
     companion object {
 
@@ -47,6 +39,7 @@ class RegistrationApi(
                         .callTimeout(30, TimeUnit.SECONDS)
                         .writeTimeout(30, TimeUnit.SECONDS)
                         .connectTimeout(30, TimeUnit.SECONDS)
+                        .addInterceptor(RegistrationApiInterceptor())
                         .build()
                 )
                 .baseUrl(FabriikApiConstants.HOST_AUTH_API)

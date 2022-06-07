@@ -8,6 +8,7 @@ import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.common.utils.validators.EmailValidator
 import com.fabriik.registration.data.RegistrationApi
 import com.fabriik.registration.utils.RegistrationUtils
+import com.platform.tools.SessionHolder
 import com.platform.tools.TokenHolder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -52,7 +53,7 @@ class RegistrationEnterEmailViewModel(
                             )
                         )
 
-                        userManager.putSession(
+                        SessionHolder.updateSession(
                             response.data.sessionKey
                         )
 

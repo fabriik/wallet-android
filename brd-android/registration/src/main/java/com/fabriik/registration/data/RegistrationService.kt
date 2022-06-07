@@ -16,12 +16,9 @@ interface RegistrationService {
 
     @POST("associate/confirm")
     suspend fun associateAccountConfirm(
-        @HeaderMap headers: Map<String, String>,
         @Body request: AssociateConfirmRequest
     ) : ResponseBody?
 
     @POST("associate/resend")
-    suspend fun resendAssociateAccountChallenge(
-        @HeaderMap headers: Map<String, String>
-    ) : ResponseBody
+    suspend fun resendAssociateAccountChallenge() : ResponseBody
 }

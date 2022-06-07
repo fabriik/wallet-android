@@ -85,9 +85,7 @@ class RegistrationVerifyEmailViewModel(
     private fun verifyEmail() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val response = registrationApi.associateAccountConfirm(
-                    currentState.code, userManager.getSession() ?: ""
-                )
+                val response = registrationApi.associateAccountConfirm(currentState.code)
 
                 setState { copy(verifiedOverlayVisible = true) }
                 delay(1000)
@@ -103,9 +101,7 @@ class RegistrationVerifyEmailViewModel(
     private fun resendEmail() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val response = registrationApi.resendAssociateAccountChallenge(
-                    userManager.getSession() ?: ""
-                )
+                val response = registrationApi.resendAssociateAccountChallenge()
                 Log.i("test_api", "Resend: ${response.string()}")
             } catch (ex: Exception) {
                 Log.i("test_api", ex.message ?: "unknown error")

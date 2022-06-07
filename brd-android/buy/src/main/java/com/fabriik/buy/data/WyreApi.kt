@@ -1,14 +1,14 @@
 package com.fabriik.buy.data
 
-import com.fabriik.buy.BuildConfig
 import com.fabriik.common.data.FabriikApiConstants
+import com.platform.tools.SessionHolder
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 class WyreApi(private val service: WyreService) {
 
     suspend fun getPaymentUrl(isTestNetwork: Boolean) = service.getPaymentUrl(
-        auth = BuildConfig.FABRIIC_CLIENT_TOKEN,
+        auth = SessionHolder.retrieveSession(),
         isTestNetwork = isTestNetwork
     )
 

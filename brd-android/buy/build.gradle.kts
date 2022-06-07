@@ -39,6 +39,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":brd-android:app-core"))
     implementation(project(":brd-android:fabriik-common"))
 
     implementation(Libs.Androidx.AppCompat)

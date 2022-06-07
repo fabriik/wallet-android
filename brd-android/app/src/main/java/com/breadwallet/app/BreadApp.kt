@@ -31,7 +31,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.net.ConnectivityManager
 import android.os.Build
-import android.util.Log
 import androidx.annotation.VisibleForTesting
 import androidx.camera.camera2.Camera2Config
 import androidx.camera.core.CameraXConfig
@@ -80,6 +79,7 @@ import com.platform.interfaces.MetaDataManager
 import com.platform.interfaces.WalletProvider
 import com.platform.sqlite.PlatformSqliteHelper
 import com.platform.tools.KVStoreManager
+import com.platform.tools.SessionHolder
 import com.platform.tools.TokenHolder
 import drewcarlson.blockset.BdbService
 import io.ktor.client.*
@@ -431,6 +431,7 @@ class BreadApp : Application(), KodeinAware, CameraXConfig.Provider {
         BRClipboardManager.provideContext(this)
         BRSharedPrefs.initialize(this, applicationScope)
         TokenHolder.provideContext(this)
+        SessionHolder.provideContext(this)
 
         ProcessLifecycleOwner.get().lifecycle.addObserver(ApplicationLifecycleObserver())
         ApplicationLifecycleObserver.addApplicationLifecycleListener { event ->
