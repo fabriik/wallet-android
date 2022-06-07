@@ -20,4 +20,9 @@
             <enum name="document" value="1"/>
         </attr>
     </declare-styleable>
+
+    <declare-styleable name="InfoView">
+        <attr name="infoTitle" format="string" />
+        <attr name="infoDescription" format="string" />
+    </declare-styleable>
 </resources>
