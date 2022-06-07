@@ -36,6 +36,10 @@ class PostValidationFragment : Fragment(),
                 viewModel.setEvent(PostValidationContract.Event.BackClicked)
             }
 
+            toolbar.setDismissButtonClickListener {
+                viewModel.setEvent(PostValidationContract.Event.DismissClicked)
+            }
+
             btnConfirm.setOnClickListener {
                 viewModel.setEvent(PostValidationContract.Event.ConfirmClicked)
             }
@@ -61,10 +65,15 @@ class PostValidationFragment : Fragment(),
 
     override fun handleEffect(effect: PostValidationContract.Effect) {
         when (effect) {
-            is PostValidationContract.Effect.GoBack -> {
+            is PostValidationContract.Effect.Back -> {
                 findNavController().popBackStack()
             }
-            is PostValidationContract.Effect.GoForward -> {
+
+            is PostValidationContract.Effect.Dismiss -> {
+                requireActivity().finish()
+            }
+
+            is PostValidationContract.Effect.Profile -> {
                 //TODO - Navigate to next screen
             }
         }
