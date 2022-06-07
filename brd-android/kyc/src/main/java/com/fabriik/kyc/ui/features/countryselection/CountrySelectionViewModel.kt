@@ -5,10 +5,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.fabriik.common.data.Status
 import com.fabriik.common.ui.base.FabriikViewModel
+import com.fabriik.common.utils.FlagUtil
 import com.fabriik.common.utils.toBundle
-import com.fabriik.kyc.R
 import com.fabriik.kyc.data.KycApi
-import com.fabriik.kyc.data.model.Country
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -93,19 +92,11 @@ class CountrySelectionViewModel(
                     )
                 }.map {
                     CountrySelectionAdapter.Item(
-                        icon = getFlag(it),
+                        icon = FlagUtil.getDrawableId(getApplication(), it.code),
                         country = it
                     )
                 }
             )
         }
-    }
-
-    private fun getFlag(country: Country) = when (country.code) {
-        "ar" -> R.drawable.ic_flag_ar
-        "gb" -> R.drawable.ic_flag_gb
-        "si" -> R.drawable.ic_flag_si
-        "us" -> R.drawable.ic_flag_us
-        else -> R.drawable.ic_flag_default
     }
 }
