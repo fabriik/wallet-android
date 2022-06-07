@@ -7,6 +7,7 @@ import android.util.Log
 import androidx.core.text.toSpannable
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.breadwallet.tools.security.BrdUserManager
 import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.common.utils.getString
 import com.fabriik.common.utils.toBundle
@@ -16,13 +17,20 @@ import com.fabriik.registration.data.RegistrationApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.closestKodein
+import org.kodein.di.direct
+import org.kodein.di.erased.instance
 
 class RegistrationVerifyEmailViewModel(
     application: Application,
     savedStateHandle: SavedStateHandle
 ) : FabriikViewModel<RegistrationVerifyEmailContract.State, RegistrationVerifyEmailContract.Event, RegistrationVerifyEmailContract.Effect>(
     application, savedStateHandle
-) {
+), KodeinAware {
+
+    override val kodein by closestKodein { application }
+    private val userManager by instance<BrdUserManager>()
     private val registrationApi = RegistrationApi.create()
 
     private lateinit var arguments: RegistrationVerifyEmailFragmentArgs
@@ -78,7 +86,7 @@ class RegistrationVerifyEmailViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val response = registrationApi.associateAccountConfirm(
-                    currentState.code
+                    currentState.code, userManager.getSession() ?: ""
                 )
 
                 setState { copy(verifiedOverlayVisible = true) }
@@ -95,7 +103,9 @@ class RegistrationVerifyEmailViewModel(
     private fun resendEmail() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val response = registrationApi.resendAssociateAccountChallenge()
+                val response = registrationApi.resendAssociateAccountChallenge(
+                    userManager.getSession() ?: ""
+                )
                 Log.i("test_api", "Resend: ${response.string()}")
             } catch (ex: Exception) {
                 Log.i("test_api", ex.message ?: "unknown error")

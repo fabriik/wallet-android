@@ -200,7 +200,7 @@ object Libs {
     }
 
     object Networking {
-        const val Moshi = "com.squareup.moshi:moshi:$MOSHI_VERSION"
+        const val Moshi = "com.squareup.moshi:moshi-kotlin:$MOSHI_VERSION"
         const val MoshiCodegen = "com.squareup.moshi:moshi-kotlin-codegen:$MOSHI_VERSION"
 
         const val Retrofit = "com.squareup.retrofit2:retrofit:$RETROFIT_VERSION"

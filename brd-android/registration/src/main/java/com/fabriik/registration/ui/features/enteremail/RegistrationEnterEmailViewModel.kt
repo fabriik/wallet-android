@@ -16,6 +16,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
+import org.kodein.di.direct
 import org.kodein.di.erased.instance
 import java.text.SimpleDateFormat
 import java.util.*
@@ -62,6 +63,10 @@ class RegistrationEnterEmailViewModel(
                             token = token,
                             dateHeader = dateHeader,
                             signature = String(signatureEncoded).trim()
+                        )
+
+                        userManager.putSession(
+                            response.data.sessionKey
                         )
 
                         setEffect {
