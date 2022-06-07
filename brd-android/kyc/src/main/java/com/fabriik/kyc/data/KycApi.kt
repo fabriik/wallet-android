@@ -3,12 +3,15 @@ package com.fabriik.kyc.data
 import com.fabriik.common.data.FabriikApiConstants
 import com.fabriik.common.data.Resource
 import com.fabriik.kyc.data.model.Country
+import com.fabriik.kyc.data.requests.CompleteLevel1VerificationRequest
 import com.fabriik.kyc.data.response.CountriesResponse
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
+import okhttp3.ResponseBody
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -24,7 +27,25 @@ class KycApi(
         }
     }
 
+    suspend fun completeLevel1Verification(firstName: String, lastName: String, country: Country, dateOfBirth: Date): Resource<ResponseBody?> {
+        return try {
+            val response = service.completeLevel1Verification(
+                CompleteLevel1VerificationRequest(
+                    firstName = firstName,
+                    lastName = lastName,
+                    country = country.code,
+                    dateOfBirth = SimpleDateFormat(DATE_FORMAT, Locale.getDefault()).format(dateOfBirth),
+                )
+            )
+            Resource.success(data = response)
+        } catch (ex: Exception) {
+            Resource.error(message = ex.message ?: "") //todo: default error
+        }
+    }
+
     companion object {
+
+        const val DATE_FORMAT = "yyyy-MM-dd"
 
         fun create() = KycApi(
             service = Retrofit.Builder()

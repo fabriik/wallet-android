@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.fabriik.common.ui.base.FabriikView
+import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.common.utils.textOrEmpty
 import com.fabriik.kyc.R
 import com.fabriik.kyc.data.model.Country
@@ -134,6 +135,12 @@ class PersonalInformationFragment : Fragment(),
 
             is PersonalInformationContract.Effect.Dismiss ->
                 requireActivity().finish()
+
+            is PersonalInformationContract.Effect.ShowToast ->
+                FabriikToastUtil.show(
+                    parentView = binding.root,
+                    message = effect.message
+                )
 
             is PersonalInformationContract.Effect.DateSelection -> {
                 val constraints = CalendarConstraints.Builder()
