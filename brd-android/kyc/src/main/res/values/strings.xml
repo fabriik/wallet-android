@@ -67,6 +67,17 @@
     <string name="PostValidation.CheckedItem3">Sending your data for verification</string>
     <string name="PostValidation.CheckedItem4">Verifying you</string>
 
+    <!-- Take photo screen -->
+    <string name="TakePhoto.Passport.Title">Please take a photo of your passport.</string>
+    <string name="TakePhoto.Passport.Description">Make sure your passport is clear and readable and fits fully in the frame.</string>
+    <string name="TakePhoto.IdBack.Title">Please take a photo of your ID’s back page</string>
+    <string name="TakePhoto.IdBack.Description">Make sure your ID is clear and readable and fits fully in the frame</string>
+    <string name="TakePhoto.IdFront.Title">Please take a photo of your ID’s front page</string>
+    <string name="TakePhoto.IdFront.Description">Make sure your ID is clear and readable and fits fully in the frame</string>
+    <string name="TakePhoto.Selfie.Title">Please take a selfie</string>
+    <string name="TakePhoto.Selfie.Description">Make sure your face is in the frame and it’s clearly visible.</string>
+    <string name="TakePhoto.DefaultErrorMessage">Something went wrong! Please try again later.</string>
+
     <!-- Submit photo screen -->
     <string name="SubmitPhoto.Title">Submit your photo</string>
     <string name="SubmitPhoto.RetakeButton">Retake photo</string>

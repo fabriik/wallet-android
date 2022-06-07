@@ -2,12 +2,21 @@
 <resources>
     <declare-styleable name="KycToolbar">
         <attr name="title" format="string" />
+        <attr name="tintColor" format="color" />
         <attr name="showBack" format="boolean" />
+        <attr name="showTitle" format="boolean" />
         <attr name="showDismiss" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="CheckedTextView">
         <attr name="contentText" format="string"/>
         <attr name="iconImage" format="reference"/>
+    </declare-styleable>
+
+    <declare-styleable name="PhotoFinderView">
+        <attr name="type" format="enum">
+            <enum name="selfie" value="0"/>
+            <enum name="document" value="1"/>
+        </attr>
     </declare-styleable>
 </resources>

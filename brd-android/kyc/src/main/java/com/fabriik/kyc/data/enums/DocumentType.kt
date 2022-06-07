@@ -1,8 +1,8 @@
 package com.fabriik.kyc.data.enums
 
-enum class DocumentType {
-    ID_CARD,
-    PASSPORT,
-    DRIVING_LICENCE,
-    SELFIE
+enum class DocumentType(val id: String) {
+    ID_CARD("id"),
+    PASSPORT("pp"),
+    DRIVING_LICENCE("dl"),
+    SELFIE("selfie")
 }

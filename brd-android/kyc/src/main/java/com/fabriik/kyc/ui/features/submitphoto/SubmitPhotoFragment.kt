@@ -81,19 +81,24 @@ class SubmitPhotoFragment : Fragment(),
 
     override fun handleEffect(effect: SubmitPhotoContract.Effect) {
         when (effect) {
-            is SubmitPhotoContract.Effect.Back -> {
+            is SubmitPhotoContract.Effect.Back ->
                 findNavController().popBackStack()
-            }
-            is SubmitPhotoContract.Effect.TakePhoto -> {
-                // TODO - navigate to camera
-            }
+
+            is SubmitPhotoContract.Effect.Dismiss ->
+                requireActivity().finish()
+
+            is SubmitPhotoContract.Effect.TakePhoto ->
+                findNavController().navigate(
+                    SubmitPhotoFragmentDirections.actionTakePhoto(
+                        documentSide = effect.documentSide,
+                        documentType = effect.documentType
+                    )
+                )
+
             is SubmitPhotoContract.Effect.PostValidation -> {
                 findNavController().navigate(
                     SubmitPhotoFragmentDirections.actionPostValidation()
                 )
-            }
-            is SubmitPhotoContract.Effect.Dismiss -> {
-                requireActivity().finish()
             }
         }
     }

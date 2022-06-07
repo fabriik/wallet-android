@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph_kyc"
-    app:startDestination="@id/nav_graph_kyc_level1">
+    app:startDestination="@id/nav_graph_kyc_level2">
 
     <navigation
         android:id="@+id/nav_graph_kyc_level1"
@@ -65,8 +65,27 @@
             tools:layout="@layout/fragment_proof_of_identity">
 
             <action
-                android:id="@+id/action_proofOfIdentity_to_camera"
-                app:destination="@+id/fragmentSubmitPhoto" />
+                android:id="@+id/actionTakePhoto"
+                app:destination="@id/fragmentTakePhoto" />
+
+        </fragment>
+
+        <fragment
+            android:id="@+id/fragmentTakePhoto"
+            android:name="com.fabriik.kyc.ui.features.takephoto.TakePhotoFragment"
+            tools:layout="@layout/fragment_take_photo">
+
+            <argument
+                android:name="documentSide"
+                app:argType="com.fabriik.kyc.data.enums.DocumentSide" />
+
+            <argument
+                android:name="documentType"
+                app:argType="com.fabriik.kyc.data.enums.DocumentType" />
+
+            <action
+                android:id="@+id/actionPhotoPreview"
+                app:destination="@id/fragmentSubmitPhoto" />
 
         </fragment>
 
@@ -74,6 +93,10 @@
             android:id="@+id/fragmentSubmitPhoto"
             android:name="com.fabriik.kyc.ui.features.submitphoto.SubmitPhotoFragment"
             tools:layout="@layout/fragment_submit_photo">
+
+            <argument
+                android:name="documentSide"
+                app:argType="com.fabriik.kyc.data.enums.DocumentSide" />
 
             <argument
                 android:name="documentType"
@@ -85,7 +108,7 @@
 
             <action
                 android:id="@+id/actionTakePhoto"
-                app:destination="@id/fragmentPostValidation" />
+                app:destination="@id/fragmentTakePhoto" />
 
             <action
                 android:id="@+id/actionPostValidation"

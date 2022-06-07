@@ -2,6 +2,7 @@ package com.fabriik.kyc.ui.features.submitphoto
 
 import android.net.Uri
 import com.fabriik.common.ui.base.FabriikContract
+import com.fabriik.kyc.data.enums.DocumentSide
 import com.fabriik.kyc.data.enums.DocumentType
 
 interface SubmitPhotoContract {
@@ -15,13 +16,17 @@ interface SubmitPhotoContract {
 
     sealed class Effect : FabriikContract.Effect {
         object Back : Effect()
-        object TakePhoto : Effect()
-        object PostValidation : Effect()
         object Dismiss : Effect()
+        object PostValidation : Effect()
+        data class TakePhoto(
+            val documentSide: DocumentSide,
+            val documentType: DocumentType
+        ) : Effect()
     }
 
     data class State(
         val documentType: DocumentType,
-        val image: Uri,
+        val documentSide: DocumentSide,
+        val image: Uri
     ) : FabriikContract.State
 }
