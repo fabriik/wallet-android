@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -13,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fabriik.common.ui.base.FabriikView
+import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.kyc.R
 import com.fabriik.kyc.databinding.FragmentCountrySelectionBinding
 import kotlinx.coroutines.flow.collect
@@ -84,12 +86,14 @@ class CountrySelectionFragment : Fragment(),
 
     override fun render(state: CountrySelectionContract.State) {
         adapter.submitList(state.adapterItems)
+        binding.loadingIndicator.isVisible = state.initialLoadingVisible
     }
 
     override fun handleEffect(effect: CountrySelectionContract.Effect) {
         when (effect) {
             is CountrySelectionContract.Effect.Dismiss ->
                 requireActivity().finish()
+
             is CountrySelectionContract.Effect.Back -> {
                 val bundle = bundleOf(
                     EXTRA_SELECTED_COUNTRY to effect.selectedCountry
@@ -97,6 +101,12 @@ class CountrySelectionFragment : Fragment(),
                 parentFragmentManager.setFragmentResult(effect.requestKey, bundle)
                 findNavController().popBackStack()
             }
+
+            is CountrySelectionContract.Effect.ShowToast ->
+                FabriikToastUtil.show(
+                    parentView = binding.root,
+                    message = effect.message
+                )
         }
     }
 

@@ -15,6 +15,7 @@ interface CountrySelectionContract {
 
     sealed class Effect : FabriikContract.Effect {
         object Dismiss : Effect()
+        data class ShowToast(val message: String): Effect()
         data class Back(
             val requestKey: String,
             val selectedCountry: Country?
@@ -24,6 +25,7 @@ interface CountrySelectionContract {
     data class State(
         val search: String = "",
         val countries: List<Country> = emptyList(),
-        val adapterItems: List<CountrySelectionAdapter.Item> = emptyList()
+        val adapterItems: List<CountrySelectionAdapter.Item> = emptyList(),
+        val initialLoadingVisible: Boolean = false
     ) : FabriikContract.State
 }

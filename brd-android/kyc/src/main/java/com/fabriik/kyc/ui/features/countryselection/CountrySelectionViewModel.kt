@@ -2,10 +2,15 @@ package com.fabriik.kyc.ui.features.countryselection
 
 import android.app.Application
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
+import com.fabriik.common.data.Status
 import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.common.utils.toBundle
 import com.fabriik.kyc.R
+import com.fabriik.kyc.data.KycApi
 import com.fabriik.kyc.data.model.Country
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class CountrySelectionViewModel(
     application: Application,
@@ -15,6 +20,8 @@ class CountrySelectionViewModel(
 ) {
 
     private lateinit var arguments: CountrySelectionFragmentArgs
+
+    private val kycApi = KycApi.create()
 
     override fun parseArguments(savedStateHandle: SavedStateHandle) {
         arguments = CountrySelectionFragmentArgs.fromBundle(
@@ -27,33 +34,27 @@ class CountrySelectionViewModel(
     override fun handleEvent(event: CountrySelectionContract.Event) {
         when (event) {
             is CountrySelectionContract.Event.LoadCountries -> {
-                //todo: loading indicator
-                // todo: get data from API
+                viewModelScope.launch(Dispatchers.IO) {
+                    //show loading
+                    setState { copy(initialLoadingVisible = true) }
 
-                setState {
-                    copy(
-                        countries = listOf(
-                            Country(
-                                code = "ar",
-                                name = "Argentina"
-                            ),
-                            Country(
-                                code = "si",
-                                name = "Slovenia"
-                            ),
-                            Country(
-                                code = "gb",
-                                name = "United Kingdom"
-                            ),
-                            Country(
-                                code = "us",
-                                name = "USA"
-                            )
-                        )
-                    )
+                    val response = kycApi.getCountries()
+
+                    //dismiss loading
+                    setState { copy(initialLoadingVisible = false) }
+
+                    when (response.status) {
+                        Status.SUCCESS -> {
+                            setState { copy(countries = response.data!!) }
+                            applyFilters()
+                        }
+
+                        Status.ERROR ->
+                            setEffect {
+                                CountrySelectionContract.Effect.ShowToast(response.message!!)
+                            }
+                    }
                 }
-
-                applyFilters()
             }
 
             is CountrySelectionContract.Event.SearchChanged -> {
