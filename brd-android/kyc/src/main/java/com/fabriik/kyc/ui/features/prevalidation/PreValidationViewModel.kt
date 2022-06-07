@@ -14,9 +14,13 @@ class PreValidationViewModel(
     override fun handleEvent(event: PreValidationContract.Event) {
         when (event) {
             is PreValidationContract.Event.BackClicked ->
-                setEffect { PreValidationContract.Effect.GoBack }
+                setEffect { PreValidationContract.Effect.Back }
+
             is PreValidationContract.Event.ConfirmClicked ->
-                setEffect { PreValidationContract.Effect.GoForward }
+                setEffect { PreValidationContract.Effect.ProofOfIdentity }
+
+            is PreValidationContract.Event.DismissCLicked ->
+                setEffect { PreValidationContract.Effect.Dismiss }
         }
     }
 }
