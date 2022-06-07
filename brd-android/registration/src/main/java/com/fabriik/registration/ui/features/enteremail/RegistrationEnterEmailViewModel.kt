@@ -59,7 +59,7 @@ class RegistrationEnterEmailViewModel(
                     // dismiss loading
                     setState { copy(loadingVisible = false) }
 
-                    when(response.status) {
+                    when (response.status) {
                         Status.SUCCESS -> {
                             SessionHolder.updateSession(
                                 response.data!!.sessionKey
@@ -72,7 +72,12 @@ class RegistrationEnterEmailViewModel(
                             }
                         }
 
-                        Status.ERROR -> {} //todo: show error
+                        Status.ERROR ->
+                            setEffect {
+                                RegistrationEnterEmailContract.Effect.ShowToast(
+                                    response.message!!
+                                )
+                            }
                     }
                 }
             }

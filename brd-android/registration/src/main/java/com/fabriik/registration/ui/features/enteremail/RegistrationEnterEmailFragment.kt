@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.fabriik.common.ui.base.FabriikView
+import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.common.utils.showKeyboard
 import com.fabriik.common.utils.textOrEmpty
 import com.fabriik.registration.R
@@ -78,6 +79,12 @@ class RegistrationEnterEmailFragment : Fragment(),
         when (effect) {
             is RegistrationEnterEmailContract.Effect.Dismiss ->
                 requireActivity().finish()
+
+            is RegistrationEnterEmailContract.Effect.ShowToast ->
+                FabriikToastUtil.show(
+                    parentView = binding.root,
+                    message = effect.message
+                )
 
             is RegistrationEnterEmailContract.Effect.GoToVerifyEmail ->
                 findNavController().navigate(

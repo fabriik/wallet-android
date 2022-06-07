@@ -12,6 +12,7 @@ interface RegistrationEnterEmailContract {
 
     sealed class Effect : FabriikContract.Effect {
         object Dismiss : Effect()
+        data class ShowToast(val message: String) : Effect()
         data class GoToVerifyEmail(val email: String) : Effect()
     }
 

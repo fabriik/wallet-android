@@ -15,6 +15,7 @@ interface RegistrationVerifyEmailContract {
     sealed class Effect : FabriikContract.Effect {
         object Back: Effect()
         object Dismiss: Effect()
+        data class ShowToast(val message: String) : Effect()
     }
 
     data class State(

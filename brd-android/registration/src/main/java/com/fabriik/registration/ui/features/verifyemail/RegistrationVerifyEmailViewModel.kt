@@ -94,9 +94,12 @@ class RegistrationVerifyEmailViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             val response = registrationApi.resendAssociateAccountChallenge()
             when (response.status) {
-                Status.SUCCESS -> {
-                    //todo: show success message
-                }
+                Status.SUCCESS ->
+                    setEffect {
+                        RegistrationVerifyEmailContract.Effect.ShowToast(
+                            getString(R.string.Registration_VerifyEmail_CodeSent)
+                        )
+                    }
 
                 Status.ERROR -> {
                     //empty
