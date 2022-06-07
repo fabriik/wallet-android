@@ -4,6 +4,7 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.breadwallet.tools.security.BrdUserManager
+import com.fabriik.common.data.Status
 import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.common.utils.validators.EmailValidator
 import com.fabriik.registration.data.RegistrationApi
@@ -25,7 +26,7 @@ class RegistrationEnterEmailViewModel(
     override val kodein by closestKodein { application }
     private val userManager by instance<BrdUserManager>()
 
-    private val registrationApi = RegistrationApi.create()
+    private val registrationApi = RegistrationApi.create(application)
     private val registrationUtils = RegistrationUtils(userManager)
 
     override fun createInitialState() = RegistrationEnterEmailContract.State()
@@ -40,30 +41,33 @@ class RegistrationEnterEmailViewModel(
 
             is RegistrationEnterEmailContract.Event.NextClicked -> {
                 viewModelScope.launch(Dispatchers.IO) {
-                    try {
-                        val token = TokenHolder.retrieveToken() ?: return@launch
-                        //todo: show error
+                    val token = TokenHolder.retrieveToken() ?: return@launch
+                    //todo: show error
 
-                        val response = registrationApi.associateAccount(
+                    val response = registrationApi.associateAccount(
+                        email = currentState.email,
+                        token = token,
+                        headers = registrationUtils.getAssociateRequestHeaders(
                             email = currentState.email,
-                            token = token,
-                            headers = registrationUtils.getAssociateRequestHeaders(
-                                email = currentState.email,
-                                token = token
-                            )
+                            token = token
                         )
+                    )
 
-                        SessionHolder.updateSession(
-                            response.data.sessionKey
-                        )
-
-                        setEffect {
-                            RegistrationEnterEmailContract.Effect.GoToVerifyEmail(
-                                currentState.email
+                    when(response.status) {
+                        Status.SUCCESS -> {
+                            SessionHolder.updateSession(
+                                response.data!!.sessionKey
                             )
+
+                            setEffect {
+                                RegistrationEnterEmailContract.Effect.GoToVerifyEmail(
+                                    currentState.email
+                                )
+                            }
                         }
-                    } catch (ex: Exception) {
-                        Log.i("test_api", ex.message ?: "unknown error")
+
+                        Status.ERROR -> {} //todo: show error
+                        Status.LOADING -> {} //todo: show loading
                     }
                 }
             }

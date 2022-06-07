@@ -1,5 +1,6 @@
 package com.fabriik.registration.data
 
+import com.fabriik.common.data.FabriikApiResponse
 import com.fabriik.registration.data.requests.AssociateConfirmRequest
 import com.fabriik.registration.data.requests.AssociateRequest
 import com.fabriik.registration.data.responses.AssociateResponse
@@ -12,13 +13,13 @@ interface RegistrationService {
     suspend fun associateAccount(
         @HeaderMap headers: Map<String, String?>,
         @Body request: AssociateRequest
-    ) : AssociateResponse
+    ): FabriikApiResponse<AssociateResponse?>
 
     @POST("associate/confirm")
     suspend fun associateAccountConfirm(
         @Body request: AssociateConfirmRequest
-    ) : ResponseBody?
+    ): ResponseBody?
 
     @POST("associate/resend")
-    suspend fun resendAssociateAccountChallenge() : ResponseBody
+    suspend fun resendAssociateAccountChallenge(): ResponseBody?
 }

@@ -3,11 +3,10 @@ package com.fabriik.registration.ui.features.verifyemail
 import android.app.Application
 import android.graphics.Typeface
 import android.text.style.StyleSpan
-import android.util.Log
 import androidx.core.text.toSpannable
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import com.breadwallet.tools.security.BrdUserManager
+import com.fabriik.common.data.Status
 import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.common.utils.getString
 import com.fabriik.common.utils.toBundle
@@ -17,21 +16,15 @@ import com.fabriik.registration.data.RegistrationApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.kodein.di.KodeinAware
-import org.kodein.di.android.closestKodein
-import org.kodein.di.direct
-import org.kodein.di.erased.instance
 
 class RegistrationVerifyEmailViewModel(
     application: Application,
     savedStateHandle: SavedStateHandle
 ) : FabriikViewModel<RegistrationVerifyEmailContract.State, RegistrationVerifyEmailContract.Event, RegistrationVerifyEmailContract.Effect>(
     application, savedStateHandle
-), KodeinAware {
+) {
 
-    override val kodein by closestKodein { application }
-    private val userManager by instance<BrdUserManager>()
-    private val registrationApi = RegistrationApi.create()
+    private val registrationApi = RegistrationApi.create(application)
 
     private lateinit var arguments: RegistrationVerifyEmailFragmentArgs
 
@@ -64,47 +57,50 @@ class RegistrationVerifyEmailViewModel(
             is RegistrationVerifyEmailContract.Event.ChangeEmailClicked ->
                 setEffect { RegistrationVerifyEmailContract.Effect.Back }
 
-            is RegistrationVerifyEmailContract.Event.ConfirmClicked -> {
+            is RegistrationVerifyEmailContract.Event.ConfirmClicked ->
                 verifyEmail()
-
-                // todo: remove after API integration, added only for testing
-                /*if (currentState.code == "111111") {
-                    setState { copy(codeErrorVisible = true).validate() }
-                } else {
-                    viewModelScope.launch(Dispatchers.IO) {
-                        setState { copy(verifiedOverlayVisible = true) }
-                        delay(1000)
-                        setState { copy(verifiedOverlayVisible = false) }
-                        setEffect { RegistrationVerifyEmailContract.Effect.Dismiss }
-                    }
-                }*/
-            }
         }
     }
 
     private fun verifyEmail() {
         viewModelScope.launch(Dispatchers.IO) {
-            try {
-                val response = registrationApi.associateAccountConfirm(currentState.code)
+            val response = registrationApi.associateAccountConfirm(currentState.code)
+            when (response.status) {
+                Status.SUCCESS ->
+                    showCompletedState()
 
-                setState { copy(verifiedOverlayVisible = true) }
-                delay(1000)
-                setState { copy(verifiedOverlayVisible = false) }
-                setEffect { RegistrationVerifyEmailContract.Effect.Dismiss }
+                Status.ERROR ->
+                    setState { copy(codeErrorVisible = true) }
 
-            } catch (ex: Exception) {
-                Log.i("test_api", ex.message ?: "unknown error")
+                Status.LOADING -> {
+                    // todo: show loading indicator
+                }
             }
         }
     }
 
+    private suspend fun showCompletedState() {
+        setState { copy(verifiedOverlayVisible = true) }
+        delay(1000)
+        setState { copy(verifiedOverlayVisible = false) }
+        setEffect { RegistrationVerifyEmailContract.Effect.Dismiss }
+    }
+
     private fun resendEmail() {
         viewModelScope.launch(Dispatchers.IO) {
-            try {
-                val response = registrationApi.resendAssociateAccountChallenge()
-                Log.i("test_api", "Resend: ${response.string()}")
-            } catch (ex: Exception) {
-                Log.i("test_api", ex.message ?: "unknown error")
+            val response = registrationApi.resendAssociateAccountChallenge()
+            when (response.status) {
+                Status.SUCCESS -> {
+                    //todo: show success message
+                }
+
+                Status.ERROR -> {
+                    //empty
+                }
+
+                Status.LOADING -> {
+                    //empty
+                }
             }
         }
     }

@@ -44,4 +44,10 @@ dependencies {
     api(brd.Libs.Androidx.NavigationFragment)
     api(brd.Libs.Material.Core)
     api(brd.Libs.Coroutines.Core)
+
+    api(brd.Libs.Networking.Retrofit)
+    api(brd.Libs.Networking.RetrofitMoshiConverter)
+
+    api(brd.Libs.Networking.Moshi)
+    kapt(brd.Libs.Networking.MoshiCodegen)
 }
