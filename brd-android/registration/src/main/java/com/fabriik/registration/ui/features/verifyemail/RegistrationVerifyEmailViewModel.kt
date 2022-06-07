@@ -64,17 +64,21 @@ class RegistrationVerifyEmailViewModel(
 
     private fun verifyEmail() {
         viewModelScope.launch(Dispatchers.IO) {
+
+            // show loading
+            setState { copy(loadingVisible = true) }
+
             val response = registrationApi.associateAccountConfirm(currentState.code)
+
+            // dismiss loading
+            setState { copy(loadingVisible = false) }
+
             when (response.status) {
                 Status.SUCCESS ->
                     showCompletedState()
 
                 Status.ERROR ->
                     setState { copy(codeErrorVisible = true) }
-
-                Status.LOADING -> {
-                    // todo: show loading indicator
-                }
             }
         }
     }
@@ -95,10 +99,6 @@ class RegistrationVerifyEmailViewModel(
                 }
 
                 Status.ERROR -> {
-                    //empty
-                }
-
-                Status.LOADING -> {
                     //empty
                 }
             }

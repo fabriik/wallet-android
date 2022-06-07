@@ -85,6 +85,7 @@ class RegistrationVerifyEmailFragment : Fragment(),
             btnConfirm.isEnabled = state.confirmEnabled
             viewOverlay.isVisible = state.verifiedOverlayVisible
             tvCodeError.isVisible = state.codeErrorVisible
+            loadingView.isVisible = state.loadingVisible
             ivEmailVerified.isVisible = state.verifiedOverlayVisible
             viewEnterCode.setErrorState(state.codeErrorVisible)
         }

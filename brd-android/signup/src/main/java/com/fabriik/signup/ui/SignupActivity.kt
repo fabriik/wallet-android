@@ -57,7 +57,7 @@ class SignupActivity : AppCompatActivity() {
     }
 
     fun showLoading(show: Boolean) {
-        binding.loadingView.root.isVisible = show
+        binding.loadingView.isVisible = show
     }
 
     companion object {

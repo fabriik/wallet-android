@@ -44,6 +44,9 @@ class RegistrationEnterEmailViewModel(
                     val token = TokenHolder.retrieveToken() ?: return@launch
                     //todo: show error
 
+                    // show loading
+                    setState { copy(loadingVisible = true) }
+
                     val response = registrationApi.associateAccount(
                         email = currentState.email,
                         token = token,
@@ -52,6 +55,9 @@ class RegistrationEnterEmailViewModel(
                             token = token
                         )
                     )
+
+                    // dismiss loading
+                    setState { copy(loadingVisible = false) }
 
                     when(response.status) {
                         Status.SUCCESS -> {
@@ -67,7 +73,6 @@ class RegistrationEnterEmailViewModel(
                         }
 
                         Status.ERROR -> {} //todo: show error
-                        Status.LOADING -> {} //todo: show loading
                     }
                 }
             }

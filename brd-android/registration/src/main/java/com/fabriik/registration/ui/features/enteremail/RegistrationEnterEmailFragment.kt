@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -67,7 +68,10 @@ class RegistrationEnterEmailFragment : Fragment(),
     }
 
     override fun render(state: RegistrationEnterEmailContract.State) {
-        binding.btnNext.isEnabled = state.nextEnabled
+        with(binding) {
+            btnNext.isEnabled = state.nextEnabled
+            loadingView.isVisible = state.loadingVisible
+        }
     }
 
     override fun handleEffect(effect: RegistrationEnterEmailContract.Effect) {

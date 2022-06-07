@@ -17,6 +17,7 @@ interface RegistrationEnterEmailContract {
 
     data class State(
         val email: String = "",
-        val nextEnabled: Boolean = false
+        val nextEnabled: Boolean = false,
+        val loadingVisible: Boolean = false
     ): FabriikContract.State
 }
