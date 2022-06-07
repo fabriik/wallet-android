@@ -17,17 +17,13 @@ class RegistrationApi(
     suspend fun associateAccount(
         email: String,
         token: String,
-        signature: String,
-        dateHeader: String
+        headers: Map<String, String?>
     ) = service.associateAccount(
         request = AssociateRequest(
             email = email,
             token = token
         ),
-        headers = mapOf(
-            Pair("Date", dateHeader),
-            Pair("Signature", signature)
-        )
+        headers = headers
     )
 
     suspend fun associateAccountConfirm(code: String, sessionKey: String) =

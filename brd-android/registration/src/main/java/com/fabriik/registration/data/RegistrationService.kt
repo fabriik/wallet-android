@@ -10,7 +10,7 @@ interface RegistrationService {
 
     @POST("associate")
     suspend fun associateAccount(
-        @HeaderMap headers: Map<String, String>,
+        @HeaderMap headers: Map<String, String?>,
         @Body request: AssociateRequest
     ) : AssociateResponse
 
