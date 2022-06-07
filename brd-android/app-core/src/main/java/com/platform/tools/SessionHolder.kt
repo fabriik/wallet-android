@@ -21,7 +21,7 @@ object SessionHolder : KodeinAware {
 
     @Synchronized
     fun retrieveSession() = userManager.getSession()
-        ?: BuildConfig.FABRIIC_CLIENT_TOKEN
+        ?: BuildConfig.DEFAULT_FABRIIK_CLIENT_TOKEN
 
     @Synchronized
     fun updateSession(session: String): String? {

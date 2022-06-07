@@ -10,7 +10,7 @@ plugins {
 
 apply(from = rootProject.file("gradle/flavors.gradle"))
 
-val FABRIIK_CLIENT_TOKEN: String by project
+val DEFAULT_FABRIIK_CLIENT_TOKEN: String by project
 
 android {
     compileSdkVersion(BrdRelease.ANDROID_COMPILE_SDK)
@@ -18,7 +18,7 @@ android {
     defaultConfig {
         minSdkVersion(BrdRelease.ANDROID_MINIMUM_SDK)
         buildConfigField("int", "VERSION_CODE", "${BrdRelease.versionCode}")
-        buildConfigField("String", "FABRIIC_CLIENT_TOKEN", FABRIIK_CLIENT_TOKEN)
+        buildConfigField("String", "DEFAULT_FABRIIK_CLIENT_TOKEN", DEFAULT_FABRIIK_CLIENT_TOKEN)
     }
     lintOptions {
         isAbortOnError = false
