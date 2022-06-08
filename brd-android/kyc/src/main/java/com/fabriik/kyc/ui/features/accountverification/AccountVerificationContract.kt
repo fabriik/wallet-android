@@ -7,12 +7,16 @@ interface AccountVerificationContract {
 
     sealed class Event : FabriikContract.Event {
         object BackClicked : Event()
+        object DismissClicked : Event()
+        object InfoClicked : Event()
         object Level1Clicked : Event()
         object Level2Clicked : Event()
     }
 
     sealed class Effect : FabriikContract.Effect {
-        object GoBack : Effect()
+        object Back : Effect()
+        object Dismiss : Effect()
+        object Info : Effect()
         object GoToPersonalInfo : Effect()
     }
 

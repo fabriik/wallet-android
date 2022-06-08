@@ -6,6 +6,7 @@
         <attr name="showBack" format="boolean" />
         <attr name="showTitle" format="boolean" />
         <attr name="showDismiss" format="boolean" />
+        <attr name="showInfo" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="CheckedTextView">
@@ -18,5 +19,10 @@
             <enum name="selfie" value="0"/>
             <enum name="document" value="1"/>
         </attr>
+    </declare-styleable>
+
+    <declare-styleable name="InfoView">
+        <attr name="infoTitle" format="string" />
+        <attr name="infoDescription" format="string" />
     </declare-styleable>
 </resources>

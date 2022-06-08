@@ -23,7 +23,13 @@ class AccountVerificationViewModel(
     override fun handleEvent(event: AccountVerificationContract.Event) {
         when (event) {
             is AccountVerificationContract.Event.BackClicked ->
-                setEffect { AccountVerificationContract.Effect.GoBack }
+                setEffect { AccountVerificationContract.Effect.Back }
+
+            is AccountVerificationContract.Event.DismissClicked ->
+                setEffect { AccountVerificationContract.Effect.Dismiss }
+
+            is AccountVerificationContract.Event.InfoClicked ->
+                setEffect { AccountVerificationContract.Effect.Info }
 
             is AccountVerificationContract.Event.Level1Clicked ->
                 setEffect { AccountVerificationContract.Effect.GoToPersonalInfo }
