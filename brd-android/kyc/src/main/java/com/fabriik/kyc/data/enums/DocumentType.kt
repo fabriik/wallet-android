@@ -12,5 +12,8 @@ enum class DocumentType(val id: String) {
     @Json(name = "DRIVERS_LICENSE")
     DRIVING_LICENCE("dl"),
 
+    @Json(name = "RESIDENCE_PERMIT")
+    RESIDENCE_PERMIT("rp"),
+
     SELFIE("selfie")
 }

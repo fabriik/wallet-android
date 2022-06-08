@@ -51,6 +51,10 @@ class ProofOfIdentityFragment : Fragment(),
             cvDrivingLicence.setOnClickListener {
                 viewModel.setEvent(ProofOfIdentityContract.Event.DrivingLicenceClicked)
             }
+
+            cvResidencePermit.setOnClickListener {
+                viewModel.setEvent(ProofOfIdentityContract.Event.ResidencePermitClicked)
+            }
         }
 
         // collect UI state
@@ -77,6 +81,7 @@ class ProofOfIdentityFragment : Fragment(),
             cvIdCard.isVisible = state.idCardVisible
             cvPassport.isVisible = state.passportVisible
             cvDrivingLicence.isVisible = state.drivingLicenceVisible
+            cvResidencePermit.isVisible = state.residencePermitVisible
             loadingIndicator.isVisible = state.initialLoadingVisible
         }
     }

@@ -69,6 +69,7 @@ class ProofOfIdentityViewModel(
                             idCardVisible = isDocumentAvailable(response, DocumentType.ID_CARD),
                             passportVisible = isDocumentAvailable(response, DocumentType.PASSPORT),
                             drivingLicenceVisible = isDocumentAvailable(response, DocumentType.DRIVING_LICENCE),
+                            residencePermitVisible = isDocumentAvailable(response, DocumentType.RESIDENCE_PERMIT)
                         )
                     }
 

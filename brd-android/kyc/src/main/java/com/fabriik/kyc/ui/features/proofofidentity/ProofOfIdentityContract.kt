@@ -11,6 +11,7 @@ interface ProofOfIdentityContract {
         object IdCardClicked : Event()
         object PassportClicked : Event()
         object DrivingLicenceClicked : Event()
+        object ResidencePermitClicked : Event()
     }
 
     sealed class Effect : FabriikContract.Effect {
@@ -23,6 +24,7 @@ interface ProofOfIdentityContract {
         val idCardVisible: Boolean = false,
         val passportVisible: Boolean = false,
         val drivingLicenceVisible: Boolean = false,
+        val residencePermitVisible: Boolean = false,
         val initialLoadingVisible: Boolean = false
     ) : FabriikContract.State
 }
