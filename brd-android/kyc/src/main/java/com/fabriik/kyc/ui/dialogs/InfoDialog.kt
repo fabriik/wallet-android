@@ -1,4 +1,4 @@
-package com.fabriik.kyc.ui.customview
+package com.fabriik.kyc.ui.dialogs
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
