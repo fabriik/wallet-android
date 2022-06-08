@@ -15,12 +15,14 @@ interface RegistrationVerifyEmailContract {
     sealed class Effect : FabriikContract.Effect {
         object Back: Effect()
         object Dismiss: Effect()
+        data class ShowToast(val message: String) : Effect()
     }
 
     data class State(
         val code: String = "",
         val subtitle: CharSequence,
         val confirmEnabled: Boolean = false,
+        val loadingVisible: Boolean = false,
         val codeErrorVisible: Boolean = false,
         val verifiedOverlayVisible: Boolean = false
     ): FabriikContract.State

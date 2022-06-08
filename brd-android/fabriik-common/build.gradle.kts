@@ -10,12 +10,15 @@ plugins {
 
 apply(from = rootProject.file("gradle/flavors.gradle"))
 
+val DEFAULT_FABRIIK_CLIENT_TOKEN: String by project
+
 android {
     compileSdkVersion(BrdRelease.ANDROID_COMPILE_SDK)
     buildToolsVersion(BrdRelease.ANDROID_BUILD_TOOLS)
     defaultConfig {
         minSdkVersion(BrdRelease.ANDROID_MINIMUM_SDK)
         buildConfigField("int", "VERSION_CODE", "${BrdRelease.versionCode}")
+        buildConfigField("String", "DEFAULT_FABRIIK_CLIENT_TOKEN", DEFAULT_FABRIIK_CLIENT_TOKEN)
     }
     lintOptions {
         isAbortOnError = false
@@ -41,4 +44,10 @@ dependencies {
     api(brd.Libs.Androidx.NavigationFragment)
     api(brd.Libs.Material.Core)
     api(brd.Libs.Coroutines.Core)
+
+    api(brd.Libs.Networking.Retrofit)
+    api(brd.Libs.Networking.RetrofitMoshiConverter)
+
+    api(brd.Libs.Networking.Moshi)
+    kapt(brd.Libs.Networking.MoshiCodegen)
 }

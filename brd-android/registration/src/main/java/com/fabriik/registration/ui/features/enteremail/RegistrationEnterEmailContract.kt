@@ -12,11 +12,13 @@ interface RegistrationEnterEmailContract {
 
     sealed class Effect : FabriikContract.Effect {
         object Dismiss : Effect()
+        data class ShowToast(val message: String) : Effect()
         data class GoToVerifyEmail(val email: String) : Effect()
     }
 
     data class State(
         val email: String = "",
-        val nextEnabled: Boolean = false
+        val nextEnabled: Boolean = false,
+        val loadingVisible: Boolean = false
     ): FabriikContract.State
 }

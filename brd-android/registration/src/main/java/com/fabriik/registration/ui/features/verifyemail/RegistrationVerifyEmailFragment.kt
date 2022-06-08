@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.fabriik.common.ui.base.FabriikView
+import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.common.utils.showKeyboard
 import com.fabriik.common.utils.textOrEmpty
 import com.fabriik.common.utils.underline
@@ -85,6 +86,7 @@ class RegistrationVerifyEmailFragment : Fragment(),
             btnConfirm.isEnabled = state.confirmEnabled
             viewOverlay.isVisible = state.verifiedOverlayVisible
             tvCodeError.isVisible = state.codeErrorVisible
+            loadingView.isVisible = state.loadingVisible
             ivEmailVerified.isVisible = state.verifiedOverlayVisible
             viewEnterCode.setErrorState(state.codeErrorVisible)
         }
@@ -97,6 +99,12 @@ class RegistrationVerifyEmailFragment : Fragment(),
 
             is RegistrationVerifyEmailContract.Effect.Dismiss ->
                 requireActivity().finish()
+
+            is RegistrationVerifyEmailContract.Effect.ShowToast ->
+                FabriikToastUtil.show(
+                    parentView = binding.root,
+                    message = effect.message
+                )
         }
     }
 }

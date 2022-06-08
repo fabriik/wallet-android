@@ -89,12 +89,21 @@
         <item name="colorSecondary">@color/light_interaction_primary_focused</item>
     </style>
 
+    <style name="FabriikSnackBarStyle" parent="@style/Widget.MaterialComponents.Snackbar">
+        <item name="android:layout_margin">24dp</item>
+    </style>
+
     <style name="FabriikCardViewStyle" parent="Widget.MaterialComponents.CardView">
         <item name="contentPadding">16dp</item>
         <item name="cardCornerRadius">@dimen/radius_l</item>
         <item name="cardBackgroundColor">@color/white</item>
         <item name="cardElevation">36dp</item>
         <item name="rippleColor">@color/fabriik_ripple_color</item>
+    </style>
+
+    <style name="FabriikLoadingIndicatorStyle" parent="Widget.MaterialComponents.CircularProgressIndicator">
+        <item name="android:indeterminate">true</item>
+        <item name="indicatorColor">@color/light_primary</item>
     </style>
 
     <style name="FabriikTextInputStyle" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
@@ -138,6 +147,10 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:padding">16dp</item>
         <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="FabriikToastTextAppearance" parent="TextStyle.Body2">
+        <item name="android:textColor">@color/white</item>
     </style>
 
     <style name="FabriikSearchEditTextStyle">

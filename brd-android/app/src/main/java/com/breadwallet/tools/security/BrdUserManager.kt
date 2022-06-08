@@ -95,6 +95,7 @@ private const val KEY_PHRASE = "phrase"
 private const val KEY_AUTH_KEY = "authKey"
 private const val KEY_CREATION_TIME = "creationTimeSeconds"
 private const val KEY_TOKEN = "token"
+private const val KEY_SESSION = "session"
 private const val KEY_BDB_JWT = "bdbJwt"
 private const val KEY_BDB_JWT_EXP = "bdbJwtExp"
 private const val KEY_PIN_CODE = "pinCode"
@@ -124,6 +125,7 @@ class CryptoUserManager(
     private val locked = AtomicBoolean(true)
     private val disabledSeconds = AtomicInteger(0)
     private var token: String? = null
+    private var session: String? = null
     private var jwt: String? = null
     private var jwtExp: Long? = null
 
@@ -377,6 +379,21 @@ class CryptoUserManager(
     override fun removeToken() {
         checkNotNull(store).edit { remove(KEY_TOKEN) }
         token = null
+    }
+
+    @Synchronized
+    override fun getSession() = session ?: checkNotNull(store).getString(KEY_SESSION, null)
+
+    @Synchronized
+    override fun putSession(session: String) {
+        checkNotNull(store).edit { putString(KEY_SESSION, session) }
+        this.session = session
+    }
+
+    @Synchronized
+    override fun removeSession() {
+        checkNotNull(store).edit { remove(KEY_SESSION) }
+        session = null
     }
 
     @Synchronized

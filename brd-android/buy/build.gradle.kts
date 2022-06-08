@@ -15,15 +15,12 @@ redacted {
     replacementString.set("***")
 }
 
-val FABRIIK_CLIENT_TOKEN: String by project
-
 android {
     compileSdkVersion(BrdRelease.ANDROID_COMPILE_SDK)
     buildToolsVersion(BrdRelease.ANDROID_BUILD_TOOLS)
     defaultConfig {
         minSdkVersion(BrdRelease.ANDROID_MINIMUM_SDK)
         buildConfigField("int", "VERSION_CODE", "${BrdRelease.versionCode}")
-        buildConfigField("String", "FABRIIC_CLIENT_TOKEN", FABRIIK_CLIENT_TOKEN)
     }
     lintOptions {
         isAbortOnError = false
@@ -39,6 +36,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":brd-android:app-core"))
     implementation(project(":brd-android:fabriik-common"))
 
     implementation(Libs.Androidx.AppCompat)

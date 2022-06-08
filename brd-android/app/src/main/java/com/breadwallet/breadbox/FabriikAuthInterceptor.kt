@@ -1,8 +1,8 @@
 package com.breadwallet.breadbox
 
-import com.breadwallet.BuildConfig
 import com.breadwallet.tools.manager.BRSharedPrefs
 import com.fabriik.common.data.FabriikApiConstants
+import com.platform.tools.SessionHolder
 import okhttp3.Interceptor
 import okhttp3.Response
 
@@ -21,7 +21,7 @@ class FabriikAuthInterceptor : Interceptor {
         }
 
         return requestBuilderWithDeviceId
-            .addHeader("Authorization", BuildConfig.FABRIIC_CLIENT_TOKEN)
+            .addHeader("Authorization", SessionHolder.retrieveSession())
             .build()
             .run(chain::proceed)
     }

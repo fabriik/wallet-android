@@ -60,6 +60,10 @@ interface BrdUserManager {
     fun putToken(token: String)
     fun removeToken()
 
+    fun getSession(): String?
+    fun putSession(session: String)
+    fun removeSession()
+
     fun getBdbJwt(): String?
     fun putBdbJwt(jwt: String, exp: Long)
 

@@ -6,11 +6,13 @@ import android.text.style.StyleSpan
 import androidx.core.text.toSpannable
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.fabriik.common.data.Status
 import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.common.utils.getString
 import com.fabriik.common.utils.toBundle
 import com.fabriik.common.utils.validators.ConfirmationCodeValidator
 import com.fabriik.registration.R
+import com.fabriik.registration.data.RegistrationApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -21,6 +23,8 @@ class RegistrationVerifyEmailViewModel(
 ) : FabriikViewModel<RegistrationVerifyEmailContract.State, RegistrationVerifyEmailContract.Event, RegistrationVerifyEmailContract.Effect>(
     application, savedStateHandle
 ) {
+
+    private val registrationApi = RegistrationApi.create(application)
 
     private lateinit var arguments: RegistrationVerifyEmailFragmentArgs
 
@@ -53,26 +57,55 @@ class RegistrationVerifyEmailViewModel(
             is RegistrationVerifyEmailContract.Event.ChangeEmailClicked ->
                 setEffect { RegistrationVerifyEmailContract.Effect.Back }
 
-            is RegistrationVerifyEmailContract.Event.ConfirmClicked -> {
-                //todo: API call
+            is RegistrationVerifyEmailContract.Event.ConfirmClicked ->
+                verifyEmail()
+        }
+    }
 
-                // todo: remove after API integration, added only for testing
-                if (currentState.code == "111111") {
-                    setState { copy(codeErrorVisible = true).validate() }
-                } else {
-                    viewModelScope.launch(Dispatchers.IO) {
-                        setState { copy(verifiedOverlayVisible = true) }
-                        delay(1000)
-                        setState { copy(verifiedOverlayVisible = false) }
-                        setEffect { RegistrationVerifyEmailContract.Effect.Dismiss }
-                    }
-                }
+    private fun verifyEmail() {
+        viewModelScope.launch(Dispatchers.IO) {
+
+            // show loading
+            setState { copy(loadingVisible = true) }
+
+            val response = registrationApi.associateAccountConfirm(currentState.code)
+
+            // dismiss loading
+            setState { copy(loadingVisible = false) }
+
+            when (response.status) {
+                Status.SUCCESS ->
+                    showCompletedState()
+
+                Status.ERROR ->
+                    setState { copy(codeErrorVisible = true) }
             }
         }
     }
 
+    private suspend fun showCompletedState() {
+        setState { copy(verifiedOverlayVisible = true) }
+        delay(1000)
+        setState { copy(verifiedOverlayVisible = false) }
+        setEffect { RegistrationVerifyEmailContract.Effect.Dismiss }
+    }
+
     private fun resendEmail() {
-        // todo: call API
+        viewModelScope.launch(Dispatchers.IO) {
+            val response = registrationApi.resendAssociateAccountChallenge()
+            when (response.status) {
+                Status.SUCCESS ->
+                    setEffect {
+                        RegistrationVerifyEmailContract.Effect.ShowToast(
+                            getString(R.string.Registration_VerifyEmail_CodeSent)
+                        )
+                    }
+
+                Status.ERROR -> {
+                    //empty
+                }
+            }
+        }
     }
 
     private fun createSubtitle(): CharSequence {

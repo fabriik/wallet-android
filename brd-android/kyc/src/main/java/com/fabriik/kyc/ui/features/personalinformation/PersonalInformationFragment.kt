@@ -8,8 +8,10 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.fabriik.common.ui.base.FabriikView
+import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.common.utils.textOrEmpty
 import com.fabriik.kyc.R
 import com.fabriik.kyc.data.model.Country
@@ -17,7 +19,6 @@ import com.fabriik.kyc.databinding.FragmentPersonalInformationBinding
 import com.fabriik.kyc.ui.features.countryselection.CountrySelectionFragment
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
-//import com.fabriik.kyc.ui.features.countryselection.CountrySelectionFragment
 import kotlinx.coroutines.flow.collect
 import java.util.*
 
@@ -117,6 +118,7 @@ class PersonalInformationFragment : Fragment(),
 
     override fun render(state: PersonalInformationContract.State) {
         with(binding) {
+            loadingView.isVisible = state.loadingVisible
             btnConfirm.isEnabled = state.confirmEnabled
             etCountry.setText(state.country?.name)
 
@@ -134,6 +136,12 @@ class PersonalInformationFragment : Fragment(),
 
             is PersonalInformationContract.Effect.Dismiss ->
                 requireActivity().finish()
+
+            is PersonalInformationContract.Effect.ShowToast ->
+                FabriikToastUtil.show(
+                    parentView = binding.root,
+                    message = effect.message
+                )
 
             is PersonalInformationContract.Effect.DateSelection -> {
                 val constraints = CalendarConstraints.Builder()

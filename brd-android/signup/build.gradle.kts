@@ -54,10 +54,4 @@ dependencies {
 
     implementation(Libs.Glide.Core)
     kapt(Libs.Glide.Compiler)
-
-    implementation(Libs.Networking.Retrofit)
-    implementation(Libs.Networking.RetrofitMoshiConverter)
-
-    implementation(Libs.Networking.Moshi)
-    kapt(Libs.Networking.MoshiCodegen)
 }
