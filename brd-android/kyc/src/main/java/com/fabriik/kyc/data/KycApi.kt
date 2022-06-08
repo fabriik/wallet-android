@@ -60,8 +60,11 @@ class KycApi(
             else -> DocumentId.ID
         }
 
-        val response = service.uploadPhotos()
-
+        try {
+            val response = service.uploadPhotos()
+        } catch (ex: Exception) {
+            Resource.error(message = ex.message ?: "") //todo: default error
+        }
     }
 
     companion object {
