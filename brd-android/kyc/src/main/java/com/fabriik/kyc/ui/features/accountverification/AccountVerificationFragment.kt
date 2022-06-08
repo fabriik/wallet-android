@@ -16,6 +16,7 @@ import com.fabriik.kyc.R
 import com.fabriik.kyc.databinding.FragmentAccountVerificationBinding
 import com.fabriik.kyc.ui.customview.AccountVerificationStatusView
 import com.fabriik.kyc.ui.customview.CheckedTextView
+import com.fabriik.kyc.ui.dialogs.InfoDialog
 import kotlinx.coroutines.flow.collect
 
 class AccountVerificationFragment : Fragment(),
@@ -37,6 +38,14 @@ class AccountVerificationFragment : Fragment(),
         with(binding) {
             toolbar.setBackButtonClickListener {
                 viewModel.setEvent(AccountVerificationContract.Event.BackClicked)
+            }
+
+            toolbar.setDismissButtonClickListener {
+                viewModel.setEvent(AccountVerificationContract.Event.DismissClicked)
+            }
+
+            toolbar.setInfoButtonClickListener {
+                viewModel.setEvent(AccountVerificationContract.Event.InfoClicked)
             }
 
             cvLevel1.setOnClickListener {
@@ -90,8 +99,12 @@ class AccountVerificationFragment : Fragment(),
 
     override fun handleEffect(effect: AccountVerificationContract.Effect) {
         when (effect) {
-            is AccountVerificationContract.Effect.GoBack ->
+            is AccountVerificationContract.Effect.Back,
+            AccountVerificationContract.Effect.Dismiss ->
                 requireActivity().finish()
+
+            is AccountVerificationContract.Effect.Info ->
+                showInfoDialog()
 
             is AccountVerificationContract.Effect.GoToKycLevel1 ->
                 findNavController().navigate(
@@ -138,5 +151,10 @@ class AccountVerificationFragment : Fragment(),
         }
 
         setIcon(ContextCompat.getDrawable(context, iconId))
+    }
+
+    private fun showInfoDialog() {
+        val fm = requireActivity().supportFragmentManager
+        InfoDialog().show(fm, "info_dialog")
     }
 }

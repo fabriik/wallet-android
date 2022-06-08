@@ -47,12 +47,16 @@ class KycToolbar @JvmOverloads constructor(
         binding.btnBack.isInvisible = !show
     }
 
-    fun setShowTitleButton(show: Boolean) {
+    fun setShowTitle(show: Boolean) {
         binding.tvTitle.isVisible = show
     }
 
     fun setShowDismissButton(show: Boolean) {
         binding.btnDismiss.isInvisible = !show
+    }
+
+    fun setShowInfoButton(show: Boolean) {
+        binding.btnInfo.isInvisible = !show
     }
 
     fun setBackButtonClickListener(listener: OnClickListener) {
@@ -61,6 +65,10 @@ class KycToolbar @JvmOverloads constructor(
 
     fun setDismissButtonClickListener(listener: OnClickListener) {
         binding.btnDismiss.setOnClickListener(listener)
+    }
+
+    fun setInfoButtonClickListener(listener: OnClickListener) {
+        binding.btnInfo.setOnClickListener(listener)
     }
 
     fun setTintColor(@ColorInt color: Int) {
@@ -74,8 +82,9 @@ class KycToolbar @JvmOverloads constructor(
         setTitle(typedArray.getString(R.styleable.KycToolbar_title))
         setTintColor(typedArray.getColor(R.styleable.KycToolbar_tintColor, defaultTintColor))
         setShowBackButton(typedArray.getBoolean(R.styleable.KycToolbar_showBack, true))
-        setShowTitleButton(typedArray.getBoolean(R.styleable.KycToolbar_showTitle, true))
+        setShowTitle(typedArray.getBoolean(R.styleable.KycToolbar_showTitle, true))
         setShowDismissButton(typedArray.getBoolean(R.styleable.KycToolbar_showDismiss, true))
+        setShowInfoButton(typedArray.getBoolean(R.styleable.KycToolbar_showInfo, false))
         typedArray.recycle()
     }
 }

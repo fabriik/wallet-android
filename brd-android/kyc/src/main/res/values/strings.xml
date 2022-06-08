@@ -28,6 +28,8 @@
     <string name="AccountVerification.Level2.Tag">Swap limit: $10,000 per Swap, no lifetime limit</string>
     <string name="AccountVerification.Level2.CheckedItem1">ID Verification</string>
     <string name="AccountVerification.Level2.CheckedItem2">Proof of life</string>
+    <string name="AccountVerification.InfoView.title">Personal information</string>
+    <string name="AccountVerification.InfoVIew.description">We need to verify your personal information for identity purposes. This information won’t be shared with outside sources unless required by law.</string>
 
     <!-- Personal info screen -->
     <string name="PersonalInformation.Title">Personal Information</string>
