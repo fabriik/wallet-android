@@ -86,10 +86,10 @@ import com.breadwallet.util.CryptoUriParser
 import com.breadwallet.util.isBrd
 import com.fabriik.buy.ui.BuyWebViewActivity
 import com.fabriik.kyc.ui.KycActivity
+import com.fabriik.kyc.ui.dialogs.InfoDialog
+import com.fabriik.kyc.ui.dialogs.InfoDialogArgs
 import com.fabriik.registration.ui.RegistrationActivity
-import com.fabriik.signup.ui.SignupActivity
 import com.fabriik.support.CashSupport
-import com.fabriik.support.pages.Topic
 import com.fabriik.trade.ui.TradeWebViewLauncher
 import com.platform.util.AppReviewPromptManager
 import kotlinx.coroutines.CoroutineScope
@@ -303,6 +303,16 @@ class RouterNavigator(
         router.fragmentManager()?.let {
             CashSupport.Builder().detail(effect.topic).build().show(it)
         }
+    }
+
+    override fun showInfoDialog(effect: NavigationTarget.ShowInfoDialog) {
+        val fm = router.fragmentManager()
+        val infoArgs = InfoDialogArgs(
+            com.fabriik.kyc.R.string.Profile_InfoDialog_title,
+            com.fabriik.kyc.R.string.Profile_InfoDialog_description,
+        )
+
+        InfoDialog(infoArgs).show(fm ?: error("Can't find fragment Manager"), "info_dialog")
     }
 
     override fun setPin(effect: NavigationTarget.SetPin) {

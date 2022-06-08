@@ -17,6 +17,7 @@ import com.fabriik.kyc.databinding.FragmentAccountVerificationBinding
 import com.fabriik.kyc.ui.customview.AccountVerificationStatusView
 import com.fabriik.kyc.ui.customview.CheckedTextView
 import com.fabriik.kyc.ui.dialogs.InfoDialog
+import com.fabriik.kyc.ui.dialogs.InfoDialogArgs
 import kotlinx.coroutines.flow.collect
 
 class AccountVerificationFragment : Fragment(),
@@ -155,6 +156,10 @@ class AccountVerificationFragment : Fragment(),
 
     private fun showInfoDialog() {
         val fm = requireActivity().supportFragmentManager
-        InfoDialog().show(fm, "info_dialog")
+        val infoArgs = InfoDialogArgs(
+            R.string.AccountVerification_InfoView_title,
+            R.string.AccountVerification_InfoVIew_description,
+        )
+        InfoDialog(infoArgs).show(fm, "info_dialog")
     }
 }

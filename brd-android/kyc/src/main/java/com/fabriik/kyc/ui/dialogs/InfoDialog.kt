@@ -4,10 +4,13 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.*
+import androidx.annotation.StringRes
 import androidx.fragment.app.DialogFragment
 import com.fabriik.kyc.databinding.FragmentInfoDialogBinding
 
-class InfoDialog : DialogFragment() {
+class InfoDialog(
+    val args: InfoDialogArgs
+) : DialogFragment() {
 
     lateinit var binding: FragmentInfoDialogBinding
     override fun onCreateView(
@@ -15,8 +18,12 @@ class InfoDialog : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         binding = FragmentInfoDialogBinding.inflate(inflater, container, false)
+
+        binding.tvTitle.text = context?.getString(args.title)
+        binding.tvDescription.text = context?.getString(args.description)
+
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         return binding.root
     }
@@ -30,3 +37,8 @@ class InfoDialog : DialogFragment() {
         }
     }
 }
+
+data class InfoDialogArgs(
+    @StringRes val title: Int,
+    @StringRes val description: Int,
+)

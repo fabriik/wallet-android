@@ -1,5 +1,6 @@
 package com.breadwallet.ui.profile
 
+import com.breadwallet.R
 import com.breadwallet.ui.navigation.NavigationEffect
 import com.breadwallet.ui.navigation.NavigationTarget
 import com.breadwallet.ui.settings.SettingsSection
@@ -44,6 +45,13 @@ object ProfileScreen {
 
         data class GoToSettings(val section: SettingsSection) : F(), NavigationEffect {
             override val navigationTarget = NavigationTarget.Menu(section)
+        }
+
+        object ShowInfoDialog : F(), NavigationEffect {
+            override val navigationTarget = NavigationTarget.ShowInfoDialog(
+                title = R.string.AccountVerification_InfoView_title,
+                description = R.string.AccountVerification_InfoVIew_description,
+            )
         }
     }
 }

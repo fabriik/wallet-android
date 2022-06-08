@@ -24,6 +24,7 @@
 
     <style name="TextStyle.Title5">
         <item name="android:textSize">20sp</item>
+        <item name="lineHeight">24dp</item>
         <item name="fontFamily">@font/degular_semibold</item>
     </style>
 
