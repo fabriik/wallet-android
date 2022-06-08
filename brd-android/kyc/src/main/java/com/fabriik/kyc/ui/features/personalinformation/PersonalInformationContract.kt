@@ -23,6 +23,7 @@ interface PersonalInformationContract {
         object GoBack : Effect()
         object Dismiss : Effect()
         object CountrySelection : Effect()
+        data class ShowToast(val message: String) : Effect()
         data class DateSelection(val date: Calendar?) : Effect()
     }
 
@@ -31,6 +32,7 @@ interface PersonalInformationContract {
         val lastName: String = "",
         val country: Country? = null,
         val dateOfBirth: Calendar? = null,
-        val confirmEnabled: Boolean = false
+        val confirmEnabled: Boolean = false,
+        val loadingVisible: Boolean = false
     ) : FabriikContract.State
 }

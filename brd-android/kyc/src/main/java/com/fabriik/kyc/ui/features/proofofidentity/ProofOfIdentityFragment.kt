@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.fabriik.common.ui.base.FabriikView
+import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.kyc.R
 import com.fabriik.kyc.data.enums.DocumentSide
 import com.fabriik.kyc.data.enums.DocumentType
@@ -50,6 +51,10 @@ class ProofOfIdentityFragment : Fragment(),
             cvDrivingLicence.setOnClickListener {
                 viewModel.setEvent(ProofOfIdentityContract.Event.DrivingLicenceClicked)
             }
+
+            cvResidencePermit.setOnClickListener {
+                viewModel.setEvent(ProofOfIdentityContract.Event.ResidencePermitClicked)
+            }
         }
 
         // collect UI state
@@ -65,6 +70,10 @@ class ProofOfIdentityFragment : Fragment(),
                 handleEffect(it)
             }
         }
+
+        viewModel.setEvent(
+            ProofOfIdentityContract.Event.LoadDocuments
+        )
     }
 
     override fun render(state: ProofOfIdentityContract.State) {
@@ -72,11 +81,19 @@ class ProofOfIdentityFragment : Fragment(),
             cvIdCard.isVisible = state.idCardVisible
             cvPassport.isVisible = state.passportVisible
             cvDrivingLicence.isVisible = state.drivingLicenceVisible
+            cvResidencePermit.isVisible = state.residencePermitVisible
+            loadingIndicator.isVisible = state.initialLoadingVisible
         }
     }
 
     override fun handleEffect(effect: ProofOfIdentityContract.Effect) {
         when (effect) {
+            is ProofOfIdentityContract.Effect.ShowToast ->
+                FabriikToastUtil.show(
+                    parentView = binding.root,
+                    message = effect.message
+                )
+
             is ProofOfIdentityContract.Effect.GoBack ->
                 findNavController().popBackStack()
 
