@@ -3,7 +3,7 @@ package com.breadwallet.ui.profile
 import com.breadwallet.ui.navigation.NavigationEffect
 import com.breadwallet.ui.navigation.NavigationTarget
 import com.breadwallet.ui.settings.SettingsSection
-import com.fabriik.registration.data.model.Profile
+import com.fabriik.common.data.model.Profile
 import dev.zacsweers.redacted.annotations.Redacted
 
 object ProfileScreen {
@@ -38,8 +38,8 @@ object ProfileScreen {
             override val navigationTarget = NavigationTarget.Back
         }
 
-        object GoToKyc : F(), NavigationEffect {
-            override val navigationTarget = NavigationTarget.GoToKYC
+        data class GoToKyc(val profile: Profile) : F(), NavigationEffect {
+            override val navigationTarget = NavigationTarget.GoToKyc(profile)
         }
 
         data class GoToSettings(val section: SettingsSection) : F(), NavigationEffect {

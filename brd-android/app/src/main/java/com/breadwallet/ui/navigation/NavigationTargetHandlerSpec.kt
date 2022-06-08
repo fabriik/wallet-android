@@ -74,12 +74,12 @@ interface NavigationTargetHandlerSpec {
         is NavigationTarget.CreateGift -> createGift(effect)
         is NavigationTarget.ShareGift -> shareGift(effect)
         is NavigationTarget.SelectBakerScreen -> selectBaker(effect)
-        is NavigationTarget.GoToKYC -> openKyc()
+        is NavigationTarget.GoToKyc -> openKyc(effect)
         is NavigationTarget.GoToFeedback -> openFeedback()
         is NavigationTarget.GoToRegistration -> openRegistration()
     }
 
-    fun openKyc(): Unit
+    fun openKyc(effect: NavigationTarget.GoToKyc): Unit
 
     fun openRegistration(): Unit
 

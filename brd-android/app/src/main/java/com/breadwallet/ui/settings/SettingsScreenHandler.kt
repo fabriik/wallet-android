@@ -311,20 +311,6 @@ class SettingsScreenHandler(
                         SettingsOption.DEVELOPER_OPTIONS
                     )
                 )
-
-                add(
-                    SettingsItem(
-                        "Registration",
-                        SettingsOption.REGISTRATION
-                    )
-                )
-
-                add(
-                    SettingsItem(
-                        "Kyc",
-                        SettingsOption.KYC
-                    )
-                )
             }
         }
     }

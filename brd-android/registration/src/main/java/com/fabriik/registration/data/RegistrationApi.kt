@@ -4,7 +4,7 @@ import android.content.Context
 import com.fabriik.common.data.FabriikApiConstants
 import com.fabriik.common.data.Resource
 import com.fabriik.common.utils.FabriikApiResponseMapper
-import com.fabriik.registration.data.model.Profile
+import com.fabriik.common.data.model.Profile
 import com.fabriik.registration.data.requests.AssociateConfirmRequest
 import com.fabriik.registration.data.requests.AssociateRequest
 import com.fabriik.registration.data.responses.AssociateResponse

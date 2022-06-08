@@ -1,4 +1,4 @@
-package com.fabriik.registration.data.model
+package com.fabriik.common.data.model
 
 import android.os.Parcelable
 import com.fabriik.common.data.enums.KycStatus

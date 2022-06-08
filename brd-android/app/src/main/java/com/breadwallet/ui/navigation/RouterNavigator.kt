@@ -149,10 +149,12 @@ class RouterNavigator(
         AppReviewPromptManager.openGooglePlay(checkNotNull(router.activity))
     }
 
-    override fun openKyc() {
+    override fun openKyc(effect: NavigationTarget.GoToKyc) {
         router.activity?.let {
             it.startActivity(
-                KycActivity.getStartIntent(it)
+                KycActivity.getStartIntent(
+                    it, effect.profile
+                )
             )
         }
     }

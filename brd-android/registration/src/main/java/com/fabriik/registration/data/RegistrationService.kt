@@ -1,7 +1,7 @@
 package com.fabriik.registration.data
 
 import com.fabriik.common.data.FabriikApiResponse
-import com.fabriik.registration.data.model.Profile
+import com.fabriik.common.data.model.Profile
 import com.fabriik.registration.data.requests.AssociateConfirmRequest
 import com.fabriik.registration.data.requests.AssociateRequest
 import com.fabriik.registration.data.responses.AssociateResponse

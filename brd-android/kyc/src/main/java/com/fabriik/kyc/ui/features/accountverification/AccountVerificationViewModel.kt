@@ -1,24 +1,31 @@
 package com.fabriik.kyc.ui.features.accountverification
 
 import android.app.Application
+import androidx.lifecycle.SavedStateHandle
 import com.fabriik.common.data.enums.KycStatus
 import com.fabriik.common.ui.base.FabriikViewModel
+import com.fabriik.common.utils.toBundle
 import com.fabriik.kyc.ui.customview.AccountVerificationStatusView
 
 class AccountVerificationViewModel(
-    application: Application
+    application: Application,
+    savedStateHandle: SavedStateHandle
 ) : FabriikViewModel<AccountVerificationContract.State, AccountVerificationContract.Event, AccountVerificationContract.Effect>(
-    application
+    application, savedStateHandle
 ) {
 
-    override fun createInitialState() : AccountVerificationContract.State {
-        val status = KycStatus.DEFAULT
+    private lateinit var arguments: AccountVerificationFragmentArgs
 
-        return AccountVerificationContract.State(
-            level1State = mapStatusToLevel1State(status),
-            level2State = mapStatusToLevel2State(status)
+    override fun parseArguments(savedStateHandle: SavedStateHandle) {
+        arguments = AccountVerificationFragmentArgs.fromBundle(
+            savedStateHandle.toBundle()
         )
     }
+
+    override fun createInitialState() = AccountVerificationContract.State(
+        level1State = mapStatusToLevel1State(arguments.profile.kycStatus),
+        level2State = mapStatusToLevel2State(arguments.profile.kycStatus)
+    )
 
     override fun handleEvent(event: AccountVerificationContract.Event) {
         when (event) {
