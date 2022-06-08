@@ -51,6 +51,7 @@
     <string name="ProofOfIdentity.Passport">Passport</string>
     <string name="ProofOfIdentity.NationalIdCard">National ID card</string>
     <string name="ProofOfIdentity.DrivingLicence">Driver’s license</string>
+    <string name="ProofOfIdentity.ResidencePermit">Residence permit</string>
 
     <!-- Pre validation screen -->
     <string name="PreValidation.Title">We need to confirm your ID</string>
