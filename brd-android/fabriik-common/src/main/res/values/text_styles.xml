@@ -68,8 +68,11 @@
         <item name="fontFamily">@font/roboto_regular</item>
     </style>
 
-    <style name="TextStyle.BottomTab" parent="TextStyle.Subtitle2">
+    <style name="TextStyle.BottomTab">
         <item name="android:textColor">@color/navigation_menu_item_tint</item>
+        <item name="android:textSize">10sp</item>
+        <item name="lineHeight">14dp</item>
+        <item name="fontFamily">@font/roboto_regular</item>
     </style>
 
     <style name="TextStyle.BottomTab.Active">
