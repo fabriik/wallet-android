@@ -2,6 +2,7 @@ package com.fabriik.kyc.data
 
 import com.fabriik.common.data.FabriikApiConstants
 import com.fabriik.common.data.Resource
+import com.fabriik.kyc.data.enums.DocumentId
 import com.fabriik.kyc.data.enums.DocumentType
 import com.fabriik.kyc.data.model.Country
 import com.fabriik.kyc.data.requests.CompleteLevel1VerificationRequest
@@ -51,6 +52,16 @@ class KycApi(
         } catch (ex: Exception) {
             Resource.error(message = ex.message ?: "") //todo: default error
         }
+    }
+
+    suspend fun uploadPhotos(documentType: DocumentType) {
+        val documentId = when(documentType) {
+            DocumentType.SELFIE -> DocumentId.SELFIE
+            else -> DocumentId.ID
+        }
+
+        val response = service.uploadPhotos()
+
     }
 
     companion object {

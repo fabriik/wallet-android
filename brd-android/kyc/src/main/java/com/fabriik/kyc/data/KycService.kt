@@ -20,4 +20,10 @@ interface KycService {
     suspend fun completeLevel1Verification(
         @Body request: CompleteLevel1VerificationRequest
     ): ResponseBody?
+
+    @Multipart
+    @POST("upload")
+    suspend fun uploadPhotos(
+        @Body request: CompleteLevel1VerificationRequest
+    ): ResponseBody?
 }
