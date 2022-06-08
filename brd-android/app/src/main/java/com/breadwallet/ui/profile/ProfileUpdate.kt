@@ -47,6 +47,10 @@ object ProfileUpdate : Update<M, E, F>, ProfileScreenUpdateSpec {
         )
     )
 
-    override fun onProfileDataLoaded(model: M, event: E.OnProfileDataLoaded): Next<M, F> =
-        next(model.copy(profile = event.profile))
+    override fun onProfileDataLoaded(model: M, event: E.OnProfileDataLoaded): Next<M, F> = next(
+        model.copy(
+            profile = event.profile,
+            isLoading = false
+        )
+    )
 }
