@@ -16,6 +16,7 @@ import com.fabriik.kyc.R
 import com.fabriik.kyc.databinding.FragmentAccountVerificationBinding
 import com.fabriik.kyc.ui.customview.AccountVerificationStatusView
 import com.fabriik.kyc.ui.customview.CheckedTextView
+import com.fabriik.kyc.ui.customview.InfoDialog
 import kotlinx.coroutines.flow.collect
 
 class AccountVerificationFragment : Fragment(),
@@ -105,7 +106,7 @@ class AccountVerificationFragment : Fragment(),
                 requireActivity().finish()
 
             is AccountVerificationContract.Effect.Info ->
-                binding.infoView.showPopupWindow()
+                showInfoDialog()
 
             is AccountVerificationContract.Effect.GoToPersonalInfo ->
                 findNavController().navigate(
@@ -154,5 +155,10 @@ class AccountVerificationFragment : Fragment(),
         }
 
         setIcon(ContextCompat.getDrawable(context, iconId))
+    }
+
+    private fun showInfoDialog() {
+        val fm = requireActivity().supportFragmentManager
+        InfoDialog().show(fm, "info_dialog")
     }
 }

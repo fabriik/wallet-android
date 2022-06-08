@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginHorizontal="40dp"
     android:background="@drawable/bg_info_prompt"
     android:orientation="vertical">
 
@@ -16,8 +16,7 @@
         android:layout_marginEnd="16dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:padding="8dp"
-        android:src="@drawable/ic_info_dismiss"
-        tools:text="Title" />
+        android:src="@drawable/ic_info_dismiss" />
 
     <TextView
         android:id="@+id/tv_title"
@@ -27,8 +26,8 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="24dp"
-        android:textColor="@color/light_contrast_02"
-        tools:text="Title" />
+        android:text="@string/AccountVerification.InfoView.title"
+        android:textColor="@color/light_contrast_02" />
 
     <TextView
         android:id="@+id/tv_description"
@@ -39,7 +38,7 @@
         android:layout_marginTop="4dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="24dp"
-        android:textColor="@color/light_contrast_02"
-        tools:text="Description" />
+        android:text="@string/AccountVerification.InfoVIew.description"
+        android:textColor="@color/light_contrast_02" />
 
 </LinearLayout>
