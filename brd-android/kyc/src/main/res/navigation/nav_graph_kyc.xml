@@ -3,22 +3,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph_kyc"
-    app:startDestination="@id/nav_graph_kyc_level1">
+    app:startDestination="@id/fragmentAccountVerification">
+
+    <fragment
+        android:id="@+id/fragmentAccountVerification"
+        android:name="com.fabriik.kyc.ui.features.accountverification.AccountVerificationFragment"
+        tools:layout="@layout/fragment_account_verification">
+
+        <action
+            android:id="@+id/actionKycLevel1"
+            app:destination="@id/nav_graph_kyc_level1" />
+
+        <action
+            android:id="@+id/actionKycLevel2"
+            app:destination="@id/nav_graph_kyc_level2" />
+
+    </fragment>
 
     <navigation
         android:id="@+id/nav_graph_kyc_level1"
-        app:startDestination="@id/fragmentAccountVerification">
-
-        <fragment
-            android:id="@+id/fragmentAccountVerification"
-            android:name="com.fabriik.kyc.ui.features.accountverification.AccountVerificationFragment"
-            tools:layout="@layout/fragment_account_verification">
-
-            <action
-                android:id="@+id/actionPersonalInfo"
-                app:destination="@id/fragmentPersonalInfo" />
-
-        </fragment>
+        app:startDestination="@id/fragmentPersonalInfo">
 
         <fragment
             android:id="@+id/fragmentPersonalInfo"

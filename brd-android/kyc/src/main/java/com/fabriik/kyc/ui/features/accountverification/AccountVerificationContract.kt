@@ -13,7 +13,8 @@ interface AccountVerificationContract {
 
     sealed class Effect : FabriikContract.Effect {
         object GoBack : Effect()
-        object GoToPersonalInfo : Effect()
+        object GoToKycLevel1 : Effect()
+        object GoToKycLevel2 : Effect()
     }
 
     data class State(

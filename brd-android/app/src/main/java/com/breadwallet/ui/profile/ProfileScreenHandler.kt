@@ -5,15 +5,11 @@ import com.breadwallet.R
 import com.breadwallet.ui.profile.ProfileScreen.E
 import com.breadwallet.ui.profile.ProfileScreen.F
 import com.breadwallet.util.errorHandler
-import com.breadwallet.ui.settings.SettingsItem
-import com.breadwallet.ui.settings.SettingsOption
-import com.fabriik.kyc.data.enums.AccountVerificationStatus
+import com.fabriik.common.data.Status
+import com.fabriik.registration.data.RegistrationApi
 import com.spotify.mobius.Connection
 import com.spotify.mobius.functions.Consumer
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancel
+import kotlinx.coroutines.*
 
 class ProfileScreenHandler(
     private val output: Consumer<E>,
@@ -21,6 +17,8 @@ class ProfileScreenHandler(
 ) : Connection<F>, CoroutineScope {
 
     override val coroutineContext = SupervisorJob() + Dispatchers.Default + errorHandler()
+
+    private val registrationApi = RegistrationApi.create(context)
 
     override fun accept(value: F) {
         when (value) {
@@ -34,11 +32,16 @@ class ProfileScreenHandler(
     }
 
     private fun loadProfileData() {
-        val profileData = ProfileScreen.ProfileData(
-            email = "test@test.com",
-            verificationStatus = AccountVerificationStatus.DEFAULT
-        )
-        output.accept(E.OnProfileDataLoaded(profileData))
+        launch {
+            val response = registrationApi.getProfile()
+            when (response.status) {
+                Status.SUCCESS ->
+                    output.accept(E.OnProfileDataLoaded(response.data!!))
+                Status.ERROR -> {
+                    //todo: show error
+                }
+            }
+        }
     }
 
     private fun loadOptions() {

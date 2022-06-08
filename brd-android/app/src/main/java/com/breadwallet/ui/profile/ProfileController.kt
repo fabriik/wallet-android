@@ -18,7 +18,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 
-class ProfileController(
+class
+ProfileController(
     args: Bundle? = null
 ) : BaseMobiusController<M, E, F>(args) {
 
@@ -92,10 +93,10 @@ class ProfileController(
             ifChanged(M::isLoading) {
                 loadingView.root.visibility = if (isLoading) View.VISIBLE else View.GONE
             }
-            ifChanged(M::profileData) { data ->
+            ifChanged(M::profile) { data ->
                 data?.let {
                     tvProfileName.text = it.email
-                    viewProfileStatus.setStatus(it.verificationStatus)
+                    viewProfileStatus.setStatus(it.kycStatus)
                 }
             }
         }

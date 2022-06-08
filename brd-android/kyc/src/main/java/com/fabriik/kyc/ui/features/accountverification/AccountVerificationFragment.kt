@@ -13,7 +13,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.fabriik.common.ui.base.FabriikView
 import com.fabriik.kyc.R
-import com.fabriik.kyc.data.enums.AccountVerificationStatus
 import com.fabriik.kyc.databinding.FragmentAccountVerificationBinding
 import com.fabriik.kyc.ui.customview.AccountVerificationStatusView
 import com.fabriik.kyc.ui.customview.CheckedTextView
@@ -94,17 +93,15 @@ class AccountVerificationFragment : Fragment(),
             is AccountVerificationContract.Effect.GoBack ->
                 requireActivity().finish()
 
-            is AccountVerificationContract.Effect.GoToPersonalInfo ->
+            is AccountVerificationContract.Effect.GoToKycLevel1 ->
                 findNavController().navigate(
-                    AccountVerificationFragmentDirections.actionPersonalInfo()
+                    AccountVerificationFragmentDirections.actionKycLevel1()
                 )
 
-            /*
-
-            is AccountVerificationContract.Effect.GoToProofOfIdentity ->
+            is AccountVerificationContract.Effect.GoToKycLevel2 ->
                 findNavController().navigate(
-                    AccountVerificationFragmentDirections.actionToProofOfIdentity()
-                )*/
+                    AccountVerificationFragmentDirections.actionKycLevel2()
+                )
         }
     }
 
