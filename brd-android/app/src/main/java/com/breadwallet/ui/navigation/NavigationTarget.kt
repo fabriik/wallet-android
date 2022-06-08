@@ -29,6 +29,7 @@ import com.breadwallet.model.InAppMessage
 import com.breadwallet.tools.util.Link
 import com.breadwallet.ui.auth.AuthMode
 import com.breadwallet.ui.settings.SettingsSection
+import com.fabriik.common.data.model.Profile
 import com.fabriik.support.pages.Topic
 import dev.zacsweers.redacted.annotations.Redacted
 import java.math.BigDecimal
@@ -47,7 +48,7 @@ sealed class NavigationTarget : INavigationTarget {
 
     object Back : NavigationTarget()
     object ReviewBrd : NavigationTarget()
-    object GoToKYC : NavigationTarget()
+    data class GoToKyc(val profile: com.fabriik.common.data.model.Profile) : NavigationTarget()
     object GoToRegistration : NavigationTarget()
     object GoToFeedback : NavigationTarget()
     object QRScanner : NavigationTarget()

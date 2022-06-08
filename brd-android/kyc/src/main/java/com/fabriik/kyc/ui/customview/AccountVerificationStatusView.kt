@@ -8,8 +8,8 @@ import androidx.annotation.StringRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import com.fabriik.common.data.enums.KycStatus
 import com.fabriik.kyc.R
-import com.fabriik.kyc.data.enums.AccountVerificationStatus
 import com.fabriik.kyc.databinding.PartialVerificationStatusBinding
 
 class AccountVerificationStatusView @JvmOverloads constructor(
@@ -44,7 +44,7 @@ class AccountVerificationStatusView @JvmOverloads constructor(
         }
     }
 
-    fun setStatus(status: AccountVerificationStatus) {
+    fun setStatus(status: KycStatus) {
         val state = mapToState(status)
 
         with(binding) {
@@ -76,13 +76,18 @@ class AccountVerificationStatusView @JvmOverloads constructor(
         this.callback = callback
     }
 
-    fun mapToState(status: AccountVerificationStatus) = when (status) {
-        AccountVerificationStatus.DEFAULT -> State.Default
-        AccountVerificationStatus.LEVEL1_VERIFIED -> State.Level1Verified
-        AccountVerificationStatus.LEVEL2_PENDING -> State.Level2Pending
-        AccountVerificationStatus.LEVEL2_DECLINED -> State.Level2Declined
-        AccountVerificationStatus.LEVEL2_RESUBMIT -> State.Level2Resubmit
-        AccountVerificationStatus.LEVEL2_VERIFIED -> State.Level2Verified
+    private fun mapToState(status: KycStatus) = when (status) {
+        KycStatus.DEFAULT,
+        KycStatus.EMAIL_VERIFIED,
+        KycStatus.EMAIL_VERIFICATION_PENDING -> State.Default
+
+        KycStatus.KYC_BASIC,
+        KycStatus.KYC_UNLIMITED_EXPIRED -> State.Level1Verified
+
+        KycStatus.KYC_UNLIMITED -> State.Level2Verified
+        KycStatus.KYC_UNLIMITED_DECLINED -> State.Level2Declined
+        KycStatus.KYC_UNLIMITED_SUBMITTED -> State.Level2Pending
+        KycStatus.KYC_UNLIMITED_RESUBMISSION_REQUESTED -> State.Level2Resubmit
     }
 
     interface Callback {

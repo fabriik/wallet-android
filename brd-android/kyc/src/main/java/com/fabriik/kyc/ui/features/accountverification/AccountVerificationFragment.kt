@@ -99,26 +99,22 @@ class AccountVerificationFragment : Fragment(),
 
     override fun handleEffect(effect: AccountVerificationContract.Effect) {
         when (effect) {
-            is AccountVerificationContract.Effect.Back ->
-                requireActivity().finish()
-
-            is AccountVerificationContract.Effect.Dismiss ->
+            is AccountVerificationContract.Effect.Back,
+            AccountVerificationContract.Effect.Dismiss ->
                 requireActivity().finish()
 
             is AccountVerificationContract.Effect.Info ->
                 showInfoDialog()
 
-            is AccountVerificationContract.Effect.GoToPersonalInfo ->
+            is AccountVerificationContract.Effect.GoToKycLevel1 ->
                 findNavController().navigate(
-                    AccountVerificationFragmentDirections.actionPersonalInfo()
+                    AccountVerificationFragmentDirections.actionKycLevel1()
                 )
 
-            /*
-
-            is AccountVerificationContract.Effect.GoToProofOfIdentity ->
+            is AccountVerificationContract.Effect.GoToKycLevel2 ->
                 findNavController().navigate(
-                    AccountVerificationFragmentDirections.actionToProofOfIdentity()
-                )*/
+                    AccountVerificationFragmentDirections.actionKycLevel2()
+                )
         }
     }
 

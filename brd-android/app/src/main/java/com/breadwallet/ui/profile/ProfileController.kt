@@ -2,6 +2,7 @@ package com.breadwallet.ui.profile
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.breadwallet.databinding.ControllerProfileBinding
@@ -18,13 +19,17 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 
-class ProfileController(
+class
+ProfileController(
     args: Bundle? = null
 ) : BaseMobiusController<M, E, F>(args) {
 
     override val init = Init<M, F> { model ->
         First.first(
-            model, setOf(
+            model.copy(
+                isLoading = true
+            ),
+            setOf(
                 F.LoadOptions,
                 F.LoadProfileData
             )
@@ -90,12 +95,13 @@ class ProfileController(
                 settingsList.adapter = adapter
             }
             ifChanged(M::isLoading) {
-                loadingView.root.visibility = if (isLoading) View.VISIBLE else View.GONE
+                profileLayout.isVisible = !isLoading
+                loadingIndicator.isVisible = isLoading
             }
-            ifChanged(M::profileData) { data ->
+            ifChanged(M::profile) { data ->
                 data?.let {
                     tvProfileName.text = it.email
-                    viewProfileStatus.setStatus(it.verificationStatus)
+                    viewProfileStatus.setStatus(it.kycStatus)
                 }
             }
         }

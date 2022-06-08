@@ -30,6 +30,7 @@ import com.breadwallet.tools.manager.BRSharedPrefs
 import com.breadwallet.ui.home.HomeScreen.E
 import com.breadwallet.ui.home.HomeScreen.F
 import com.breadwallet.ui.home.HomeScreen.M
+import com.platform.tools.SessionHolder
 import com.spotify.mobius.Effects.effects
 import com.spotify.mobius.Next.dispatch
 import com.spotify.mobius.Next.next
@@ -131,7 +132,17 @@ val HomeScreenUpdate = Update<M, E, F> { model, event ->
         E.OnBuyNoteSeen -> dispatch(effects(F.GoToBuy))
         E.OnTradeNoteSeen -> dispatch(effects(F.LoadSwapCurrencies))
         E.OnMenuClicked -> dispatch(effects(F.GoToMenu))
-        E.OnProfileClicked -> dispatch(effects(F.GoToProfile))
+        E.OnProfileClicked ->
+            dispatch(
+                effects(
+                    if (SessionHolder.isDefaultSession()) {
+                        F.GoToRegistration
+                    } else {
+                        F.GoToProfile
+                    }
+                )
+            )
+        
         is E.OnPromptLoaded -> next(model.copy(promptId = event.promptId))
         is E.OnDeepLinkProvided -> dispatch(
             effects(

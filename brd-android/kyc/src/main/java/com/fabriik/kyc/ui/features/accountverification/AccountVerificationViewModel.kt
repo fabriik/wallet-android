@@ -1,24 +1,31 @@
 package com.fabriik.kyc.ui.features.accountverification
 
 import android.app.Application
+import androidx.lifecycle.SavedStateHandle
+import com.fabriik.common.data.enums.KycStatus
 import com.fabriik.common.ui.base.FabriikViewModel
-import com.fabriik.kyc.data.enums.AccountVerificationStatus
+import com.fabriik.common.utils.toBundle
 import com.fabriik.kyc.ui.customview.AccountVerificationStatusView
 
 class AccountVerificationViewModel(
-    application: Application
+    application: Application,
+    savedStateHandle: SavedStateHandle
 ) : FabriikViewModel<AccountVerificationContract.State, AccountVerificationContract.Event, AccountVerificationContract.Effect>(
-    application
+    application, savedStateHandle
 ) {
 
-    override fun createInitialState() : AccountVerificationContract.State {
-        val status = AccountVerificationStatus.DEFAULT
+    private lateinit var arguments: AccountVerificationFragmentArgs
 
-        return AccountVerificationContract.State(
-            level1State = mapStatusToLevel1State(status),
-            level2State = mapStatusToLevel2State(status)
+    override fun parseArguments(savedStateHandle: SavedStateHandle) {
+        arguments = AccountVerificationFragmentArgs.fromBundle(
+            savedStateHandle.toBundle()
         )
     }
+
+    override fun createInitialState() = AccountVerificationContract.State(
+        level1State = mapStatusToLevel1State(arguments.profile.kycStatus),
+        level2State = mapStatusToLevel2State(arguments.profile.kycStatus)
+    )
 
     override fun handleEvent(event: AccountVerificationContract.Event) {
         when (event) {
@@ -32,15 +39,18 @@ class AccountVerificationViewModel(
                 setEffect { AccountVerificationContract.Effect.Info }
 
             is AccountVerificationContract.Event.Level1Clicked ->
-                setEffect { AccountVerificationContract.Effect.GoToPersonalInfo }
+                setEffect { AccountVerificationContract.Effect.GoToKycLevel1 }
 
-            is AccountVerificationContract.Event.Level2Clicked -> {} //todo
+            is AccountVerificationContract.Event.Level2Clicked ->
+                setEffect { AccountVerificationContract.Effect.GoToKycLevel2 }
         }
     }
 
-    private fun mapStatusToLevel1State(status: AccountVerificationStatus): AccountVerificationContract.Level1State {
+    private fun mapStatusToLevel1State(status: KycStatus): AccountVerificationContract.Level1State {
         val state = when (status) {
-            AccountVerificationStatus.DEFAULT -> null
+            KycStatus.DEFAULT,
+            KycStatus.EMAIL_VERIFIED,
+            KycStatus.EMAIL_VERIFICATION_PENDING -> null
             else -> AccountVerificationStatusView.StatusViewState.Verified
         }
 
@@ -50,30 +60,37 @@ class AccountVerificationViewModel(
         )
     }
 
-    private fun mapStatusToLevel2State(status: AccountVerificationStatus): AccountVerificationContract.Level2State {
+    private fun mapStatusToLevel2State(status: KycStatus): AccountVerificationContract.Level2State {
         return when (status) {
-            AccountVerificationStatus.DEFAULT -> AccountVerificationContract.Level2State(
+            KycStatus.DEFAULT,
+            KycStatus.EMAIL_VERIFIED,
+            KycStatus.EMAIL_VERIFICATION_PENDING -> AccountVerificationContract.Level2State(
                 isEnabled = false,
                 statusState = null
             )
-            AccountVerificationStatus.LEVEL1_VERIFIED -> AccountVerificationContract.Level2State(
+
+            KycStatus.KYC_BASIC,
+            KycStatus.KYC_UNLIMITED_EXPIRED -> AccountVerificationContract.Level2State(
                 isEnabled = true
             )
-            AccountVerificationStatus.LEVEL2_DECLINED -> AccountVerificationContract.Level2State(
+
+            KycStatus.KYC_UNLIMITED_DECLINED -> AccountVerificationContract.Level2State(
                 isEnabled = true,
                 statusState = AccountVerificationStatusView.StatusViewState.Declined,
                 verificationError = "Test error message"
             )
-            AccountVerificationStatus.LEVEL2_RESUBMIT -> AccountVerificationContract.Level2State(
+
+            KycStatus.KYC_UNLIMITED_RESUBMISSION_REQUESTED -> AccountVerificationContract.Level2State(
                 isEnabled = true,
                 statusState = AccountVerificationStatusView.StatusViewState.Resubmit,
                 verificationError = "Test error message"
             )
-            AccountVerificationStatus.LEVEL2_PENDING -> AccountVerificationContract.Level2State(
+
+            KycStatus.KYC_UNLIMITED_SUBMITTED -> AccountVerificationContract.Level2State(
                 isEnabled = true,
                 statusState = AccountVerificationStatusView.StatusViewState.Pending
             )
-            AccountVerificationStatus.LEVEL2_VERIFIED -> AccountVerificationContract.Level2State(
+            KycStatus.KYC_UNLIMITED -> AccountVerificationContract.Level2State(
                 isEnabled = true,
                 statusState = AccountVerificationStatusView.StatusViewState.Verified
             )

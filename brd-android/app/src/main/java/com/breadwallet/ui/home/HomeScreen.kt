@@ -152,6 +152,10 @@ object HomeScreen {
             override val navigationTarget = NavigationTarget.Profile
         }
 
+        object GoToRegistration : F(), NavigationEffect {
+            override val navigationTarget = NavigationTarget.GoToRegistration
+        }
+
         object GoToFingerprintSettings : F(), NavigationEffect {
             override val navigationTarget = NavigationTarget.FingerprintSettings
         }

@@ -33,6 +33,9 @@ object SessionHolder : KodeinAware {
     }
 
     @Synchronized
+    fun isDefaultSession() = retrieveSession() == BuildConfig.DEFAULT_FABRIIK_CLIENT_TOKEN
+
+    @Synchronized
     fun clear() {
         userManager.removeSession()
         mApiSession = null

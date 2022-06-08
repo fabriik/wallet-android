@@ -4,6 +4,7 @@ import android.content.Context
 import com.fabriik.common.data.FabriikApiConstants
 import com.fabriik.common.data.Resource
 import com.fabriik.common.utils.FabriikApiResponseMapper
+import com.fabriik.common.data.model.Profile
 import com.fabriik.registration.data.requests.AssociateConfirmRequest
 import com.fabriik.registration.data.requests.AssociateRequest
 import com.fabriik.registration.data.responses.AssociateResponse
@@ -59,6 +60,19 @@ class RegistrationApi(
     suspend fun resendAssociateAccountChallenge(): Resource<ResponseBody?> {
         return try {
             val response = service.resendAssociateAccountChallenge()
+            Resource.success(response)
+        } catch (ex: Exception) {
+            responseMapper.mapError(
+                context = context,
+                exception = ex,
+                kClass = ResponseBody::class
+            )
+        }
+    }
+
+    suspend fun getProfile(): Resource<Profile?> {
+        return try {
+            val response = service.getProfile()
             Resource.success(response)
         } catch (ex: Exception) {
             responseMapper.mapError(

@@ -19,16 +19,16 @@ object ProfileUpdate : Update<M, E, F>, ProfileScreenUpdateSpec {
         dispatch(setOf(F.GoBack))
 
     override fun onVerifyProfileClicked(model: M): Next<M, F> =
-        dispatch(setOf(F.GoToKyc))
+        dispatch(setOf(F.GoToKyc(model.profile!!)))
 
     override fun onUpgradeLimitsClicked(model: M): Next<M, F> =
-        dispatch(setOf(F.GoToKyc))
+        dispatch(setOf(F.GoToKyc(model.profile!!)))
 
     override fun onVerificationMoreInfoClicked(model: M): Next<M, F> =
-        dispatch(setOf(F.GoToKyc)) // TODO: open dialog instead
+        dispatch(setOf(F.GoToKyc(model.profile!!))) // TODO: open dialog instead
 
     override fun onVerificationDeclinedInfoClicked(model: M): Next<M, F> =
-        dispatch(setOf(F.GoToKyc))
+        dispatch(setOf(F.GoToKyc(model.profile!!))) // TODO: open dialog instead
 
     override fun onChangeEmailClicked(model: M): Next<M, F> =
         dispatch(emptySet()) //todo: call registration flow
@@ -47,6 +47,10 @@ object ProfileUpdate : Update<M, E, F>, ProfileScreenUpdateSpec {
         )
     )
 
-    override fun onProfileDataLoaded(model: M, event: E.OnProfileDataLoaded): Next<M, F> =
-        next(model.copy(profileData = event.data))
+    override fun onProfileDataLoaded(model: M, event: E.OnProfileDataLoaded): Next<M, F> = next(
+        model.copy(
+            profile = event.profile,
+            isLoading = false
+        )
+    )
 }

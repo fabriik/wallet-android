@@ -1,6 +1,7 @@
 package com.fabriik.registration.data
 
 import com.fabriik.common.data.FabriikApiResponse
+import com.fabriik.common.data.model.Profile
 import com.fabriik.registration.data.requests.AssociateConfirmRequest
 import com.fabriik.registration.data.requests.AssociateRequest
 import com.fabriik.registration.data.responses.AssociateResponse
@@ -22,4 +23,7 @@ interface RegistrationService {
 
     @POST("associate/resend")
     suspend fun resendAssociateAccountChallenge(): ResponseBody?
+
+    @GET("profile")
+    suspend fun getProfile(): Profile
 }
