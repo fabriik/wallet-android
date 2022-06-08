@@ -104,9 +104,8 @@ class AccountVerificationFragment : Fragment(),
             is AccountVerificationContract.Effect.Dismiss ->
                 requireActivity().finish()
 
-            is AccountVerificationContract.Effect.Info -> {
-                // TODO - open dialog/snackabar with info
-            }
+            is AccountVerificationContract.Effect.Info ->
+                binding.infoView.showPopupWindow()
 
             is AccountVerificationContract.Effect.GoToPersonalInfo ->
                 findNavController().navigate(
