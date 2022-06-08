@@ -1,8 +1,13 @@
 package com.fabriik.kyc.ui.features.personalinformation
 
 import android.app.Application
+import androidx.lifecycle.viewModelScope
+import com.fabriik.common.data.Status
 import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.common.utils.validators.TextValidator
+import com.fabriik.kyc.data.KycApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.*
 
 class PersonalInformationViewModel(
@@ -11,6 +16,7 @@ class PersonalInformationViewModel(
     application
 ) {
 
+    private val kycApi = KycApi.create()
     private val textValidator = TextValidator
 
     override fun createInitialState() = PersonalInformationContract.State()
@@ -32,8 +38,7 @@ class PersonalInformationViewModel(
                 }
 
             is PersonalInformationContract.Event.ConfirmClicked ->
-                // todo: call API
-                setEffect { PersonalInformationContract.Effect.Dismiss }
+                confirmClicked()
 
             is PersonalInformationContract.Event.NameChanged ->
                 setState { copy(name = event.name).validate() }
@@ -48,6 +53,36 @@ class PersonalInformationViewModel(
                 val calendar = Calendar.getInstance()
                 calendar.timeInMillis = event.date
                 setState { copy(dateOfBirth = calendar).validate() }
+            }
+        }
+    }
+
+    private fun confirmClicked() {
+        viewModelScope.launch(Dispatchers.IO) {
+            //show loading
+            setState { copy(loadingVisible = true) }
+
+            val response = kycApi.completeLevel1Verification(
+                firstName = currentState.name,
+                lastName = currentState.lastName,
+                country = currentState.country!!,
+                dateOfBirth = currentState.dateOfBirth?.time!!,
+            )
+
+            //dismiss loading
+            setState { copy(loadingVisible = false) }
+
+            when (response.status) {
+                Status.SUCCESS -> {
+                    setEffect { PersonalInformationContract.Effect.Dismiss }
+                }
+
+                Status.ERROR ->
+                    setEffect {
+                        PersonalInformationContract.Effect.ShowToast(
+                            response.message ?: "" //todo: Default message
+                        )
+                    }
             }
         }
     }

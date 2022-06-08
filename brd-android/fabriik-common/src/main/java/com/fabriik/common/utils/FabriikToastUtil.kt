@@ -1,6 +1,7 @@
 package com.fabriik.common.utils
 
 import android.view.View
+import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.core.view.setPadding
@@ -19,7 +20,7 @@ object FabriikToastUtil {
         snackBar.view.setBackgroundResource(R.drawable.bg_info_prompt)
 
         val snackBarView = snackBar.view as Snackbar.SnackbarLayout
-        val parentParams = snackBarView.layoutParams as FrameLayout.LayoutParams
+        val parentParams = snackBarView.layoutParams as ViewGroup.LayoutParams
         parentParams.width = FrameLayout.LayoutParams.MATCH_PARENT
         snackBarView.layoutParams = parentParams
 

@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="AppTheme.Fabriik" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:windowBackground">#FFFFFF</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowTranslucentNavigation">false</item>
         <item name="android:textColor">@color/light_text_01</item>
         <item name="textInputStyle">@style/FabriikTextInputStyle</item>
         <item name="radioButtonStyle">@style/FabriikRadioButtonStyle</item>
