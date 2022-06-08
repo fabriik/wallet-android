@@ -2,17 +2,20 @@ package com.fabriik.kyc.data
 
 import com.fabriik.common.data.FabriikApiConstants
 import com.fabriik.common.data.Resource
-import com.fabriik.kyc.data.enums.DocumentId
 import com.fabriik.kyc.data.enums.DocumentType
 import com.fabriik.kyc.data.model.Country
 import com.fabriik.kyc.data.requests.CompleteLevel1VerificationRequest
-import com.fabriik.kyc.data.response.CountriesResponse
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.ResponseBody
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -54,14 +57,34 @@ class KycApi(
         }
     }
 
-    suspend fun uploadPhotos(documentType: DocumentType) {
-        val documentId = when(documentType) {
-            DocumentType.SELFIE -> DocumentId.SELFIE
-            else -> DocumentId.ID
+    suspend fun uploadPhotos(documentType: DocumentType, backImageFile: File, frontImageFile: File) : Resource<ResponseBody?> {
+        val type = when(documentType) {
+            DocumentType.SELFIE -> "SELFIE"
+            else -> "ID"
         }
 
-        try {
-            val response = service.uploadPhotos()
+        val documentId = when(documentType) {
+            DocumentType.SELFIE -> "selfie.jpg"
+            DocumentType.PASSPORT -> "passport.jpg"
+            else -> "id.jpg"
+        }
+
+        return try {
+            val bodyType = type.toRequestBody()
+            val bodyDocumentId = documentId.toRequestBody()
+            val bodyDocumentType = documentType.id.toRequestBody()
+            val bodyFrontImage = frontImageFile.asRequestBody()
+            val bodyBackImage = backImageFile.asRequestBody()
+
+            val response = service.uploadPhotos(
+                type = bodyType,
+                documentId = bodyDocumentId,
+                documentType = bodyDocumentType,
+                frontImage = MultipartBody.Part.createFormData("front", documentId, bodyFrontImage),
+                backImage = MultipartBody.Part.createFormData("back", documentId, bodyBackImage)
+            )
+
+            Resource.success(null)
         } catch (ex: Exception) {
             Resource.error(message = ex.message ?: "") //todo: default error
         }

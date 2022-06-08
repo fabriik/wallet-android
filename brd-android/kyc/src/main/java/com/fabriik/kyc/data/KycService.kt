@@ -3,6 +3,8 @@ package com.fabriik.kyc.data
 import com.fabriik.kyc.data.requests.CompleteLevel1VerificationRequest
 import com.fabriik.kyc.data.response.CountriesResponse
 import com.fabriik.kyc.data.response.DocumentsResponse
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.http.*
 
@@ -24,6 +26,10 @@ interface KycService {
     @Multipart
     @POST("upload")
     suspend fun uploadPhotos(
-        @Body request: CompleteLevel1VerificationRequest
+        @Part("type") type: RequestBody,
+        @Part("document_id") documentId: RequestBody,
+        @Part("document_type") documentType: RequestBody,
+        @Part("front") frontImage: MultipartBody.Part,
+        @Part("back") backImage: MultipartBody.Part?
     ): ResponseBody?
 }

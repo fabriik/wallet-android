@@ -2,10 +2,15 @@ package com.fabriik.kyc.ui.features.submitphoto
 
 import android.app.Application
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
 import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.kyc.data.enums.DocumentSide
 import com.fabriik.kyc.data.enums.DocumentType
 import com.fabriik.common.utils.toBundle
+import com.fabriik.kyc.data.KycApi
+import com.fabriik.kyc.data.model.DocumentData
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class SubmitPhotoViewModel(
     application: Application,
@@ -14,16 +19,19 @@ class SubmitPhotoViewModel(
 ) : FabriikViewModel<SubmitPhotoContract.State, SubmitPhotoContract.Event, SubmitPhotoContract.Effect>(
     application, savedStateHandle
 ) {
-    lateinit var arguments: SubmitPhotoFragmentArgs
+
+    private val kycApi = KycApi.create()
+    private lateinit var arguments: SubmitPhotoFragmentArgs
+
     override fun parseArguments(savedStateHandle: SavedStateHandle) {
         arguments = SubmitPhotoFragmentArgs.fromBundle(savedStateHandle.toBundle())
         super.parseArguments(savedStateHandle)
     }
 
     override fun createInitialState() = SubmitPhotoContract.State(
+        currentData = arguments.currentData,
         documentType = arguments.documentType,
-        documentSide = arguments.documentSide,
-        image = arguments.imageUri,
+        documentData = arguments.documentData
     )
 
     override fun handleEvent(event: SubmitPhotoContract.Event) {
@@ -41,32 +49,65 @@ class SubmitPhotoViewModel(
     }
 
     private fun onConfirmClicked() {
-        setEffect {
-            when (currentState.documentType) {
-                DocumentType.SELFIE ->
-                    SubmitPhotoContract.Effect.PostValidation
+        val documentData = currentState.documentData.toMutableList()
+        documentData.add(currentState.currentData)
 
-                DocumentType.PASSPORT ->
+        when (currentState.documentType) {
+            DocumentType.SELFIE ->
+                uploadSelfie(documentData)
+
+            DocumentType.PASSPORT ->
+                uploadPassport(documentData)
+
+            else -> when (documentData.size) {
+                1 -> setEffect {
                     SubmitPhotoContract.Effect.TakePhoto(
-                        documentType = DocumentType.SELFIE,
-                        documentSide = DocumentSide.FRONT
+                        documentType = currentState.documentType,
+                        documentData = documentData.toTypedArray()
                     )
-
-                else ->
-                    when (currentState.documentSide) {
-                        DocumentSide.FRONT ->
-                            SubmitPhotoContract.Effect.TakePhoto(
-                                documentType = currentState.documentType,
-                                documentSide = DocumentSide.BACK
-                            )
-
-                        DocumentSide.BACK ->
-                            SubmitPhotoContract.Effect.TakePhoto(
-                                documentType = DocumentType.SELFIE,
-                                documentSide = DocumentSide.FRONT
-                            )
-                    }
+                }
+                2 -> uploadOtherDocuments(documentData)
             }
+        }
+    }
+
+    private fun uploadOtherDocuments(documentData: List<DocumentData>) {
+        val backImageData = documentData.find {
+            it.documentSide == DocumentSide.BACK
+        }
+
+        val frontImageData = documentData.find {
+            it.documentSide == DocumentSide.FRONT
+        }
+
+        // todo: upload images
+
+        setEffect {
+            SubmitPhotoContract.Effect.TakePhoto(
+                documentType = DocumentType.SELFIE,
+                documentData = emptyArray()
+            )
+        }
+    }
+
+    private fun uploadPassport(documentData: List<DocumentData>) {
+        val passportImageData = documentData[0]
+        // todo: upload images
+
+        setEffect {
+            SubmitPhotoContract.Effect.TakePhoto(
+                documentType = DocumentType.SELFIE,
+                documentData = emptyArray()
+            )
+        }
+    }
+
+    private fun uploadSelfie(documentData: List<DocumentData>) {
+        val selfieImageData = documentData[0]
+        // todo: upload images
+
+        setEffect {
+            SubmitPhotoContract.Effect.PostValidation
         }
     }
 }

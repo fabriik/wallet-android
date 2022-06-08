@@ -101,7 +101,7 @@ class ProofOfIdentityFragment : Fragment(),
                 findNavController().navigate(
                     ProofOfIdentityFragmentDirections.actionTakePhoto(
                         documentType = effect.documentType,
-                        documentSide = DocumentSide.FRONT
+                        documentData = arrayOf()
                     )
                 )
         }

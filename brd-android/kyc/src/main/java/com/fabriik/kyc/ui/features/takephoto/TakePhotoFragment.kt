@@ -132,9 +132,9 @@ class TakePhotoFragment : Fragment(),
             is TakePhotoContract.Effect.GoToPreview ->
                 findNavController().navigate(
                     TakePhotoFragmentDirections.actionPhotoPreview(
-                        documentSide = effect.documentSide,
-                        documentType = effect.documentType,
-                        imageUri = effect.imageUri
+                        currentData = effect.currentData,
+                        documentData = effect.documentData,
+                        documentType = effect.documentType
                     )
                 )
 

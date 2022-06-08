@@ -73,9 +73,9 @@ class SubmitPhotoFragment : Fragment(),
             ivSelfie.isVisible = isSelfie
             ivDocument.isVisible = !isSelfie
 
-            Glide.with(requireContext())
+            /*Glide.with(requireContext())
                 .load(state.image)
-                .into(if (isSelfie) ivSelfie else ivDocument)
+                .into(if (isSelfie) ivSelfie else ivDocument)*/
         }
     }
 
@@ -90,7 +90,7 @@ class SubmitPhotoFragment : Fragment(),
             is SubmitPhotoContract.Effect.TakePhoto ->
                 findNavController().navigate(
                     SubmitPhotoFragmentDirections.actionTakePhoto(
-                        documentSide = effect.documentSide,
+                        documentData = effect.documentData,
                         documentType = effect.documentType
                     )
                 )
