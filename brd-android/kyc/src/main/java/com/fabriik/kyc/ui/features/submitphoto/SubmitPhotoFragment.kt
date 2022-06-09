@@ -74,9 +74,9 @@ class SubmitPhotoFragment : Fragment(),
 
             val isSelfie = state.documentType == DocumentType.SELFIE
             val content1 =
-                if (isSelfie) R.string.SubmitPhoto_Selfie_CheckedItem1 else R.string.SubmitPhoto_Selfie_CheckedItem2
+                if (isSelfie) R.string.SubmitPhoto_Selfie_CheckedItem1 else R.string.SubmitPhoto_Document_CheckedItem1
             val content2 =
-                if (isSelfie) R.string.SubmitPhoto_Document_CheckedItem1 else R.string.SubmitPhoto_Document_CheckedItem2
+                if (isSelfie) R.string.SubmitPhoto_Selfie_CheckedItem2 else R.string.SubmitPhoto_Document_CheckedItem2
 
             checkedItem1.setContent(context?.getString(content1))
             checkedItem2.setContent(context?.getString(content2))
