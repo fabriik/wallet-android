@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.fabriik.common.ui.base.FabriikView
+import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.kyc.R
 import com.fabriik.kyc.data.enums.DocumentType
 import com.fabriik.kyc.databinding.FragmentSubmitPhotoBinding
@@ -69,13 +70,20 @@ class SubmitPhotoFragment : Fragment(),
 
     override fun render(state: SubmitPhotoContract.State) {
         with(binding) {
+            loadingView.isVisible = state.loadingVisible
+
             val isSelfie = state.documentType == DocumentType.SELFIE
-            ivSelfie.isVisible = isSelfie
-            ivDocument.isVisible = !isSelfie
+            val content1 =
+                if (isSelfie) R.string.SubmitPhoto_Selfie_CheckedItem1 else R.string.SubmitPhoto_Document_CheckedItem1
+            val content2 =
+                if (isSelfie) R.string.SubmitPhoto_Selfie_CheckedItem2 else R.string.SubmitPhoto_Document_CheckedItem2
+
+            checkedItem1.setContent(context?.getString(content1))
+            checkedItem2.setContent(context?.getString(content2))
 
             Glide.with(requireContext())
-                .load(state.image)
-                .into(if (isSelfie) ivSelfie else ivDocument)
+                .load(state.currentData.imageUri)
+                .into(ivReviewPhoto)
         }
     }
 
@@ -90,7 +98,7 @@ class SubmitPhotoFragment : Fragment(),
             is SubmitPhotoContract.Effect.TakePhoto ->
                 findNavController().navigate(
                     SubmitPhotoFragmentDirections.actionTakePhoto(
-                        documentSide = effect.documentSide,
+                        documentData = effect.documentData,
                         documentType = effect.documentType
                     )
                 )
@@ -100,6 +108,12 @@ class SubmitPhotoFragment : Fragment(),
                     SubmitPhotoFragmentDirections.actionPostValidation()
                 )
             }
+
+            is SubmitPhotoContract.Effect.ShowToast ->
+                FabriikToastUtil.show(
+                    parentView = binding.root,
+                    message = effect.message
+                )
         }
     }
 }

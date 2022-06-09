@@ -34,13 +34,17 @@ class ProfileScreenHandler(
     private fun loadProfileData() {
         launch {
             val response = registrationApi.getProfile()
-            when (response.status) {
-                Status.SUCCESS ->
-                    output.accept(E.OnProfileDataLoaded(response.data!!))
-                Status.ERROR -> {
-                    //todo: show error
+
+            output.accept(
+                when (response.status) {
+                    Status.SUCCESS ->
+                        E.OnProfileDataLoaded(response.data!!)
+                    Status.ERROR ->
+                        E.OnProfileDataLoadFailed(
+                            response.message ?: context.getString(R.string.FabriikApi_DefaultError)
+                        )
                 }
-            }
+            )
         }
     }
 

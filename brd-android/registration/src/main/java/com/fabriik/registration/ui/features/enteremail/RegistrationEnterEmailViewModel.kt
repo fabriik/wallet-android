@@ -6,7 +6,9 @@ import androidx.lifecycle.viewModelScope
 import com.breadwallet.tools.security.BrdUserManager
 import com.fabriik.common.data.Status
 import com.fabriik.common.ui.base.FabriikViewModel
+import com.fabriik.common.utils.getString
 import com.fabriik.common.utils.validators.EmailValidator
+import com.fabriik.registration.R
 import com.fabriik.registration.data.RegistrationApi
 import com.fabriik.registration.utils.RegistrationUtils
 import com.platform.tools.SessionHolder
@@ -39,49 +41,58 @@ class RegistrationEnterEmailViewModel(
             is RegistrationEnterEmailContract.Event.DismissClicked ->
                 setEffect { RegistrationEnterEmailContract.Effect.Dismiss }
 
-            is RegistrationEnterEmailContract.Event.NextClicked -> {
-                viewModelScope.launch(Dispatchers.IO) {
-                    val token = TokenHolder.retrieveToken() ?: return@launch
-                    //todo: show error
+            is RegistrationEnterEmailContract.Event.NextClicked ->
+                onNextClicked()
+        }
+    }
 
-                    // show loading
-                    setState { copy(loadingVisible = true) }
+    private fun onNextClicked() {
+        val token = TokenHolder.retrieveToken()
+        if (token.isNullOrBlank()) {
+            setEffect {
+                RegistrationEnterEmailContract.Effect.ShowToast(
+                    getString(R.string.FabriikApi_DefaultError)
+                )
+            }
+            return
+        }
 
-                    val response = registrationApi.associateAccount(
+        callApi(
+            endState = { copy(loadingVisible = false) },
+            startState = { copy(loadingVisible = true) },
+            action = {
+                registrationApi.associateAccount(
+                    email = currentState.email,
+                    token = token,
+                    headers = registrationUtils.getAssociateRequestHeaders(
                         email = currentState.email,
-                        token = token,
-                        headers = registrationUtils.getAssociateRequestHeaders(
-                            email = currentState.email,
-                            token = token
-                        )
+                        token = token
                     )
+                )
+            },
+            callback = {
+                when (it.status) {
+                    Status.SUCCESS -> {
+                        SessionHolder.updateSession(
+                            it.data!!.sessionKey
+                        )
 
-                    // dismiss loading
-                    setState { copy(loadingVisible = false) }
-
-                    when (response.status) {
-                        Status.SUCCESS -> {
-                            SessionHolder.updateSession(
-                                response.data!!.sessionKey
+                        setEffect {
+                            RegistrationEnterEmailContract.Effect.GoToVerifyEmail(
+                                currentState.email
                             )
-
-                            setEffect {
-                                RegistrationEnterEmailContract.Effect.GoToVerifyEmail(
-                                    currentState.email
-                                )
-                            }
                         }
-
-                        Status.ERROR ->
-                            setEffect {
-                                RegistrationEnterEmailContract.Effect.ShowToast(
-                                    response.message!!
-                                )
-                            }
                     }
+
+                    Status.ERROR ->
+                        setEffect {
+                            RegistrationEnterEmailContract.Effect.ShowToast(
+                                it.message ?: getString(R.string.FabriikApi_DefaultError)
+                            )
+                        }
                 }
             }
-        }
+        )
     }
 
     private fun RegistrationEnterEmailContract.State.validate() = copy(

@@ -84,12 +84,12 @@
             tools:layout="@layout/fragment_take_photo">
 
             <argument
-                android:name="documentSide"
-                app:argType="com.fabriik.kyc.data.enums.DocumentSide" />
-
-            <argument
                 android:name="documentType"
                 app:argType="com.fabriik.kyc.data.enums.DocumentType" />
+
+            <argument
+                android:name="documentData"
+                app:argType="com.fabriik.kyc.data.model.DocumentData[]" />
 
             <action
                 android:id="@+id/actionPhotoPreview"
@@ -103,16 +103,16 @@
             tools:layout="@layout/fragment_submit_photo">
 
             <argument
-                android:name="documentSide"
-                app:argType="com.fabriik.kyc.data.enums.DocumentSide" />
+                android:name="documentData"
+                app:argType="com.fabriik.kyc.data.model.DocumentData[]" />
+
+            <argument
+                android:name="currentData"
+                app:argType="com.fabriik.kyc.data.model.DocumentData" />
 
             <argument
                 android:name="documentType"
                 app:argType="com.fabriik.kyc.data.enums.DocumentType" />
-
-            <argument
-                android:name="imageUri"
-                app:argType="android.net.Uri" />
 
             <action
                 android:id="@+id/actionTakePhoto"

@@ -63,49 +63,51 @@ class RegistrationVerifyEmailViewModel(
     }
 
     private fun verifyEmail() {
-        viewModelScope.launch(Dispatchers.IO) {
+        callApi(
+            endState = { copy(loadingVisible = false) },
+            startState = { copy(loadingVisible = true) },
+            action = { registrationApi.associateAccountConfirm(currentState.code) },
+            callback = {
+                when (it.status) {
+                    Status.SUCCESS ->
+                        showCompletedState()
 
-            // show loading
-            setState { copy(loadingVisible = true) }
-
-            val response = registrationApi.associateAccountConfirm(currentState.code)
-
-            // dismiss loading
-            setState { copy(loadingVisible = false) }
-
-            when (response.status) {
-                Status.SUCCESS ->
-                    showCompletedState()
-
-                Status.ERROR ->
-                    setState { copy(codeErrorVisible = true) }
+                    Status.ERROR ->
+                        setState { copy(codeErrorVisible = true) }
+                }
             }
-        }
+        )
     }
 
-    private suspend fun showCompletedState() {
-        setState { copy(verifiedOverlayVisible = true) }
-        delay(1000)
-        setState { copy(verifiedOverlayVisible = false) }
-        setEffect { RegistrationVerifyEmailContract.Effect.Dismiss }
+    private fun showCompletedState() {
+        viewModelScope.launch(Dispatchers.IO) {
+            setState { copy(verifiedOverlayVisible = true) }
+            delay(1000)
+            setState { copy(verifiedOverlayVisible = false) }
+            setEffect { RegistrationVerifyEmailContract.Effect.Dismiss }
+        }
     }
 
     private fun resendEmail() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val response = registrationApi.resendAssociateAccountChallenge()
-            when (response.status) {
-                Status.SUCCESS ->
-                    setEffect {
-                        RegistrationVerifyEmailContract.Effect.ShowToast(
-                            getString(R.string.Registration_VerifyEmail_CodeSent)
-                        )
-                    }
+        callApi(
+            endState = { currentState },
+            startState = { currentState },
+            action = { registrationApi.resendAssociateAccountChallenge() },
+            callback = {
+                when (it.status) {
+                    Status.SUCCESS ->
+                        setEffect {
+                            RegistrationVerifyEmailContract.Effect.ShowToast(
+                                getString(R.string.Registration_VerifyEmail_CodeSent)
+                            )
+                        }
 
-                Status.ERROR -> {
-                    //empty
+                    Status.ERROR -> {
+                        //empty
+                    }
                 }
             }
-        }
+        )
     }
 
     private fun createSubtitle(): CharSequence {
