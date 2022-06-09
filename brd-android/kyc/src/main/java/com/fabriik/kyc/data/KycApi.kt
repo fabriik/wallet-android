@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.core.net.toFile
 import com.fabriik.common.data.FabriikApiConstants
 import com.fabriik.common.data.Resource
-import com.fabriik.kyc.R
+import com.fabriik.common.utils.FabriikApiResponseMapper
 import com.fabriik.kyc.data.enums.DocumentSide
 import com.fabriik.kyc.data.enums.DocumentType
 import com.fabriik.kyc.data.model.Country
@@ -13,7 +13,7 @@ import com.fabriik.kyc.data.requests.CompleteLevel1VerificationRequest
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.*
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -25,12 +25,17 @@ class KycApi(
     private val context: Context,
     private val service: KycService
 ) {
+    private val responseMapper = FabriikApiResponseMapper()
+
     suspend fun getCountries(): Resource<List<Country>?> {
         return try {
             val response = service.getCountries(Locale.getDefault().language)
             Resource.success(data = response.countries)
         } catch (ex: Exception) {
-            Resource.error(message = getErrorMessage(ex))
+            responseMapper.mapError(
+                context = context,
+                exception = ex
+            )
         }
     }
 
@@ -39,13 +44,16 @@ class KycApi(
             val response = service.getDocuments()
             Resource.success(data = response.documents)
         } catch (ex: Exception) {
-            Resource.error(message = getErrorMessage(ex))
+            responseMapper.mapError(
+                context = context,
+                exception = ex
+            )
         }
     }
 
     suspend fun completeLevel1Verification(firstName: String, lastName: String, country: Country, dateOfBirth: Date): Resource<ResponseBody?> {
         return try {
-            val response = service.completeLevel1Verification(
+            service.completeLevel1Verification(
                 CompleteLevel1VerificationRequest(
                     firstName = firstName,
                     lastName = lastName,
@@ -53,9 +61,12 @@ class KycApi(
                     dateOfBirth = SimpleDateFormat(DATE_FORMAT, Locale.getDefault()).format(dateOfBirth),
                 )
             )
-            Resource.success(data = response)
+            Resource.success(null)
         } catch (ex: Exception) {
-            Resource.error(message = getErrorMessage(ex))
+            responseMapper.mapError(
+                context = context,
+                exception = ex
+            )
         }
     }
 
@@ -67,7 +78,7 @@ class KycApi(
             val imagesParts = mutableListOf<MultipartBody.Part>()
             for (data in documentData) {
                 val imageFile = data.imageUri.toFile()
-                val requestBody = RequestBody.create("image/*".toMediaTypeOrNull(), imageFile)
+                val requestBody = imageFile.asRequestBody()
 
                 val partName = when (data.documentSide) {
                     DocumentSide.FRONT -> "front"
@@ -87,14 +98,25 @@ class KycApi(
                 images = imagesParts.toTypedArray()
             )
 
-            Resource.success(null)
+            Resource.success(response)
         } catch (ex: Exception) {
-            Resource.error(message = getErrorMessage(ex))
+            responseMapper.mapError(
+                context = context,
+                exception = ex
+            )
         }
     }
 
-    private fun getErrorMessage(ex: Exception): String {
-        return ex.message ?: context.getString(R.string.FabriikApi_DefaultError)
+    suspend fun submitPhotosForVerification(): Resource<ResponseBody?> {
+        return try {
+            val response = service.submitPhotosForVerification()
+            Resource.success(data = response)
+        } catch (ex: Exception) {
+            responseMapper.mapError(
+                context = context,
+                exception = ex
+            )
+        }
     }
 
     companion object {

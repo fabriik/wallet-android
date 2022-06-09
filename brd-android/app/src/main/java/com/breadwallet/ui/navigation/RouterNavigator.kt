@@ -26,6 +26,7 @@ package com.breadwallet.ui.navigation
 
 import android.content.Intent
 import android.net.Uri
+import android.view.View
 import android.widget.Toast
 import com.bluelinelabs.conductor.Controller
 import com.bluelinelabs.conductor.ControllerChangeHandler
@@ -85,11 +86,10 @@ import com.breadwallet.ui.uigift.ShareGiftController
 import com.breadwallet.util.CryptoUriParser
 import com.breadwallet.util.isBrd
 import com.fabriik.buy.ui.BuyWebViewActivity
+import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.kyc.ui.KycActivity
 import com.fabriik.registration.ui.RegistrationActivity
-import com.fabriik.signup.ui.SignupActivity
 import com.fabriik.support.CashSupport
-import com.fabriik.support.pages.Topic
 import com.fabriik.trade.ui.TradeWebViewLauncher
 import com.platform.util.AppReviewPromptManager
 import kotlinx.coroutines.CoroutineScope
@@ -701,6 +701,13 @@ class RouterNavigator(
 
     override fun selectBaker(effect: NavigationTarget.SelectBakerScreen) {
         router.pushController(RouterTransaction.with(SelectBakersController(effect.bakers)))
+    }
+
+    override fun fabriikToast(effect: NavigationTarget.FabriikToast) {
+        FabriikToastUtil.show(
+            parentView = checkNotNull(router.activity).window.decorView,
+            message = effect.message
+        )
     }
 
     private inline fun <reified T : Controller> pushSingleInstance(
