@@ -73,12 +73,17 @@ class SubmitPhotoFragment : Fragment(),
             loadingView.isVisible = state.loadingVisible
 
             val isSelfie = state.documentType == DocumentType.SELFIE
-            ivSelfie.isVisible = isSelfie
-            ivDocument.isVisible = !isSelfie
+            val content1 =
+                if (isSelfie) R.string.SubmitPhoto_Selfie_CheckedItem1 else R.string.SubmitPhoto_Document_CheckedItem1
+            val content2 =
+                if (isSelfie) R.string.SubmitPhoto_Selfie_CheckedItem2 else R.string.SubmitPhoto_Document_CheckedItem2
+
+            checkedItem1.setContent(context?.getString(content1))
+            checkedItem2.setContent(context?.getString(content2))
 
             Glide.with(requireContext())
                 .load(state.currentData.imageUri)
-                .into(if (isSelfie) ivSelfie else ivDocument)
+                .into(ivReviewPhoto)
         }
     }
 

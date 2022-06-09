@@ -4,7 +4,9 @@ import android.app.Application
 import androidx.lifecycle.SavedStateHandle
 import com.fabriik.common.data.enums.KycStatus
 import com.fabriik.common.ui.base.FabriikViewModel
+import com.fabriik.common.utils.getString
 import com.fabriik.common.utils.toBundle
+import com.fabriik.kyc.R
 import com.fabriik.kyc.ui.customview.AccountVerificationStatusView
 
 class AccountVerificationViewModel(
@@ -69,28 +71,28 @@ class AccountVerificationViewModel(
                 statusState = null
             )
 
-            KycStatus.KYC_BASIC,
-            KycStatus.KYC_UNLIMITED_EXPIRED -> AccountVerificationContract.Level2State(
+            KycStatus.KYC1,
+            KycStatus.KYC2_EXPIRED -> AccountVerificationContract.Level2State(
                 isEnabled = true
             )
 
-            KycStatus.KYC_UNLIMITED_DECLINED -> AccountVerificationContract.Level2State(
+            KycStatus.KYC2_DECLINED -> AccountVerificationContract.Level2State(
                 isEnabled = true,
                 statusState = AccountVerificationStatusView.StatusViewState.Declined,
-                verificationError = "Test error message"
+                verificationError = getString(R.string.FabriikApi_DefaultError)  // todo: read from API
             )
 
-            KycStatus.KYC_UNLIMITED_RESUBMISSION_REQUESTED -> AccountVerificationContract.Level2State(
+            KycStatus.KYC2_RESUBMISSION_REQUESTED -> AccountVerificationContract.Level2State(
                 isEnabled = true,
                 statusState = AccountVerificationStatusView.StatusViewState.Resubmit,
-                verificationError = "Test error message"
+                verificationError = getString(R.string.FabriikApi_DefaultError) // todo: read from API
             )
 
-            KycStatus.KYC_UNLIMITED_SUBMITTED -> AccountVerificationContract.Level2State(
+            KycStatus.KYC2_SUBMITTED -> AccountVerificationContract.Level2State(
                 isEnabled = true,
                 statusState = AccountVerificationStatusView.StatusViewState.Pending
             )
-            KycStatus.KYC_UNLIMITED -> AccountVerificationContract.Level2State(
+            KycStatus.KYC2 -> AccountVerificationContract.Level2State(
                 isEnabled = true,
                 statusState = AccountVerificationStatusView.StatusViewState.Verified
             )
