@@ -90,8 +90,8 @@ class RegistrationVerifyEmailViewModel(
 
     private fun resendEmail() {
         callApi(
-            endState = { copy() },
-            startState = { copy() },
+            endState = { currentState },
+            startState = { currentState },
             action = { registrationApi.resendAssociateAccountChallenge() },
             callback = {
                 when (it.status) {
