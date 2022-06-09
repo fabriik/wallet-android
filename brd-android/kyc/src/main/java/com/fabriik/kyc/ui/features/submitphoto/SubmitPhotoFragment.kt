@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.fabriik.common.ui.base.FabriikView
+import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.kyc.R
 import com.fabriik.kyc.data.enums.DocumentType
 import com.fabriik.kyc.databinding.FragmentSubmitPhotoBinding
@@ -100,6 +101,12 @@ class SubmitPhotoFragment : Fragment(),
                     SubmitPhotoFragmentDirections.actionPostValidation()
                 )
             }
+
+            is SubmitPhotoContract.Effect.ShowToast ->
+                FabriikToastUtil.show(
+                    parentView = binding.root,
+                    message = effect.message
+                )
         }
     }
 }

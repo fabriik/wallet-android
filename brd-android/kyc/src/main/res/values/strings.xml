@@ -79,7 +79,6 @@
     <string name="TakePhoto.IdFront.Description">Make sure your ID is clear and readable and fits fully in the frame</string>
     <string name="TakePhoto.Selfie.Title">Please take a selfie</string>
     <string name="TakePhoto.Selfie.Description">Make sure your face is in the frame and it’s clearly visible.</string>
-    <string name="TakePhoto.DefaultErrorMessage">Something went wrong! Please try again later.</string>
 
     <!-- Submit photo screen -->
     <string name="SubmitPhoto.Title">Submit your photo</string>

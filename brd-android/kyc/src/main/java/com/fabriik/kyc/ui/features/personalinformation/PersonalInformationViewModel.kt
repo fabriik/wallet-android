@@ -16,7 +16,7 @@ class PersonalInformationViewModel(
     application
 ) {
 
-    private val kycApi = KycApi.create()
+    private val kycApi = KycApi.create(application.applicationContext)
     private val textValidator = TextValidator
 
     override fun createInitialState() = PersonalInformationContract.State()

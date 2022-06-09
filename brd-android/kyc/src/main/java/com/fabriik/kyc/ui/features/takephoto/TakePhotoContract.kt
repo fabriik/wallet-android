@@ -24,8 +24,7 @@ interface TakePhotoContract {
         object Back : Effect()
         object Dismiss : Effect()
         object RequestCameraPermission : Effect()
-        class ShowSnackBar(val message: String) : Effect()
-        class ShowLoading(val show: Boolean) : Effect()
+        class ShowToast(val message: String) : Effect()
         class SetupCamera(val preferredLensFacing: Int) : Effect()
 
         class TakePhoto(

@@ -1,20 +1,18 @@
 package com.fabriik.kyc.ui.features.submitphoto
 
 import android.app.Application
-import androidx.core.net.toFile
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.fabriik.common.data.Status
 import com.fabriik.common.ui.base.FabriikViewModel
-import com.fabriik.kyc.data.enums.DocumentSide
+import com.fabriik.common.utils.getString
 import com.fabriik.kyc.data.enums.DocumentType
 import com.fabriik.common.utils.toBundle
+import com.fabriik.kyc.R
 import com.fabriik.kyc.data.KycApi
 import com.fabriik.kyc.data.model.DocumentData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import okhttp3.MultipartBody
-import java.io.File
 
 class SubmitPhotoViewModel(
     application: Application,
@@ -24,7 +22,7 @@ class SubmitPhotoViewModel(
     application, savedStateHandle
 ) {
 
-    private val kycApi = KycApi.create()
+    private val kycApi = KycApi.create(application.applicationContext)
     private lateinit var arguments: SubmitPhotoFragmentArgs
 
     override fun parseArguments(savedStateHandle: SavedStateHandle) {
@@ -76,7 +74,14 @@ class SubmitPhotoViewModel(
     }
 
     private fun uploadOtherDocuments(documentData: List<DocumentData>) {
-        // todo: validation
+        if (documentData.size != TWO_PHOTOS) {
+            setEffect {
+                SubmitPhotoContract.Effect.ShowToast(
+                    getString(R.string.FabriikApi_DefaultError)
+                )
+            }
+            return
+        }
 
         uploadFile(
             type = TYPE_ID,
@@ -92,7 +97,14 @@ class SubmitPhotoViewModel(
     }
 
     private fun uploadPassport(documentData: List<DocumentData>) {
-        // todo: validation
+        if (documentData.size != ONE_PHOTO) {
+            setEffect {
+                SubmitPhotoContract.Effect.ShowToast(
+                    getString(R.string.FabriikApi_DefaultError)
+                )
+            }
+            return
+        }
 
         uploadFile(
             type = TYPE_ID,
@@ -108,7 +120,14 @@ class SubmitPhotoViewModel(
     }
 
     private fun uploadSelfie(documentData: List<DocumentData>) {
-        // todo: validation
+        if (documentData.size != ONE_PHOTO) {
+            setEffect {
+                SubmitPhotoContract.Effect.ShowToast(
+                    getString(R.string.FabriikApi_DefaultError)
+                )
+            }
+            return
+        }
 
         uploadFile(
             type = TYPE_SELFIE,
@@ -129,8 +148,15 @@ class SubmitPhotoViewModel(
             )
 
             when (response.status) {
-                Status.SUCCESS -> callback()
-                Status.ERROR -> {}
+                Status.SUCCESS ->
+                    callback()
+
+                Status.ERROR ->
+                    setEffect {
+                        SubmitPhotoContract.Effect.ShowToast(
+                            response.message ?: getString(R.string.FabriikApi_DefaultError)
+                        )
+                    }
             }
         }
     }

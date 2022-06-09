@@ -81,8 +81,8 @@ class TakePhotoViewModel(
 
             is TakePhotoContract.Event.TakePhotoFailed ->
                 setEffect {
-                    TakePhotoContract.Effect.ShowSnackBar(
-                        getString(R.string.TakePhoto_DefaultErrorMessage)
+                    TakePhotoContract.Effect.ShowToast(
+                        getString(R.string.FabriikApi_DefaultError)
                     )
                 }
 

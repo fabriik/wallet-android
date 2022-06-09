@@ -20,7 +20,7 @@ class CountrySelectionViewModel(
 
     private lateinit var arguments: CountrySelectionFragmentArgs
 
-    private val kycApi = KycApi.create()
+    private val kycApi = KycApi.create(application.applicationContext)
 
     override fun parseArguments(savedStateHandle: SavedStateHandle) {
         arguments = CountrySelectionFragmentArgs.fromBundle(

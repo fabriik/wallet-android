@@ -1,8 +1,10 @@
 package com.fabriik.kyc.data
 
+import android.content.Context
 import androidx.core.net.toFile
 import com.fabriik.common.data.FabriikApiConstants
 import com.fabriik.common.data.Resource
+import com.fabriik.kyc.R
 import com.fabriik.kyc.data.enums.DocumentSide
 import com.fabriik.kyc.data.enums.DocumentType
 import com.fabriik.kyc.data.model.Country
@@ -20,6 +22,7 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 class KycApi(
+    private val context: Context,
     private val service: KycService
 ) {
     suspend fun getCountries(): Resource<List<Country>?> {
@@ -27,7 +30,7 @@ class KycApi(
             val response = service.getCountries(Locale.getDefault().language)
             Resource.success(data = response.countries)
         } catch (ex: Exception) {
-            Resource.error(message = ex.message ?: "") //todo: default error
+            Resource.error(message = getErrorMessage(ex))
         }
     }
 
@@ -36,7 +39,7 @@ class KycApi(
             val response = service.getDocuments()
             Resource.success(data = response.documents)
         } catch (ex: Exception) {
-            Resource.error(message = ex.message ?: "") //todo: default error
+            Resource.error(message = getErrorMessage(ex))
         }
     }
 
@@ -52,7 +55,7 @@ class KycApi(
             )
             Resource.success(data = response)
         } catch (ex: Exception) {
-            Resource.error(message = ex.message ?: "") //todo: default error
+            Resource.error(message = getErrorMessage(ex))
         }
     }
 
@@ -86,15 +89,20 @@ class KycApi(
 
             Resource.success(null)
         } catch (ex: Exception) {
-            Resource.error(message = ex.message ?: "") //todo: default error
+            Resource.error(message = getErrorMessage(ex))
         }
+    }
+
+    private fun getErrorMessage(ex: Exception): String {
+        return ex.message ?: context.getString(R.string.FabriikApi_DefaultError)
     }
 
     companion object {
 
         const val DATE_FORMAT = "yyyy-MM-dd"
 
-        fun create() = KycApi(
+        fun create(context: Context) = KycApi(
+            context = context,
             service = Retrofit.Builder()
                 .client(
                     OkHttpClient.Builder()

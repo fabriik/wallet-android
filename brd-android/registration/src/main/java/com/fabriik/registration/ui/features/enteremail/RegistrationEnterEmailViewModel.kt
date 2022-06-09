@@ -6,7 +6,9 @@ import androidx.lifecycle.viewModelScope
 import com.breadwallet.tools.security.BrdUserManager
 import com.fabriik.common.data.Status
 import com.fabriik.common.ui.base.FabriikViewModel
+import com.fabriik.common.utils.getString
 import com.fabriik.common.utils.validators.EmailValidator
+import com.fabriik.registration.R
 import com.fabriik.registration.data.RegistrationApi
 import com.fabriik.registration.utils.RegistrationUtils
 import com.platform.tools.SessionHolder
@@ -41,8 +43,15 @@ class RegistrationEnterEmailViewModel(
 
             is RegistrationEnterEmailContract.Event.NextClicked -> {
                 viewModelScope.launch(Dispatchers.IO) {
-                    val token = TokenHolder.retrieveToken() ?: return@launch
-                    //todo: show error
+                    val token = TokenHolder.retrieveToken()
+                    if (token.isNullOrBlank()) {
+                        setEffect {
+                            RegistrationEnterEmailContract.Effect.ShowToast(
+                                getString(R.string.FabriikApi_DefaultError)
+                            )
+                        }
+                        return@launch
+                    }
 
                     // show loading
                     setState { copy(loadingVisible = true) }

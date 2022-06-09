@@ -19,6 +19,9 @@ interface SubmitPhotoContract {
         object Back : Effect()
         object Dismiss : Effect()
         object PostValidation : Effect()
+        data class ShowToast(
+            val message: String
+        ) : Effect()
         data class TakePhoto(
             val documentData: Array<DocumentData>,
             val documentType: DocumentType

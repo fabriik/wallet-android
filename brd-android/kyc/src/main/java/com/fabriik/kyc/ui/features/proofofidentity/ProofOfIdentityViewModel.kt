@@ -17,7 +17,7 @@ class ProofOfIdentityViewModel(
     application
 ) {
 
-    private val kycApi = KycApi.create()
+    private val kycApi = KycApi.create(application.applicationContext)
 
     override fun createInitialState() = ProofOfIdentityContract.State()
 
