@@ -133,9 +133,7 @@ class SubmitPhotoViewModel(
             type = TYPE_SELFIE,
             documentData = documentData
         ) {
-            setEffect {
-                SubmitPhotoContract.Effect.PostValidation
-            }
+            submitPhotosForVerification()
         }
     }
 
@@ -161,6 +159,27 @@ class SubmitPhotoViewModel(
                             response.message ?: getString(R.string.FabriikApi_DefaultError)
                         )
                     }
+            }
+        }
+    }
+
+    private fun submitPhotosForVerification() {
+        viewModelScope.launch(Dispatchers.IO) {
+            setState { copy(loadingVisible = true) }
+
+            val response = kycApi.submitPhotosForVerification()
+
+            setState { copy(loadingVisible = false) }
+
+            when (response.status) {
+                Status.SUCCESS ->
+                    setEffect { SubmitPhotoContract.Effect.PostValidation }
+
+                Status.ERROR -> setEffect {
+                    SubmitPhotoContract.Effect.ShowToast(
+                        response.message ?: getString(R.string.FabriikApi_DefaultError)
+                    )
+                }
             }
         }
     }

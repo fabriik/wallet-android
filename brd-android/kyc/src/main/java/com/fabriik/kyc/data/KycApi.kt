@@ -87,7 +87,16 @@ class KycApi(
                 images = imagesParts.toTypedArray()
             )
 
-            Resource.success(null)
+            Resource.success(response)
+        } catch (ex: Exception) {
+            Resource.error(message = getErrorMessage(ex))
+        }
+    }
+
+    suspend fun submitPhotosForVerification(): Resource<ResponseBody?> {
+        return try {
+            val response = service.submitPhotosForVerification()
+            Resource.success(data = response)
         } catch (ex: Exception) {
             Resource.error(message = getErrorMessage(ex))
         }

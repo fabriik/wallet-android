@@ -30,4 +30,7 @@ interface KycService {
         @Part("document_type") documentType: RequestBody,
         @Part images: Array<MultipartBody.Part>
     ): ResponseBody?
+
+    @POST("session/submit")
+    suspend fun submitPhotosForVerification(): ResponseBody?
 }
