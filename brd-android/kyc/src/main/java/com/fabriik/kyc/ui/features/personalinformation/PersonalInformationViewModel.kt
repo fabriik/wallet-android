@@ -1,13 +1,12 @@
 package com.fabriik.kyc.ui.features.personalinformation
 
 import android.app.Application
-import androidx.lifecycle.viewModelScope
 import com.fabriik.common.data.Status
 import com.fabriik.common.ui.base.FabriikViewModel
+import com.fabriik.common.utils.getString
 import com.fabriik.common.utils.validators.TextValidator
+import com.fabriik.kyc.R
 import com.fabriik.kyc.data.KycApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.util.*
 
 class PersonalInformationViewModel(
@@ -58,33 +57,31 @@ class PersonalInformationViewModel(
     }
 
     private fun confirmClicked() {
-        viewModelScope.launch(Dispatchers.IO) {
-            //show loading
-            setState { copy(loadingVisible = true) }
+        callApi(
+            endState = { copy(loadingVisible = false) },
+            startState = { copy(loadingVisible = true) },
+            action = {
+                kycApi.completeLevel1Verification(
+                    firstName = currentState.name,
+                    lastName = currentState.lastName,
+                    country = currentState.country!!,
+                    dateOfBirth = currentState.dateOfBirth?.time!!,
+                )
+            },
+            callback = {
+                when (it.status) {
+                    Status.SUCCESS ->
+                        setEffect { PersonalInformationContract.Effect.Dismiss }
 
-            val response = kycApi.completeLevel1Verification(
-                firstName = currentState.name,
-                lastName = currentState.lastName,
-                country = currentState.country!!,
-                dateOfBirth = currentState.dateOfBirth?.time!!,
-            )
-
-            //dismiss loading
-            setState { copy(loadingVisible = false) }
-
-            when (response.status) {
-                Status.SUCCESS -> {
-                    setEffect { PersonalInformationContract.Effect.Dismiss }
+                    Status.ERROR ->
+                        setEffect {
+                            PersonalInformationContract.Effect.ShowToast(
+                                it.message ?: getString(R.string.FabriikApi_DefaultError)
+                            )
+                        }
                 }
-
-                Status.ERROR ->
-                    setEffect {
-                        PersonalInformationContract.Effect.ShowToast(
-                            response.message ?: "" //todo: Default message
-                        )
-                    }
             }
-        }
+        )
     }
 
     private fun PersonalInformationContract.State.validate() = copy(
