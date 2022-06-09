@@ -60,7 +60,6 @@ import com.breadwallet.ui.receive.ReceiveController
 import com.breadwallet.ui.scanner.ScannerController
 import com.breadwallet.ui.send.SendSheetController
 import com.breadwallet.ui.settings.SettingsController
-import com.breadwallet.ui.settings.SettingsSection
 import com.breadwallet.ui.settings.about.AboutController
 import com.breadwallet.ui.settings.analytics.ShareDataController
 import com.breadwallet.ui.settings.currency.DisplayCurrencyController
@@ -88,6 +87,8 @@ import com.breadwallet.util.isBrd
 import com.fabriik.buy.ui.BuyWebViewActivity
 import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.kyc.ui.KycActivity
+import com.fabriik.kyc.ui.dialogs.InfoDialog
+import com.fabriik.kyc.ui.dialogs.InfoDialogArgs
 import com.fabriik.registration.ui.RegistrationActivity
 import com.fabriik.support.CashSupport
 import com.fabriik.trade.ui.TradeWebViewLauncher
@@ -303,6 +304,13 @@ class RouterNavigator(
         router.fragmentManager()?.let {
             CashSupport.Builder().detail(effect.topic).build().show(it)
         }
+    }
+
+    override fun showInfoDialog(effect: NavigationTarget.ShowInfoDialog) {
+        val fm = router.fragmentManager()
+        val infoArgs = InfoDialogArgs(effect.title, effect.description)
+
+        InfoDialog(infoArgs).show(fm ?: error("Can't find fragment Manager"), "info_dialog")
     }
 
     override fun setPin(effect: NavigationTarget.SetPin) {

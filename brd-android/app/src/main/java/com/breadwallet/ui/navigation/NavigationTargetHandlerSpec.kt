@@ -77,6 +77,7 @@ interface NavigationTargetHandlerSpec {
         is NavigationTarget.GoToKyc -> openKyc(effect)
         is NavigationTarget.GoToFeedback -> openFeedback()
         is NavigationTarget.GoToRegistration -> openRegistration()
+        is NavigationTarget.ShowInfoDialog -> showInfoDialog(effect)
         is NavigationTarget.FabriikToast -> fabriikToast(effect)
     }
 
@@ -181,6 +182,8 @@ interface NavigationTargetHandlerSpec {
     fun selectBaker(effect: NavigationTarget.SelectBakerScreen): Unit
 
     fun showSupportPage(effect: NavigationTarget.SupportDialog): Unit
+
+    fun showInfoDialog(effect: NavigationTarget.ShowInfoDialog): Unit
 
     fun fabriikToast(effect: NavigationTarget.FabriikToast): Unit
 }

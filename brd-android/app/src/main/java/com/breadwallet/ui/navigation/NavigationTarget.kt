@@ -24,6 +24,7 @@
  */
 package com.breadwallet.ui.navigation
 
+import androidx.annotation.StringRes
 import com.brd.bakerapi.models.Baker
 import com.breadwallet.model.InAppMessage
 import com.breadwallet.tools.util.Link
@@ -187,5 +188,10 @@ sealed class NavigationTarget : INavigationTarget {
 
     data class SelectBakerScreen(
         val bakers: List<Baker>
+    ) : NavigationTarget()
+
+    data class ShowInfoDialog(
+        @StringRes val title: Int,
+        @StringRes val description: Int,
     ) : NavigationTarget()
 }
