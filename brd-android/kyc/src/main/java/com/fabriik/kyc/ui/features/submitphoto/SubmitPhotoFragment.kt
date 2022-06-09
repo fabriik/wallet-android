@@ -73,9 +73,9 @@ class SubmitPhotoFragment : Fragment(),
             ivSelfie.isVisible = isSelfie
             ivDocument.isVisible = !isSelfie
 
-            /*Glide.with(requireContext())
-                .load(state.image)
-                .into(if (isSelfie) ivSelfie else ivDocument)*/
+            Glide.with(requireContext())
+                .load(state.currentData.imageUri)
+                .into(if (isSelfie) ivSelfie else ivDocument)
         }
     }
 
