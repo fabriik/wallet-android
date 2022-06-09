@@ -83,4 +83,7 @@
     <!-- Submit photo screen -->
     <string name="SubmitPhoto.Title">Submit your photo</string>
     <string name="SubmitPhoto.RetakeButton">Retake photo</string>
+    <string name="SubmitPhoto.Subtitle">Before you confirm, please:</string>
+    <string name="SubmitPhoto.CheckedItem1">You have captured the entire document</string>
+    <string name="SubmitPhoto.CheckedItem2">Make sure document details are clearly visible and within the frame</string>
 </resources>

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_height="match_parent">
 
     <com.fabriik.kyc.ui.customview.KycToolbar
         android:id="@+id/toolbar"
@@ -17,29 +18,69 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingHorizontal="16dp"
+        android:paddingTop="24dp"
         android:paddingBottom="32dp">
+
+        <TextView
+            android:id="@+id/tv_subtitle"
+            style="@style/TextStyle.Title6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/SubmitPhoto.Subtitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.fabriik.kyc.ui.customview.CheckedTextView
+            android:id="@+id/checked_item_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="32dp"
+            app:contentText="@string/SubmitPhoto.CheckedItem1"
+            app:iconImage="@drawable/ic_check_blue"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_subtitle" />
+
+        <com.fabriik.kyc.ui.customview.CheckedTextView
+            android:id="@+id/checked_item_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="60dp"
+            app:contentText="@string/SubmitPhoto.CheckedItem2"
+            app:iconImage="@drawable/ic_check_blue"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/checked_item_1" />
 
         <ImageView
             android:id="@+id/iv_document"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="31dp"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="32dp"
             android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/btn_retake_photo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/checked_item_2" />
 
         <ImageView
             android:id="@+id/iv_selfie"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="40dp"
-            android:layout_marginTop="56dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="32dp"
             android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/btn_retake_photo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/checked_item_2" />
 
         <Space
             android:id="@+id/horizontal_divider"
