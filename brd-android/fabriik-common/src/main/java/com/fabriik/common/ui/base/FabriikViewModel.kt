@@ -4,6 +4,8 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.fabriik.common.data.Resource
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -53,6 +55,15 @@ abstract class FabriikViewModel<State : FabriikContract.State, Event : FabriikCo
 
     protected open fun parseArguments(savedStateHandle: SavedStateHandle) {
         //empty
+    }
+
+    protected fun <T> callApi(startState: State.() -> State, endState: State.() -> State, action: suspend () -> T, callback: (T) -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            setState { startState() }
+            val response = action()
+            setState { endState() }
+            callback(response)
+        }
     }
 
     private fun subscribeEvents() {

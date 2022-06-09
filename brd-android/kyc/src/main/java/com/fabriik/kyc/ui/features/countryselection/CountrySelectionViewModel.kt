@@ -2,14 +2,13 @@ package com.fabriik.kyc.ui.features.countryselection
 
 import android.app.Application
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.viewModelScope
 import com.fabriik.common.data.Status
 import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.common.utils.FlagUtil
+import com.fabriik.common.utils.getString
 import com.fabriik.common.utils.toBundle
+import com.fabriik.kyc.R
 import com.fabriik.kyc.data.KycApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class CountrySelectionViewModel(
     application: Application,
@@ -32,29 +31,8 @@ class CountrySelectionViewModel(
 
     override fun handleEvent(event: CountrySelectionContract.Event) {
         when (event) {
-            is CountrySelectionContract.Event.LoadCountries -> {
-                viewModelScope.launch(Dispatchers.IO) {
-                    //show loading
-                    setState { copy(initialLoadingVisible = true) }
-
-                    val response = kycApi.getCountries()
-
-                    //dismiss loading
-                    setState { copy(initialLoadingVisible = false) }
-
-                    when (response.status) {
-                        Status.SUCCESS -> {
-                            setState { copy(countries = response.data!!) }
-                            applyFilters()
-                        }
-
-                        Status.ERROR ->
-                            setEffect {
-                                CountrySelectionContract.Effect.ShowToast(response.message!!)
-                            }
-                    }
-                }
-            }
+            is CountrySelectionContract.Event.LoadCountries ->
+                loadCountries()
 
             is CountrySelectionContract.Event.SearchChanged -> {
                 setState { copy(search = event.query ?: "") }
@@ -80,6 +58,29 @@ class CountrySelectionViewModel(
             is CountrySelectionContract.Event.DismissClicked ->
                 setEffect { CountrySelectionContract.Effect.Dismiss }
         }
+    }
+
+    private fun loadCountries() {
+        callApi(
+            endState = { copy(initialLoadingVisible = false) },
+            startState = { copy(initialLoadingVisible = true) },
+            action = { kycApi.getCountries() },
+            callback = {
+                when (it.status) {
+                    Status.SUCCESS -> {
+                        setState { copy(countries = it.data!!) }
+                        applyFilters()
+                    }
+
+                    Status.ERROR ->
+                        setEffect {
+                            CountrySelectionContract.Effect.ShowToast(
+                                it.message ?: getString(R.string.FabriikApi_DefaultError)
+                            )
+                        }
+                }
+            }
+        )
     }
 
     private fun applyFilters() {

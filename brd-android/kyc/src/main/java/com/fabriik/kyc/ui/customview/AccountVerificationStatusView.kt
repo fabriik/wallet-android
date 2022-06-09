@@ -81,13 +81,13 @@ class AccountVerificationStatusView @JvmOverloads constructor(
         KycStatus.EMAIL_VERIFIED,
         KycStatus.EMAIL_VERIFICATION_PENDING -> State.Default
 
-        KycStatus.KYC_BASIC,
-        KycStatus.KYC_UNLIMITED_EXPIRED -> State.Level1Verified
+        KycStatus.KYC1,
+        KycStatus.KYC2_EXPIRED -> State.Level1Verified
 
-        KycStatus.KYC_UNLIMITED -> State.Level2Verified
-        KycStatus.KYC_UNLIMITED_DECLINED -> State.Level2Declined
-        KycStatus.KYC_UNLIMITED_SUBMITTED -> State.Level2Pending
-        KycStatus.KYC_UNLIMITED_RESUBMISSION_REQUESTED -> State.Level2Resubmit
+        KycStatus.KYC2 -> State.Level2Verified
+        KycStatus.KYC2_DECLINED -> State.Level2Declined
+        KycStatus.KYC2_SUBMITTED -> State.Level2Pending
+        KycStatus.KYC2_RESUBMISSION_REQUESTED -> State.Level2Resubmit
     }
 
     interface Callback {

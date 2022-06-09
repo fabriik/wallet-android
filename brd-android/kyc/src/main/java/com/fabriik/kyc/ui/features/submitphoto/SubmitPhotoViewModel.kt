@@ -2,7 +2,6 @@ package com.fabriik.kyc.ui.features.submitphoto
 
 import android.app.Application
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.viewModelScope
 import com.fabriik.common.data.Status
 import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.common.utils.getString
@@ -11,8 +10,6 @@ import com.fabriik.common.utils.toBundle
 import com.fabriik.kyc.R
 import com.fabriik.kyc.data.KycApi
 import com.fabriik.kyc.data.model.DocumentData
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class SubmitPhotoViewModel(
     application: Application,
@@ -138,50 +135,50 @@ class SubmitPhotoViewModel(
     }
 
     private fun uploadFile(type: String, documentData: List<DocumentData>, callback: () -> Unit) {
-        viewModelScope.launch(Dispatchers.IO) {
-            setState { copy(loadingVisible = true) }
+        callApi(
+            endState = { copy(loadingVisible = false) },
+            startState = { copy(loadingVisible = true) },
+            action = {
+                kycApi.uploadPhotos(
+                    type = type,
+                    documentData = documentData,
+                    documentType = currentState.documentType
+                )
+            },
+            callback = {
+                when (it.status) {
+                    Status.SUCCESS ->
+                        callback()
 
-            val response = kycApi.uploadPhotos(
-                type = type,
-                documentData = documentData,
-                documentType = currentState.documentType
-            )
-
-            setState { copy(loadingVisible = false) }
-
-            when (response.status) {
-                Status.SUCCESS ->
-                    callback()
-
-                Status.ERROR ->
-                    setEffect {
-                        SubmitPhotoContract.Effect.ShowToast(
-                            response.message ?: getString(R.string.FabriikApi_DefaultError)
-                        )
-                    }
+                    Status.ERROR ->
+                        setEffect {
+                            SubmitPhotoContract.Effect.ShowToast(
+                                it.message ?: getString(R.string.FabriikApi_DefaultError)
+                            )
+                        }
+                }
             }
-        }
+        )
     }
 
     private fun submitPhotosForVerification() {
-        viewModelScope.launch(Dispatchers.IO) {
-            setState { copy(loadingVisible = true) }
+        callApi(
+            endState = { copy(loadingVisible = false) },
+            startState = { copy(loadingVisible = true) },
+            action = { kycApi.submitPhotosForVerification() },
+            callback = {
+                when (it.status) {
+                    Status.SUCCESS ->
+                        setEffect { SubmitPhotoContract.Effect.PostValidation }
 
-            val response = kycApi.submitPhotosForVerification()
-
-            setState { copy(loadingVisible = false) }
-
-            when (response.status) {
-                Status.SUCCESS ->
-                    setEffect { SubmitPhotoContract.Effect.PostValidation }
-
-                Status.ERROR -> setEffect {
-                    SubmitPhotoContract.Effect.ShowToast(
-                        response.message ?: getString(R.string.FabriikApi_DefaultError)
-                    )
+                    Status.ERROR -> setEffect {
+                        SubmitPhotoContract.Effect.ShowToast(
+                            it.message ?: getString(R.string.FabriikApi_DefaultError)
+                        )
+                    }
                 }
             }
-        }
+        )
     }
 
     companion object {
