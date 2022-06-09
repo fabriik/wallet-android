@@ -59,7 +59,6 @@ import com.breadwallet.ui.receive.ReceiveController
 import com.breadwallet.ui.scanner.ScannerController
 import com.breadwallet.ui.send.SendSheetController
 import com.breadwallet.ui.settings.SettingsController
-import com.breadwallet.ui.settings.SettingsSection
 import com.breadwallet.ui.settings.about.AboutController
 import com.breadwallet.ui.settings.analytics.ShareDataController
 import com.breadwallet.ui.settings.currency.DisplayCurrencyController
@@ -307,10 +306,7 @@ class RouterNavigator(
 
     override fun showInfoDialog(effect: NavigationTarget.ShowInfoDialog) {
         val fm = router.fragmentManager()
-        val infoArgs = InfoDialogArgs(
-            com.fabriik.kyc.R.string.Profile_InfoDialog_title,
-            com.fabriik.kyc.R.string.Profile_InfoDialog_description,
-        )
+        val infoArgs = InfoDialogArgs(effect.title, effect.description)
 
         InfoDialog(infoArgs).show(fm ?: error("Can't find fragment Manager"), "info_dialog")
     }
