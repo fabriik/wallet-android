@@ -14,6 +14,7 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -45,7 +46,7 @@ class KycApi(
 
     suspend fun completeLevel1Verification(firstName: String, lastName: String, country: Country, dateOfBirth: Date): Resource<ResponseBody?> {
         return try {
-            val response = service.completeLevel1Verification(
+            service.completeLevel1Verification(
                 CompleteLevel1VerificationRequest(
                     firstName = firstName,
                     lastName = lastName,
@@ -53,7 +54,7 @@ class KycApi(
                     dateOfBirth = SimpleDateFormat(DATE_FORMAT, Locale.getDefault()).format(dateOfBirth),
                 )
             )
-            Resource.success(data = response)
+            Resource.success(null)
         } catch (ex: Exception) {
             Resource.error(message = getErrorMessage(ex))
         }
@@ -67,7 +68,7 @@ class KycApi(
             val imagesParts = mutableListOf<MultipartBody.Part>()
             for (data in documentData) {
                 val imageFile = data.imageUri.toFile()
-                val requestBody = RequestBody.create("image/*".toMediaTypeOrNull(), imageFile)
+                val requestBody = imageFile.asRequestBody()
 
                 val partName = when (data.documentSide) {
                     DocumentSide.FRONT -> "front"
