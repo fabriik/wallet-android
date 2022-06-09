@@ -6,36 +6,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.fabriik.kyc.ui.customview.KycToolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:showBack="true"
-        app:showDismiss="true"
-        app:title="@string/SubmitPhoto.Title" />
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingHorizontal="16dp"
-        android:paddingTop="24dp"
         android:paddingBottom="32dp">
+
+        <com.fabriik.kyc.ui.customview.KycToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:showBack="true"
+            app:showDismiss="true"
+            app:title="@string/SubmitPhoto.Title" />
 
         <TextView
             android:id="@+id/tv_subtitle"
             style="@style/TextStyle.Title6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="124dp"
             android:text="@string/SubmitPhoto.Subtitle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@id/toolbar"
+            app:layout_goneMarginStart="16dp" />
 
         <com.fabriik.kyc.ui.customview.CheckedTextView
             android:id="@+id/checked_item_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
+            android:layout_marginStart="40dp"
             android:layout_marginTop="32dp"
             app:iconImage="@drawable/ic_check_blue"
             app:layout_constraintEnd_toEndOf="parent"
@@ -46,7 +48,7 @@
             android:id="@+id/checked_item_2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
+            android:layout_marginStart="40dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="60dp"
             app:iconImage="@drawable/ic_check_blue"
@@ -56,12 +58,11 @@
 
         <ImageView
             android:id="@+id/iv_review_photo"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="24dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="32dp"
-            android:visibility="gone"
+            android:paddingHorizontal="40dp"
+            android:paddingTop="24dp"
+            android:paddingBottom="32dp"
             app:layout_constraintBottom_toTopOf="@id/btn_retake_photo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -79,6 +80,7 @@
             style="@style/ConfirmButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:layout_marginEnd="4dp"
             android:text="@string/SubmitPhoto.RetakeButton"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -91,6 +93,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
+            android:layout_marginEnd="16dp"
             android:text="@string/KYC.ConfirmButton"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
