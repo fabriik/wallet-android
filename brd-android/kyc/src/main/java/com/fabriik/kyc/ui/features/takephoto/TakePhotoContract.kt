@@ -6,6 +6,7 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import com.fabriik.common.ui.base.FabriikContract
 import com.fabriik.kyc.data.enums.DocumentSide
 import com.fabriik.kyc.data.enums.DocumentType
+import com.fabriik.kyc.data.model.DocumentData
 import com.fabriik.kyc.ui.customview.PhotoFinderView
 
 interface TakePhotoContract {
@@ -23,8 +24,7 @@ interface TakePhotoContract {
         object Back : Effect()
         object Dismiss : Effect()
         object RequestCameraPermission : Effect()
-        class ShowSnackBar(val message: String) : Effect()
-        class ShowLoading(val show: Boolean) : Effect()
+        class ShowToast(val message: String) : Effect()
         class SetupCamera(val preferredLensFacing: Int) : Effect()
 
         class TakePhoto(
@@ -32,9 +32,9 @@ interface TakePhotoContract {
         ) : Effect()
 
         class GoToPreview(
-            val documentSide: DocumentSide,
-            val documentType: DocumentType,
-            val imageUri: Uri
+            val currentData: DocumentData,
+            val documentData: Array<DocumentData>,
+            val documentType: DocumentType
         ) : Effect()
     }
 

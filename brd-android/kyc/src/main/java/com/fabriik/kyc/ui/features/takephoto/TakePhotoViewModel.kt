@@ -13,6 +13,7 @@ import com.fabriik.common.utils.toBundle
 import com.fabriik.kyc.R
 import com.fabriik.kyc.data.enums.DocumentSide
 import com.fabriik.kyc.data.enums.DocumentType
+import com.fabriik.kyc.data.model.DocumentData
 import com.fabriik.kyc.ui.customview.PhotoFinderView
 
 class TakePhotoViewModel(
@@ -30,26 +31,34 @@ class TakePhotoViewModel(
         )
     }
 
-    override fun createInitialState() = TakePhotoContract.State(
-        title = getTitle(
-            documentType = arguments.documentType,
-            documentSide = arguments.documentSide
-        ),
-        description = getDescription(
-            documentType = arguments.documentType,
-            documentSide = arguments.documentSide
-        ),
-        documentSide = arguments.documentSide,
-        documentType = arguments.documentType,
-        preferredLensFacing = when (arguments.documentType) {
-            DocumentType.SELFIE -> CameraSelector.LENS_FACING_FRONT
-            else -> CameraSelector.LENS_FACING_BACK
-        },
-        finderViewType = when (arguments.documentType) {
-            DocumentType.SELFIE -> PhotoFinderView.Type.SELFIE
-            else -> PhotoFinderView.Type.DOCUMENT
+    override fun createInitialState(): TakePhotoContract.State {
+        val documentSide = if (arguments.documentData.isEmpty()) {
+            DocumentSide.FRONT
+        } else {
+            DocumentSide.BACK
         }
-    )
+
+        return TakePhotoContract.State(
+            title = getTitle(
+                documentType = arguments.documentType,
+                documentSide = documentSide
+            ),
+            description = getDescription(
+                documentType = arguments.documentType,
+                documentSide = documentSide
+            ),
+            documentSide = documentSide,
+            documentType = arguments.documentType,
+            preferredLensFacing = when (arguments.documentType) {
+                DocumentType.SELFIE -> CameraSelector.LENS_FACING_FRONT
+                else -> CameraSelector.LENS_FACING_BACK
+            },
+            finderViewType = when (arguments.documentType) {
+                DocumentType.SELFIE -> PhotoFinderView.Type.SELFIE
+                else -> PhotoFinderView.Type.DOCUMENT
+            }
+        )
+    }
 
     override fun handleEvent(event: TakePhotoContract.Event) {
         when (event) {
@@ -72,16 +81,19 @@ class TakePhotoViewModel(
 
             is TakePhotoContract.Event.TakePhotoFailed ->
                 setEffect {
-                    TakePhotoContract.Effect.ShowSnackBar(
-                        getString(R.string.TakePhoto_DefaultErrorMessage)
+                    TakePhotoContract.Effect.ShowToast(
+                        getString(R.string.FabriikApi_DefaultError)
                     )
                 }
 
             is TakePhotoContract.Event.TakePhotoCompleted ->
                 setEffect {
                     TakePhotoContract.Effect.GoToPreview(
-                        imageUri = event.uri,
-                        documentSide = currentState.documentSide,
+                        currentData = DocumentData(
+                            documentSide = currentState.documentSide,
+                            imageUri = event.uri
+                        ),
+                        documentData = arguments.documentData,
                         documentType = currentState.documentType
                     )
                 }

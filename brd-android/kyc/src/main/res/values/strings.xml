@@ -2,6 +2,7 @@
 <resources>
     <!-- Common -->
     <string name="KYC.ConfirmButton">Confirm</string>
+    <string name="KYC.Continue">Continue</string>
 
     <!-- Profile status view -->
     <string name="ProfileStatusView.accountLimits">Account limits</string>
@@ -79,9 +80,13 @@
     <string name="TakePhoto.IdFront.Description">Make sure your ID is clear and readable and fits fully in the frame</string>
     <string name="TakePhoto.Selfie.Title">Please take a selfie</string>
     <string name="TakePhoto.Selfie.Description">Make sure your face is in the frame and it’s clearly visible.</string>
-    <string name="TakePhoto.DefaultErrorMessage">Something went wrong! Please try again later.</string>
 
     <!-- Submit photo screen -->
     <string name="SubmitPhoto.Title">Submit your photo</string>
     <string name="SubmitPhoto.RetakeButton">Retake photo</string>
+    <string name="SubmitPhoto.Subtitle">Before you confirm, please:</string>
+    <string name="SubmitPhoto.Document.CheckedItem1">You have captured the entire document</string>
+    <string name="SubmitPhoto.Selfie.CheckedItem1">You have captured your entire face in the frame.</string>
+    <string name="SubmitPhoto.Document.CheckedItem2">Make sure document details are clearly visible and within the frame</string>
+    <string name="SubmitPhoto.Selfie.CheckedItem2">Your face is clearly visible.</string>
 </resources>

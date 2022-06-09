@@ -53,4 +53,10 @@ object ProfileUpdate : Update<M, E, F>, ProfileScreenUpdateSpec {
             isLoading = false
         )
     )
+
+    override fun onProfileDataLoadFailed(model: M, event: E.OnProfileDataLoadFailed): Next<M, F> =
+        next(
+            model.copy(isLoading = false),
+            setOf(F.ShowFabriikToast(event.message))
+        )
 }

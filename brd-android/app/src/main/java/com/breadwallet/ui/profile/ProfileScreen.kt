@@ -29,6 +29,7 @@ object ProfileScreen {
         data class OnOptionClicked(val option: ProfileOption) : E()
         data class OnOptionsLoaded(@Redacted val options: List<ProfileItem>) : E()
         data class OnProfileDataLoaded(val profile: Profile) : E()
+        data class OnProfileDataLoadFailed(val message: String) : E()
     }
 
     sealed class F {
@@ -52,6 +53,10 @@ object ProfileScreen {
                 title = R.string.AccountVerification_InfoView_title,
                 description = R.string.AccountVerification_InfoVIew_description,
             )
+        }
+        
+        data class ShowFabriikToast(val message: String) : F(), NavigationEffect {
+            override val navigationTarget = NavigationTarget.FabriikToast(message)
         }
     }
 }

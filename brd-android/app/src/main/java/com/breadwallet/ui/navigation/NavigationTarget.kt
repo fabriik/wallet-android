@@ -69,6 +69,10 @@ sealed class NavigationTarget : INavigationTarget {
         val currencyCode: String? = null
     ) : NavigationTarget()
 
+    data class FabriikToast(
+        val message: String
+    ) : NavigationTarget()
+
     data class SupportDialog(
         val topic: Topic
     ) : NavigationTarget()

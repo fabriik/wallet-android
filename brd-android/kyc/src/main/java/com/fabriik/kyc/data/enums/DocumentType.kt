@@ -4,16 +4,16 @@ import com.squareup.moshi.Json
 
 enum class DocumentType(val id: String) {
     @Json(name = "ID_CARD")
-    ID_CARD("id"),
+    ID_CARD("ID_CARD"),
 
     @Json(name = "PASSPORT")
-    PASSPORT("pp"),
+    PASSPORT("PASSPORT"),
 
     @Json(name = "DRIVERS_LICENSE")
-    DRIVING_LICENCE("dl"),
+    DRIVING_LICENCE("DRIVERS_LICENSE"),
 
     @Json(name = "RESIDENCE_PERMIT")
-    RESIDENCE_PERMIT("rp"),
+    RESIDENCE_PERMIT("RESIDENCE_PERMIT"),
 
-    SELFIE("selfie")
+    SELFIE("SELFIE")
 }

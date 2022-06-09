@@ -38,34 +38,31 @@ class RegistrationApi(
         } catch (ex: Exception) {
             responseMapper.mapError(
                 context = context,
-                exception = ex,
-                kClass = AssociateRequest::class
+                exception = ex
             )
         }
     }
 
     suspend fun associateAccountConfirm(code: String): Resource<ResponseBody?> {
         return try {
-            val response = service.associateAccountConfirm(AssociateConfirmRequest(code))
-            Resource.success(response)
+            service.associateAccountConfirm(AssociateConfirmRequest(code))
+            Resource.success(null)
         } catch (ex: Exception) {
             responseMapper.mapError(
                 context = context,
-                exception = ex,
-                kClass = ResponseBody::class
+                exception = ex
             )
         }
     }
 
     suspend fun resendAssociateAccountChallenge(): Resource<ResponseBody?> {
         return try {
-            val response = service.resendAssociateAccountChallenge()
-            Resource.success(response)
+            service.resendAssociateAccountChallenge()
+            Resource.success(null)
         } catch (ex: Exception) {
             responseMapper.mapError(
                 context = context,
-                exception = ex,
-                kClass = ResponseBody::class
+                exception = ex
             )
         }
     }
@@ -77,8 +74,7 @@ class RegistrationApi(
         } catch (ex: Exception) {
             responseMapper.mapError(
                 context = context,
-                exception = ex,
-                kClass = ResponseBody::class
+                exception = ex
             )
         }
     }

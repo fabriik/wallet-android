@@ -15,7 +15,6 @@ include(
     "brd-android:kyc",
     "brd-android:buy",
     "brd-android:trade",
-    "brd-android:signup",
     "brd-android:support",
     "brd-android:theme",
     "brd-android:registration",

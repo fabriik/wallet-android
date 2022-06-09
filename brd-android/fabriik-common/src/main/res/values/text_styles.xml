@@ -30,6 +30,7 @@
 
     <style name="TextStyle.Title6">
         <item name="android:textSize">16sp</item>
+        <item name="android:lineSpacingExtra">4dp</item>
         <item name="fontFamily">@font/degular_semibold</item>
     </style>
 
@@ -51,7 +52,7 @@
     <style name="TextStyle.Body2">
         <item name="android:textSize">14sp</item>
         <item name="fontFamily">@font/roboto_regular</item>
-        <item name="lineHeight">20dp</item>
+        <item name="android:lineSpacingExtra">6dp</item>
     </style>
 
     <style name="TextStyle.Caption">
@@ -72,7 +73,7 @@
     <style name="TextStyle.BottomTab">
         <item name="android:textColor">@color/navigation_menu_item_tint</item>
         <item name="android:textSize">10sp</item>
-        <item name="lineHeight">14dp</item>
+        <item name="android:lineSpacingExtra">4dp</item>
         <item name="fontFamily">@font/roboto_regular</item>
     </style>
 

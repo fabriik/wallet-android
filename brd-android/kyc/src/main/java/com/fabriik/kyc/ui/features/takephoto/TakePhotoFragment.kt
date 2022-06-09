@@ -16,6 +16,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.fabriik.common.ui.base.FabriikView
+import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.kyc.R
 import com.fabriik.kyc.databinding.FragmentTakePhotoBinding
 import kotlinx.coroutines.flow.collect
@@ -132,22 +133,20 @@ class TakePhotoFragment : Fragment(),
             is TakePhotoContract.Effect.GoToPreview ->
                 findNavController().navigate(
                     TakePhotoFragmentDirections.actionPhotoPreview(
-                        documentSide = effect.documentSide,
-                        documentType = effect.documentType,
-                        imageUri = effect.imageUri
+                        currentData = effect.currentData,
+                        documentData = effect.documentData,
+                        documentType = effect.documentType
                     )
                 )
 
             is TakePhotoContract.Effect.TakePhoto ->
                 takePhoto(effect.fileName)
 
-            is TakePhotoContract.Effect.ShowLoading -> {
-                // todo:
-            }
-
-            is TakePhotoContract.Effect.ShowSnackBar -> {
-                // todo:
-            }
+            is TakePhotoContract.Effect.ShowToast ->
+                FabriikToastUtil.show(
+                    parentView = binding.root,
+                    message = effect.message
+                )
         }
     }
 

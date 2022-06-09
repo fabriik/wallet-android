@@ -78,6 +78,7 @@ interface NavigationTargetHandlerSpec {
         is NavigationTarget.GoToFeedback -> openFeedback()
         is NavigationTarget.GoToRegistration -> openRegistration()
         is NavigationTarget.ShowInfoDialog -> showInfoDialog(effect)
+        is NavigationTarget.FabriikToast -> fabriikToast(effect)
     }
 
     fun openKyc(effect: NavigationTarget.GoToKyc): Unit
@@ -183,4 +184,6 @@ interface NavigationTargetHandlerSpec {
     fun showSupportPage(effect: NavigationTarget.SupportDialog): Unit
 
     fun showInfoDialog(effect: NavigationTarget.ShowInfoDialog): Unit
+
+    fun fabriikToast(effect: NavigationTarget.FabriikToast): Unit
 }
