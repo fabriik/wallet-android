@@ -141,11 +141,15 @@ class SubmitPhotoViewModel(
 
     private fun uploadFile(type: String, documentData: List<DocumentData>, callback: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
+            setState { copy(loadingVisible = true) }
+
             val response = kycApi.uploadPhotos(
                 type = type,
                 documentData = documentData,
                 documentType = currentState.documentType
             )
+
+            setState { copy(loadingVisible = false) }
 
             when (response.status) {
                 Status.SUCCESS ->

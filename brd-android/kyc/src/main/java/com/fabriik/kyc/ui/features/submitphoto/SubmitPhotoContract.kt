@@ -29,6 +29,7 @@ interface SubmitPhotoContract {
     }
 
     data class State(
+        val loadingVisible: Boolean = false,
         val currentData: DocumentData,
         val documentType: DocumentType,
         val documentData: Array<DocumentData>

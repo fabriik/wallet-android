@@ -70,6 +70,8 @@ class SubmitPhotoFragment : Fragment(),
 
     override fun render(state: SubmitPhotoContract.State) {
         with(binding) {
+            loadingView.isVisible = state.loadingVisible
+
             val isSelfie = state.documentType == DocumentType.SELFIE
             ivSelfie.isVisible = isSelfie
             ivDocument.isVisible = !isSelfie
