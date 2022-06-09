@@ -74,7 +74,7 @@ class PostValidationFragment : Fragment(),
             }
 
             is PostValidationContract.Effect.Profile -> {
-                //TODO - Navigate to next screen
+                requireActivity().finish()
             }
         }
     }

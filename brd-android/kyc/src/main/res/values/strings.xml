@@ -2,6 +2,7 @@
 <resources>
     <!-- Common -->
     <string name="KYC.ConfirmButton">Confirm</string>
+    <string name="KYC.Continue">Continue</string>
 
     <!-- Profile status view -->
     <string name="ProfileStatusView.accountLimits">Account limits</string>
