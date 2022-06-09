@@ -13,21 +13,21 @@ enum class KycStatus {
     @Json(name = "email_verified")
     EMAIL_VERIFIED,
 
-    @Json(name = "kyc1")
+    @Json(name = "kyc_basic")
     KYC_BASIC,
 
-    @Json(name = "kyc2_expired")
+    @Json(name = "kyc_unlimited_expired")
     KYC_UNLIMITED_EXPIRED,
 
-    @Json(name = "kyc2_submitted")
+    @Json(name = "kyc_unlimited_submitted")
     KYC_UNLIMITED_SUBMITTED,
 
-    @Json(name = "kyc2_resubmission_requested")
+    @Json(name = "kyc_unlimited_resubmission_requested")
     KYC_UNLIMITED_RESUBMISSION_REQUESTED,
 
-    @Json(name = "kyc2_declined")
+    @Json(name = "kyc_unlimited_declined")
     KYC_UNLIMITED_DECLINED,
 
-    @Json(name = "kyc2")
+    @Json(name = "kyc_unlimited")
     KYC_UNLIMITED
 }
