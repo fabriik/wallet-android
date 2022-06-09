@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.core.net.toFile
 import com.fabriik.common.data.FabriikApiConstants
 import com.fabriik.common.data.Resource
-import com.fabriik.kyc.R
+import com.fabriik.common.utils.FabriikApiResponseMapper
 import com.fabriik.kyc.data.enums.DocumentSide
 import com.fabriik.kyc.data.enums.DocumentType
 import com.fabriik.kyc.data.model.Country
@@ -13,7 +13,6 @@ import com.fabriik.kyc.data.requests.CompleteLevel1VerificationRequest
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.*
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Retrofit
@@ -26,12 +25,17 @@ class KycApi(
     private val context: Context,
     private val service: KycService
 ) {
+    private val responseMapper = FabriikApiResponseMapper()
+
     suspend fun getCountries(): Resource<List<Country>?> {
         return try {
             val response = service.getCountries(Locale.getDefault().language)
             Resource.success(data = response.countries)
         } catch (ex: Exception) {
-            Resource.error(message = getErrorMessage(ex))
+            responseMapper.mapError(
+                context = context,
+                exception = ex
+            )
         }
     }
 
@@ -40,7 +44,10 @@ class KycApi(
             val response = service.getDocuments()
             Resource.success(data = response.documents)
         } catch (ex: Exception) {
-            Resource.error(message = getErrorMessage(ex))
+            responseMapper.mapError(
+                context = context,
+                exception = ex
+            )
         }
     }
 
@@ -56,7 +63,10 @@ class KycApi(
             )
             Resource.success(null)
         } catch (ex: Exception) {
-            Resource.error(message = getErrorMessage(ex))
+            responseMapper.mapError(
+                context = context,
+                exception = ex
+            )
         }
     }
 
@@ -90,7 +100,10 @@ class KycApi(
 
             Resource.success(response)
         } catch (ex: Exception) {
-            Resource.error(message = getErrorMessage(ex))
+            responseMapper.mapError(
+                context = context,
+                exception = ex
+            )
         }
     }
 
@@ -99,12 +112,11 @@ class KycApi(
             val response = service.submitPhotosForVerification()
             Resource.success(data = response)
         } catch (ex: Exception) {
-            Resource.error(message = getErrorMessage(ex))
+            responseMapper.mapError(
+                context = context,
+                exception = ex
+            )
         }
-    }
-
-    private fun getErrorMessage(ex: Exception): String {
-        return ex.message ?: context.getString(R.string.FabriikApi_DefaultError)
     }
 
     companion object {

@@ -38,8 +38,7 @@ class RegistrationApi(
         } catch (ex: Exception) {
             responseMapper.mapError(
                 context = context,
-                exception = ex,
-                kClass = AssociateRequest::class
+                exception = ex
             )
         }
     }
@@ -51,8 +50,7 @@ class RegistrationApi(
         } catch (ex: Exception) {
             responseMapper.mapError(
                 context = context,
-                exception = ex,
-                kClass = ResponseBody::class
+                exception = ex
             )
         }
     }
@@ -64,8 +62,7 @@ class RegistrationApi(
         } catch (ex: Exception) {
             responseMapper.mapError(
                 context = context,
-                exception = ex,
-                kClass = ResponseBody::class
+                exception = ex
             )
         }
     }
@@ -77,8 +74,7 @@ class RegistrationApi(
         } catch (ex: Exception) {
             responseMapper.mapError(
                 context = context,
-                exception = ex,
-                kClass = ResponseBody::class
+                exception = ex
             )
         }
     }
