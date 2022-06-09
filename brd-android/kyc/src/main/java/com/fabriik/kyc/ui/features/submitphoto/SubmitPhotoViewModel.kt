@@ -64,13 +64,13 @@ class SubmitPhotoViewModel(
                 uploadPassport(documentData)
 
             else -> when (documentData.size) {
-                1 -> setEffect {
+                ONE_PHOTO -> setEffect {
                     SubmitPhotoContract.Effect.TakePhoto(
                         documentType = currentState.documentType,
                         documentData = documentData.toTypedArray()
                     )
                 }
-                2 -> uploadOtherDocuments(documentData)
+                TWO_PHOTOS -> uploadOtherDocuments(documentData)
             }
         }
     }
@@ -78,7 +78,10 @@ class SubmitPhotoViewModel(
     private fun uploadOtherDocuments(documentData: List<DocumentData>) {
         // todo: validation
 
-        uploadFile(documentData) {
+        uploadFile(
+            type = TYPE_ID,
+            documentData = documentData
+        ) {
             setEffect {
                 SubmitPhotoContract.Effect.TakePhoto(
                     documentType = DocumentType.SELFIE,
@@ -91,7 +94,10 @@ class SubmitPhotoViewModel(
     private fun uploadPassport(documentData: List<DocumentData>) {
         // todo: validation
 
-        uploadFile(documentData) {
+        uploadFile(
+            type = TYPE_ID,
+            documentData = documentData
+        ) {
             setEffect {
                 SubmitPhotoContract.Effect.TakePhoto(
                     documentType = DocumentType.SELFIE,
@@ -104,24 +110,35 @@ class SubmitPhotoViewModel(
     private fun uploadSelfie(documentData: List<DocumentData>) {
         // todo: validation
 
-        uploadFile(documentData) {
+        uploadFile(
+            type = TYPE_SELFIE,
+            documentData = documentData
+        ) {
             setEffect {
                 SubmitPhotoContract.Effect.PostValidation
             }
         }
     }
 
-    private fun uploadFile(images: List<DocumentData>, callback: () -> Unit) {
+    private fun uploadFile(type: String, documentData: List<DocumentData>, callback: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             val response = kycApi.uploadPhotos(
-                documentType = currentState.documentType,
-                images = images
+                type = type,
+                documentData = documentData,
+                documentType = currentState.documentType
             )
 
             when (response.status) {
-                Status.SUCCESS -> {}
+                Status.SUCCESS -> callback()
                 Status.ERROR -> {}
             }
         }
+    }
+
+    companion object {
+        const val ONE_PHOTO = 1
+        const val TWO_PHOTOS = 2
+        const val TYPE_ID = "ID"
+        const val TYPE_SELFIE = "SELFIE"
     }
 }

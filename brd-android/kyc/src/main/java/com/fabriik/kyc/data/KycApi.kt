@@ -56,29 +56,17 @@ class KycApi(
         }
     }
 
-    suspend fun uploadPhotos(documentType: DocumentType, images: List<DocumentData>) : Resource<ResponseBody?> {
-        val type = when(documentType) {
-            DocumentType.SELFIE -> "SELFIE"
-            else -> "ID"
-        }
-
-        val documentId = when(documentType) {
-            DocumentType.SELFIE -> "selfie.jpg"
-            DocumentType.PASSPORT -> "passport.jpg"
-            else -> "id.jpg"
-        }
-
+    suspend fun uploadPhotos(type: String, documentType: DocumentType, documentData: List<DocumentData>) : Resource<ResponseBody?> {
         return try {
             val bodyType = type.toRequestBody()
-            val bodyDocumentId = documentId.toRequestBody()
             val bodyDocumentType = documentType.id.toRequestBody()
 
             val imagesParts = mutableListOf<MultipartBody.Part>()
-            for (imageData in images) {
-                val imageFile = imageData.imageUri.toFile()
+            for (data in documentData) {
+                val imageFile = data.imageUri.toFile()
                 val requestBody = RequestBody.create("image/*".toMediaTypeOrNull(), imageFile)
 
-                val partName = when (imageData.documentSide) {
+                val partName = when (data.documentSide) {
                     DocumentSide.FRONT -> "front"
                     DocumentSide.BACK -> "back"
                 }
@@ -92,7 +80,6 @@ class KycApi(
 
             val response = service.uploadPhotos(
                 type = bodyType,
-                documentId = bodyDocumentId,
                 documentType = bodyDocumentType,
                 images = imagesParts.toTypedArray()
             )

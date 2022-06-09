@@ -27,7 +27,6 @@ interface KycService {
     @POST("upload")
     suspend fun uploadPhotos(
         @Part("type") type: RequestBody,
-        @Part("document_id") documentId: RequestBody,
         @Part("document_type") documentType: RequestBody,
         @Part images: Array<MultipartBody.Part>
     ): ResponseBody?
