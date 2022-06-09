@@ -37,7 +37,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="32dp"
-            app:contentText="@string/SubmitPhoto.CheckedItem1"
             app:iconImage="@drawable/ic_check_blue"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -50,30 +49,16 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="60dp"
-            app:contentText="@string/SubmitPhoto.CheckedItem2"
             app:iconImage="@drawable/ic_check_blue"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/checked_item_1" />
 
         <ImageView
-            android:id="@+id/iv_document"
+            android:id="@+id/iv_review_photo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="24dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="32dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@id/btn_retake_photo"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/checked_item_2" />
-
-        <ImageView
-            android:id="@+id/iv_selfie"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="40dp"
             android:layout_marginTop="24dp"
             android:layout_marginBottom="32dp"
             android:visibility="gone"
