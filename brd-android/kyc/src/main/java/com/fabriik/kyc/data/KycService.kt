@@ -29,7 +29,6 @@ interface KycService {
         @Part("type") type: RequestBody,
         @Part("document_id") documentId: RequestBody,
         @Part("document_type") documentType: RequestBody,
-        @Part("front") frontImage: MultipartBody.Part,
-        @Part("back") backImage: MultipartBody.Part?
+        @Part images: Array<MultipartBody.Part>
     ): ResponseBody?
 }

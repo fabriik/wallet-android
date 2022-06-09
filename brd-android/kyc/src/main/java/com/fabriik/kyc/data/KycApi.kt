@@ -1,21 +1,20 @@
 package com.fabriik.kyc.data
 
+import androidx.core.net.toFile
 import com.fabriik.common.data.FabriikApiConstants
 import com.fabriik.common.data.Resource
+import com.fabriik.kyc.data.enums.DocumentSide
 import com.fabriik.kyc.data.enums.DocumentType
 import com.fabriik.kyc.data.model.Country
+import com.fabriik.kyc.data.model.DocumentData
 import com.fabriik.kyc.data.requests.CompleteLevel1VerificationRequest
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import okhttp3.MultipartBody
-import okhttp3.OkHttpClient
-import okhttp3.RequestBody
-import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
-import okhttp3.ResponseBody
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -57,7 +56,7 @@ class KycApi(
         }
     }
 
-    suspend fun uploadPhotos(documentType: DocumentType, backImageFile: File, frontImageFile: File) : Resource<ResponseBody?> {
+    suspend fun uploadPhotos(documentType: DocumentType, images: List<DocumentData>) : Resource<ResponseBody?> {
         val type = when(documentType) {
             DocumentType.SELFIE -> "SELFIE"
             else -> "ID"
@@ -73,15 +72,29 @@ class KycApi(
             val bodyType = type.toRequestBody()
             val bodyDocumentId = documentId.toRequestBody()
             val bodyDocumentType = documentType.id.toRequestBody()
-            val bodyFrontImage = frontImageFile.asRequestBody()
-            val bodyBackImage = backImageFile.asRequestBody()
+
+            val imagesParts = mutableListOf<MultipartBody.Part>()
+            for (imageData in images) {
+                val imageFile = imageData.imageUri.toFile()
+                val requestBody = RequestBody.create("image/*".toMediaTypeOrNull(), imageFile)
+
+                val partName = when (imageData.documentSide) {
+                    DocumentSide.FRONT -> "front"
+                    DocumentSide.BACK -> "back"
+                }
+
+                imagesParts.add(
+                    MultipartBody.Part.createFormData(
+                        partName, partName, requestBody
+                    )
+                )
+            }
 
             val response = service.uploadPhotos(
                 type = bodyType,
                 documentId = bodyDocumentId,
                 documentType = bodyDocumentType,
-                frontImage = MultipartBody.Part.createFormData("front", documentId, bodyFrontImage),
-                backImage = MultipartBody.Part.createFormData("back", documentId, bodyBackImage)
+                images = imagesParts.toTypedArray()
             )
 
             Resource.success(null)

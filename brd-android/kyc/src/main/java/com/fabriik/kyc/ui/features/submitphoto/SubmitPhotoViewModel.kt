@@ -1,8 +1,10 @@
 package com.fabriik.kyc.ui.features.submitphoto
 
 import android.app.Application
+import androidx.core.net.toFile
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.fabriik.common.data.Status
 import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.kyc.data.enums.DocumentSide
 import com.fabriik.kyc.data.enums.DocumentType
@@ -11,6 +13,8 @@ import com.fabriik.kyc.data.KycApi
 import com.fabriik.kyc.data.model.DocumentData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
+import java.io.File
 
 class SubmitPhotoViewModel(
     application: Application,
@@ -72,42 +76,52 @@ class SubmitPhotoViewModel(
     }
 
     private fun uploadOtherDocuments(documentData: List<DocumentData>) {
-        val backImageData = documentData.find {
-            it.documentSide == DocumentSide.BACK
-        }
+        // todo: validation
 
-        val frontImageData = documentData.find {
-            it.documentSide == DocumentSide.FRONT
-        }
-
-        // todo: upload images
-
-        setEffect {
-            SubmitPhotoContract.Effect.TakePhoto(
-                documentType = DocumentType.SELFIE,
-                documentData = emptyArray()
-            )
+        uploadFile(documentData) {
+            setEffect {
+                SubmitPhotoContract.Effect.TakePhoto(
+                    documentType = DocumentType.SELFIE,
+                    documentData = emptyArray()
+                )
+            }
         }
     }
 
     private fun uploadPassport(documentData: List<DocumentData>) {
-        val passportImageData = documentData[0]
-        // todo: upload images
+        // todo: validation
 
-        setEffect {
-            SubmitPhotoContract.Effect.TakePhoto(
-                documentType = DocumentType.SELFIE,
-                documentData = emptyArray()
-            )
+        uploadFile(documentData) {
+            setEffect {
+                SubmitPhotoContract.Effect.TakePhoto(
+                    documentType = DocumentType.SELFIE,
+                    documentData = emptyArray()
+                )
+            }
         }
     }
 
     private fun uploadSelfie(documentData: List<DocumentData>) {
-        val selfieImageData = documentData[0]
-        // todo: upload images
+        // todo: validation
 
-        setEffect {
-            SubmitPhotoContract.Effect.PostValidation
+        uploadFile(documentData) {
+            setEffect {
+                SubmitPhotoContract.Effect.PostValidation
+            }
+        }
+    }
+
+    private fun uploadFile(images: List<DocumentData>, callback: () -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val response = kycApi.uploadPhotos(
+                documentType = currentState.documentType,
+                images = images
+            )
+
+            when (response.status) {
+                Status.SUCCESS -> {}
+                Status.ERROR -> {}
+            }
         }
     }
 }
