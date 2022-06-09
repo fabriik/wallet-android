@@ -7,9 +7,7 @@ import com.fabriik.common.data.Resource
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import okhttp3.ResponseBody
 import retrofit2.HttpException
-import kotlin.reflect.KClass
 
 class FabriikApiResponseMapper {
 
@@ -28,12 +26,12 @@ class FabriikApiResponseMapper {
         }
     }
 
-    fun <T> mapError(context: Context, exception: Exception, kClass: KClass<*>) : Resource<T?> {
+    fun <T> mapError(context: Context, exception: Exception) : Resource<T?> {
         var errorMessage: String? = null
 
         if (exception is HttpException) {
             exception.response()?.errorBody()?.let {
-                val responseType = Types.newParameterizedType(FabriikApiResponse::class.java, kClass.java)
+                val responseType = Types.newParameterizedType(FabriikApiResponse::class.java, Any::class.java)
                 val responseAdapter = moshi.adapter<FabriikApiResponse<Any>>(responseType)
 
                 val response = responseAdapter.fromJson(
