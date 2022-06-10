@@ -202,13 +202,21 @@
     </androidx.core.widget.NestedScrollView>
 
     <include
-        android:id="@+id/loading_view"
-        layout="@layout/view_fabriik_loading"
+        android:id="@+id/view_completed"
+        layout="@layout/view_fabriik_completed"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
         android:elevation="10dp"
         android:visibility="gone"
         tools:visibility="visible" />
+
+    <include
+        android:id="@+id/view_loading"
+        layout="@layout/view_fabriik_loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="10dp"
+        android:visibility="gone"
+        tools:visibility="visible"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

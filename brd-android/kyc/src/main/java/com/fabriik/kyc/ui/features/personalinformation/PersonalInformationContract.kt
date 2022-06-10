@@ -33,6 +33,7 @@ interface PersonalInformationContract {
         val country: Country? = null,
         val dateOfBirth: Calendar? = null,
         val confirmEnabled: Boolean = false,
-        val loadingVisible: Boolean = false
+        val loadingVisible: Boolean = false,
+        val completedViewVisible: Boolean = false
     ) : FabriikContract.State
 }
