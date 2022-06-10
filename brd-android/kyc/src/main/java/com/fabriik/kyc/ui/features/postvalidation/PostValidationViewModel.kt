@@ -12,14 +12,9 @@ class PostValidationViewModel(
 
     override fun handleEvent(event: PostValidationContract.Event) {
         when (event) {
-            is PostValidationContract.Event.BackClicked ->
-                setEffect { PostValidationContract.Effect.Back }
 
             is PostValidationContract.Event.ConfirmClicked ->
                 setEffect { PostValidationContract.Effect.Profile }
-
-            is PostValidationContract.Event.DismissClicked ->
-                setEffect { PostValidationContract.Effect.Dismiss }
         }
     }
 }
