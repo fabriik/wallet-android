@@ -50,8 +50,8 @@ object ProfileScreen {
 
         object ShowInfoDialog : F(), NavigationEffect {
             override val navigationTarget = NavigationTarget.ShowInfoDialog(
-                title = R.string.AccountVerification_InfoView_title,
-                description = R.string.AccountVerification_InfoVIew_description,
+                title = R.string.Profile_InfoDialog_title,
+                description = R.string.Profile_InfoDialog_description,
             )
         }
         
