@@ -81,9 +81,9 @@ class RegistrationVerifyEmailViewModel(
 
     private fun showCompletedState() {
         viewModelScope.launch(Dispatchers.IO) {
-            setState { copy(verifiedOverlayVisible = true) }
+            setState { copy(completedViewVisible = true) }
             delay(1000)
-            setState { copy(verifiedOverlayVisible = false) }
+            setState { copy(completedViewVisible = false) }
             setEffect { RegistrationVerifyEmailContract.Effect.Dismiss }
         }
     }

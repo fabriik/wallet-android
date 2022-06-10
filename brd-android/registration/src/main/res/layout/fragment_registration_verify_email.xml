@@ -115,32 +115,21 @@
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toEndOf="@id/btn_resend" />
 
-    <View
-        android:id="@+id/view_overlay"
+    <include
+        android:id="@+id/view_completed"
+        layout="@layout/view_fabriik_completed"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:alpha="0.8"
-        android:background="@color/white"
-        android:focusable="true"
+        android:elevation="10dp"
         android:visibility="gone"
+        tools:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/iv_email_verified"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_email_verified"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/tv_subtitle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-
     <include
-        android:id="@+id/loading_view"
+        android:id="@+id/view_loading"
         layout="@layout/view_fabriik_loading"
         android:layout_width="0dp"
         android:layout_height="0dp"

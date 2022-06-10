@@ -1,12 +1,16 @@
 package com.fabriik.kyc.ui.features.personalinformation
 
 import android.app.Application
+import androidx.lifecycle.viewModelScope
 import com.fabriik.common.data.Status
 import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.common.utils.getString
 import com.fabriik.common.utils.validators.TextValidator
 import com.fabriik.kyc.R
 import com.fabriik.kyc.data.KycApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.*
 
 class PersonalInformationViewModel(
@@ -56,6 +60,15 @@ class PersonalInformationViewModel(
         }
     }
 
+    private fun showCompletedState() {
+        viewModelScope.launch(Dispatchers.IO) {
+            setState { copy(completedViewVisible = true) }
+            delay(1000)
+            setState { copy(completedViewVisible = false) }
+            setEffect { PersonalInformationContract.Effect.Dismiss }
+        }
+    }
+
     private fun confirmClicked() {
         callApi(
             endState = { copy(loadingVisible = false) },
@@ -71,7 +84,7 @@ class PersonalInformationViewModel(
             callback = {
                 when (it.status) {
                     Status.SUCCESS ->
-                        setEffect { PersonalInformationContract.Effect.Dismiss }
+                        showCompletedState()
 
                     Status.ERROR ->
                         setEffect {
