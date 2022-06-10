@@ -1,8 +1,6 @@
 package com.fabriik.kyc.ui.features.takephoto
 
 import android.net.Uri
-import androidx.camera.core.CameraSelector
-import androidx.camera.lifecycle.ProcessCameraProvider
 import com.fabriik.common.ui.base.FabriikContract
 import com.fabriik.kyc.data.enums.DocumentSide
 import com.fabriik.kyc.data.enums.DocumentType
@@ -46,6 +44,7 @@ interface TakePhotoContract {
         val documentSide: DocumentSide,
         val takePhotoEnabled: Boolean = true,
         val finderViewType: PhotoFinderView.Type,
-        val preferredLensFacing: Int
+        val preferredLensFacing: Int,
+        val backEnabled: Boolean = true
     ) : FabriikContract.State
 }

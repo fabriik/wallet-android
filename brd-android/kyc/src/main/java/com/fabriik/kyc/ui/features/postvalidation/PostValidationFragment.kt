@@ -4,10 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import com.fabriik.common.ui.base.FabriikView
 import com.fabriik.kyc.R
 import com.fabriik.kyc.databinding.FragmentPostValidationBinding
@@ -32,14 +32,6 @@ class PostValidationFragment : Fragment(),
         binding = FragmentPostValidationBinding.bind(view)
 
         with(binding) {
-            toolbar.setBackButtonClickListener {
-                viewModel.setEvent(PostValidationContract.Event.BackClicked)
-            }
-
-            toolbar.setDismissButtonClickListener {
-                viewModel.setEvent(PostValidationContract.Event.DismissClicked)
-            }
-
             btnConfirm.setOnClickListener {
                 viewModel.setEvent(PostValidationContract.Event.ConfirmClicked)
             }
@@ -58,6 +50,10 @@ class PostValidationFragment : Fragment(),
                 handleEffect(it)
             }
         }
+
+        requireActivity().onBackPressedDispatcher.addCallback {
+            //User shouldn't be allowed to go back
+        }
     }
 
     override fun render(state: PostValidationContract.State) {
@@ -65,17 +61,9 @@ class PostValidationFragment : Fragment(),
 
     override fun handleEffect(effect: PostValidationContract.Effect) {
         when (effect) {
-            is PostValidationContract.Effect.Back -> {
-                findNavController().popBackStack()
-            }
 
-            is PostValidationContract.Effect.Dismiss -> {
+            is PostValidationContract.Effect.Profile ->
                 requireActivity().finish()
-            }
-
-            is PostValidationContract.Effect.Profile -> {
-                requireActivity().finish()
-            }
         }
     }
 }
