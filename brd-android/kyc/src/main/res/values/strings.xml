@@ -29,6 +29,10 @@
     <string name="AccountVerification.Level2.Tag">Swap limit: $10,000 per Swap, no lifetime limit</string>
     <string name="AccountVerification.Level2.CheckedItem1">ID Verification</string>
     <string name="AccountVerification.Level2.CheckedItem2">Proof of life</string>
+    <string name="AccountVerification.Level2.CompleteLevel1First">Please complete Level 1 verification first.</string>
+    <string name="AccountVerification.Level2.PendingVerification">Unavailable while KYC verification is pending.</string>
+    <string name="AccountVerification.Level2.UpdateLevel1IfDataChanged">If your personal information has changed, please first update Level 1 KYC and then continue with
+Level 2 KYC.</string>
     <string name="AccountVerification.InfoView.title">Personal information</string>
     <string name="AccountVerification.InfoVIew.description">We need to verify your personal information for identity purposes. This information won’t be shared with outside sources unless required by law.</string>
 
