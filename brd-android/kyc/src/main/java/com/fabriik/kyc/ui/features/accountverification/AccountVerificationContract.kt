@@ -1,5 +1,6 @@
 package com.fabriik.kyc.ui.features.accountverification
 
+import com.fabriik.common.data.model.Profile
 import com.fabriik.common.ui.base.FabriikContract
 import com.fabriik.kyc.ui.customview.AccountVerificationStatusView
 
@@ -19,9 +20,12 @@ interface AccountVerificationContract {
         object Dismiss : Effect()
         object GoToKycLevel1 : Effect()
         object GoToKycLevel2 : Effect()
+        object ShowLevel1ChangeConfirmationDialog : AccountVerificationContract.Effect()
+        data class ShowToast(val message: String) : AccountVerificationContract.Effect()
     }
 
     data class State(
+        val profile: Profile,
         val level1State: Level1State,
         val level2State: Level2State
     ) : FabriikContract.State
