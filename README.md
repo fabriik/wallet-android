@@ -1,10 +1,12 @@
 [![Fabriik](images/top-logo.png)](https://fabriik.com/)
 
+
 <div align="center">
   <a href="https://apps.apple.com/us/app/fabriik/id1595167194"><img align="center" width="140px" height="47px" src="images/app_store.png"/></a>
   <a href="https://play.google.com/store/apps/details?id=com.fabriik.on"><img align="center" width="170px" height="47px" src="images/play_store.png"/></a>
 </div>
 
+<br>
 Fabriik is the best way to get started with bitcoin.
 Our simple, streamlined design is easy for beginners, yet powerful enough for experienced users.
 
