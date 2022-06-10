@@ -285,7 +285,17 @@ class SettingsScreenHandler(
                 context.getString(R.string.Settings_about),
                 SettingsOption.ABOUT,
                 R.drawable.ic_about
-            )
+            ),
+            SettingsItem(
+                context.getString(R.string.Settings_preferences),
+                SettingsOption.PREFERENCES,
+                R.drawable.ic_preferences
+            ),
+            SettingsItem(
+                context.getString(R.string.MenuButton_security),
+                SettingsOption.SECURITY_SETTINGS,
+                R.drawable.ic_security_settings
+            ),
         ).apply {
             if (experimentsRepository.isExperimentActive(Experiments.ATM_MAP)) {
                 add(
