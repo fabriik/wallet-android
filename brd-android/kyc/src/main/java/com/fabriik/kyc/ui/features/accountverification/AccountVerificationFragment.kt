@@ -121,6 +121,8 @@ class AccountVerificationFragment : Fragment(),
                     parentView = binding.root,
                     message = effect.message
                 )
+
+            AccountVerificationContract.Effect.ShowLevel1ChangeConfirmationDialog -> TODO()
         }
     }
 
