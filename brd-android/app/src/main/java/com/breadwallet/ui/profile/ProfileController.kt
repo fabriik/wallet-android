@@ -1,5 +1,6 @@
 package com.breadwallet.ui.profile
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
@@ -11,6 +12,7 @@ import com.breadwallet.ui.flowbind.clicks
 import com.breadwallet.ui.profile.ProfileScreen.E
 import com.breadwallet.ui.profile.ProfileScreen.F
 import com.breadwallet.ui.profile.ProfileScreen.M
+import com.fabriik.kyc.ui.KycActivity
 import com.fabriik.kyc.ui.customview.AccountVerificationStatusView
 import com.spotify.mobius.Connectable
 import com.spotify.mobius.First
@@ -58,6 +60,14 @@ ProfileController(
                 activity!!, DividerItemDecoration.VERTICAL
             )
         )
+
+        registerForActivityResult(KycActivity.REQUEST_CODE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == KycActivity.REQUEST_CODE && resultCode == KycActivity.RESULT_DATA_UPDATED) {
+            eventConsumer.accept(E.RefreshProfile)
+        }
     }
 
     override fun bindView(modelFlow: Flow<M>): Flow<E> {

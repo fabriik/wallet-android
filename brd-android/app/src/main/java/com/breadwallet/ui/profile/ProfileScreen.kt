@@ -20,6 +20,7 @@ object ProfileScreen {
     }
 
     sealed class E {
+        object RefreshProfile : E()
         object OnCloseClicked : E()
         object OnChangeEmailClicked : E()
         object OnVerifyProfileClicked : E()
@@ -34,6 +35,7 @@ object ProfileScreen {
 
     sealed class F {
         object LoadOptions : F()
+        object RefreshProfile : F()
         object LoadProfileData : F()
 
         object GoBack : F(), NavigationEffect {

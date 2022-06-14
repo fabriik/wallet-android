@@ -152,10 +152,10 @@ class RouterNavigator(
 
     override fun openKyc(effect: NavigationTarget.GoToKyc) {
         router.activity?.let {
-            it.startActivity(
+            it.startActivityForResult(
                 KycActivity.getStartIntent(
                     it, effect.profile
-                )
+                ), KycActivity.REQUEST_CODE
             )
         }
     }

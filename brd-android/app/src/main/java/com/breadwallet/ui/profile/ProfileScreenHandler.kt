@@ -2,16 +2,14 @@ package com.breadwallet.ui.profile
 
 import android.content.Context
 import com.breadwallet.R
-import com.breadwallet.tools.security.BrdUserManager
 import com.breadwallet.tools.security.ProfileManager
 import com.breadwallet.ui.profile.ProfileScreen.E
 import com.breadwallet.ui.profile.ProfileScreen.F
 import com.breadwallet.util.errorHandler
-import com.fabriik.common.data.Status
-import com.fabriik.registration.data.RegistrationApi
 import com.spotify.mobius.Connection
 import com.spotify.mobius.functions.Consumer
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.mapLatest
 
 class ProfileScreenHandler(
     private val output: Consumer<E>,
@@ -25,6 +23,7 @@ class ProfileScreenHandler(
         when (value) {
             F.LoadOptions -> loadOptions()
             F.LoadProfileData -> loadProfileData()
+            F.RefreshProfile -> refreshProfile()
         }
     }
 
@@ -57,5 +56,16 @@ class ProfileScreenHandler(
             )
         )
         output.accept(E.OnOptionsLoaded(items))
+    }
+
+    private fun refreshProfile() {
+        profileManager.updateProfile()
+            .mapLatest {
+                if (it == null) {
+                    E.OnProfileDataLoadFailed(it)
+                } else {
+                    E.OnProfileDataLoaded(it)
+                }
+            }
     }
 }
