@@ -45,7 +45,8 @@ object HomeScreen {
         val isBuyAlertNeeded: Boolean = false,
         val isTradeAlertNeeded: Boolean = false,
         val showBuyAndSell: Boolean = false,
-        val rateAppPromptDontShowMeAgain: Boolean = false
+        val rateAppPromptDontShowMeAgain: Boolean = false,
+        val profile: Profile? = null
     ) {
 
         companion object {
@@ -217,7 +218,6 @@ object HomeScreen {
         object ClearRateAppPrompt : F()
         object SaveDontShowMeRateAppPrompt : F()
 
-        data class UpdateProfile(val profile: Profile) : F()
         data class SubmitSupportForm(val feedback: String) : F()
     }
 }

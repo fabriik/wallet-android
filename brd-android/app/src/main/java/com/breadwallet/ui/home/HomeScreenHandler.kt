@@ -49,6 +49,7 @@ import com.breadwallet.ui.home.HomeScreen.E
 import com.breadwallet.ui.home.HomeScreen.F
 import com.breadwallet.util.usermetrics.UserMetricsUtil
 import com.breadwallet.platform.interfaces.AccountMetaDataProvider
+import com.breadwallet.tools.security.ProfileManager
 import com.fabriik.common.data.Status
 import com.fabriik.registration.data.RegistrationApi
 import com.platform.interfaces.WalletProvider
@@ -56,16 +57,12 @@ import com.platform.util.AppReviewPromptManager
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import drewcarlson.mobius.flow.subtypeEffectHandler
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.suspendCancellableCoroutine
 import java.math.BigDecimal
 import java.util.Locale
 import kotlin.coroutines.resume
 import com.breadwallet.crypto.Wallet as CryptoWallet
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 
 private const val PROMPT_DISMISSED_FINGERPRINT = "fingerprint"
 
@@ -80,7 +77,7 @@ fun createHomeScreenHandler(
     accountMetaDataProvider: AccountMetaDataProvider,
     connectivityStateProvider: ConnectivityStateProvider,
     supportManager: SupportManager,
-    registrationApi: RegistrationApi
+    profileManager: ProfileManager
 ) = subtypeEffectHandler<F, E> {
     addConsumer<F.SaveEmail> { effect ->
         UserMetricsUtil.makeEmailOptInRequest(context, effect.email)
@@ -103,15 +100,15 @@ fun createHomeScreenHandler(
             val promptId = when {
                 BRSharedPrefs.appRatePromptShouldPromptDebug -> PromptItem.RATE_APP
                 !BRSharedPrefs.getEmailOptIn()
-                    && !BRSharedPrefs.getEmailOptInDismissed() -> {
+                        && !BRSharedPrefs.getEmailOptInDismissed() -> {
                     PromptItem.EMAIL_COLLECTION
                 }
                 brdUser.pinCodeNeedsUpgrade() -> PromptItem.UPGRADE_PIN
                 !BRSharedPrefs.phraseWroteDown -> PromptItem.PAPER_KEY
                 AppReviewPromptManager.shouldPrompt() -> PromptItem.RATE_APP
                 (!BRSharedPrefs.unlockWithFingerprint
-                    && Utils.isFingerprintAvailable(context)
-                    && !BRSharedPrefs.getPromptDismissed(PROMPT_DISMISSED_FINGERPRINT)) -> {
+                        && Utils.isFingerprintAvailable(context)
+                        && !BRSharedPrefs.getPromptDismissed(PROMPT_DISMISSED_FINGERPRINT)) -> {
                     PromptItem.FINGER_PRINT
                 }
                 // BRSharedPrefs.getScanRecommended(iso = "BTC") -> PromptItem.RECOMMEND_RESCAN
@@ -137,9 +134,6 @@ fun createHomeScreenHandler(
     addConsumer<F.UpdateWalletOrder> { effect ->
         accountMetaDataProvider.reorderWallets(effect.orderedCurrencyIds)
     }
-    addConsumer<F.UpdateProfile> { effect ->
-        brdUser.putProfile(effect.profile)
-    }
     addConsumer<F.RecordPushNotificationOpened> { effect ->
         EventUtils.pushEvent(
             EventUtils.EVENT_MIXPANEL_APP_OPEN,
@@ -150,7 +144,7 @@ fun createHomeScreenHandler(
     addAction<F.CheckIfShowBuyAndSell> {
         val showBuyAndSell =
             ExperimentsRepositoryImpl.isExperimentActive(Experiments.BUY_SELL_MENU_BUTTON)
-                && BRSharedPrefs.getPreferredFiatIso() == BRConstants.USD
+                    && BRSharedPrefs.getPreferredFiatIso() == BRConstants.USD
         EventUtils.pushEvent(
             EventUtils.EVENT_EXPERIMENT_BUY_SELL_MENU_BUTTON,
             mapOf(EventUtils.EVENT_ATTRIBUTE_SHOW to showBuyAndSell.toString())
@@ -160,7 +154,7 @@ fun createHomeScreenHandler(
     addFunction<F.LoadIsBuyBellNeeded> {
         val isBuyBellNeeded =
             ExperimentsRepositoryImpl.isExperimentActive(Experiments.BUY_NOTIFICATION) &&
-                CurrencyUtils.isBuyNotificationNeeded()
+                    CurrencyUtils.isBuyNotificationNeeded()
         E.OnBuyBellNeededLoaded(isBuyBellNeeded)
     }
 
@@ -233,14 +227,15 @@ fun createHomeScreenHandler(
         supportManager.submitEmailRequest(body = effect.feedback)
     }
 
-    addFunction<F.LoadProfile> {
-        val response = registrationApi.getProfile()
-        when (response.status) {
-            Status.SUCCESS ->
-                E.OnProfileDataLoaded(response.data!!)
-            Status.ERROR ->
-                E.OnProfileDataLoadFailed(response.message)
-        }
+    addTransformer<F.LoadProfile> {
+        profileManager.updateProfile()
+            .mapLatest {
+                if (it == null) {
+                    E.OnProfileDataLoadFailed(it)
+                } else {
+                    E.OnProfileDataLoaded(it)
+                }
+            }
     }
 }
 

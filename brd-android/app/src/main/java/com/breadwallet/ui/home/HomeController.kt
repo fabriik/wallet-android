@@ -96,7 +96,7 @@ class HomeController(
             direct.instance(),
             direct.instance(),
             direct.instance(),
-            RegistrationApi.create(requireContext())
+            direct.instance()
     )
 
     private val binding by viewBinding(ControllerHomeBinding::inflate)

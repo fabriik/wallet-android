@@ -3,6 +3,7 @@ package com.breadwallet.ui.profile
 import android.content.Context
 import com.breadwallet.R
 import com.breadwallet.tools.security.BrdUserManager
+import com.breadwallet.tools.security.ProfileManager
 import com.breadwallet.ui.profile.ProfileScreen.E
 import com.breadwallet.ui.profile.ProfileScreen.F
 import com.breadwallet.util.errorHandler
@@ -15,12 +16,10 @@ import kotlinx.coroutines.*
 class ProfileScreenHandler(
     private val output: Consumer<E>,
     private val context: Context,
-    private val userManager: BrdUserManager
+    private val profileManager: ProfileManager
 ) : Connection<F>, CoroutineScope {
 
     override val coroutineContext = SupervisorJob() + Dispatchers.Default + errorHandler()
-
-    private val registrationApi = RegistrationApi.create(context)
 
     override fun accept(value: F) {
         when (value) {
@@ -35,9 +34,11 @@ class ProfileScreenHandler(
 
     private fun loadProfileData() {
         launch {
-            val profile = userManager.getProfile()
+            val profile = profileManager.getProfile()
             if (profile != null) {
                 output.accept(E.OnProfileDataLoaded(profile))
+            } else {
+                output.accept(E.OnProfileDataLoadFailed(null))
             }
         }
     }

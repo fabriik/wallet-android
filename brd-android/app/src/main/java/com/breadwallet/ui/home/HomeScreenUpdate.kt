@@ -143,8 +143,8 @@ val HomeScreenUpdate = Update<M, E, F> { model, event ->
                 )
             )
 
-        is E.OnProfileDataLoaded -> dispatch(
-            effects(F.UpdateProfile(event.profile))
+        is E.OnProfileDataLoaded -> next(
+            model.copy(profile = event.profile)
         )
 
         is E.OnProfileDataLoadFailed -> noChange()

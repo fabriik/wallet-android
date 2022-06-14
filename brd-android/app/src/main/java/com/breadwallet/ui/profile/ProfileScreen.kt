@@ -29,7 +29,7 @@ object ProfileScreen {
         data class OnOptionClicked(val option: ProfileOption) : E()
         data class OnOptionsLoaded(@Redacted val options: List<ProfileItem>) : E()
         data class OnProfileDataLoaded(val profile: Profile) : E()
-        data class OnProfileDataLoadFailed(val message: String) : E()
+        data class OnProfileDataLoadFailed(val message: String?) : E()
     }
 
     sealed class F {
