@@ -93,7 +93,9 @@ class SubmitPhotoFragment : Fragment(),
                 findNavController().popBackStack()
 
             is SubmitPhotoContract.Effect.Dismiss ->
-                requireActivity().finish()
+                findNavController().navigate(
+                    SubmitPhotoFragmentDirections.actionAccountVerification(null)
+                )
 
             is SubmitPhotoContract.Effect.TakePhoto ->
                 findNavController().navigate(

@@ -40,6 +40,10 @@ class ProofOfIdentityFragment : Fragment(),
                 viewModel.setEvent(ProofOfIdentityContract.Event.BackClicked)
             }
 
+            toolbar.setDismissButtonClickListener {
+                viewModel.setEvent(ProofOfIdentityContract.Event.Dismiss)
+            }
+
             cvIdCard.setOnClickListener {
                 viewModel.setEvent(ProofOfIdentityContract.Event.IdCardClicked)
             }
@@ -92,6 +96,11 @@ class ProofOfIdentityFragment : Fragment(),
                 FabriikToastUtil.show(
                     parentView = binding.root,
                     message = effect.message
+                )
+
+            is ProofOfIdentityContract.Effect.Dismiss ->
+                findNavController().navigate(
+                    ProofOfIdentityFragmentDirections.actionAccountVerification(null)
                 )
 
             is ProofOfIdentityContract.Effect.GoBack ->

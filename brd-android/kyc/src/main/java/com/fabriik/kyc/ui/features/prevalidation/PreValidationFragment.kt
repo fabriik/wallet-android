@@ -70,7 +70,9 @@ class PreValidationFragment : Fragment(),
                 findNavController().popBackStack()
 
             is PreValidationContract.Effect.Dismiss ->
-                requireActivity().finish()
+                findNavController().navigate(
+                    PreValidationFragmentDirections.actionAccountVerification(null)
+                )
 
             is PreValidationContract.Effect.ProofOfIdentity ->
                 findNavController().navigate(

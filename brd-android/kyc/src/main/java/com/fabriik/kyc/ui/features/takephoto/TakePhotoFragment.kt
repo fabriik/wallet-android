@@ -120,7 +120,9 @@ class TakePhotoFragment : Fragment(),
                 findNavController().popBackStack()
 
             is TakePhotoContract.Effect.Dismiss ->
-                requireActivity().finish()
+                findNavController().navigate(
+                    TakePhotoFragmentDirections.actionAccountVerification(null)
+                )
 
             is TakePhotoContract.Effect.RequestCameraPermission ->
                 permissionsLauncher.launch(Manifest.permission.CAMERA)
