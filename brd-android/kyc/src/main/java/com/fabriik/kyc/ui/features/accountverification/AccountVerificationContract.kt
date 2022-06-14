@@ -1,5 +1,6 @@
 package com.fabriik.kyc.ui.features.accountverification
 
+import com.fabriik.common.data.model.Profile
 import com.fabriik.common.ui.base.FabriikContract
 import com.fabriik.kyc.ui.customview.AccountVerificationStatusView
 
@@ -11,6 +12,14 @@ interface AccountVerificationContract {
         object InfoClicked : Event()
         object Level1Clicked : Event()
         object Level2Clicked : Event()
+
+        data class ProfileLoaded(
+            val profile: Profile
+        ) : Event()
+
+        data class ProfileLoadFailed(
+            val message: String
+        ) : Event()
     }
 
     sealed class Effect : FabriikContract.Effect {
@@ -19,11 +28,16 @@ interface AccountVerificationContract {
         object Dismiss : Effect()
         object GoToKycLevel1 : Effect()
         object GoToKycLevel2 : Effect()
+
+        data class ShowToast(
+            val message: String
+        ) : Effect()
     }
 
     data class State(
         val level1State: Level1State,
-        val level2State: Level2State
+        val level2State: Level2State,
+        val isLoading: Boolean
     ) : FabriikContract.State
 
     data class Level1State(

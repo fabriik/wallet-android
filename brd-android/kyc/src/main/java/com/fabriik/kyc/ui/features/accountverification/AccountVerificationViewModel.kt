@@ -2,12 +2,18 @@ package com.fabriik.kyc.ui.features.accountverification
 
 import android.app.Application
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
+import com.fabriik.common.data.Status
 import com.fabriik.common.data.enums.KycStatus
 import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.common.utils.getString
 import com.fabriik.common.utils.toBundle
 import com.fabriik.kyc.R
 import com.fabriik.kyc.ui.customview.AccountVerificationStatusView
+import com.fabriik.registration.data.RegistrationApi
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class AccountVerificationViewModel(
     application: Application,
@@ -17,6 +23,13 @@ class AccountVerificationViewModel(
 ) {
 
     private lateinit var arguments: AccountVerificationFragmentArgs
+    private val registrationApi = RegistrationApi.create(application.applicationContext)
+
+    init {
+        if (arguments.profile == null) {
+            loadProfile()
+        }
+    }
 
     override fun parseArguments(savedStateHandle: SavedStateHandle) {
         arguments = AccountVerificationFragmentArgs.fromBundle(
@@ -25,8 +38,9 @@ class AccountVerificationViewModel(
     }
 
     override fun createInitialState() = AccountVerificationContract.State(
-        level1State = mapStatusToLevel1State(arguments.profile.kycStatus),
-        level2State = mapStatusToLevel2State(arguments.profile.kycStatus)
+        level1State = mapStatusToLevel1State(arguments.profile?.kycStatus),
+        level2State = mapStatusToLevel2State(arguments.profile?.kycStatus),
+        isLoading = arguments.profile == null
     )
 
     override fun handleEvent(event: AccountVerificationContract.Event) {
@@ -45,14 +59,27 @@ class AccountVerificationViewModel(
 
             is AccountVerificationContract.Event.Level2Clicked ->
                 setEffect { AccountVerificationContract.Effect.GoToKycLevel2 }
+
+            is AccountVerificationContract.Event.ProfileLoaded ->
+                setState {
+                    AccountVerificationContract.State(
+                        level1State = mapStatusToLevel1State(event.profile.kycStatus),
+                        level2State = mapStatusToLevel2State(event.profile.kycStatus),
+                        isLoading = false
+                    )
+                }
+
+            is AccountVerificationContract.Event.ProfileLoadFailed ->
+                setEffect { AccountVerificationContract.Effect.ShowToast(event.message) }
         }
     }
 
-    private fun mapStatusToLevel1State(status: KycStatus): AccountVerificationContract.Level1State {
+    private fun mapStatusToLevel1State(status: KycStatus?): AccountVerificationContract.Level1State {
         val state = when (status) {
             KycStatus.DEFAULT,
             KycStatus.EMAIL_VERIFIED,
-            KycStatus.EMAIL_VERIFICATION_PENDING -> null
+            KycStatus.EMAIL_VERIFICATION_PENDING,
+            null -> null
             else -> AccountVerificationStatusView.StatusViewState.Verified
         }
 
@@ -62,11 +89,12 @@ class AccountVerificationViewModel(
         )
     }
 
-    private fun mapStatusToLevel2State(status: KycStatus): AccountVerificationContract.Level2State {
+    private fun mapStatusToLevel2State(status: KycStatus?): AccountVerificationContract.Level2State {
         return when (status) {
             KycStatus.DEFAULT,
             KycStatus.EMAIL_VERIFIED,
-            KycStatus.EMAIL_VERIFICATION_PENDING -> AccountVerificationContract.Level2State(
+            KycStatus.EMAIL_VERIFICATION_PENDING,
+            null -> AccountVerificationContract.Level2State(
                 isEnabled = false,
                 statusState = null
             )
@@ -96,6 +124,17 @@ class AccountVerificationViewModel(
                 isEnabled = true,
                 statusState = AccountVerificationStatusView.StatusViewState.Verified
             )
+        }
+    }
+
+    private fun loadProfile() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val response = registrationApi.getProfile()
+            val event = when (response.status) {
+                Status.SUCCESS -> AccountVerificationContract.Event.ProfileLoaded(response.data!!)
+                Status.ERROR -> AccountVerificationContract.Event.ProfileLoadFailed(response.message!!)
+            }
+            setEvent(event)
         }
     }
 }

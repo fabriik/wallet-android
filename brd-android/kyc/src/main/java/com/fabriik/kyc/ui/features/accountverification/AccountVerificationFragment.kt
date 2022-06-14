@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.fabriik.common.ui.base.FabriikView
+import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.kyc.R
 import com.fabriik.kyc.databinding.FragmentAccountVerificationBinding
 import com.fabriik.kyc.ui.customview.AccountVerificationStatusView
@@ -95,6 +96,9 @@ class AccountVerificationFragment : Fragment(),
             tvLevel2CheckedItemError.setStateIcon(state.level2State.statusState)
             tvLevel2CheckedItemError.setContent(state.level2State.verificationError)
             tvLevel2CheckedItemError.isVisible = state.level2State.verificationError != null
+
+            accountLayout.isVisible = !state.isLoading
+            loadingIndicator.isVisible = state.isLoading
         }
     }
 
@@ -116,6 +120,13 @@ class AccountVerificationFragment : Fragment(),
                 findNavController().navigate(
                     AccountVerificationFragmentDirections.actionKycLevel2()
                 )
+
+            is AccountVerificationContract.Effect.ShowToast -> {
+                FabriikToastUtil.show(
+                    parentView = binding.root,
+                    message = effect.message
+                )
+            }
         }
     }
 

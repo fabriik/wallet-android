@@ -12,6 +12,7 @@
 
         <argument
             android:name="profile"
+            app:nullable="true"
             app:argType="com.fabriik.common.data.model.Profile" />
 
         <action
@@ -131,4 +132,8 @@
 
         </fragment>
     </navigation>
+
+    <action
+        android:id="@+id/actionAccountVerification"
+        app:destination="@+id/fragmentAccountVerification"/>
 </navigation>
