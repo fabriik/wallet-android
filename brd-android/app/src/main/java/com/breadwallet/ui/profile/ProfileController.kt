@@ -18,6 +18,8 @@ import com.spotify.mobius.Init
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
+import org.kodein.di.direct
+import org.kodein.di.erased.instance
 
 class
 ProfileController(
@@ -41,7 +43,8 @@ ProfileController(
     override val effectHandler = Connectable<F, E> { output ->
         ProfileScreenHandler(
             output,
-            applicationContext!!
+            applicationContext!!,
+            direct.instance()
         )
     }
 

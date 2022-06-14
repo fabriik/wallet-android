@@ -25,6 +25,7 @@
 package com.breadwallet.ui.home
 
 import android.content.Context
+import com.breadwallet.R
 import com.breadwallet.breadbox.*
 import com.breadwallet.crypto.WalletManagerState
 import com.breadwallet.ext.throttleLatest
@@ -48,22 +49,23 @@ import com.breadwallet.ui.home.HomeScreen.E
 import com.breadwallet.ui.home.HomeScreen.F
 import com.breadwallet.util.usermetrics.UserMetricsUtil
 import com.breadwallet.platform.interfaces.AccountMetaDataProvider
+import com.fabriik.common.data.Status
+import com.fabriik.registration.data.RegistrationApi
 import com.platform.interfaces.WalletProvider
 import com.platform.util.AppReviewPromptManager
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import drewcarlson.mobius.flow.subtypeEffectHandler
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.mapLatest
-import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.suspendCancellableCoroutine
 import java.math.BigDecimal
 import java.util.Locale
 import kotlin.coroutines.resume
 import com.breadwallet.crypto.Wallet as CryptoWallet
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
 private const val PROMPT_DISMISSED_FINGERPRINT = "fingerprint"
 
@@ -77,7 +79,8 @@ fun createHomeScreenHandler(
     walletProvider: WalletProvider,
     accountMetaDataProvider: AccountMetaDataProvider,
     connectivityStateProvider: ConnectivityStateProvider,
-    supportManager: SupportManager
+    supportManager: SupportManager,
+    registrationApi: RegistrationApi
 ) = subtypeEffectHandler<F, E> {
     addConsumer<F.SaveEmail> { effect ->
         UserMetricsUtil.makeEmailOptInRequest(context, effect.email)
@@ -133,6 +136,9 @@ fun createHomeScreenHandler(
     }
     addConsumer<F.UpdateWalletOrder> { effect ->
         accountMetaDataProvider.reorderWallets(effect.orderedCurrencyIds)
+    }
+    addConsumer<F.UpdateProfile> { effect ->
+        brdUser.putProfile(effect.profile)
     }
     addConsumer<F.RecordPushNotificationOpened> { effect ->
         EventUtils.pushEvent(
@@ -225,6 +231,16 @@ fun createHomeScreenHandler(
     }
     addConsumer<F.SubmitSupportForm> { effect ->
         supportManager.submitEmailRequest(body = effect.feedback)
+    }
+
+    addFunction<F.LoadProfile> {
+        val response = registrationApi.getProfile()
+        when (response.status) {
+            Status.SUCCESS ->
+                E.OnProfileDataLoaded(response.data!!)
+            Status.ERROR ->
+                E.OnProfileDataLoadFailed(response.message)
+        }
     }
 }
 

@@ -142,7 +142,13 @@ val HomeScreenUpdate = Update<M, E, F> { model, event ->
                     }
                 )
             )
-        
+
+        is E.OnProfileDataLoaded -> dispatch(
+            effects(F.UpdateProfile(event.profile))
+        )
+
+        is E.OnProfileDataLoadFailed -> noChange()
+
         is E.OnPromptLoaded -> next(model.copy(promptId = event.promptId))
         is E.OnDeepLinkProvided -> dispatch(
             effects(
