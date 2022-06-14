@@ -57,15 +57,15 @@ class AccountVerificationViewModel(
 
             is AccountVerificationContract.Event.Level1Clicked ->
                 setEffect {
-                    when (currentState.profile.kycStatus) {
+                    when (currentState.profile?.kycStatus) {
                         KycStatus.DEFAULT,
                         KycStatus.EMAIL_VERIFIED,
                         KycStatus.EMAIL_VERIFICATION_PENDING,
                         KycStatus.KYC1,
                         KycStatus.KYC2_EXPIRED,
                         KycStatus.KYC2_DECLINED,
-                        KycStatus.KYC2_RESUBMISSION_REQUESTED ->
-                            AccountVerificationContract.Effect.GoToKycLevel1
+                        KycStatus.KYC2_RESUBMISSION_REQUESTED,
+                        null -> AccountVerificationContract.Effect.GoToKycLevel1
 
                         KycStatus.KYC2_SUBMITTED ->
                             AccountVerificationContract.Effect.ShowToast(
@@ -79,7 +79,7 @@ class AccountVerificationViewModel(
 
             is AccountVerificationContract.Event.Level2Clicked ->
                 setEffect {
-                    when (currentState.profile.kycStatus) {
+                    when (currentState.profile?.kycStatus) {
                         KycStatus.DEFAULT,
                         KycStatus.EMAIL_VERIFIED,
                         KycStatus.EMAIL_VERIFICATION_PENDING ->
@@ -91,7 +91,8 @@ class AccountVerificationViewModel(
                         KycStatus.KYC1,
                         KycStatus.KYC2_EXPIRED,
                         KycStatus.KYC2_DECLINED,
-                        KycStatus.KYC2_RESUBMISSION_REQUESTED ->
+                        KycStatus.KYC2_RESUBMISSION_REQUESTED,
+                        null ->
                             AccountVerificationContract.Effect.GoToKycLevel2
 
                         KycStatus.KYC2_SUBMITTED ->
@@ -109,6 +110,7 @@ class AccountVerificationViewModel(
             is AccountVerificationContract.Event.ProfileLoaded ->
                 setState {
                     AccountVerificationContract.State(
+                        profile = event.profile,
                         level1State = mapStatusToLevel1State(event.profile.kycStatus),
                         level2State = mapStatusToLevel2State(event.profile.kycStatus),
                         isLoading = false

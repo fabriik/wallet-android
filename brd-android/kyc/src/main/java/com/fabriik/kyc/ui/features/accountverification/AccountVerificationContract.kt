@@ -33,7 +33,7 @@ interface AccountVerificationContract {
     }
 
     data class State(
-        val profile: Profile,
+        val profile: Profile?,
         val level1State: Level1State,
         val level2State: Level2State,
         val isLoading: Boolean
