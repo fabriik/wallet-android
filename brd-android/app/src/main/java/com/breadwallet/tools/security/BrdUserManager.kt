@@ -29,6 +29,7 @@ import android.app.KeyguardManager
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
+import android.os.Parcelable
 import android.security.keystore.KeyPermanentlyInvalidatedException
 import android.security.keystore.UserNotAuthenticatedException
 import android.text.format.DateUtils
@@ -46,6 +47,9 @@ import com.breadwallet.tools.crypto.CryptoHelper.hexEncode
 import com.breadwallet.tools.manager.BRReportsManager
 import com.breadwallet.tools.manager.BRSharedPrefs
 import com.breadwallet.platform.interfaces.AccountMetaDataProvider
+import com.fabriik.common.data.model.Profile
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.Moshi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.Default
 import kotlinx.coroutines.Dispatchers.Main
@@ -91,6 +95,7 @@ private const val PUT_PHRASE_RC = 400
 private const val GET_PHRASE_RC = 401
 
 private const val KEY_ACCOUNT = "account"
+private const val KEY_PROFILE = "profile"
 private const val KEY_PHRASE = "phrase"
 private const val KEY_AUTH_KEY = "authKey"
 private const val KEY_CREATION_TIME = "creationTimeSeconds"
@@ -128,6 +133,7 @@ class CryptoUserManager(
     private var session: String? = null
     private var jwt: String? = null
     private var jwtExp: Long? = null
+    private var profile: Profile? = null
 
     init {
         store = createStore()
@@ -382,6 +388,15 @@ class CryptoUserManager(
     }
 
     @Synchronized
+    override fun getProfile() = profile ?: checkNotNull(store).getProfile()
+
+    @Synchronized
+    override fun putProfile(profile: Profile?) {
+        checkNotNull(store).edit { putProfile(profile) }
+        this.profile = profile
+    }
+
+    @Synchronized
     override fun getSession() = session ?: checkNotNull(store).getString(KEY_SESSION, null)
 
     @Synchronized
@@ -601,10 +616,10 @@ class CryptoUserManager(
     fun wipeAccount() {
         checkNotNull(store).edit {
             putString(KEY_PHRASE, null)
-            putString(KEY_ACCOUNT, null)
             putString(KEY_AUTH_KEY, null)
             putString(KEY_PIN_CODE, null)
             putLong(KEY_CREATION_TIME, 0)
+            putProfile(null)
         }
         BRKeyStore.wipeKeyStore(true)
     }
@@ -662,6 +677,21 @@ class CryptoUserManager(
     }
 }
 
+fun SharedPreferences.getProfile() : Profile? {
+    val moshi = Moshi.Builder().build()
+    val adapter: JsonAdapter<Profile> = moshi.adapter(Profile::class.java)
+    val json = getString(KEY_PROFILE, null) ?: return null
+    return adapter.fromJson(json)
+}
+
+fun SharedPreferences.Editor.putProfile(profile: Profile?) {
+    val moshi = Moshi.Builder().build()
+    val adapter: JsonAdapter<Profile> = moshi.adapter(Profile::class.java)
+    putString(
+        KEY_PROFILE, if (profile == null) null else adapter.toJson(profile)
+    )
+}
+
 fun SharedPreferences.getBytes(key: String, defaultValue: ByteArray?): ByteArray? {
     val valStr = getString(key, null) ?: return defaultValue
     return hexDecode(valStr)
@@ -670,4 +700,3 @@ fun SharedPreferences.getBytes(key: String, defaultValue: ByteArray?): ByteArray
 fun SharedPreferences.Editor.putBytes(key: String, value: ByteArray) {
     putString(key, hexEncode(value))
 }
-
