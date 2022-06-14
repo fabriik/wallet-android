@@ -77,13 +77,11 @@ class AccountVerificationFragment : Fragment(),
     override fun render(state: AccountVerificationContract.State) {
         with(binding) {
             // level 1 configuration
-            cvLevel1.isEnabled = state.level1State.isEnabled
             tvLevel1Tag.isEnabled = state.level1State.isEnabled
             tvLevel1CheckedItem1.setStateIcon(state.level1State.statusState)
             setStatusState(tvLevel1Status, state.level1State.statusState)
 
             // level 2 configuration
-            cvLevel2.isEnabled = state.level2State.isEnabled
             tvLevel2Tag.isEnabled = state.level2State.isEnabled
             setStatusState(tvLevel2Status, state.level2State.statusState)
 
@@ -121,12 +119,13 @@ class AccountVerificationFragment : Fragment(),
                     AccountVerificationFragmentDirections.actionKycLevel2()
                 )
 
-            is AccountVerificationContract.Effect.ShowToast -> {
+            is AccountVerificationContract.Effect.ShowToast ->
                 FabriikToastUtil.show(
                     parentView = binding.root,
                     message = effect.message
                 )
-            }
+
+            AccountVerificationContract.Effect.ShowLevel1ChangeConfirmationDialog -> TODO()
         }
     }
 

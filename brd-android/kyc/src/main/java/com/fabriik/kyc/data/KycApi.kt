@@ -13,6 +13,7 @@ import com.fabriik.kyc.data.requests.CompleteLevel1VerificationRequest
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Retrofit
@@ -73,12 +74,18 @@ class KycApi(
     suspend fun uploadPhotos(type: String, documentType: DocumentType, documentData: List<DocumentData>) : Resource<ResponseBody?> {
         return try {
             val bodyType = type.toRequestBody()
-            val bodyDocumentType = documentType.id.toRequestBody()
+            val bodyDocumentType = if (documentType == DocumentType.SELFIE) {
+                null
+            } else {
+                documentType.id.toRequestBody()
+            }
 
             val imagesParts = mutableListOf<MultipartBody.Part>()
             for (data in documentData) {
                 val imageFile = data.imageUri.toFile()
-                val requestBody = imageFile.asRequestBody()
+                val requestBody = imageFile.asRequestBody(
+                    contentType = "image/*".toMediaTypeOrNull()
+                )
 
                 val partName = when (data.documentSide) {
                     DocumentSide.FRONT -> "front"

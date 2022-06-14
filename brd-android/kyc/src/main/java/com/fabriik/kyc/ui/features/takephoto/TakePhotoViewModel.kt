@@ -37,6 +37,8 @@ class TakePhotoViewModel(
         } else {
             DocumentSide.BACK
         }
+        val backDisabled =
+            arguments.documentType == DocumentType.SELFIE || documentSide == DocumentSide.BACK
 
         return TakePhotoContract.State(
             title = getTitle(
@@ -56,7 +58,8 @@ class TakePhotoViewModel(
             finderViewType = when (arguments.documentType) {
                 DocumentType.SELFIE -> PhotoFinderView.Type.SELFIE
                 else -> PhotoFinderView.Type.DOCUMENT
-            }
+            },
+            backEnabled = !backDisabled
         )
     }
 

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
@@ -111,6 +112,11 @@ class TakePhotoFragment : Fragment(),
             tvDocumentTitle.setText(state.title)
             tvDocumentDescription.setText(state.description)
             btnTakePhoto.isEnabled = state.takePhotoEnabled
+            toolbar.setShowBackButton(state.backEnabled)
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback {
+            if (state.backEnabled) findNavController().popBackStack() else Unit
         }
     }
 

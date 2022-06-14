@@ -28,13 +28,12 @@ interface AccountVerificationContract {
         object Dismiss : Effect()
         object GoToKycLevel1 : Effect()
         object GoToKycLevel2 : Effect()
-
-        data class ShowToast(
-            val message: String
-        ) : Effect()
+        object ShowLevel1ChangeConfirmationDialog : Effect()
+        data class ShowToast(val message: String) : Effect()
     }
 
     data class State(
+        val profile: Profile,
         val level1State: Level1State,
         val level2State: Level2State,
         val isLoading: Boolean

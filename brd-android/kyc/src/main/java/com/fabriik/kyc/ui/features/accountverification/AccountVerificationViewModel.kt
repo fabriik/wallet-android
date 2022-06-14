@@ -38,6 +38,7 @@ class AccountVerificationViewModel(
     }
 
     override fun createInitialState() = AccountVerificationContract.State(
+        profile = arguments.profile,
         level1State = mapStatusToLevel1State(arguments.profile?.kycStatus),
         level2State = mapStatusToLevel2State(arguments.profile?.kycStatus),
         isLoading = arguments.profile == null
@@ -55,10 +56,55 @@ class AccountVerificationViewModel(
                 setEffect { AccountVerificationContract.Effect.Info }
 
             is AccountVerificationContract.Event.Level1Clicked ->
-                setEffect { AccountVerificationContract.Effect.GoToKycLevel1 }
+                setEffect {
+                    when (currentState.profile.kycStatus) {
+                        KycStatus.DEFAULT,
+                        KycStatus.EMAIL_VERIFIED,
+                        KycStatus.EMAIL_VERIFICATION_PENDING,
+                        KycStatus.KYC1,
+                        KycStatus.KYC2_EXPIRED,
+                        KycStatus.KYC2_DECLINED,
+                        KycStatus.KYC2_RESUBMISSION_REQUESTED ->
+                            AccountVerificationContract.Effect.GoToKycLevel1
+
+                        KycStatus.KYC2_SUBMITTED ->
+                            AccountVerificationContract.Effect.ShowToast(
+                                getString(R.string.AccountVerification_Level2_PendingVerification)
+                            )
+
+                        KycStatus.KYC2 ->
+                            AccountVerificationContract.Effect.ShowLevel1ChangeConfirmationDialog
+                    }
+                }
 
             is AccountVerificationContract.Event.Level2Clicked ->
-                setEffect { AccountVerificationContract.Effect.GoToKycLevel2 }
+                setEffect {
+                    when (currentState.profile.kycStatus) {
+                        KycStatus.DEFAULT,
+                        KycStatus.EMAIL_VERIFIED,
+                        KycStatus.EMAIL_VERIFICATION_PENDING ->
+                            AccountVerificationContract.Effect.ShowToast(
+                                getString(R.string.AccountVerification_Level2_CompleteLevel1First)
+                            )
+
+
+                        KycStatus.KYC1,
+                        KycStatus.KYC2_EXPIRED,
+                        KycStatus.KYC2_DECLINED,
+                        KycStatus.KYC2_RESUBMISSION_REQUESTED ->
+                            AccountVerificationContract.Effect.GoToKycLevel2
+
+                        KycStatus.KYC2_SUBMITTED ->
+                            AccountVerificationContract.Effect.ShowToast(
+                                getString(R.string.AccountVerification_Level2_PendingVerification)
+                            )
+
+                        KycStatus.KYC2 ->
+                            AccountVerificationContract.Effect.ShowToast(
+                                getString(R.string.AccountVerification_Level2_UpdateLevel1IfDataChanged)
+                            )
+                    }
+                }
 
             is AccountVerificationContract.Event.ProfileLoaded ->
                 setState {

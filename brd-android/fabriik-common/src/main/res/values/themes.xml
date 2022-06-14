@@ -2,6 +2,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="AppTheme.Fabriik" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/light_primary</item>
+        <item name="colorPrimaryDark">@color/light_primary</item>
+        <item name="colorAccent">@color/light_primary</item>
         <item name="android:windowBackground">#FFFFFF</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
