@@ -12,6 +12,8 @@ import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.fabriik.common.ui.base.FabriikView
 import com.fabriik.common.utils.FabriikToastUtil
+import com.fabriik.common.utils.hideKeyboard
+import com.fabriik.common.utils.showKeyboard
 import com.fabriik.common.utils.textOrEmpty
 import com.fabriik.kyc.R
 import com.fabriik.kyc.data.model.Country
@@ -101,6 +103,10 @@ class PersonalInformationFragment : Fragment(),
             }
         }
 
+        if (viewModel.state.value.name.isEmpty()) {
+            binding.etName.showKeyboard()
+        }
+
         // collect UI state
         lifecycleScope.launchWhenStarted {
             viewModel.state.collect {
@@ -132,23 +138,29 @@ class PersonalInformationFragment : Fragment(),
 
     override fun handleEffect(effect: PersonalInformationContract.Effect) {
         when (effect) {
-            is PersonalInformationContract.Effect.GoBack ->
+            is PersonalInformationContract.Effect.GoBack -> {
+                hideKeyboard()
                 findNavController().popBackStack()
+            }
 
             is PersonalInformationContract.Effect.Dismiss -> {
+                hideKeyboard()
                 requireActivity().let {
                     it.setResult(effect.resultCode)
                     it.finish()
                 }
             }
 
-            is PersonalInformationContract.Effect.ShowToast ->
+            is PersonalInformationContract.Effect.ShowToast -> {
+                hideKeyboard()
                 FabriikToastUtil.show(
                     parentView = binding.root,
                     message = effect.message
                 )
+            }
 
             is PersonalInformationContract.Effect.DateSelection -> {
+                hideKeyboard()
                 val constraints = CalendarConstraints.Builder()
                     .setEnd(MaterialDatePicker.todayInUtcMilliseconds())
                     .build()
@@ -166,6 +178,7 @@ class PersonalInformationFragment : Fragment(),
             }
 
             is PersonalInformationContract.Effect.CountrySelection -> {
+                hideKeyboard()
                 findNavController().navigate(
                     PersonalInformationFragmentDirections.actionCountrySelection(
                         REQUEST_KEY_COUNTRY_SELECTION
@@ -178,5 +191,12 @@ class PersonalInformationFragment : Fragment(),
     companion object {
         const val TAG_DATE_PICKER = "date_of_birth_picker"
         const val REQUEST_KEY_COUNTRY_SELECTION = "request_key_country"
+    }
+
+    private fun hideKeyboard() {
+        with(binding) {
+            etName.hideKeyboard()
+            etLastName.hideKeyboard()
+        }
     }
 }
