@@ -375,6 +375,8 @@
     <string name="HomeScreen.trade">Swap</string>
     <!-- Home screen toolbar 'balance' button -->
     <string name="HomeScreen.balance">Balance</string>
+    <!-- Home screen toolbar 'home' button -->
+    <string name="HomeScreen.home">Home</string>
     <string name="HomeScreen.partnershipNoteTitle">Partnership note</string>
     <string name="HomeScreen.partnershipNoteBuyDescription">Fabriik is providing Buy functionality through Wyre, a third-party API provider.</string>
     <string name="HomeScreen.partnershipNoteSwapDescription">Fabriik is providing Swap functionality through Changelly, a third-party API provider.</string>
