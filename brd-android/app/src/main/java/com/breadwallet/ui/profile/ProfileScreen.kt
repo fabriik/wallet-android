@@ -20,6 +20,7 @@ object ProfileScreen {
     }
 
     sealed class E {
+        object RefreshProfile : E()
         object OnCloseClicked : E()
         object OnChangeEmailClicked : E()
         object OnVerifyProfileClicked : E()
@@ -29,11 +30,12 @@ object ProfileScreen {
         data class OnOptionClicked(val option: ProfileOption) : E()
         data class OnOptionsLoaded(@Redacted val options: List<ProfileItem>) : E()
         data class OnProfileDataLoaded(val profile: Profile) : E()
-        data class OnProfileDataLoadFailed(val message: String) : E()
+        data class OnProfileDataLoadFailed(val message: String?) : E()
     }
 
     sealed class F {
         object LoadOptions : F()
+        object RefreshProfile : F()
         object LoadProfileData : F()
 
         object GoBack : F(), NavigationEffect {

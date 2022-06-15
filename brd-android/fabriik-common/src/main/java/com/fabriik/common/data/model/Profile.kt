@@ -15,3 +15,11 @@ data class Profile(
     @Json(name = "kyc_status")
     val kycStatus: KycStatus
 ) : Parcelable
+
+fun Profile?.canUseBuyTrade() = when(this?.kycStatus) {
+    null,
+    KycStatus.DEFAULT,
+    KycStatus.EMAIL_VERIFIED,
+    KycStatus.EMAIL_VERIFICATION_PENDING -> false
+    else -> true
+}

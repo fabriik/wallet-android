@@ -31,6 +31,7 @@ import com.breadwallet.ui.navigation.NavigationEffect
 import com.breadwallet.ui.navigation.NavigationTarget
 import com.breadwallet.ui.navigation.OnCompleteAction
 import com.breadwallet.ui.settings.SettingsSection
+import com.fabriik.common.data.model.Profile
 import dev.zacsweers.redacted.annotations.Redacted
 import java.math.BigDecimal
 
@@ -44,7 +45,8 @@ object HomeScreen {
         val isBuyAlertNeeded: Boolean = false,
         val isTradeAlertNeeded: Boolean = false,
         val showBuyAndSell: Boolean = false,
-        val rateAppPromptDontShowMeAgain: Boolean = false
+        val rateAppPromptDontShowMeAgain: Boolean = false,
+        val profile: Profile? = null
     ) {
 
         companion object {
@@ -105,10 +107,13 @@ object HomeScreen {
         object OnRateAppPromptNoThanksClicked : E()
         data class OnEmailPromptClicked(@Redacted val email: String) : E()
         data class OnSupportFormSubmitted(val feedback: String) : E()
+        data class OnProfileDataLoaded(val profile: Profile) : E()
+        data class OnProfileDataLoadFailed(val message: String?) : E()
     }
 
     sealed class F {
 
+        object LoadProfile : F()
         object LoadWallets : F()
         object LoadSwapCurrencies : F()
         object LoadEnabledWallets : F()
@@ -150,6 +155,10 @@ object HomeScreen {
 
         object GoToProfile : F(), NavigationEffect {
             override val navigationTarget = NavigationTarget.Profile
+        }
+
+        object GoToVerifyProfile : F(), NavigationEffect {
+            override val navigationTarget = NavigationTarget.VerifyProfile
         }
 
         object GoToRegistration : F(), NavigationEffect {

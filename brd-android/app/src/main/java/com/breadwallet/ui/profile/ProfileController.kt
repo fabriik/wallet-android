@@ -1,5 +1,6 @@
 package com.breadwallet.ui.profile
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
@@ -11,6 +12,7 @@ import com.breadwallet.ui.flowbind.clicks
 import com.breadwallet.ui.profile.ProfileScreen.E
 import com.breadwallet.ui.profile.ProfileScreen.F
 import com.breadwallet.ui.profile.ProfileScreen.M
+import com.fabriik.kyc.ui.KycActivity
 import com.fabriik.kyc.ui.customview.AccountVerificationStatusView
 import com.spotify.mobius.Connectable
 import com.spotify.mobius.First
@@ -18,6 +20,8 @@ import com.spotify.mobius.Init
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
+import org.kodein.di.direct
+import org.kodein.di.erased.instance
 
 class
 ProfileController(
@@ -38,12 +42,11 @@ ProfileController(
 
     override val defaultModel = M.createDefault()
     override val update = ProfileUpdate
-    override val effectHandler = Connectable<F, E> { output ->
-        ProfileScreenHandler(
-            output,
-            applicationContext!!
+    override val flowEffectHandler
+        get() = createProfileScreenHandler(
+            checkNotNull(applicationContext),
+            direct.instance()
         )
-    }
 
     private val binding by viewBinding(ControllerProfileBinding::inflate)
 
@@ -55,6 +58,14 @@ ProfileController(
                 activity!!, DividerItemDecoration.VERTICAL
             )
         )
+
+        registerForActivityResult(KycActivity.REQUEST_CODE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == KycActivity.REQUEST_CODE && resultCode == KycActivity.RESULT_DATA_UPDATED) {
+            eventConsumer.accept(E.RefreshProfile)
+        }
     }
 
     override fun bindView(modelFlow: Flow<M>): Flow<E> {

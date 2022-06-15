@@ -8,6 +8,7 @@ import com.fabriik.common.utils.getString
 import com.fabriik.common.utils.validators.TextValidator
 import com.fabriik.kyc.R
 import com.fabriik.kyc.data.KycApi
+import com.fabriik.kyc.ui.KycActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -30,7 +31,7 @@ class PersonalInformationViewModel(
                 setEffect { PersonalInformationContract.Effect.GoBack }
 
             is PersonalInformationContract.Event.DismissClicked ->
-                setEffect { PersonalInformationContract.Effect.Dismiss }
+                setEffect { PersonalInformationContract.Effect.Dismiss() }
 
             is PersonalInformationContract.Event.CountryClicked ->
                 setEffect { PersonalInformationContract.Effect.CountrySelection }
@@ -65,7 +66,7 @@ class PersonalInformationViewModel(
             setState { copy(completedViewVisible = true) }
             delay(1000)
             setState { copy(completedViewVisible = false) }
-            setEffect { PersonalInformationContract.Effect.Dismiss }
+            setEffect { PersonalInformationContract.Effect.Dismiss(KycActivity.RESULT_DATA_UPDATED) }
         }
     }
 

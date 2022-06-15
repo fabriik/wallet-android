@@ -2,53 +2,20 @@ package com.breadwallet.ui.profile
 
 import android.content.Context
 import com.breadwallet.R
+import com.breadwallet.tools.security.ProfileManager
 import com.breadwallet.ui.profile.ProfileScreen.E
 import com.breadwallet.ui.profile.ProfileScreen.F
-import com.breadwallet.util.errorHandler
-import com.fabriik.common.data.Status
-import com.fabriik.registration.data.RegistrationApi
-import com.spotify.mobius.Connection
-import com.spotify.mobius.functions.Consumer
-import kotlinx.coroutines.*
+import drewcarlson.mobius.flow.subtypeEffectHandler
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.flow.transform
 
-class ProfileScreenHandler(
-    private val output: Consumer<E>,
-    private val context: Context
-) : Connection<F>, CoroutineScope {
+fun createProfileScreenHandler(
+    context: Context,
+    profileManager: ProfileManager
+) = subtypeEffectHandler<F, E> {
 
-    override val coroutineContext = SupervisorJob() + Dispatchers.Default + errorHandler()
-
-    private val registrationApi = RegistrationApi.create(context)
-
-    override fun accept(value: F) {
-        when (value) {
-            F.LoadOptions -> loadOptions()
-            F.LoadProfileData -> loadProfileData()
-        }
-    }
-
-    override fun dispose() {
-        coroutineContext.cancel()
-    }
-
-    private fun loadProfileData() {
-        launch {
-            val response = registrationApi.getProfile()
-
-            output.accept(
-                when (response.status) {
-                    Status.SUCCESS ->
-                        E.OnProfileDataLoaded(response.data!!)
-                    Status.ERROR ->
-                        E.OnProfileDataLoadFailed(
-                            response.message ?: context.getString(R.string.FabriikApi_DefaultError)
-                        )
-                }
-            )
-        }
-    }
-
-    private fun loadOptions() {
+    addFunction<F.LoadOptions> {
         val items = listOf(
             ProfileItem(
                 title = context.getString(R.string.MenuButton_security),
@@ -61,6 +28,26 @@ class ProfileScreenHandler(
                 iconResId = R.drawable.ic_preferences
             )
         )
-        output.accept(E.OnOptionsLoaded(items))
+        E.OnOptionsLoaded(items)
+    }
+
+    addFunction<F.LoadProfileData> {
+        val profile = profileManager.getProfile()
+        if (profile != null) {
+            E.OnProfileDataLoaded(profile)
+        } else {
+            E.OnProfileDataLoadFailed(null)
+        }
+    }
+
+    addTransformer<F.RefreshProfile> { effects ->
+        effects.flatMapLatest { profileManager.updateProfile() }
+            .mapLatest {
+                if (it == null) {
+                    E.OnProfileDataLoadFailed(it)
+                } else {
+                    E.OnProfileDataLoaded(it)
+                }
+            }
     }
 }

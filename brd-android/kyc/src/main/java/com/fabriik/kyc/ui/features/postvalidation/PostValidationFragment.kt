@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import com.fabriik.common.ui.base.FabriikView
 import com.fabriik.kyc.R
 import com.fabriik.kyc.databinding.FragmentPostValidationBinding
+import com.fabriik.kyc.ui.KycActivity
 import kotlinx.coroutines.flow.collect
 
 class PostValidationFragment : Fragment(),
@@ -63,7 +64,10 @@ class PostValidationFragment : Fragment(),
         when (effect) {
 
             is PostValidationContract.Effect.Profile ->
-                requireActivity().finish()
+                requireActivity().let {
+                    it.setResult(KycActivity.RESULT_DATA_UPDATED)
+                    it.finish()
+                }
         }
     }
 }

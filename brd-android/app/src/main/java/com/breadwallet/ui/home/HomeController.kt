@@ -51,6 +51,7 @@ import com.breadwallet.ui.home.HomeScreen.E
 import com.breadwallet.ui.home.HomeScreen.F
 import com.breadwallet.ui.home.HomeScreen.M
 import com.breadwallet.util.isValidEmail
+import com.fabriik.registration.data.RegistrationApi
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.GenericFastAdapter
 import com.mikepenz.fastadapter.adapters.GenericModelAdapter
@@ -94,8 +95,9 @@ class HomeController(
             direct.instance(),
             direct.instance(),
             direct.instance(),
+            direct.instance(),
             direct.instance()
-        )
+    )
 
     private val binding by viewBinding(ControllerHomeBinding::inflate)
     private var fastAdapter: GenericFastAdapter? = null
