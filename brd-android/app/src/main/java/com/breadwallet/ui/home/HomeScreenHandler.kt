@@ -100,15 +100,15 @@ fun createHomeScreenHandler(
             val promptId = when {
                 BRSharedPrefs.appRatePromptShouldPromptDebug -> PromptItem.RATE_APP
                 !BRSharedPrefs.getEmailOptIn()
-                        && !BRSharedPrefs.getEmailOptInDismissed() -> {
+                    && !BRSharedPrefs.getEmailOptInDismissed() -> {
                     PromptItem.EMAIL_COLLECTION
                 }
                 brdUser.pinCodeNeedsUpgrade() -> PromptItem.UPGRADE_PIN
                 !BRSharedPrefs.phraseWroteDown -> PromptItem.PAPER_KEY
                 AppReviewPromptManager.shouldPrompt() -> PromptItem.RATE_APP
                 (!BRSharedPrefs.unlockWithFingerprint
-                        && Utils.isFingerprintAvailable(context)
-                        && !BRSharedPrefs.getPromptDismissed(PROMPT_DISMISSED_FINGERPRINT)) -> {
+                    && Utils.isFingerprintAvailable(context)
+                    && !BRSharedPrefs.getPromptDismissed(PROMPT_DISMISSED_FINGERPRINT)) -> {
                     PromptItem.FINGER_PRINT
                 }
                 // BRSharedPrefs.getScanRecommended(iso = "BTC") -> PromptItem.RECOMMEND_RESCAN
@@ -144,7 +144,7 @@ fun createHomeScreenHandler(
     addAction<F.CheckIfShowBuyAndSell> {
         val showBuyAndSell =
             ExperimentsRepositoryImpl.isExperimentActive(Experiments.BUY_SELL_MENU_BUTTON)
-                    && BRSharedPrefs.getPreferredFiatIso() == BRConstants.USD
+                && BRSharedPrefs.getPreferredFiatIso() == BRConstants.USD
         EventUtils.pushEvent(
             EventUtils.EVENT_EXPERIMENT_BUY_SELL_MENU_BUTTON,
             mapOf(EventUtils.EVENT_ATTRIBUTE_SHOW to showBuyAndSell.toString())
@@ -154,7 +154,7 @@ fun createHomeScreenHandler(
     addFunction<F.LoadIsBuyBellNeeded> {
         val isBuyBellNeeded =
             ExperimentsRepositoryImpl.isExperimentActive(Experiments.BUY_NOTIFICATION) &&
-                    CurrencyUtils.isBuyNotificationNeeded()
+                CurrencyUtils.isBuyNotificationNeeded()
         E.OnBuyBellNeededLoaded(isBuyBellNeeded)
     }
 
