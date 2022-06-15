@@ -82,6 +82,7 @@ import com.breadwallet.ui.writedownkey.WriteDownKeyController
 import com.breadwallet.ui.uistaking.StakingController
 import com.breadwallet.ui.uigift.CreateGiftController
 import com.breadwallet.ui.uigift.ShareGiftController
+import com.breadwallet.ui.verifyaccount.VerifyController
 import com.breadwallet.util.CryptoUriParser
 import com.breadwallet.util.isBrd
 import com.fabriik.buy.ui.BuyWebViewActivity
@@ -207,6 +208,14 @@ class RouterNavigator(
     override fun profile() {
         router.pushController(
             RouterTransaction.with(ProfileController())
+                .popChangeHandler(VerticalChangeHandler())
+                .pushChangeHandler(VerticalChangeHandler())
+        )
+    }
+
+    override fun verifyProfile() {
+        router.pushController(
+            RouterTransaction.with(VerifyController())
                 .popChangeHandler(VerticalChangeHandler())
                 .pushChangeHandler(VerticalChangeHandler())
         )
