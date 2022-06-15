@@ -163,6 +163,7 @@ internal class CoreBreadBox(
             logDebug("Dispatching initial System values")
 
             system.resume()
+            system.resume()
 
             networkManager = NetworkManager(
                 system,
