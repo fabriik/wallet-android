@@ -42,13 +42,11 @@ ProfileController(
 
     override val defaultModel = M.createDefault()
     override val update = ProfileUpdate
-    override val effectHandler = Connectable<F, E> { output ->
-        ProfileScreenHandler(
-            output,
-            applicationContext!!,
+    override val flowEffectHandler
+        get() = createProfileScreenHandler(
+            checkNotNull(applicationContext),
             direct.instance()
         )
-    }
 
     private val binding by viewBinding(ControllerProfileBinding::inflate)
 

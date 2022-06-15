@@ -12,6 +12,6 @@ data class Profile(
     @Json(name = "email")
     val email: String,
 
-    @Json(name = "kyc_status")
-    val kycStatus: KycStatus
+    @Json(name = "kyc_status231")
+    val kycStatus: KycStatus = KycStatus.KYC1
 ) : Parcelable

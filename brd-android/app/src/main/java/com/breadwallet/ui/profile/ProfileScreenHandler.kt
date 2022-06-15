@@ -5,44 +5,17 @@ import com.breadwallet.R
 import com.breadwallet.tools.security.ProfileManager
 import com.breadwallet.ui.profile.ProfileScreen.E
 import com.breadwallet.ui.profile.ProfileScreen.F
-import com.breadwallet.util.errorHandler
-import com.spotify.mobius.Connection
-import com.spotify.mobius.functions.Consumer
-import kotlinx.coroutines.*
+import drewcarlson.mobius.flow.subtypeEffectHandler
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.flow.transform
 
-class ProfileScreenHandler(
-    private val output: Consumer<E>,
-    private val context: Context,
-    private val profileManager: ProfileManager
-) : Connection<F>, CoroutineScope {
+fun createProfileScreenHandler(
+    context: Context,
+    profileManager: ProfileManager
+) = subtypeEffectHandler<F, E> {
 
-    override val coroutineContext = SupervisorJob() + Dispatchers.Default + errorHandler()
-
-    override fun accept(value: F) {
-        when (value) {
-            F.LoadOptions -> loadOptions()
-            F.LoadProfileData -> loadProfileData()
-            F.RefreshProfile -> refreshProfile()
-        }
-    }
-
-    override fun dispose() {
-        coroutineContext.cancel()
-    }
-
-    private fun loadProfileData() {
-        launch {
-            val profile = profileManager.getProfile()
-            if (profile != null) {
-                output.accept(E.OnProfileDataLoaded(profile))
-            } else {
-                output.accept(E.OnProfileDataLoadFailed(null))
-            }
-        }
-    }
-
-    private fun loadOptions() {
+    addFunction<F.LoadOptions> {
         val items = listOf(
             ProfileItem(
                 title = context.getString(R.string.MenuButton_security),
@@ -55,11 +28,20 @@ class ProfileScreenHandler(
                 iconResId = R.drawable.ic_preferences
             )
         )
-        output.accept(E.OnOptionsLoaded(items))
+        E.OnOptionsLoaded(items)
     }
 
-    private fun refreshProfile() {
-        profileManager.updateProfile()
+    addFunction<F.LoadProfileData> {
+        val profile = profileManager.getProfile()
+        if (profile != null) {
+            E.OnProfileDataLoaded(profile)
+        } else {
+            E.OnProfileDataLoadFailed(null)
+        }
+    }
+
+    addTransformer<F.RefreshProfile> { effects ->
+        effects.flatMapLatest { profileManager.updateProfile() }
             .mapLatest {
                 if (it == null) {
                     E.OnProfileDataLoadFailed(it)

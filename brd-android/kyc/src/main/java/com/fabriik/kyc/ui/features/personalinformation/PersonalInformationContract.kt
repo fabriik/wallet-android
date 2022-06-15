@@ -1,5 +1,6 @@
 package com.fabriik.kyc.ui.features.personalinformation
 
+import android.app.Activity
 import com.fabriik.common.ui.base.FabriikContract
 import com.fabriik.kyc.data.model.Country
 import java.util.*
@@ -21,8 +22,8 @@ interface PersonalInformationContract {
 
     sealed class Effect : FabriikContract.Effect {
         object GoBack : Effect()
-        object Dismiss : Effect()
         object CountrySelection : Effect()
+        data class Dismiss(val resultCode: Int = Activity.RESULT_CANCELED) : Effect()
         data class ShowToast(val message: String) : Effect()
         data class DateSelection(val date: Calendar?) : Effect()
     }

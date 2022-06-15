@@ -227,8 +227,8 @@ fun createHomeScreenHandler(
         supportManager.submitEmailRequest(body = effect.feedback)
     }
 
-    addTransformer<F.LoadProfile> {
-        profileManager.updateProfile()
+    addTransformer<F.LoadProfile> { effects ->
+        effects.flatMapLatest { profileManager.updateProfile() }
             .mapLatest {
                 if (it == null) {
                     E.OnProfileDataLoadFailed(it)
