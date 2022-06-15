@@ -18,12 +18,15 @@ class RegistrationUtils(
     }
 
     fun getAssociateRequestHeaders(email: String, token: String): Map<String, String?> {
+        val dateHeaderValue = getDateHeader()
+
         return mapOf(
-            Pair(HEADER_DATE, getDateHeader()),
+            Pair(HEADER_DATE, dateHeaderValue),
             Pair(
                 HEADER_SIGNATURE, getSignatureHeader(
-                    email = email,
-                    token = token
+                    date = dateHeaderValue,
+                    token = token,
+                    salt = email
                 )
             )
         )
@@ -31,9 +34,9 @@ class RegistrationUtils(
 
     private fun getDateHeader() = dateFormat.format(Date())
 
-    private fun getSignatureHeader(email: String, token: String): String? {
+    private fun getSignatureHeader(date: String, token: String, salt: String): String? {
         val key = getAuthKey() ?: return null
-        val signatureSha256 = CryptoHelper.sha256((token + email).toByteArray()) ?: return null
+        val signatureSha256 = CryptoHelper.sha256((date + token + salt).toByteArray()) ?: return null
         val signature = CryptoHelper.signBasicDer(signatureSha256, key)
         val signatureEncoded = Base64.encode(signature, Base64.NO_WRAP)
         return String(signatureEncoded).trim()

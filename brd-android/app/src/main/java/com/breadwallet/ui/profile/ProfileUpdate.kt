@@ -18,6 +18,9 @@ object ProfileUpdate : Update<M, E, F>, ProfileScreenUpdateSpec {
     override fun onCloseClicked(model: M): Next<M, F> =
         dispatch(setOf(F.GoBack))
 
+    override fun refreshProfile(model: M): Next<M, F> =
+        dispatch(setOf(F.RefreshProfile))
+
     override fun onVerifyProfileClicked(model: M): Next<M, F> =
         dispatch(setOf(F.GoToKyc(model.profile!!)))
 
@@ -57,6 +60,6 @@ object ProfileUpdate : Update<M, E, F>, ProfileScreenUpdateSpec {
     override fun onProfileDataLoadFailed(model: M, event: E.OnProfileDataLoadFailed): Next<M, F> =
         next(
             model.copy(isLoading = false),
-            setOf(F.ShowFabriikToast(event.message))
+            setOf(F.ShowFabriikToast(event.message ?: ""))
         )
 }

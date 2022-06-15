@@ -26,6 +26,8 @@ class KycActivity : AppCompatActivity() {
     }
 
     companion object {
+        const val REQUEST_CODE = 1231
+        const val RESULT_DATA_UPDATED = 1231_1
         private const val EXTRA_PROFILE = "profile"
 
         fun getStartIntent(context: Context, profile: Profile): Intent {

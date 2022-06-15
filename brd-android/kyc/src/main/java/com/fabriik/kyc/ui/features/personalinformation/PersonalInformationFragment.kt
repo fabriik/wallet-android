@@ -135,8 +135,12 @@ class PersonalInformationFragment : Fragment(),
             is PersonalInformationContract.Effect.GoBack ->
                 findNavController().popBackStack()
 
-            is PersonalInformationContract.Effect.Dismiss ->
-                requireActivity().finish()
+            is PersonalInformationContract.Effect.Dismiss -> {
+                requireActivity().let {
+                    it.setResult(effect.resultCode)
+                    it.finish()
+                }
+            }
 
             is PersonalInformationContract.Effect.ShowToast ->
                 FabriikToastUtil.show(
