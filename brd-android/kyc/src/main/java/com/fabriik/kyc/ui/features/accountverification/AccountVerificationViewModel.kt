@@ -11,7 +11,6 @@ import com.fabriik.common.utils.toBundle
 import com.fabriik.kyc.R
 import com.fabriik.kyc.ui.customview.AccountVerificationStatusView
 import com.fabriik.registration.data.RegistrationApi
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -64,8 +63,8 @@ class AccountVerificationViewModel(
                         KycStatus.KYC1,
                         KycStatus.KYC2_EXPIRED,
                         KycStatus.KYC2_DECLINED,
-                        KycStatus.KYC2_RESUBMISSION_REQUESTED,
-                        null -> AccountVerificationContract.Effect.GoToKycLevel1
+                        KycStatus.KYC2_RESUBMISSION_REQUESTED ->
+                            AccountVerificationContract.Effect.GoToKycLevel1
 
                         KycStatus.KYC2_SUBMITTED ->
                             AccountVerificationContract.Effect.ShowToast(
@@ -74,6 +73,9 @@ class AccountVerificationViewModel(
 
                         KycStatus.KYC2 ->
                             AccountVerificationContract.Effect.ShowLevel1ChangeConfirmationDialog
+                        null -> AccountVerificationContract.Effect.ShowToast(
+                            "Can't go to verification since profile doesn't exist"
+                        )
                     }
                 }
 
@@ -91,8 +93,7 @@ class AccountVerificationViewModel(
                         KycStatus.KYC1,
                         KycStatus.KYC2_EXPIRED,
                         KycStatus.KYC2_DECLINED,
-                        KycStatus.KYC2_RESUBMISSION_REQUESTED,
-                        null ->
+                        KycStatus.KYC2_RESUBMISSION_REQUESTED ->
                             AccountVerificationContract.Effect.GoToKycLevel2
 
                         KycStatus.KYC2_SUBMITTED ->
@@ -104,6 +105,9 @@ class AccountVerificationViewModel(
                             AccountVerificationContract.Effect.ShowToast(
                                 getString(R.string.AccountVerification_Level2_UpdateLevel1IfDataChanged)
                             )
+                        null -> AccountVerificationContract.Effect.ShowToast(
+                            "Can't go to verification since profile doesn't exist"
+                        )
                     }
                 }
 
@@ -178,9 +182,17 @@ class AccountVerificationViewModel(
     private fun loadProfile() {
         viewModelScope.launch(Dispatchers.IO) {
             val response = registrationApi.getProfile()
-            val event = when (response.status) {
-                Status.SUCCESS -> AccountVerificationContract.Event.ProfileLoaded(response.data!!)
-                Status.ERROR -> AccountVerificationContract.Event.ProfileLoadFailed(response.message!!)
+            val event = when {
+
+                response.status == Status.SUCCESS && response.data != null ->
+                    AccountVerificationContract.Event.ProfileLoaded(response.data!!)
+
+                response.status == Status.ERROR && response.message != null ->
+                    AccountVerificationContract.Event.ProfileLoadFailed(response.message!!)
+
+                else -> AccountVerificationContract.Event.ProfileLoadFailed(
+                    getString(R.string.Alert_somethingWentWrong)
+                )
             }
             setEvent(event)
         }
