@@ -61,10 +61,7 @@ import com.breadwallet.repository.RatesRepository
 import com.breadwallet.tools.crypto.Base32
 import com.breadwallet.tools.crypto.CryptoHelper
 import com.breadwallet.tools.manager.*
-import com.breadwallet.tools.security.BRKeyStore
-import com.breadwallet.tools.security.BrdUserManager
-import com.breadwallet.tools.security.BrdUserState
-import com.breadwallet.tools.security.CryptoUserManager
+import com.breadwallet.tools.security.*
 import com.breadwallet.tools.services.BRDFirebaseMessagingService
 import com.breadwallet.tools.util.*
 import com.breadwallet.ui.uigift.GiftBackup
@@ -72,6 +69,7 @@ import com.breadwallet.ui.uigift.SharedPrefsGiftBackup
 import com.breadwallet.util.*
 import com.breadwallet.util.usermetrics.UserMetricsUtil
 import com.fabriik.common.data.FabriikApiConstants
+import com.fabriik.registration.data.RegistrationApi
 import com.platform.APIClient
 import com.platform.HTTPServer
 import com.platform.interfaces.KVStoreProvider
@@ -400,6 +398,13 @@ class BreadApp : Application(), KodeinAware, CameraXConfig.Provider {
 
         bind<BRDApiClient>() with singleton {
             BRDApiClient.create(AndroidBRDAuthProvider(instance()))
+        }
+
+        bind<ProfileManager>() with singleton {
+            ProfileManagerImpl(
+                instance(),
+                RegistrationApi.create(this@BreadApp)
+            )
         }
 
         bind<Preferences>() with singleton {

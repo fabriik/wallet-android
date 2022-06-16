@@ -30,6 +30,7 @@ import com.breadwallet.tools.manager.BRSharedPrefs
 import com.breadwallet.ui.home.HomeScreen.E
 import com.breadwallet.ui.home.HomeScreen.F
 import com.breadwallet.ui.home.HomeScreen.M
+import com.fabriik.common.data.model.canUseBuyTrade
 import com.platform.tools.SessionHolder
 import com.spotify.mobius.Effects.effects
 import com.spotify.mobius.Next.dispatch
@@ -105,6 +106,8 @@ val HomeScreenUpdate = Update<M, E, F> { model, event ->
                             dialogId = DIALOG_PARTNERSHIP_NOTE_BUY,
                             messageResId = R.string.HomeScreen_partnershipNoteBuyDescription
                         )
+                    } else if (!model.profile.canUseBuyTrade()) {
+                        F.GoToVerifyProfile
                     } else {
                         F.GoToBuy
                     }
@@ -123,6 +126,8 @@ val HomeScreenUpdate = Update<M, E, F> { model, event ->
                             dialogId = DIALOG_PARTNERSHIP_NOTE_SWAP,
                             messageResId = R.string.HomeScreen_partnershipNoteSwapDescription
                         )
+                    } else if (!model.profile.canUseBuyTrade()) {
+                        F.GoToVerifyProfile
                     } else {
                         F.LoadSwapCurrencies
                     }
@@ -142,7 +147,13 @@ val HomeScreenUpdate = Update<M, E, F> { model, event ->
                     }
                 )
             )
-        
+
+        is E.OnProfileDataLoaded -> next(
+            model.copy(profile = event.profile)
+        )
+
+        is E.OnProfileDataLoadFailed -> noChange()
+
         is E.OnPromptLoaded -> next(model.copy(promptId = event.promptId))
         is E.OnDeepLinkProvided -> dispatch(
             effects(

@@ -11,10 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.fabriik.common.ui.base.FabriikView
-import com.fabriik.common.utils.FabriikToastUtil
-import com.fabriik.common.utils.showKeyboard
-import com.fabriik.common.utils.textOrEmpty
-import com.fabriik.common.utils.underline
+import com.fabriik.common.utils.*
 import com.fabriik.registration.R
 import com.fabriik.registration.databinding.FragmentRegistrationVerifyEmailBinding
 import kotlinx.coroutines.flow.collect
@@ -40,6 +37,7 @@ class RegistrationVerifyEmailFragment : Fragment(),
             btnChangeEmail.underline()
 
             btnConfirm.setOnClickListener {
+                viewEnterCode.hideKeyboard()
                 viewModel.setEvent(RegistrationVerifyEmailContract.Event.ConfirmClicked)
             }
 
@@ -52,6 +50,7 @@ class RegistrationVerifyEmailFragment : Fragment(),
             }
 
             btnDismiss.setOnClickListener {
+                viewEnterCode.hideKeyboard()
                 viewModel.setEvent(RegistrationVerifyEmailContract.Event.DismissClicked)
             }
 

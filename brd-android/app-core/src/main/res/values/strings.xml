@@ -375,6 +375,8 @@
     <string name="HomeScreen.trade">Swap</string>
     <!-- Home screen toolbar 'balance' button -->
     <string name="HomeScreen.balance">Balance</string>
+    <!-- Home screen toolbar 'home' button -->
+    <string name="HomeScreen.home">Home</string>
     <string name="HomeScreen.partnershipNoteTitle">Partnership note</string>
     <string name="HomeScreen.partnershipNoteBuyDescription">Fabriik is providing Buy functionality through Wyre, a third-party API provider.</string>
     <string name="HomeScreen.partnershipNoteSwapDescription">Fabriik is providing Swap functionality through Changelly, a third-party API provider.</string>
@@ -1489,4 +1491,9 @@
     <!-- Profile info dialog -->
     <string name="Profile.InfoDialog.title">Why should I verify my account?</string>
     <string name="Profile.InfoDialog.description">If you verify your account, you are given acces to:\n\t\u2022 Unlimited deposits/withdraws\n\t\u2022 Enhanced security\n\t\u2022 Full asset support\n\t\u2022 Buy crypto with card\n\t\u2022 24/7/365 live customer support</string>
+
+    <!-- Verify account screen -->
+    <string name="VerifyAccount.Title">Verify your account to get full access to your Fabriik wallet!</string>
+    <string name="VerifyAccount.Subtitle">We need to verify your identity in order to buy/sell and swap crypto.</string>
+    <string name="VerifyAccount.Button">Verify your account</string>
 </resources>

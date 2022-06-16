@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.fabriik.common.ui.base.FabriikView
 import com.fabriik.common.utils.FabriikToastUtil
+import com.fabriik.common.utils.hideKeyboard
 import com.fabriik.common.utils.showKeyboard
 import com.fabriik.common.utils.textOrEmpty
 import com.fabriik.registration.R
@@ -36,10 +37,12 @@ class RegistrationEnterEmailFragment : Fragment(),
 
         with(binding) {
             btnNext.setOnClickListener {
+                etEmail.hideKeyboard()
                 viewModel.setEvent(RegistrationEnterEmailContract.Event.NextClicked)
             }
 
             btnDismiss.setOnClickListener {
+                etEmail.hideKeyboard()
                 viewModel.setEvent(RegistrationEnterEmailContract.Event.DismissClicked)
             }
 
