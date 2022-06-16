@@ -12,14 +12,6 @@ interface AccountVerificationContract {
         object InfoClicked : Event()
         object Level1Clicked : Event()
         object Level2Clicked : Event()
-
-        data class ProfileLoaded(
-            val profile: Profile
-        ) : Event()
-
-        data class ProfileLoadFailed(
-            val message: String
-        ) : Event()
     }
 
     sealed class Effect : FabriikContract.Effect {
@@ -32,12 +24,16 @@ interface AccountVerificationContract {
         data class ShowToast(val message: String) : Effect()
     }
 
-    data class State(
-        val profile: Profile?,
-        val level1State: Level1State,
-        val level2State: Level2State,
-        val isLoading: Boolean
-    ) : FabriikContract.State
+    sealed class State : FabriikContract.State {
+
+        object Loading : State()
+
+        data class Content(
+            val profile: Profile,
+            val level1State: Level1State,
+            val level2State: Level2State,
+        ) : State()
+    }
 
     data class Level1State(
         val isEnabled: Boolean = false,

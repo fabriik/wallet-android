@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -76,27 +77,31 @@ class AccountVerificationFragment : Fragment(),
 
     override fun render(state: AccountVerificationContract.State) {
         with(binding) {
-            // level 1 configuration
-            tvLevel1Tag.isEnabled = state.level1State.isEnabled
-            tvLevel1CheckedItem1.setStateIcon(state.level1State.statusState)
-            setStatusState(tvLevel1Status, state.level1State.statusState)
+            when (state) {
+                is AccountVerificationContract.State.Content -> {
+                    // level 1 configuration
+                    tvLevel1Tag.isEnabled = state.level1State.isEnabled
+                    tvLevel1CheckedItem1.setStateIcon(state.level1State.statusState)
+                    setStatusState(tvLevel1Status, state.level1State.statusState)
 
-            // level 2 configuration
-            tvLevel2Tag.isEnabled = state.level2State.isEnabled
-            setStatusState(tvLevel2Status, state.level2State.statusState)
+                    // level 2 configuration
+                    tvLevel2Tag.isEnabled = state.level2State.isEnabled
+                    setStatusState(tvLevel2Status, state.level2State.statusState)
 
-            tvLevel2CheckedItem1.setStateIcon(state.level2State.statusState)
-            tvLevel2CheckedItem1.isVisible = state.level2State.verificationError == null
+                    tvLevel2CheckedItem1.setStateIcon(state.level2State.statusState)
+                    tvLevel2CheckedItem1.isVisible = state.level2State.verificationError == null
 
-            tvLevel2CheckedItem2.setStateIcon(state.level2State.statusState)
-            tvLevel2CheckedItem2.isVisible = state.level2State.verificationError == null
+                    tvLevel2CheckedItem2.setStateIcon(state.level2State.statusState)
+                    tvLevel2CheckedItem2.isVisible = state.level2State.verificationError == null
 
-            tvLevel2CheckedItemError.setStateIcon(state.level2State.statusState)
-            tvLevel2CheckedItemError.setContent(state.level2State.verificationError)
-            tvLevel2CheckedItemError.isVisible = state.level2State.verificationError != null
+                    tvLevel2CheckedItemError.setStateIcon(state.level2State.statusState)
+                    tvLevel2CheckedItemError.setContent(state.level2State.verificationError)
+                    tvLevel2CheckedItemError.isVisible = state.level2State.verificationError != null
+                }
+            }
 
-            accountLayout.isVisible = !state.isLoading
-            loadingIndicator.isVisible = state.isLoading
+            accountLayout.isInvisible = state is AccountVerificationContract.State.Loading
+            loadingIndicator.isVisible = state is AccountVerificationContract.State.Loading
         }
     }
 
@@ -127,6 +132,11 @@ class AccountVerificationFragment : Fragment(),
 
             AccountVerificationContract.Effect.ShowLevel1ChangeConfirmationDialog -> TODO()
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        viewModel.updateProfile()
     }
 
     private fun setStatusState(

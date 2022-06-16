@@ -2,46 +2,28 @@ package com.fabriik.kyc.ui.features.accountverification
 
 import android.app.Application
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.viewModelScope
-import com.fabriik.common.data.Status
+import com.breadwallet.tools.security.ProfileManager
 import com.fabriik.common.data.enums.KycStatus
 import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.common.utils.getString
-import com.fabriik.common.utils.toBundle
 import com.fabriik.kyc.R
 import com.fabriik.kyc.ui.customview.AccountVerificationStatusView
-import com.fabriik.registration.data.RegistrationApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.closestKodein
+import org.kodein.di.erased.instance
 
 class AccountVerificationViewModel(
     application: Application,
-    savedStateHandle: SavedStateHandle
-) : FabriikViewModel<AccountVerificationContract.State, AccountVerificationContract.Event, AccountVerificationContract.Effect>(
-    application, savedStateHandle
-) {
+    savedStateHandle: SavedStateHandle,
+) :
+    FabriikViewModel<AccountVerificationContract.State, AccountVerificationContract.Event, AccountVerificationContract.Effect>(
+        application, savedStateHandle
+    ), KodeinAware {
 
-    private lateinit var arguments: AccountVerificationFragmentArgs
-    private val registrationApi = RegistrationApi.create(application.applicationContext)
+    override val kodein by closestKodein { application }
+    private val profileManager by kodein.instance<ProfileManager>()
 
-    init {
-        if (arguments.profile == null) {
-            loadProfile()
-        }
-    }
-
-    override fun parseArguments(savedStateHandle: SavedStateHandle) {
-        arguments = AccountVerificationFragmentArgs.fromBundle(
-            savedStateHandle.toBundle()
-        )
-    }
-
-    override fun createInitialState() = AccountVerificationContract.State(
-        profile = arguments.profile,
-        level1State = mapStatusToLevel1State(arguments.profile?.kycStatus),
-        level2State = mapStatusToLevel2State(arguments.profile?.kycStatus),
-        isLoading = arguments.profile == null
-    )
+    override fun createInitialState() = AccountVerificationContract.State.Loading
 
     override fun handleEvent(event: AccountVerificationContract.Event) {
         when (event) {
@@ -54,75 +36,74 @@ class AccountVerificationViewModel(
             is AccountVerificationContract.Event.InfoClicked ->
                 setEffect { AccountVerificationContract.Effect.Info }
 
-            is AccountVerificationContract.Event.Level1Clicked ->
-                setEffect {
-                    when (currentState.profile?.kycStatus) {
-                        KycStatus.DEFAULT,
-                        KycStatus.EMAIL_VERIFIED,
-                        KycStatus.EMAIL_VERIFICATION_PENDING,
-                        KycStatus.KYC1,
-                        KycStatus.KYC2_EXPIRED,
-                        KycStatus.KYC2_DECLINED,
-                        KycStatus.KYC2_RESUBMISSION_REQUESTED ->
-                            AccountVerificationContract.Effect.GoToKycLevel1
-
-                        KycStatus.KYC2_SUBMITTED ->
-                            AccountVerificationContract.Effect.ShowToast(
-                                getString(R.string.AccountVerification_Level2_PendingVerification)
-                            )
-
-                        KycStatus.KYC2 ->
-                            AccountVerificationContract.Effect.ShowLevel1ChangeConfirmationDialog
-                        null -> AccountVerificationContract.Effect.ShowToast(
-                            "Can't go to verification since profile doesn't exist"
-                        )
-                    }
+            is AccountVerificationContract.Event.Level1Clicked -> {
+                when (currentState) {
+                    is AccountVerificationContract.State.Content ->
+                        navigateOnLevel1Clicked()
                 }
+            }
+
 
             is AccountVerificationContract.Event.Level2Clicked ->
-                setEffect {
-                    when (currentState.profile?.kycStatus) {
-                        KycStatus.DEFAULT,
-                        KycStatus.EMAIL_VERIFIED,
-                        KycStatus.EMAIL_VERIFICATION_PENDING ->
-                            AccountVerificationContract.Effect.ShowToast(
-                                getString(R.string.AccountVerification_Level2_CompleteLevel1First)
-                            )
-
-
-                        KycStatus.KYC1,
-                        KycStatus.KYC2_EXPIRED,
-                        KycStatus.KYC2_DECLINED,
-                        KycStatus.KYC2_RESUBMISSION_REQUESTED ->
-                            AccountVerificationContract.Effect.GoToKycLevel2
-
-                        KycStatus.KYC2_SUBMITTED ->
-                            AccountVerificationContract.Effect.ShowToast(
-                                getString(R.string.AccountVerification_Level2_PendingVerification)
-                            )
-
-                        KycStatus.KYC2 ->
-                            AccountVerificationContract.Effect.ShowToast(
-                                getString(R.string.AccountVerification_Level2_UpdateLevel1IfDataChanged)
-                            )
-                        null -> AccountVerificationContract.Effect.ShowToast(
-                            "Can't go to verification since profile doesn't exist"
-                        )
-                    }
+                when (currentState) {
+                    is AccountVerificationContract.State.Content ->
+                        navigateOnLevel2Clicked()
                 }
+        }
+    }
 
-            is AccountVerificationContract.Event.ProfileLoaded ->
-                setState {
-                    AccountVerificationContract.State(
-                        profile = event.profile,
-                        level1State = mapStatusToLevel1State(event.profile.kycStatus),
-                        level2State = mapStatusToLevel2State(event.profile.kycStatus),
-                        isLoading = false
+    private fun navigateOnLevel1Clicked() {
+        val state = currentState as AccountVerificationContract.State.Content
+        setEffect {
+            when (state.profile.kycStatus) {
+                KycStatus.DEFAULT,
+                KycStatus.EMAIL_VERIFIED,
+                KycStatus.EMAIL_VERIFICATION_PENDING,
+                KycStatus.KYC1,
+                KycStatus.KYC2_EXPIRED,
+                KycStatus.KYC2_DECLINED,
+                KycStatus.KYC2_RESUBMISSION_REQUESTED ->
+                    AccountVerificationContract.Effect.GoToKycLevel1
+
+                KycStatus.KYC2_SUBMITTED ->
+                    AccountVerificationContract.Effect.ShowToast(
+                        getString(R.string.AccountVerification_Level2_PendingVerification)
                     )
-                }
 
-            is AccountVerificationContract.Event.ProfileLoadFailed ->
-                setEffect { AccountVerificationContract.Effect.ShowToast(event.message) }
+                KycStatus.KYC2 ->
+                    AccountVerificationContract.Effect.ShowLevel1ChangeConfirmationDialog
+            }
+        }
+    }
+
+    private fun navigateOnLevel2Clicked() {
+        val state = currentState as AccountVerificationContract.State.Content
+        setEffect {
+            when (state.profile.kycStatus) {
+                KycStatus.DEFAULT,
+                KycStatus.EMAIL_VERIFIED,
+                KycStatus.EMAIL_VERIFICATION_PENDING ->
+                    AccountVerificationContract.Effect.ShowToast(
+                        getString(R.string.AccountVerification_Level2_CompleteLevel1First)
+                    )
+
+
+                KycStatus.KYC1,
+                KycStatus.KYC2_EXPIRED,
+                KycStatus.KYC2_DECLINED,
+                KycStatus.KYC2_RESUBMISSION_REQUESTED ->
+                    AccountVerificationContract.Effect.GoToKycLevel2
+
+                KycStatus.KYC2_SUBMITTED ->
+                    AccountVerificationContract.Effect.ShowToast(
+                        getString(R.string.AccountVerification_Level2_PendingVerification)
+                    )
+
+                KycStatus.KYC2 ->
+                    AccountVerificationContract.Effect.ShowToast(
+                        getString(R.string.AccountVerification_Level2_UpdateLevel1IfDataChanged)
+                    )
+            }
         }
     }
 
@@ -179,22 +160,17 @@ class AccountVerificationViewModel(
         }
     }
 
-    private fun loadProfile() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val response = registrationApi.getProfile()
-            val event = when {
-
-                response.status == Status.SUCCESS && response.data != null ->
-                    AccountVerificationContract.Event.ProfileLoaded(response.data!!)
-
-                response.status == Status.ERROR && response.message != null ->
-                    AccountVerificationContract.Event.ProfileLoadFailed(response.message!!)
-
-                else -> AccountVerificationContract.Event.ProfileLoadFailed(
-                    getString(R.string.Alert_somethingWentWrong)
+    fun updateProfile() {
+        profileManager.updateProfile()
+        val profile = profileManager.getProfile()
+        if (profile != null) {
+            setState {
+                AccountVerificationContract.State.Content(
+                    profile = profile,
+                    level1State = mapStatusToLevel1State(profile.kycStatus),
+                    level2State = mapStatusToLevel2State(profile.kycStatus),
                 )
             }
-            setEvent(event)
         }
     }
 }
