@@ -28,11 +28,23 @@ import com.breadwallet.tools.security.BrdUserManager
 import com.breadwallet.tools.util.EventUtils
 import com.breadwallet.ui.pin.InputPin.E
 import com.breadwallet.ui.pin.InputPin.F
+import com.fabriik.common.data.Status
+import com.fabriik.registration.data.RegistrationApi
+import com.fabriik.registration.data.responses.AssociateNewDeviceStatus
+import com.fabriik.registration.utils.RegistrationUtils
+import com.platform.tools.TokenHolder
 import drewcarlson.mobius.flow.subtypeEffectHandler
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.mapLatest
+import java.util.*
 
 fun createInputPinHandler(
-    userManager: BrdUserManager
+    userManager: BrdUserManager,
+    registrationApi: RegistrationApi
 ) = subtypeEffectHandler<F, E> {
+
+    val registrationUtils = RegistrationUtils(userManager)
+
     addFunction<F.SetupPin> { effect ->
         try {
             userManager.configurePinCode(effect.pin)
@@ -46,8 +58,50 @@ fun createInputPinHandler(
         E.OnPinCheck(userManager.hasPinCode())
     }
 
+    addFunction<F.ContinueWithFlow> {
+        E.OnContinueToNextStep
+    }
+
     addConsumer<F.TrackEvent> { (event) ->
         EventUtils.pushEvent(event)
+    }
+
+    addTransformer<F.AssociateNewDevice> { effect ->
+        effect
+            .mapLatest {
+                val token = TokenHolder.retrieveToken() ?: return@mapLatest E.OnContinueToNextStep
+                val nonce = UUID.randomUUID().toString()
+
+                val response = registrationApi.associateNewDevice(
+                    nonce,
+                    token,
+                    registrationUtils.getAssociateRequestHeaders(
+                        salt = nonce,
+                        token = token
+                    )
+                )
+
+                when (response.status) {
+                    Status.SUCCESS -> {
+                        val status = response.data?.status
+                        val email = response.data?.email
+                        val sessionKey = response.data?.sessionKey
+
+                        if (status == null || email.isNullOrBlank() || sessionKey.isNullOrBlank()) {
+                            return@mapLatest E.OnContinueToNextStep
+                        }
+
+                        when (status) {
+                            AssociateNewDeviceStatus.SENT -> {
+                                userManager.putSession(sessionKey)
+                                E.OnVerifyEmailRequested(email)
+                            }
+                           else -> E.OnContinueToNextStep
+                        }
+                    }
+                    Status.ERROR -> E.OnContinueToNextStep
+                }
+            }
     }
 }
 

@@ -61,7 +61,7 @@ class RegistrationEnterEmailViewModel(
                     email = currentState.email,
                     token = token,
                     headers = registrationUtils.getAssociateRequestHeaders(
-                        email = currentState.email,
+                        salt = currentState.email,
                         token = token
                     )
                 )

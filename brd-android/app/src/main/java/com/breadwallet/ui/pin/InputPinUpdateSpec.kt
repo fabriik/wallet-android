@@ -29,9 +29,13 @@ import com.spotify.mobius.Next
 interface InputPinUpdateSpec {
     fun patch(model: InputPin.M, event: InputPin.E): Next<InputPin.M, InputPin.F> = when (event) {
         InputPin.E.OnFaqClicked -> onFaqClicked(model)
+        InputPin.E.OnFaqClicked -> onFaqClicked(model)
         InputPin.E.OnPinLocked -> onPinLocked(model)
         InputPin.E.OnPinSaved -> onPinSaved(model)
         InputPin.E.OnPinSaveFailed -> onPinSaveFailed(model)
+        InputPin.E.OnContinueToNextStep -> onContinueToNextStep(model)
+        InputPin.E.OnVerifyEmailClosed -> onVerifyEmailClosed(model)
+        is InputPin.E.OnVerifyEmailRequested -> onVerifyEmailRequested(model, event)
         is InputPin.E.OnPinEntered -> onPinEntered(model, event)
         is InputPin.E.OnPinCheck -> onPinCheck(model, event)
     }
@@ -41,6 +45,12 @@ interface InputPinUpdateSpec {
     fun onPinLocked(model: InputPin.M): Next<InputPin.M, InputPin.F>
 
     fun onPinSaved(model: InputPin.M): Next<InputPin.M, InputPin.F>
+
+    fun onContinueToNextStep(model: InputPin.M): Next<InputPin.M, InputPin.F>
+
+    fun onVerifyEmailClosed(model: InputPin.M): Next<InputPin.M, InputPin.F>
+
+    fun onVerifyEmailRequested(model: InputPin.M, event: InputPin.E.OnVerifyEmailRequested): Next<InputPin.M, InputPin.F>
 
     fun onPinSaveFailed(model: InputPin.M): Next<InputPin.M, InputPin.F>
 

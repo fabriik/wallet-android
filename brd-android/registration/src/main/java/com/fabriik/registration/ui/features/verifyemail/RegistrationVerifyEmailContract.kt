@@ -24,6 +24,7 @@ interface RegistrationVerifyEmailContract {
         val confirmEnabled: Boolean = false,
         val loadingVisible: Boolean = false,
         val codeErrorVisible: Boolean = false,
-        val completedViewVisible: Boolean = false
+        val completedViewVisible: Boolean = false,
+        val changeEmailButtonVisible: Boolean = false
     ): FabriikContract.State
 }

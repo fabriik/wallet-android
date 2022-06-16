@@ -32,6 +32,8 @@ import com.breadwallet.ui.navigation.NavigationTarget
 import com.breadwallet.ui.navigation.OnCompleteAction
 import com.breadwallet.ui.settings.SettingsSection
 import com.fabriik.common.data.model.Profile
+import com.fabriik.registration.ui.RegistrationActivity
+import com.fabriik.registration.ui.RegistrationFlow
 import dev.zacsweers.redacted.annotations.Redacted
 import java.math.BigDecimal
 
@@ -162,7 +164,7 @@ object HomeScreen {
         }
 
         object GoToRegistration : F(), NavigationEffect {
-            override val navigationTarget = NavigationTarget.GoToRegistration
+            override val navigationTarget = NavigationTarget.GoToRegistration(RegistrationFlow.REGISTER)
         }
 
         object GoToFingerprintSettings : F(), NavigationEffect {

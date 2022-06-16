@@ -56,7 +56,8 @@ class RegistrationApi(
                 ),
                 headers = headers
             )
-            responseMapper.mapSuccess(response)
+
+            Resource.success(response)
         } catch (ex: Exception) {
             responseMapper.mapError(
                 context = context,

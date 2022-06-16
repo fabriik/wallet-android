@@ -5,9 +5,21 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class AssociateNewDeviceResponse(
+
+    @Json(name = "status")
+    val status: AssociateNewDeviceStatus,
+
     @Json(name = "email")
-    val email: String,
+    val email: String?,
 
     @Json(name = "sessionKey")
-    val sessionKey: String
+    val sessionKey: String?
 )
+
+enum class AssociateNewDeviceStatus {
+    @Json(name = "NO_EMAIL")
+    NO_EMAIL,
+
+    @Json(name = "SENT")
+    SENT
+}

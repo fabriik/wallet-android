@@ -22,7 +22,7 @@ interface RegistrationService {
     suspend fun associateNewDevice(
         @HeaderMap headers: Map<String, String?>,
         @Body request: AssociateNewDeviceRequest
-    ): FabriikApiResponse<AssociateNewDeviceResponse?>
+    ): AssociateNewDeviceResponse
 
     @POST("associate/confirm")
     suspend fun associateAccountConfirm(

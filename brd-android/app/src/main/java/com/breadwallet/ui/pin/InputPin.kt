@@ -28,6 +28,8 @@ import com.breadwallet.ui.ViewEffect
 import com.breadwallet.ui.navigation.NavigationEffect
 import com.breadwallet.ui.navigation.NavigationTarget
 import com.breadwallet.ui.navigation.OnCompleteAction
+import com.fabriik.registration.ui.RegistrationActivity
+import com.fabriik.registration.ui.RegistrationFlow
 import com.fabriik.support.pages.Topic
 import dev.zacsweers.redacted.annotations.Redacted
 
@@ -65,6 +67,9 @@ object InputPin {
 
     sealed class E {
 
+        object OnContinueToNextStep : E()
+        object OnVerifyEmailClosed : E()
+        data class OnVerifyEmailRequested(val email: String) : E()
         object OnFaqClicked : E()
         object OnPinLocked : E()
         object OnPinSaved : E()
@@ -82,6 +87,8 @@ object InputPin {
 
     sealed class F {
 
+        object AssociateNewDevice : F()
+        object ContinueWithFlow : F()
         object CheckIfPinExists : F()
         data class SetupPin(
             @Redacted val pin: String
@@ -98,6 +105,12 @@ object InputPin {
 
         object GoToHome : F(), NavigationEffect {
             override val navigationTarget = NavigationTarget.Home
+        }
+        data class GoToVerifyEmail(val email: String) : F(), NavigationEffect {
+            override val navigationTarget = NavigationTarget.GoToRegistration(
+                flow = RegistrationFlow.RE_VERIFY,
+                email = email
+            )
         }
         object GoToFaq : F(), NavigationEffect {
             override val navigationTarget = NavigationTarget.SupportDialog(Topic.PIN)
