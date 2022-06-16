@@ -3,19 +3,26 @@ package com.fabriik.registration.data
 import com.fabriik.common.data.FabriikApiResponse
 import com.fabriik.common.data.model.Profile
 import com.fabriik.registration.data.requests.AssociateConfirmRequest
-import com.fabriik.registration.data.requests.AssociateRequest
-import com.fabriik.registration.data.responses.AssociateResponse
-import okhttp3.ResponseBody
+import com.fabriik.registration.data.requests.AssociateEmailRequest
+import com.fabriik.registration.data.requests.AssociateNewDeviceRequest
+import com.fabriik.registration.data.responses.AssociateEmailResponse
+import com.fabriik.registration.data.responses.AssociateNewDeviceResponse
 import retrofit2.Response
 import retrofit2.http.*
 
 interface RegistrationService {
 
     @POST("associate")
-    suspend fun associateAccount(
+    suspend fun associateEmail(
         @HeaderMap headers: Map<String, String?>,
-        @Body request: AssociateRequest
-    ): FabriikApiResponse<AssociateResponse?>
+        @Body request: AssociateEmailRequest
+    ): FabriikApiResponse<AssociateEmailResponse?>
+
+    @POST("new-device")
+    suspend fun associateNewDevice(
+        @HeaderMap headers: Map<String, String?>,
+        @Body request: AssociateNewDeviceRequest
+    ): FabriikApiResponse<AssociateNewDeviceResponse?>
 
     @POST("associate/confirm")
     suspend fun associateAccountConfirm(
