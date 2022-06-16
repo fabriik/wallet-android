@@ -29,7 +29,6 @@ import com.spotify.mobius.Next
 interface InputPinUpdateSpec {
     fun patch(model: InputPin.M, event: InputPin.E): Next<InputPin.M, InputPin.F> = when (event) {
         InputPin.E.OnFaqClicked -> onFaqClicked(model)
-        InputPin.E.OnFaqClicked -> onFaqClicked(model)
         InputPin.E.OnPinLocked -> onPinLocked(model)
         InputPin.E.OnPinSaved -> onPinSaved(model)
         InputPin.E.OnPinSaveFailed -> onPinSaveFailed(model)
