@@ -94,7 +94,7 @@ class SubmitPhotoFragment : Fragment(),
 
             is SubmitPhotoContract.Effect.Dismiss ->
                 findNavController().navigate(
-                    SubmitPhotoFragmentDirections.actionAccountVerification(null)
+                    SubmitPhotoFragmentDirections.actionAccountVerification()
                 )
 
             is SubmitPhotoContract.Effect.TakePhoto ->

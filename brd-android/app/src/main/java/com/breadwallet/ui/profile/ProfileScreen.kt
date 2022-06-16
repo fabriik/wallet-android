@@ -42,8 +42,8 @@ object ProfileScreen {
             override val navigationTarget = NavigationTarget.Back
         }
 
-        data class GoToKyc(val profile: Profile) : F(), NavigationEffect {
-            override val navigationTarget = NavigationTarget.GoToKyc(profile)
+        object GoToKyc : F(), NavigationEffect {
+            override val navigationTarget = NavigationTarget.GoToKyc
         }
 
         data class GoToSettings(val section: SettingsSection) : F(), NavigationEffect {

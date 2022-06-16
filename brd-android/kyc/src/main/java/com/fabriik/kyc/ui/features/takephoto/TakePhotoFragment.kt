@@ -127,7 +127,7 @@ class TakePhotoFragment : Fragment(),
 
             is TakePhotoContract.Effect.Dismiss ->
                 findNavController().navigate(
-                    TakePhotoFragmentDirections.actionAccountVerification(null)
+                    TakePhotoFragmentDirections.actionAccountVerification()
                 )
 
             is TakePhotoContract.Effect.RequestCameraPermission ->

@@ -100,7 +100,7 @@ class ProofOfIdentityFragment : Fragment(),
 
             is ProofOfIdentityContract.Effect.Dismiss ->
                 findNavController().navigate(
-                    ProofOfIdentityFragmentDirections.actionAccountVerification(null)
+                    ProofOfIdentityFragmentDirections.actionAccountVerification()
                 )
 
             is ProofOfIdentityContract.Effect.GoBack ->

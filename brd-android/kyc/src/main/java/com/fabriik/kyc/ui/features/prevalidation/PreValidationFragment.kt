@@ -71,7 +71,7 @@ class PreValidationFragment : Fragment(),
 
             is PreValidationContract.Effect.Dismiss ->
                 findNavController().navigate(
-                    PreValidationFragmentDirections.actionAccountVerification(null)
+                    PreValidationFragmentDirections.actionAccountVerification()
                 )
 
             is PreValidationContract.Effect.ProofOfIdentity ->
