@@ -162,6 +162,7 @@ internal class CoreBreadBox(
         system = newSystem().also { system ->
             logDebug("Dispatching initial System values")
 
+            // This a hack to fix W1-451, see more in https://github.com/blockset-corp/walletkit/issues/362
             system.resume()
             system.resume()
 
