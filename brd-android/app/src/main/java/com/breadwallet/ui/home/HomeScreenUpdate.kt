@@ -140,10 +140,10 @@ val HomeScreenUpdate = Update<M, E, F> { model, event ->
         E.OnProfileClicked ->
             dispatch(
                 effects(
-                    if (SessionHolder.isDefaultSession()) {
-                        F.GoToRegistration
-                    } else {
+                    if (SessionHolder.isUserSessionVerified()) {
                         F.GoToProfile
+                    } else {
+                        F.GoToRegistration
                     }
                 )
             )

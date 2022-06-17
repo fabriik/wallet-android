@@ -14,6 +14,8 @@ import com.fabriik.common.utils.validators.ConfirmationCodeValidator
 import com.fabriik.registration.R
 import com.fabriik.registration.data.RegistrationApi
 import com.fabriik.registration.ui.RegistrationActivity
+import com.platform.tools.SessionHolder
+import com.platform.tools.SessionState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -64,14 +66,30 @@ class RegistrationVerifyEmailViewModel(
     }
 
     private fun verifyEmail() {
+        val currentSession = SessionHolder.getSession()
+        if (currentSession.state == SessionState.DEFAULT) {
+            setEffect {
+                RegistrationVerifyEmailContract.Effect.ShowToast(
+                    getString(R.string.FabriikApi_DefaultError)
+                )
+            }
+            return
+        }
+
         callApi(
             endState = { copy(loadingVisible = false) },
             startState = { copy(loadingVisible = true) },
             action = { registrationApi.associateAccountConfirm(currentState.code) },
             callback = {
                 when (it.status) {
-                    Status.SUCCESS ->
+                    Status.SUCCESS -> {
+                        SessionHolder.updateSession(
+                            sessionKey = currentSession.key,
+                            state = SessionState.VERIFIED
+                        )
+
                         showCompletedState()
+                    }
 
                     Status.ERROR ->
                         setState { copy(codeErrorVisible = true) }

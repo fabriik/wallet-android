@@ -21,7 +21,7 @@ class FabriikAuthInterceptor : Interceptor {
         }
 
         return requestBuilderWithDeviceId
-            .addHeader("Authorization", SessionHolder.retrieveSession())
+            .addHeader("Authorization", SessionHolder.getSessionKey())
             .build()
             .run(chain::proceed)
     }

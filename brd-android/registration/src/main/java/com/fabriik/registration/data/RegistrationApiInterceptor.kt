@@ -1,7 +1,6 @@
 package com.fabriik.registration.data
 
 import com.breadwallet.tools.manager.BRSharedPrefs
-import com.fabriik.common.data.FabriikApiConstants
 import com.platform.tools.SessionHolder
 import okhttp3.Interceptor
 import okhttp3.Response
@@ -21,7 +20,7 @@ class RegistrationApiInterceptor : Interceptor {
         }
 
         return requestBuilderWithDeviceId
-            .addHeader("Authorization", SessionHolder.retrieveSession())
+            .addHeader("Authorization", SessionHolder.getSessionKey())
             .build()
             .run(chain::proceed)
     }
