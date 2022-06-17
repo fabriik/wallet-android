@@ -34,7 +34,7 @@
     <string name="AccountVerification.Level2.UpdateLevel1IfDataChanged">If your personal information has changed, please first update Level 1 KYC and then continue with
 Level 2 KYC.</string>
     <string name="AccountVerification.InfoView.title">Personal information</string>
-    <string name="AccountVerification.InfoVIew.description">We need to verify your personal information for identity purposes. This information won’t be shared with outside sources unless required by law.</string>
+    <string name="AccountVerification.InfoVIew.description">We need to verify your personal information for compliance purposes. This information won’t be shared with outside sources unless required by law.</string>
 
     <!-- Personal info screen -->
     <string name="PersonalInformation.Title">Personal Information</string>
