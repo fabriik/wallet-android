@@ -137,8 +137,7 @@ val HomeScreenUpdate = Update<M, E, F> { model, event ->
         E.OnBuyNoteSeen -> dispatch(effects(F.GoToBuy))
         E.OnTradeNoteSeen -> dispatch(effects(F.LoadSwapCurrencies))
         E.OnMenuClicked -> dispatch(effects(F.GoToMenu))
-        E.OnProfileClicked -> {
-            SessionHolder.clear() //todo: remove
+        E.OnProfileClicked ->
             dispatch(
                 effects(
                     if (SessionHolder.isDefaultSession()) {
@@ -148,7 +147,9 @@ val HomeScreenUpdate = Update<M, E, F> { model, event ->
                     }
                 )
             )
-        }
+
+        E.OnEmailVerified -> dispatch(setOf(F.GoToProfile))
+
         is E.OnProfileDataLoaded -> next(
             model.copy(profile = event.profile)
         )

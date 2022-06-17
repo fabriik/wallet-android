@@ -13,6 +13,7 @@ import com.fabriik.common.utils.toBundle
 import com.fabriik.common.utils.validators.ConfirmationCodeValidator
 import com.fabriik.registration.R
 import com.fabriik.registration.data.RegistrationApi
+import com.fabriik.registration.ui.RegistrationActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -41,7 +42,7 @@ class RegistrationVerifyEmailViewModel(
     override fun handleEvent(event: RegistrationVerifyEmailContract.Event) {
         when (event) {
             is RegistrationVerifyEmailContract.Event.DismissClicked ->
-                setEffect { RegistrationVerifyEmailContract.Effect.Dismiss }
+                setEffect { RegistrationVerifyEmailContract.Effect.Dismiss() }
 
             is RegistrationVerifyEmailContract.Event.CodeChanged ->
                 setState {
@@ -84,7 +85,11 @@ class RegistrationVerifyEmailViewModel(
             setState { copy(completedViewVisible = true) }
             delay(1000)
             setState { copy(completedViewVisible = false) }
-            setEffect { RegistrationVerifyEmailContract.Effect.Dismiss }
+            setEffect {
+                RegistrationVerifyEmailContract.Effect.Dismiss(
+                    RegistrationActivity.RESULT_VERIFIED
+                )
+            }
         }
     }
 

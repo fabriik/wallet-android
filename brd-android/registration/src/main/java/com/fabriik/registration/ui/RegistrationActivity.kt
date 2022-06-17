@@ -27,6 +27,9 @@ class RegistrationActivity : AppCompatActivity() {
     }
 
     companion object {
+        const val REQUEST_CODE = 1232
+        const val RESULT_VERIFIED = 1232_1
+
         fun getStartIntent(context: Context) = Intent(context, RegistrationActivity::class.java)
     }
 }
