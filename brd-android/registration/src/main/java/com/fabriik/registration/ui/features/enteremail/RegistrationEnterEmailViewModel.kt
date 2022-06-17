@@ -12,6 +12,7 @@ import com.fabriik.registration.R
 import com.fabriik.registration.data.RegistrationApi
 import com.fabriik.registration.utils.RegistrationUtils
 import com.platform.tools.SessionHolder
+import com.platform.tools.SessionState
 import com.platform.tools.TokenHolder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -74,7 +75,8 @@ class RegistrationEnterEmailViewModel(
                 when (it.status) {
                     Status.SUCCESS -> {
                         SessionHolder.updateSession(
-                            it.data!!.sessionKey
+                            sessionKey = it.data!!.sessionKey,
+                            state = SessionState.CREATED
                         )
 
                         setEffect {

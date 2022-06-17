@@ -27,6 +27,7 @@ package com.breadwallet.ui.home
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.content.Intent
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.ImageButton
@@ -74,6 +75,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.kodein.di.direct
 import org.kodein.di.erased.instance
+import com.fabriik.registration.ui.RegistrationActivity
 
 private const val EMAIL_SUCCESS_DELAY = 3_000L
 private const val NETWORK_TESTNET = "TESTNET"
@@ -148,6 +150,7 @@ class HomeController(
         }
 
         addWalletAdapter!!.add(AddWalletItem())
+        registerForActivityResult(RegistrationActivity.REQUEST_CODE)
     }
 
     override fun onDestroyView(view: View) {
@@ -155,6 +158,14 @@ class HomeController(
         addWalletAdapter = null
         fastAdapter = null
         super.onDestroyView(view)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == RegistrationActivity.REQUEST_CODE && resultCode == RegistrationActivity.RESULT_VERIFIED) {
+            eventConsumer.accept(E.OnEmailVerified)
+        }
     }
 
     override fun bindView(modelFlow: Flow<M>): Flow<E> {

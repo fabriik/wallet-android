@@ -36,7 +36,7 @@ fun createProfileScreenHandler(
         if (profile != null) {
             E.OnProfileDataLoaded(profile)
         } else {
-            E.OnProfileDataLoadFailed(null)
+            E.RefreshProfile
         }
     }
 

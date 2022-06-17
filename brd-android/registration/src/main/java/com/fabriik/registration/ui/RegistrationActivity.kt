@@ -22,7 +22,14 @@ class RegistrationActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
     }
 
+    override fun onBackPressed() {
+        //method is disabled for this activity
+    }
+
     companion object {
+        const val REQUEST_CODE = 1232
+        const val RESULT_VERIFIED = 1232_1
+
         fun getStartIntent(context: Context) = Intent(context, RegistrationActivity::class.java)
     }
 }

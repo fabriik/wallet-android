@@ -26,6 +26,7 @@ package com.breadwallet.tools.security
 
 import com.breadwallet.crypto.Account
 import com.fabriik.common.data.model.Profile
+import com.platform.tools.Session
 import kotlinx.coroutines.flow.Flow
 
 /** Manages creation, recovery, and access to an [Account]. */
@@ -64,8 +65,8 @@ interface BrdUserManager {
     fun getProfile(): Profile?
     fun putProfile(profile: Profile?)
 
-    fun getSession(): String?
-    fun putSession(session: String)
+    fun getSession(): Session?
+    fun putSession(session: Session)
     fun removeSession()
 
     fun getBdbJwt(): String?
