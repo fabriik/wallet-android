@@ -107,12 +107,11 @@ class AccountVerificationViewModel(
         }
     }
 
-    private fun mapStatusToLevel1State(status: KycStatus?): AccountVerificationContract.Level1State {
+    private fun mapStatusToLevel1State(status: KycStatus): AccountVerificationContract.Level1State {
         val state = when (status) {
             KycStatus.DEFAULT,
             KycStatus.EMAIL_VERIFIED,
-            KycStatus.EMAIL_VERIFICATION_PENDING,
-            null -> null
+            KycStatus.EMAIL_VERIFICATION_PENDING -> null
             else -> AccountVerificationStatusView.StatusViewState.Verified
         }
 
@@ -122,12 +121,12 @@ class AccountVerificationViewModel(
         )
     }
 
-    private fun mapStatusToLevel2State(status: KycStatus?): AccountVerificationContract.Level2State {
+    private fun mapStatusToLevel2State(status: KycStatus): AccountVerificationContract.Level2State {
         return when (status) {
             KycStatus.DEFAULT,
             KycStatus.EMAIL_VERIFIED,
-            KycStatus.EMAIL_VERIFICATION_PENDING,
-            null -> AccountVerificationContract.Level2State(
+            KycStatus.EMAIL_VERIFICATION_PENDING ->
+                AccountVerificationContract.Level2State(
                 isEnabled = false,
                 statusState = null
             )
