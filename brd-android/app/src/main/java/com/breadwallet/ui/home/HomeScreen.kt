@@ -105,6 +105,7 @@ object HomeScreen {
         object OnUpgradePinPromptClicked : E()
         object OnRescanPromptClicked : E()
         object OnRateAppPromptClicked : E()
+        object OnEmailVerified : E()
         data class OnRateAppPromptDontShowClicked(val checked: Boolean) : E()
         object OnRateAppPromptNoThanksClicked : E()
         data class OnEmailPromptClicked(@Redacted val email: String) : E()

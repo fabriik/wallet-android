@@ -32,9 +32,10 @@ import com.fabriik.common.data.Status
 import com.fabriik.registration.data.RegistrationApi
 import com.fabriik.registration.data.responses.AssociateNewDeviceStatus
 import com.fabriik.registration.utils.RegistrationUtils
+import com.platform.tools.Session
+import com.platform.tools.SessionState
 import com.platform.tools.TokenHolder
 import drewcarlson.mobius.flow.subtypeEffectHandler
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.mapLatest
 import java.util.*
 
@@ -93,10 +94,15 @@ fun createInputPinHandler(
 
                         when (status) {
                             AssociateNewDeviceStatus.SENT -> {
-                                userManager.putSession(sessionKey)
+                                userManager.putSession(
+                                    Session(
+                                        key = sessionKey,
+                                        state = SessionState.CREATED
+                                    )
+                                )
                                 E.OnVerifyEmailRequested(email)
                             }
-                           else -> E.OnContinueToNextStep
+                            else -> E.OnContinueToNextStep
                         }
                     }
                     Status.ERROR -> E.OnContinueToNextStep

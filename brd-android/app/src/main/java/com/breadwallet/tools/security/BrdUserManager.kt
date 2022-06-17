@@ -48,6 +48,8 @@ import com.breadwallet.tools.manager.BRReportsManager
 import com.breadwallet.tools.manager.BRSharedPrefs
 import com.breadwallet.platform.interfaces.AccountMetaDataProvider
 import com.fabriik.common.data.model.Profile
+import com.platform.tools.Session
+import com.platform.tools.SessionState
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.Dispatchers
@@ -100,7 +102,8 @@ private const val KEY_PHRASE = "phrase"
 private const val KEY_AUTH_KEY = "authKey"
 private const val KEY_CREATION_TIME = "creationTimeSeconds"
 private const val KEY_TOKEN = "token"
-private const val KEY_SESSION = "session"
+private const val KEY_SESSION_KEY = "session_key"
+private const val KEY_SESSION_STATE = "session_state"
 private const val KEY_BDB_JWT = "bdbJwt"
 private const val KEY_BDB_JWT_EXP = "bdbJwtExp"
 private const val KEY_PIN_CODE = "pinCode"
@@ -130,7 +133,7 @@ class CryptoUserManager(
     private val locked = AtomicBoolean(true)
     private val disabledSeconds = AtomicInteger(0)
     private var token: String? = null
-    private var session: String? = null
+    private var session: Session? = null
     private var jwt: String? = null
     private var jwtExp: Long? = null
     private var profile: Profile? = null
@@ -397,17 +400,43 @@ class CryptoUserManager(
     }
 
     @Synchronized
-    override fun getSession() = session ?: checkNotNull(store).getString(KEY_SESSION, null)
+    override fun getSession(): Session? {
+        if (session != null) {
+            return session
+        }
+
+        val storeSafe = checkNotNull(store)
+        val sessionKey = storeSafe.getString(KEY_SESSION_KEY, null)
+        val sessionStateId = storeSafe.getString(KEY_SESSION_STATE, null)
+        val sessionState = SessionState.values().find {
+            it.id == sessionStateId
+        }
+
+        return if (sessionKey.isNullOrBlank() || sessionState == null) {
+            null
+        } else {
+            Session(
+                key = sessionKey,
+                state = sessionState
+            )
+        }
+    }
 
     @Synchronized
-    override fun putSession(session: String) {
-        checkNotNull(store).edit { putString(KEY_SESSION, session) }
+    override fun putSession(session: Session) {
+        checkNotNull(store).edit {
+            putString(KEY_SESSION_KEY, session.key)
+            putString(KEY_SESSION_STATE, session.state.id)
+        }
         this.session = session
     }
 
     @Synchronized
     override fun removeSession() {
-        checkNotNull(store).edit { remove(KEY_SESSION) }
+        checkNotNull(store).edit {
+            remove(KEY_SESSION_KEY)
+            remove(KEY_SESSION_STATE)
+        }
         session = null
     }
 

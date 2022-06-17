@@ -68,8 +68,12 @@ class RegistrationApi(
 
     suspend fun associateAccountConfirm(code: String): Resource<ResponseBody?> {
         return try {
-            service.associateAccountConfirm(AssociateConfirmRequest(code))
-            Resource.success(null)
+            val response = service.associateAccountConfirm(AssociateConfirmRequest(code))
+            if (response.isSuccessful) {
+                Resource.success(null)
+            } else {
+                Resource.error(message = "Invalid code")
+            }
         } catch (ex: Exception) {
             responseMapper.mapError(
                 context = context,
@@ -80,8 +84,12 @@ class RegistrationApi(
 
     suspend fun resendAssociateAccountChallenge(): Resource<ResponseBody?> {
         return try {
-            service.resendAssociateAccountChallenge()
-            Resource.success(null)
+            val response = service.resendAssociateAccountChallenge()
+            if (response.isSuccessful) {
+                Resource.success(null)
+            } else {
+                Resource.error(message = "Code not sent")
+            }
         } catch (ex: Exception) {
             responseMapper.mapError(
                 context = context,

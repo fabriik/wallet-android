@@ -8,7 +8,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 class WyreApi(private val service: WyreService) {
 
     suspend fun getPaymentUrl(isTestNetwork: Boolean) = service.getPaymentUrl(
-        auth = SessionHolder.retrieveSession(),
+        auth = SessionHolder.getSessionKey(),
         isTestNetwork = isTestNetwork
     )
 

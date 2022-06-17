@@ -1,5 +1,6 @@
 package com.fabriik.registration.ui.features.verifyemail
 
+import android.app.Activity
 import com.fabriik.common.ui.base.FabriikContract
 
 interface RegistrationVerifyEmailContract {
@@ -14,7 +15,7 @@ interface RegistrationVerifyEmailContract {
 
     sealed class Effect : FabriikContract.Effect {
         object Back: Effect()
-        object Dismiss: Effect()
+        data class Dismiss(val resultCode: Int = Activity.RESULT_CANCELED): Effect()
         data class ShowToast(val message: String) : Effect()
     }
 

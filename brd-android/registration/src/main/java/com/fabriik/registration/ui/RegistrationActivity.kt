@@ -43,12 +43,17 @@ class RegistrationActivity : AppCompatActivity() {
         navHostFragment.navController.setGraph(graph, data.second)
     }
 
+    override fun onBackPressed() {
+        //method is disabled for this activity
+    }
+
     companion object {
         private const val EXTRA_ARGS = "extra_args"
         private const val EXTRA_FLOW = "flow"
         private const val EXTRA_EMAIL = "email"
 
         const val REQUEST_CODE = 1232
+        const val RESULT_VERIFIED = 1232_1
 
         fun getStartIntent(context: Context, args: Args) : Intent {
             val intent = Intent(context, RegistrationActivity::class.java)
