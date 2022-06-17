@@ -67,7 +67,6 @@ class RegistrationActivity : AppCompatActivity() {
         val flow: RegistrationFlow,
         val email: String?,
     ): Parcelable
-
 }
 
 enum class RegistrationFlow {
