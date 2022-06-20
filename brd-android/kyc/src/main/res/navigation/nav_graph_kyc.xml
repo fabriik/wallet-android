@@ -10,10 +10,6 @@
         android:name="com.fabriik.kyc.ui.features.accountverification.AccountVerificationFragment"
         tools:layout="@layout/fragment_account_verification">
 
-        <argument
-            android:name="profile"
-            app:argType="com.fabriik.common.data.model.Profile" />
-
         <action
             android:id="@+id/actionKycLevel1"
             app:destination="@id/nav_graph_kyc_level1" />
@@ -131,4 +127,8 @@
 
         </fragment>
     </navigation>
+
+    <action
+        android:id="@+id/actionAccountVerification"
+        app:destination="@+id/fragmentAccountVerification"/>
 </navigation>

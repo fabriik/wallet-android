@@ -13,6 +13,7 @@ import com.fabriik.common.utils.toBundle
 import com.fabriik.common.utils.validators.ConfirmationCodeValidator
 import com.fabriik.registration.R
 import com.fabriik.registration.data.RegistrationApi
+import com.fabriik.registration.ui.RegistrationFlow
 import com.fabriik.registration.ui.RegistrationActivity
 import com.platform.tools.SessionHolder
 import com.platform.tools.SessionState
@@ -38,7 +39,8 @@ class RegistrationVerifyEmailViewModel(
     }
 
     override fun createInitialState() = RegistrationVerifyEmailContract.State(
-        subtitle = createSubtitle()
+        subtitle = createSubtitle(),
+        changeEmailButtonVisible = arguments.flow != RegistrationFlow.RE_VERIFY
     )
 
     override fun handleEvent(event: RegistrationVerifyEmailContract.Event) {

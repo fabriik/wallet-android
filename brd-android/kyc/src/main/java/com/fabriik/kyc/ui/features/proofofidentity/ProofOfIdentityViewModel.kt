@@ -54,6 +54,9 @@ class ProofOfIdentityViewModel(
                         DocumentType.RESIDENCE_PERMIT
                     )
                 }
+
+            is ProofOfIdentityContract.Event.Dismiss ->
+                setEffect { ProofOfIdentityContract.Effect.Dismiss }
         }
     }
 

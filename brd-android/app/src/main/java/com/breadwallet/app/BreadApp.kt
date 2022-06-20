@@ -400,10 +400,14 @@ class BreadApp : Application(), KodeinAware, CameraXConfig.Provider {
             BRDApiClient.create(AndroidBRDAuthProvider(instance()))
         }
 
+        bind<RegistrationApi>() with singleton {
+            RegistrationApi.create(this@BreadApp)
+        }
+
         bind<ProfileManager>() with singleton {
             ProfileManagerImpl(
                 instance(),
-                RegistrationApi.create(this@BreadApp)
+                instance()
             )
         }
 

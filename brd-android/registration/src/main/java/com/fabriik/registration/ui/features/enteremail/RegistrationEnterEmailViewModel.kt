@@ -1,8 +1,6 @@
 package com.fabriik.registration.ui.features.enteremail
 
 import android.app.Application
-import android.util.Log
-import androidx.lifecycle.viewModelScope
 import com.breadwallet.tools.security.BrdUserManager
 import com.fabriik.common.data.Status
 import com.fabriik.common.ui.base.FabriikViewModel
@@ -14,8 +12,6 @@ import com.fabriik.registration.utils.RegistrationUtils
 import com.platform.tools.SessionHolder
 import com.platform.tools.SessionState
 import com.platform.tools.TokenHolder
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
 import org.kodein.di.erased.instance
@@ -62,11 +58,11 @@ class RegistrationEnterEmailViewModel(
             endState = { copy(loadingVisible = false) },
             startState = { copy(loadingVisible = true) },
             action = {
-                registrationApi.associateAccount(
+                registrationApi.associateEmail(
                     email = currentState.email,
                     token = token,
                     headers = registrationUtils.getAssociateRequestHeaders(
-                        email = currentState.email,
+                        salt = currentState.email,
                         token = token
                     )
                 )

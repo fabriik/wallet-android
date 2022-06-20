@@ -5,11 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
-import com.fabriik.common.data.model.Profile
 import com.fabriik.kyc.R
 import com.fabriik.kyc.databinding.ActivityKycBinding
-import com.fabriik.kyc.ui.features.accountverification.AccountVerificationFragmentArgs
-import java.lang.IllegalStateException
 
 class KycActivity : AppCompatActivity() {
 
@@ -28,12 +25,9 @@ class KycActivity : AppCompatActivity() {
     companion object {
         const val REQUEST_CODE = 1231
         const val RESULT_DATA_UPDATED = 1231_1
-        private const val EXTRA_PROFILE = "profile"
 
-        fun getStartIntent(context: Context, profile: Profile): Intent {
-            val intent = Intent(context, KycActivity::class.java)
-            intent.putExtra(EXTRA_PROFILE, profile)
-            return intent
+        fun getStartIntent(context: Context): Intent {
+            return Intent(context, KycActivity::class.java)
         }
     }
 }

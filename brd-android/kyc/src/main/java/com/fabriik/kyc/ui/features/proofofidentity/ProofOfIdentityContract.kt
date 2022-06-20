@@ -12,10 +12,12 @@ interface ProofOfIdentityContract {
         object PassportClicked : Event()
         object DrivingLicenceClicked : Event()
         object ResidencePermitClicked : Event()
+        object Dismiss : Event()
     }
 
     sealed class Effect : FabriikContract.Effect {
         object GoBack : Effect()
+        object Dismiss : Effect()
         data class ShowToast(val message: String) : Effect()
         data class GoToDocumentUpload(val documentType: DocumentType) : Effect()
     }
