@@ -96,7 +96,10 @@ class RegistrationVerifyEmailFragment : Fragment(),
                 findNavController().popBackStack()
 
             is RegistrationVerifyEmailContract.Effect.Dismiss ->
-                requireActivity().finish()
+                requireActivity().let {
+                    it.setResult(effect.resultCode)
+                    it.finish()
+                }
 
             is RegistrationVerifyEmailContract.Effect.ShowToast ->
                 FabriikToastUtil.show(

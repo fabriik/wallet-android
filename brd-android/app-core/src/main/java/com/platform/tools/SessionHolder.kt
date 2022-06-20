@@ -9,7 +9,12 @@ import org.kodein.di.erased.instance
 
 object SessionHolder : KodeinAware {
 
-    private var mApiSession: String? = null
+    private val defaultSession = Session(
+        key = BuildConfig.DEFAULT_FABRIIK_CLIENT_TOKEN,
+        state = SessionState.DEFAULT
+    )
+
+    private var mApiSession: Session? = null
     private lateinit var context: Context
 
     fun provideContext(context: Context) {
@@ -20,24 +25,50 @@ object SessionHolder : KodeinAware {
     private val userManager by instance<BrdUserManager>()
 
     @Synchronized
-    fun retrieveSession() = userManager.getSession()
-        ?: BuildConfig.DEFAULT_FABRIIK_CLIENT_TOKEN
+    fun getSession() = userManager.getSession() ?: defaultSession
 
     @Synchronized
-    fun updateSession(session: String): String? {
-        if (mApiSession == null || mApiSession != session) {
-            mApiSession = session
-            userManager.putSession(session)
+    fun getSessionKey() = getSession().key
+
+    @Synchronized
+    fun updateSession(sessionKey: String, state: SessionState): Session? {
+        if (mApiSession == null || mApiSession!!.key != sessionKey || mApiSession!!.state != state) {
+            mApiSession = Session(
+                key = sessionKey,
+                state = state
+            )
+            userManager.putSession(mApiSession!!)
         }
         return mApiSession
     }
 
     @Synchronized
-    fun isDefaultSession() = retrieveSession() == BuildConfig.DEFAULT_FABRIIK_CLIENT_TOKEN
+    fun isDefaultSession() = getSession().isDefaultSession()
+
+    @Synchronized
+    fun isUserSessionVerified() : Boolean {
+        val session = getSession()
+        return !session.isDefaultSession() && session.state == SessionState.VERIFIED
+    }
 
     @Synchronized
     fun clear() {
         userManager.removeSession()
         mApiSession = null
     }
+}
+
+data class Session(
+    val state: SessionState,
+    val key: String
+) {
+    @Synchronized
+    fun isDefaultSession() = state == SessionState.DEFAULT
+}
+
+enum class SessionState(val id: String) {
+    CREATED("created"),
+    VERIFIED("verified"),
+    EXPIRED("expired"),
+    DEFAULT("default")
 }

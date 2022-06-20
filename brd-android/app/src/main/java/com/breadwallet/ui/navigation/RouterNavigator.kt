@@ -163,8 +163,9 @@ class RouterNavigator(
 
     override fun openRegistration() {
         router.activity?.let {
-            it.startActivity(
-                RegistrationActivity.getStartIntent(it)
+            it.startActivityForResult(
+                RegistrationActivity.getStartIntent(it),
+                RegistrationActivity.REQUEST_CODE
             )
         }
     }
