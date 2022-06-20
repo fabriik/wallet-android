@@ -7,6 +7,7 @@ import com.fabriik.registration.data.RegistrationApi
 import com.fabriik.registration.utils.UserSessionManager
 import com.fabriik.registration.utils.UserSessionManagerImpl
 import com.platform.tools.SessionHolder
+import com.platform.tools.SessionState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -35,6 +36,7 @@ class ProfileManagerImpl(
             }
             Status.ERROR -> {
                 if (userSessionManager.isSessionExpiredError(response.throwable)) {
+                    SessionHolder.updateSessionState(SessionState.EXPIRED)
                     userSessionManager.onSessionExpired(
                         context = context,
                         scope = scope
