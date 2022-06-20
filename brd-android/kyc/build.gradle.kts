@@ -38,6 +38,7 @@ android {
 dependencies {
     implementation(project(":brd-android:app-core"))
     implementation(project(":brd-android:fabriik-common"))
+    implementation(project(":brd-android:registration"))
 
     implementation(Libs.AndroidxCamera.Core)
     implementation(Libs.AndroidxCamera.Camera2)

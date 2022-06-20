@@ -48,7 +48,7 @@ sealed class NavigationTarget : INavigationTarget {
 
     object Back : NavigationTarget()
     object ReviewBrd : NavigationTarget()
-    data class GoToKyc(val profile: com.fabriik.common.data.model.Profile) : NavigationTarget()
+    object GoToKyc : NavigationTarget()
     object GoToRegistration : NavigationTarget()
     object GoToFeedback : NavigationTarget()
     object QRScanner : NavigationTarget()
