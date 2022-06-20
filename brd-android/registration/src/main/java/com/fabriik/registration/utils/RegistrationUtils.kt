@@ -17,7 +17,7 @@ class RegistrationUtils(
         timeZone = TimeZone.getTimeZone("GMT")
     }
 
-    fun getAssociateRequestHeaders(email: String, token: String): Map<String, String?> {
+    fun getAssociateRequestHeaders(salt: String, token: String): Map<String, String?> {
         val dateHeaderValue = getDateHeader()
 
         return mapOf(
@@ -26,7 +26,7 @@ class RegistrationUtils(
                 HEADER_SIGNATURE, getSignatureHeader(
                     date = dateHeaderValue,
                     token = token,
-                    salt = email
+                    salt = salt
                 )
             )
         )

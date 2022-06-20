@@ -80,12 +80,13 @@ class RegistrationVerifyEmailFragment : Fragment(),
     }
 
     override fun render(state: RegistrationVerifyEmailContract.State) {
-        with (binding) {
+        with(binding) {
             tvSubtitle.text = state.subtitle
             btnConfirm.isEnabled = state.confirmEnabled
             tvCodeError.isVisible = state.codeErrorVisible
             viewLoading.isVisible = state.loadingVisible
             viewCompleted.isVisible = state.completedViewVisible
+            btnChangeEmail.isVisible = state.changeEmailButtonVisible
             viewEnterCode.setErrorState(state.codeErrorVisible)
         }
     }

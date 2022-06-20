@@ -17,6 +17,8 @@ import com.fabriik.common.utils.showKeyboard
 import com.fabriik.common.utils.textOrEmpty
 import com.fabriik.registration.R
 import com.fabriik.registration.databinding.FragmentRegistrationEnterEmailBinding
+import com.fabriik.registration.ui.RegistrationActivity
+import com.fabriik.registration.ui.RegistrationFlow
 import kotlinx.coroutines.flow.collect
 
 class RegistrationEnterEmailFragment : Fragment(),
@@ -91,7 +93,10 @@ class RegistrationEnterEmailFragment : Fragment(),
 
             is RegistrationEnterEmailContract.Effect.GoToVerifyEmail ->
                 findNavController().navigate(
-                    RegistrationEnterEmailFragmentDirections.actionVerifyEmail(effect.email)
+                    RegistrationEnterEmailFragmentDirections.actionVerifyEmail(
+                        email = effect.email,
+                        flow = RegistrationFlow.REGISTER
+                    )
                 )
         }
     }

@@ -159,11 +159,15 @@ class RouterNavigator(
         }
     }
 
-    override fun openRegistration() {
+    override fun openRegistration(effect: NavigationTarget.GoToRegistration) {
         router.activity?.let {
             it.startActivityForResult(
-                RegistrationActivity.getStartIntent(it),
-                RegistrationActivity.REQUEST_CODE
+                RegistrationActivity.getStartIntent(
+                    it, RegistrationActivity.Args(
+                        flow = effect.flow,
+                        email = effect.email
+                    )
+                ), RegistrationActivity.REQUEST_CODE
             )
         }
     }

@@ -25,6 +25,10 @@
             android:name="email"
             app:argType="string"/>
 
+        <argument
+            android:name="flow"
+            app:argType="com.fabriik.registration.ui.RegistrationFlow"/>
+
     </fragment>
 
 </navigation>

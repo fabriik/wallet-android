@@ -6,8 +6,10 @@ import com.fabriik.common.data.Resource
 import com.fabriik.common.utils.FabriikApiResponseMapper
 import com.fabriik.common.data.model.Profile
 import com.fabriik.registration.data.requests.AssociateConfirmRequest
-import com.fabriik.registration.data.requests.AssociateRequest
-import com.fabriik.registration.data.responses.AssociateResponse
+import com.fabriik.registration.data.requests.AssociateEmailRequest
+import com.fabriik.registration.data.requests.AssociateNewDeviceRequest
+import com.fabriik.registration.data.responses.AssociateEmailResponse
+import com.fabriik.registration.data.responses.AssociateNewDeviceResponse
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
@@ -23,18 +25,39 @@ class RegistrationApi(
 
     private val responseMapper = FabriikApiResponseMapper()
 
-    suspend fun associateAccount(
+    suspend fun associateEmail(
         email: String, token: String, headers: Map<String, String?>
-    ): Resource<AssociateResponse?> {
+    ): Resource<AssociateEmailResponse?> {
         return try {
-            val response = service.associateAccount(
-                request = AssociateRequest(
+            val response = service.associateEmail(
+                request = AssociateEmailRequest(
                     email = email,
                     token = token
                 ),
                 headers = headers
             )
             responseMapper.mapSuccess(response)
+        } catch (ex: Exception) {
+            responseMapper.mapError(
+                context = context,
+                exception = ex
+            )
+        }
+    }
+
+    suspend fun associateNewDevice(
+        nonce: String, token: String, headers: Map<String, String?>
+    ): Resource<AssociateNewDeviceResponse?> {
+        return try {
+            val response = service.associateNewDevice(
+                request = AssociateNewDeviceRequest(
+                    nonce = nonce,
+                    token = token
+                ),
+                headers = headers
+            )
+
+            Resource.success(response)
         } catch (ex: Exception) {
             responseMapper.mapError(
                 context = context,
