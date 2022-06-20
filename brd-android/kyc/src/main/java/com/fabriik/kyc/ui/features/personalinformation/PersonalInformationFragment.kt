@@ -145,10 +145,9 @@ class PersonalInformationFragment : Fragment(),
 
             is PersonalInformationContract.Effect.Dismiss -> {
                 hideKeyboard()
-                requireActivity().let {
-                    it.setResult(effect.resultCode)
-                    it.finish()
-                }
+                findNavController().navigate(
+                    PersonalInformationFragmentDirections.actionAccountVerification()
+                )
             }
 
             is PersonalInformationContract.Effect.ShowToast -> {
