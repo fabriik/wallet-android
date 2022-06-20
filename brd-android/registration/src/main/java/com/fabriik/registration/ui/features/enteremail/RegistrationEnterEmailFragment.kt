@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
@@ -70,6 +71,10 @@ class RegistrationEnterEmailFragment : Fragment(),
             viewModel.effect.collect {
                 handleEffect(it)
             }
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback {
+            //User shouldn't be allowed to go back
         }
     }
 
