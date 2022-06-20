@@ -50,7 +50,7 @@ sealed class NavigationTarget : INavigationTarget {
 
     object Back : NavigationTarget()
     object ReviewBrd : NavigationTarget()
-    data class GoToKyc(val profile: com.fabriik.common.data.model.Profile) : NavigationTarget()
+    object GoToKyc : NavigationTarget()
     data class GoToRegistration(val flow: RegistrationFlow, val email: String? = null) : NavigationTarget()
     object GoToFeedback : NavigationTarget()
     object QRScanner : NavigationTarget()
