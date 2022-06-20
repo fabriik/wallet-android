@@ -131,9 +131,9 @@ class AccountVerificationViewModel(
             KycStatus.EMAIL_VERIFIED,
             KycStatus.EMAIL_VERIFICATION_PENDING ->
                 AccountVerificationContract.Level2State(
-                isEnabled = false,
-                statusState = null
-            )
+                    isEnabled = false,
+                    statusState = null
+                )
 
             KycStatus.KYC1,
             KycStatus.KYC2_EXPIRED -> AccountVerificationContract.Level2State(
@@ -166,14 +166,13 @@ class AccountVerificationViewModel(
     fun updateProfile() {
         viewModelScope.launch(Dispatchers.IO) {
             profileManager.updateProfile().collect { profile ->
-                if (profile != null) {
-                    setState {
-                        AccountVerificationContract.State.Content(
-                            profile = profile,
-                            level1State = mapStatusToLevel1State(profile.kycStatus),
-                            level2State = mapStatusToLevel2State(profile.kycStatus),
-                        )
-                    }
+                if (profile == null) return@collect
+                setState {
+                    AccountVerificationContract.State.Content(
+                        profile = profile,
+                        level1State = mapStatusToLevel1State(profile.kycStatus),
+                        level2State = mapStatusToLevel2State(profile.kycStatus),
+                    )
                 }
             }
         }
