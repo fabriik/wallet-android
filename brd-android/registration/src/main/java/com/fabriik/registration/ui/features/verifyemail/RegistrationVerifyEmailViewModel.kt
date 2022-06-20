@@ -17,9 +17,6 @@ import com.fabriik.registration.ui.RegistrationFlow
 import com.fabriik.registration.ui.RegistrationActivity
 import com.platform.tools.SessionHolder
 import com.platform.tools.SessionState
-import com.fabriik.registration.ui.RegistrationActivity
-import com.platform.tools.SessionHolder
-import com.platform.tools.SessionState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
