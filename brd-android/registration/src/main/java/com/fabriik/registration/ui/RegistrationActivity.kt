@@ -47,10 +47,6 @@ class RegistrationActivity : AppCompatActivity() {
         //method is disabled for this activity
     }
 
-    override fun onBackPressed() {
-        //method is disabled for this activity
-    }
-
     companion object {
         private const val EXTRA_ARGS = "extra_args"
         private const val EXTRA_FLOW = "flow"
