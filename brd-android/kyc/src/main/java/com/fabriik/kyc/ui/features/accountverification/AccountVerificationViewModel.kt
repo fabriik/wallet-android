@@ -2,12 +2,16 @@ package com.fabriik.kyc.ui.features.accountverification
 
 import android.app.Application
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
 import com.breadwallet.tools.security.ProfileManager
 import com.fabriik.common.data.enums.KycStatus
 import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.common.utils.getString
 import com.fabriik.kyc.R
 import com.fabriik.kyc.ui.customview.AccountVerificationStatusView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
 import org.kodein.di.erased.instance
@@ -160,15 +164,17 @@ class AccountVerificationViewModel(
     }
 
     fun updateProfile() {
-        profileManager.updateProfile()
-        val profile = profileManager.getProfile()
-        if (profile != null) {
-            setState {
-                AccountVerificationContract.State.Content(
-                    profile = profile,
-                    level1State = mapStatusToLevel1State(profile.kycStatus),
-                    level2State = mapStatusToLevel2State(profile.kycStatus),
-                )
+        viewModelScope.launch(Dispatchers.IO) {
+            profileManager.updateProfile().collect { profile ->
+                if (profile != null) {
+                    setState {
+                        AccountVerificationContract.State.Content(
+                            profile = profile,
+                            level1State = mapStatusToLevel1State(profile.kycStatus),
+                            level2State = mapStatusToLevel2State(profile.kycStatus),
+                        )
+                    }
+                }
             }
         }
     }
