@@ -70,6 +70,9 @@ import com.breadwallet.util.*
 import com.breadwallet.util.usermetrics.UserMetricsUtil
 import com.fabriik.common.data.FabriikApiConstants
 import com.fabriik.registration.data.RegistrationApi
+import com.fabriik.registration.utils.RegistrationUtils
+import com.fabriik.registration.utils.UserSessionManager
+import com.fabriik.registration.utils.UserSessionManagerImpl
 import com.platform.APIClient
 import com.platform.HTTPServer
 import com.platform.interfaces.KVStoreProvider
@@ -369,6 +372,13 @@ class BreadApp : Application(), KodeinAware, CameraXConfig.Provider {
             )
         }
 
+        bind<UserSessionManager>() with singleton {
+            UserSessionManagerImpl(
+                instance(),
+                instance()
+            )
+        }
+
         bind<ConversionTracker>() with singleton {
             ConversionTracker(instance())
         }
@@ -402,6 +412,10 @@ class BreadApp : Application(), KodeinAware, CameraXConfig.Provider {
 
         bind<RegistrationApi>() with singleton {
             RegistrationApi.create(this@BreadApp)
+        }
+
+        bind<RegistrationUtils>() with singleton {
+            RegistrationUtils(instance())
         }
 
         bind<ProfileManager>() with singleton {
