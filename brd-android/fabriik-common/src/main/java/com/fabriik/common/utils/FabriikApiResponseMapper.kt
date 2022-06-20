@@ -8,6 +8,7 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.HttpException
+import java.lang.RuntimeException
 
 class FabriikApiResponseMapper {
 
@@ -28,6 +29,7 @@ class FabriikApiResponseMapper {
 
     fun <T> mapError(context: Context, exception: Exception) : Resource<T?> {
         var errorMessage: String? = null
+        var throwable = exception
 
         if (exception is HttpException) {
             exception.response()?.errorBody()?.let {
@@ -38,12 +40,19 @@ class FabriikApiResponseMapper {
                     it.source()
                 )
 
+                if (response?.error?.code == "105") {
+                    throwable = UserSessionExpiredException()
+                }
+
                 errorMessage = response?.error?.message
             }
         }
 
         return Resource.error(
-            message = errorMessage ?: context.getString(R.string.FabriikApi_DefaultError)
+            message = errorMessage ?: context.getString(R.string.FabriikApi_DefaultError),
+            throwable = throwable
         )
     }
 }
+
+class UserSessionExpiredException: RuntimeException("User session has expired")

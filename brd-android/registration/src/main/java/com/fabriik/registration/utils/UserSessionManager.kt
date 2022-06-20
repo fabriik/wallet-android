@@ -8,5 +8,5 @@ interface UserSessionManager {
 
     fun onSessionExpired(context: Context, scope: CoroutineScope)
 
-    fun isSessionExpiredError(error: FabriikApiResponseError) : Boolean
+    fun isSessionExpiredError(error: Throwable?) : Boolean
 }

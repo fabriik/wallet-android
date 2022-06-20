@@ -20,7 +20,7 @@ class RegistrationApiInterceptor : Interceptor {
         }
 
         return requestBuilderWithDeviceId
-            .addHeader("Authorization", SessionHolder.getSessionKey())
+            .addHeader("Authorization", ""/*SessionHolder.getSessionKey()*/)
             .build()
             .run(chain::proceed)
     }

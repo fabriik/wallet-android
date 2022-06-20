@@ -420,6 +420,9 @@ class BreadApp : Application(), KodeinAware, CameraXConfig.Provider {
 
         bind<ProfileManager>() with singleton {
             ProfileManagerImpl(
+                this@BreadApp,
+                applicationScope,
+                instance(),
                 instance(),
                 instance()
             )

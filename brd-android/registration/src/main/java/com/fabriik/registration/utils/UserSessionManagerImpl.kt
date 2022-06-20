@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import com.fabriik.common.data.FabriikApiResponseError
 import com.fabriik.common.data.Status
+import com.fabriik.common.utils.UserSessionExpiredException
 import com.fabriik.registration.data.RegistrationApi
 import com.fabriik.registration.ui.RegistrationActivity
 import com.fabriik.registration.ui.RegistrationFlow
@@ -11,13 +12,16 @@ import com.platform.tools.TokenHolder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.json.JSONException
+import org.json.JSONObject
+import retrofit2.HttpException
 import java.util.*
 
 class UserSessionManagerImpl(
     private val registrationApi: RegistrationApi,
     private val registrationUtils: RegistrationUtils
 ) : UserSessionManager {
-    
+
     private val sessionExpiredErrorCode = "105"
 
     override fun onSessionExpired(context: Context, scope: CoroutineScope) {
@@ -51,6 +55,7 @@ class UserSessionManagerImpl(
         }
     }
 
-    override fun isSessionExpiredError(error: FabriikApiResponseError) =
-        error.code == sessionExpiredErrorCode
+    override fun isSessionExpiredError(error: Throwable?) : Boolean {
+        return (error is UserSessionExpiredException)
+    }
 }
