@@ -52,7 +52,7 @@ class RegistrationVerifyEmailViewModel(
                 setState {
                     copy(
                         code = event.code,
-                        codeErrorVisible = false,
+                        codeErrorVisible = false
                     ).validate()
                 }
 
