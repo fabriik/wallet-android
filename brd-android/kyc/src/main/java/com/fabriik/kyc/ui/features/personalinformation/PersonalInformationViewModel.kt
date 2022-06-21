@@ -73,39 +73,40 @@ class PersonalInformationViewModel(
     }
 
     private fun confirmClicked() {
-        if (isAgeValid()) {
-            callApi(
-                endState = { copy(loadingVisible = false) },
-                startState = { copy(loadingVisible = true) },
-                action = {
-                    kycApi.completeLevel1Verification(
-                        firstName = currentState.name,
-                        lastName = currentState.lastName,
-                        country = currentState.country!!,
-                        dateOfBirth = currentState.dateOfBirth?.time!!,
-                    )
-                },
-                callback = {
-                    when (it.status) {
-                        Status.SUCCESS -> {
-                            showCompletedState()
-                        }
-
-                        Status.ERROR -> {
-                            setEffect {
-                                PersonalInformationContract.Effect.ShowToast(
-                                    it.message ?: getString(R.string.FabriikApi_DefaultError)
-                                )
-                            }
-                        }
-                    }
-                }
-            )
-        } else {
+        if (!isAgeValid()) {
             setEffect {
                 PersonalInformationContract.Effect.ShowToast(getString(R.string.KYC_Error_Underage))
             }
+            return
         }
+
+        callApi(
+            endState = { copy(loadingVisible = false) },
+            startState = { copy(loadingVisible = true) },
+            action = {
+                kycApi.completeLevel1Verification(
+                    firstName = currentState.name,
+                    lastName = currentState.lastName,
+                    country = currentState.country!!,
+                    dateOfBirth = currentState.dateOfBirth?.time!!,
+                )
+            },
+            callback = {
+                when (it.status) {
+                    Status.SUCCESS -> {
+                        showCompletedState()
+                    }
+
+                    Status.ERROR -> {
+                        setEffect {
+                            PersonalInformationContract.Effect.ShowToast(
+                                it.message ?: getString(R.string.FabriikApi_DefaultError)
+                            )
+                        }
+                    }
+                }
+            }
+        )
     }
 
     private fun PersonalInformationContract.State.validate() = copy(
