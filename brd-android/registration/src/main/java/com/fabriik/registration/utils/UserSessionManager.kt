@@ -48,6 +48,7 @@ object UserSessionManager: KodeinAware {
         this.context = context
     }
 
+    @Synchronized
     fun checkIfSessionExpired(
         context: Context, scope: CoroutineScope, response: Response
     ) {
@@ -69,6 +70,11 @@ object UserSessionManager: KodeinAware {
                     salt = nonce,
                     token = token
                 )
+            )
+
+            SessionHolder.updateSession(
+                sessionKey = responseAssociate.data?.sessionKey!!,
+                state = SessionState.CREATED
             )
 
             when (responseAssociate.status) {
