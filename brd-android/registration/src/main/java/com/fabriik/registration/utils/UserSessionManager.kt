@@ -2,6 +2,8 @@ package com.fabriik.registration.utils
 
 import android.content.Context
 import android.content.Intent
+import androidx.lifecycle.Lifecycle
+import com.breadwallet.app.ApplicationLifecycleObserver
 import com.fabriik.common.data.FabriikApiResponseError
 import com.fabriik.common.data.Status
 import com.fabriik.common.utils.UserSessionExpiredException
@@ -32,6 +34,15 @@ object UserSessionManager: KodeinAware {
     private lateinit var context: Context
 
     private val sessionExpiredErrorCode = "105"
+    private var canShowSessionExpiredScreen = true
+
+    init {
+        ApplicationLifecycleObserver.addApplicationLifecycleListener { event ->
+            if (event == Lifecycle.Event.ON_START) {
+                canShowSessionExpiredScreen = true
+            }
+        }
+    }
 
     fun provideContext(context: Context) {
         this.context = context
@@ -40,11 +51,12 @@ object UserSessionManager: KodeinAware {
     fun checkIfSessionExpired(
         context: Context, scope: CoroutineScope, response: Response
     ) {
-        if (SessionHolder.isDefaultSession() || !isSessionExpiredError(response)) {
+        if (SessionHolder.isDefaultSession() || !isSessionExpiredError(response) || !canShowSessionExpiredScreen) {
             return
         }
 
         SessionHolder.updateSessionState(SessionState.EXPIRED)
+        canShowSessionExpiredScreen = false
 
         val token = TokenHolder.retrieveToken() ?: return
         val nonce = UUID.randomUUID().toString()
@@ -68,7 +80,9 @@ object UserSessionManager: KodeinAware {
                             email = responseAssociate.data?.email!!
                         )
                     )
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    intent.addFlags(
+                        Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    )
                     context.startActivity(intent)
                 }
                 Status.ERROR -> {}

@@ -294,7 +294,10 @@ class BreadApp : Application(), KodeinAware, CameraXConfig.Provider {
         }
 
         bind<FabriikAuthInterceptor>() with singleton {
-            FabriikAuthInterceptor()
+            FabriikAuthInterceptor(
+                this@BreadApp,
+                applicationScope
+            )
         }
 
         bind<BlockchainDb>() with singleton {

@@ -1,12 +1,18 @@
 package com.breadwallet.breadbox
 
+import android.content.Context
 import com.breadwallet.tools.manager.BRSharedPrefs
 import com.fabriik.common.data.FabriikApiConstants
+import com.fabriik.registration.utils.UserSessionManager
 import com.platform.tools.SessionHolder
+import kotlinx.coroutines.CoroutineScope
 import okhttp3.Interceptor
 import okhttp3.Response
 
-class FabriikAuthInterceptor : Interceptor {
+class FabriikAuthInterceptor(
+    private val context: Context,
+    private val scope: CoroutineScope
+) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val requestBuilderWithDeviceId = chain.request()
@@ -20,9 +26,18 @@ class FabriikAuthInterceptor : Interceptor {
             )
         }
 
-        return requestBuilderWithDeviceId
+        val response = requestBuilderWithDeviceId
             .addHeader("Authorization", SessionHolder.getSessionKey())
             .build()
             .run(chain::proceed)
+
+
+        UserSessionManager.checkIfSessionExpired(
+            scope = scope,
+            context = context,
+            response = response
+        )
+
+        return response
     }
 }
