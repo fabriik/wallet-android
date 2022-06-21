@@ -120,6 +120,8 @@ class PersonalInformationFragment : Fragment(),
                 handleEffect(it)
             }
         }
+
+        viewModel.setEvent(PersonalInformationContract.Event.LoadProfile)
     }
 
     override fun render(state: PersonalInformationContract.State) {

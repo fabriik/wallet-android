@@ -5,6 +5,7 @@ import com.fabriik.common.data.FabriikApiConstants
 import com.fabriik.common.data.Resource
 import com.fabriik.common.utils.FabriikApiResponseMapper
 import com.fabriik.common.data.model.Profile
+import com.fabriik.common.utils.adapter.CalendarJsonAdapter
 import com.fabriik.registration.data.requests.AssociateConfirmRequest
 import com.fabriik.registration.data.requests.AssociateEmailRequest
 import com.fabriik.registration.data.requests.AssociateNewDeviceRequest
@@ -16,6 +17,7 @@ import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 class RegistrationApi(
@@ -125,6 +127,7 @@ class RegistrationApi(
                 .addConverterFactory(
                     MoshiConverterFactory.create(
                         Moshi.Builder()
+                            .add(Calendar::class.java, CalendarJsonAdapter())
                             .addLast(KotlinJsonAdapterFactory())
                             .build()
                     )
