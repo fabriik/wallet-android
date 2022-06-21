@@ -28,7 +28,7 @@ class ProfileManagerImpl(
                 emit(response.data)
             }
             Status.ERROR -> {
-                //Log.i("err")
+                emit(null)
             }
         }
     }
