@@ -59,10 +59,7 @@ class RegistrationApi(
 
             Resource.success(response)
         } catch (ex: Exception) {
-            responseMapper.mapError(
-                context = context,
-                exception = ex
-            )
+            Resource.error(message = ex.message ?: "Not found")
         }
     }
 
