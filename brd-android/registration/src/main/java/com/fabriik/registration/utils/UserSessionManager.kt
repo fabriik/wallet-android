@@ -4,9 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.lifecycle.Lifecycle
 import com.breadwallet.app.ApplicationLifecycleObserver
-import com.fabriik.common.data.FabriikApiResponseError
 import com.fabriik.common.data.Status
-import com.fabriik.common.utils.UserSessionExpiredException
 import com.fabriik.registration.data.RegistrationApi
 import com.fabriik.registration.ui.RegistrationActivity
 import com.fabriik.registration.ui.RegistrationFlow
@@ -17,12 +15,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import okhttp3.Response
-import org.json.JSONException
 import org.json.JSONObject
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
 import org.kodein.di.erased.instance
-import retrofit2.HttpException
 import java.util.*
 
 object UserSessionManager: KodeinAware {
