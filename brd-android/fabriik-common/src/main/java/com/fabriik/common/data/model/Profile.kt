@@ -13,16 +13,16 @@ data class Profile(
     @Json(name = "email")
     val email: String,
 
-    @Json(name = "firstName")
+    @Json(name = "first_name")
     val firstName: String?,
 
-    @Json(name = "lastName")
+    @Json(name = "last_name")
     val lastName: String?,
 
     @Json(name = "country")
     val country: String?,
 
-    @Json(name = "dateOfBirth")
+    @Json(name = "date_of_birth")
     val dateOfBirth: Calendar?,
 
     @Json(name = "kyc_status")

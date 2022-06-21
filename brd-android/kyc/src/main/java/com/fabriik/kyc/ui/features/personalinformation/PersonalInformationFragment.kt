@@ -131,6 +131,11 @@ class PersonalInformationFragment : Fragment(),
             btnConfirm.isEnabled = state.confirmEnabled
             etCountry.setText(state.country?.name)
 
+            etName.setText(state.name)
+            etName.setSelection(state.name.length)
+            etLastName.setText(state.lastName)
+            etLastName.setSelection(state.lastName.length)
+
             val date = state.dateOfBirth
             etDay.setText(date?.get(Calendar.DAY_OF_MONTH)?.toString())
             etYear.setText(date?.get(Calendar.YEAR)?.toString())
