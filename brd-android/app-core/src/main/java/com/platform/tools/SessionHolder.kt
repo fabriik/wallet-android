@@ -28,7 +28,7 @@ object SessionHolder : KodeinAware {
     fun getSession() = userManager.getSession() ?: defaultSession
 
     @Synchronized
-    fun getSessionKey() = ""//getSession().key
+    fun getSessionKey() = getSession().key
 
     @Synchronized
     fun updateSession(sessionKey: String, state: SessionState): Session? {
