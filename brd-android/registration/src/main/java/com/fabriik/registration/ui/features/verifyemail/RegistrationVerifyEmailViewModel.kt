@@ -20,15 +20,19 @@ import com.platform.tools.SessionState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.closestKodein
+import org.kodein.di.erased.instance
 
 class RegistrationVerifyEmailViewModel(
     application: Application,
     savedStateHandle: SavedStateHandle
 ) : FabriikViewModel<RegistrationVerifyEmailContract.State, RegistrationVerifyEmailContract.Event, RegistrationVerifyEmailContract.Effect>(
     application, savedStateHandle
-) {
+), KodeinAware {
 
-    private val registrationApi = RegistrationApi.create(application)
+    override val kodein by closestKodein { application }
+    private val registrationApi by instance<RegistrationApi>()
 
     private lateinit var arguments: RegistrationVerifyEmailFragmentArgs
 

@@ -1,12 +1,94 @@
 package com.fabriik.registration.utils
 
 import android.content.Context
+import android.content.Intent
 import com.fabriik.common.data.FabriikApiResponseError
+import com.fabriik.common.data.Status
+import com.fabriik.common.utils.UserSessionExpiredException
+import com.fabriik.registration.data.RegistrationApi
+import com.fabriik.registration.ui.RegistrationActivity
+import com.fabriik.registration.ui.RegistrationFlow
+import com.platform.tools.SessionHolder
+import com.platform.tools.SessionState
+import com.platform.tools.TokenHolder
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import okhttp3.Response
+import org.json.JSONException
+import org.json.JSONObject
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.closestKodein
+import org.kodein.di.erased.instance
+import retrofit2.HttpException
+import java.util.*
 
-interface UserSessionManager {
+object UserSessionManager: KodeinAware {
 
-    fun onSessionExpired(context: Context, scope: CoroutineScope)
+    override val kodein by closestKodein { context }
+    private val registrationApi by instance<RegistrationApi>()
+    private val registrationUtils by instance<RegistrationUtils>()
 
-    fun isSessionExpiredError(error: Throwable?) : Boolean
+    private lateinit var context: Context
+
+    private val sessionExpiredErrorCode = "105"
+
+    fun provideContext(context: Context) {
+        this.context = context
+    }
+
+    fun checkIfSessionExpired(
+        context: Context, scope: CoroutineScope, response: Response
+    ) {
+        if (SessionHolder.isDefaultSession() || !isSessionExpiredError(response)) {
+            return
+        }
+
+        SessionHolder.updateSessionState(SessionState.EXPIRED)
+
+        val token = TokenHolder.retrieveToken() ?: return
+        val nonce = UUID.randomUUID().toString()
+
+        scope.launch(Dispatchers.IO) {
+            val responseAssociate = registrationApi.associateNewDevice(
+                nonce,
+                token,
+                registrationUtils.getAssociateRequestHeaders(
+                    salt = nonce,
+                    token = token
+                )
+            )
+
+            when (responseAssociate.status) {
+                Status.SUCCESS -> {
+                    val intent = RegistrationActivity.getStartIntent(
+                        context = context,
+                        args = RegistrationActivity.Args(
+                            flow = RegistrationFlow.RE_VERIFY,
+                            email = responseAssociate.data?.email!!
+                        )
+                    )
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    context.startActivity(intent)
+                }
+                Status.ERROR -> {}
+            }
+        }
+    }
+
+    private fun isSessionExpiredError(response: Response) : Boolean {
+        if (response.isSuccessful) {
+            return false
+        }
+
+        return try {
+            val responseJson = response.peekBody(Long.MAX_VALUE).string()
+            val jsonObject = JSONObject(responseJson)
+            val errorObject = jsonObject.getJSONObject("error")
+            val errorCode = errorObject.getString("code")
+            errorCode == sessionExpiredErrorCode
+        } catch (ex: Exception) {
+            false
+        }
+    }
 }

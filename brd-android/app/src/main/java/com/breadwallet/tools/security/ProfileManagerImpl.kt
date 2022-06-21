@@ -1,23 +1,16 @@
 package com.breadwallet.tools.security
 
-import android.content.Context
+import android.util.Log
 import com.fabriik.common.data.Status
 import com.fabriik.common.data.model.Profile
 import com.fabriik.registration.data.RegistrationApi
-import com.fabriik.registration.utils.UserSessionManager
-import com.fabriik.registration.utils.UserSessionManagerImpl
 import com.platform.tools.SessionHolder
-import com.platform.tools.SessionState
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class ProfileManagerImpl(
-    private val context: Context,
-    private val scope: CoroutineScope,
     private val userManager: BrdUserManager,
-    private val registrationApi: RegistrationApi,
-    private val userSessionManager: UserSessionManager
+    private val registrationApi: RegistrationApi
 ) : ProfileManager {
 
     override fun getProfile() = userManager.getProfile()
@@ -35,13 +28,7 @@ class ProfileManagerImpl(
                 emit(response.data)
             }
             Status.ERROR -> {
-                if (userSessionManager.isSessionExpiredError(response.throwable)) {
-                    SessionHolder.updateSessionState(SessionState.EXPIRED)
-                    userSessionManager.onSessionExpired(
-                        context = context,
-                        scope = scope
-                    )
-                }
+                //Log.i("err")
             }
         }
     }

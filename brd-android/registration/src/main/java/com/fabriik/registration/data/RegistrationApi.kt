@@ -112,7 +112,7 @@ class RegistrationApi(
 
     companion object {
 
-        fun create(context: Context) = RegistrationApi(
+        fun create(context: Context, interceptor: RegistrationApiInterceptor) = RegistrationApi(
             context = context,
             service = Retrofit.Builder()
                 .client(
@@ -121,7 +121,7 @@ class RegistrationApi(
                         .callTimeout(30, TimeUnit.SECONDS)
                         .writeTimeout(30, TimeUnit.SECONDS)
                         .connectTimeout(30, TimeUnit.SECONDS)
-                        .addInterceptor(RegistrationApiInterceptor())
+                        .addInterceptor(interceptor)
                         .build()
                 )
                 .baseUrl(FabriikApiConstants.HOST_AUTH_API)
