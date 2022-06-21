@@ -46,10 +46,6 @@ class CountrySelectionFragment : Fragment(),
                 viewModel.setEvent(CountrySelectionContract.Event.BackClicked)
             }
 
-            btnDismiss.setOnClickListener {
-                viewModel.setEvent(CountrySelectionContract.Event.DismissClicked)
-            }
-
             etSearch.doAfterTextChanged {
                 viewModel.setEvent(CountrySelectionContract.Event.SearchChanged(it?.toString()))
             }
@@ -91,9 +87,6 @@ class CountrySelectionFragment : Fragment(),
 
     override fun handleEffect(effect: CountrySelectionContract.Effect) {
         when (effect) {
-            is CountrySelectionContract.Effect.Dismiss ->
-                requireActivity().finish()
-
             is CountrySelectionContract.Effect.Back -> {
                 val bundle = bundleOf(
                     EXTRA_SELECTED_COUNTRY to effect.selectedCountry

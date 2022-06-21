@@ -54,9 +54,6 @@ class CountrySelectionViewModel(
                         selectedCountry = null
                     )
                 }
-
-            is CountrySelectionContract.Event.DismissClicked ->
-                setEffect { CountrySelectionContract.Effect.Dismiss }
         }
     }
 

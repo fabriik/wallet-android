@@ -14,37 +14,23 @@
         android:layout_marginStart="16dp"
         android:text="@string/CountrySelection.Title"
         android:textColor="@color/light_text_01"
-        app:layout_constraintBottom_toBottomOf="@id/btn_dismiss"
+        app:layout_constraintBottom_toBottomOf="@id/btn_back"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/btn_dismiss" />
+        app:layout_constraintTop_toTopOf="@id/btn_back" />
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/btn_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:padding="8dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:scaleType="fitXY"
         android:src="@drawable/ic_kyc_back"
         android:tint="@color/light_icons_01"
-        app:layout_constraintBottom_toBottomOf="@id/btn_dismiss"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/btn_dismiss" />
-
-    <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/btn_dismiss"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:padding="8dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:scaleType="fitXY"
-        android:src="@drawable/ic_kyc_dismiss"
-        android:tint="@color/light_icons_01"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatEditText
@@ -57,7 +43,7 @@
         android:hint="@string/CountrySelection.SearchHint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_dismiss"/>
+        app:layout_constraintTop_toBottomOf="@+id/btn_back"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_countries"
