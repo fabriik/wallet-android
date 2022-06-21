@@ -3,6 +3,8 @@ package com.breadwallet.ui.profile
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedDispatcher
+import androidx.activity.addCallback
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -58,6 +60,10 @@ ProfileController(
                 activity!!, DividerItemDecoration.VERTICAL
             )
         )
+
+        OnBackPressedDispatcher().addCallback {
+            eventConsumer.accept(E.OnCloseClicked)
+        }
 
         registerForActivityResult(KycActivity.REQUEST_CODE)
     }
