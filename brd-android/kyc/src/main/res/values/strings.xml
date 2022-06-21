@@ -3,6 +3,7 @@
     <!-- Common -->
     <string name="KYC.ConfirmButton">Confirm</string>
     <string name="KYC.Continue">Continue</string>
+    <string name="KYC.Error.Underage">You must be at least 18 years old to complete Level 1 and 2 verification.</string>
 
     <!-- Profile status view -->
     <string name="ProfileStatusView.accountLimits">Account limits</string>

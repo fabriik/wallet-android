@@ -12,6 +12,8 @@ import com.fabriik.kyc.ui.KycActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.time.LocalDate
 import java.util.*
 
 class PersonalInformationViewModel(
@@ -71,31 +73,39 @@ class PersonalInformationViewModel(
     }
 
     private fun confirmClicked() {
-        callApi(
-            endState = { copy(loadingVisible = false) },
-            startState = { copy(loadingVisible = true) },
-            action = {
-                kycApi.completeLevel1Verification(
-                    firstName = currentState.name,
-                    lastName = currentState.lastName,
-                    country = currentState.country!!,
-                    dateOfBirth = currentState.dateOfBirth?.time!!,
-                )
-            },
-            callback = {
-                when (it.status) {
-                    Status.SUCCESS ->
-                        showCompletedState()
-
-                    Status.ERROR ->
-                        setEffect {
-                            PersonalInformationContract.Effect.ShowToast(
-                                it.message ?: getString(R.string.FabriikApi_DefaultError)
-                            )
+        if (isAgeValid()) {
+            callApi(
+                endState = { copy(loadingVisible = false) },
+                startState = { copy(loadingVisible = true) },
+                action = {
+                    kycApi.completeLevel1Verification(
+                        firstName = currentState.name,
+                        lastName = currentState.lastName,
+                        country = currentState.country!!,
+                        dateOfBirth = currentState.dateOfBirth?.time!!,
+                    )
+                },
+                callback = {
+                    when (it.status) {
+                        Status.SUCCESS -> {
+                            showCompletedState()
                         }
+
+                        Status.ERROR -> {
+                            setEffect {
+                                PersonalInformationContract.Effect.ShowToast(
+                                    it.message ?: getString(R.string.FabriikApi_DefaultError)
+                                )
+                            }
+                        }
+                    }
                 }
+            )
+        } else {
+            setEffect {
+                PersonalInformationContract.Effect.ShowToast(getString(R.string.KYC_Error_Underage))
             }
-        )
+        }
     }
 
     private fun PersonalInformationContract.State.validate() = copy(
@@ -104,4 +114,13 @@ class PersonalInformationViewModel(
                 && textValidator(name)
                 && textValidator(lastName)
     )
+
+    private fun isAgeValid(): Boolean {
+        val date = SimpleDateFormat(
+            KycApi.DATE_FORMAT,
+            Locale.getDefault()
+        ).format(currentState.dateOfBirth?.time!!)
+
+        return LocalDate.parse(date).plusYears(18).isBefore(LocalDate.now())
+    }
 }
