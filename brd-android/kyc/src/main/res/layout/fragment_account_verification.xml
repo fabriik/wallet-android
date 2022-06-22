@@ -168,20 +168,6 @@
                         app:layout_constraintTop_toBottomOf="@id/tv_level2_title" />
 
                     <com.fabriik.kyc.ui.customview.CheckedTextView
-                        android:id="@+id/tv_level2_checked_item_2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="16dp"
-                        app:contentText="@string/AccountVerification.Level2.CheckedItem2"
-                        app:iconImage="@drawable/ic_check_grey"
-                        app:layout_constrainedWidth="true"
-                        app:layout_constraintEnd_toStartOf="@id/iv_level2_arrow_right"
-                        app:layout_constraintHorizontal_bias="0"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_level2_checked_item_1" />
-
-                    <com.fabriik.kyc.ui.customview.CheckedTextView
                         android:id="@+id/tv_level2_checked_item_error"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -191,7 +177,7 @@
                         app:layout_constraintEnd_toStartOf="@id/iv_level2_arrow_right"
                         app:layout_constraintHorizontal_bias="0"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_level2_checked_item_2"
+                        app:layout_constraintTop_toBottomOf="@id/tv_level2_checked_item_1"
                         tools:contentText="Error message"
                         tools:iconImage="@drawable/ic_check_error" />
 
