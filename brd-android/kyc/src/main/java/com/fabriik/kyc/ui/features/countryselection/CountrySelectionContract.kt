@@ -8,13 +8,11 @@ interface CountrySelectionContract {
     sealed class Event : FabriikContract.Event {
         object BackClicked : Event()
         object LoadCountries : Event()
-        object DismissClicked : Event()
         data class SearchChanged(val query: String?) : Event()
         data class CountrySelected(val country: Country) : Event()
     }
 
     sealed class Effect : FabriikContract.Effect {
-        object Dismiss : Effect()
         data class ShowToast(val message: String): Effect()
         data class Back(
             val requestKey: String,
