@@ -72,8 +72,7 @@ class RegistrationVerifyEmailViewModel(
     }
 
     private fun verifyEmail() {
-        val currentSession = SessionHolder.getSession()
-        if (currentSession.state == SessionState.DEFAULT) {
+        if (SessionHolder.isDefaultSession()) {
             setEffect {
                 RegistrationVerifyEmailContract.Effect.ShowToast(
                     getString(R.string.FabriikApi_DefaultError)
