@@ -63,6 +63,7 @@ import java.math.BigDecimal
 import java.util.Locale
 import kotlin.coroutines.resume
 import com.breadwallet.crypto.Wallet as CryptoWallet
+import com.fabriik.registration.utils.UserSessionManager
 
 private const val PROMPT_DISMISSED_FINGERPRINT = "fingerprint"
 
@@ -236,6 +237,10 @@ fun createHomeScreenHandler(
                     E.OnProfileDataLoaded(it)
                 }
             }
+    }
+
+    addConsumer<F.RequestSessionVerification> {
+        UserSessionManager.requestSessionVerification(context)
     }
 }
 

@@ -98,7 +98,7 @@ val HomeScreenUpdate = Update<M, E, F> { model, event ->
         E.OnBuyClicked -> when {
             !model.profile.isUserRegistered() -> dispatch(effects(F.GoToRegistration))
             !model.profile.canUseBuyTrade() -> dispatch(effects(F.GoToVerifyProfile))
-            !SessionHolder.isUserSessionVerified() -> //todo: session expired
+            !SessionHolder.isUserSessionVerified() -> dispatch(effects(F.RequestSessionVerification))
             else -> {
                 val isBuyAlertNeeded = model.isBuyAlertNeeded
                 BRSharedPrefs.buyNotePromptShouldPrompt = false
@@ -121,7 +121,7 @@ val HomeScreenUpdate = Update<M, E, F> { model, event ->
         E.OnTradeClicked -> when {
             !model.profile.isUserRegistered() -> dispatch(effects(F.GoToRegistration))
             !model.profile.canUseBuyTrade() -> dispatch(effects(F.GoToVerifyProfile))
-            !SessionHolder.isUserSessionVerified() -> //todo: session expired
+            !SessionHolder.isUserSessionVerified() -> dispatch(effects(F.RequestSessionVerification))
             else -> {
                 val isTradeAlertNeeded = model.isTradeAlertNeeded
                 BRSharedPrefs.tradeNotePromptShouldPrompt = false

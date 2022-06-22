@@ -21,7 +21,7 @@ import org.kodein.di.android.closestKodein
 import org.kodein.di.erased.instance
 import java.util.*
 
-object UserSessionManager: KodeinAware {
+object UserSessionManager : KodeinAware {
 
     override val kodein by closestKodein { context }
     private val registrationApi by instance<RegistrationApi>()
@@ -55,44 +55,47 @@ object UserSessionManager: KodeinAware {
         SessionHolder.updateSessionState(SessionState.EXPIRED)
         canShowSessionExpiredScreen = false
 
-        val token = TokenHolder.retrieveToken() ?: return
-        val nonce = UUID.randomUUID().toString()
-
         scope.launch(Dispatchers.IO) {
-            val responseAssociate = registrationApi.associateNewDevice(
-                nonce,
-                token,
-                registrationUtils.getAssociateRequestHeaders(
-                    salt = nonce,
-                    token = token
-                )
-            )
-
-            SessionHolder.updateSession(
-                sessionKey = responseAssociate.data?.sessionKey!!,
-                state = SessionState.CREATED
-            )
-
-            when (responseAssociate.status) {
-                Status.SUCCESS -> {
-                    val intent = RegistrationActivity.getStartIntent(
-                        context = context,
-                        args = RegistrationActivity.Args(
-                            flow = RegistrationFlow.RE_VERIFY,
-                            email = responseAssociate.data?.email!!
-                        )
-                    )
-                    intent.addFlags(
-                        Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP
-                    )
-                    context.startActivity(intent)
-                }
-                Status.ERROR -> {}
-            }
+            requestSessionVerification(context)
         }
     }
 
-    private fun isSessionExpiredError(response: Response) : Boolean {
+    suspend fun requestSessionVerification(context: Context) {
+        val token = TokenHolder.retrieveToken() ?: return
+        val nonce = UUID.randomUUID().toString()
+        val responseAssociate = registrationApi.associateNewDevice(
+            nonce,
+            token,
+            registrationUtils.getAssociateRequestHeaders(
+                salt = nonce,
+                token = token
+            )
+        )
+
+        SessionHolder.updateSession(
+            sessionKey = responseAssociate.data?.sessionKey!!,
+            state = SessionState.CREATED
+        )
+
+        when (responseAssociate.status) {
+            Status.SUCCESS -> {
+                val intent = RegistrationActivity.getStartIntent(
+                    context = context,
+                    args = RegistrationActivity.Args(
+                        flow = RegistrationFlow.RE_VERIFY,
+                        email = responseAssociate.data?.email!!
+                    )
+                )
+                intent.addFlags(
+                    Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                )
+                context.startActivity(intent)
+            }
+            Status.ERROR -> {}
+        }
+    }
+
+    private fun isSessionExpiredError(response: Response): Boolean {
         if (response.isSuccessful) {
             return false
         }
