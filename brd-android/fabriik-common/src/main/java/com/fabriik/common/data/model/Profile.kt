@@ -16,6 +16,13 @@ data class Profile(
     val kycStatus: KycStatus
 ) : Parcelable
 
+fun Profile?.isUserRegistered() = when(this?.kycStatus) {
+    null,
+    KycStatus.DEFAULT,
+    KycStatus.EMAIL_VERIFICATION_PENDING -> false
+    else -> true
+}
+
 fun Profile?.canUseBuyTrade() = when(this?.kycStatus) {
     null,
     KycStatus.DEFAULT,

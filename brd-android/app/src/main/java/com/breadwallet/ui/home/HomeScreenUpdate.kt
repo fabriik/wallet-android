@@ -31,6 +31,7 @@ import com.breadwallet.ui.home.HomeScreen.E
 import com.breadwallet.ui.home.HomeScreen.F
 import com.breadwallet.ui.home.HomeScreen.M
 import com.fabriik.common.data.model.canUseBuyTrade
+import com.fabriik.common.data.model.isUserRegistered
 import com.platform.tools.SessionHolder
 import com.spotify.mobius.Effects.effects
 import com.spotify.mobius.Next.dispatch
@@ -95,7 +96,9 @@ val HomeScreenUpdate = Update<M, E, F> { model, event ->
         }
         is E.OnAddWalletsClicked -> dispatch(effects(F.GoToAddWallet))
         E.OnBuyClicked -> when {
+            !model.profile.isUserRegistered() -> dispatch(effects(F.GoToRegistration))
             !model.profile.canUseBuyTrade() -> dispatch(effects(F.GoToVerifyProfile))
+            !SessionHolder.isUserSessionVerified() -> //todo: session expired
             else -> {
                 val isBuyAlertNeeded = model.isBuyAlertNeeded
                 BRSharedPrefs.buyNotePromptShouldPrompt = false
@@ -116,7 +119,9 @@ val HomeScreenUpdate = Update<M, E, F> { model, event ->
             }
         }
         E.OnTradeClicked -> when {
+            !model.profile.isUserRegistered() -> dispatch(effects(F.GoToRegistration))
             !model.profile.canUseBuyTrade() -> dispatch(effects(F.GoToVerifyProfile))
+            !SessionHolder.isUserSessionVerified() -> //todo: session expired
             else -> {
                 val isTradeAlertNeeded = model.isTradeAlertNeeded
                 BRSharedPrefs.tradeNotePromptShouldPrompt = false
