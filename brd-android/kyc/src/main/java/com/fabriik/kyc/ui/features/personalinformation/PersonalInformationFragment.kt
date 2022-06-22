@@ -120,6 +120,8 @@ class PersonalInformationFragment : Fragment(),
                 handleEffect(it)
             }
         }
+
+        viewModel.setEvent(PersonalInformationContract.Event.LoadProfile)
     }
 
     override fun render(state: PersonalInformationContract.State) {
@@ -128,6 +130,11 @@ class PersonalInformationFragment : Fragment(),
             viewCompleted.isVisible = state.completedViewVisible
             btnConfirm.isEnabled = state.confirmEnabled
             etCountry.setText(state.country?.name)
+
+            etName.setText(state.name)
+            etName.setSelection(state.name.length)
+            etLastName.setText(state.lastName)
+            etLastName.setSelection(state.lastName.length)
 
             val date = state.dateOfBirth
             etDay.setText(date?.get(Calendar.DAY_OF_MONTH)?.toString())

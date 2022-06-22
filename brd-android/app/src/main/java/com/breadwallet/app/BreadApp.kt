@@ -70,6 +70,9 @@ import com.breadwallet.util.*
 import com.breadwallet.util.usermetrics.UserMetricsUtil
 import com.fabriik.common.data.FabriikApiConstants
 import com.fabriik.registration.data.RegistrationApi
+import com.fabriik.registration.data.RegistrationApiInterceptor
+import com.fabriik.registration.utils.RegistrationUtils
+import com.fabriik.registration.utils.UserSessionManager
 import com.platform.APIClient
 import com.platform.HTTPServer
 import com.platform.interfaces.KVStoreProvider
@@ -291,7 +294,10 @@ class BreadApp : Application(), KodeinAware, CameraXConfig.Provider {
         }
 
         bind<FabriikAuthInterceptor>() with singleton {
-            FabriikAuthInterceptor()
+            FabriikAuthInterceptor(
+                this@BreadApp,
+                applicationScope
+            )
         }
 
         bind<BlockchainDb>() with singleton {
@@ -401,7 +407,21 @@ class BreadApp : Application(), KodeinAware, CameraXConfig.Provider {
         }
 
         bind<RegistrationApi>() with singleton {
-            RegistrationApi.create(this@BreadApp)
+            RegistrationApi.create(
+                this@BreadApp,
+                instance()
+            )
+        }
+
+        bind<RegistrationUtils>() with singleton {
+            RegistrationUtils(instance())
+        }
+
+        bind<RegistrationApiInterceptor>() with singleton {
+            RegistrationApiInterceptor(
+                this@BreadApp,
+                applicationScope
+            )
         }
 
         bind<ProfileManager>() with singleton {
@@ -441,6 +461,7 @@ class BreadApp : Application(), KodeinAware, CameraXConfig.Provider {
         BRSharedPrefs.initialize(this, applicationScope)
         TokenHolder.provideContext(this)
         SessionHolder.provideContext(this)
+        UserSessionManager.provideContext(this)
 
         ProcessLifecycleOwner.get().lifecycle.addObserver(ApplicationLifecycleObserver())
         ApplicationLifecycleObserver.addApplicationLifecycleListener { event ->

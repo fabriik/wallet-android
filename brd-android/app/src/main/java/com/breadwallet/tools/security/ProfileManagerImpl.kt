@@ -1,5 +1,6 @@
 package com.breadwallet.tools.security
 
+import com.fabriik.common.data.Status
 import com.fabriik.common.data.model.Profile
 import com.fabriik.registration.data.RegistrationApi
 import com.platform.tools.SessionHolder
@@ -20,11 +21,14 @@ class ProfileManagerImpl(
         }
 
         val response = registrationApi.getProfile()
-        val profile = response.data
-
-        if (profile != null) {
-            userManager.putProfile(profile)
+        when (response.status) {
+            Status.SUCCESS -> {
+                userManager.putProfile(response.data)
+                emit(response.data)
+            }
+            Status.ERROR -> {
+                emit(null)
+            }
         }
-        emit(profile)
     }
 }

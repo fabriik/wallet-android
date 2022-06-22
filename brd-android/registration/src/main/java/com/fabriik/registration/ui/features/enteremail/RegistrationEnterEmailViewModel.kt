@@ -23,10 +23,8 @@ class RegistrationEnterEmailViewModel(
 ), KodeinAware {
 
     override val kodein by closestKodein { application }
-    private val userManager by instance<BrdUserManager>()
-
-    private val registrationApi = RegistrationApi.create(application)
-    private val registrationUtils = RegistrationUtils(userManager)
+    private val registrationApi by instance<RegistrationApi>()
+    private val registrationUtils by instance<RegistrationUtils>()
 
     override fun createInitialState() = RegistrationEnterEmailContract.State()
 

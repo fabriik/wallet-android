@@ -48,6 +48,7 @@ import com.breadwallet.tools.manager.BRReportsManager
 import com.breadwallet.tools.manager.BRSharedPrefs
 import com.breadwallet.platform.interfaces.AccountMetaDataProvider
 import com.fabriik.common.data.model.Profile
+import com.fabriik.common.utils.adapter.CalendarJsonAdapter
 import com.platform.tools.Session
 import com.platform.tools.SessionState
 import com.squareup.moshi.JsonAdapter
@@ -77,7 +78,7 @@ import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import java.security.KeyStore
 import java.security.UnrecoverableKeyException
-import java.util.Date
+import java.util.*
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
 import javax.crypto.Cipher
@@ -707,14 +708,20 @@ class CryptoUserManager(
 }
 
 fun SharedPreferences.getProfile() : Profile? {
-    val moshi = Moshi.Builder().build()
+    val moshi = Moshi.Builder()
+        .add(Calendar::class.java, CalendarJsonAdapter())
+        .build()
+
     val adapter: JsonAdapter<Profile> = moshi.adapter(Profile::class.java)
     val json = getString(KEY_PROFILE, null) ?: return null
     return adapter.fromJson(json)
 }
 
 fun SharedPreferences.Editor.putProfile(profile: Profile?) {
-    val moshi = Moshi.Builder().build()
+    val moshi = Moshi.Builder()
+        .add(Calendar::class.java, CalendarJsonAdapter())
+        .build()
+
     val adapter: JsonAdapter<Profile> = moshi.adapter(Profile::class.java)
     putString(
         KEY_PROFILE, if (profile == null) null else adapter.toJson(profile)

@@ -5,6 +5,7 @@ import com.fabriik.common.data.FabriikApiConstants
 import com.fabriik.common.data.Resource
 import com.fabriik.common.utils.FabriikApiResponseMapper
 import com.fabriik.common.data.model.Profile
+import com.fabriik.common.utils.adapter.CalendarJsonAdapter
 import com.fabriik.registration.data.requests.AssociateConfirmRequest
 import com.fabriik.registration.data.requests.AssociateEmailRequest
 import com.fabriik.registration.data.requests.AssociateNewDeviceRequest
@@ -16,6 +17,7 @@ import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 class RegistrationApi(
@@ -59,10 +61,7 @@ class RegistrationApi(
 
             Resource.success(response)
         } catch (ex: Exception) {
-            responseMapper.mapError(
-                context = context,
-                exception = ex
-            )
+            Resource.error(message = ex.message ?: "Not found")
         }
     }
 
@@ -112,7 +111,7 @@ class RegistrationApi(
 
     companion object {
 
-        fun create(context: Context) = RegistrationApi(
+        fun create(context: Context, interceptor: RegistrationApiInterceptor) = RegistrationApi(
             context = context,
             service = Retrofit.Builder()
                 .client(
@@ -121,13 +120,14 @@ class RegistrationApi(
                         .callTimeout(30, TimeUnit.SECONDS)
                         .writeTimeout(30, TimeUnit.SECONDS)
                         .connectTimeout(30, TimeUnit.SECONDS)
-                        .addInterceptor(RegistrationApiInterceptor())
+                        .addInterceptor(interceptor)
                         .build()
                 )
                 .baseUrl(FabriikApiConstants.HOST_AUTH_API)
                 .addConverterFactory(
                     MoshiConverterFactory.create(
                         Moshi.Builder()
+                            .add(Calendar::class.java, CalendarJsonAdapter())
                             .addLast(KotlinJsonAdapterFactory())
                             .build()
                     )

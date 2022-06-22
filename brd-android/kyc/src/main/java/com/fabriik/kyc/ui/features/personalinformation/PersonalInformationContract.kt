@@ -1,6 +1,7 @@
 package com.fabriik.kyc.ui.features.personalinformation
 
 import android.app.Activity
+import com.fabriik.common.data.model.Profile
 import com.fabriik.common.ui.base.FabriikContract
 import com.fabriik.kyc.data.model.Country
 import java.util.*
@@ -8,6 +9,7 @@ import java.util.*
 interface PersonalInformationContract {
 
     sealed class Event : FabriikContract.Event {
+        object LoadProfile : Event()
         object BackClicked : Event()
         object DateClicked : Event()
         object CountryClicked : Event()
