@@ -130,5 +130,6 @@
 
     <action
         android:id="@+id/actionAccountVerification"
-        app:destination="@+id/fragmentAccountVerification"/>
+        app:destination="@+id/fragmentAccountVerification"
+        app:popUpTo="@+id/fragmentAccountVerification"/>
 </navigation>

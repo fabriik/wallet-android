@@ -1,6 +1,5 @@
 package com.breadwallet.tools.security
 
-import android.util.Log
 import com.fabriik.common.data.Status
 import com.fabriik.common.data.model.Profile
 import com.fabriik.registration.data.RegistrationApi
