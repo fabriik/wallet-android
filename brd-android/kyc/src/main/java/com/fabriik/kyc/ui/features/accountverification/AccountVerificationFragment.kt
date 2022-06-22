@@ -91,9 +91,6 @@ class AccountVerificationFragment : Fragment(),
                     tvLevel2CheckedItem1.setStateIcon(state.level2State.statusState)
                     tvLevel2CheckedItem1.isVisible = state.level2State.verificationError == null
 
-                    tvLevel2CheckedItem2.setStateIcon(state.level2State.statusState)
-                    tvLevel2CheckedItem2.isVisible = state.level2State.verificationError == null
-
                     tvLevel2CheckedItemError.setStateIcon(state.level2State.statusState)
                     tvLevel2CheckedItemError.setContent(state.level2State.verificationError)
                     tvLevel2CheckedItemError.isVisible = state.level2State.verificationError != null

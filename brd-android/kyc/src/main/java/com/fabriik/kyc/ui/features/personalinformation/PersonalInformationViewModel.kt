@@ -2,23 +2,35 @@ package com.fabriik.kyc.ui.features.personalinformation
 
 import android.app.Application
 import androidx.lifecycle.viewModelScope
+import com.breadwallet.tools.security.ProfileManager
 import com.fabriik.common.data.Status
 import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.common.utils.getString
 import com.fabriik.common.utils.validators.TextValidator
 import com.fabriik.kyc.R
 import com.fabriik.kyc.data.KycApi
+import com.fabriik.kyc.data.model.Country
 import com.fabriik.kyc.ui.KycActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.closestKodein
+import org.kodein.di.erased.instance
 import java.util.*
 
 class PersonalInformationViewModel(
     application: Application
 ) : FabriikViewModel<PersonalInformationContract.State, PersonalInformationContract.Event, PersonalInformationContract.Effect>(
     application
-) {
+), KodeinAware {
+
+    override val kodein by closestKodein { application }
+    private val profileManager by kodein.instance<ProfileManager>()
+
+    companion object {
+        const val MIN_AGE = 18
+    }
 
     private val kycApi = KycApi.create(application.applicationContext)
     private val textValidator = TextValidator
@@ -27,6 +39,18 @@ class PersonalInformationViewModel(
 
     override fun handleEvent(event: PersonalInformationContract.Event) {
         when (event) {
+            is PersonalInformationContract.Event.LoadProfile -> {
+                val profile = profileManager.getProfile()
+                setState {
+                    copy(
+                        name = profile?.firstName ?: "",
+                        lastName = profile?.lastName ?: "",
+                        dateOfBirth = profile?.dateOfBirth,
+                        country = profile?.country?.let { Country(it, it) },
+                    )
+                }
+            }
+
             is PersonalInformationContract.Event.BackClicked ->
                 setEffect { PersonalInformationContract.Effect.GoBack }
 
@@ -71,6 +95,13 @@ class PersonalInformationViewModel(
     }
 
     private fun confirmClicked() {
+        if (!isAgeValid()) {
+            setEffect {
+                PersonalInformationContract.Effect.ShowToast(getString(R.string.KYC_Error_Underage))
+            }
+            return
+        }
+
         callApi(
             endState = { copy(loadingVisible = false) },
             startState = { copy(loadingVisible = true) },
@@ -84,15 +115,17 @@ class PersonalInformationViewModel(
             },
             callback = {
                 when (it.status) {
-                    Status.SUCCESS ->
+                    Status.SUCCESS -> {
                         showCompletedState()
+                    }
 
-                    Status.ERROR ->
+                    Status.ERROR -> {
                         setEffect {
                             PersonalInformationContract.Effect.ShowToast(
                                 it.message ?: getString(R.string.FabriikApi_DefaultError)
                             )
                         }
+                    }
                 }
             }
         )
@@ -104,4 +137,13 @@ class PersonalInformationViewModel(
                 && textValidator(name)
                 && textValidator(lastName)
     )
+
+    private fun isAgeValid(): Boolean {
+        val currentDate = Calendar.getInstance()
+        val targetDate = Calendar.getInstance()
+        targetDate.time = currentState.dateOfBirth?.time ?: return false
+        targetDate.add(Calendar.YEAR, MIN_AGE)
+
+        return targetDate.before(currentDate)
+    }
 }

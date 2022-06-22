@@ -5,12 +5,14 @@ import androidx.core.net.toFile
 import com.fabriik.common.data.FabriikApiConstants
 import com.fabriik.common.data.Resource
 import com.fabriik.common.utils.FabriikApiResponseMapper
+import com.fabriik.common.utils.adapter.CalendarJsonAdapter
 import com.fabriik.kyc.data.enums.DocumentSide
 import com.fabriik.kyc.data.enums.DocumentType
 import com.fabriik.kyc.data.model.Country
 import com.fabriik.kyc.data.model.DocumentData
 import com.fabriik.kyc.data.requests.CompleteLevel1VerificationRequest
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.addAdapter
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -54,7 +56,7 @@ class KycApi(
 
     suspend fun completeLevel1Verification(firstName: String, lastName: String, country: Country, dateOfBirth: Date): Resource<ResponseBody?> {
         return try {
-            service.completeLevel1Verification(
+            val response = service.completeLevel1Verification(
                 CompleteLevel1VerificationRequest(
                     firstName = firstName,
                     lastName = lastName,
@@ -62,7 +64,8 @@ class KycApi(
                     dateOfBirth = SimpleDateFormat(DATE_FORMAT, Locale.getDefault()).format(dateOfBirth),
                 )
             )
-            Resource.success(null)
+
+            responseMapper.mapResponseSuccess(context, response)
         } catch (ex: Exception) {
             responseMapper.mapError(
                 context = context,
@@ -146,6 +149,7 @@ class KycApi(
                 .addConverterFactory(
                     MoshiConverterFactory.create(
                         Moshi.Builder()
+                            .add(Calendar::class.java, CalendarJsonAdapter())
                             .addLast(KotlinJsonAdapterFactory())
                             .build()
                     )

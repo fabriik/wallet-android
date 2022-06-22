@@ -21,7 +21,7 @@ import org.kodein.di.android.closestKodein
 import org.kodein.di.erased.instance
 import java.util.*
 
-object UserSessionManager : KodeinAware {
+object UserSessionManager: KodeinAware {
 
     override val kodein by closestKodein { context }
     private val registrationApi by instance<RegistrationApi>()

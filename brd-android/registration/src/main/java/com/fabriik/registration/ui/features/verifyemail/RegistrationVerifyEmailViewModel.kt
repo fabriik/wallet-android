@@ -98,7 +98,7 @@ class RegistrationVerifyEmailViewModel(
                     }
 
                     Status.ERROR ->
-                        setState { copy(codeErrorVisible = true) }
+                        setState { copy(codeErrorVisible = true).validate() }
                 }
             }
         )

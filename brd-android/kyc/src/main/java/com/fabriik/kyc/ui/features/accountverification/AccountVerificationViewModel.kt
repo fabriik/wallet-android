@@ -125,7 +125,7 @@ class AccountVerificationViewModel(
         )
     }
 
-    private fun mapStatusToLevel2State(status: KycStatus): AccountVerificationContract.Level2State {
+    private fun mapStatusToLevel2State(status: KycStatus, kycFailureReason: String?): AccountVerificationContract.Level2State {
         return when (status) {
             KycStatus.DEFAULT,
             KycStatus.EMAIL_VERIFIED,
@@ -143,13 +143,13 @@ class AccountVerificationViewModel(
             KycStatus.KYC2_DECLINED -> AccountVerificationContract.Level2State(
                 isEnabled = true,
                 statusState = AccountVerificationStatusView.StatusViewState.Declined,
-                verificationError = getString(R.string.FabriikApi_DefaultError)  // todo: read from API
+                verificationError = kycFailureReason ?: getString(R.string.FabriikApi_DefaultError)
             )
 
             KycStatus.KYC2_RESUBMISSION_REQUESTED -> AccountVerificationContract.Level2State(
                 isEnabled = true,
                 statusState = AccountVerificationStatusView.StatusViewState.Resubmit,
-                verificationError = getString(R.string.FabriikApi_DefaultError) // todo: read from API
+                verificationError = kycFailureReason ?: getString(R.string.FabriikApi_DefaultError)
             )
 
             KycStatus.KYC2_SUBMITTED -> AccountVerificationContract.Level2State(
@@ -171,7 +171,7 @@ class AccountVerificationViewModel(
                     AccountVerificationContract.State.Content(
                         profile = profile,
                         level1State = mapStatusToLevel1State(profile.kycStatus),
-                        level2State = mapStatusToLevel2State(profile.kycStatus),
+                        level2State = mapStatusToLevel2State(profile.kycStatus, profile.kycFailureReason),
                     )
                 }
             }
