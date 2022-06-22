@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -13,7 +14,9 @@ import com.bumptech.glide.Glide
 import com.fabriik.common.ui.base.FabriikView
 import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.kyc.R
-import com.fabriik.kyc.data.enums.DocumentType
+import com.fabriik.kyc.data.enums.DocumentSide
+import com.fabriik.kyc.data.enums.DocumentType.SELFIE
+import com.fabriik.kyc.data.enums.DocumentType.PASSPORT
 import com.fabriik.kyc.databinding.FragmentSubmitPhotoBinding
 import kotlinx.coroutines.flow.collect
 
@@ -66,17 +69,29 @@ class SubmitPhotoFragment : Fragment(),
                 handleEffect(it)
             }
         }
+
+        requireActivity().onBackPressedDispatcher.addCallback {
+            viewModel.setEvent(SubmitPhotoContract.Event.BackClicked)
+        }
     }
 
     override fun render(state: SubmitPhotoContract.State) {
         with(binding) {
             loadingView.isVisible = state.loadingVisible
 
-            val isSelfie = state.documentType == DocumentType.SELFIE
-            val content1 =
-                if (isSelfie) R.string.SubmitPhoto_Selfie_CheckedItem1 else R.string.SubmitPhoto_Document_CheckedItem1
-            val content2 =
-                if (isSelfie) R.string.SubmitPhoto_Selfie_CheckedItem2 else R.string.SubmitPhoto_Document_CheckedItem2
+            val content1 = when (state.documentType) {
+                SELFIE -> R.string.SubmitPhoto_Selfie_CheckedItem1
+                PASSPORT -> R.string.SubmitPhoto_Document_Passport_CheckedItem1
+                else -> when (state.currentData.documentSide) {
+                    DocumentSide.FRONT -> R.string.SubmitPhoto_Document_CheckedItem1_Front
+                    DocumentSide.BACK -> R.string.SubmitPhoto_Document_CheckedItem1_Back
+                }
+            }
+
+            val content2 = when (state.documentType) {
+                SELFIE -> R.string.SubmitPhoto_Selfie_CheckedItem2
+                else -> R.string.SubmitPhoto_Document_CheckedItem2
+            }
 
             checkedItem1.setContent(context?.getString(content1))
             checkedItem2.setContent(context?.getString(content2))
