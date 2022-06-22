@@ -12,8 +12,6 @@ import com.fabriik.kyc.ui.KycActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.time.LocalDate
 import java.util.*
 
 class PersonalInformationViewModel(
@@ -117,11 +115,10 @@ class PersonalInformationViewModel(
     )
 
     private fun isAgeValid(): Boolean {
-        val date = SimpleDateFormat(
-            KycApi.DATE_FORMAT,
-            Locale.getDefault()
-        ).format(currentState.dateOfBirth?.time!!)
+        val currentDate = Calendar.getInstance()
+        val dateOfBirth = currentState.dateOfBirth ?: return false
 
-        return LocalDate.parse(date).plusYears(18).isBefore(LocalDate.now())
+        val yearsDiff = currentDate[Calendar.YEAR] - (dateOfBirth[Calendar.YEAR])
+        return yearsDiff >= 18 && currentDate[Calendar.MONTH] >= dateOfBirth[Calendar.MONTH] && currentDate[Calendar.DAY_OF_MONTH] >= dateOfBirth[Calendar.DAY_OF_MONTH]
     }
 }
