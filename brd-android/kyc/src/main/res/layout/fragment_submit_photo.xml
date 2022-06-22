@@ -58,11 +58,11 @@
 
         <ImageView
             android:id="@+id/iv_review_photo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="40dp"
-            android:paddingTop="24dp"
-            android:paddingBottom="32dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="40dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="32dp"
             app:layout_constraintBottom_toTopOf="@id/btn_retake_photo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
