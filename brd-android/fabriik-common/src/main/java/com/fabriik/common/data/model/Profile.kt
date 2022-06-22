@@ -23,10 +23,10 @@ fun Profile?.isUserRegistered() = when(this?.kycStatus) {
     else -> true
 }
 
-fun Profile?.canUseBuyTrade() = when(this?.kycStatus) {
+fun Profile?.canUseBuyTrade() = false/*when(this?.kycStatus) {
     null,
     KycStatus.DEFAULT,
     KycStatus.EMAIL_VERIFIED,
     KycStatus.EMAIL_VERIFICATION_PENDING -> false
     else -> true
-}
+}*/
