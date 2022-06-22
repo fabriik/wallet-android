@@ -32,21 +32,25 @@ object SessionHolder : KodeinAware {
 
     @Synchronized
     fun updateSession(sessionKey: String, state: SessionState): Session? {
-        if (mApiSession == null || mApiSession!!.key != sessionKey || mApiSession!!.state != state) {
-            mApiSession = Session(
+        val currentApiSession = mApiSession
+        if (currentApiSession == null || currentApiSession.key != sessionKey || currentApiSession.state != state) {
+            val newApiSession = Session(
                 key = sessionKey,
                 state = state
             )
-            userManager.putSession(mApiSession!!)
+            userManager.putSession(newApiSession)
+            mApiSession = newApiSession
         }
         return mApiSession
     }
 
     @Synchronized
     fun updateSessionState(state: SessionState): Session? {
-        if (mApiSession != null && mApiSession!!.state != state) {
-            mApiSession = mApiSession!!.copy(state = state)
-            userManager.putSession(mApiSession!!)
+        val currentApiSession = mApiSession
+        if (currentApiSession != null && currentApiSession.state != state) {
+            val newApiSession = currentApiSession.copy(state = state)
+            userManager.putSession(newApiSession)
+            mApiSession = newApiSession
         }
         return mApiSession
     }
