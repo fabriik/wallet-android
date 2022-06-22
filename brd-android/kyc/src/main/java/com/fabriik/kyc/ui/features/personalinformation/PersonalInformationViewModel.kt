@@ -28,6 +28,10 @@ class PersonalInformationViewModel(
     override val kodein by closestKodein { application }
     private val profileManager by kodein.instance<ProfileManager>()
 
+    companion object {
+        const val MIN_AGE = 18
+    }
+
     private val kycApi = KycApi.create(application.applicationContext)
     private val textValidator = TextValidator
 
@@ -91,6 +95,13 @@ class PersonalInformationViewModel(
     }
 
     private fun confirmClicked() {
+        if (!isAgeValid()) {
+            setEffect {
+                PersonalInformationContract.Effect.ShowToast(getString(R.string.KYC_Error_Underage))
+            }
+            return
+        }
+
         callApi(
             endState = { copy(loadingVisible = false) },
             startState = { copy(loadingVisible = true) },
@@ -104,15 +115,17 @@ class PersonalInformationViewModel(
             },
             callback = {
                 when (it.status) {
-                    Status.SUCCESS ->
+                    Status.SUCCESS -> {
                         showCompletedState()
+                    }
 
-                    Status.ERROR ->
+                    Status.ERROR -> {
                         setEffect {
                             PersonalInformationContract.Effect.ShowToast(
                                 it.message ?: getString(R.string.FabriikApi_DefaultError)
                             )
                         }
+                    }
                 }
             }
         )
@@ -124,4 +137,13 @@ class PersonalInformationViewModel(
                 && textValidator(name)
                 && textValidator(lastName)
     )
+
+    private fun isAgeValid(): Boolean {
+        val currentDate = Calendar.getInstance()
+        val targetDate = Calendar.getInstance()
+        targetDate.time = currentState.dateOfBirth?.time ?: return false
+        targetDate.add(Calendar.YEAR, MIN_AGE)
+
+        return targetDate.before(currentDate)
+    }
 }

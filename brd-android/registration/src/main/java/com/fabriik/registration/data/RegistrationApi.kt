@@ -38,7 +38,7 @@ class RegistrationApi(
                 ),
                 headers = headers
             )
-            responseMapper.mapSuccess(response)
+            responseMapper.mapFabriikApiResponseSuccess(response)
         } catch (ex: Exception) {
             responseMapper.mapError(
                 context = context,

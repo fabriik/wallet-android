@@ -56,7 +56,7 @@ class KycApi(
 
     suspend fun completeLevel1Verification(firstName: String, lastName: String, country: Country, dateOfBirth: Date): Resource<ResponseBody?> {
         return try {
-            service.completeLevel1Verification(
+            val response = service.completeLevel1Verification(
                 CompleteLevel1VerificationRequest(
                     firstName = firstName,
                     lastName = lastName,
@@ -64,7 +64,8 @@ class KycApi(
                     dateOfBirth = SimpleDateFormat(DATE_FORMAT, Locale.getDefault()).format(dateOfBirth),
                 )
             )
-            Resource.success(null)
+
+            responseMapper.mapResponseSuccess(context, response)
         } catch (ex: Exception) {
             responseMapper.mapError(
                 context = context,
