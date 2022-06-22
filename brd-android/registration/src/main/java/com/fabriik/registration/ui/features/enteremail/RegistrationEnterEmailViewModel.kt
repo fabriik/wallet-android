@@ -1,6 +1,7 @@
 package com.fabriik.registration.ui.features.enteremail
 
 import android.app.Application
+import androidx.lifecycle.viewModelScope
 import com.breadwallet.tools.security.BrdUserManager
 import com.fabriik.common.data.Status
 import com.fabriik.common.ui.base.FabriikViewModel
@@ -12,6 +13,8 @@ import com.fabriik.registration.utils.RegistrationUtils
 import com.platform.tools.SessionHolder
 import com.platform.tools.SessionState
 import com.platform.tools.TokenHolder
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
 import org.kodein.di.erased.instance
@@ -42,53 +45,55 @@ class RegistrationEnterEmailViewModel(
     }
 
     private fun onNextClicked() {
-        val token = TokenHolder.retrieveToken()
-        if (token.isNullOrBlank()) {
-            setEffect {
-                RegistrationEnterEmailContract.Effect.ShowToast(
-                    getString(R.string.FabriikApi_DefaultError)
-                )
-            }
-            return
-        }
-
-        callApi(
-            endState = { copy(loadingVisible = false) },
-            startState = { copy(loadingVisible = true) },
-            action = {
-                registrationApi.associateEmail(
-                    email = currentState.email,
-                    token = token,
-                    headers = registrationUtils.getAssociateRequestHeaders(
-                        salt = currentState.email,
-                        token = token
+        viewModelScope.launch(Dispatchers.IO) {
+            val token = TokenHolder.retrieveToken()
+            if (token.isNullOrBlank()) {
+                setEffect {
+                    RegistrationEnterEmailContract.Effect.ShowToast(
+                        getString(R.string.FabriikApi_DefaultError)
                     )
-                )
-            },
-            callback = {
-                when (it.status) {
-                    Status.SUCCESS -> {
-                        SessionHolder.updateSession(
-                            sessionKey = it.data!!.sessionKey,
-                            state = SessionState.CREATED
-                        )
-
-                        setEffect {
-                            RegistrationEnterEmailContract.Effect.GoToVerifyEmail(
-                                currentState.email
-                            )
-                        }
-                    }
-
-                    Status.ERROR ->
-                        setEffect {
-                            RegistrationEnterEmailContract.Effect.ShowToast(
-                                it.message ?: getString(R.string.FabriikApi_DefaultError)
-                            )
-                        }
                 }
+                return@launch
             }
-        )
+
+            callApi(
+                endState = { copy(loadingVisible = false) },
+                startState = { copy(loadingVisible = true) },
+                action = {
+                    registrationApi.associateEmail(
+                        email = currentState.email,
+                        token = token,
+                        headers = registrationUtils.getAssociateRequestHeaders(
+                            salt = currentState.email,
+                            token = token
+                        )
+                    )
+                },
+                callback = {
+                    when (it.status) {
+                        Status.SUCCESS -> {
+                            SessionHolder.updateSession(
+                                sessionKey = it.data!!.sessionKey,
+                                state = SessionState.CREATED
+                            )
+
+                            setEffect {
+                                RegistrationEnterEmailContract.Effect.GoToVerifyEmail(
+                                    currentState.email
+                                )
+                            }
+                        }
+
+                        Status.ERROR ->
+                            setEffect {
+                                RegistrationEnterEmailContract.Effect.ShowToast(
+                                    it.message ?: getString(R.string.FabriikApi_DefaultError)
+                                )
+                            }
+                    }
+                }
+            )
+        }
     }
 
     private fun RegistrationEnterEmailContract.State.validate() = copy(

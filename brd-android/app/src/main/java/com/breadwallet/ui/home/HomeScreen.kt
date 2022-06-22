@@ -127,6 +127,7 @@ object HomeScreen {
         object LoadConnectivityState : F()
         object CheckInAppNotification : F()
         object CheckIfShowBuyAndSell : F()
+        object RequestSessionVerification : F()
 
         data class GoToDeepLink(val url: String) : F(), NavigationEffect {
             override val navigationTarget = NavigationTarget.DeepLink(url, true)

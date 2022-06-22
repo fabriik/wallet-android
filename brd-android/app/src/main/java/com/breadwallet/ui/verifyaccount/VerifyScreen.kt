@@ -13,8 +13,7 @@ object VerifyScreen {
 
     sealed class F {
         object GoToAccountVerification : F(), NavigationEffect {
-            override val navigationTarget =
-                NavigationTarget.Profile //TODO - change to account verification
+            override val navigationTarget = NavigationTarget.GoToKyc
         }
     }
 }

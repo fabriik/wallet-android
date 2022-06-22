@@ -31,6 +31,7 @@ import com.breadwallet.ui.home.HomeScreen.E
 import com.breadwallet.ui.home.HomeScreen.F
 import com.breadwallet.ui.home.HomeScreen.M
 import com.fabriik.common.data.model.canUseBuyTrade
+import com.fabriik.common.data.model.isUserRegistered
 import com.platform.tools.SessionHolder
 import com.spotify.mobius.Effects.effects
 import com.spotify.mobius.Next.dispatch
@@ -94,45 +95,51 @@ val HomeScreenUpdate = Update<M, E, F> { model, event ->
             }
         }
         is E.OnAddWalletsClicked -> dispatch(effects(F.GoToAddWallet))
-        E.OnBuyClicked -> {
-            val isBuyAlertNeeded = model.isBuyAlertNeeded
-            BRSharedPrefs.buyNotePromptShouldPrompt = false
+        E.OnBuyClicked -> when {
+            !model.profile.isUserRegistered() -> dispatch(effects(F.GoToRegistration))
+            !SessionHolder.isUserSessionVerified() -> dispatch(effects(F.RequestSessionVerification))
+            !model.profile.canUseBuyTrade() -> dispatch(effects(F.GoToVerifyProfile))
+            else -> {
+                val isBuyAlertNeeded = model.isBuyAlertNeeded
+                BRSharedPrefs.buyNotePromptShouldPrompt = false
 
-            next<M, F>(
-                model.copy(isBuyAlertNeeded = false),
-                effects(
-                    if (isBuyAlertNeeded) {
-                        F.ShowPartnershipNote(
-                            dialogId = DIALOG_PARTNERSHIP_NOTE_BUY,
-                            messageResId = R.string.HomeScreen_partnershipNoteBuyDescription
-                        )
-                    } else if (!model.profile.canUseBuyTrade()) {
-                        F.GoToVerifyProfile
-                    } else {
-                        F.GoToBuy
-                    }
+                next<M, F>(
+                    model.copy(isBuyAlertNeeded = false),
+                    effects(
+                        if (isBuyAlertNeeded) {
+                            F.ShowPartnershipNote(
+                                dialogId = DIALOG_PARTNERSHIP_NOTE_BUY,
+                                messageResId = R.string.HomeScreen_partnershipNoteBuyDescription
+                            )
+                        } else {
+                            F.GoToBuy
+                        }
+                    )
                 )
-            )
+            }
         }
-        E.OnTradeClicked -> {
-            val isTradeAlertNeeded = model.isTradeAlertNeeded
-            BRSharedPrefs.tradeNotePromptShouldPrompt = false
+        E.OnTradeClicked -> when {
+            !model.profile.isUserRegistered() -> dispatch(effects(F.GoToRegistration))
+            !SessionHolder.isUserSessionVerified() -> dispatch(effects(F.RequestSessionVerification))
+            !model.profile.canUseBuyTrade() -> dispatch(effects(F.GoToVerifyProfile))
+            else -> {
+                val isTradeAlertNeeded = model.isTradeAlertNeeded
+                BRSharedPrefs.tradeNotePromptShouldPrompt = false
 
-            next<M, F>(
-                model.copy(isTradeAlertNeeded = false),
-                effects(
-                    if (isTradeAlertNeeded) {
-                        F.ShowPartnershipNote(
-                            dialogId = DIALOG_PARTNERSHIP_NOTE_SWAP,
-                            messageResId = R.string.HomeScreen_partnershipNoteSwapDescription
-                        )
-                    } else if (!model.profile.canUseBuyTrade()) {
-                        F.GoToVerifyProfile
-                    } else {
-                        F.LoadSwapCurrencies
-                    }
+                next<M, F>(
+                    model.copy(isTradeAlertNeeded = false),
+                    effects(
+                        if (isTradeAlertNeeded) {
+                            F.ShowPartnershipNote(
+                                dialogId = DIALOG_PARTNERSHIP_NOTE_SWAP,
+                                messageResId = R.string.HomeScreen_partnershipNoteSwapDescription
+                            )
+                        } else {
+                            F.LoadSwapCurrencies
+                        }
+                    )
                 )
-            )
+            }
         }
         E.OnBuyNoteSeen -> dispatch(effects(F.GoToBuy))
         E.OnTradeNoteSeen -> dispatch(effects(F.LoadSwapCurrencies))
