@@ -20,6 +20,10 @@ class PersonalInformationViewModel(
     application
 ) {
 
+    companion object {
+        const val MIN_AGE = 18
+    }
+
     private val kycApi = KycApi.create(application.applicationContext)
     private val textValidator = TextValidator
 
@@ -116,9 +120,10 @@ class PersonalInformationViewModel(
 
     private fun isAgeValid(): Boolean {
         val currentDate = Calendar.getInstance()
-        val dateOfBirth = currentState.dateOfBirth ?: return false
+        val targetDate = Calendar.getInstance()
+        targetDate.time = currentState.dateOfBirth?.time ?: return false
+        targetDate.add(Calendar.YEAR, MIN_AGE)
 
-        val yearsDiff = currentDate[Calendar.YEAR] - (dateOfBirth[Calendar.YEAR])
-        return yearsDiff >= 18 && currentDate[Calendar.MONTH] >= dateOfBirth[Calendar.MONTH] && currentDate[Calendar.DAY_OF_MONTH] >= dateOfBirth[Calendar.DAY_OF_MONTH]
+        return targetDate.before(currentDate)
     }
 }
