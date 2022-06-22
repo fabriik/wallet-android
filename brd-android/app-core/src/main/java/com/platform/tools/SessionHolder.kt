@@ -56,15 +56,6 @@ object SessionHolder : KodeinAware {
     }
 
     @Synchronized
-    fun updateSessionState(state: SessionState): Session? {
-        if (mApiSession != null && mApiSession!!.state != state) {
-            mApiSession = mApiSession!!.copy(state = state)
-            userManager.putSession(mApiSession!!)
-        }
-        return mApiSession
-    }
-
-    @Synchronized
     fun isDefaultSession() = getSession().isDefaultSession()
 
     @Synchronized
