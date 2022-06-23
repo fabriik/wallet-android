@@ -97,8 +97,11 @@ class AccountVerificationFragment : Fragment(),
                 }
             }
 
-            accountLayout.isInvisible = state is AccountVerificationContract.State.Loading
-            loadingIndicator.isVisible = state is AccountVerificationContract.State.Loading
+            accountLayout.isInvisible = state is AccountVerificationContract.State.Empty
+            loadingIndicator.isVisible = when (state) {
+                is AccountVerificationContract.State.Empty -> state.isLoading
+                else -> false
+            }
         }
     }
 

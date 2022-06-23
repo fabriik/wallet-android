@@ -27,7 +27,7 @@ class AccountVerificationViewModel(
     override val kodein by closestKodein { application }
     private val profileManager by kodein.instance<ProfileManager>()
 
-    override fun createInitialState() = AccountVerificationContract.State.Loading
+    override fun createInitialState() = AccountVerificationContract.State.Empty()
 
     override fun handleEvent(event: AccountVerificationContract.Event) {
         when (event) {
@@ -166,12 +166,23 @@ class AccountVerificationViewModel(
     fun updateProfile() {
         viewModelScope.launch(Dispatchers.IO) {
             profileManager.updateProfile().collect { profile ->
-                if (profile == null) return@collect
+                if (profile == null) {
+                    setEffect {
+                        AccountVerificationContract.Effect.ShowToast(
+                            getString(R.string.FabriikApi_DefaultError)
+                        )
+                    }
+                    setState { AccountVerificationContract.State.Empty(false) }
+                    return@collect
+                }
                 setState {
                     AccountVerificationContract.State.Content(
                         profile = profile,
                         level1State = mapStatusToLevel1State(profile.kycStatus),
-                        level2State = mapStatusToLevel2State(profile.kycStatus, profile.kycFailureReason),
+                        level2State = mapStatusToLevel2State(
+                            profile.kycStatus,
+                            profile.kycFailureReason
+                        ),
                     )
                 }
             }
