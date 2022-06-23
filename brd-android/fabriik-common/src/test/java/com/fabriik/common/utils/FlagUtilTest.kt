@@ -8,19 +8,19 @@ import org.robolectric.ParameterizedRobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 
 @RunWith(ParameterizedRobolectricTestRunner::class)
-class FlagUtilTest(private val countryCode: String, private val drawableId: Int) {
+class FlagUtilTest(private val countryCode: String, private val expectedDrawableId: Int) {
 
     private val context = RuntimeEnvironment.application.applicationContext
 
     @Test
-    fun getDrawableId_checkIfFlagExist() {
+    fun getDrawableId_returnExpectedFlag() {
         val actual = FlagUtil.getDrawableId(context, countryCode)
-        Assert.assertEquals(drawableId, actual)
+        Assert.assertEquals(expectedDrawableId, actual)
     }
 
     companion object {
         @JvmStatic
-        @ParameterizedRobolectricTestRunner.Parameters(name = "countryCode: {0} drawableId: {1}")
+        @ParameterizedRobolectricTestRunner.Parameters(name = "countryCode: {0} expectedDrawableId: {1}")
         fun getParams() = listOf(
             arrayOf("ad", R.drawable.ic_flag_ad),
             arrayOf("ae", R.drawable.ic_flag_ae),
