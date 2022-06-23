@@ -25,6 +25,7 @@
 package com.breadwallet.ui.home
 
 import android.content.Context
+import android.util.Log
 import com.breadwallet.R
 import com.breadwallet.breadbox.*
 import com.breadwallet.crypto.WalletManagerState
@@ -64,6 +65,7 @@ import java.util.Locale
 import kotlin.coroutines.resume
 import com.breadwallet.crypto.Wallet as CryptoWallet
 import com.fabriik.registration.utils.UserSessionManager
+import drewcarlson.mobius.flow.flowTransformer
 
 private const val PROMPT_DISMISSED_FINGERPRINT = "fingerprint"
 
@@ -229,13 +231,21 @@ fun createHomeScreenHandler(
     }
 
     addConsumer<F.RefreshProfile> {
+        Log.d("ProfileManager", "HomeScreen refresh profile called")
         profileManager.updateProfile()
     }
 
-    addTransformer<F.LoadProfile> { effects ->
-        effects.combine(profileManager.profileChanges()) { _, _ -> Unit }
-            .mapLatest {
-                val profile = profileManager.getProfile()
+    addConsumer<F.RequestSessionVerification> {
+        UserSessionManager.requestSessionVerification(context)
+    }
+
+    addTransformer(handleLoadProfile(profileManager))
+}
+
+private fun handleLoadProfile(profileManager: ProfileManager) =
+    flowTransformer<F.LoadProfile, E> { effects ->
+        effects.flatMapLatest { profileManager.profileChanges() }
+            .mapLatest { profile ->
                 if (profile == null) {
                     E.OnProfileDataLoadFailed(profile)
                 } else {
@@ -243,11 +253,6 @@ fun createHomeScreenHandler(
                 }
             }
     }
-
-    addConsumer<F.RequestSessionVerification> {
-        UserSessionManager.requestSessionVerification(context)
-    }
-}
 
 private suspend fun Context.loadInAppMessage(): InAppMessage =
     suspendCancellableCoroutine { continuation ->
