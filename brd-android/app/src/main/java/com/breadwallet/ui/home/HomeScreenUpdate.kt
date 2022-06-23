@@ -38,6 +38,7 @@ import com.spotify.mobius.Next.dispatch
 import com.spotify.mobius.Next.next
 import com.spotify.mobius.Next.noChange
 import com.spotify.mobius.Update
+import drewcarlson.mobius.flow.dispatch
 
 const val MAX_CRYPTO_DIGITS = 8
 const val DIALOG_PARTNERSHIP_NOTE_BUY = "buy_part_note"

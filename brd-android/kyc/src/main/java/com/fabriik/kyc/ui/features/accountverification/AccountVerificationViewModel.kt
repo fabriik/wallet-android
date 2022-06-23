@@ -10,7 +10,7 @@ import com.fabriik.common.utils.getString
 import com.fabriik.kyc.R
 import com.fabriik.kyc.ui.customview.AccountVerificationStatusView
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
@@ -26,6 +26,10 @@ class AccountVerificationViewModel(
 
     override val kodein by closestKodein { application }
     private val profileManager by kodein.instance<ProfileManager>()
+
+    init {
+        subscribeOnProfileChanges()
+    }
 
     override fun createInitialState() = AccountVerificationContract.State.Empty()
 
@@ -54,6 +58,10 @@ class AccountVerificationViewModel(
                         navigateOnLevel2Clicked()
                 }
         }
+    }
+
+    fun updateProfile() {
+        profileManager.updateProfile()
     }
 
     private fun navigateOnLevel1Clicked() {
@@ -163,9 +171,9 @@ class AccountVerificationViewModel(
         }
     }
 
-    fun updateProfile() {
-        viewModelScope.launch(Dispatchers.IO) {
-            profileManager.updateProfile().collect { profile ->
+    private fun subscribeOnProfileChanges() {
+        profileManager.profileChanges()
+            .onEach { profile ->
                 if (profile == null) {
                     setEffect {
                         AccountVerificationContract.Effect.ShowToast(
@@ -173,8 +181,9 @@ class AccountVerificationViewModel(
                         )
                     }
                     setState { AccountVerificationContract.State.Empty(false) }
-                    return@collect
+                    return@onEach
                 }
+
                 setState {
                     AccountVerificationContract.State.Content(
                         profile = profile,
@@ -186,6 +195,7 @@ class AccountVerificationViewModel(
                     )
                 }
             }
-        }
+            .flowOn(Dispatchers.Main)
+            .launchIn(viewModelScope)
     }
 }

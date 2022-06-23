@@ -232,13 +232,16 @@ fun createHomeScreenHandler(
         profileManager.updateProfile()
     }
 
-    addFunction<F.LoadProfile> {
-        val profile = profileManager.getProfile()
-        if (profile == null) {
-            E.OnProfileDataLoadFailed(profile)
-        } else {
-            E.OnProfileDataLoaded(profile)
-        }
+    addTransformer<F.LoadProfile> { effects ->
+        effects.combine(profileManager.profileChanges()) { _, _ -> Unit }
+            .mapLatest {
+                val profile = profileManager.getProfile()
+                if (profile == null) {
+                    E.OnProfileDataLoadFailed(profile)
+                } else {
+                    E.OnProfileDataLoaded(profile)
+                }
+            }
     }
 
     addConsumer<F.RequestSessionVerification> {
