@@ -18,9 +18,6 @@ object ProfileUpdate : Update<M, E, F>, ProfileScreenUpdateSpec {
     override fun onCloseClicked(model: M): Next<M, F> =
         dispatch(setOf(F.GoBack))
 
-    override fun refreshProfile(model: M): Next<M, F> =
-        dispatch(setOf(F.RefreshProfile))
-
     override fun onVerifyProfileClicked(model: M): Next<M, F> =
         dispatch(setOf(F.GoToKyc))
 

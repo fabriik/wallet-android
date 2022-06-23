@@ -34,10 +34,6 @@ fun createProfileScreenHandler(
         E.OnOptionsLoaded(items)
     }
 
-    addConsumer<F.RefreshProfile> {
-        profileManager.updateProfile()
-    }
-
     addTransformer(handleLoadProfile(profileManager))
 }
 

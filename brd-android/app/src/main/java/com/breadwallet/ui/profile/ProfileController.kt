@@ -64,14 +64,6 @@ ProfileController(
         OnBackPressedDispatcher().addCallback {
             eventConsumer.accept(E.OnCloseClicked)
         }
-
-        registerForActivityResult(KycActivity.REQUEST_CODE)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == KycActivity.REQUEST_CODE && resultCode == KycActivity.RESULT_DATA_UPDATED) {
-            eventConsumer.accept(E.RefreshProfile)
-        }
     }
 
     override fun bindView(modelFlow: Flow<M>): Flow<E> {
