@@ -89,6 +89,7 @@ private const val RETROFIT_VERSION = "2.9.0"
 private const val MOSHI_VERSION = "1.12.0"
 private const val BROWSER_VERSION = "1.4.0"
 private const val GLIDE_VERSION = "4.13.0"
+private const val ROBOLECTRIC_VERSION = "4.8"
 
 object Libs {
 
@@ -220,6 +221,10 @@ object Libs {
         const val Core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$COROUTINES_VERSION"
         const val Android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$COROUTINES_VERSION"
         const val Test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$COROUTINES_VERSION"
+    }
+
+    object Robolectric {
+        const val Core = "org.robolectric:robolectric:$ROBOLECTRIC_VERSION"
     }
 
     object Kotlin {
