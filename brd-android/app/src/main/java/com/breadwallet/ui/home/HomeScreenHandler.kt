@@ -247,8 +247,10 @@ private fun handleLoadProfile(profileManager: ProfileManager) =
         effects.flatMapLatest { profileManager.profileChanges() }
             .mapLatest { profile ->
                 if (profile == null) {
+                    Log.d("ProfileManager", "HomeScreen updated, profile is null")
                     E.OnProfileDataLoadFailed(profile)
                 } else {
+                    Log.d("ProfileManager", "HomeScreen updated, profile is loaded")
                     E.OnProfileDataLoaded(profile)
                 }
             }
