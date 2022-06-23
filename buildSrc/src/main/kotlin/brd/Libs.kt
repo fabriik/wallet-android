@@ -89,7 +89,7 @@ private const val RETROFIT_VERSION = "2.9.0"
 private const val MOSHI_VERSION = "1.12.0"
 private const val BROWSER_VERSION = "1.4.0"
 private const val GLIDE_VERSION = "4.13.0"
-private const val ROBOLECTRIC_VERSION = "4.8"
+private const val ROBOLECTRIC_VERSION = "4.5.1"
 
 object Libs {
 
