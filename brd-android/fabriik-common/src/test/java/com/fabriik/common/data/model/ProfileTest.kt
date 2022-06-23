@@ -80,7 +80,7 @@ class ProfileTest {
     }
 
     @Test
-    fun canUseBuyTrade_statusIsEmailVerified_returnTrue() {
+    fun canUseBuyTrade_statusIsEmailVerified_returnFalse() {
         canUseBuyTrade_checkResult(KycStatus.EMAIL_VERIFIED, false)
     }
 
