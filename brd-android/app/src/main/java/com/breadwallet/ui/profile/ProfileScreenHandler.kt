@@ -40,14 +40,7 @@ fun createProfileScreenHandler(
         }
     }
 
-    addTransformer<F.RefreshProfile> { effects ->
-        effects.flatMapLatest { profileManager.updateProfile() }
-            .mapLatest {
-                if (it == null) {
-                    E.OnProfileDataLoadFailed(it)
-                } else {
-                    E.OnProfileDataLoaded(it)
-                }
-            }
+    addConsumer<F.RefreshProfile> {
+        profileManager.updateProfile()
     }
 }
