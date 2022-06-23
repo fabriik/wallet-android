@@ -55,5 +55,6 @@ dependencies {
     kapt(brd.Libs.Networking.MoshiCodegen)
 
     testImplementation(brd.Libs.JUnit.Core)
+    testImplementation(brd.Libs.Mockito.Core)
     testImplementation(brd.Libs.Robolectric.Core)
 }
