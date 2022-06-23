@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.core.widget.NestedScrollView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
@@ -14,7 +14,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/btn_dismiss"
@@ -112,5 +112,5 @@
                 tools:visibility="visible" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
+    </ScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
