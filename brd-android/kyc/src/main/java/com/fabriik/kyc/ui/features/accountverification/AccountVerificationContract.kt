@@ -26,7 +26,9 @@ interface AccountVerificationContract {
 
     sealed class State : FabriikContract.State {
 
-        object Loading : State()
+        data class Empty(
+            val isLoading: Boolean = true
+        ) : State()
 
         data class Content(
             val profile: Profile,

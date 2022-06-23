@@ -69,7 +69,7 @@ private const val COMMONS_IO_VERSION = "2.6"
 private const val JBSDIFF_VERSION = "1.0"
 private const val SLF4J_VERSION = "1.7.26"
 private const val JUNIT_VERSION = "4.12"
-private const val MOCKITO_VERSION = "2.25.0"
+private const val MOCKITO_VERSION = "4.6.1"
 private const val KASPRESSO_VERSION = "1.1.0"
 private const val KAKAO_VERSION = "2.3.2"
 private const val MATERIAL_VERSION = "1.3.0"
@@ -284,6 +284,7 @@ object Libs {
     }
 
     object Mockito {
+        const val Core = "org.mockito:mockito-core:$MOCKITO_VERSION"
         const val Android = "org.mockito:mockito-android:$MOCKITO_VERSION"
     }
 
