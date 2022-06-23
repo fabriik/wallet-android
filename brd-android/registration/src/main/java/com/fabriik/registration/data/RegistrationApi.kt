@@ -102,11 +102,10 @@ class RegistrationApi(
             val response = service.getProfile()
             Resource.success(response)
         } catch (ex: Exception) {
-            /*responseMapper.mapError(
+            responseMapper.mapError(
                 context = context,
                 exception = ex
-            )*/
-            Resource.error(message = "Error")
+            )
         }
     }
 
