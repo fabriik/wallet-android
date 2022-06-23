@@ -426,6 +426,7 @@ class BreadApp : Application(), KodeinAware, CameraXConfig.Provider {
 
         bind<ProfileManager>() with singleton {
             ProfileManagerImpl(
+                applicationScope,
                 instance(),
                 instance()
             )

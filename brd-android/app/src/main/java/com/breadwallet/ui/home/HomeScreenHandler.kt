@@ -228,13 +228,18 @@ fun createHomeScreenHandler(
         supportManager.submitEmailRequest(body = effect.feedback)
     }
 
+    addConsumer<F.RefreshProfile> {
+        profileManager.updateProfile()
+    }
+
     addTransformer<F.LoadProfile> { effects ->
-        effects.flatMapLatest { profileManager.updateProfile() }
+        effects.combine(profileManager.profileChanges()) { _, _ -> Unit }
             .mapLatest {
-                if (it == null) {
-                    E.OnProfileDataLoadFailed(it)
+                val profile = profileManager.getProfile()
+                if (profile == null) {
+                    E.OnProfileDataLoadFailed(profile)
                 } else {
-                    E.OnProfileDataLoaded(it)
+                    E.OnProfileDataLoaded(profile)
                 }
             }
     }

@@ -11,6 +11,9 @@ import com.fabriik.kyc.R
 import com.fabriik.kyc.ui.customview.AccountVerificationStatusView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
@@ -26,6 +29,10 @@ class AccountVerificationViewModel(
 
     override val kodein by closestKodein { application }
     private val profileManager by kodein.instance<ProfileManager>()
+
+    init {
+        subscribeProfileChanges()
+    }
 
     override fun createInitialState() = AccountVerificationContract.State.Empty()
 
@@ -47,13 +54,44 @@ class AccountVerificationViewModel(
                 }
             }
 
-
             is AccountVerificationContract.Event.Level2Clicked ->
                 when (currentState) {
                     is AccountVerificationContract.State.Content ->
                         navigateOnLevel2Clicked()
                 }
         }
+    }
+
+    fun updateProfile() {
+        profileManager.updateProfile()
+    }
+
+    private fun subscribeProfileChanges() {
+        profileManager.profileChanges()
+            .onEach { profile ->
+                if (profile == null) {
+                    setEffect {
+                        AccountVerificationContract.Effect.ShowToast(
+                            getString(R.string.FabriikApi_DefaultError)
+                        )
+                    }
+                    setState { AccountVerificationContract.State.Empty(false) }
+                    return@onEach
+                }
+
+                setState {
+                    AccountVerificationContract.State.Content(
+                        profile = profile,
+                        level1State = mapStatusToLevel1State(profile.kycStatus),
+                        level2State = mapStatusToLevel2State(
+                            profile.kycStatus,
+                            profile.kycFailureReason
+                        )
+                    )
+                }
+            }
+            .flowOn(Dispatchers.Main)
+            .launchIn(viewModelScope)
     }
 
     private fun navigateOnLevel1Clicked() {
@@ -160,32 +198,6 @@ class AccountVerificationViewModel(
                 isEnabled = true,
                 statusState = AccountVerificationStatusView.StatusViewState.Verified
             )
-        }
-    }
-
-    fun updateProfile() {
-        viewModelScope.launch(Dispatchers.IO) {
-            profileManager.updateProfile().collect { profile ->
-                if (profile == null) {
-                    setEffect {
-                        AccountVerificationContract.Effect.ShowToast(
-                            getString(R.string.FabriikApi_DefaultError)
-                        )
-                    }
-                    setState { AccountVerificationContract.State.Empty(false) }
-                    return@collect
-                }
-                setState {
-                    AccountVerificationContract.State.Content(
-                        profile = profile,
-                        level1State = mapStatusToLevel1State(profile.kycStatus),
-                        level2State = mapStatusToLevel2State(
-                            profile.kycStatus,
-                            profile.kycFailureReason
-                        ),
-                    )
-                }
-            }
         }
     }
 }

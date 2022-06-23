@@ -117,6 +117,7 @@ object HomeScreen {
     sealed class F {
 
         object LoadProfile : F()
+        object RefreshProfile : F()
         object LoadWallets : F()
         object LoadSwapCurrencies : F()
         object LoadEnabledWallets : F()
