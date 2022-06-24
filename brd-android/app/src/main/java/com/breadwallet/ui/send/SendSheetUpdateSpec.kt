@@ -36,7 +36,6 @@ interface SendSheetUpdateSpec {
         SendSheet.E.OnAuthSuccess -> onAuthSuccess(model)
         SendSheet.E.OnAuthCancelled -> onAuthCancelled(model)
         SendSheet.E.OnScanClicked -> onScanClicked(model)
-        SendSheet.E.OnFaqClicked -> onFaqClicked(model)
         SendSheet.E.OnCloseClicked -> onCloseClicked(model)
         SendSheet.E.OnPasteClicked -> onPasteClicked(model)
         SendSheet.E.OnAmountEditClicked -> onAmountEditClicked(model)
@@ -89,8 +88,6 @@ interface SendSheetUpdateSpec {
     fun onAuthCancelled(model: SendSheet.M): Next<SendSheet.M, SendSheet.F>
 
     fun onScanClicked(model: SendSheet.M): Next<SendSheet.M, SendSheet.F>
-
-    fun onFaqClicked(model: SendSheet.M): Next<SendSheet.M, SendSheet.F>
 
     fun onCloseClicked(model: SendSheet.M): Next<SendSheet.M, SendSheet.F>
 

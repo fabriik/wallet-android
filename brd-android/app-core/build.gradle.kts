@@ -39,7 +39,6 @@ android {
 dependencies {
     implementation(project(":brd-android:fabriik-common"))
     implementation(project(":brd-android:theme"))
-    implementation(project(":brd-android:buy"))
     implementation(Libs.Kotlin.StdLibJdk8)
     implementation(Libs.Coroutines.Core)
     api(Libs.WalletKit.CoreAndroid)
@@ -59,8 +58,8 @@ dependencies {
     implementation(Libs.Firebase.Crashlytics)
 
     // Kodein DI
-    implementation(Libs.Kodein.CoreErasedJvm)
-    implementation(Libs.Kodein.FrameworkAndroidX)
+    api(Libs.Kodein.CoreErasedJvm)
+    api(Libs.Kodein.FrameworkAndroidX)
 
     implementation(Libs.Jbsdiff.Core)
 }

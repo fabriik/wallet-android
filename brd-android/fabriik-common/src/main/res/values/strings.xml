@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="FabriikApi.DefaultError">Something went wrong! Try again later.</string>
+</resources>

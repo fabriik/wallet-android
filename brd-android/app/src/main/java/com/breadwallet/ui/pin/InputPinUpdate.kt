@@ -29,6 +29,7 @@ import com.breadwallet.ui.pin.InputPin.E
 import com.breadwallet.ui.pin.InputPin.F
 import com.breadwallet.ui.pin.InputPin.M
 import com.spotify.mobius.Next
+import com.spotify.mobius.Next.dispatch
 import com.spotify.mobius.Next.next
 import com.spotify.mobius.Update
 
@@ -70,6 +71,15 @@ object InputPinUpdate : Update<M, E, F>, InputPinUpdateSpec {
         next(model, setOf(F.GoToDisabledScreen))
 
     override fun onPinSaved(model: M): Next<M, F> {
+        val effect = if (model.mode == M.Mode.CONFIRM && !model.pinUpdateMode) {
+            F.AssociateNewDevice
+        } else {
+            F.ContinueWithFlow
+        }
+        return next(model, setOf(effect))
+    }
+
+    override fun onContinueToNextStep(model: M): Next<M, F> {
         val effects = if (model.pinUpdateMode || model.skipWriteDownKey) {
             setOf(F.GoToHome)
         } else {
@@ -80,6 +90,12 @@ object InputPinUpdate : Update<M, E, F>, InputPinUpdateSpec {
         }
         return next(model, effects)
     }
+
+    override fun onVerifyEmailClosed(model: M): Next<M, F> =
+        dispatch(setOf(F.GoToHome))
+
+    override fun onVerifyEmailRequested(model: M, event: E.OnVerifyEmailRequested): Next<M, F> =
+        dispatch(setOf(F.GoToVerifyEmail(event.email)))
 
     override fun onPinSaveFailed(model: M): Next<M, F> {
         return next(model.copy(mode = M.Mode.NEW, pin = ""), setOf<F>(F.ShowPinError))

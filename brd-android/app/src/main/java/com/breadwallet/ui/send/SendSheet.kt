@@ -429,7 +429,6 @@ object SendSheet {
         object OnAuthCancelled : E()
 
         object OnScanClicked : E()
-        object OnFaqClicked : E()
         object OnCloseClicked : E()
         object OnPasteClicked : E()
         object OnAmountEditClicked : E()
@@ -464,8 +463,8 @@ object SendSheet {
             override val navigationTarget: NavigationTarget
         ) : F(), NavigationEffect {
             data class GoToFaq(
-                val currencyCode: CurrencyCode
-            ) : Nav(NavigationTarget.SupportPage(BRConstants.FAQ_SEND, currencyCode))
+                val topic: Topic
+            ) : Nav(NavigationTarget.SupportDialog(topic))
 
             data class GoToReceive(
                 val currencyCode: CurrencyCode
@@ -575,12 +574,6 @@ object SendSheet {
                 message = message,
                 positiveButtonResId = R.string.Button_ok
             )
-        }
-
-        data class ShowSupportDialog(
-            val topic: Topic
-        ) : F(), NavigationEffect {
-            override val navigationTarget = NavigationTarget.SupportDialog(topic)
         }
 
         object ShowTransferFailed : F(), NavigationEffect {

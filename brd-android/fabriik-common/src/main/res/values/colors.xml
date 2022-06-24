@@ -24,6 +24,7 @@
     <color name="light_outline_03">#9AA0A6</color>
     <color name="light_icons_01">#3C4043</color>
     <color name="light_icons_02">#5F6368</color>
+    <color name="light_icons_03">#71767B</color>
 
     <!-- Inverse colors -->
     <color name="light_inverse_background_01">#2E3134</color>

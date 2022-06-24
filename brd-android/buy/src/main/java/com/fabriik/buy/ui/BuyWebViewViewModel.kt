@@ -12,12 +12,6 @@ class BuyWebViewViewModel(
 ) : ViewModel(), LifecycleObserver {
 
     fun getPaymentUrl() = liveData(Dispatchers.IO) {
-        emit(
-            Resource.loading(
-                data = null
-            )
-        )
-
         try {
             emit(
                 Resource.success(

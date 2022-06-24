@@ -17,6 +17,7 @@
         <item name="colorControlActivated">@color/prompt_action_button</item>
         <item name="android:fontFamily">@font/mobile_font</item>
         <item name="switchStyle">@style/switchStyle</item>
+        <item name="snackbarStyle">@style/snackBarStyle</item>
         <item name="toolbar_back_arrow_dark">@drawable/ic_arrow_left</item>
         <item name="android:windowSplashScreenBackground">@color/white</item>
         <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_splash_screen</item>
@@ -38,6 +39,10 @@
 
     <style name="EditTextStyle" parent="Widget.AppCompat.EditText">
         <item name="android:fontFamily">@font/mobile_font_medium</item>
+    </style>
+
+    <style name="snackBarStyle" parent="@style/Widget.MaterialComponents.Snackbar">
+        <item name="android:layout_margin">24dp</item>
     </style>
 
     <style name="AppTheme.Dark" parent="AppTheme">

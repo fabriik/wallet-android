@@ -32,6 +32,8 @@ interface NavigationTargetHandlerSpec {
         NavigationTarget.BrdLogin -> brdLogin()
         NavigationTarget.Home -> home()
         NavigationTarget.Buy -> buy()
+        NavigationTarget.Profile -> profile()
+        NavigationTarget.VerifyProfile -> verifyProfile()
         is NavigationTarget.Trade -> trade(effect.currencies)
         NavigationTarget.AddWallet -> addWallet()
         NavigationTarget.DisabledScreen -> disabledScreen()
@@ -48,7 +50,7 @@ interface NavigationTargetHandlerSpec {
         NavigationTarget.BitcoinNodeSelector -> bitcoinNodeSelector()
         NavigationTarget.EnableSegWit -> enableSegWit()
         NavigationTarget.LegacyAddress -> legacyAddress()
-        is NavigationTarget.SupportDialog -> showSupportDialog(effect)
+        is NavigationTarget.SupportDialog -> showSupportPage(effect)
         is NavigationTarget.SendSheet -> sendSheet(effect)
         is NavigationTarget.ReceiveSheet -> receiveSheet(effect)
         is NavigationTarget.ViewTransaction -> viewTransaction(effect)
@@ -73,11 +75,16 @@ interface NavigationTargetHandlerSpec {
         is NavigationTarget.CreateGift -> createGift(effect)
         is NavigationTarget.ShareGift -> shareGift(effect)
         is NavigationTarget.SelectBakerScreen -> selectBaker(effect)
-        is NavigationTarget.GoToKYC -> openKyc()
+        is NavigationTarget.GoToKyc -> openKyc(effect)
         is NavigationTarget.GoToFeedback -> openFeedback()
+        is NavigationTarget.GoToRegistration -> openRegistration(effect)
+        is NavigationTarget.ShowInfoDialog -> showInfoDialog(effect)
+        is NavigationTarget.FabriikToast -> fabriikToast(effect)
     }
 
-    fun openKyc(): Unit
+    fun openKyc(effect: NavigationTarget.GoToKyc): Unit
+
+    fun openRegistration(effect: NavigationTarget.GoToRegistration): Unit
 
     fun openFeedback(): Unit
 
@@ -96,6 +103,10 @@ interface NavigationTargetHandlerSpec {
     fun home(): Unit
 
     fun buy(): Unit
+
+    fun profile(): Unit
+
+    fun verifyProfile(): Unit
 
     fun trade(currencies: List<String>): Unit
 
@@ -173,5 +184,9 @@ interface NavigationTargetHandlerSpec {
 
     fun selectBaker(effect: NavigationTarget.SelectBakerScreen): Unit
 
-    fun showSupportDialog(effect: NavigationTarget.SupportDialog): Unit
+    fun showSupportPage(effect: NavigationTarget.SupportDialog): Unit
+
+    fun showInfoDialog(effect: NavigationTarget.ShowInfoDialog): Unit
+
+    fun fabriikToast(effect: NavigationTarget.FabriikToast): Unit
 }
