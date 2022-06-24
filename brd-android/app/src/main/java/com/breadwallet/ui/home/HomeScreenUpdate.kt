@@ -144,16 +144,15 @@ val HomeScreenUpdate = Update<M, E, F> { model, event ->
         E.OnBuyNoteSeen -> dispatch(effects(F.GoToBuy))
         E.OnTradeNoteSeen -> dispatch(effects(F.LoadSwapCurrencies))
         E.OnMenuClicked -> dispatch(effects(F.GoToMenu))
-        E.OnProfileClicked ->
-            dispatch(
-                effects(
-                    if (SessionHolder.isUserSessionVerified()) {
-                        F.GoToProfile
-                    } else {
-                        F.GoToRegistration
-                    }
-                )
+        E.OnProfileClicked -> dispatch(
+            effects(
+                when {
+                    !model.profile.isUserRegistered() -> F.GoToRegistration
+                    !SessionHolder.isUserSessionVerified() -> F.RequestSessionVerification
+                    else -> F.GoToProfile
+                }
             )
+        )
 
         E.OnEmailVerified -> {
             dispatch(
