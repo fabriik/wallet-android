@@ -1499,6 +1499,13 @@
     <string name="VerifyAccount.Subtitle">We need to verify your identity in order to buy/sell and swap crypto.</string>
     <string name="VerifyAccount.Button">Verify your account</string>
 
+    <!-- Reset pin screen -->
+    <string name="ResetPin.title">Reset PIN</string>
+    <string name="ResetPin.subtitleNewPin">Set your new PIN</string>
+    <string name="ResetPin.subtitleConfirmNewPin">Confirm your new PIN</string>
+    <string name="ResetPin.description">Your PIN will be used to unlock your Fabriik Wallet and send money</string>
+
+    <!-- Pin reset completed screen -->
     <string name="PinResetCompleted.title">Your PIN was reset successfully!</string>
     <string name="PinResetCompleted.button">Go to dashboard</string>
 </resources>

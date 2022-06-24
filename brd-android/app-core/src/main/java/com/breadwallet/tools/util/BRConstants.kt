@@ -93,6 +93,7 @@ object BRConstants {
      * Support Center article ids.
      */
     const val FAQ_WALLET_DISABLE = "wallet-disabled"
+    const val FAQ_SET_PIN = "set-pin"
     const val FAQ_FASTSYNC = "fastsync-explained"
 
     /**

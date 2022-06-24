@@ -80,6 +80,7 @@ interface NavigationTargetHandlerSpec {
         is NavigationTarget.GoToRegistration -> openRegistration(effect)
         is NavigationTarget.ShowInfoDialog -> showInfoDialog(effect)
         is NavigationTarget.FabriikToast -> fabriikToast(effect)
+        is NavigationTarget.PinReset -> pinReset()
         is NavigationTarget.PinResetCompleted -> pinResetCompleted()
     }
 
@@ -190,6 +191,8 @@ interface NavigationTargetHandlerSpec {
     fun showInfoDialog(effect: NavigationTarget.ShowInfoDialog): Unit
 
     fun fabriikToast(effect: NavigationTarget.FabriikToast): Unit
+
+    fun pinReset(): Unit
 
     fun pinResetCompleted(): Unit
 }

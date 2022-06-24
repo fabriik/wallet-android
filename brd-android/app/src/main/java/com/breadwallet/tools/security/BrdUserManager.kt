@@ -359,6 +359,8 @@ class CryptoUserManager(
             false
         }
 
+    override fun getRemainingPinAttempts() = MAX_UNLOCK_ATTEMPTS - getFailCount()
+
     override fun hasPinCode() = getPinCode().isNotBlank()
 
     override fun pinCodeNeedsUpgrade() =
