@@ -114,11 +114,7 @@ object SettingsScreen {
         object GoToSupport : F(), NavigationEffect {
             override val navigationTarget = NavigationTarget.SupportPage("")
         }
-
-        object GoToKyc : F(), NavigationEffect {
-            override val navigationTarget = NavigationTarget.GoToKYC
-        }
-
+        
         object GoToFeedback : F(), NavigationEffect {
             override val navigationTarget = NavigationTarget.GoToFeedback
         }

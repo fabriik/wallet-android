@@ -31,6 +31,9 @@ import com.breadwallet.ui.navigation.NavigationEffect
 import com.breadwallet.ui.navigation.NavigationTarget
 import com.breadwallet.ui.navigation.OnCompleteAction
 import com.breadwallet.ui.settings.SettingsSection
+import com.fabriik.common.data.model.Profile
+import com.fabriik.registration.ui.RegistrationActivity
+import com.fabriik.registration.ui.RegistrationFlow
 import dev.zacsweers.redacted.annotations.Redacted
 import java.math.BigDecimal
 
@@ -44,7 +47,8 @@ object HomeScreen {
         val isBuyAlertNeeded: Boolean = false,
         val isTradeAlertNeeded: Boolean = false,
         val showBuyAndSell: Boolean = false,
-        val rateAppPromptDontShowMeAgain: Boolean = false
+        val rateAppPromptDontShowMeAgain: Boolean = false,
+        val profile: Profile? = null
     ) {
 
         companion object {
@@ -83,6 +87,7 @@ object HomeScreen {
         object OnTradeClicked : E()
         object OnTradeNoteSeen : E()
         object OnMenuClicked : E()
+        object OnProfileClicked : E()
 
         data class OnDeepLinkProvided(val url: String) : E()
         data class OnInAppNotificationProvided(val inAppMessage: InAppMessage) : E()
@@ -100,14 +105,19 @@ object HomeScreen {
         object OnUpgradePinPromptClicked : E()
         object OnRescanPromptClicked : E()
         object OnRateAppPromptClicked : E()
+        object OnEmailVerified : E()
         data class OnRateAppPromptDontShowClicked(val checked: Boolean) : E()
         object OnRateAppPromptNoThanksClicked : E()
         data class OnEmailPromptClicked(@Redacted val email: String) : E()
         data class OnSupportFormSubmitted(val feedback: String) : E()
+        data class OnProfileDataLoaded(val profile: Profile) : E()
+        data class OnProfileDataLoadFailed(val message: String?) : E()
     }
 
     sealed class F {
 
+        object LoadProfile : F()
+        object RefreshProfile : F()
         object LoadWallets : F()
         object LoadSwapCurrencies : F()
         object LoadEnabledWallets : F()
@@ -118,6 +128,7 @@ object HomeScreen {
         object LoadConnectivityState : F()
         object CheckInAppNotification : F()
         object CheckIfShowBuyAndSell : F()
+        object RequestSessionVerification : F()
 
         data class GoToDeepLink(val url: String) : F(), NavigationEffect {
             override val navigationTarget = NavigationTarget.DeepLink(url, true)
@@ -145,6 +156,18 @@ object HomeScreen {
 
         object GoToMenu : F(), NavigationEffect {
             override val navigationTarget = NavigationTarget.Menu(SettingsSection.HOME)
+        }
+
+        object GoToProfile : F(), NavigationEffect {
+            override val navigationTarget = NavigationTarget.Profile
+        }
+
+        object GoToVerifyProfile : F(), NavigationEffect {
+            override val navigationTarget = NavigationTarget.VerifyProfile
+        }
+
+        object GoToRegistration : F(), NavigationEffect {
+            override val navigationTarget = NavigationTarget.GoToRegistration(RegistrationFlow.REGISTER)
         }
 
         object GoToFingerprintSettings : F(), NavigationEffect {

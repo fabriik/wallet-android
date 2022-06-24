@@ -32,6 +32,7 @@ import com.breadwallet.ui.receive.ReceiveScreen.E.OnAmountChange.Delete
 import com.breadwallet.ui.receive.ReceiveScreen.F
 import com.breadwallet.ui.receive.ReceiveScreen.M
 import com.breadwallet.ui.send.MAX_DIGITS
+import com.fabriik.support.pages.Topic
 import com.spotify.mobius.Next
 import com.spotify.mobius.Next.dispatch
 import com.spotify.mobius.Next.next
@@ -60,8 +61,15 @@ object ReceiveUpdate : Update<M, E, F>, ReceiveScreenUpdateSpec {
     override fun onCloseClicked(model: M): Next<M, F> =
         dispatch(setOf(F.CloseSheet))
 
-    override fun onFaqClicked(model: M): Next<M, F> =
-        dispatch(setOf(F.GoToFaq(model.currencyCode)))
+    override fun onFaqClicked(model: M, event: E.OnFaqClicked): Next<M, F> {
+        val topic = when (model.currencyCode){
+            "btc" -> Topic.RECEIVE_BITCOIN
+            "eth" -> Topic.RECEIVE_ETHER
+            else -> Topic.RECEIVE
+        }
+
+        return dispatch(setOf(F.GoToFaq(topic)))
+    }
 
     override fun onCopyAddressClicked(model: M): Next<M, F> =
         dispatch(

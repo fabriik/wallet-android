@@ -29,6 +29,7 @@ import android.app.KeyguardManager
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
+import android.os.Parcelable
 import android.security.keystore.KeyPermanentlyInvalidatedException
 import android.security.keystore.UserNotAuthenticatedException
 import android.text.format.DateUtils
@@ -46,6 +47,12 @@ import com.breadwallet.tools.crypto.CryptoHelper.hexEncode
 import com.breadwallet.tools.manager.BRReportsManager
 import com.breadwallet.tools.manager.BRSharedPrefs
 import com.breadwallet.platform.interfaces.AccountMetaDataProvider
+import com.fabriik.common.data.model.Profile
+import com.fabriik.common.utils.adapter.CalendarJsonAdapter
+import com.platform.tools.Session
+import com.platform.tools.SessionState
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.Moshi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.Default
 import kotlinx.coroutines.Dispatchers.Main
@@ -71,7 +78,7 @@ import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import java.security.KeyStore
 import java.security.UnrecoverableKeyException
-import java.util.Date
+import java.util.*
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
 import javax.crypto.Cipher
@@ -91,10 +98,13 @@ private const val PUT_PHRASE_RC = 400
 private const val GET_PHRASE_RC = 401
 
 private const val KEY_ACCOUNT = "account"
+private const val KEY_PROFILE = "profile"
 private const val KEY_PHRASE = "phrase"
 private const val KEY_AUTH_KEY = "authKey"
 private const val KEY_CREATION_TIME = "creationTimeSeconds"
 private const val KEY_TOKEN = "token"
+private const val KEY_SESSION_KEY = "session_key"
+private const val KEY_SESSION_STATE = "session_state"
 private const val KEY_BDB_JWT = "bdbJwt"
 private const val KEY_BDB_JWT_EXP = "bdbJwtExp"
 private const val KEY_PIN_CODE = "pinCode"
@@ -124,8 +134,10 @@ class CryptoUserManager(
     private val locked = AtomicBoolean(true)
     private val disabledSeconds = AtomicInteger(0)
     private var token: String? = null
+    private var session: Session? = null
     private var jwt: String? = null
     private var jwtExp: Long? = null
+    private var profile: Profile? = null
 
     init {
         store = createStore()
@@ -380,6 +392,56 @@ class CryptoUserManager(
     }
 
     @Synchronized
+    override fun getProfile() = profile ?: checkNotNull(store).getProfile()
+
+    @Synchronized
+    override fun putProfile(profile: Profile?) {
+        checkNotNull(store).edit { putProfile(profile) }
+        this.profile = profile
+    }
+
+    @Synchronized
+    override fun getSession(): Session? {
+        if (session != null) {
+            return session
+        }
+
+        val storeSafe = checkNotNull(store)
+        val sessionKey = storeSafe.getString(KEY_SESSION_KEY, null)
+        val sessionStateId = storeSafe.getString(KEY_SESSION_STATE, null)
+        val sessionState = SessionState.values().find {
+            it.id == sessionStateId
+        }
+
+        return if (sessionKey.isNullOrBlank() || sessionState == null) {
+            null
+        } else {
+            Session(
+                key = sessionKey,
+                state = sessionState
+            )
+        }
+    }
+
+    @Synchronized
+    override fun putSession(session: Session) {
+        checkNotNull(store).edit {
+            putString(KEY_SESSION_KEY, session.key)
+            putString(KEY_SESSION_STATE, session.state.id)
+        }
+        this.session = session
+    }
+
+    @Synchronized
+    override fun removeSession() {
+        checkNotNull(store).edit {
+            remove(KEY_SESSION_KEY)
+            remove(KEY_SESSION_STATE)
+        }
+        session = null
+    }
+
+    @Synchronized
     override fun getBdbJwt() =
         if ((getBdbJwtExp() - JWT_EXP_PADDING_MS) <= System.currentTimeMillis()) {
             null
@@ -584,10 +646,10 @@ class CryptoUserManager(
     fun wipeAccount() {
         checkNotNull(store).edit {
             putString(KEY_PHRASE, null)
-            putString(KEY_ACCOUNT, null)
             putString(KEY_AUTH_KEY, null)
             putString(KEY_PIN_CODE, null)
             putLong(KEY_CREATION_TIME, 0)
+            putProfile(null)
         }
         BRKeyStore.wipeKeyStore(true)
     }
@@ -645,6 +707,27 @@ class CryptoUserManager(
     }
 }
 
+fun SharedPreferences.getProfile() : Profile? {
+    val moshi = Moshi.Builder()
+        .add(Calendar::class.java, CalendarJsonAdapter())
+        .build()
+
+    val adapter: JsonAdapter<Profile> = moshi.adapter(Profile::class.java)
+    val json = getString(KEY_PROFILE, null) ?: return null
+    return adapter.fromJson(json)
+}
+
+fun SharedPreferences.Editor.putProfile(profile: Profile?) {
+    val moshi = Moshi.Builder()
+        .add(Calendar::class.java, CalendarJsonAdapter())
+        .build()
+
+    val adapter: JsonAdapter<Profile> = moshi.adapter(Profile::class.java)
+    putString(
+        KEY_PROFILE, if (profile == null) null else adapter.toJson(profile)
+    )
+}
+
 fun SharedPreferences.getBytes(key: String, defaultValue: ByteArray?): ByteArray? {
     val valStr = getString(key, null) ?: return defaultValue
     return hexDecode(valStr)
@@ -653,4 +736,3 @@ fun SharedPreferences.getBytes(key: String, defaultValue: ByteArray?): ByteArray
 fun SharedPreferences.Editor.putBytes(key: String, value: ByteArray) {
     putString(key, hexEncode(value))
 }
-

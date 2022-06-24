@@ -24,11 +24,14 @@
  */
 package com.breadwallet.ui.navigation
 
+import androidx.annotation.StringRes
 import com.brd.bakerapi.models.Baker
 import com.breadwallet.model.InAppMessage
 import com.breadwallet.tools.util.Link
 import com.breadwallet.ui.auth.AuthMode
 import com.breadwallet.ui.settings.SettingsSection
+import com.fabriik.registration.ui.RegistrationActivity
+import com.fabriik.registration.ui.RegistrationFlow
 import com.fabriik.support.pages.Topic
 import dev.zacsweers.redacted.annotations.Redacted
 import java.math.BigDecimal
@@ -47,11 +50,13 @@ sealed class NavigationTarget : INavigationTarget {
 
     object Back : NavigationTarget()
     object ReviewBrd : NavigationTarget()
-    object GoToKYC : NavigationTarget()
+    object GoToKyc : NavigationTarget()
+    data class GoToRegistration(val flow: RegistrationFlow, val email: String? = null) : NavigationTarget()
     object GoToFeedback : NavigationTarget()
     object QRScanner : NavigationTarget()
     object LogcatViewer : NavigationTarget()
     object MetadataViewer : NavigationTarget()
+    object VerifyProfile : NavigationTarget()
 
     data class DeepLink(
         val url: String? = null,
@@ -64,6 +69,10 @@ sealed class NavigationTarget : INavigationTarget {
     data class SupportPage(
         val articleId: String,
         val currencyCode: String? = null
+    ) : NavigationTarget()
+
+    data class FabriikToast(
+        val message: String
     ) : NavigationTarget()
 
     data class SupportDialog(
@@ -100,6 +109,7 @@ sealed class NavigationTarget : INavigationTarget {
 
     object Home : NavigationTarget()
     object Buy : NavigationTarget()
+    object Profile : NavigationTarget()
     data class Trade(
         val currencies: List<String>
     ) : NavigationTarget()
@@ -182,5 +192,10 @@ sealed class NavigationTarget : INavigationTarget {
 
     data class SelectBakerScreen(
         val bakers: List<Baker>
+    ) : NavigationTarget()
+
+    data class ShowInfoDialog(
+        @StringRes val title: Int,
+        @StringRes val description: Int,
     ) : NavigationTarget()
 }

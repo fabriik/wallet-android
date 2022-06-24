@@ -31,7 +31,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.net.ConnectivityManager
 import android.os.Build
-import android.util.Log
 import androidx.annotation.VisibleForTesting
 import androidx.camera.camera2.Camera2Config
 import androidx.camera.core.CameraXConfig
@@ -62,10 +61,7 @@ import com.breadwallet.repository.RatesRepository
 import com.breadwallet.tools.crypto.Base32
 import com.breadwallet.tools.crypto.CryptoHelper
 import com.breadwallet.tools.manager.*
-import com.breadwallet.tools.security.BRKeyStore
-import com.breadwallet.tools.security.BrdUserManager
-import com.breadwallet.tools.security.BrdUserState
-import com.breadwallet.tools.security.CryptoUserManager
+import com.breadwallet.tools.security.*
 import com.breadwallet.tools.services.BRDFirebaseMessagingService
 import com.breadwallet.tools.util.*
 import com.breadwallet.ui.uigift.GiftBackup
@@ -73,6 +69,10 @@ import com.breadwallet.ui.uigift.SharedPrefsGiftBackup
 import com.breadwallet.util.*
 import com.breadwallet.util.usermetrics.UserMetricsUtil
 import com.fabriik.common.data.FabriikApiConstants
+import com.fabriik.registration.data.RegistrationApi
+import com.fabriik.registration.data.RegistrationApiInterceptor
+import com.fabriik.registration.utils.RegistrationUtils
+import com.fabriik.registration.utils.UserSessionManager
 import com.platform.APIClient
 import com.platform.HTTPServer
 import com.platform.interfaces.KVStoreProvider
@@ -80,6 +80,7 @@ import com.platform.interfaces.MetaDataManager
 import com.platform.interfaces.WalletProvider
 import com.platform.sqlite.PlatformSqliteHelper
 import com.platform.tools.KVStoreManager
+import com.platform.tools.SessionHolder
 import com.platform.tools.TokenHolder
 import drewcarlson.blockset.BdbService
 import io.ktor.client.*
@@ -293,7 +294,10 @@ class BreadApp : Application(), KodeinAware, CameraXConfig.Provider {
         }
 
         bind<FabriikAuthInterceptor>() with singleton {
-            FabriikAuthInterceptor()
+            FabriikAuthInterceptor(
+                this@BreadApp,
+                applicationScope
+            )
         }
 
         bind<BlockchainDb>() with singleton {
@@ -402,6 +406,32 @@ class BreadApp : Application(), KodeinAware, CameraXConfig.Provider {
             BRDApiClient.create(AndroidBRDAuthProvider(instance()))
         }
 
+        bind<RegistrationApi>() with singleton {
+            RegistrationApi.create(
+                this@BreadApp,
+                instance()
+            )
+        }
+
+        bind<RegistrationUtils>() with singleton {
+            RegistrationUtils(instance())
+        }
+
+        bind<RegistrationApiInterceptor>() with singleton {
+            RegistrationApiInterceptor(
+                this@BreadApp,
+                applicationScope
+            )
+        }
+
+        bind<ProfileManager>() with singleton {
+            ProfileManagerImpl(
+                applicationScope,
+                instance(),
+                instance()
+            )
+        }
+
         bind<Preferences>() with singleton {
             val prefs = getSharedPreferences(BRSharedPrefs.PREFS_NAME, Context.MODE_PRIVATE)
             AndroidPreferences(prefs)
@@ -431,6 +461,8 @@ class BreadApp : Application(), KodeinAware, CameraXConfig.Provider {
         BRClipboardManager.provideContext(this)
         BRSharedPrefs.initialize(this, applicationScope)
         TokenHolder.provideContext(this)
+        SessionHolder.provideContext(this)
+        UserSessionManager.provideContext(this)
 
         ProcessLifecycleOwner.get().lifecycle.addObserver(ApplicationLifecycleObserver())
         ApplicationLifecycleObserver.addApplicationLifecycleListener { event ->

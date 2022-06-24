@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_registration"
+    app:startDestination="@id/fragmentEnterEmail">
+
+    <fragment
+        android:id="@+id/fragmentEnterEmail"
+        android:name="com.fabriik.registration.ui.features.enteremail.RegistrationEnterEmailFragment"
+        tools:layout="@layout/fragment_registration_enter_email">
+
+        <action
+            android:id="@+id/action_verify_email"
+            app:destination="@+id/fragmentVerifyEmail" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragmentVerifyEmail"
+        android:name="com.fabriik.registration.ui.features.verifyemail.RegistrationVerifyEmailFragment"
+        tools:layout="@layout/fragment_registration_verify_email" >
+
+        <argument
+            android:name="email"
+            app:argType="string"/>
+
+        <argument
+            android:name="flow"
+            app:argType="com.fabriik.registration.ui.RegistrationFlow"/>
+
+    </fragment>
+
+</navigation>
