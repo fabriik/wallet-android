@@ -71,7 +71,6 @@ class AccountVerificationViewModel(
         profileManager.profileChanges()
             .onEach { profile ->
                 if (profile == null) {
-                    Log.d("ProfileManager", "AccountVerification updated, profile is loaded")
                     setEffect {
                         AccountVerificationContract.Effect.ShowToast(
                             getString(R.string.FabriikApi_DefaultError)
@@ -81,7 +80,6 @@ class AccountVerificationViewModel(
                     return@onEach
                 }
 
-                Log.d("ProfileManager", "AccountVerification updated, profile is loaded")
                 setState {
                     AccountVerificationContract.State.Content(
                         profile = profile,

@@ -231,7 +231,6 @@ fun createHomeScreenHandler(
     }
 
     addConsumer<F.RefreshProfile> {
-        Log.d("ProfileManager", "HomeScreen refresh profile called")
         profileManager.updateProfile()
     }
 
@@ -247,10 +246,8 @@ private fun handleLoadProfile(profileManager: ProfileManager) =
         effects.flatMapLatest { profileManager.profileChanges() }
             .mapLatest { profile ->
                 if (profile == null) {
-                    Log.d("ProfileManager", "HomeScreen updated, profile is null")
                     E.OnProfileDataLoadFailed(profile)
                 } else {
-                    Log.d("ProfileManager", "HomeScreen updated, profile is loaded")
                     E.OnProfileDataLoaded(profile)
                 }
             }
