@@ -57,6 +57,7 @@ import com.breadwallet.ui.pin.InputPinController
 import com.breadwallet.ui.profile.ProfileController
 import com.breadwallet.ui.provekey.PaperKeyProveController
 import com.breadwallet.ui.receive.ReceiveController
+import com.breadwallet.ui.resetpin.completed.PinResetCompletedController
 import com.breadwallet.ui.scanner.ScannerController
 import com.breadwallet.ui.send.SendSheetController
 import com.breadwallet.ui.settings.SettingsController
@@ -727,6 +728,14 @@ class RouterNavigator(
         FabriikToastUtil.show(
             parentView = checkNotNull(router.activity).window.decorView,
             message = effect.message
+        )
+    }
+
+    override fun pinResetCompleted() {
+        router.pushController(
+            RouterTransaction.with(
+                PinResetCompletedController()
+            )
         )
     }
 
