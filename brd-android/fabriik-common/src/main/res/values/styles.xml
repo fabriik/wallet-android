@@ -36,11 +36,6 @@
         <item name="dialogPreferredPadding">24dp</item>
     </style>
 
-    <style name="FabriikGenericDialogStyle" parent="Theme.MaterialComponents.Light.Dialog.MinWidth">
-        <item name="dialogCornerRadius">16dp</item>
-        <item name="dialogPreferredPadding">24dp</item>
-    </style>
-
     <style name="FabriikButtonStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="android:minHeight">0dp</item>
         <item name="android:padding">12dp</item>
@@ -101,27 +96,8 @@
         <item name="rippleColor">@color/fabriik_ripple_color</item>
     </style>
 
-    <style name="FabriikRadioButtonStyle" parent="Widget.MaterialComponents.CompoundButton.RadioButton">
-        <item name="materialThemeOverlay">@style/FabriikRadioButton.ThemeOverlay</item>
-        <item name="android:textColor">@color/light_text_01</item>
-        <item name="android:textAppearance">@style/TextStyle.Caption</item>
-    </style>
-
-    <style name="FabriikRadioButton.ThemeOverlay" parent="">
-        <item name="colorOnSurface">@color/light_icons_01</item>
-        <item name="colorSecondary">@color/light_interaction_primary_focused</item>
-    </style>
-
     <style name="FabriikSnackBarStyle" parent="@style/Widget.MaterialComponents.Snackbar">
         <item name="android:layout_margin">24dp</item>
-    </style>
-
-    <style name="FabriikCardViewStyle" parent="Widget.MaterialComponents.CardView">
-        <item name="contentPadding">16dp</item>
-        <item name="cardCornerRadius">@dimen/radius_l</item>
-        <item name="cardBackgroundColor">@color/white</item>
-        <item name="cardElevation">36dp</item>
-        <item name="rippleColor">@color/fabriik_ripple_color</item>
     </style>
 
     <style name="FabriikLoadingIndicatorStyle" parent="Widget.MaterialComponents.CircularProgressIndicator">
