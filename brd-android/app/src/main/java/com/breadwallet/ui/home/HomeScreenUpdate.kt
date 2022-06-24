@@ -155,7 +155,14 @@ val HomeScreenUpdate = Update<M, E, F> { model, event ->
                 )
             )
 
-        E.OnEmailVerified -> dispatch(setOf(F.GoToProfile))
+        E.OnEmailVerified -> {
+            dispatch(
+                setOf(
+                    F.RefreshProfile,
+                    F.GoToProfile
+                )
+            )
+        }
 
         is E.OnProfileDataLoaded -> next(
             model.copy(profile = event.profile)

@@ -5,7 +5,6 @@ import com.spotify.mobius.Next
 interface ProfileScreenUpdateSpec {
     fun patch(model: ProfileScreen.M, event: ProfileScreen.E): Next<ProfileScreen.M, ProfileScreen.F> = when (event) {
         ProfileScreen.E.OnCloseClicked -> onCloseClicked(model)
-        is ProfileScreen.E.RefreshProfile -> refreshProfile(model)
         is ProfileScreen.E.OnOptionClicked -> onOptionClicked(model, event)
         is ProfileScreen.E.OnOptionsLoaded -> onOptionsLoaded(model, event)
         is ProfileScreen.E.OnProfileDataLoaded -> onProfileDataLoaded(model, event)
@@ -18,8 +17,6 @@ interface ProfileScreenUpdateSpec {
     }
 
     fun onCloseClicked(model: ProfileScreen.M): Next<ProfileScreen.M, ProfileScreen.F>
-
-    fun refreshProfile(model: ProfileScreen.M): Next<ProfileScreen.M, ProfileScreen.F>
 
     fun onVerifyProfileClicked(model: ProfileScreen.M): Next<ProfileScreen.M, ProfileScreen.F>
 

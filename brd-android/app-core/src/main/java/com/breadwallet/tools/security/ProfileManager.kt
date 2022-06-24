@@ -7,5 +7,7 @@ interface ProfileManager {
 
     fun getProfile() : Profile?
 
-    fun updateProfile() : Flow<Profile?>
+    fun profileChanges() : Flow<Profile?>
+
+    fun updateProfile()
 }

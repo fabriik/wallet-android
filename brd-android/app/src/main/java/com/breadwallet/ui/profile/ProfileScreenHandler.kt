@@ -1,11 +1,14 @@
 package com.breadwallet.ui.profile
 
 import android.content.Context
+import android.util.Log
 import com.breadwallet.R
 import com.breadwallet.tools.security.ProfileManager
 import com.breadwallet.ui.profile.ProfileScreen.E
 import com.breadwallet.ui.profile.ProfileScreen.F
+import drewcarlson.mobius.flow.flowTransformer
 import drewcarlson.mobius.flow.subtypeEffectHandler
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.transform
@@ -31,23 +34,17 @@ fun createProfileScreenHandler(
         E.OnOptionsLoaded(items)
     }
 
-    addFunction<F.LoadProfileData> {
-        val profile = profileManager.getProfile()
-        if (profile != null) {
-            E.OnProfileDataLoaded(profile)
-        } else {
-            E.RefreshProfile
-        }
-    }
+    addTransformer(handleLoadProfile(profileManager))
+}
 
-    addTransformer<F.RefreshProfile> { effects ->
-        effects.flatMapLatest { profileManager.updateProfile() }
-            .mapLatest {
-                if (it == null) {
-                    E.OnProfileDataLoadFailed(it)
+private fun handleLoadProfile(profileManager: ProfileManager) =
+    flowTransformer<F.LoadProfileData, E> { effects ->
+        effects.flatMapLatest { profileManager.profileChanges() }
+            .mapLatest { profile ->
+                if (profile == null) {
+                    E.OnProfileDataLoadFailed(profile)
                 } else {
-                    E.OnProfileDataLoaded(it)
+                    E.OnProfileDataLoaded(profile)
                 }
             }
     }
-}
