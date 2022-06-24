@@ -25,6 +25,8 @@
 package com.breadwallet.ui.home
 
 import android.content.Context
+import android.util.Log
+import com.breadwallet.R
 import com.breadwallet.breadbox.*
 import com.breadwallet.crypto.WalletManagerState
 import com.breadwallet.ext.throttleLatest
@@ -48,22 +50,22 @@ import com.breadwallet.ui.home.HomeScreen.E
 import com.breadwallet.ui.home.HomeScreen.F
 import com.breadwallet.util.usermetrics.UserMetricsUtil
 import com.breadwallet.platform.interfaces.AccountMetaDataProvider
+import com.breadwallet.tools.security.ProfileManager
+import com.fabriik.common.data.Status
+import com.fabriik.registration.data.RegistrationApi
 import com.platform.interfaces.WalletProvider
 import com.platform.util.AppReviewPromptManager
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import drewcarlson.mobius.flow.subtypeEffectHandler
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.mapLatest
-import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.suspendCancellableCoroutine
 import java.math.BigDecimal
 import java.util.Locale
 import kotlin.coroutines.resume
 import com.breadwallet.crypto.Wallet as CryptoWallet
+import com.fabriik.registration.utils.UserSessionManager
+import drewcarlson.mobius.flow.flowTransformer
 
 private const val PROMPT_DISMISSED_FINGERPRINT = "fingerprint"
 
@@ -77,7 +79,8 @@ fun createHomeScreenHandler(
     walletProvider: WalletProvider,
     accountMetaDataProvider: AccountMetaDataProvider,
     connectivityStateProvider: ConnectivityStateProvider,
-    supportManager: SupportManager
+    supportManager: SupportManager,
+    profileManager: ProfileManager
 ) = subtypeEffectHandler<F, E> {
     addConsumer<F.SaveEmail> { effect ->
         UserMetricsUtil.makeEmailOptInRequest(context, effect.email)
@@ -226,7 +229,29 @@ fun createHomeScreenHandler(
     addConsumer<F.SubmitSupportForm> { effect ->
         supportManager.submitEmailRequest(body = effect.feedback)
     }
+
+    addConsumer<F.RefreshProfile> {
+        profileManager.updateProfile()
+    }
+
+    addConsumer<F.RequestSessionVerification> {
+        UserSessionManager.requestSessionVerification(context)
+    }
+
+    addTransformer(handleLoadProfile(profileManager))
 }
+
+private fun handleLoadProfile(profileManager: ProfileManager) =
+    flowTransformer<F.LoadProfile, E> { effects ->
+        effects.flatMapLatest { profileManager.profileChanges() }
+            .mapLatest { profile ->
+                if (profile == null) {
+                    E.OnProfileDataLoadFailed(profile)
+                } else {
+                    E.OnProfileDataLoaded(profile)
+                }
+            }
+    }
 
 private suspend fun Context.loadInAppMessage(): InAppMessage =
     suspendCancellableCoroutine { continuation ->

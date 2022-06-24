@@ -229,13 +229,6 @@ object SendSheetUpdate : Update<M, E, F>, SendSheetUpdateSpec {
         }
     }
 
-    override fun onFaqClicked(model: M): Next<M, F> {
-        return when {
-            model.isConfirmingTx -> noChange()
-            else -> dispatch(setOf(F.Nav.GoToFaq(model.currencyCode)))
-        }
-    }
-
     override fun onCloseClicked(model: M): Next<M, F> {
         return when {
             model.isConfirmingTx -> noChange()
@@ -872,7 +865,7 @@ object SendSheetUpdate : Update<M, E, F>, SendSheetUpdateSpec {
     override fun onDestinationTagFaqClicked(model: M, event: E): Next<M, F> {
         return when (event) {
             is E.OnDestinationTagFaqClicked -> {
-                dispatch(effects(F.ShowSupportDialog(topic = Topic.SEND_DESTINATION_TAG)))
+                dispatch(effects(F.Nav.GoToFaq(Topic.SEND_DESTINATION_TAG)))
             }
             else -> noChange()
         }
@@ -888,7 +881,7 @@ object SendSheetUpdate : Update<M, E, F>, SendSheetUpdateSpec {
             else -> Topic.SEND
         }
 
-        return dispatch(effects(F.ShowSupportDialog(topic)))
+        return dispatch(effects(F.Nav.GoToFaq(topic)))
     }
 
     override fun onInsufficientBalance(model: M, event: E.OnInsufficientBalance): Next<M, F> {

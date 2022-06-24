@@ -11,6 +11,7 @@
         <activity
             android:name=".ui.BuyWebViewActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
     </application>

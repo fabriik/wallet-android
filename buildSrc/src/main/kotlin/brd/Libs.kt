@@ -69,7 +69,7 @@ private const val COMMONS_IO_VERSION = "2.6"
 private const val JBSDIFF_VERSION = "1.0"
 private const val SLF4J_VERSION = "1.7.26"
 private const val JUNIT_VERSION = "4.12"
-private const val MOCKITO_VERSION = "2.25.0"
+private const val MOCKITO_VERSION = "4.6.1"
 private const val KASPRESSO_VERSION = "1.1.0"
 private const val KAKAO_VERSION = "2.3.2"
 private const val MATERIAL_VERSION = "1.3.0"
@@ -89,6 +89,7 @@ private const val RETROFIT_VERSION = "2.9.0"
 private const val MOSHI_VERSION = "1.12.0"
 private const val BROWSER_VERSION = "1.4.0"
 private const val GLIDE_VERSION = "4.13.0"
+private const val ROBOLECTRIC_VERSION = "4.5.1"
 
 object Libs {
 
@@ -200,7 +201,7 @@ object Libs {
     }
 
     object Networking {
-        const val Moshi = "com.squareup.moshi:moshi:$MOSHI_VERSION"
+        const val Moshi = "com.squareup.moshi:moshi-kotlin:$MOSHI_VERSION"
         const val MoshiCodegen = "com.squareup.moshi:moshi-kotlin-codegen:$MOSHI_VERSION"
 
         const val Retrofit = "com.squareup.retrofit2:retrofit:$RETROFIT_VERSION"
@@ -220,6 +221,10 @@ object Libs {
         const val Core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$COROUTINES_VERSION"
         const val Android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$COROUTINES_VERSION"
         const val Test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$COROUTINES_VERSION"
+    }
+
+    object Robolectric {
+        const val Core = "org.robolectric:robolectric:$ROBOLECTRIC_VERSION"
     }
 
     object Kotlin {
@@ -279,6 +284,7 @@ object Libs {
     }
 
     object Mockito {
+        const val Core = "org.mockito:mockito-core:$MOCKITO_VERSION"
         const val Android = "org.mockito:mockito-android:$MOCKITO_VERSION"
     }
 

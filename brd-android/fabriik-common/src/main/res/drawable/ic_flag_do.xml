@@ -1,0 +1,37 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="17dp"
+    android:height="12dp"
+    android:viewportWidth="17"
+    android:viewportHeight="12">
+  <group>
+    <clip-path
+        android:pathData="M15.2,0H1.6C0.716,0 0,0.716 0,1.6V10.4C0,11.284 0.716,12 1.6,12H15.2C16.084,12 16.8,11.284 16.8,10.4V1.6C16.8,0.716 16.084,0 15.2,0Z"/>
+    <path
+        android:pathData="M15.2,0H1.6C0.716,0 0,0.716 0,1.6V10.4C0,11.284 0.716,12 1.6,12H15.2C16.084,12 16.8,11.284 16.8,10.4V1.6C16.8,0.716 16.084,0 15.2,0Z"
+        android:fillColor="#002B64"/>
+    <path
+        android:pathData="M0,7.2H7.2V12H0V7.2ZM9.6,0H16.8V4.8H9.6V0Z"
+        android:fillColor="#D0091E"
+        android:fillType="evenOdd"/>
+    <path
+        android:pathData="M7.2,7.2H0V4.8H7.2V0H9.6V4.8H16.8V7.2H9.6V12H7.2V7.2Z"
+        android:fillColor="#ffffff"
+        android:fillType="evenOdd"/>
+    <path
+        android:pathData="M8.399,7.2C9.062,7.2 9.599,6.663 9.599,6C9.599,5.337 9.062,4.8 8.399,4.8C7.736,4.8 7.199,5.337 7.199,6C7.199,6.663 7.736,7.2 8.399,7.2Z"
+        android:fillColor="#007A1B"/>
+    <path
+        android:pathData="M8.4,6.4C8.621,6.4 8.8,6.221 8.8,6C8.8,5.779 8.621,5.6 8.4,5.6C8.179,5.6 8,5.779 8,6C8,6.221 8.179,6.4 8.4,6.4Z"
+        android:fillColor="#002B64"/>
+    <path
+        android:pathData="M7.599,5.6C7.82,5.6 7.999,5.421 7.999,5.2C7.999,4.979 7.82,4.8 7.599,4.8C7.378,4.8 7.199,4.979 7.199,5.2C7.199,5.421 7.378,5.6 7.599,5.6ZM9.199,5.6C9.42,5.6 9.599,5.421 9.599,5.2C9.599,4.979 9.42,4.8 9.199,4.8C8.978,4.8 8.799,4.979 8.799,5.2C8.799,5.421 8.978,5.6 9.199,5.6Z"
+        android:fillColor="#FDD200"
+        android:fillType="evenOdd"/>
+    <path
+        android:strokeWidth="1"
+        android:pathData="M15.2,0.4H1.6C0.938,0.4 0.4,0.937 0.4,1.6V10.4C0.4,11.063 0.938,11.6 1.6,11.6H15.2C15.863,11.6 16.4,11.063 16.4,10.4V1.6C16.4,0.937 15.863,0.4 15.2,0.4Z"
+        android:strokeAlpha="0.1"
+        android:fillColor="#00000000"
+        android:strokeColor="#000000"/>
+  </group>
+</vector>

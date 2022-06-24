@@ -30,6 +30,7 @@ class BuyWebViewActivity : AppCompatActivity() {
 
         webView = findViewById(R.id.web_view)
         loadingIndicator = findViewById(R.id.loading_bar)
+        loadingIndicator.isVisible = true
 
         webView.settings.apply {
             domStorageEnabled = true
@@ -75,9 +76,6 @@ class BuyWebViewActivity : AppCompatActivity() {
                 }
                 Status.ERROR -> {
                     finishWithResult(RESULT_ERROR)
-                }
-                Status.LOADING -> {
-                    loadingIndicator.isVisible = true
                 }
             }
         }

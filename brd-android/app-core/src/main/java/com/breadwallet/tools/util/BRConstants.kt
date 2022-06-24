@@ -92,26 +92,8 @@ object BRConstants {
     /**
      * Support Center article ids.
      */
-    const val FAQ_DISPLAY_CURRENCY = "display-currency"
-    const val FAQ_RECOVER_WALLET = "recover-wallet"
-    const val FAQ_RESCAN = "re-scan"
-    const val FAQ_SECURITY_CENTER = "security-center"
-    const val FAQ_PAPER_KEY = "paper-key"
-    const val FAQ_ENABLE_FINGERPRINT = "enable-fingerprint-authentication"
-    const val FAQ_TRANSACTION_DETAILS = "transaction-details"
-    const val FAQ_RECEIVE = "receive-tx"
-    const val FAQ_REQUEST_AMOUNT = "request-amount"
-    const val FAQ_SEND = "send-tx"
     const val FAQ_WALLET_DISABLE = "wallet-disabled"
-    const val FAQ_RESET_PIN_WITH_PAPER_KEY = "reset-pin-paper-key"
     const val FAQ_SET_PIN = "set-pin"
-    const val FAQ_IMPORT_WALLET = "import-wallet"
-    const val FAQ_WRITE_PAPER_KEY = "write-phrase"
-    const val FAQ_START_VIEW = "start-view"
-    const val FAQ_WIPE_WALLET = "wipe-wallet"
-    const val FAQ_LOOP_BUG = "android-loop-bug"
-    const val FAQ_BCH = "bitcoin-cash"
-    const val FAQ_UNSUPPORTED_TOKEN = "unsupported-token"
     const val FAQ_FASTSYNC = "fastsync-explained"
 
     /**
