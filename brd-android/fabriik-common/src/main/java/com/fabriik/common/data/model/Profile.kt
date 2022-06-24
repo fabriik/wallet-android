@@ -28,7 +28,7 @@ data class Profile(
     @Json(name = "kyc_status")
     val kycStatus: KycStatus,
 
-    @Json(name = "kycFailureReason")
+    @Json(name = "kyc_failure_reason")
     val kycFailureReason: String?
 
 ) : Parcelable
