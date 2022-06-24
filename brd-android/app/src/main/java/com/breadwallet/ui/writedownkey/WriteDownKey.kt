@@ -28,6 +28,7 @@ import com.breadwallet.tools.util.BRConstants
 import com.breadwallet.ui.navigation.NavigationEffect
 import com.breadwallet.ui.navigation.NavigationTarget
 import com.breadwallet.ui.navigation.OnCompleteAction
+import com.fabriik.support.pages.Topic
 import dev.zacsweers.redacted.annotations.Redacted
 
 object WriteDownKey {
@@ -56,7 +57,7 @@ object WriteDownKey {
 
     sealed class F {
         object GoToFaq : F(), NavigationEffect {
-            override val navigationTarget = NavigationTarget.SupportPage(BRConstants.FAQ_PAPER_KEY)
+            override val navigationTarget = NavigationTarget.SupportDialog(Topic.RECOVERY_KEY)
         }
 
         object GoToHome : F(), NavigationEffect {

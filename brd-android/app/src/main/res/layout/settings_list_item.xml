@@ -46,7 +46,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:visibility="gone"
-        android:backgroundTint="@color/fabriik_shuttle_grey"
+        android:backgroundTint="@color/light_icons_02"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

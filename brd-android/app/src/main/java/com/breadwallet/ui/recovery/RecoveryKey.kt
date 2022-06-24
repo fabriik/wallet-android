@@ -25,10 +25,10 @@
 package com.breadwallet.ui.recovery
 
 import com.breadwallet.R
-import com.breadwallet.tools.util.BRConstants
 import com.breadwallet.ui.ViewEffect
 import com.breadwallet.ui.navigation.NavigationEffect
 import com.breadwallet.ui.navigation.NavigationTarget
+import com.fabriik.support.pages.Topic
 import dev.zacsweers.redacted.annotations.Redacted
 
 object RecoveryKey {
@@ -140,7 +140,7 @@ object RecoveryKey {
     sealed class F {
 
         object GoToRecoveryKeyFaq : F(), NavigationEffect {
-            override val navigationTarget = NavigationTarget.SupportPage(BRConstants.FAQ_PAPER_KEY)
+            override val navigationTarget = NavigationTarget.SupportDialog(Topic.RECOVERY_KEY)
         }
 
         object SetPinForRecovery : F(), NavigationEffect {

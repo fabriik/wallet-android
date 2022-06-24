@@ -9,6 +9,7 @@ object FabriikApiConstants {
     private const val BASE_URL = "https://$HOST"
 
     const val HOST_WYRE_API = "$BASE_URL/wyre/"
+    const val HOST_KYC_API = "$BASE_URL/one/kyc/"
     const val HOST_AUTH_API = "$BASE_URL/one/auth/"
     const val HOST_WALLET_API = "$BASE_URL/wallet"
     const val HOST_BLOCKSATOSHI_API = "$BASE_URL/blocksatoshi"

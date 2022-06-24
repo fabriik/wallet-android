@@ -29,11 +29,11 @@ import com.spotify.mobius.Next
 interface ReceiveScreenUpdateSpec {
     fun patch(model: ReceiveScreen.M, event: ReceiveScreen.E): Next<ReceiveScreen.M, ReceiveScreen.F> = when (event) {
         ReceiveScreen.E.OnCloseClicked -> onCloseClicked(model)
-        ReceiveScreen.E.OnFaqClicked -> onFaqClicked(model)
         ReceiveScreen.E.OnShareClicked -> onShareClicked(model)
         ReceiveScreen.E.OnCopyAddressClicked -> onCopyAddressClicked(model)
         ReceiveScreen.E.OnAmountClicked -> onAmountClicked(model)
         ReceiveScreen.E.OnToggleCurrencyClicked -> onToggleCurrencyClicked(model)
+        is ReceiveScreen.E.OnFaqClicked -> onFaqClicked(model, event)
         is ReceiveScreen.E.OnExchangeRateUpdated -> onExchangeRateUpdated(model, event)
         is ReceiveScreen.E.OnWalletInfoLoaded -> onWalletInfoLoaded(model, event)
         is ReceiveScreen.E.OnAmountChange -> onAmountChange(model, event)
@@ -41,7 +41,7 @@ interface ReceiveScreenUpdateSpec {
 
     fun onCloseClicked(model: ReceiveScreen.M): Next<ReceiveScreen.M, ReceiveScreen.F>
 
-    fun onFaqClicked(model: ReceiveScreen.M): Next<ReceiveScreen.M, ReceiveScreen.F>
+    fun onFaqClicked(model: ReceiveScreen.M, event: ReceiveScreen.E.OnFaqClicked): Next<ReceiveScreen.M, ReceiveScreen.F>
 
     fun onShareClicked(model: ReceiveScreen.M): Next<ReceiveScreen.M, ReceiveScreen.F>
 

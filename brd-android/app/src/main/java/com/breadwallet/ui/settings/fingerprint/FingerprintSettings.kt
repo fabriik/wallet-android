@@ -24,9 +24,9 @@
  */
 package com.breadwallet.ui.settings.fingerprint
 
-import com.breadwallet.tools.util.BRConstants
 import com.breadwallet.ui.navigation.NavigationEffect
 import com.breadwallet.ui.navigation.NavigationTarget
+import com.fabriik.support.pages.Topic
 
 object FingerprintSettings {
 
@@ -59,7 +59,7 @@ object FingerprintSettings {
         }
         object GoToFaq : F(), NavigationEffect {
             override val navigationTarget =
-                NavigationTarget.SupportPage(BRConstants.FAQ_ENABLE_FINGERPRINT)
+                NavigationTarget.SupportDialog(Topic.FINGERPRINT)
         }
     }
 }

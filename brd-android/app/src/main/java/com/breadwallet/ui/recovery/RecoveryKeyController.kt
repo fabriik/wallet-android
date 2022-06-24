@@ -161,6 +161,7 @@ class RecoveryKeyController(
                 output.accept(E.OnFaqClicked)
             }
             sendButton.setOnClickListener {
+                Utils.hideKeyboard(activity)
                 output.accept(E.OnNextClicked)
             }
             buttonContactSupport.setOnClickListener {

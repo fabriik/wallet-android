@@ -27,6 +27,7 @@ package com.breadwallet.ui.home
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.content.Intent
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.ImageButton
@@ -51,6 +52,7 @@ import com.breadwallet.ui.home.HomeScreen.E
 import com.breadwallet.ui.home.HomeScreen.F
 import com.breadwallet.ui.home.HomeScreen.M
 import com.breadwallet.util.isValidEmail
+import com.fabriik.registration.data.RegistrationApi
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.GenericFastAdapter
 import com.mikepenz.fastadapter.adapters.GenericModelAdapter
@@ -73,6 +75,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.kodein.di.direct
 import org.kodein.di.erased.instance
+import com.fabriik.registration.ui.RegistrationActivity
 
 private const val EMAIL_SUCCESS_DELAY = 3_000L
 private const val NETWORK_TESTNET = "TESTNET"
@@ -94,8 +97,9 @@ class HomeController(
             direct.instance(),
             direct.instance(),
             direct.instance(),
+            direct.instance(),
             direct.instance()
-        )
+    )
 
     private val binding by viewBinding(ControllerHomeBinding::inflate)
     private var fastAdapter: GenericFastAdapter? = null
@@ -105,8 +109,9 @@ class HomeController(
     override fun bindView(output: Consumer<E>): Disposable {
         return with (binding) {
             buyLayout.setOnClickListener { output.accept(E.OnBuyClicked) }
-            tradeLayout.setOnClickListener { output.accept(E.OnTradeClicked) }
             menuLayout.setOnClickListener { output.accept(E.OnMenuClicked) }
+            tradeLayout.setOnClickListener { output.accept(E.OnTradeClicked) }
+            profileLayout.setOnClickListener { output.accept(E.OnProfileClicked) }
 
             val fastAdapter = checkNotNull(fastAdapter)
             fastAdapter.onClickListener = { _, _, item, _ ->
@@ -145,6 +150,7 @@ class HomeController(
         }
 
         addWalletAdapter!!.add(AddWalletItem())
+        registerForActivityResult(RegistrationActivity.REQUEST_CODE)
     }
 
     override fun onDestroyView(view: View) {
@@ -152,6 +158,14 @@ class HomeController(
         addWalletAdapter = null
         fastAdapter = null
         super.onDestroyView(view)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == RegistrationActivity.REQUEST_CODE && resultCode == RegistrationActivity.RESULT_VERIFIED) {
+            eventConsumer.accept(E.OnEmailVerified)
+        }
     }
 
     override fun bindView(modelFlow: Flow<M>): Flow<E> {
@@ -178,25 +192,11 @@ class HomeController(
                 }
             }
 
-            ifChanged(M::isBuyBellNeeded) {
-                buyBell.isVisible = isBuyBellNeeded
-            }
-
             ifChanged(M::hasInternet) {
                 notificationBar.apply {
                     isGone = hasInternet
                     if (hasInternet) bringToFront()
                 }
-                buyTextView.setText(
-                    when {
-                        showBuyAndSell -> R.string.HomeScreen_buyAndSell
-                        else -> R.string.HomeScreen_buy
-                    }
-                )
-            }
-
-            ifChanged(M::isBuyBellNeeded) {
-                buyBell.isVisible = isBuyBellNeeded
             }
         }
     }
