@@ -30,6 +30,9 @@ import com.breadwallet.tools.manager.BRSharedPrefs
 import com.breadwallet.ui.home.HomeScreen.E
 import com.breadwallet.ui.home.HomeScreen.F
 import com.breadwallet.ui.home.HomeScreen.M
+import com.fabriik.common.data.model.canUseBuyTrade
+import com.fabriik.common.data.model.isUserRegistered
+import com.platform.tools.SessionHolder
 import com.spotify.mobius.Effects.effects
 import com.spotify.mobius.Next.dispatch
 import com.spotify.mobius.Next.next
@@ -92,45 +95,80 @@ val HomeScreenUpdate = Update<M, E, F> { model, event ->
             }
         }
         is E.OnAddWalletsClicked -> dispatch(effects(F.GoToAddWallet))
-        E.OnBuyClicked -> {
-            val isBuyAlertNeeded = model.isBuyAlertNeeded
-            BRSharedPrefs.buyNotePromptShouldPrompt = false
+        E.OnBuyClicked -> when {
+            !model.profile.isUserRegistered() -> dispatch(effects(F.GoToRegistration))
+            !SessionHolder.isUserSessionVerified() -> dispatch(effects(F.RequestSessionVerification))
+            !model.profile.canUseBuyTrade() -> dispatch(effects(F.GoToVerifyProfile))
+            else -> {
+                val isBuyAlertNeeded = model.isBuyAlertNeeded
+                BRSharedPrefs.buyNotePromptShouldPrompt = false
 
-            next<M, F>(
-                model.copy(isBuyAlertNeeded = false),
-                effects(
-                    if (isBuyAlertNeeded) {
-                        F.ShowPartnershipNote(
-                            dialogId = DIALOG_PARTNERSHIP_NOTE_BUY,
-                            messageResId = R.string.HomeScreen_partnershipNoteBuyDescription
-                        )
-                    } else {
-                        F.GoToBuy
-                    }
+                next<M, F>(
+                    model.copy(isBuyAlertNeeded = false),
+                    effects(
+                        if (isBuyAlertNeeded) {
+                            F.ShowPartnershipNote(
+                                dialogId = DIALOG_PARTNERSHIP_NOTE_BUY,
+                                messageResId = R.string.HomeScreen_partnershipNoteBuyDescription
+                            )
+                        } else {
+                            F.GoToBuy
+                        }
+                    )
                 )
-            )
+            }
         }
-        E.OnTradeClicked -> {
-            val isTradeAlertNeeded = model.isTradeAlertNeeded
-            BRSharedPrefs.tradeNotePromptShouldPrompt = false
+        E.OnTradeClicked -> when {
+            !model.profile.isUserRegistered() -> dispatch(effects(F.GoToRegistration))
+            !SessionHolder.isUserSessionVerified() -> dispatch(effects(F.RequestSessionVerification))
+            !model.profile.canUseBuyTrade() -> dispatch(effects(F.GoToVerifyProfile))
+            else -> {
+                val isTradeAlertNeeded = model.isTradeAlertNeeded
+                BRSharedPrefs.tradeNotePromptShouldPrompt = false
 
-            next<M, F>(
-                model.copy(isTradeAlertNeeded = false),
-                effects(
-                    if (isTradeAlertNeeded) {
-                        F.ShowPartnershipNote(
-                            dialogId = DIALOG_PARTNERSHIP_NOTE_SWAP,
-                            messageResId = R.string.HomeScreen_partnershipNoteSwapDescription
-                        )
-                    } else {
-                        F.LoadSwapCurrencies
-                    }
+                next<M, F>(
+                    model.copy(isTradeAlertNeeded = false),
+                    effects(
+                        if (isTradeAlertNeeded) {
+                            F.ShowPartnershipNote(
+                                dialogId = DIALOG_PARTNERSHIP_NOTE_SWAP,
+                                messageResId = R.string.HomeScreen_partnershipNoteSwapDescription
+                            )
+                        } else {
+                            F.LoadSwapCurrencies
+                        }
+                    )
                 )
-            )
+            }
         }
         E.OnBuyNoteSeen -> dispatch(effects(F.GoToBuy))
         E.OnTradeNoteSeen -> dispatch(effects(F.LoadSwapCurrencies))
         E.OnMenuClicked -> dispatch(effects(F.GoToMenu))
+        E.OnProfileClicked -> dispatch(
+            effects(
+                when {
+                    !model.profile.isUserRegistered() -> F.GoToRegistration
+                    !SessionHolder.isUserSessionVerified() -> F.RequestSessionVerification
+                    else -> F.GoToProfile
+                }
+            )
+        )
+
+        E.OnEmailVerified -> {
+            dispatch(
+                setOf(
+                    F.RefreshProfile,
+                    F.GoToProfile
+                )
+            )
+        }
+
+        is E.OnProfileDataLoaded -> next(
+            model.copy(profile = event.profile)
+        )
+
+        is E.OnProfileDataLoadFailed -> noChange()
+
         is E.OnPromptLoaded -> next(model.copy(promptId = event.promptId))
         is E.OnDeepLinkProvided -> dispatch(
             effects(

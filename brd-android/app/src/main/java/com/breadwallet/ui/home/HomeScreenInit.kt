@@ -32,6 +32,8 @@ import com.spotify.mobius.Init
 
 val HomeScreenInit = Init<M, F> { model ->
     first(model, effects(
+            F.LoadProfile,
+            F.RefreshProfile,
             F.LoadEnabledWallets,
             F.LoadIsBuyBellNeeded,
             F.LoadIsBuyAlertNeeded,

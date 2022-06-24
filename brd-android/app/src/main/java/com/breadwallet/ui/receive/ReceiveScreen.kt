@@ -24,7 +24,6 @@
  */
 package com.breadwallet.ui.receive
 
-import com.breadwallet.crypto.Amount
 import com.breadwallet.ext.isZero
 import com.breadwallet.tools.util.BRConstants
 import com.breadwallet.ui.ViewEffect
@@ -33,6 +32,7 @@ import com.breadwallet.ui.navigation.NavigationTarget
 import com.breadwallet.ui.send.MAX_DIGITS
 import com.breadwallet.util.CurrencyCode
 import com.breadwallet.util.isRipple
+import com.fabriik.support.pages.Topic
 import dev.zacsweers.redacted.annotations.Redacted
 import java.math.BigDecimal
 
@@ -170,12 +170,9 @@ object ReceiveScreen {
         }
 
         data class GoToFaq(
-            val currencyCode: CurrencyCode
+            val topic: Topic
         ) : F(), NavigationEffect {
-            override val navigationTarget = NavigationTarget.SupportPage(
-                BRConstants.FAQ_RECEIVE,
-                currencyCode
-            )
+            override val navigationTarget = NavigationTarget.SupportDialog(topic)
         }
 
         object ShowCopiedMessage : F(), ViewEffect

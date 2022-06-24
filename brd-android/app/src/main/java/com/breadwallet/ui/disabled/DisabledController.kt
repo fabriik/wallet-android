@@ -60,7 +60,7 @@ class DisabledController(args: Bundle? = null) : BaseController(args) {
         super.onCreateView(view)
 
         binding.btnFaq.setOnClickListener {
-            navigator.showSupportDialog(
+            navigator.showSupportPage(
                 NavigationTarget.SupportDialog(Topic.WALLET_DISABLED)
             )
         }

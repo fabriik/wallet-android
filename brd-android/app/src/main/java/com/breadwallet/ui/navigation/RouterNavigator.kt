@@ -38,7 +38,6 @@ import com.breadwallet.R
 import com.breadwallet.breadbox.BreadBox
 import com.breadwallet.legacy.presenter.settings.NotificationSettingsController
 import com.breadwallet.logger.logError
-import com.breadwallet.platform.interfaces.AccountMetaDataProvider
 import com.breadwallet.tools.util.*
 import com.breadwallet.ui.addwallets.AddWalletsController
 import com.breadwallet.ui.auth.AuthenticationController
@@ -53,6 +52,7 @@ import com.breadwallet.ui.login.LoginController
 import com.breadwallet.ui.notification.InAppNotificationActivity
 import com.breadwallet.ui.onboarding.OnBoardingController
 import com.breadwallet.ui.pin.InputPinController
+import com.breadwallet.ui.profile.ProfileController
 import com.breadwallet.ui.provekey.PaperKeyProveController
 import com.breadwallet.ui.receive.ReceiveController
 import com.breadwallet.ui.recovery.RecoveryKeyController
@@ -83,13 +83,16 @@ import com.breadwallet.ui.writedownkey.WriteDownKeyController
 import com.breadwallet.ui.uistaking.StakingController
 import com.breadwallet.ui.uigift.CreateGiftController
 import com.breadwallet.ui.uigift.ShareGiftController
+import com.breadwallet.ui.verifyaccount.VerifyController
 import com.breadwallet.util.CryptoUriParser
 import com.breadwallet.util.isBrd
 import com.fabriik.buy.ui.BuyWebViewActivity
-import com.fabriik.common.ui.views.ErrorBubbleView
-import com.fabriik.signup.ui.SignupActivity
+import com.fabriik.common.utils.FabriikToastUtil
+import com.fabriik.kyc.ui.KycActivity
+import com.fabriik.kyc.ui.dialogs.InfoDialog
+import com.fabriik.kyc.ui.dialogs.InfoDialogArgs
+import com.fabriik.registration.ui.RegistrationActivity
 import com.fabriik.support.CashSupport
-import com.fabriik.support.pages.Topic
 import com.fabriik.trade.ui.TradeWebViewLauncher
 import com.platform.util.AppReviewPromptManager
 import kotlinx.coroutines.CoroutineScope
@@ -114,7 +117,6 @@ class RouterNavigator(
 
     private val breadBox by instance<BreadBox>()
     private val uriParser by instance<CryptoUriParser>()
-    private val metaDataManager by instance<AccountMetaDataProvider>()
 
     override fun navigateTo(target: INavigationTarget) =
         patch(target as NavigationTarget)
@@ -149,10 +151,23 @@ class RouterNavigator(
         AppReviewPromptManager.openGooglePlay(checkNotNull(router.activity))
     }
 
-    override fun openKyc() {
+    override fun openKyc(effect: NavigationTarget.GoToKyc) {
         router.activity?.let {
-            it.startActivity(
-                SignupActivity.getStartIntent(it)
+            it.startActivityForResult(
+                KycActivity.getStartIntent(it), KycActivity.REQUEST_CODE
+            )
+        }
+    }
+
+    override fun openRegistration(effect: NavigationTarget.GoToRegistration) {
+        router.activity?.let {
+            it.startActivityForResult(
+                RegistrationActivity.getStartIntent(
+                    it, RegistrationActivity.Args(
+                        flow = effect.flow,
+                        email = effect.email
+                    )
+                ), RegistrationActivity.REQUEST_CODE
             )
         }
     }
@@ -191,6 +206,22 @@ class RouterNavigator(
                 )
             )
         }
+    }
+
+    override fun profile() {
+        router.pushController(
+            RouterTransaction.with(ProfileController())
+                .popChangeHandler(VerticalChangeHandler())
+                .pushChangeHandler(VerticalChangeHandler())
+        )
+    }
+
+    override fun verifyProfile() {
+        router.pushController(
+            RouterTransaction.with(VerifyController())
+                .popChangeHandler(VerticalChangeHandler())
+                .pushChangeHandler(VerticalChangeHandler())
+        )
     }
 
     override fun trade(currencies: List<String>) {
@@ -264,6 +295,7 @@ class RouterNavigator(
     }
 
     override fun supportPage(effect: NavigationTarget.SupportPage) {
+        // TODO - Check if we still need web support
         if (effect.articleId.isBlank()) {
             val supportPage = BRConstants.URL_SUPPORT_PAGE
             router.pushController(
@@ -276,27 +308,21 @@ class RouterNavigator(
         }
 
         router.fragmentManager()?.let {
-            when (effect.articleId) {
-                BRConstants.FAQ_SET_PIN -> {
-                    CashSupport.Builder().detail(Topic.PIN).build().show(it)
-                }
-                BRConstants.FAQ_IMPORT_WALLET -> {
-                    CashSupport.Builder().detail(Topic.IMPORT_WALLET).build().show(it)
-                }
-                BRConstants.FAQ_ENABLE_FINGERPRINT -> {
-                    CashSupport.Builder().detail(Topic.FINGERPRINT).build().show(it)
-                }
-                BRConstants.FAQ_RESCAN -> {
-                    CashSupport.Builder().detail(Topic.SYNC_BITCOIN_BLOCK_CHAIN).build().show(it)
-                }
-                BRConstants.FAQ_PAPER_KEY -> {
-                    CashSupport.Builder().detail(Topic.RECOVERY_KEY).build().show(it)
-                }
-                else -> {
-                    CashSupport.Builder().build().show(it)
-                }
-            }
+            CashSupport.Builder().build().show(it)
         }
+    }
+
+    override fun showSupportPage(effect: NavigationTarget.SupportDialog) {
+        router.fragmentManager()?.let {
+            CashSupport.Builder().detail(effect.topic).build().show(it)
+        }
+    }
+
+    override fun showInfoDialog(effect: NavigationTarget.ShowInfoDialog) {
+        val fm = router.fragmentManager()
+        val infoArgs = InfoDialogArgs(effect.title, effect.description)
+
+        InfoDialog(infoArgs).show(fm ?: error("Can't find fragment Manager"), "info_dialog")
     }
 
     override fun setPin(effect: NavigationTarget.SetPin) {
@@ -697,10 +723,11 @@ class RouterNavigator(
         router.pushController(RouterTransaction.with(SelectBakersController(effect.bakers)))
     }
 
-    override fun showSupportDialog(effect: NavigationTarget.SupportDialog) {
-        router.fragmentManager()?.let {
-            CashSupport.Builder().detail(effect.topic).build().show(it)
-        }
+    override fun fabriikToast(effect: NavigationTarget.FabriikToast) {
+        FabriikToastUtil.show(
+            parentView = checkNotNull(router.activity).window.decorView,
+            message = effect.message
+        )
     }
 
     override fun recoveryKeyScreen(effect: NavigationTarget.RecoveryKeyScreen) {

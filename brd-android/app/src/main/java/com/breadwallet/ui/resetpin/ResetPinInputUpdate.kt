@@ -22,9 +22,6 @@ object ResetPinInputUpdate : Update<M, E, F>, ResetPinInputUpdateSpec {
         event: E.OnPinEntered
     ): Next<M, F> {
         return when (model.mode) {
-            M.Mode.NEW -> {
-                next(model.copy(mode = M.Mode.CONFIRM, pin = event.pin))
-            }
             M.Mode.CONFIRM -> if (event.pin == model.pin) {
                 next(model, setOf<F>(F.SetupPin(model.pin)))
             } else {
@@ -32,6 +29,9 @@ object ResetPinInputUpdate : Update<M, E, F>, ResetPinInputUpdateSpec {
                     model.copy(mode = M.Mode.NEW, pin = ""),
                     setOf<F>(F.ErrorShake)
                 )
+            }
+            M.Mode.NEW -> {
+                next(model.copy(mode = M.Mode.CONFIRM, pin = event.pin))
             }
         }
     }

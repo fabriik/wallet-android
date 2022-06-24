@@ -24,6 +24,7 @@
  */
 package com.breadwallet.ui.pin
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
@@ -40,6 +41,7 @@ import com.breadwallet.ui.navigation.OnCompleteAction
 import com.breadwallet.ui.pin.InputPin.E
 import com.breadwallet.ui.pin.InputPin.F
 import com.breadwallet.ui.pin.InputPin.M
+import com.fabriik.registration.ui.RegistrationActivity
 import drewcarlson.mobius.flow.FlowTransformer
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -75,17 +77,27 @@ class InputPinController(args: Bundle) : BaseMobiusController<M, E, F>(args) {
     override val init = InputPinInit
     override val update = InputPinUpdate
     override val flowEffectHandler: FlowTransformer<F, E>
-        get() = createInputPinHandler(direct.instance())
+        get() = createInputPinHandler(direct.instance(), direct.instance())
 
     private val binding by viewBinding(ControllerPinInputBinding::inflate)
 
     override fun onCreateView(view: View) {
         super.onCreateView(view)
 
+        registerForActivityResult(RegistrationActivity.REQUEST_CODE)
+
         val pinDigitButtonColor = ContextCompat.getColor(view.context, R.color.fabriik_black)
         binding.brkeyboard.setButtonTextColor(pinDigitButtonColor)
         binding.brkeyboard.setShowDecimal(false)
         binding.brkeyboard.setDeleteImage(R.drawable.ic_delete_black)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == RegistrationActivity.REQUEST_CODE) {
+            eventConsumer.accept(E.OnVerifyEmailClosed)
+        }
     }
 
     override fun handleViewEffect(effect: ViewEffect) {
