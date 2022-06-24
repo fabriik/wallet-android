@@ -152,6 +152,36 @@ class HomeScreenUpdateTests {
             )
     }
 
+    @Test
+    fun buyNoteSeen() {
+        val initState = M.createDefault()
+
+        spec.given(initState)
+            .`when`(
+                E.OnBuyNoteSeen
+            )
+            .then(
+                assertThatNext(
+                    hasEffects(F.GoToBuy as F)
+                )
+            )
+    }
+
+    @Test
+    fun tradeNoteSeen() {
+        val initState = M.createDefault()
+
+        spec.given(initState)
+            .`when`(
+                E.OnTradeNoteSeen
+            )
+            .then(
+                assertThatNext(
+                    hasEffects(F.LoadSwapCurrencies as F)
+                )
+            )
+    }
+
     /*@Test
     fun buyClick() {
         val initState = M.createDefault()
