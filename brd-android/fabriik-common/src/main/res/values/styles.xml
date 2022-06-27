@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <style name="FabriikTheme.Dialog.Alert" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
         <item name="materialAlertDialogTitleTextStyle">@style/FabriikTheme.Dialog.Alert.Title</item>
         <item name="materialAlertDialogBodyTextStyle">@style/FabriikTheme.Dialog.Alert.Body</item>
@@ -174,4 +173,5 @@
         <item name="color">@color/light_primary</item>
         <item name="android:textAppearance">@style/TextStyle.Subtitle1</item>
     </style>
+
 </resources>

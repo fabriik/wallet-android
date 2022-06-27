@@ -26,7 +26,6 @@ package com.breadwallet.ui.navigation
 
 import android.content.Intent
 import android.net.Uri
-import android.view.View
 import android.widget.Toast
 import com.bluelinelabs.conductor.Controller
 import com.bluelinelabs.conductor.ControllerChangeHandler
@@ -39,7 +38,6 @@ import com.breadwallet.R
 import com.breadwallet.breadbox.BreadBox
 import com.breadwallet.legacy.presenter.settings.NotificationSettingsController
 import com.breadwallet.logger.logError
-import com.breadwallet.platform.interfaces.AccountMetaDataProvider
 import com.breadwallet.tools.util.*
 import com.breadwallet.ui.addwallets.AddWalletsController
 import com.breadwallet.ui.auth.AuthenticationController
@@ -57,6 +55,7 @@ import com.breadwallet.ui.pin.InputPinController
 import com.breadwallet.ui.profile.ProfileController
 import com.breadwallet.ui.provekey.PaperKeyProveController
 import com.breadwallet.ui.receive.ReceiveController
+import com.breadwallet.ui.recovery.RecoveryKeyController
 import com.breadwallet.ui.resetpin.ResetPinInputController
 import com.breadwallet.ui.resetpin.completed.PinResetCompletedController
 import com.breadwallet.ui.scanner.ScannerController
@@ -118,7 +117,6 @@ class RouterNavigator(
 
     private val breadBox by instance<BreadBox>()
     private val uriParser by instance<CryptoUriParser>()
-    private val metaDataManager by instance<AccountMetaDataProvider>()
 
     override fun navigateTo(target: INavigationTarget) =
         patch(target as NavigationTarget)
@@ -729,6 +727,14 @@ class RouterNavigator(
         FabriikToastUtil.show(
             parentView = checkNotNull(router.activity).window.decorView,
             message = effect.message
+        )
+    }
+
+    override fun recoveryKeyScreen(effect: NavigationTarget.RecoveryKeyScreen) {
+        router.pushController(
+            RouterTransaction.with(
+                RecoveryKeyController(effect.mode)
+            )
         )
     }
 
