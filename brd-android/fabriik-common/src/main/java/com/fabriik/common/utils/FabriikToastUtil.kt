@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
+import androidx.annotation.DrawableRes
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.setPadding
 import com.fabriik.common.R
@@ -13,44 +14,54 @@ import com.google.android.material.snackbar.Snackbar
 object FabriikToastUtil {
 
     fun showInfo(parentView: View, message: String) {
-        val view = TextView(parentView.context)
-        view.text = message
-        view.setPadding(16.dp)
-        view.setTextAppearance(R.style.FabriikToastTextAppearance)
-
-        val snackBar = Snackbar.make(parentView, "", Snackbar.LENGTH_LONG)
-        snackBar.view.setBackgroundResource(R.drawable.bg_info_prompt)
-
-        val snackBarView = snackBar.view as Snackbar.SnackbarLayout
-        val parentParams = snackBarView.layoutParams as ViewGroup.LayoutParams
-        parentParams.width = FrameLayout.LayoutParams.MATCH_PARENT
-        snackBarView.layoutParams = parentParams
-
-        snackBarView.addView(view, 0)
-        snackBar.show()
+        showCustomSnackBar(
+            parentView = parentView,
+            message = message,
+            gravity = Gravity.BOTTOM,
+            background = R.drawable.bg_info_prompt
+        )
     }
 
     fun showError(parentView: View, message: String) {
-        val view = TextView(parentView.context)
-        view.text = message
-        view.setPadding(16.dp)
-        view.setTextAppearance(R.style.FabriikToastTextAppearance)
+        showCustomSnackBar(
+            parentView = parentView,
+            message = message,
+            gravity = Gravity.TOP,
+            background = R.drawable.bg_error_bubble
+        )
+    }
 
-        val snackBar = Snackbar.make(parentView, "", Snackbar.LENGTH_LONG)
-        snackBar.view.setBackgroundResource(R.drawable.bg_error_bubble)
-
-        val snackBarView = snackBar.view as Snackbar.SnackbarLayout
-        val parentParams = snackBarView.layoutParams as ViewGroup.LayoutParams
-        parentParams.width = FrameLayout.LayoutParams.MATCH_PARENT
-
-        if (parentParams is CoordinatorLayout.LayoutParams) {
-            parentParams.gravity = Gravity.TOP
-        } else if (parentParams is FrameLayout.LayoutParams) {
-            parentParams.gravity = Gravity.TOP
+    private fun showCustomSnackBar(
+        parentView: View,
+        message: String,
+        gravity: Int,
+        @DrawableRes background: Int
+    ) {
+        val view = TextView(parentView.context).apply {
+            text = message
+            setPadding(16.dp)
+            setTextAppearance(R.style.FabriikToastTextAppearance)
         }
 
-        snackBarView.layoutParams = parentParams
-        snackBarView.addView(view, 0)
+        val snackBar = Snackbar.make(parentView, "", Snackbar.LENGTH_LONG).apply {
+            this.view.setBackgroundResource(background)
+        }
+
+        // setup snackBar view
+        (snackBar.view as Snackbar.SnackbarLayout).let {
+            val params = it.layoutParams as ViewGroup.LayoutParams
+            params.width = FrameLayout.LayoutParams.MATCH_PARENT
+
+            if (params is CoordinatorLayout.LayoutParams) {
+                params.gravity = gravity
+            } else if (params is FrameLayout.LayoutParams) {
+                params.gravity = gravity
+            }
+
+            it.layoutParams = params
+            it.addView(view, 0)
+        }
+
         snackBar.show()
     }
 }

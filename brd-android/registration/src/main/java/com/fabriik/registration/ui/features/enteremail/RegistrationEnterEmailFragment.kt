@@ -18,7 +18,6 @@ import com.fabriik.common.utils.showKeyboard
 import com.fabriik.common.utils.textOrEmpty
 import com.fabriik.registration.R
 import com.fabriik.registration.databinding.FragmentRegistrationEnterEmailBinding
-import com.fabriik.registration.ui.RegistrationActivity
 import com.fabriik.registration.ui.RegistrationFlow
 import kotlinx.coroutines.flow.collect
 
