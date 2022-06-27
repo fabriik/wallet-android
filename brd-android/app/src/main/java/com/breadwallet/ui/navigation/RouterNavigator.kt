@@ -724,10 +724,18 @@ class RouterNavigator(
     }
 
     override fun fabriikToast(effect: NavigationTarget.FabriikToast) {
-        FabriikToastUtil.showInfo(
-            parentView = checkNotNull(router.activity).window.decorView,
-            message = effect.message
-        )
+        when (effect.type) {
+            NavigationTarget.FabriikToast.Type.INFO ->
+                FabriikToastUtil.showInfo(
+                    parentView = checkNotNull(router.activity).window.decorView,
+                    message = effect.message
+                )
+            NavigationTarget.FabriikToast.Type.ERROR ->
+                FabriikToastUtil.showError(
+                    parentView = checkNotNull(router.activity).window.decorView,
+                    message = effect.message
+                )
+        }
     }
 
     override fun recoveryKeyScreen(effect: NavigationTarget.RecoveryKeyScreen) {
