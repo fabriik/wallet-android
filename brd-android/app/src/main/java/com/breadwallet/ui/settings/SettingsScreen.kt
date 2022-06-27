@@ -71,6 +71,7 @@ object SettingsScreen {
         object OnWalletsUpdated : E()
         object ShowHiddenOptions : E()
         object OnCloseHiddenMenu : E()
+        data class OnTestGenericDialogResult(val message: String) : E()
 
         data class OnATMMapClicked(val url: String, val mapJson: String) : E()
 
@@ -223,6 +224,10 @@ object SettingsScreen {
 
         object RelaunchHomeScreen : F(), NavigationEffect {
             override val navigationTarget = NavigationTarget.Home
+        }
+
+        data class ShowToast(val message: String) : F(), NavigationEffect {
+            override val navigationTarget = NavigationTarget.FabriikToast(message)
         }
 
         object TestFabriikGenericDialog : F(), NavigationEffect {

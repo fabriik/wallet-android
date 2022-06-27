@@ -44,6 +44,7 @@ interface SettingsScreenUpdateSpec {
         is SettingsScreen.E.SetPlatformBundle -> setPlatformBundle(model, event)
         is SettingsScreen.E.SetTokenBundle -> setTokenBundle(model, event)
         is SettingsScreen.E.OnATMMapClicked -> onATMMapClicked(model, event)
+        is SettingsScreen.E.OnTestGenericDialogResult -> onTestGenericDialogResult(model, event)
         is SettingsScreen.E.OnTransactionsExportFileGenerated -> onTransactionsExportFileGenerated(model, event)
     }
 
@@ -76,6 +77,8 @@ interface SettingsScreenUpdateSpec {
     fun setTokenBundle(model: SettingsScreen.M, event: SettingsScreen.E.SetTokenBundle): Next<SettingsScreen.M, SettingsScreen.F>
 
     fun onATMMapClicked(model: SettingsScreen.M, event: SettingsScreen.E.OnATMMapClicked): Next<SettingsScreen.M, SettingsScreen.F>
+
+    fun onTestGenericDialogResult(model: SettingsScreen.M, event: SettingsScreen.E.OnTestGenericDialogResult) : Next<SettingsScreen.M, SettingsScreen.F>
 
     fun onExportTransactionsConfirmed(model: SettingsScreen.M) : Next<SettingsScreen.M, SettingsScreen.F>
 

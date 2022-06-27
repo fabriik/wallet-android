@@ -106,6 +106,9 @@ object SettingsUpdate : Update<M, E, F>, SettingsScreenUpdateSpec {
             setOf(F.GenerateTransactionsExportFile)
         )
 
+    override fun onTestGenericDialogResult(model: M, event: E.OnTestGenericDialogResult): Next<M, F> =
+        dispatch(setOf(F.ShowToast(event.message)))
+
     override fun onTransactionsExportFileGenerated(model: M, event: E.OnTransactionsExportFileGenerated): Next<M, F> =
         next(
             model.copy(isLoading = false),
