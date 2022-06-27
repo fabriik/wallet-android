@@ -135,7 +135,10 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_word1"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:singleLine="true"
+                        android:imeOptions="actionNext"
+                        android:nextFocusForward="@id/et_word2"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -153,7 +156,10 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_word2"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:singleLine="true"
+                        android:imeOptions="actionNext"
+                        android:nextFocusForward="@id/et_word3"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -170,7 +176,10 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_word3"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:singleLine="true"
+                        android:imeOptions="actionNext"
+                        android:nextFocusForward="@id/et_word4" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -196,7 +205,10 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_word4"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:singleLine="true"
+                        android:imeOptions="actionNext"
+                        android:nextFocusForward="@id/et_word5"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -214,7 +226,10 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_word5"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:singleLine="true"
+                        android:imeOptions="actionNext"
+                        android:nextFocusForward="@id/et_word6" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -231,7 +246,10 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_word6"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:singleLine="true"
+                        android:imeOptions="actionNext"
+                        android:nextFocusForward="@id/et_word7"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -257,7 +275,10 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_word7"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:singleLine="true"
+                        android:imeOptions="actionNext"
+                        android:nextFocusForward="@id/et_word8" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -275,7 +296,10 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_word8"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:singleLine="true"
+                        android:imeOptions="actionNext"
+                        android:nextFocusForward="@id/et_word9" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -292,7 +316,10 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_word9"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:singleLine="true"
+                        android:imeOptions="actionNext"
+                        android:nextFocusForward="@id/et_word10" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -318,7 +345,10 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_word10"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:singleLine="true"
+                        android:imeOptions="actionNext"
+                        android:nextFocusForward="@id/et_word11" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -336,7 +366,10 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_word11"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:singleLine="true"
+                        android:imeOptions="actionNext"
+                        android:nextFocusForward="@id/et_word12" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -353,7 +386,9 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_word12"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:singleLine="true"
+                        android:imeOptions="actionDone"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
