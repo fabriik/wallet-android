@@ -13,7 +13,8 @@ class FabriikGenericDialogArgs(
     val positive: ButtonData? = null,
     val negative: ButtonData? = null,
     val description: CharSequence? = null,
-    val descriptionRes: Int? = null
+    val descriptionRes: Int? = null,
+    val showDismissButton: Boolean = false
 ) : Parcelable {
 
     @Parcelize

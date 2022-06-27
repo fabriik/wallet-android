@@ -45,7 +45,6 @@ interface SettingsScreenUpdateSpec {
         is SettingsScreen.E.SetTokenBundle -> setTokenBundle(model, event)
         is SettingsScreen.E.OnATMMapClicked -> onATMMapClicked(model, event)
         is SettingsScreen.E.OnTransactionsExportFileGenerated -> onTransactionsExportFileGenerated(model, event)
-
     }
 
     fun onBackClicked(model: SettingsScreen.M): Next<SettingsScreen.M, SettingsScreen.F>

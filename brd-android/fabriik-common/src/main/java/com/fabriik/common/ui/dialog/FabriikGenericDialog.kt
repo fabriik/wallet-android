@@ -54,6 +54,7 @@ class FabriikGenericDialog : DialogFragment() {
             args.negative?.icon?.let { btnNegative.setIconResource(it) }
 
             // setup listeners
+            btnDismiss.isVisible = args.showDismissButton
             btnDismiss.setOnClickListener {
                 notifyListeners(RESULT_KEY_DISMISSED)
             }

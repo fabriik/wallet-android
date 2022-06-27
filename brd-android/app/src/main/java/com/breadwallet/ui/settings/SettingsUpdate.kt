@@ -163,6 +163,7 @@ object SettingsUpdate : Update<M, E, F>, SettingsScreenUpdateSpec {
                     SettingsOption.COPY_PAPER_KEY -> F.CopyPaperKey
                     SettingsOption.METADATA_VIEWER -> F.ViewMetadata
                     SettingsOption.EXPORT_TRANSACTIONS -> F.ShowConfirmExportTransactions
+                    SettingsOption.TEST_FABRIIK_GENERIC_DIALOG -> F.TestFabriikGenericDialog
                 }
             )
         )
