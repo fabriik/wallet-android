@@ -56,7 +56,10 @@ object ProfileScreen {
         }
         
         data class ShowFabriikToast(val message: String) : F(), NavigationEffect {
-            override val navigationTarget = NavigationTarget.FabriikToast(message)
+            override val navigationTarget = NavigationTarget.FabriikToast(
+                message = message,
+                type = NavigationTarget.FabriikToast.Type.INFO
+            )
         }
     }
 }
