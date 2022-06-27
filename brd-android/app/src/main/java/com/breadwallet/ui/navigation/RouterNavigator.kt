@@ -85,6 +85,7 @@ import com.breadwallet.ui.uigift.ShareGiftController
 import com.breadwallet.ui.verifyaccount.VerifyController
 import com.breadwallet.util.CryptoUriParser
 import com.breadwallet.util.isBrd
+import com.breadwallet.util.showFabriikGenericDialog
 import com.fabriik.buy.ui.BuyWebViewActivity
 import com.fabriik.common.ui.dialog.FabriikGenericDialog
 import com.fabriik.common.utils.FabriikToastUtil
@@ -732,10 +733,7 @@ class RouterNavigator(
     }
 
     override fun fabriikGenericDialog(effect: NavigationTarget.FabriikGenericDialog) {
-        router.fragmentManager()?.let { fm ->
-            FabriikGenericDialog.newInstance(effect.args)
-                .show(fm)
-        }
+        router.showFabriikGenericDialog(effect.args)
     }
 
     private inline fun <reified T : Controller> pushSingleInstance(
