@@ -26,7 +26,6 @@ package com.breadwallet.ui.navigation
 
 import android.content.Intent
 import android.net.Uri
-import android.view.View
 import android.widget.Toast
 import com.bluelinelabs.conductor.Controller
 import com.bluelinelabs.conductor.ControllerChangeHandler
@@ -724,10 +723,18 @@ class RouterNavigator(
     }
 
     override fun fabriikToast(effect: NavigationTarget.FabriikToast) {
-        FabriikToastUtil.show(
-            parentView = checkNotNull(router.activity).window.decorView,
-            message = effect.message
-        )
+        when (effect.type) {
+            NavigationTarget.FabriikToast.Type.INFO ->
+                FabriikToastUtil.showInfo(
+                    parentView = checkNotNull(router.activity).window.decorView,
+                    message = effect.message
+                )
+            NavigationTarget.FabriikToast.Type.ERROR ->
+                FabriikToastUtil.showError(
+                    parentView = checkNotNull(router.activity).window.decorView,
+                    message = effect.message
+                )
+        }
     }
 
     private inline fun <reified T : Controller> pushSingleInstance(

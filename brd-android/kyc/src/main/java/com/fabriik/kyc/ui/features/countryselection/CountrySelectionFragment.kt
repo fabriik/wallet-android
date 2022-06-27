@@ -96,7 +96,7 @@ class CountrySelectionFragment : Fragment(),
             }
 
             is CountrySelectionContract.Effect.ShowToast ->
-                FabriikToastUtil.show(
+                FabriikToastUtil.showInfo(
                     parentView = binding.root,
                     message = effect.message
                 )
