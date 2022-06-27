@@ -29,6 +29,7 @@ import com.breadwallet.ui.login.LoginScreen.E
 import com.breadwallet.ui.login.LoginScreen.F
 import com.breadwallet.ui.login.LoginScreen.M
 import com.breadwallet.ui.recovery.RecoveryKey
+import com.spotify.mobius.Effects.effects
 import com.spotify.mobius.Next
 import com.spotify.mobius.Next.dispatch
 import com.spotify.mobius.Next.next
@@ -44,10 +45,7 @@ object LoginUpdate : Update<M, E, F>, LoginScreenUpdateSpec {
 
     override fun onAuthenticationSuccess(model: M): Next<M, F> =
         next(
-            model.copy(
-                isUnlocked = true,
-                invalidPinError = null
-            ),
+            model.copy(isUnlocked = true),
             setOf(
                 F.AuthenticationSuccess,
                 F.UnlockBrdUser,
@@ -56,13 +54,8 @@ object LoginUpdate : Update<M, E, F>, LoginScreenUpdateSpec {
         )
 
     override fun onAuthenticationFailed(model: M, event: E.OnAuthenticationFailed): Next<M, F> =
-        next(
-            model.copy(
-                invalidPinError = event.attemptsLeft?.let {
-                    LoginScreen.InvalidPinError(event.attemptsLeft)
-                }
-            ),
-            setOf(
+        dispatch(
+            effects(
                 F.AuthenticationFailed(event.attemptsLeft),
                 F.TrackEvent(EventUtils.EVENT_LOGIN_FAILED)
             )

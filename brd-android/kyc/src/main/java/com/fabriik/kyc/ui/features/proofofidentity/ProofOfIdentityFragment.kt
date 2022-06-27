@@ -93,7 +93,7 @@ class ProofOfIdentityFragment : Fragment(),
     override fun handleEffect(effect: ProofOfIdentityContract.Effect) {
         when (effect) {
             is ProofOfIdentityContract.Effect.ShowToast ->
-                FabriikToastUtil.show(
+                FabriikToastUtil.showInfo(
                     parentView = binding.root,
                     message = effect.message
                 )

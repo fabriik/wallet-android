@@ -724,7 +724,7 @@ class RouterNavigator(
     }
 
     override fun fabriikToast(effect: NavigationTarget.FabriikToast) {
-        FabriikToastUtil.show(
+        FabriikToastUtil.showInfo(
             parentView = checkNotNull(router.activity).window.decorView,
             message = effect.message
         )

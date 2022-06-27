@@ -36,8 +36,7 @@ object LoginScreen {
         val fingerprintEnable: Boolean = false,
         val showHomeScreen: Boolean = true,
         @Redacted val extraUrl: String,
-        val isUnlocked: Boolean = false,
-        val invalidPinError: InvalidPinError? = null
+        val isUnlocked: Boolean = false
     ) {
         companion object {
             fun createDefault(

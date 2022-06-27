@@ -125,7 +125,7 @@ class AccountVerificationFragment : Fragment(),
                 )
 
             is AccountVerificationContract.Effect.ShowToast ->
-                FabriikToastUtil.show(
+                FabriikToastUtil.showInfo(
                     parentView = binding.root,
                     message = effect.message
                 )

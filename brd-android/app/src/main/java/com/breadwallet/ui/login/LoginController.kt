@@ -43,6 +43,7 @@ import com.breadwallet.ui.flowbind.clicks
 import com.breadwallet.ui.login.LoginScreen.E
 import com.breadwallet.ui.login.LoginScreen.F
 import com.breadwallet.ui.login.LoginScreen.M
+import com.fabriik.common.utils.FabriikToastUtil
 import drewcarlson.mobius.flow.FlowTransformer
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -153,18 +154,6 @@ class LoginController(args: Bundle? = null) :
         }
     }
 
-    override fun M.render() {
-        ifChanged(M::invalidPinError) {
-            binding.viewErrorBubble.isGone = it == null
-            it?.let {
-                val attemptsText = resources!!.getQuantityText(R.plurals.attempts, it.attemptsLeft)
-                binding.viewErrorBubble.text = resources!!.getString(
-                    R.string.LoginController_invalidPinError, it.attemptsLeft, attemptsText
-                )
-            }
-        }
-    }
-
     override fun handleBack() =
         (router.backstackSize > 1 && !currentModel.isUnlocked) ||
             activity?.isTaskRoot == false
@@ -172,7 +161,17 @@ class LoginController(args: Bundle? = null) :
     override fun handleViewEffect(effect: ViewEffect) {
         when (effect) {
             F.AuthenticationSuccess -> unlockWallet()
-            is F.AuthenticationFailed -> { /* empty */ }
+            is F.AuthenticationFailed -> {
+                val attemptsLeft = effect.attemptsLeft ?: return
+                val attemptsText = resources!!.getQuantityText(R.plurals.attempts, attemptsLeft)
+
+                FabriikToastUtil.showError(
+                    parentView = binding.root,
+                    message = resources!!.getString(
+                        R.string.LoginController_invalidPinError, attemptsLeft, attemptsText
+                    )
+                )
+            }
             F.ShowFingerprintController -> {
                 biometricPrompt.authenticate(
                     BiometricPrompt.PromptInfo.Builder()
