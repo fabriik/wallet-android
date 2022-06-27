@@ -159,7 +159,7 @@ class PersonalInformationFragment : Fragment(),
 
             is PersonalInformationContract.Effect.ShowToast -> {
                 hideKeyboard()
-                FabriikToastUtil.show(
+                FabriikToastUtil.showInfo(
                     parentView = binding.root,
                     message = effect.message
                 )

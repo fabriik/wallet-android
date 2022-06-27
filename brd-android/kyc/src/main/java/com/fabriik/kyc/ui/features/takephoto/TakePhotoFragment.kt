@@ -151,7 +151,7 @@ class TakePhotoFragment : Fragment(),
                 takePhoto(effect.fileName)
 
             is TakePhotoContract.Effect.ShowToast ->
-                FabriikToastUtil.show(
+                FabriikToastUtil.showInfo(
                     parentView = binding.root,
                     message = effect.message
                 )
