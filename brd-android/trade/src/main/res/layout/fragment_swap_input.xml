@@ -1,21 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:background="@color/white">
 
     <com.fabriik.common.ui.customview.KycToolbar
         android:id="@+id/toolbar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:title="Swap"
-        app:showBackButton="false"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:showBack="false"
+        app:title="Swap" />
 
+    <TextView
+        android:id="@+id/tv_rate_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Rate:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
+    <TextView
+        android:id="@+id/tv_rate_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        app:layout_constraintBaseline_toBaselineOf="@id/tv_rate_title"
+        app:layout_constraintStart_toEndOf="@id/tv_rate_title"
+        tools:text="1 BSV = 0.0000333 BTC" />
+
+    <TextView
+        android:id="@+id/tv_timer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:textColor="@color/light_primary"
+        app:layout_constraintBaseline_toBaselineOf="@id/tv_rate_title"
+        app:layout_constraintEnd_toStartOf="@+id/pb_timer"
+        tools:text="00:15s" />
+
+    <ProgressBar
+        android:id="@+id/pb_timer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:textColor="@color/light_primary"
+        app:layout_constraintBottom_toBottomOf="@id/tv_rate_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="00:15s" />
+
+    <com.fabriik.trade.ui.customview.SwapCardView
+        android:id="@+id/cv_swap"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_rate_title" />
+
+    <com.fabriik.common.ui.customview.FabriikSwitch
+        android:id="@+id/switch_min_max"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cv_swap"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_confirm"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Confirm"
+        android:layout_margin="16dp"
+        app:layout_constraintVertical_bias="1"
+        app:layout_constraintTop_toBottomOf="@+id/switch_min_max"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
