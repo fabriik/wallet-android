@@ -37,9 +37,8 @@
         app:layout_constraintTop_toTopOf="@id/et_fiat_amount"
         tools:text="USD" />
 
-    <include
+    <com.fabriik.trade.ui.customview.CurrencySelectorView
         android:id="@+id/view_currency_selector"
-        layout="@layout/view_currency_selector"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"

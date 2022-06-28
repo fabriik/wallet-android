@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:padding="8dp">
+    tools:layout_width="wrap_content"
+    tools:layout_height="wrap_content"
+    tools:parentTag="LinearLayout"
+    tools:orientation="horizontal"
+    tools:padding="8dp">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/iv_logo"
@@ -30,4 +31,4 @@
         android:src="@drawable/ic_chevron_down"
         android:tint="@color/light_primary"/>
 
-</LinearLayout>
+</merge>
