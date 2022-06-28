@@ -6,9 +6,8 @@
     android:layout_height="wrap_content"
     android:padding="8dp">
 
-    <include
+    <com.fabriik.trade.ui.customview.CurrencyInputView
         android:id="@+id/view_input_selling_currency"
-        layout="@layout/view_currency_input"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -57,9 +56,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_selling_currency_network_fee_title" />
 
-    <include
+    <com.fabriik.trade.ui.customview.CurrencyInputView
         android:id="@+id/view_input_buying_currency"
-        layout="@layout/view_currency_input"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
