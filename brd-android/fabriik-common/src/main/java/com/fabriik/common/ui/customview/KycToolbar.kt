@@ -1,4 +1,4 @@
-package com.fabriik.kyc.ui.customview
+package com.fabriik.common.ui.customview
 
 import android.animation.ObjectAnimator
 import android.animation.StateListAnimator
@@ -11,8 +11,8 @@ import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
-import com.fabriik.kyc.R
-import com.fabriik.kyc.databinding.PartialKycToolbarBinding
+import com.fabriik.common.R
+import com.fabriik.common.databinding.PartialKycToolbarBinding
 import com.google.android.material.appbar.AppBarLayout
 
 class KycToolbar @JvmOverloads constructor(
@@ -78,7 +78,9 @@ class KycToolbar @JvmOverloads constructor(
     }
 
     private fun parseAttributes(attrs: AttributeSet?) {
-        val typedArray = context.obtainStyledAttributes(attrs, R.styleable.KycToolbar)
+        val typedArray = context.obtainStyledAttributes(attrs,
+            R.styleable.KycToolbar
+        )
         setTitle(typedArray.getString(R.styleable.KycToolbar_title))
         setTintColor(typedArray.getColor(R.styleable.KycToolbar_tintColor, defaultTintColor))
         setShowBackButton(typedArray.getBoolean(R.styleable.KycToolbar_showBack, true))

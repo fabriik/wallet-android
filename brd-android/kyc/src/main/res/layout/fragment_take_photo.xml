@@ -24,7 +24,7 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:type="document"/>
 
-    <com.fabriik.kyc.ui.customview.KycToolbar
+    <com.fabriik.common.ui.customview.KycToolbar
         android:id="@+id/toolbar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
