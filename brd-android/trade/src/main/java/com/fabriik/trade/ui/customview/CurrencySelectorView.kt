@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import androidx.core.view.setPadding
+import com.breadwallet.crypto.Currency
 import com.fabriik.common.utils.dp
 import com.fabriik.trade.databinding.ViewCurrencySelectorBinding
 
@@ -20,5 +21,11 @@ class CurrencySelectorView @JvmOverloads constructor(
         binding = ViewCurrencySelectorBinding.inflate(
             LayoutInflater.from(context), this
         )
+    }
+
+    fun setCryptoCurrency(currency: Currency) {
+        with(binding) {
+            tvCurrency.text = currency.code
+        }
     }
 }
