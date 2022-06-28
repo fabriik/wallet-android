@@ -8,4 +8,14 @@
         <attr name="showDismiss" format="boolean" />
         <attr name="showInfo" format="boolean" />
     </declare-styleable>
+
+    <declare-styleable name="FabriikSwitch">
+        <attr name="leftOption" format="string" />
+        <attr name="rightOption" format="string" />
+        <attr name="selectedOption" format="enum">
+            <enum name="none" value="-1" />
+            <enum name="left" value="0" />
+            <enum name="right" value="1" />
+        </attr>
+    </declare-styleable>
 </resources>
