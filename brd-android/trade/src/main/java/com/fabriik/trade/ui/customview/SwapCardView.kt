@@ -42,6 +42,7 @@ class SwapCardView @JvmOverloads constructor(
     }
 
     fun setFiatCurrency(currency: String) {
+        binding.viewInputBuyingCurrency.setFiatCurrency(currency)
         binding.viewInputSellingCurrency.setFiatCurrency(currency)
     }
 
