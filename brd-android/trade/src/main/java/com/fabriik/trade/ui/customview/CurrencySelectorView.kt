@@ -7,6 +7,7 @@ import android.widget.LinearLayout
 import androidx.core.view.setPadding
 import com.breadwallet.crypto.Currency
 import com.fabriik.common.utils.dp
+import com.fabriik.common.utils.viewScope
 import com.fabriik.trade.databinding.ViewCurrencySelectorBinding
 
 class CurrencySelectorView @JvmOverloads constructor(
@@ -23,9 +24,15 @@ class CurrencySelectorView @JvmOverloads constructor(
         )
     }
 
-    fun setCryptoCurrency(currency: Currency) {
-        with(binding) {
-            tvCurrency.text = currency.code
+    fun setCryptoCurrency(currency: String) {
+        binding.root.post {
+            binding.tvCurrency.text = currency
+            binding.viewIcon.loadIconForCurrency(
+                currencyCode = currency,
+                scope = this@CurrencySelectorView.viewScope
+            )
         }
     }
+
+    override fun getBaseline() = binding.tvCurrency.baseline
 }
