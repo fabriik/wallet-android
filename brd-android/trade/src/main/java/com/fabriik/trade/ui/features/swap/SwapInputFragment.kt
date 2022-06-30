@@ -81,7 +81,9 @@ class SwapInputFragment : Fragment(),
         with(binding) {
             cvSwap.setOriginCurrency(state.originCurrency)
             cvSwap.setDestinationCurrency(state.destinationCurrency)
-            tvRateValue.text = "1 ${state.originCurrency} = ${state.rateOriginToDestinationCurrency} ${state.destinationCurrency}"
+            tvRateValue.text = RATE_FORMAT.format(
+                state.originCurrency, state.rateOriginToDestinationCurrency, state.destinationCurrency
+            )
         }
     }
 
@@ -96,5 +98,9 @@ class SwapInputFragment : Fragment(),
             SwapInputContract.Effect.DestinationSelection ->
                 Toast.makeText(context, "Destination currency selected", Toast.LENGTH_LONG).show()
         }
+    }
+
+    companion object {
+        const val RATE_FORMAT = "1 %s = %f %s"
     }
 }

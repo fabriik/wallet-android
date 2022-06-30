@@ -7,8 +7,8 @@
     tools:orientation="horizontal"
     tools:padding="8dp">
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/iv_logo"
+    <com.fabriik.trade.ui.customview.IconView
+        android:id="@+id/view_icon"
         android:layout_width="32dp"
         android:layout_height="32dp"
         tools:background="@color/light_icons_01" />
