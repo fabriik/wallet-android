@@ -7,6 +7,7 @@ import androidx.core.view.isVisible
 import com.fabriik.common.utils.dp
 import com.fabriik.trade.databinding.ViewSwapCardBinding
 import com.google.android.material.card.MaterialCardView
+import java.math.BigDecimal
 
 class SwapCardView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
@@ -28,11 +29,27 @@ class SwapCardView @JvmOverloads constructor(
                 override fun onCurrencySelectorClicked() {
                     callback?.onBuyingCurrencySelectorClicked()
                 }
+
+                override fun onFiatAmountChanged(amount: BigDecimal) {
+                    callback?.onBuyingCurrencyFiatAmountChanged(amount)
+                }
+
+                override fun onCryptoAmountChanged(amount: BigDecimal) {
+                    callback?.onBuyingCurrencyCryptoAmountChanged(amount)
+                }
             })
 
             viewInputSellingCurrency.setCallback(object : CurrencyInputView.Callback {
                 override fun onCurrencySelectorClicked() {
                     callback?.onSellingCurrencySelectorClicked()
+                }
+
+                override fun onFiatAmountChanged(amount: BigDecimal) {
+                    callback?.onSellingCurrencyFiatAmountChanged(amount)
+                }
+
+                override fun onCryptoAmountChanged(amount: BigDecimal) {
+                    callback?.onSellingCurrencyCryptoAmountChanged(amount)
                 }
             })
         }
@@ -75,5 +92,9 @@ class SwapCardView @JvmOverloads constructor(
         fun onReplaceCurrenciesClicked()
         fun onBuyingCurrencySelectorClicked()
         fun onSellingCurrencySelectorClicked()
+        fun onSellingCurrencyFiatAmountChanged(amount: BigDecimal)
+        fun onSellingCurrencyCryptoAmountChanged(amount: BigDecimal)
+        fun onBuyingCurrencyFiatAmountChanged(amount: BigDecimal)
+        fun onBuyingCurrencyCryptoAmountChanged(amount: BigDecimal)
     }
 }

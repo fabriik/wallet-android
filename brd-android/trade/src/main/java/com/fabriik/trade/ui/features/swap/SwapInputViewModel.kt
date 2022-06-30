@@ -38,6 +38,38 @@ class SwapInputViewModel(
                     )
                 }
             }
+
+            is SwapInputContract.Event.OriginCurrencyFiatAmountChange -> {
+                setState {
+                    copy(
+
+                    )
+                }
+            } //todo
+
+            is SwapInputContract.Event.OriginCurrencyCryptoAmountChange -> {
+                setState {
+                    copy(
+
+                    )
+                }
+            } //todo
+
+            is SwapInputContract.Event.DestinationCurrencyFiatAmountChange -> {
+                setState {
+                    copy(
+
+                    )
+                }
+            } //todo
+
+            is SwapInputContract.Event.DestinationCurrencyCryptoAmountChange -> {
+                setState {
+                    copy(
+
+                    )
+                }
+            } //todo
         }
     }
 }

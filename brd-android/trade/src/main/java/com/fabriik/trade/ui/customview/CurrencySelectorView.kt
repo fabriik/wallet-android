@@ -33,4 +33,6 @@ class CurrencySelectorView @JvmOverloads constructor(
             )
         }
     }
+
+    override fun getBaseline() = binding.tvCurrency.baseline
 }

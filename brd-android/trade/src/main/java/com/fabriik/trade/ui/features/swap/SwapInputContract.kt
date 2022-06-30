@@ -10,6 +10,10 @@ interface SwapInputContract {
         object OriginCurrencyClicked : Event()
         object ReplaceCurrenciesClicked : Event()
         object DestinationCurrencyClicked : Event()
+        data class OriginCurrencyFiatAmountChange(val amount: BigDecimal) : Event()
+        data class OriginCurrencyCryptoAmountChange(val amount: BigDecimal) : Event()
+        data class DestinationCurrencyFiatAmountChange(val amount: BigDecimal) : Event()
+        data class DestinationCurrencyCryptoAmountChange(val amount: BigDecimal) : Event()
     }
 
     sealed class Effect : FabriikContract.Effect {
@@ -21,8 +25,12 @@ interface SwapInputContract {
     data class State(
         val originCurrency: String,
         val originCurrencyBalance: BigDecimal,
-        val sendingNetworkFee: String? = null,
+        val originFiatAmount: BigDecimal = BigDecimal.ZERO,
+        val originCryptoAmount: BigDecimal = BigDecimal.ZERO,
         val destinationCurrency: String,
+        val destinationFiatAmount: BigDecimal = BigDecimal.ZERO,
+        val destinationCryptoAmount: BigDecimal = BigDecimal.ZERO,
+        val sendingNetworkFee: String? = null,
         val receivingNetworkFee: String? = null,
         val rateOriginToDestinationCurrency: BigDecimal
     ) : FabriikContract.State

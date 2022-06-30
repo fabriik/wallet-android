@@ -15,6 +15,7 @@ import com.fabriik.trade.R
 import com.fabriik.trade.databinding.FragmentSwapInputBinding
 import com.fabriik.trade.ui.customview.SwapCardView
 import kotlinx.coroutines.flow.collect
+import java.math.BigDecimal
 
 class SwapInputFragment : Fragment(),
     FabriikView<SwapInputContract.State, SwapInputContract.Effect> {
@@ -54,6 +55,22 @@ class SwapInputFragment : Fragment(),
 
                 override fun onSellingCurrencySelectorClicked() {
                     viewModel.setEvent(SwapInputContract.Event.OriginCurrencyClicked)
+                }
+
+                override fun onSellingCurrencyFiatAmountChanged(amount: BigDecimal) {
+                    viewModel.setEvent(SwapInputContract.Event.OriginCurrencyFiatAmountChange(amount))
+                }
+
+                override fun onSellingCurrencyCryptoAmountChanged(amount: BigDecimal) {
+                    viewModel.setEvent(SwapInputContract.Event.OriginCurrencyCryptoAmountChange(amount))
+                }
+
+                override fun onBuyingCurrencyFiatAmountChanged(amount: BigDecimal) {
+                    viewModel.setEvent(SwapInputContract.Event.DestinationCurrencyFiatAmountChange(amount))
+                }
+
+                override fun onBuyingCurrencyCryptoAmountChanged(amount: BigDecimal) {
+                    viewModel.setEvent(SwapInputContract.Event.DestinationCurrencyCryptoAmountChange(amount))
                 }
             })
         }
