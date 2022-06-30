@@ -12,8 +12,9 @@ class SwapInputViewModel(
 
     override fun createInitialState() = SwapInputContract.State(
         originCurrency = "BSV",
+        originCurrencyBalance = BigDecimal.TEN,
         destinationCurrency = "BTC",
-        rateOriginToDestinationCurrency = BigDecimal.TEN
+        rateOriginToDestinationCurrency = BigDecimal.ONE
     )
 
     override fun handleEvent(event: SwapInputContract.Event) {

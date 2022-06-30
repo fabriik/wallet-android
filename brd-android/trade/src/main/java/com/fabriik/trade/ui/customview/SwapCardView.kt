@@ -3,6 +3,7 @@ package com.fabriik.trade.ui.customview
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import androidx.core.view.isVisible
 import com.fabriik.common.utils.dp
 import com.fabriik.trade.databinding.ViewSwapCardBinding
 import com.google.android.material.card.MaterialCardView
@@ -52,6 +53,22 @@ class SwapCardView @JvmOverloads constructor(
 
     fun setDestinationCurrency(currency: String) {
         binding.viewInputBuyingCurrency.setCryptoCurrency(currency)
+    }
+
+    fun setSendingNetworkFee(feeText: String?) {
+        binding.tvSellingCurrencyNetworkFee.text = feeText
+        binding.tvSellingCurrencyNetworkFee.isVisible = feeText != null
+        binding.tvSellingCurrencyNetworkFeeTitle.isVisible = feeText != null
+    }
+
+    fun setReceivingNetworkFee(feeText: String?) {
+        binding.tvBuyingCurrencyNetworkFee.text = feeText
+        binding.tvBuyingCurrencyNetworkFee.isVisible = feeText != null
+        binding.tvBuyingCurrencyNetworkFeeTitle.isVisible = feeText != null
+    }
+
+    fun setSellingCurrencyTitle(title: String) {
+        binding.viewInputSellingCurrency.setTitle(title)
     }
 
     interface Callback {

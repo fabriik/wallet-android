@@ -20,7 +20,10 @@ interface SwapInputContract {
 
     data class State(
         val originCurrency: String,
+        val originCurrencyBalance: BigDecimal,
+        val sendingNetworkFee: String? = null,
         val destinationCurrency: String,
+        val receivingNetworkFee: String? = null,
         val rateOriginToDestinationCurrency: BigDecimal
     ) : FabriikContract.State
 }

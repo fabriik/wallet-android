@@ -79,8 +79,11 @@ class SwapInputFragment : Fragment(),
 
     override fun render(state: SwapInputContract.State) {
         with(binding) {
+            cvSwap.setSellingCurrencyTitle(getString(R.string.Swap_IHave, state.originCurrencyBalance, state.originCurrency))
             cvSwap.setOriginCurrency(state.originCurrency)
+            cvSwap.setSendingNetworkFee(state.sendingNetworkFee)
             cvSwap.setDestinationCurrency(state.destinationCurrency)
+            cvSwap.setReceivingNetworkFee(state.receivingNetworkFee)
             tvRateValue.text = RATE_FORMAT.format(
                 state.originCurrency, state.rateOriginToDestinationCurrency, state.destinationCurrency
             )

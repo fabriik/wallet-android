@@ -13,7 +13,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:title="@string/Swap.IHave"/>
+        tools:title="@string/Swap.IHave" />
 
     <TextView
         android:id="@+id/tv_selling_currency_network_fee_title"
@@ -24,9 +24,11 @@
         android:layout_marginTop="16dp"
         android:gravity="start"
         android:textColor="@color/light_text_02"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view_input_selling_currency"
-        tools:text="Sending network fee\n(included)" />
+        tools:text="Sending network fee\n(included)"
+        tools:visibility="visible" />
 
     <TextView
         android:id="@+id/tv_selling_currency_network_fee"
@@ -37,9 +39,11 @@
         android:layout_marginEnd="8dp"
         android:gravity="end"
         android:textColor="@color/light_text_02"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view_input_selling_currency"
-        tools:text="0.00023546 BSV\n$0.01 USD" />
+        tools:text="0.00023546 BSV\n$0.01 USD"
+        tools:visibility="visible" />
 
     <View
         android:id="@+id/view_separator"
@@ -67,10 +71,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:title="@string/Swap.IWant"
+        app:title="@string/Swap.IWant"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn_swap"/>
+        app:layout_constraintTop_toBottomOf="@id/btn_swap" />
 
     <TextView
         android:id="@+id/tv_buying_currency_network_fee_title"
@@ -81,9 +85,11 @@
         android:layout_marginTop="16dp"
         android:gravity="start"
         android:textColor="@color/light_text_02"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view_input_buying_currency"
-        tools:text="Receiving network fee\n(included)" />
+        tools:text="Receiving network fee\n(included)"
+        tools:visibility="visible" />
 
     <TextView
         android:id="@+id/tv_buying_currency_network_fee"
@@ -94,8 +100,10 @@
         android:layout_marginEnd="8dp"
         android:gravity="end"
         android:textColor="@color/light_text_02"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view_input_buying_currency"
-        tools:text="0.0005 BTC\n$1.51 USD" />
+        tools:text="0.0005 BTC\n$1.51 USD"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
