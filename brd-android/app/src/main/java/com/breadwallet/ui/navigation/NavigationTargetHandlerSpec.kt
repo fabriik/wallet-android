@@ -34,7 +34,7 @@ interface NavigationTargetHandlerSpec {
         NavigationTarget.Buy -> buy()
         NavigationTarget.Profile -> profile()
         NavigationTarget.VerifyProfile -> verifyProfile()
-        is NavigationTarget.Trade -> trade(effect.currencies)
+        NavigationTarget.Trade -> trade()
         NavigationTarget.AddWallet -> addWallet()
         NavigationTarget.DisabledScreen -> disabledScreen()
         NavigationTarget.NativeApiExplorer -> nativeApiExplorer()
@@ -108,7 +108,7 @@ interface NavigationTargetHandlerSpec {
 
     fun verifyProfile(): Unit
 
-    fun trade(currencies: List<String>): Unit
+    fun trade(): Unit
 
     fun addWallet(): Unit
 

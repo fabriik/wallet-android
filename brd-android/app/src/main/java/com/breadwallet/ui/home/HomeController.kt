@@ -351,7 +351,6 @@ class HomeController(
         eventConsumer.accept(
             when(dialogId) {
                 DIALOG_PARTNERSHIP_NOTE_BUY -> E.OnBuyNoteSeen
-                DIALOG_PARTNERSHIP_NOTE_SWAP -> E.OnTradeNoteSeen
                 else -> E.OnSupportFormSubmitted(result.inputText)
             }
         )
