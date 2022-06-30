@@ -4,15 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
+import com.breadwallet.tools.manager.BRSharedPrefs
 import com.fabriik.common.ui.base.FabriikView
 import com.fabriik.trade.R
 import com.fabriik.trade.databinding.FragmentSwapInputBinding
+import com.fabriik.trade.ui.customview.SwapCardView
 import kotlinx.coroutines.flow.collect
+import java.math.BigDecimal
 
 class SwapInputFragment : Fragment(),
     FabriikView<SwapInputContract.State, SwapInputContract.Effect> {
@@ -37,10 +40,39 @@ class SwapInputFragment : Fragment(),
                 viewModel.setEvent(SwapInputContract.Event.DismissClicked)
             }
 
-            btnConfirm.setOnClickListener {
-                // TODO add here the current pair
-                findNavController().navigate(SwapInputFragmentDirections.actionFragmentSwapInputToFragmentSwapProcessing("ETH", "BTC"))
-            }
+            //todo: for test only
+            tvTimer.text = "00:15s"
+
+            cvSwap.setFiatCurrency(BRSharedPrefs.getPreferredFiatIso())
+            cvSwap.setCallback(object : SwapCardView.Callback {
+                override fun onReplaceCurrenciesClicked() {
+                    viewModel.setEvent(SwapInputContract.Event.ReplaceCurrenciesClicked)
+                }
+
+                override fun onBuyingCurrencySelectorClicked() {
+                    viewModel.setEvent(SwapInputContract.Event.DestinationCurrencyClicked)
+                }
+
+                override fun onSellingCurrencySelectorClicked() {
+                    viewModel.setEvent(SwapInputContract.Event.OriginCurrencyClicked)
+                }
+
+                override fun onSellingCurrencyFiatAmountChanged(amount: BigDecimal) {
+                    viewModel.setEvent(SwapInputContract.Event.OriginCurrencyFiatAmountChange(amount))
+                }
+
+                override fun onSellingCurrencyCryptoAmountChanged(amount: BigDecimal) {
+                    viewModel.setEvent(SwapInputContract.Event.OriginCurrencyCryptoAmountChange(amount))
+                }
+
+                override fun onBuyingCurrencyFiatAmountChanged(amount: BigDecimal) {
+                    viewModel.setEvent(SwapInputContract.Event.DestinationCurrencyFiatAmountChange(amount))
+                }
+
+                override fun onBuyingCurrencyCryptoAmountChanged(amount: BigDecimal) {
+                    viewModel.setEvent(SwapInputContract.Event.DestinationCurrencyCryptoAmountChange(amount))
+                }
+            })
         }
 
         // collect UI state
@@ -63,12 +95,32 @@ class SwapInputFragment : Fragment(),
     }
 
     override fun render(state: SwapInputContract.State) {
+        with(binding) {
+            cvSwap.setSellingCurrencyTitle(getString(R.string.Swap_IHave, state.originCurrencyBalance, state.originCurrency))
+            cvSwap.setOriginCurrency(state.originCurrency)
+            cvSwap.setSendingNetworkFee(state.sendingNetworkFee)
+            cvSwap.setDestinationCurrency(state.destinationCurrency)
+            cvSwap.setReceivingNetworkFee(state.receivingNetworkFee)
+            tvRateValue.text = RATE_FORMAT.format(
+                state.originCurrency, state.rateOriginToDestinationCurrency, state.destinationCurrency
+            )
+        }
     }
 
     override fun handleEffect(effect: SwapInputContract.Effect) {
         when (effect) {
             SwapInputContract.Effect.Dismiss ->
                 requireActivity().finish()
+
+            SwapInputContract.Effect.OriginSelection ->
+                Toast.makeText(context, "Origin currency selected", Toast.LENGTH_LONG).show()
+
+            SwapInputContract.Effect.DestinationSelection ->
+                Toast.makeText(context, "Destination currency selected", Toast.LENGTH_LONG).show()
         }
+    }
+
+    companion object {
+        const val RATE_FORMAT = "1 %s = %f %s"
     }
 }
