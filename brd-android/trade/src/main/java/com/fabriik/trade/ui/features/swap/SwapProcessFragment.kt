@@ -6,12 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.fabriik.trade.R
-import com.fabriik.trade.databinding.FragmentSwapInputBinding
+import com.fabriik.trade.databinding.FragmentSwapProcessBinding
 
 class SwapProcessFragment : Fragment() {
 
-    private lateinit var binding: FragmentSwapInputBinding
+    private lateinit var binding: FragmentSwapProcessBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -23,13 +24,19 @@ class SwapProcessFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentSwapInputBinding.bind(view)
-
+        binding = FragmentSwapProcessBinding.bind(view)
+        val args = SwapProcessFragmentArgs.fromBundle(requireArguments())
         with(binding) {
+            tvProcessingTitle.text = getString(R.string.Swap_Process_Header, args.coinFrom, args.coinTo)
+            tvProcessingBody.text = getString(R.string.Swap_Process_Body, args.coinTo)
 
+            btnHome.setOnClickListener {
+                requireActivity().finish()
+            }
+            btnDetails.setOnClickListener {
+                findNavController().navigate(SwapProcessFragmentDirections.actionFragmentSwapProcessingToFragmentSwapDetails())
+            }
         }
-
-
 
         requireActivity().onBackPressedDispatcher.addCallback {
             //User shouldn't be allowed to go back

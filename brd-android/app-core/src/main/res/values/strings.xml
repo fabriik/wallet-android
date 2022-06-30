@@ -1385,7 +1385,7 @@
     <!-- Webview loading error message -->
     <string name="Webview.errorMessage">There was an error loading the content. Please try again.</string>
     <!-- Updating webview message -->
-    <string name="Webview.updating">Updating...</string>
+    <string name="Webview.updating">Updating…</string>
     <!-- Welcome screen text. (?) will be replaced with the help icon users should look for. -->
     <string name="Welcome.body">Breadwallet has changed its name to Fabriik, with a brand new look and some new features.\n\nIf you need help, look for the (?) in the top right of most screens.</string>
     <!-- Top title of welcome screen -->
@@ -1469,7 +1469,7 @@
     <!-- Wipe wallet button title -->
     <string name="WipeWallet.wipe">Wipe</string>
     <!-- Wiping activity message -->
-    <string name="WipeWallet.wiping">Wiping...</string>
+    <string name="WipeWallet.wiping">Wiping…</string>
     <!-- Paper key instructions. -->
     <string name="WritePaperPhrase.instruction">Write down each word in order and store it in a safe place.</string>
     <!-- button label -->
@@ -1496,4 +1496,8 @@
     <string name="VerifyAccount.Title">Verify your account to get full access to your Fabriik wallet!</string>
     <string name="VerifyAccount.Subtitle">We need to verify your identity in order to buy/sell and swap crypto.</string>
     <string name="VerifyAccount.Button">Verify your account</string>
+
+    <string name="Swap.Process.Header">Swapping  %1$s/%2$s</string>
+    <string name="Swap.Process.Body">In approximately 30 minutes or less your %1$s will arrive. You can continue to use you wallet safely, we will notify you when it’s done.</string>
+
 </resources>

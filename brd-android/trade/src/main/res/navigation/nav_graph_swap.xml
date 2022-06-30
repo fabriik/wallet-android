@@ -7,9 +7,25 @@
 
     <fragment android:id="@+id/fragmentSwapInput"
         android:name="com.fabriik.trade.ui.features.swap.SwapInputFragment"
-        tools:layout="@layout/fragment_swap_input"/>
+        tools:layout="@layout/fragment_swap_input">
+        <action
+            android:id="@+id/action_fragmentSwapInput_to_fragmentSwapProcessing"
+            app:destination="@id/fragmentSwapProcessing" />
+    </fragment>
 
     <fragment android:id="@+id/fragmentSwapProcessing"
         android:name="com.fabriik.trade.ui.features.swap.SwapProcessFragment"
-        tools:layout="@layout/fragment_swap_process"/>
+        tools:layout="@layout/fragment_swap_process">
+        <argument android:name="coinFrom" app:nullable="false" app:argType="string"/>
+        <argument android:name="coinTo" app:nullable="false" app:argType="string"/>
+        <action
+            android:id="@+id/action_fragmentSwapProcessing_to_fragmentSwapDetails"
+            app:destination="@id/fragmentSwapDetails" />
+    </fragment>
+
+    <fragment android:id="@+id/fragmentSwapDetails"
+        android:name="com.fabriik.trade.ui.features.swap.SwapDetailsFragment"
+        tools:layout="@layout/fragment_swap_details">
+
+    </fragment>
 </navigation>

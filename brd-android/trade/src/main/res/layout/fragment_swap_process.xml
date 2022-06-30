@@ -25,7 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="Swapping BSV/BTC"
+        tools:text="Swapping BSV/BTC"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/processing_icon" />
 
@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:paddingStart="41dp"
         android:paddingEnd="41dp"
-        android:text="In approximately 30 minutes or less your BTC will arrive.
+        tools:text="In approximately 30 minutes or less your BTC will arrive.
 You can continue to use you wallet safely, we will notify you when it’s done."
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_processing_title" />
@@ -57,7 +57,7 @@ You can continue to use you wallet safely, we will notify you when it’s done."
         app:layout_constraintBottom_toBottomOf="parent"/>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_back"
+        android:id="@+id/btn_home"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Back to Home"
