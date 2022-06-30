@@ -10,12 +10,12 @@
     </declare-styleable>
 
     <declare-styleable name="FabriikSwitch">
-        <attr name="leftOption" format="string" />
-        <attr name="rightOption" format="string" />
+        <attr name="leftOptionText" format="string" />
+        <attr name="rightOptionText" format="string" />
         <attr name="selectedOption" format="enum">
-            <enum name="none" value="-1" />
-            <enum name="left" value="0" />
-            <enum name="right" value="1" />
+            <enum name="none" value="0" />
+            <enum name="left" value="1" />
+            <enum name="right" value="2" />
         </attr>
     </declare-styleable>
 </resources>
