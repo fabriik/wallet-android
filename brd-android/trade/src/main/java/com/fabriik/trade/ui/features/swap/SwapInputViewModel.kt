@@ -15,6 +15,12 @@ class SwapInputViewModel(
         when (event) {
             SwapInputContract.Event.DismissClicked ->
                 setEffect { SwapInputContract.Effect.Dismiss }
+
+            SwapInputContract.Event.OriginCurrencyClicked ->
+                setEffect { SwapInputContract.Effect.OriginSelection }
+
+            SwapInputContract.Event.DestinationCurrencyClicked ->
+                setEffect { SwapInputContract.Effect.DestinationSelection }
         }
     }
 }

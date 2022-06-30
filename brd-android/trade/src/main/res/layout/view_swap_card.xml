@@ -11,7 +11,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:title="I have 100 BSV"/>
 
     <TextView
         android:id="@+id/tv_selling_currency_network_fee_title"
@@ -67,7 +69,8 @@
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn_swap" />
+        app:layout_constraintTop_toBottomOf="@id/btn_swap"
+        tools:title="I want" />
 
     <TextView
         android:id="@+id/tv_buying_currency_network_fee_title"

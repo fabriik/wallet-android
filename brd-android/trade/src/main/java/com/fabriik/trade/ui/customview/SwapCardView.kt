@@ -12,11 +12,53 @@ class SwapCardView @JvmOverloads constructor(
 ) : MaterialCardView(context, attrs) {
 
     private val binding: ViewSwapCardBinding
+    private var callback: Callback? = null
 
     init {
         radius = 16.dp.toFloat()
         binding = ViewSwapCardBinding.inflate(
             LayoutInflater.from(context), this, true
         )
+
+        with(binding) {
+            btnSwap.setOnClickListener { onSwapClicked() }
+
+            viewInputBuyingCurrency.setCallback(object : CurrencyInputView.Callback {
+                override fun onCurrencySelectorClicked() {
+                    callback?.onBuyingCurrencySelectorClicked()
+                }
+            })
+
+            viewInputSellingCurrency.setCallback(object : CurrencyInputView.Callback {
+                override fun onCurrencySelectorClicked() {
+                    callback?.onSellingCurrencySelectorClicked()
+                }
+            })
+        }
+    }
+
+    fun setCallback(callback: Callback) {
+        this.callback = callback
+    }
+
+    fun setFiatCurrency(currency: String) {
+        binding.viewInputSellingCurrency.setFiatCurrency(currency)
+    }
+
+    fun setOriginCurrency(currency: String) {
+        binding.viewInputSellingCurrency.setCryptoCurrency(currency)
+    }
+
+    fun setDestinationCurrency(currency: String) {
+        binding.viewInputBuyingCurrency.setCryptoCurrency(currency)
+    }
+
+    private fun onSwapClicked() {
+        // todo:
+    }
+
+    interface Callback {
+        fun onBuyingCurrencySelectorClicked()
+        fun onSellingCurrencySelectorClicked()
     }
 }

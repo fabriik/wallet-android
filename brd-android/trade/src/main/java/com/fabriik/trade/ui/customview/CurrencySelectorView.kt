@@ -23,9 +23,9 @@ class CurrencySelectorView @JvmOverloads constructor(
         )
     }
 
-    fun setCryptoCurrency(currency: Currency) {
+    fun setCryptoCurrency(currency: String) {
         with(binding) {
-            tvCurrency.text = currency.code
+            tvCurrency.text = currency
         }
     }
 }
