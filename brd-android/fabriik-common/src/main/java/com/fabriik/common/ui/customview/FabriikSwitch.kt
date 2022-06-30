@@ -1,9 +1,13 @@
 package com.fabriik.common.ui.customview
 
 import android.content.Context
+import android.graphics.Color
 import android.util.AttributeSet
+import android.view.ContextThemeWrapper
+import android.view.Gravity
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.view.setPadding
 import com.fabriik.common.R
 import com.fabriik.common.utils.dp
@@ -27,11 +31,8 @@ class FabriikSwitch @JvmOverloads constructor(
     }
 
     private fun addOptionView(text: String) : TextView {
-        val tvOption = TextView(context)
-        tvOption.setPadding(12.dp)
+        val tvOption = TextView(ContextThemeWrapper(context, R.style.FabriikCustomSwitchItemStyle))
         tvOption.text = text
-        tvOption.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-        tvOption.setBackgroundResource(R.drawable.bg_switch_item)
         addView(tvOption, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, 0.5f))
         return tvOption
     }

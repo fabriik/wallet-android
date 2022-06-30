@@ -175,4 +175,11 @@
         <item name="color">@color/light_primary</item>
         <item name="android:textAppearance">@style/TextStyle.Subtitle1</item>
     </style>
+
+    <style name="FabriikCustomSwitchItemStyle">
+        <item name="android:gravity">center</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:textColor">@color/text_color_fabriik_switch</item>
+        <item name="android:background">@drawable/bg_switch_item</item>
+    </style>
 </resources>
