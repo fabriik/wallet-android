@@ -30,8 +30,8 @@ class FabriikSwitch @JvmOverloads constructor(
         val selectedOption = typedArray.getInt(R.styleable.FabriikSwitch_selectedOption, 0)
         typedArray.recycle()
 
-        tvLeftOption = addOptionView(leftOptionText)
-        tvRightOption = addOptionView(rightOptionText)
+        tvLeftOption = addOptionView(leftOptionText, OPTION_LEFT)
+        tvRightOption = addOptionView(rightOptionText, OPTION_RIGHT)
 
         setSelectedItem(selectedOption)
     }
@@ -41,9 +41,10 @@ class FabriikSwitch @JvmOverloads constructor(
         tvRightOption.isActivated = selectedOption == OPTION_RIGHT
     }
 
-    private fun addOptionView(text: CharSequence) : TextView {
+    private fun addOptionView(text: CharSequence, @SwitchOption option: Int) : TextView {
         val tvOption = TextView(ContextThemeWrapper(context, R.style.FabriikCustomSwitchItemStyle))
         tvOption.text = text
+        tvOption.setOnClickListener { setSelectedItem(option) }
         addView(tvOption, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, 0.5f))
         return tvOption
     }
