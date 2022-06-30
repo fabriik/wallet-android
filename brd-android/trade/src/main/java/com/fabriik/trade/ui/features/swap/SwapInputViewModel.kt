@@ -13,7 +13,8 @@ class SwapInputViewModel(
 
     override fun handleEvent(event: SwapInputContract.Event) {
         when (event) {
-
+            SwapInputContract.Event.DismissClicked ->
+                setEffect { SwapInputContract.Effect.Dismiss }
         }
     }
 }

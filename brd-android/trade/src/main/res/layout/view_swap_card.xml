@@ -15,25 +15,29 @@
 
     <TextView
         android:id="@+id/tv_selling_currency_network_fee_title"
+        style="@style/TextStyle.Caption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
         android:gravity="start"
-        app:layout_constraintTop_toBottomOf="@+id/view_input_selling_currency"
+        android:textColor="@color/light_text_02"
         app:layout_constraintStart_toStartOf="parent"
-        tools:text="Sending network fee\n(included)"/>
+        app:layout_constraintTop_toBottomOf="@+id/view_input_selling_currency"
+        tools:text="Sending network fee\n(included)" />
 
     <TextView
         android:id="@+id/tv_selling_currency_network_fee"
+        style="@style/TextStyle.Caption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:gravity="end"
-        app:layout_constraintTop_toBottomOf="@+id/view_input_selling_currency"
+        android:textColor="@color/light_text_02"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:text="0.00023546 BSV\n$0.01 USD"/>
+        app:layout_constraintTop_toBottomOf="@+id/view_input_selling_currency"
+        tools:text="0.00023546 BSV\n$0.01 USD" />
 
     <View
         android:id="@+id/view_separator"
@@ -67,24 +71,28 @@
 
     <TextView
         android:id="@+id/tv_buying_currency_network_fee_title"
+        style="@style/TextStyle.Caption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
         android:gravity="start"
-        app:layout_constraintTop_toBottomOf="@+id/view_input_buying_currency"
+        android:textColor="@color/light_text_02"
         app:layout_constraintStart_toStartOf="parent"
-        tools:text="Receiving network fee\n(included)"/>
+        app:layout_constraintTop_toBottomOf="@+id/view_input_buying_currency"
+        tools:text="Receiving network fee\n(included)" />
 
     <TextView
         android:id="@+id/tv_buying_currency_network_fee"
+        style="@style/TextStyle.Caption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:gravity="end"
-        app:layout_constraintTop_toBottomOf="@+id/view_input_buying_currency"
+        android:textColor="@color/light_text_02"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:text="0.0005 BTC\n$1.51 USD"/>
+        app:layout_constraintTop_toBottomOf="@+id/view_input_buying_currency"
+        tools:text="0.0005 BTC\n$1.51 USD" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

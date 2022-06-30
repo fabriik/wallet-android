@@ -32,7 +32,9 @@ class SwapInputFragment : Fragment(),
         binding = FragmentSwapInputBinding.bind(view)
 
         with(binding) {
-
+            toolbar.setDismissButtonClickListener {
+                viewModel.setEvent(SwapInputContract.Event.DismissClicked)
+            }
         }
 
         // collect UI state
@@ -58,6 +60,9 @@ class SwapInputFragment : Fragment(),
     }
 
     override fun handleEffect(effect: SwapInputContract.Effect) {
-
+        when (effect) {
+            SwapInputContract.Effect.Dismiss ->
+                requireActivity().finish()
+        }
     }
 }
