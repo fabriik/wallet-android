@@ -21,7 +21,7 @@ class SwapCardView @JvmOverloads constructor(
         )
 
         with(binding) {
-            btnSwap.setOnClickListener { onSwapClicked() }
+            btnSwap.setOnClickListener { callback?.onReplaceCurrenciesClicked() }
 
             viewInputBuyingCurrency.setCallback(object : CurrencyInputView.Callback {
                 override fun onCurrencySelectorClicked() {
@@ -53,11 +53,8 @@ class SwapCardView @JvmOverloads constructor(
         binding.viewInputBuyingCurrency.setCryptoCurrency(currency)
     }
 
-    private fun onSwapClicked() {
-        // todo:
-    }
-
     interface Callback {
+        fun onReplaceCurrenciesClicked()
         fun onBuyingCurrencySelectorClicked()
         fun onSellingCurrencySelectorClicked()
     }

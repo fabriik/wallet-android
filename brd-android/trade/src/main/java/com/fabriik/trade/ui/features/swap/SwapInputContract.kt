@@ -1,12 +1,14 @@
 package com.fabriik.trade.ui.features.swap
 
 import com.fabriik.common.ui.base.FabriikContract
+import java.math.BigDecimal
 
 interface SwapInputContract {
 
     sealed class Event : FabriikContract.Event {
         object DismissClicked : Event()
         object OriginCurrencyClicked : Event()
+        object ReplaceCurrenciesClicked : Event()
         object DestinationCurrencyClicked : Event()
     }
 
@@ -16,5 +18,9 @@ interface SwapInputContract {
         object DestinationSelection : Effect()
     }
 
-    object State : FabriikContract.State
+    data class State(
+        val originCurrency: String,
+        val destinationCurrency: String,
+        val rateOriginToDestinationCurrency: BigDecimal
+    ) : FabriikContract.State
 }

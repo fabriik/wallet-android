@@ -9,6 +9,7 @@ import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.breadwallet.tools.manager.BRSharedPrefs
 import com.fabriik.common.ui.base.FabriikView
 import com.fabriik.trade.R
 import com.fabriik.trade.databinding.FragmentSwapInputBinding
@@ -40,18 +41,19 @@ class SwapInputFragment : Fragment(),
 
             //todo: for test only
             tvTimer.text = "00:15s"
-            tvRateValue.text = "1 BSV = 0.0000333 BTC"
-            cvSwap.setFiatCurrency("USD")
-            cvSwap.setOriginCurrency("BSV")
-            cvSwap.setDestinationCurrency("BTC")
 
-            cvSwap.setCallback(object: SwapCardView.Callback{
+            cvSwap.setFiatCurrency(BRSharedPrefs.getPreferredFiatIso())
+            cvSwap.setCallback(object : SwapCardView.Callback {
+                override fun onReplaceCurrenciesClicked() {
+                    viewModel.setEvent(SwapInputContract.Event.ReplaceCurrenciesClicked)
+                }
+
                 override fun onBuyingCurrencySelectorClicked() {
-                    viewModel.setEvent(SwapInputContract.Event.OriginCurrencyClicked)
+                    viewModel.setEvent(SwapInputContract.Event.DestinationCurrencyClicked)
                 }
 
                 override fun onSellingCurrencySelectorClicked() {
-                    viewModel.setEvent(SwapInputContract.Event.DestinationCurrencyClicked)
+                    viewModel.setEvent(SwapInputContract.Event.OriginCurrencyClicked)
                 }
             })
         }
@@ -76,6 +78,11 @@ class SwapInputFragment : Fragment(),
     }
 
     override fun render(state: SwapInputContract.State) {
+        with(binding) {
+            cvSwap.setOriginCurrency(state.originCurrency)
+            cvSwap.setDestinationCurrency(state.destinationCurrency)
+            tvRateValue.text = "1 ${state.originCurrency} = ${state.rateOriginToDestinationCurrency} ${state.destinationCurrency}"
+        }
     }
 
     override fun handleEffect(effect: SwapInputContract.Effect) {
