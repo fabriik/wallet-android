@@ -104,9 +104,10 @@ class SwapInputFragment : Fragment(),
             tvRateValue.text = RATE_FORMAT.format(
                 state.originCurrency, state.rateOriginToDestinationCurrency, state.destinationCurrency
             )
+            viewTimer.setProgress(SwapInputViewModel.QUOTE_TIMER, state.timer)
 
             tvTimer.isVisible = !state.quoteLoading
-            pbTimer.isVisible = !state.quoteLoading
+            viewTimer.isVisible = !state.quoteLoading
             tvRateValue.isVisible = !state.quoteLoading
             quoteLoadingIndicator.isVisible = state.quoteLoading
         }
