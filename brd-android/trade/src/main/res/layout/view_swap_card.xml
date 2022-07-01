@@ -13,7 +13,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:title="@string/Swap.IHave" />
+        tools:title="@string/Swap.Input.IHave" />
 
     <TextView
         android:id="@+id/tv_selling_currency_network_fee_title"
@@ -71,7 +71,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        app:title="@string/Swap.IWant"
+        app:title="@string/Swap.Input.IWant"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_swap" />
