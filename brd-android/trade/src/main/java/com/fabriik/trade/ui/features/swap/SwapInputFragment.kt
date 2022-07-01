@@ -106,7 +106,9 @@ class SwapInputFragment : Fragment(),
             )
 
             tvTimer.isVisible = !state.quoteLoading
+            pbTimer.isVisible = !state.quoteLoading
             tvRateValue.isVisible = !state.quoteLoading
+            quoteLoadingIndicator.isVisible = state.quoteLoading
         }
     }
 

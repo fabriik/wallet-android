@@ -58,6 +58,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         tools:text="00:15s" />
 
+    <androidx.core.widget.ContentLoadingProgressBar
+        android:id="@+id/quote_loading_indicator"
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:textColor="@color/light_primary"
+        app:layout_constraintStart_toEndOf="@id/tv_rate_title"
+        app:layout_constraintTop_toTopOf="@id/tv_rate_title"
+        app:layout_constraintBottom_toBottomOf="@id/tv_rate_title"
+        tools:text="00:15s" />
+
     <com.fabriik.trade.ui.customview.SwapCardView
         android:id="@+id/cv_swap"
         android:layout_width="0dp"
