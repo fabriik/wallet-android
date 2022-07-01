@@ -80,7 +80,7 @@ class RegistrationEnterEmailFragment : Fragment(),
     override fun render(state: RegistrationEnterEmailContract.State) {
         with(binding) {
             btnNext.isEnabled = state.nextEnabled
-            loadingView.isVisible = state.loadingVisible
+            loadingView.root.isVisible = state.loadingVisible
         }
     }
 
