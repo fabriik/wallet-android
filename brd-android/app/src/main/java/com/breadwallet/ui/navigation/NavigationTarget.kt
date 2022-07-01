@@ -72,8 +72,14 @@ sealed class NavigationTarget : INavigationTarget {
     ) : NavigationTarget()
 
     data class FabriikToast(
+        val type: Type,
         val message: String
-    ) : NavigationTarget()
+    ) : NavigationTarget() {
+        enum class Type {
+            INFO,
+            ERROR
+        }
+    }
 
     data class FabriikGenericDialog(
         val args: FabriikGenericDialogArgs

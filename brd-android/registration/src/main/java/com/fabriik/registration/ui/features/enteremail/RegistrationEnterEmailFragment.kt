@@ -90,7 +90,7 @@ class RegistrationEnterEmailFragment : Fragment(),
                 requireActivity().finish()
 
             is RegistrationEnterEmailContract.Effect.ShowToast ->
-                FabriikToastUtil.show(
+                FabriikToastUtil.showInfo(
                     parentView = binding.root,
                     message = effect.message
                 )
