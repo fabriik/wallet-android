@@ -17,6 +17,7 @@ class TimerView @JvmOverloads constructor(
 ) : LinearLayout(context, attrs, defStyleAttr) {
 
     private val timeFormat = "00:%02ds"
+    private val animationViewSize = 20.dp
 
     private val textView = TextView(ContextThemeWrapper(context, R.style.TimerView_TextView))
     private val animationView = AnimationView(context)
@@ -25,12 +26,8 @@ class TimerView @JvmOverloads constructor(
         gravity = Gravity.CENTER
         orientation = HORIZONTAL
 
-        textView.setTextColor(ContextCompat.getColor(context, R.color.light_primary))
-        textView.setTextAppearance(R.style.TextStyle_Body2)
-        textView.setPaddingRelative(0, 0, 4.dp, 0)
-
         addView(textView, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT))
-        addView(animationView, LayoutParams(20.dp, 20.dp))
+        addView(animationView, LayoutParams(animationViewSize, animationViewSize))
     }
 
     fun setProgress(max: Int, current: Int) {
@@ -42,9 +39,9 @@ class TimerView @JvmOverloads constructor(
         context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
     ) : View(context, attrs, defStyleAttr) {
 
-        private var drawingRect = RectF(0f, 0f, 0f, 0f)
+        private var drawingRect = RectF()
         private val paintColor = ContextCompat.getColor(context, R.color.light_primary)
-        private val paddingFromStroke = 5.dp.toFloat()
+        private val marginFromBorder = 5.dp.toFloat()
 
         private val paintCircle = Paint().apply {
             isAntiAlias = true
@@ -90,10 +87,10 @@ class TimerView @JvmOverloads constructor(
 
         private fun recalculateRectangle() {
             drawingRect = RectF(
-                paddingFromStroke,
-                paddingFromStroke,
-                width - paddingFromStroke,
-                height - paddingFromStroke
+                marginFromBorder,
+                marginFromBorder,
+                width - marginFromBorder,
+                height - marginFromBorder
             )
         }
     }

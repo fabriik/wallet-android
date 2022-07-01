@@ -32,7 +32,8 @@ class VerifyController(
     override fun bindView(modelFlow: Flow<M>): Flow<E> {
         return with(binding) {
             merge(
-                btnVerifyAccount.clicks().map { E.OnVerifyClicked }
+                btnVerifyAccount.clicks().map { E.OnVerifyClicked },
+                btnDismiss.clicks().map { E.OnDismissClicked }
             )
         }
     }

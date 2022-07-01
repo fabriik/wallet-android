@@ -1,10 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/btn_dismiss"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:padding="8dp"
+        android:src="@drawable/ic_kyc_dismiss" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -23,8 +35,8 @@
                 android:id="@+id/ic_verify_account"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="72dp"
-                android:layout_marginEnd="120dp"
+                android:layout_marginStart="80dp"
+                android:layout_marginEnd="100dp"
                 android:adjustViewBounds="true"
                 android:scaleType="fitXY"
                 android:src="@drawable/ic_verify_account"
@@ -61,15 +73,13 @@
                 style="@style/FabriikButtonStyle.Dense"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
+                android:layout_margin="16dp"
                 android:text="@string/VerifyAccount.Button"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.85" />
+                app:layout_constraintStart_toStartOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
-</RelativeLayout>
+</LinearLayout>
