@@ -168,51 +168,6 @@ class HomeScreenUpdateTests {
     }
 
     @Test
-    fun tradeNoteSeen() {
-        val initState = M.createDefault()
-
-        spec.given(initState)
-            .`when`(
-                E.OnTradeNoteSeen
-            )
-            .then(
-                assertThatNext(
-                    hasEffects(F.LoadSwapCurrencies as F)
-                )
-            )
-    }
-
-    /*@Test
-    fun buyClick() {
-        val initState = M.createDefault()
-
-        spec.given(initState)
-            .`when`(
-                E.OnBuyClicked
-            )
-            .then(
-                assertThatNext(
-                    hasEffects(F.GoToBuy as F)
-                )
-            )
-    }
-
-    @Test
-    fun tradeClick() {
-        val initState = M.createDefault()
-
-        spec.given(initState)
-            .`when`(
-                E.OnTradeClicked
-            )
-            .then(
-                assertThatNext(
-                    hasEffects(F.LoadSwapCurrencies as F)
-                )
-            )
-    }*/// todo: fix unit test
-
-    @Test
     fun menuClick() {
         val initState = M.createDefault()
 
