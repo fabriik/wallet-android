@@ -12,10 +12,10 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import com.fabriik.common.R
-import com.fabriik.common.databinding.PartialKycToolbarBinding
+import com.fabriik.common.databinding.PartialFabriikToolbarBinding
 import com.google.android.material.appbar.AppBarLayout
 
-class KycToolbar @JvmOverloads constructor(
+class FabriikToolbar @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : AppBarLayout(context, attrs) {
 
@@ -23,7 +23,7 @@ class KycToolbar @JvmOverloads constructor(
         context, R.color.light_icons_01
     )
 
-    private val binding: PartialKycToolbarBinding
+    private val binding: PartialFabriikToolbarBinding
 
     init {
         stateListAnimator = StateListAnimator().apply {
@@ -32,7 +32,7 @@ class KycToolbar @JvmOverloads constructor(
 
         setBackgroundColor(Color.TRANSPARENT)
 
-        binding = PartialKycToolbarBinding.inflate(
+        binding = PartialFabriikToolbarBinding.inflate(
             LayoutInflater.from(context), this
         )
 
@@ -78,15 +78,13 @@ class KycToolbar @JvmOverloads constructor(
     }
 
     private fun parseAttributes(attrs: AttributeSet?) {
-        val typedArray = context.obtainStyledAttributes(attrs,
-            R.styleable.KycToolbar
-        )
-        setTitle(typedArray.getString(R.styleable.KycToolbar_title))
-        setTintColor(typedArray.getColor(R.styleable.KycToolbar_tintColor, defaultTintColor))
-        setShowBackButton(typedArray.getBoolean(R.styleable.KycToolbar_showBack, true))
-        setShowTitle(typedArray.getBoolean(R.styleable.KycToolbar_showTitle, true))
-        setShowDismissButton(typedArray.getBoolean(R.styleable.KycToolbar_showDismiss, true))
-        setShowInfoButton(typedArray.getBoolean(R.styleable.KycToolbar_showInfo, false))
+        val typedArray = context.obtainStyledAttributes(attrs, R.styleable.FabriikToolbar)
+        setTitle(typedArray.getString(R.styleable.FabriikToolbar_title))
+        setTintColor(typedArray.getColor(R.styleable.FabriikToolbar_tintColor, defaultTintColor))
+        setShowBackButton(typedArray.getBoolean(R.styleable.FabriikToolbar_showBack, true))
+        setShowTitle(typedArray.getBoolean(R.styleable.FabriikToolbar_showTitle, true))
+        setShowDismissButton(typedArray.getBoolean(R.styleable.FabriikToolbar_showDismiss, true))
+        setShowInfoButton(typedArray.getBoolean(R.styleable.FabriikToolbar_showInfo, false))
         typedArray.recycle()
     }
 }
