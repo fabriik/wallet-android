@@ -16,6 +16,7 @@ import com.fabriik.trade.databinding.FragmentSwapInputBinding
 import com.fabriik.trade.ui.customview.SwapCardView
 import kotlinx.coroutines.flow.collect
 import java.math.BigDecimal
+import androidx.core.view.isVisible
 
 class SwapInputFragment : Fragment(),
     FabriikView<SwapInputContract.State, SwapInputContract.Effect> {
@@ -39,9 +40,6 @@ class SwapInputFragment : Fragment(),
             toolbar.setDismissButtonClickListener {
                 viewModel.setEvent(SwapInputContract.Event.DismissClicked)
             }
-
-            //todo: for test only
-            tvTimer.text = "00:15s"
 
             cvSwap.setFiatCurrency(BRSharedPrefs.getPreferredFiatIso())
             cvSwap.setCallback(object : SwapCardView.Callback {
@@ -101,9 +99,14 @@ class SwapInputFragment : Fragment(),
             cvSwap.setSendingNetworkFee(state.sendingNetworkFee)
             cvSwap.setDestinationCurrency(state.destinationCurrency)
             cvSwap.setReceivingNetworkFee(state.receivingNetworkFee)
+
+            tvTimer.text = "${state.timer}s"
             tvRateValue.text = RATE_FORMAT.format(
                 state.originCurrency, state.rateOriginToDestinationCurrency, state.destinationCurrency
             )
+
+            tvTimer.isVisible = !state.quoteLoading
+            tvRateValue.isVisible = !state.quoteLoading
         }
     }
 

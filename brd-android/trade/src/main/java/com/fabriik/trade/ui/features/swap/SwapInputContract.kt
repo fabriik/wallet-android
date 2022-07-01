@@ -23,6 +23,8 @@ interface SwapInputContract {
     }
 
     data class State(
+        val timer: Int,
+        val quoteLoading: Boolean = false,
         val originCurrency: String,
         val originCurrencyBalance: BigDecimal,
         val originFiatAmount: BigDecimal = BigDecimal.ZERO,

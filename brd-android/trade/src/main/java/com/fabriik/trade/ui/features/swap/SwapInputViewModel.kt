@@ -1,7 +1,14 @@
 package com.fabriik.trade.ui.features.swap
 
 import android.app.Application
+import androidx.lifecycle.viewModelScope
 import com.fabriik.common.ui.base.FabriikViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import java.math.BigDecimal
 
 class SwapInputViewModel(
@@ -10,7 +17,13 @@ class SwapInputViewModel(
     application
 ) {
 
+    init {
+        refreshQuote()
+    }
+
     override fun createInitialState() = SwapInputContract.State(
+        timer = QUOTE_TIMER,
+        quoteLoading = true,
         originCurrency = "BSV",
         originCurrencyBalance = BigDecimal.TEN,
         destinationCurrency = "BTC",
@@ -71,5 +84,35 @@ class SwapInputViewModel(
                 }
             } //todo
         }
+    }
+
+    private fun startTimer() {
+        setState { copy(timer = QUOTE_TIMER) }
+
+        viewModelScope.launch {
+            (QUOTE_TIMER downTo 0)
+                .asSequence()
+                .asFlow()
+                .onEach { delay(1000) }
+                .collect {
+                    if (it == 0) {
+                        refreshQuote()
+                    }
+                    setState { copy(timer = it) }
+                }
+        }
+    }
+
+    private fun refreshQuote() {
+        viewModelScope.launch(Dispatchers.IO) {
+            setState { copy(quoteLoading = true) }
+            delay(2000)
+            startTimer()
+            setState { copy(quoteLoading = false) }
+        }
+    }
+
+    companion object {
+        const val QUOTE_TIMER = 15
     }
 }
