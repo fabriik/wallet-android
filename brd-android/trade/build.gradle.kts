@@ -33,9 +33,13 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
+    implementation(project(":brd-android:app-core"))
     implementation(project(":brd-android:fabriik-common"))
 
     implementation(Libs.Androidx.AppCompat)

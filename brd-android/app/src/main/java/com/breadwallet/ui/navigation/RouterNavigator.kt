@@ -91,7 +91,7 @@ import com.fabriik.kyc.ui.dialogs.InfoDialog
 import com.fabriik.kyc.ui.dialogs.InfoDialogArgs
 import com.fabriik.registration.ui.RegistrationActivity
 import com.fabriik.support.CashSupport
-import com.fabriik.trade.ui.TradeWebViewLauncher
+import com.fabriik.trade.ui.SwapActivity
 import com.platform.util.AppReviewPromptManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -223,11 +223,10 @@ class RouterNavigator(
         )
     }
 
-    override fun trade(currencies: List<String>) {
+    override fun trade() {
         router.activity?.let {
-            TradeWebViewLauncher.launch(
-                activity = it,
-                currencies = currencies
+            it.startActivity(
+                SwapActivity.getStartIntent(it)
             )
         }
     }
