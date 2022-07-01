@@ -100,13 +100,11 @@ class SwapInputFragment : Fragment(),
             cvSwap.setDestinationCurrency(state.destinationCurrency)
             cvSwap.setReceivingNetworkFee(state.receivingNetworkFee)
 
-            tvTimer.text = "${state.timer}s"
+            viewTimer.setProgress(SwapInputViewModel.QUOTE_TIMER, state.timer)
             tvRateValue.text = RATE_FORMAT.format(
                 state.originCurrency, state.rateOriginToDestinationCurrency, state.destinationCurrency
             )
-            viewTimer.setProgress(SwapInputViewModel.QUOTE_TIMER, state.timer)
 
-            tvTimer.isVisible = !state.quoteLoading
             viewTimer.isVisible = !state.quoteLoading
             tvRateValue.isVisible = !state.quoteLoading
             quoteLoadingIndicator.isVisible = state.quoteLoading

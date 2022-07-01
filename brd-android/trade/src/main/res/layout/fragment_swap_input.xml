@@ -32,26 +32,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintHorizontal_bias="0"
         app:layout_constraintBaseline_toBaselineOf="@id/tv_rate_title"
         app:layout_constraintStart_toEndOf="@id/tv_rate_title"
-        tools:text="1 BSV = 0.0000333 BTC" />
-
-    <TextView
-        android:id="@+id/tv_timer"
-        style="@style/TextStyle.Body2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginEnd="4dp"
-        android:textColor="@color/light_primary"
-        app:layout_constraintBaseline_toBaselineOf="@id/tv_rate_title"
         app:layout_constraintEnd_toStartOf="@+id/view_timer"
-        tools:text="00:15s" />
+        tools:text="1 BSV = 0.0000333 BTC" />
 
     <com.fabriik.trade.ui.customview.TimerView
         android:id="@+id/view_timer"
-        android:layout_width="16dp"
-        android:layout_height="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:textColor="@color/light_primary"
         app:layout_constraintBottom_toBottomOf="@id/tv_rate_title"
@@ -64,7 +55,7 @@
         style="?android:attr/progressBarStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:textColor="@color/light_primary"
         app:layout_constraintBottom_toBottomOf="@id/tv_rate_title"
         app:layout_constraintStart_toEndOf="@id/tv_rate_title"
