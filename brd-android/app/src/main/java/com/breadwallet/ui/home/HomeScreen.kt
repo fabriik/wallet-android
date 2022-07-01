@@ -41,7 +41,7 @@ object HomeScreen {
     data class M(
         val wallets: Map<String, Wallet> = emptyMap(),
         val displayOrder: List<String> = emptyList(),
-        val OnPromptLoaded: PromptItem? = null,
+        val promptId: PromptItem? = null,
         val hasInternet: Boolean = true,
         val isBuyBellNeeded: Boolean = false,
         val isBuyAlertNeeded: Boolean = false,
