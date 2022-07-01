@@ -112,6 +112,7 @@ object HomeScreen {
         data class OnSupportFormSubmitted(val feedback: String) : E()
         data class OnProfileDataLoaded(val profile: Profile) : E()
         data class OnProfileDataLoadFailed(val message: String?) : E()
+        object OnVerifyPromptClicked : E()
     }
 
     sealed class F {
@@ -228,6 +229,10 @@ object HomeScreen {
         object SaveDontShowMeRateAppPrompt : F()
 
         data class SubmitSupportForm(val feedback: String) : F()
+
+        object GoToKyc : F(), NavigationEffect {
+            override val navigationTarget = NavigationTarget.GoToKyc
+        }
     }
 }
 
@@ -258,5 +263,6 @@ enum class PromptItem {
     PAPER_KEY,
     UPGRADE_PIN,
     RECOMMEND_RESCAN,
-    RATE_APP
+    RATE_APP,
+    VERIFY_USER
 }
