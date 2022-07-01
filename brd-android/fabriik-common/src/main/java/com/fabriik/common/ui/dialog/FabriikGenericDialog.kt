@@ -4,12 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageButton
+import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import com.fabriik.common.R
 import com.fabriik.common.databinding.DialogFabriikGenericBinding
+import com.google.android.material.button.MaterialButton
 import java.lang.IllegalStateException
 
 class FabriikGenericDialog : DialogFragment() {
@@ -33,46 +37,59 @@ class FabriikGenericDialog : DialogFragment() {
             ?: throw IllegalStateException()
 
         with(binding) {
-
-            // setup views
-            val title = if (args.titleRes != null) getString(args.titleRes!!) else args.title
-            tvTitle.text = title
-            tvTitle.isVisible = title != null
-
-            val description = if (args.descriptionRes != null) getString(args.descriptionRes!!) else args.description
-            tvDescription.text = description
-            tvDescription.isVisible = description != null
-
-            val positiveText = if (args.positive?.titleRes != null) getString(args.positive?.titleRes!!) else args.positive?.title
-            btnPositive.text = positiveText
-            btnPositive.isVisible = args.positive != null
-            args.positive?.icon?.let { btnPositive.setIconResource(it) }
-
-            val negativeText = if (args.negative?.titleRes != null) getString(args.negative?.titleRes!!) else args.negative?.title
-            btnNegative.text = negativeText
-            btnNegative.isVisible = args.negative != null
-            args.negative?.icon?.let { btnNegative.setIconResource(it) }
-
-            // setup listeners
-            btnDismiss.isVisible = args.showDismissButton
-            btnDismiss.setOnClickListener {
-                notifyListeners(RESULT_KEY_DISMISSED)
-            }
-
-            btnPositive.setOnClickListener {
-                val resultKey = args.positive?.resultKey ?: return@setOnClickListener
-                notifyListeners(resultKey)
-            }
-
-            btnNegative.setOnClickListener {
-                val resultKey = args.negative?.resultKey ?: return@setOnClickListener
-                notifyListeners(resultKey)
-            }
+            setupTitle(tvTitle)
+            setupDescription(tvDescription)
+            setupDismissButton(btnDismiss)
+            setupPositiveButton(btnPositive)
+            setupNegativeButton(btnNegative)
         }
     }
 
     fun show(manager: FragmentManager) {
         show(manager, TAG)
+    }
+
+    private fun setupTitle(view: TextView) {
+        val title = if (args.titleRes != null) getString(args.titleRes!!) else args.title
+        view.text = title
+        view.isVisible = title != null
+    }
+
+    private fun setupDescription(view: TextView) {
+        val description = if (args.descriptionRes != null) getString(args.descriptionRes!!) else args.description
+        view.text = description
+        view.isVisible = description != null
+    }
+
+    private fun setupPositiveButton(button: MaterialButton) {
+        val positiveText = if (args.positive?.titleRes != null) getString(args.positive?.titleRes!!) else args.positive?.title
+        button.text = positiveText
+        button.isVisible = args.positive != null
+        args.positive?.icon?.let { button.setIconResource(it) }
+
+        button.setOnClickListener {
+            val resultKey = args.positive?.resultKey ?: return@setOnClickListener
+            notifyListeners(resultKey)
+        }
+    }
+
+    private fun setupNegativeButton(button: MaterialButton) {
+        val negativeText = if (args.negative?.titleRes != null) getString(args.negative?.titleRes!!) else args.negative?.title
+        button.text = negativeText
+        button.isVisible = args.negative != null
+        args.negative?.icon?.let { button.setIconResource(it) }
+
+        button.setOnClickListener {
+            val resultKey = args.negative?.resultKey ?: return@setOnClickListener
+            notifyListeners(resultKey)
+        }
+    }
+
+    private fun setupDismissButton(button: ImageButton) {
+        button.isVisible = args.showDismissButton
+        button.setOnClickListener {
+            notifyListeners(RESULT_KEY_DISMISSED)
+        }
     }
 
     private fun notifyListeners(result: String) {

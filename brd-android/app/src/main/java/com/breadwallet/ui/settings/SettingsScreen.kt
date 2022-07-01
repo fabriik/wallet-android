@@ -227,7 +227,10 @@ object SettingsScreen {
         }
 
         data class ShowToast(val message: String) : F(), NavigationEffect {
-            override val navigationTarget = NavigationTarget.FabriikToast(message)
+            override val navigationTarget = NavigationTarget.FabriikToast(
+                type = NavigationTarget.FabriikToast.Type.INFO,
+                message = message
+            )
         }
 
         object TestFabriikGenericDialog : F(), NavigationEffect {
