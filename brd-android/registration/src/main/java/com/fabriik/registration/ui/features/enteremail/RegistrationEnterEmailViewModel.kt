@@ -28,6 +28,7 @@ class RegistrationEnterEmailViewModel(
     override val kodein by closestKodein { application }
     private val registrationApi by instance<RegistrationApi>()
     private val registrationUtils by instance<RegistrationUtils>()
+    private val userManager by instance<BrdUserManager>()
 
     override fun createInitialState() = RegistrationEnterEmailContract.State()
 
@@ -72,6 +73,7 @@ class RegistrationEnterEmailViewModel(
                 callback = {
                     when (it.status) {
                         Status.SUCCESS -> {
+                            userManager.updateVerifyPrompt(true)
                             SessionHolder.updateSession(
                                 sessionKey = it.data!!.sessionKey,
                                 state = SessionState.CREATED
