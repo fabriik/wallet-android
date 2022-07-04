@@ -51,7 +51,6 @@ dependencies {
     api(brd.Libs.Material.Core)
     api(brd.Libs.Coroutines.Core)
 
-    api(brd.Libs.Picasso.Core)
     api(brd.Libs.Networking.Retrofit)
     api(brd.Libs.Networking.RetrofitMoshiConverter)
 
