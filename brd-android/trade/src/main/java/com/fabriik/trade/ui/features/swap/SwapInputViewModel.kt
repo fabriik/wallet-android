@@ -112,7 +112,7 @@ class SwapInputViewModel(
     private fun refreshQuote() {
         viewModelScope.launch(Dispatchers.IO) {
             setState { copy(quoteLoading = true) }
-            delay(2000)
+            delay(2000) //todo: replace with API call
             startTimer()
             setState { copy(quoteLoading = false) }
         }
