@@ -166,11 +166,6 @@ fun createHomeScreenHandler(
         E.OnBuyAlertNeededLoaded(isBuyAlertNeeded)
     }
 
-    addFunction<F.LoadIsTradeAlertNeeded> {
-        val isTradeAlertNeeded = BRSharedPrefs.tradeNotePromptShouldPrompt
-        E.OnTradeAlertNeededLoaded(isTradeAlertNeeded)
-    }
-
     addTransformer<F.LoadEnabledWallets> {
         walletProvider.enabledWallets().mapLatest { wallets ->
             val fiatIso = BRSharedPrefs.getPreferredFiatIso()
@@ -198,25 +193,6 @@ fun createHomeScreenHandler(
                     val name = TokenUtil.tokenForCode(it.currency.code)?.name
                     it.asWallet(name, fiatIso, ratesRepo)
                 })
-            }
-    }
-
-    addTransformer<F.LoadSwapCurrencies> { effects ->
-        effects.flatMapLatest { breadBox.system() }
-            .throttleLatest(WALLET_UPDATE_THROTTLE)
-            .mapLatest { system ->
-                val networks = system.networks
-                val currencies = TokenUtil.getTokenItems()
-                    .filter { token ->
-                        val hasNetwork = networks.any { it.containsCurrency(token.currencyId) }
-                        val isErc20 = token.type == "erc20"
-                        (token.isSupported && (isErc20 || hasNetwork))
-                    }
-                    .map {
-                        if (it.symbol == "usdt") "${it.symbol}20" else it.symbol
-                    }
-
-                E.OnSwapCurrenciesLoaded(currencies)
             }
     }
 

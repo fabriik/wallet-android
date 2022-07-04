@@ -34,7 +34,7 @@ interface NavigationTargetHandlerSpec {
         NavigationTarget.Buy -> buy()
         NavigationTarget.Profile -> profile()
         NavigationTarget.VerifyProfile -> verifyProfile()
-        is NavigationTarget.Trade -> trade(effect.currencies)
+        NavigationTarget.Trade -> trade()
         NavigationTarget.AddWallet -> addWallet()
         NavigationTarget.DisabledScreen -> disabledScreen()
         NavigationTarget.NativeApiExplorer -> nativeApiExplorer()
@@ -80,6 +80,7 @@ interface NavigationTargetHandlerSpec {
         is NavigationTarget.GoToRegistration -> openRegistration(effect)
         is NavigationTarget.ShowInfoDialog -> showInfoDialog(effect)
         is NavigationTarget.FabriikToast -> fabriikToast(effect)
+        is NavigationTarget.FabriikGenericDialog -> fabriikGenericDialog(effect)
     }
 
     fun openKyc(effect: NavigationTarget.GoToKyc): Unit
@@ -108,7 +109,7 @@ interface NavigationTargetHandlerSpec {
 
     fun verifyProfile(): Unit
 
-    fun trade(currencies: List<String>): Unit
+    fun trade(): Unit
 
     fun addWallet(): Unit
 
@@ -189,4 +190,6 @@ interface NavigationTargetHandlerSpec {
     fun showInfoDialog(effect: NavigationTarget.ShowInfoDialog): Unit
 
     fun fabriikToast(effect: NavigationTarget.FabriikToast): Unit
+
+    fun fabriikGenericDialog(effect: NavigationTarget.FabriikGenericDialog): Unit
 }

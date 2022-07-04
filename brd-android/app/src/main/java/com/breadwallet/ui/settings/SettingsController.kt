@@ -49,6 +49,10 @@ import com.breadwallet.ui.scanner.ScannerController
 import com.breadwallet.ui.settings.SettingsScreen.E
 import com.breadwallet.ui.settings.SettingsScreen.F
 import com.breadwallet.ui.settings.SettingsScreen.M
+import com.breadwallet.ui.settings.SettingsScreen.TEST_FABRIIK_DIALOG
+import com.breadwallet.ui.settings.SettingsScreen.TEST_FABRIIK_DIALOG_NEGATIVE
+import com.breadwallet.ui.settings.SettingsScreen.TEST_FABRIIK_DIALOG_POSITIVE
+import com.breadwallet.util.registerForGenericDialogResult
 import com.platform.APIClient
 import com.spotify.mobius.Connectable
 import kotlinx.coroutines.flow.Flow
@@ -114,6 +118,15 @@ class SettingsController(
                 DividerItemDecoration.VERTICAL
             )
         )
+
+        registerForGenericDialogResult(TEST_FABRIIK_DIALOG) { resultKey, _ ->
+            when (resultKey) {
+                TEST_FABRIIK_DIALOG_NEGATIVE ->
+                    eventConsumer.accept(E.OnTestGenericDialogResult("Test dialog negative button clicked"))
+                TEST_FABRIIK_DIALOG_POSITIVE ->
+                    eventConsumer.accept(E.OnTestGenericDialogResult("Test dialog positive button clicked"))
+            }
+        }
     }
 
     override fun bindView(modelFlow: Flow<M>): Flow<E> {

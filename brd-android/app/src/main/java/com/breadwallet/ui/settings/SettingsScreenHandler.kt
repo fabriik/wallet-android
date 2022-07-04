@@ -446,6 +446,10 @@ class SettingsScreenHandler(
                 SettingsOption.TOGGLE_RATE_APP_PROMPT,
                 addOn = "show=$toggleRateAppPromptAddOn"
             ),
+            SettingsItem(
+                "Show Fabriik generic dialog",
+                SettingsOption.TEST_FABRIIK_GENERIC_DIALOG
+            ),
         ) + getHiddenOptions()
     }
 

@@ -41,7 +41,6 @@ import com.spotify.mobius.Update
 
 const val MAX_CRYPTO_DIGITS = 8
 const val DIALOG_PARTNERSHIP_NOTE_BUY = "buy_part_note"
-const val DIALOG_PARTNERSHIP_NOTE_SWAP = "swap_part_note"
 
 val HomeScreenUpdate = Update<M, E, F> { model, event ->
     when (event) {
@@ -55,7 +54,6 @@ val HomeScreenUpdate = Update<M, E, F> { model, event ->
         )
         is E.OnBuyBellNeededLoaded -> next(model.copy(isBuyBellNeeded = event.isBuyBellNeeded))
         is E.OnBuyAlertNeededLoaded -> next(model.copy(isBuyAlertNeeded = event.isBuyAlertNeeded))
-        is E.OnTradeAlertNeededLoaded -> next(model.copy(isTradeAlertNeeded = event.isTradeAlertNeeded))
         is E.OnEnabledWalletsUpdated -> {
             next(
                 model.copy(
@@ -118,31 +116,17 @@ val HomeScreenUpdate = Update<M, E, F> { model, event ->
                 )
             }
         }
-        E.OnTradeClicked -> when {
-            !model.profile.isUserRegistered() -> dispatch(effects(F.GoToRegistration))
-            !SessionHolder.isUserSessionVerified() -> dispatch(effects(F.RequestSessionVerification))
-            !model.profile.canUseBuyTrade() -> dispatch(effects(F.GoToVerifyProfile))
-            else -> {
-                val isTradeAlertNeeded = model.isTradeAlertNeeded
-                BRSharedPrefs.tradeNotePromptShouldPrompt = false
-
-                next<M, F>(
-                    model.copy(isTradeAlertNeeded = false),
-                    effects(
-                        if (isTradeAlertNeeded) {
-                            F.ShowPartnershipNote(
-                                dialogId = DIALOG_PARTNERSHIP_NOTE_SWAP,
-                                messageResId = R.string.HomeScreen_partnershipNoteSwapDescription
-                            )
-                        } else {
-                            F.LoadSwapCurrencies
-                        }
-                    )
-                )
-            }
-        }
+        E.OnTradeClicked -> dispatch(
+            effects(
+                when {
+                    !model.profile.isUserRegistered() -> F.GoToRegistration
+                    !SessionHolder.isUserSessionVerified() -> F.RequestSessionVerification
+                    !model.profile.canUseBuyTrade() -> F.GoToVerifyProfile
+                    else -> F.GoToTrade
+                }
+            )
+	)
         E.OnBuyNoteSeen -> dispatch(effects(F.GoToBuy))
-        E.OnTradeNoteSeen -> dispatch(effects(F.LoadSwapCurrencies))
         E.OnMenuClicked -> dispatch(effects(F.GoToMenu))
         E.OnProfileClicked -> dispatch(
             effects(
@@ -293,9 +277,6 @@ val HomeScreenUpdate = Update<M, E, F> { model, event ->
         }
         is E.OnSupportFormSubmitted -> dispatch(
             effects(F.SubmitSupportForm(event.feedback))
-        )
-        is E.OnSwapCurrenciesLoaded -> dispatch(
-            effects(F.GoToTrade(event.currencies))
         )
     }
 }
