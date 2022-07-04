@@ -100,8 +100,10 @@ class AssetSelectionViewModel(
     ): AssetSelectionAdapter.AssetSelectionItem {
         val token = TokenUtil.tokenForCode(currencyCode)
         val currencyFullName = token?.name ?: currencyCode
-        val fiatBalance = getFiatForCrypto(currencyCode, wallet)
         val cryptoBalance = wallet.balance.toBigDecimal()
+        val fiatBalance = ratesRepository.getFiatForCrypto(
+            cryptoBalance, currencyCode, fiatIso
+        ) ?: BigDecimal.ZERO
 
         return AssetSelectionAdapter.AssetSelectionItem(
             title = currencyFullName,
@@ -115,13 +117,6 @@ class AssetSelectionViewModel(
             cryptoCurrencyCode = currencyCode
         )
     }
-
-    private fun getFiatForCrypto(currencyCode: String, wallet: Wallet) =
-        ratesRepository.getFiatForCrypto(
-            cryptoAmount = wallet.balance.toBigDecimal(),
-            cryptoCode = currencyCode,
-            fiatCode = fiatIso
-        ) ?: BigDecimal.ZERO
 
     private fun applyFilters() {
         setState {
