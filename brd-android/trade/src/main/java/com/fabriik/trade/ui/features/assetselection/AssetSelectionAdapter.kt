@@ -1,11 +1,18 @@
 package com.fabriik.trade.ui.features.assetselection
 
+import android.annotation.SuppressLint
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.fabriik.trade.databinding.ListItemAssetBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancelChildren
+import kotlinx.parcelize.Parcelize
 
 class AssetSelectionAdapter(private val callback: (AssetSelectionItem) -> Unit) :
     ListAdapter<AssetSelectionAdapter.AssetSelectionItem, AssetSelectionAdapter.ViewHolder>(
@@ -27,14 +34,29 @@ class AssetSelectionAdapter(private val callback: (AssetSelectionItem) -> Unit) 
         )
     }
 
-    class ViewHolder(val binding: ListItemAssetBinding) : RecyclerView.ViewHolder(binding.root) {
+    override fun onViewRecycled(holder: ViewHolder) {
+        super.onViewRecycled(holder)
+        holder.unbind()
+    }
 
+    inner class ViewHolder(val binding: ListItemAssetBinding) : RecyclerView.ViewHolder(binding.root) {
+
+        private val boundScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
+
+        @SuppressLint("SetTextI18n")
         fun bind(item: AssetSelectionItem, callback: (AssetSelectionItem) -> Unit) {
             with(binding) {
-                //ivLogo.setImageResource(item.icon)
-                //tvTitle.text = item.country.name
+                ivLogo.loadIcon(boundScope, item.cryptoCurrencyCode)
+                tvTitle.text = item.title
+                tvSubtitle.text = item.cryptoCurrencyCode
+                tvFiatAmount.text = item.fiatBalance
+                tvCryptoAmount.text = item.cryptoBalance
                 root.setOnClickListener { callback(item) }
             }
+        }
+
+        fun unbind() {
+            boundScope.coroutineContext.cancelChildren()
         }
     }
 
@@ -44,15 +66,18 @@ class AssetSelectionAdapter(private val callback: (AssetSelectionItem) -> Unit) 
 
         override fun areContentsTheSame(oldItem: AssetSelectionItem, newItem: AssetSelectionItem) =
             oldItem.fiatBalance == newItem.fiatBalance &&
-            oldItem.cryptoBalance == newItem.cryptoBalance &&
-            oldItem.fiatCurrencyCode == newItem.fiatCurrencyCode &&
-            oldItem.cryptoCurrencyCode == newItem.cryptoCurrencyCode
+                    oldItem.title == newItem.title &&
+                    oldItem.subtitle == newItem.subtitle &&
+                    oldItem.cryptoBalance == newItem.cryptoBalance &&
+                    oldItem.cryptoCurrencyCode == newItem.cryptoCurrencyCode
     }
 
+    @Parcelize
     class AssetSelectionItem(
+        val title: String,
+        val subtitle: String,
         val fiatBalance: String,
-        val fiatCurrencyCode: String,
         val cryptoBalance: String,
         val cryptoCurrencyCode: String,
-    )
+    ) : Parcelable
 }

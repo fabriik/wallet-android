@@ -55,64 +55,43 @@ class AssetSelectionViewModel(
             copy(
                 assets = listOf(
                     AssetSelectionAdapter.AssetSelectionItem(
-                        fiatBalance = "42.31",
-                        fiatCurrencyCode = "USD",
-                        cryptoBalance = "2.312132",
+                        title = "BSV",
+                        subtitle = "BSV",
+                        fiatBalance = "42.31 USD",
+                        cryptoBalance = "2.312132 BSV",
                         cryptoCurrencyCode = "BSV"
                     ),
                     AssetSelectionAdapter.AssetSelectionItem(
-                        fiatBalance = "22142.31",
-                        fiatCurrencyCode = "USD",
-                        cryptoBalance = "1.312132",
+                        title = "BTC",
+                        subtitle = "BTC",
+                        fiatBalance = "22142.31 USD",
+                        cryptoBalance = "1.312132 BTC",
                         cryptoCurrencyCode = "BTC"
                     ),
                     AssetSelectionAdapter.AssetSelectionItem(
-                        fiatBalance = "2922.31",
-                        fiatCurrencyCode = "USD",
-                        cryptoBalance = "2",
+                        title = "Ethereum",
+                        subtitle = "ETH",
+                        fiatBalance = "2922.31 USD",
+                        cryptoBalance = "2 ETH",
                         cryptoCurrencyCode = "ETH"
                     )
                 )
             )
         }
 
-        /*callApi(
-            endState = { copy(initialLoadingVisible = false) },
-            startState = { copy(initialLoadingVisible = true) },
-            action = { kycApi.getCountries() },
-            callback = {
-                when (it.status) {
-                    Status.SUCCESS -> {
-                        setState { copy(countries = it.data!!) }
-                        applyFilters()
-                    }
-
-                    Status.ERROR ->
-                        setEffect {
-                            AssetSelectionContract.Effect.ShowToast(
-                                it.message ?: getString(R.string.FabriikApi_DefaultError)
-                            )
-                        }
-                }
-            }
-        )*/
+        applyFilters()
     }
 
     private fun applyFilters() {
-        /*setState {
+        setState {
             copy(
                 adapterItems = currentState.assets.filter {
-                    it.name.contains(
+                    it.cryptoCurrencyCode.contains(
                         other = currentState.search,
                         ignoreCase = true
                     )
-                }.map {
-                    AssetSelectionAdapter.Item(
-                        icon = FlagUtil.getDrawableId(getApplication(), it.code),
-                        country = it
-                    )
                 }
             )
-        }*/
+        }
     }
 }
