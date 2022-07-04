@@ -3,7 +3,6 @@ package com.fabriik.trade.ui.features.assetselection
 import android.app.Application
 import androidx.lifecycle.SavedStateHandle
 import com.fabriik.common.ui.base.FabriikViewModel
-import com.fabriik.common.utils.FlagUtil
 import com.fabriik.common.utils.toBundle
 
 class AssetSelectionViewModel(
@@ -13,10 +12,10 @@ class AssetSelectionViewModel(
     application, savedStateHandle
 ) {
 
-    private lateinit var arguments: CountrySelectionFragmentArgs
+    private lateinit var arguments: AssetSelectionFragmentArgs
 
     override fun parseArguments(savedStateHandle: SavedStateHandle) {
-        arguments = CountrySelectionFragmentArgs.fromBundle(
+        arguments = AssetSelectionFragmentArgs.fromBundle(
             savedStateHandle.toBundle()
         )
     }
@@ -37,7 +36,7 @@ class AssetSelectionViewModel(
                 setEffect {
                     AssetSelectionContract.Effect.Back(
                         requestKey = arguments.requestKey,
-                        selectedAsset = event.country
+                        selectedAsset = event.asset
                     )
                 }
 
@@ -52,6 +51,31 @@ class AssetSelectionViewModel(
     }
 
     private fun loadAssets() {
+        setState {
+            copy(
+                assets = listOf(
+                    AssetSelectionAdapter.AssetSelectionItem(
+                        fiatBalance = "42.31",
+                        fiatCurrencyCode = "USD",
+                        cryptoBalance = "2.312132",
+                        cryptoCurrencyCode = "BSV"
+                    ),
+                    AssetSelectionAdapter.AssetSelectionItem(
+                        fiatBalance = "22142.31",
+                        fiatCurrencyCode = "USD",
+                        cryptoBalance = "1.312132",
+                        cryptoCurrencyCode = "BTC"
+                    ),
+                    AssetSelectionAdapter.AssetSelectionItem(
+                        fiatBalance = "2922.31",
+                        fiatCurrencyCode = "USD",
+                        cryptoBalance = "2",
+                        cryptoCurrencyCode = "ETH"
+                    )
+                )
+            )
+        }
+
         /*callApi(
             endState = { copy(initialLoadingVisible = false) },
             startState = { copy(initialLoadingVisible = true) },
@@ -75,7 +99,7 @@ class AssetSelectionViewModel(
     }
 
     private fun applyFilters() {
-        setState {
+        /*setState {
             copy(
                 adapterItems = currentState.assets.filter {
                     it.name.contains(
@@ -89,6 +113,6 @@ class AssetSelectionViewModel(
                     )
                 }
             )
-        }
+        }*/
     }
 }

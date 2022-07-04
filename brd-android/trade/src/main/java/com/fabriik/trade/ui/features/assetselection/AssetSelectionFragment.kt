@@ -43,18 +43,18 @@ class AssetSelectionFragment : Fragment(),
 
         with(binding) {
             btnBack.setOnClickListener {
-                viewModel.setEvent(CountrySelectionContract.Event.BackClicked)
+                viewModel.setEvent(AssetSelectionContract.Event.BackClicked)
             }
 
             etSearch.doAfterTextChanged {
-                viewModel.setEvent(CountrySelectionContract.Event.SearchChanged(it?.toString()))
+                viewModel.setEvent(AssetSelectionContract.Event.SearchChanged(it?.toString()))
             }
 
             val layoutManager = LinearLayoutManager(context)
-            rvCountries.adapter = adapter
-            rvCountries.layoutManager = layoutManager
-            rvCountries.setHasFixedSize(true)
-            rvCountries.addItemDecoration(
+            rvAssets.adapter = adapter
+            rvAssets.layoutManager = layoutManager
+            rvAssets.setHasFixedSize(true)
+            rvAssets.addItemDecoration(
                 DividerItemDecoration(
                     context, layoutManager.orientation
                 )

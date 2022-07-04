@@ -8,21 +8,21 @@ interface AssetSelectionContract {
         object BackClicked : Event()
         object LoadAssets : Event()
         data class SearchChanged(val query: String?) : Event()
-        data class AssetSelected(val asset: Country) : Event()
+        data class AssetSelected(val asset: AssetSelectionAdapter.AssetSelectionItem) : Event()
     }
 
     sealed class Effect : FabriikContract.Effect {
         data class ShowToast(val message: String): Effect()
         data class Back(
             val requestKey: String,
-            val selectedAsset: Country?
+            val selectedAsset: AssetSelectionAdapter.AssetSelectionItem?
         ) : Effect()
     }
 
     data class State(
         val search: String = "",
-        val assets: List<Country> = emptyList(),
-        val adapterItems: List<AssetSelectionAdapter.Item> = emptyList(),
+        val assets: List<AssetSelectionAdapter.AssetSelectionItem> = emptyList(),
+        val adapterItems: List<AssetSelectionAdapter.AssetSelectionItem> = emptyList(),
         val initialLoadingVisible: Boolean = false
     ) : FabriikContract.State
 }

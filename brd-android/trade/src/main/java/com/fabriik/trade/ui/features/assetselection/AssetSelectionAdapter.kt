@@ -7,9 +7,9 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.fabriik.trade.databinding.ListItemAssetBinding
 
-class AssetSelectionAdapter(private val callback: (Country) -> Unit) :
-    ListAdapter<AssetSelectionAdapter.Item, AssetSelectionAdapter.ViewHolder>(
-        CountryDiffCallback
+class AssetSelectionAdapter(private val callback: (AssetSelectionItem) -> Unit) :
+    ListAdapter<AssetSelectionAdapter.AssetSelectionItem, AssetSelectionAdapter.ViewHolder>(
+        AssetSelectionItemDiffCallback
     ) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -27,27 +27,32 @@ class AssetSelectionAdapter(private val callback: (Country) -> Unit) :
         )
     }
 
-    data class Item(
-        val icon: Int,
-        val country: Country
-    )
-
     class ViewHolder(val binding: ListItemAssetBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: Item, callback: (Country) -> Unit) {
+        fun bind(item: AssetSelectionItem, callback: (AssetSelectionItem) -> Unit) {
             with(binding) {
-                ivLogo.setImageResource(item.icon)
-                tvTitle.text = item.country.name
-                root.setOnClickListener { callback(item.country) }
+                //ivLogo.setImageResource(item.icon)
+                //tvTitle.text = item.country.name
+                root.setOnClickListener { callback(item) }
             }
         }
     }
 
-    object CountryDiffCallback : DiffUtil.ItemCallback<Item>() {
-        override fun areItemsTheSame(oldItem: Item, newItem: Item) =
-            oldItem.country.code == newItem.country.code
+    object AssetSelectionItemDiffCallback : DiffUtil.ItemCallback<AssetSelectionItem>() {
+        override fun areItemsTheSame(oldItem: AssetSelectionItem, newItem: AssetSelectionItem) =
+            oldItem.cryptoCurrencyCode == newItem.cryptoCurrencyCode
 
-        override fun areContentsTheSame(oldItem: Item, newItem: Item) =
-            oldItem.country.name == newItem.country.name
+        override fun areContentsTheSame(oldItem: AssetSelectionItem, newItem: AssetSelectionItem) =
+            oldItem.fiatBalance == newItem.fiatBalance &&
+            oldItem.cryptoBalance == newItem.cryptoBalance &&
+            oldItem.fiatCurrencyCode == newItem.fiatCurrencyCode &&
+            oldItem.cryptoCurrencyCode == newItem.cryptoCurrencyCode
     }
+
+    class AssetSelectionItem(
+        val fiatBalance: String,
+        val fiatCurrencyCode: String,
+        val cryptoBalance: String,
+        val cryptoCurrencyCode: String,
+    )
 }
