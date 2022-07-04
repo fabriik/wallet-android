@@ -55,4 +55,7 @@ dependencies {
 
     implementation(Libs.Networking.Moshi)
     kapt(Libs.Networking.MoshiCodegen)
+
+    implementation(Libs.Glide.Core)
+    kapt(Libs.Glide.Compiler)
 }
