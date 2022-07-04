@@ -24,6 +24,36 @@ class SwapInputFragment : Fragment(),
     private lateinit var binding: FragmentSwapInputBinding
     private val viewModel: SwapInputViewModel by viewModels()
 
+    private val cardSwapCallback = object : SwapCardView.Callback {
+        override fun onReplaceCurrenciesClicked() {
+            viewModel.setEvent(SwapInputContract.Event.ReplaceCurrenciesClicked)
+        }
+
+        override fun onBuyingCurrencySelectorClicked() {
+            viewModel.setEvent(SwapInputContract.Event.DestinationCurrencyClicked)
+        }
+
+        override fun onSellingCurrencySelectorClicked() {
+            viewModel.setEvent(SwapInputContract.Event.OriginCurrencyClicked)
+        }
+
+        override fun onSellingCurrencyFiatAmountChanged(amount: BigDecimal) {
+            viewModel.setEvent(SwapInputContract.Event.OriginCurrencyFiatAmountChange(amount))
+        }
+
+        override fun onSellingCurrencyCryptoAmountChanged(amount: BigDecimal) {
+            viewModel.setEvent(SwapInputContract.Event.OriginCurrencyCryptoAmountChange(amount))
+        }
+
+        override fun onBuyingCurrencyFiatAmountChanged(amount: BigDecimal) {
+            viewModel.setEvent(SwapInputContract.Event.DestinationCurrencyFiatAmountChange(amount))
+        }
+
+        override fun onBuyingCurrencyCryptoAmountChanged(amount: BigDecimal) {
+            viewModel.setEvent(SwapInputContract.Event.DestinationCurrencyCryptoAmountChange(amount))
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -42,35 +72,7 @@ class SwapInputFragment : Fragment(),
             }
 
             cvSwap.setFiatCurrency(BRSharedPrefs.getPreferredFiatIso())
-            cvSwap.setCallback(object : SwapCardView.Callback {
-                override fun onReplaceCurrenciesClicked() {
-                    viewModel.setEvent(SwapInputContract.Event.ReplaceCurrenciesClicked)
-                }
-
-                override fun onBuyingCurrencySelectorClicked() {
-                    viewModel.setEvent(SwapInputContract.Event.DestinationCurrencyClicked)
-                }
-
-                override fun onSellingCurrencySelectorClicked() {
-                    viewModel.setEvent(SwapInputContract.Event.OriginCurrencyClicked)
-                }
-
-                override fun onSellingCurrencyFiatAmountChanged(amount: BigDecimal) {
-                    viewModel.setEvent(SwapInputContract.Event.OriginCurrencyFiatAmountChange(amount))
-                }
-
-                override fun onSellingCurrencyCryptoAmountChanged(amount: BigDecimal) {
-                    viewModel.setEvent(SwapInputContract.Event.OriginCurrencyCryptoAmountChange(amount))
-                }
-
-                override fun onBuyingCurrencyFiatAmountChanged(amount: BigDecimal) {
-                    viewModel.setEvent(SwapInputContract.Event.DestinationCurrencyFiatAmountChange(amount))
-                }
-
-                override fun onBuyingCurrencyCryptoAmountChanged(amount: BigDecimal) {
-                    viewModel.setEvent(SwapInputContract.Event.DestinationCurrencyCryptoAmountChange(amount))
-                }
-            })
+            cvSwap.setCallback(cardSwapCallback)
         }
 
         // collect UI state
