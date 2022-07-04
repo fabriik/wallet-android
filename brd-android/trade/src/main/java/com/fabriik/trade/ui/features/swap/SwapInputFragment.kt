@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.collect
 import java.math.BigDecimal
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
+import com.fabriik.common.ui.customview.FabriikSwitch
 import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.trade.ui.features.assetselection.AssetSelectionAdapter
 import com.fabriik.trade.ui.features.assetselection.AssetSelectionFragment
@@ -77,6 +78,15 @@ class SwapInputFragment : Fragment(),
 
             cvSwap.setFiatCurrency(BRSharedPrefs.getPreferredFiatIso())
             cvSwap.setCallback(cardSwapCallback)
+
+            switchMinMax.setCallback {
+                when (it) {
+                    FabriikSwitch.OPTION_LEFT ->
+                        viewModel.setEvent(SwapInputContract.Event.OnMinAmountClicked)
+                    FabriikSwitch.OPTION_RIGHT ->
+                        viewModel.setEvent(SwapInputContract.Event.OnMaxAmountClicked)
+                }
+            }
         }
 
         // collect UI state
@@ -120,7 +130,12 @@ class SwapInputFragment : Fragment(),
 
     override fun render(state: SwapInputContract.State) {
         with(binding) {
-            cvSwap.setSellingCurrencyTitle(getString(R.string.Swap_Input_IHave, state.originCurrencyBalance, state.originCurrency))
+            state.selectedTradingPair.let {
+                cvSwap.setOriginCurrency(it?.baseCurrency)
+                cvSwap.setDestinationCurrency(it?.termCurrency)
+            }
+
+            /*cvSwap.setSellingCurrencyTitle(getString(R.string.Swap_Input_IHave, state.originCurrencyBalance, state.originCurrency))
             cvSwap.setOriginCurrency(state.originCurrency)
             cvSwap.setSendingNetworkFee(state.sendingNetworkFee)
             cvSwap.setDestinationCurrency(state.destinationCurrency)
@@ -133,7 +148,7 @@ class SwapInputFragment : Fragment(),
 
             viewTimer.isVisible = !state.quoteLoading
             tvRateValue.isVisible = !state.quoteLoading
-            quoteLoadingIndicator.isVisible = state.quoteLoading
+            quoteLoadingIndicator.isVisible = state.quoteLoading*/
 
             content.isVisible = !state.initialLoadingVisible
             initialLoadingIndicator.isVisible = state.initialLoadingVisible
@@ -145,17 +160,19 @@ class SwapInputFragment : Fragment(),
             SwapInputContract.Effect.Dismiss ->
                 requireActivity().finish()
 
-            SwapInputContract.Effect.OriginSelection ->
+            is SwapInputContract.Effect.OriginSelection ->
                 findNavController().navigate(
                     SwapInputFragmentDirections.actionAssetSelection(
-                        REQUEST_KEY_ORIGIN_SELECTION
+                        REQUEST_KEY_ORIGIN_SELECTION,
+                        effect.currencies.toTypedArray()
                     )
                 )
 
-            SwapInputContract.Effect.DestinationSelection ->
+            is SwapInputContract.Effect.DestinationSelection ->
                 findNavController().navigate(
                     SwapInputFragmentDirections.actionAssetSelection(
-                        REQUEST_KEY_DESTINATION_SELECTION
+                        REQUEST_KEY_DESTINATION_SELECTION,
+                        effect.currencies.toTypedArray()
                     )
                 )
 

@@ -12,6 +12,7 @@ import androidx.annotation.StringRes
 import androidx.core.os.bundleOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.SavedStateHandle
+import java.math.BigDecimal
 
 fun AndroidViewModel.getString(@StringRes string: Int, vararg formatArgs: Any?): String {
     return getApplication<Application>().applicationContext.getString(string, *formatArgs)
@@ -28,7 +29,7 @@ fun Button.underline() {
 }
 
 fun EditText.showKeyboard() {
-    postDelayed( {
+    postDelayed({
         val manager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
         requestFocus()
         manager?.showSoftInput(this, InputMethodManager.SHOW_FORCED)
@@ -44,6 +45,16 @@ fun EditText.hideKeyboard() {
 fun Editable?.textOrEmpty() = if (isNullOrEmpty()) "" else toString()
 
 fun Editable?.asInt() = if (isNullOrEmpty()) null else toString().toInt()
+
+fun min(a: BigDecimal, b: BigDecimal) = when {
+    b < a -> b
+    else -> a
+}
+
+fun max(a: BigDecimal, b: BigDecimal) = when {
+    b > a -> b
+    else -> a
+}
 
 val Int.dp: Int
     get() = (this * Resources.getSystem().displayMetrics.density).toInt()

@@ -74,8 +74,7 @@ class AssetSelectionViewModel(
     }
 
     private fun loadAssets() {
-        // todo: a
-        val supportedCurrencies = listOf("BTC", "BSV", "ETH")
+        val supportedCurrencies = arguments.currencies
 
         viewModelScope.launch(Dispatchers.IO) {
             val wallets = breadBox.wallets().first()

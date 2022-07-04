@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.fabriik.common.data.Status
 import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.common.utils.getString
+import com.fabriik.common.utils.min
 import com.fabriik.trade.R
 import com.fabriik.trade.data.SwapApi
 import com.fabriik.trade.ui.features.assetselection.AssetSelectionContract
@@ -15,6 +16,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
+import kotlin.math.min
 
 class SwapInputViewModel(
     application: Application
@@ -29,13 +31,13 @@ class SwapInputViewModel(
     }
 
     override fun createInitialState() = SwapInputContract.State(
-        timer = QUOTE_TIMER,
+        /*timer = QUOTE_TIMER,
         quoteLoading = true,
         originCurrency = "BSV",
         originCurrencyBalance = BigDecimal.TEN,
         destinationCurrency = "BTC",
         rateOriginToDestinationCurrency = BigDecimal.ONE,
-        initialLoadingVisible = true
+        initialLoadingVisible = true*/
     )
 
     override fun handleEvent(event: SwapInputContract.Event) {
@@ -43,12 +45,32 @@ class SwapInputViewModel(
             SwapInputContract.Event.DismissClicked ->
                 setEffect { SwapInputContract.Effect.Dismiss }
 
-            SwapInputContract.Event.OriginCurrencyClicked ->
-                setEffect { SwapInputContract.Effect.OriginSelection }
+            SwapInputContract.Event.OriginCurrencyClicked -> {
+                val currencies = currentState.tradingPairs.map { it.baseCurrency }//todo: filter only enabled wallets
+                setEffect { SwapInputContract.Effect.OriginSelection(currencies) }
+            }
 
-            SwapInputContract.Event.DestinationCurrencyClicked ->
-                setEffect { SwapInputContract.Effect.DestinationSelection }
+            SwapInputContract.Event.DestinationCurrencyClicked -> {
+                val currencies = currentState.tradingPairs.map { it.termCurrency }
+                setEffect { SwapInputContract.Effect.DestinationSelection(currencies) }
+            }
 
+            SwapInputContract.Event.OnMinAmountClicked ->
+                onBaseCurrencyCryptoChanged(
+                    min(
+                        currentState.baseCurrencyCryptoBalance,
+                        currentState.selectedTradingPair?.minAmount ?: BigDecimal.ZERO
+                    )
+                )
+
+            SwapInputContract.Event.OnMaxAmountClicked ->
+                onBaseCurrencyCryptoChanged(
+                    min(
+                        currentState.baseCurrencyCryptoBalance,
+                        currentState.selectedTradingPair?.maxAmount ?: BigDecimal.ZERO
+                    )
+                )
+/*
             SwapInputContract.Event.ReplaceCurrenciesClicked -> {
                 val originCurrency = currentState.originCurrency
                 val destinationCurrency = currentState.destinationCurrency
@@ -96,12 +118,12 @@ class SwapInputViewModel(
 
                     )
                 }
-            } //todo
+            }*/ //todo
         }
     }
 
     private fun startTimer() {
-        setState { copy(timer = QUOTE_TIMER) }
+        /*setState { copy(timer = QUOTE_TIMER) }
 
         viewModelScope.launch {
             (QUOTE_TIMER downTo 0)
@@ -114,16 +136,16 @@ class SwapInputViewModel(
                     }
                     setState { copy(timer = it) }
                 }
-        }
+        }*/
     }
 
     private fun refreshQuote() {
-        viewModelScope.launch(Dispatchers.IO) {
+        /*viewModelScope.launch(Dispatchers.IO) {
             setState { copy(quoteLoading = true) }
             delay(2000) //todo: replace with API call
             startTimer()
             setState { copy(quoteLoading = false) }
-        }
+        }*/
     }
 
     private fun loadSupportedCurrencies() {
@@ -136,10 +158,10 @@ class SwapInputViewModel(
                     Status.SUCCESS -> {
                         setState {
                             copy(
-                                tradingPairs = it.data ?: emptyList()
+                                tradingPairs = it.data ?: emptyList(),
+                                selectedTradingPair = it.data?.firstOrNull()
                             )
                         }
-                        refreshQuote()
                     }
 
                     Status.ERROR ->
@@ -151,6 +173,26 @@ class SwapInputViewModel(
                 }
             }
         )
+    }
+
+    private fun onBaseCurrencyFiatChanged(amount: BigDecimal) {
+
+    }
+
+    private fun onBaseCurrencyCryptoChanged(amount: BigDecimal) {
+        setState {
+            copy(
+                baseCurrencyCryptoBalance = amount
+            )
+        }
+    }
+
+    private fun onTermCurrencyFiatChanged(amount: BigDecimal) {
+
+    }
+
+    private fun onTermCurrencyCryptoChanged(amount: BigDecimal) {
+
     }
 
     companion object {

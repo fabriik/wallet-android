@@ -43,8 +43,8 @@ class CurrencyInputView @JvmOverloads constructor(
         binding.tvFiatCurrency.text = currency
     }
 
-    fun setCryptoCurrency(currency: String) {
-        binding.viewCurrencySelector.setCryptoCurrency(currency)
+    fun setCryptoCurrency(currency: String?) {
+        currency?.let { binding.viewCurrencySelector.setCryptoCurrency(it) }
     }
 
     private fun onFiatAmountChanged(value: String) {

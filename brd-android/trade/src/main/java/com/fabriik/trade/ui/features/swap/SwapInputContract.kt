@@ -12,6 +12,8 @@ interface SwapInputContract {
         object OriginCurrencyClicked : Event()
         object ReplaceCurrenciesClicked : Event()
         object DestinationCurrencyClicked : Event()
+        object OnMinAmountClicked : Event()
+        object OnMaxAmountClicked : Event()
         data class OriginCurrencyFiatAmountChange(val amount: BigDecimal) : Event()
         data class OriginCurrencyCryptoAmountChange(val amount: BigDecimal) : Event()
         data class DestinationCurrencyFiatAmountChange(val amount: BigDecimal) : Event()
@@ -22,16 +24,18 @@ interface SwapInputContract {
 
     sealed class Effect : FabriikContract.Effect {
         object Dismiss : Effect()
-        object OriginSelection : Effect()
-        object DestinationSelection : Effect()
         data class ShowToast(val message: String): Effect()
+        data class OriginSelection(val currencies: List<String>) : Effect()
+        data class DestinationSelection(val currencies: List<String>) : Effect()
     }
 
     data class State(
-        val timer: Int,
-        val tradingPairs: List<SupportedTradingPair> = emptyList(),
-        val quoteLoading: Boolean = false,
         val initialLoadingVisible: Boolean = false,
+        val tradingPairs: List<SupportedTradingPair> = emptyList(),
+        val selectedTradingPair: SupportedTradingPair? = null,
+        val baseCurrencyCryptoBalance: BigDecimal = BigDecimal.ZERO,
+        val termCurrencyCryptoBalance: BigDecimal = BigDecimal.ZERO,
+        /*val timer: Int,val quoteLoading: Boolean = false,
         val originCurrency: String,
         val originCurrencyBalance: BigDecimal,
         val originFiatAmount: BigDecimal = BigDecimal.ZERO,
@@ -41,6 +45,6 @@ interface SwapInputContract {
         val destinationCryptoAmount: BigDecimal = BigDecimal.ZERO,
         val sendingNetworkFee: String? = null,
         val receivingNetworkFee: String? = null,
-        val rateOriginToDestinationCurrency: BigDecimal
+        val rateOriginToDestinationCurrency: BigDecimal*/
     ) : FabriikContract.State
 }

@@ -64,11 +64,11 @@ class SwapCardView @JvmOverloads constructor(
         binding.viewInputSellingCurrency.setFiatCurrency(currency)
     }
 
-    fun setOriginCurrency(currency: String) {
+    fun setOriginCurrency(currency: String?) {
         binding.viewInputSellingCurrency.setCryptoCurrency(currency)
     }
 
-    fun setDestinationCurrency(currency: String) {
+    fun setDestinationCurrency(currency: String?) {
         binding.viewInputBuyingCurrency.setCryptoCurrency(currency)
     }
 

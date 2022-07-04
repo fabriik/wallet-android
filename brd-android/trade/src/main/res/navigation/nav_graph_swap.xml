@@ -25,6 +25,10 @@
             android:name="requestKey"
             app:argType="string" />
 
+        <argument
+            android:name="currencies"
+            app:argType="string[]" />
+
     </fragment>
 
 </navigation>
