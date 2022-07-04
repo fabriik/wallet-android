@@ -2,15 +2,38 @@ package com.fabriik.trade.ui.features.assetselection
 
 import android.app.Application
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
+import com.breadwallet.breadbox.BreadBox
+import com.breadwallet.breadbox.formatCryptoForUi
+import com.breadwallet.breadbox.toBigDecimal
+import com.breadwallet.crypto.Wallet
+import com.breadwallet.repository.RatesRepository
+import com.breadwallet.tools.manager.BRSharedPrefs
+import com.breadwallet.tools.util.TokenUtil
+import com.breadwallet.ui.formatFiatForUi
 import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.common.utils.toBundle
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.closestKodein
+import org.kodein.di.erased.instance
+import java.math.BigDecimal
+import java.util.*
 
 class AssetSelectionViewModel(
     application: Application,
     savedStateHandle: SavedStateHandle
 ) : FabriikViewModel<AssetSelectionContract.State, AssetSelectionContract.Event, AssetSelectionContract.Effect>(
     application, savedStateHandle
-) {
+), KodeinAware {
+
+    override val kodein by closestKodein { application }
+
+    private val fiatIso = BRSharedPrefs.getPreferredFiatIso()
+    private val breadBox by kodein.instance<BreadBox>()
+    private val ratesRepository by kodein.instance<RatesRepository>()
 
     private lateinit var arguments: AssetSelectionFragmentArgs
 
@@ -51,36 +74,54 @@ class AssetSelectionViewModel(
     }
 
     private fun loadAssets() {
-        setState {
-            copy(
-                assets = listOf(
-                    AssetSelectionAdapter.AssetSelectionItem(
-                        title = "BSV",
-                        subtitle = "BSV",
-                        fiatBalance = "42.31 USD",
-                        cryptoBalance = "2.312132 BSV",
-                        cryptoCurrencyCode = "BSV"
-                    ),
-                    AssetSelectionAdapter.AssetSelectionItem(
-                        title = "BTC",
-                        subtitle = "BTC",
-                        fiatBalance = "22142.31 USD",
-                        cryptoBalance = "1.312132 BTC",
-                        cryptoCurrencyCode = "BTC"
-                    ),
-                    AssetSelectionAdapter.AssetSelectionItem(
-                        title = "Ethereum",
-                        subtitle = "ETH",
-                        fiatBalance = "2922.31 USD",
-                        cryptoBalance = "2 ETH",
-                        cryptoCurrencyCode = "ETH"
-                    )
-                )
-            )
-        }
+        // todo: a
+        val supportedCurrencies = listOf("BTC", "BSV", "ETH")
 
-        applyFilters()
+        viewModelScope.launch(Dispatchers.IO) {
+            val wallets = breadBox.wallets().first()
+            val assets = wallets.mapNotNull { wallet ->
+                val currencyCode = supportedCurrencies.firstOrNull {
+                    it.toLowerCase(Locale.ROOT) == wallet.currency.code
+                } ?: return@mapNotNull null
+
+                mapToAssetSelectionItem(
+                    currencyCode = currencyCode,
+                    wallet = wallet
+                )
+            }
+
+            setState { copy(assets = assets) }
+            applyFilters()
+        }
     }
+
+    private fun mapToAssetSelectionItem(
+        currencyCode: String, wallet: Wallet
+    ): AssetSelectionAdapter.AssetSelectionItem {
+        val token = TokenUtil.tokenForCode(currencyCode)
+        val currencyFullName = token?.name ?: currencyCode
+        val fiatBalance = getFiatForCrypto(currencyCode, wallet)
+        val cryptoBalance = wallet.balance.toBigDecimal()
+
+        return AssetSelectionAdapter.AssetSelectionItem(
+            title = currencyFullName,
+            subtitle = currencyCode,
+            fiatBalance = fiatBalance.formatFiatForUi(
+                currencyCode = fiatIso
+            ),
+            cryptoBalance = cryptoBalance.formatCryptoForUi(
+                currencyCode = currencyCode
+            ),
+            cryptoCurrencyCode = currencyCode
+        )
+    }
+
+    private fun getFiatForCrypto(currencyCode: String, wallet: Wallet) =
+        ratesRepository.getFiatForCrypto(
+            cryptoAmount = wallet.balance.toBigDecimal(),
+            cryptoCode = currencyCode,
+            fiatCode = fiatIso
+        ) ?: BigDecimal.ZERO
 
     private fun applyFilters() {
         setState {
