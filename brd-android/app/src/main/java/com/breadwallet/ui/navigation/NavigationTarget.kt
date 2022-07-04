@@ -30,7 +30,7 @@ import com.breadwallet.model.InAppMessage
 import com.breadwallet.tools.util.Link
 import com.breadwallet.ui.auth.AuthMode
 import com.breadwallet.ui.settings.SettingsSection
-import com.fabriik.registration.ui.RegistrationActivity
+import com.fabriik.common.ui.dialog.FabriikGenericDialogArgs
 import com.fabriik.registration.ui.RegistrationFlow
 import com.fabriik.support.pages.Topic
 import dev.zacsweers.redacted.annotations.Redacted
@@ -80,6 +80,10 @@ sealed class NavigationTarget : INavigationTarget {
             ERROR
         }
     }
+
+    data class FabriikGenericDialog(
+        val args: FabriikGenericDialogArgs
+    ) : NavigationTarget()
 
     data class SupportDialog(
         val topic: Topic

@@ -65,6 +65,7 @@ enum class SettingsOption {
     VIEW_LOGS,
     COPY_PAPER_KEY,
     METADATA_VIEWER,
+    TEST_FABRIIK_GENERIC_DIALOG,
 
     // BTC
     REDEEM_PRIVATE_KEY,
