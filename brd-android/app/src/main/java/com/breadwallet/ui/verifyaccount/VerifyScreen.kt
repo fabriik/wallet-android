@@ -9,11 +9,16 @@ object VerifyScreen {
 
     sealed class E {
         object OnVerifyClicked : E()
+        object OnDismissClicked : E()
     }
 
     sealed class F {
         object GoToAccountVerification : F(), NavigationEffect {
             override val navigationTarget = NavigationTarget.GoToKyc
+        }
+
+        object Dismiss : F(), NavigationEffect {
+            override val navigationTarget = NavigationTarget.Home
         }
     }
 }

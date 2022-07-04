@@ -84,14 +84,16 @@ import com.breadwallet.ui.uigift.ShareGiftController
 import com.breadwallet.ui.verifyaccount.VerifyController
 import com.breadwallet.util.CryptoUriParser
 import com.breadwallet.util.isBrd
+import com.breadwallet.util.showFabriikGenericDialog
 import com.fabriik.buy.ui.BuyWebViewActivity
+import com.fabriik.common.ui.dialog.FabriikGenericDialog
 import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.kyc.ui.KycActivity
 import com.fabriik.kyc.ui.dialogs.InfoDialog
 import com.fabriik.kyc.ui.dialogs.InfoDialogArgs
 import com.fabriik.registration.ui.RegistrationActivity
 import com.fabriik.support.CashSupport
-import com.fabriik.trade.ui.TradeWebViewLauncher
+import com.fabriik.trade.ui.SwapActivity
 import com.platform.util.AppReviewPromptManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -223,11 +225,10 @@ class RouterNavigator(
         )
     }
 
-    override fun trade(currencies: List<String>) {
+    override fun trade() {
         router.activity?.let {
-            TradeWebViewLauncher.launch(
-                activity = it,
-                currencies = currencies
+            it.startActivity(
+                SwapActivity.getStartIntent(it)
             )
         }
     }
@@ -735,6 +736,10 @@ class RouterNavigator(
                     message = effect.message
                 )
         }
+    }
+
+    override fun fabriikGenericDialog(effect: NavigationTarget.FabriikGenericDialog) {
+        router.showFabriikGenericDialog(effect.args)
     }
 
     private inline fun <reified T : Controller> pushSingleInstance(

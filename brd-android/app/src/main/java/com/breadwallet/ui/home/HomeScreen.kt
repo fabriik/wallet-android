@@ -45,7 +45,6 @@ object HomeScreen {
         val hasInternet: Boolean = true,
         val isBuyBellNeeded: Boolean = false,
         val isBuyAlertNeeded: Boolean = false,
-        val isTradeAlertNeeded: Boolean = false,
         val showBuyAndSell: Boolean = false,
         val rateAppPromptDontShowMeAgain: Boolean = false,
         val profile: Profile? = null
@@ -68,13 +67,10 @@ object HomeScreen {
 
         data class OnWalletsUpdated(@Redacted val wallets: List<Wallet>) : E()
 
-        data class OnSwapCurrenciesLoaded(val currencies: List<String>) : E()
-
         data class OnWalletDisplayOrderUpdated(@Redacted val displayOrder: List<String>) : E()
 
         data class OnBuyBellNeededLoaded(val isBuyBellNeeded: Boolean) : E()
         data class OnBuyAlertNeededLoaded(val isBuyAlertNeeded: Boolean) : E()
-        data class OnTradeAlertNeededLoaded(val isTradeAlertNeeded: Boolean) : E()
 
         data class OnConnectionUpdated(val isConnected: Boolean) : E()
 
@@ -85,7 +81,6 @@ object HomeScreen {
         object OnBuyClicked : E()
         object OnBuyNoteSeen : E()
         object OnTradeClicked : E()
-        object OnTradeNoteSeen : E()
         object OnMenuClicked : E()
         object OnProfileClicked : E()
 
@@ -120,11 +115,9 @@ object HomeScreen {
         object LoadProfile : F()
         object RefreshProfile : F()
         object LoadWallets : F()
-        object LoadSwapCurrencies : F()
         object LoadEnabledWallets : F()
         object LoadIsBuyBellNeeded : F()
         object LoadIsBuyAlertNeeded : F()
-        object LoadIsTradeAlertNeeded : F()
         object LoadPrompt : F()
         object LoadConnectivityState : F()
         object CheckInAppNotification : F()
@@ -151,8 +144,8 @@ object HomeScreen {
             override val navigationTarget = NavigationTarget.Buy
         }
 
-        data class GoToTrade(val currencies: List<String>) : F(), NavigationEffect {
-            override val navigationTarget = NavigationTarget.Trade(currencies)
+        object GoToTrade : F(), NavigationEffect {
+            override val navigationTarget = NavigationTarget.Trade
         }
 
         object GoToMenu : F(), NavigationEffect {

@@ -38,10 +38,10 @@ object BrdRelease {
     private val product = ciTag?.get(1) ?: 13
 
     /** Hot fix version. Usually affected by engineering. Maximum value: 9 */
-    private val engineering = ciTag?.get(2) ?: 0
+    private val engineering = ciTag?.get(2) ?: 1
 
     /** Build version. Increase for each new build. Maximum value: 999 */
-    private val build = ciTag?.lastOrNull() ?: 50
+    private val build = ciTag?.lastOrNull() ?: 51
 
     init {
         check(marketing in 0..99)

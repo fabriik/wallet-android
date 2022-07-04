@@ -30,7 +30,7 @@ import com.breadwallet.model.InAppMessage
 import com.breadwallet.tools.util.Link
 import com.breadwallet.ui.auth.AuthMode
 import com.breadwallet.ui.settings.SettingsSection
-import com.fabriik.registration.ui.RegistrationActivity
+import com.fabriik.common.ui.dialog.FabriikGenericDialogArgs
 import com.fabriik.registration.ui.RegistrationFlow
 import com.fabriik.support.pages.Topic
 import dev.zacsweers.redacted.annotations.Redacted
@@ -81,6 +81,10 @@ sealed class NavigationTarget : INavigationTarget {
         }
     }
 
+    data class FabriikGenericDialog(
+        val args: FabriikGenericDialogArgs
+    ) : NavigationTarget()
+
     data class SupportDialog(
         val topic: Topic
     ) : NavigationTarget()
@@ -114,9 +118,7 @@ sealed class NavigationTarget : INavigationTarget {
     object Home : NavigationTarget()
     object Buy : NavigationTarget()
     object Profile : NavigationTarget()
-    data class Trade(
-        val currencies: List<String>
-    ) : NavigationTarget()
+    object Trade: NavigationTarget()
     object AddWallet : NavigationTarget()
     object DisabledScreen : NavigationTarget()
     object NativeApiExplorer : NavigationTarget()
