@@ -279,9 +279,6 @@ val HomeScreenUpdate = Update<M, E, F> { model, event ->
         is E.OnSupportFormSubmitted -> dispatch(
             effects(F.SubmitSupportForm(event.feedback))
         )
-        is E.OnSwapCurrenciesLoaded -> dispatch(
-            effects(F.GoToTrade(event.currencies))
-        )
 
         is E.OnVerifyPromptClicked -> {
             when {
