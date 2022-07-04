@@ -5,7 +5,6 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import androidx.core.view.setPadding
-import com.breadwallet.crypto.Currency
 import com.fabriik.common.utils.dp
 import com.fabriik.common.utils.viewScope
 import com.fabriik.trade.databinding.ViewCurrencySelectorBinding
@@ -27,7 +26,7 @@ class CurrencySelectorView @JvmOverloads constructor(
     fun setCryptoCurrency(currency: String) {
         binding.root.post {
             binding.tvCurrency.text = currency
-            binding.viewIcon.loadIconForCurrency(
+            binding.viewIcon.loadIcon(
                 currencyCode = currency,
                 scope = this@CurrencySelectorView.viewScope
             )

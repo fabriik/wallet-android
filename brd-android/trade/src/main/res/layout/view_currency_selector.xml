@@ -7,7 +7,7 @@
     tools:orientation="horizontal"
     tools:padding="8dp">
 
-    <com.fabriik.trade.ui.customview.IconView
+    <com.fabriik.trade.ui.customview.CryptoIconView
         android:id="@+id/view_icon"
         android:layout_width="32dp"
         android:layout_height="32dp"
