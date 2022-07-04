@@ -2,7 +2,12 @@ package com.fabriik.trade.ui.features.swap
 
 import android.app.Application
 import androidx.lifecycle.viewModelScope
+import com.fabriik.common.data.Status
 import com.fabriik.common.ui.base.FabriikViewModel
+import com.fabriik.common.utils.getString
+import com.fabriik.trade.R
+import com.fabriik.trade.data.SwapApi
+import com.fabriik.trade.ui.features.assetselection.AssetSelectionContract
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.asFlow
@@ -17,8 +22,10 @@ class SwapInputViewModel(
     application
 ) {
 
+    private val swapApi = SwapApi.create(application)
+
     init {
-        refreshQuote()
+        loadSupportedCurrencies()
     }
 
     override fun createInitialState() = SwapInputContract.State(
@@ -27,7 +34,8 @@ class SwapInputViewModel(
         originCurrency = "BSV",
         originCurrencyBalance = BigDecimal.TEN,
         destinationCurrency = "BTC",
-        rateOriginToDestinationCurrency = BigDecimal.ONE
+        rateOriginToDestinationCurrency = BigDecimal.ONE,
+        initialLoadingVisible = true
     )
 
     override fun handleEvent(event: SwapInputContract.Event) {
@@ -116,6 +124,33 @@ class SwapInputViewModel(
             startTimer()
             setState { copy(quoteLoading = false) }
         }
+    }
+
+    private fun loadSupportedCurrencies() {
+        callApi(
+            endState = { copy(initialLoadingVisible = false) },
+            startState = { copy(initialLoadingVisible = true) },
+            action = { swapApi.getSupportedTradingPairs() },
+            callback = {
+                when (it.status) {
+                    Status.SUCCESS -> {
+                        setState {
+                            copy(
+                                tradingPairs = it.data ?: emptyList()
+                            )
+                        }
+                        refreshQuote()
+                    }
+
+                    Status.ERROR ->
+                        setEffect {
+                            SwapInputContract.Effect.ShowToast(
+                                it.message ?: getString(R.string.FabriikApi_DefaultError)
+                            )
+                        }
+                }
+            }
+        )
     }
 
     companion object {

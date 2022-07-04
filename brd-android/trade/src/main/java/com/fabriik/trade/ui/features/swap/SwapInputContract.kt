@@ -1,6 +1,7 @@
 package com.fabriik.trade.ui.features.swap
 
 import com.fabriik.common.ui.base.FabriikContract
+import com.fabriik.trade.data.model.SupportedTradingPair
 import com.fabriik.trade.ui.features.assetselection.AssetSelectionAdapter
 import java.math.BigDecimal
 
@@ -23,11 +24,14 @@ interface SwapInputContract {
         object Dismiss : Effect()
         object OriginSelection : Effect()
         object DestinationSelection : Effect()
+        data class ShowToast(val message: String): Effect()
     }
 
     data class State(
         val timer: Int,
+        val tradingPairs: List<SupportedTradingPair> = emptyList(),
         val quoteLoading: Boolean = false,
+        val initialLoadingVisible: Boolean = false,
         val originCurrency: String,
         val originCurrencyBalance: BigDecimal,
         val originFiatAmount: BigDecimal = BigDecimal.ZERO,

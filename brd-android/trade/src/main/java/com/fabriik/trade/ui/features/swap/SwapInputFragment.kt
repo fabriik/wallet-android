@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.collect
 import java.math.BigDecimal
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
+import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.trade.ui.features.assetselection.AssetSelectionAdapter
 import com.fabriik.trade.ui.features.assetselection.AssetSelectionFragment
 
@@ -133,6 +134,9 @@ class SwapInputFragment : Fragment(),
             viewTimer.isVisible = !state.quoteLoading
             tvRateValue.isVisible = !state.quoteLoading
             quoteLoadingIndicator.isVisible = state.quoteLoading
+
+            content.isVisible = !state.initialLoadingVisible
+            initialLoadingIndicator.isVisible = state.initialLoadingVisible
         }
     }
 
@@ -153,6 +157,11 @@ class SwapInputFragment : Fragment(),
                     SwapInputFragmentDirections.actionAssetSelection(
                         REQUEST_KEY_DESTINATION_SELECTION
                     )
+                )
+
+            is SwapInputContract.Effect.ShowToast ->
+                FabriikToastUtil.showInfo(
+                    binding.root, effect.message
                 )
         }
     }
