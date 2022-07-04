@@ -2,6 +2,11 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph_swap">
+    android:id="@+id/nav_graph_swap"
+    app:startDestination="@id/fragmentSwapInput">
+
+    <fragment android:id="@+id/fragmentSwapInput"
+        android:name="com.fabriik.trade.ui.features.swap.SwapInputFragment"
+        tools:layout="@layout/fragment_swap_input"/>
 
 </navigation>

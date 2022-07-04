@@ -50,4 +50,3 @@ val Int.dp: Int
 
 val Int.sp: Int
     get() = (this * Resources.getSystem().displayMetrics.scaledDensity).toInt()
-
