@@ -90,6 +90,7 @@ class SwapInputViewModel(
                     }
                 } else {
                     setState { copy(selectedTradingPair = newTradingPair) }
+                    refreshQuote()
                 }
             }
 
@@ -102,7 +103,8 @@ class SwapInputViewModel(
                     it.termCurrency == currentState.selectedTradingPair?.termCurrency
                 } ?: pairsWithSelectedBaseCurrency.firstOrNull()
 
-                setState { copy(selectedTradingPair = newSelectedPair) } //todo: update rates, call API
+                setState { copy(selectedTradingPair = newSelectedPair) } //todo: update rates
+                refreshQuote()
             }
 
             is SwapInputContract.Event.DestinationCurrencyChanged -> {
@@ -114,7 +116,8 @@ class SwapInputViewModel(
                     it.termCurrency == event.currencyCode
                 } ?: currentState.selectedTradingPair
 
-                setState { copy(selectedTradingPair = newSelectedPair) } //todo: update rates, call API
+                setState { copy(selectedTradingPair = newSelectedPair) } //todo: update rates
+                refreshQuote()
             }
 
 /*
@@ -172,12 +175,28 @@ class SwapInputViewModel(
     }
 
     private fun refreshQuote() {
-        /*viewModelScope.launch(Dispatchers.IO) {
-            setState { copy(quoteLoading = true) }
-            delay(2000) //todo: replace with API call
-            startTimer()
-            setState { copy(quoteLoading = false) }
-        }*/
+        val selectedTradingPair = currentState.selectedTradingPair ?: return
+
+        callApi(
+            startState = { copy(quoteLoadingVisible = true) },
+            endState = { copy(quoteLoadingVisible = false) },
+            action = { swapApi.getQuote(selectedTradingPair) },
+            callback = {
+                when (it.status) {
+                    Status.SUCCESS -> {
+                        setState { copy(quoteResponse = it.data) }
+                        //todo: set timer
+                    }
+
+                    Status.ERROR ->
+                        setEffect {
+                            SwapInputContract.Effect.ShowToast(
+                                it.message ?: getString(R.string.FabriikApi_DefaultError)
+                            )
+                        }
+                }
+            }
+        )
     }
 
     private fun loadSupportedCurrencies() {
@@ -194,6 +213,7 @@ class SwapInputViewModel(
                                 selectedTradingPair = it.data?.firstOrNull()
                             )
                         }
+                        refreshQuote()
                     }
 
                     Status.ERROR ->
