@@ -76,6 +76,12 @@ class SwapInputFragment : Fragment(),
 
             cvSwap.setFiatCurrency(BRSharedPrefs.getPreferredFiatIso())
             cvSwap.setCallback(cardSwapCallback)
+
+
+            btnConfirm.setOnClickListener {
+                // TODO add here the current pair
+                findNavController().navigate(SwapInputFragmentDirections.actionFragmentSwapInputToFragmentSwapProcessing("ETH", "BTC"))
+            }
         }
 
         // collect UI state
