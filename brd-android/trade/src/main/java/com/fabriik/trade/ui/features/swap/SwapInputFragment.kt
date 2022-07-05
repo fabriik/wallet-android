@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.collect
 import java.math.BigDecimal
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
+import com.breadwallet.breadbox.formatCryptoForUi
 import com.fabriik.common.ui.customview.FabriikSwitch
 import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.trade.ui.features.assetselection.AssetSelectionAdapter
@@ -146,6 +147,27 @@ class SwapInputFragment : Fragment(),
 
                 cvSwap.setOriginCurrency(state.selectedPair.baseCurrency)
                 cvSwap.setDestinationCurrency(state.selectedPair.termCurrency)
+
+                when (state.quoteState) {
+                    is SwapInputContract.QuoteState.Loading -> {
+                        viewTimer.isVisible = false
+                        tvRateValue.isVisible = false
+                        quoteLoadingIndicator.isVisible = true
+                    }
+
+                    is SwapInputContract.QuoteState.Loaded -> {
+                        viewTimer.isVisible = true
+                        tvRateValue.isVisible = true
+                        quoteLoadingIndicator.isVisible = false
+
+                        tvRateValue.text = RATE_FORMAT.format(
+                            state.selectedPair.baseCurrency,
+                            state.quoteState.buyRate.formatCryptoForUi(
+                                state.selectedPair.termCurrency
+                            )
+                        )
+                    }
+                }
             }
         }
         /*with(binding) {
@@ -203,7 +225,7 @@ class SwapInputFragment : Fragment(),
     }
 
     companion object {
-        const val RATE_FORMAT = "1 %s = %f %s"
+        const val RATE_FORMAT = "1 %s = %s"
         const val REQUEST_KEY_ORIGIN_SELECTION = "req_code_origin_select"
         const val REQUEST_KEY_DESTINATION_SELECTION = "req_code_dest_select"
     }

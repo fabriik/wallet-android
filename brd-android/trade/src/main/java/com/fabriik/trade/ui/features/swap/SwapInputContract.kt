@@ -34,8 +34,18 @@ interface SwapInputContract {
         object Empty : State()
         data class Loaded(
             val tradingPairs: List<SupportedTradingPair>,
-            val selectedPair: SupportedTradingPair
+            val selectedPair: SupportedTradingPair,
+            val quoteState: QuoteState = QuoteState.Loading
         ) : State()
+    }
+
+    sealed class QuoteState {
+        object Loading : QuoteState()
+        data class Loaded(
+            val sellRate: BigDecimal,
+            val buyRate: BigDecimal,
+            val timerTimestamp: Long
+        ) : QuoteState()
     }
 }
 

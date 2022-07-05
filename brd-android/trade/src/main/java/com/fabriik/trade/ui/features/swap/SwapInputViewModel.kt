@@ -46,6 +46,21 @@ class SwapInputViewModel(
                 setEffect { SwapInputContract.Effect.OriginSelection(currencies) }
             }
 
+            is SwapInputContract.Event.OriginCurrencyChanged -> withLoadedState { state ->
+                val pairsWithSelectedBaseCurrency = state.tradingPairs.filter {
+                    it.baseCurrency == event.currencyCode
+                }
+
+                val newSelectedPair = pairsWithSelectedBaseCurrency.find {
+                    it.termCurrency == state.selectedPair.termCurrency
+                } ?: pairsWithSelectedBaseCurrency.firstOrNull()
+
+                newSelectedPair?.let {
+                    setState { state.copy(selectedPair = newSelectedPair) }
+                    refreshQuote()
+                }
+            }
+
             SwapInputContract.Event.DestinationCurrencyClicked -> withLoadedState { state ->
                 val currencies = state.tradingPairs
                     .filter { it.baseCurrency == state.selectedPair.baseCurrency }
@@ -53,6 +68,19 @@ class SwapInputViewModel(
                     .distinct()
 
                 setEffect { SwapInputContract.Effect.DestinationSelection(currencies) }
+            }
+
+            is SwapInputContract.Event.DestinationCurrencyChanged -> withLoadedState { state ->
+                val pairsWithSelectedBaseCurrency = state.tradingPairs.filter {
+                    it.baseCurrency == state.selectedPair.baseCurrency
+                }
+
+                val newSelectedPair = pairsWithSelectedBaseCurrency.find {
+                    it.termCurrency == event.currencyCode
+                } ?: state.selectedPair
+
+                setState { state.copy(selectedPair = newSelectedPair) }
+                refreshQuote()
             }
 
             /*
@@ -223,7 +251,39 @@ class SwapInputViewModel(
                             )
                         }
 
-                        //refreshQuote()
+                        refreshQuote()
+                    }
+
+                    Status.ERROR ->
+                        setEffect {
+                            SwapInputContract.Effect.ShowToast(
+                                it.message ?: getString(R.string.FabriikApi_DefaultError)
+                            )
+                        }
+                }
+            }
+        )
+    }
+
+    private fun refreshQuote() = withLoadedState { state ->
+        callApi(
+            endState = { currentState },
+            startState = { state.copy(quoteState = SwapInputContract.QuoteState.Loading) },
+            action = { swapApi.getQuote(state.selectedPair) },
+            callback = {
+                when (it.status) {
+                    Status.SUCCESS -> {
+                        setState {
+                            state.copy(
+                                quoteState = SwapInputContract.QuoteState.Loaded(
+                                    sellRate = it.data!!.closeBid,
+                                    buyRate = it.data!!.closeAsk,
+                                    timerTimestamp = it.data!!.timestamp
+                                )
+                            )
+                        }
+
+                        //todo: set timer
                     }
 
                     Status.ERROR ->
