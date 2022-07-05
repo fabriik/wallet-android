@@ -160,6 +160,7 @@ class SwapInputFragment : Fragment(),
                         tvRateValue.isVisible = true
                         quoteLoadingIndicator.isVisible = false
 
+                        viewTimer.setProgress(SwapInputViewModel.QUOTE_TIMER, state.timer)
                         tvRateValue.text = RATE_FORMAT.format(
                             state.selectedPair.baseCurrency,
                             state.quoteState.buyRate.formatCryptoForUi(

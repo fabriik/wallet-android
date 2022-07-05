@@ -33,6 +33,7 @@ interface SwapInputContract {
     sealed class State : FabriikContract.State {
         object Empty : State()
         data class Loaded(
+            val timer: Int = 0,
             val tradingPairs: List<SupportedTradingPair>,
             val selectedPair: SupportedTradingPair,
             val quoteState: QuoteState = QuoteState.Loading

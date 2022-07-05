@@ -16,6 +16,8 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
+import java.util.*
+import java.util.concurrent.TimeUnit
 import kotlin.math.min
 
 class SwapInputViewModel(
@@ -282,8 +284,7 @@ class SwapInputViewModel(
                                 )
                             )
                         }
-
-                        //todo: set timer
+                        setupTimer()
                     }
 
                     Status.ERROR ->
@@ -297,12 +298,51 @@ class SwapInputViewModel(
         )
     }
 
+    private fun setupTimer() = withLoadedQuoteState { state, quoteState ->
+        val targetTimestamp = quoteState.timerTimestamp
+        val currentTimestamp = System.currentTimeMillis()
+        val diffSec = TimeUnit.MILLISECONDS.toSeconds(targetTimestamp - currentTimestamp)
+
+        if (diffSec <= 0) {
+            onTimerCompleted()
+            return@withLoadedQuoteState
+        }
+
+        viewModelScope.launch {
+            (diffSec downTo 0)
+                .asSequence()
+                .asFlow()
+                .onEach { delay(1000) }
+                .collect {
+                    if (it == 0L) {
+                        onTimerCompleted()
+                    } else {
+                        setState {
+                            state.copy(timer = it.toInt())
+                        }
+                    }
+                }
+        }
+    }
+
+    private fun onTimerCompleted() {
+        refreshQuote()
+    }
+
     private fun withLoadedState(unit: (SwapInputContract.State.Loaded) -> Unit) {
         val state = currentState
         if (state is SwapInputContract.State.Loaded) {
             unit(state)
         }
     }
+
+    private fun withLoadedQuoteState(unit: (SwapInputContract.State.Loaded, SwapInputContract.QuoteState.Loaded) -> Unit) =
+        withLoadedState {
+            val quoteState = it.quoteState
+            if (quoteState is SwapInputContract.QuoteState.Loaded) {
+                unit(it, quoteState)
+            }
+        }
 
     /*private fun onBaseCurrencyFiatChanged(amount: BigDecimal) {
 
@@ -322,9 +362,9 @@ class SwapInputViewModel(
 
     private fun onTermCurrencyCryptoChanged(amount: BigDecimal) {
 
-    }
+    }*/
 
     companion object {
         const val QUOTE_TIMER = 15
-    }*/
+    }
 }
