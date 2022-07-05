@@ -232,7 +232,10 @@ class SwapInputViewModel(
 
     private fun getWalletBalance(currencyCode: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val wallet = breadBox.wallet(currencyCode).firstOrNull()
+            val wallet = breadBox.wallets()
+                .first()
+                .find { it.currency.code.equals(currencyCode, ignoreCase = true)}
+
             if (wallet != null) {
                 withLoadedState {
                     setState {
