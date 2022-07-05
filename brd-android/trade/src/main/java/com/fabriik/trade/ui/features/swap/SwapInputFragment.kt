@@ -147,6 +147,13 @@ class SwapInputFragment : Fragment(),
 
                 cvSwap.setOriginCurrency(state.selectedPair.baseCurrency)
                 cvSwap.setDestinationCurrency(state.selectedPair.termCurrency)
+                cvSwap.setSellingCurrencyTitle(
+                    getString(
+                        R.string.Swap_Input_IHave, state.sourceCurrencyBalance.formatCryptoForUi(
+                            state.selectedPair.baseCurrency
+                        )
+                    )
+                )
 
                 when (state.quoteState) {
                     is SwapInputContract.QuoteState.Loading -> {
@@ -171,29 +178,10 @@ class SwapInputFragment : Fragment(),
                 }
             }
         }
+
         /*with(binding) {
-            state.selectedTradingPair.let {
-                cvSwap.setOriginCurrency(it?.baseCurrency)
-                cvSwap.setDestinationCurrency(it?.termCurrency)
-            }
-
-            /*cvSwap.setSellingCurrencyTitle(getString(R.string.Swap_Input_IHave, state.originCurrencyBalance, state.originCurrency))
-            cvSwap.setOriginCurrency(state.originCurrency)
             cvSwap.setSendingNetworkFee(state.sendingNetworkFee)
-            cvSwap.setDestinationCurrency(state.destinationCurrency)
             cvSwap.setReceivingNetworkFee(state.receivingNetworkFee)
-
-            viewTimer.setProgress(SwapInputViewModel.QUOTE_TIMER, state.timer)
-            tvRateValue.text = RATE_FORMAT.format(
-                state.originCurrency, state.rateOriginToDestinationCurrency, state.destinationCurrency
-            )
-*/
-            viewTimer.isVisible = !state.quoteLoadingVisible
-            tvRateValue.isVisible = !state.quoteLoadingVisible
-            quoteLoadingIndicator.isVisible = state.quoteLoadingVisible
-
-            content.isVisible = !state.initialLoadingVisible
-            initialLoadingIndicator.isVisible = state.initialLoadingVisible
         }*/
     }
 

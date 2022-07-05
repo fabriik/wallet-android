@@ -2,30 +2,33 @@ package com.fabriik.trade.ui.features.swap
 
 import android.app.Application
 import androidx.lifecycle.viewModelScope
+import com.breadwallet.breadbox.BreadBox
+import com.breadwallet.breadbox.findByCurrencyId
+import com.breadwallet.breadbox.toBigDecimal
 import com.fabriik.common.data.Status
 import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.common.utils.getString
-import com.fabriik.common.utils.min
 import com.fabriik.trade.R
 import com.fabriik.trade.data.SwapApi
-import com.fabriik.trade.ui.features.assetselection.AssetSelectionContract
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.closestKodein
+import org.kodein.di.erased.instance
 import java.math.BigDecimal
-import java.util.*
 import java.util.concurrent.TimeUnit
-import kotlin.math.min
 
 class SwapInputViewModel(
     application: Application
 ) : FabriikViewModel<SwapInputContract.State, SwapInputContract.Event, SwapInputContract.Effect>(
     application
-) {
+), KodeinAware {
 
+    override val kodein by closestKodein { application }
+
+    private val breadBox by kodein.instance<BreadBox>()
     private val swapApi = SwapApi.create(application)
 
     init {
@@ -59,6 +62,7 @@ class SwapInputViewModel(
 
                 newSelectedPair?.let {
                     setState { state.copy(selectedPair = newSelectedPair) }
+                    getWalletBalance(newSelectedPair.baseCurrency)
                     refreshQuote()
                 }
             }
@@ -211,6 +215,7 @@ class SwapInputViewModel(
                             )
                         }
 
+                        getWalletBalance(selectedPair.baseCurrency)
                         refreshQuote()
                     }
 
@@ -225,6 +230,21 @@ class SwapInputViewModel(
         )
     }
 
+    private fun getWalletBalance(currencyCode: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val wallet = breadBox.wallet(currencyCode).firstOrNull()
+            if (wallet != null) {
+                withLoadedState {
+                    setState {
+                        it.copy(
+                            sourceCurrencyBalance = wallet.balance.toBigDecimal()
+                        )
+                    }
+                }
+            }
+        }
+    }
+
     private fun refreshQuote() = withLoadedState { state ->
         callApi(
             endState = { currentState },
@@ -232,9 +252,9 @@ class SwapInputViewModel(
             action = { swapApi.getQuote(state.selectedPair) },
             callback = {
                 when (it.status) {
-                    Status.SUCCESS -> {
+                    Status.SUCCESS -> withLoadedState { latestState ->
                         setState {
-                            state.copy(
+                            latestState.copy(
                                 quoteState = SwapInputContract.QuoteState.Loaded(
                                     sellRate = it.data!!.closeBid,
                                     buyRate = it.data!!.closeAsk,
