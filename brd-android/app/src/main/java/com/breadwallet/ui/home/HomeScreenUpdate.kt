@@ -196,6 +196,7 @@ val HomeScreenUpdate = Update<M, E, F> { model, event ->
                 PromptItem.UPGRADE_PIN -> EventUtils.PROMPT_UPGRADE_PIN
                 PromptItem.RECOMMEND_RESCAN -> EventUtils.PROMPT_RECOMMEND_RESCAN
                 PromptItem.RATE_APP -> EventUtils.PROMPT_RATE_APP
+                PromptItem.VERIFY_USER -> EventUtils.PROMPT_VERIFY_USER
             }
             val eventName = promptName + EventUtils.EVENT_PROMPT_SUFFIX_DISMISSED
             val effects = mutableSetOf(F.DismissPrompt(event.promptId), F.TrackEvent(eventName))
@@ -278,5 +279,12 @@ val HomeScreenUpdate = Update<M, E, F> { model, event ->
         is E.OnSupportFormSubmitted -> dispatch(
             effects(F.SubmitSupportForm(event.feedback))
         )
+
+        is E.OnVerifyPromptClicked -> {
+            when {
+                !model.profile.isUserRegistered() -> dispatch(effects(F.GoToRegistration))
+                else -> dispatch(effects(F.GoToKyc))
+            }
+        }
     }
 }

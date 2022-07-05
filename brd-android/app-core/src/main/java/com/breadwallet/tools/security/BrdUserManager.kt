@@ -72,5 +72,8 @@ interface BrdUserManager {
     fun getBdbJwt(): String?
     fun putBdbJwt(jwt: String, exp: Long)
 
+    fun showVerifyPrompt(): Boolean
+    fun updateVerifyPrompt(showVerifyPrompt: Boolean)
+
     fun onActivityResult(requestCode: Int, resultCode: Int)
 }

@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.lifecycle.Lifecycle
 import com.breadwallet.app.ApplicationLifecycleObserver
+import com.breadwallet.tools.security.BrdUserManager
 import com.fabriik.common.data.Status
 import com.fabriik.registration.data.RegistrationApi
 import com.fabriik.registration.ui.RegistrationActivity
@@ -26,6 +27,7 @@ object UserSessionManager: KodeinAware {
     override val kodein by closestKodein { context }
     private val registrationApi by instance<RegistrationApi>()
     private val registrationUtils by instance<RegistrationUtils>()
+    private val userManager by instance<BrdUserManager>()
 
     private lateinit var context: Context
 
@@ -52,6 +54,7 @@ object UserSessionManager: KodeinAware {
             return
         }
 
+        userManager.updateVerifyPrompt(true)
         SessionHolder.updateSessionState(SessionState.EXPIRED)
         canShowSessionExpiredScreen = false
 
