@@ -17,6 +17,9 @@ import com.fabriik.trade.ui.customview.SwapCardView
 import kotlinx.coroutines.flow.collect
 import java.math.BigDecimal
 import androidx.core.view.isVisible
+import androidx.navigation.fragment.findNavController
+import com.fabriik.trade.ui.features.assetselection.AssetSelectionAdapter
+import com.fabriik.trade.ui.features.assetselection.AssetSelectionFragment
 
 class SwapInputFragment : Fragment(),
     FabriikView<SwapInputContract.State, SwapInputContract.Effect> {
@@ -89,6 +92,26 @@ class SwapInputFragment : Fragment(),
             }
         }
 
+        // listen for origin currency changes
+        parentFragmentManager.setFragmentResultListener(REQUEST_KEY_ORIGIN_SELECTION, this) { _, bundle ->
+            val asset = bundle.getParcelable(AssetSelectionFragment.EXTRA_SELECTED_ASSET) as AssetSelectionAdapter.AssetSelectionItem?
+            if (asset != null) {
+                viewModel.setEvent(
+                    SwapInputContract.Event.OriginCurrencyChanged(asset.cryptoCurrencyCode)
+                )
+            }
+        }
+
+        // listen for destination currency changes
+        parentFragmentManager.setFragmentResultListener(REQUEST_KEY_DESTINATION_SELECTION, this) { _, bundle ->
+            val asset = bundle.getParcelable(AssetSelectionFragment.EXTRA_SELECTED_ASSET) as AssetSelectionAdapter.AssetSelectionItem?
+            if (asset != null) {
+                viewModel.setEvent(
+                    SwapInputContract.Event.DestinationCurrencyChanged(asset.cryptoCurrencyCode)
+                )
+            }
+        }
+
         requireActivity().onBackPressedDispatcher.addCallback {
             //User shouldn't be allowed to go back
         }
@@ -119,14 +142,24 @@ class SwapInputFragment : Fragment(),
                 requireActivity().finish()
 
             SwapInputContract.Effect.OriginSelection ->
-                Toast.makeText(context, "Origin currency selected", Toast.LENGTH_LONG).show()
+                findNavController().navigate(
+                    SwapInputFragmentDirections.actionAssetSelection(
+                        REQUEST_KEY_ORIGIN_SELECTION
+                    )
+                )
 
             SwapInputContract.Effect.DestinationSelection ->
-                Toast.makeText(context, "Destination currency selected", Toast.LENGTH_LONG).show()
+                findNavController().navigate(
+                    SwapInputFragmentDirections.actionAssetSelection(
+                        REQUEST_KEY_DESTINATION_SELECTION
+                    )
+                )
         }
     }
 
     companion object {
         const val RATE_FORMAT = "1 %s = %f %s"
+        const val REQUEST_KEY_ORIGIN_SELECTION = "req_code_origin_select"
+        const val REQUEST_KEY_DESTINATION_SELECTION = "req_code_dest_select"
     }
 }

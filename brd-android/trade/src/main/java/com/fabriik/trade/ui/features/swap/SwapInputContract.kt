@@ -1,6 +1,7 @@
 package com.fabriik.trade.ui.features.swap
 
 import com.fabriik.common.ui.base.FabriikContract
+import com.fabriik.trade.ui.features.assetselection.AssetSelectionAdapter
 import java.math.BigDecimal
 
 interface SwapInputContract {
@@ -14,6 +15,8 @@ interface SwapInputContract {
         data class OriginCurrencyCryptoAmountChange(val amount: BigDecimal) : Event()
         data class DestinationCurrencyFiatAmountChange(val amount: BigDecimal) : Event()
         data class DestinationCurrencyCryptoAmountChange(val amount: BigDecimal) : Event()
+        data class OriginCurrencyChanged(val currencyCode: String) : Event()
+        data class DestinationCurrencyChanged(val currencyCode: String) : Event()
     }
 
     sealed class Effect : FabriikContract.Effect {

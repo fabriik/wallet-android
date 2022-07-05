@@ -52,6 +52,12 @@ class SwapInputViewModel(
                 }
             }
 
+            is SwapInputContract.Event.OriginCurrencyChanged ->
+                setState { copy(originCurrency = event.currencyCode) } //todo: update rates, call API
+
+            is SwapInputContract.Event.DestinationCurrencyChanged ->
+                setState { copy(destinationCurrency = event.currencyCode) } //todo: update rates, call API
+
             is SwapInputContract.Event.OriginCurrencyFiatAmountChange -> {
                 setState {
                     copy(
