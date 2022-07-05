@@ -183,48 +183,6 @@ class SwapInputViewModel(
                        }*/ //todo
         }
     }
-/*
-    private fun startTimer() {
-        /*setState { copy(timer = QUOTE_TIMER) }
-
-        viewModelScope.launch {
-            (QUOTE_TIMER downTo 0)
-                .asSequence()
-                .asFlow()
-                .onEach { delay(1000) }
-                .collect {
-                    if (it == 0) {
-                        refreshQuote()
-                    }
-                    setState { copy(timer = it) }
-                }
-        }*/
-    }
-
-    private fun refreshQuote() {
-        val selectedTradingPair = currentState.selectedTradingPair ?: return
-
-        callApi(
-            startState = { copy(quoteLoadingVisible = true) },
-            endState = { copy(quoteLoadingVisible = false) },
-            action = { swapApi.getQuote(selectedTradingPair) },
-            callback = {
-                when (it.status) {
-                    Status.SUCCESS -> {
-                        setState { copy(quoteResponse = it.data) }
-                        //todo: set timer
-                    }
-
-                    Status.ERROR ->
-                        setEffect {
-                            SwapInputContract.Effect.ShowToast(
-                                it.message ?: getString(R.string.FabriikApi_DefaultError)
-                            )
-                        }
-                }
-            }
-        )
-    }*/
 
     private fun loadSupportedCurrencies() {
         callApi(
@@ -284,7 +242,7 @@ class SwapInputViewModel(
                                 )
                             )
                         }
-                        setupTimer()
+                        //setupTimer()
                     }
 
                     Status.ERROR ->
