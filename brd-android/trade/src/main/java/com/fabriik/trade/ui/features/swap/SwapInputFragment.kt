@@ -155,6 +155,11 @@ class SwapInputFragment : Fragment(),
                     )
                 )
 
+                cvSwap.setSourceFiatAmount(state.sourceFiatAmount)
+                cvSwap.setSourceCryptoAmount(state.sourceCryptoAmount)
+                cvSwap.setDestinationFiatAmount(state.destinationFiatAmount)
+                cvSwap.setDestinationCryptoAmount(state.destinationCryptoAmount)
+
                 when (state.quoteState) {
                     is SwapInputContract.QuoteState.Loading -> {
                         viewTimer.isVisible = false

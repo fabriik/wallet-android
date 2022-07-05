@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.breadwallet.breadbox.BreadBox
 import com.breadwallet.breadbox.findByCurrencyId
 import com.breadwallet.breadbox.toBigDecimal
+import com.breadwallet.repository.RatesRepository
+import com.breadwallet.tools.manager.BRSharedPrefs
 import com.fabriik.common.data.Status
 import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.common.utils.getString
@@ -28,8 +30,10 @@ class SwapInputViewModel(
 
     override val kodein by closestKodein { application }
 
-    private val breadBox by kodein.instance<BreadBox>()
+    private val fiatIso = BRSharedPrefs.getPreferredFiatIso()
     private val swapApi = SwapApi.create(application)
+    private val breadBox by kodein.instance<BreadBox>()
+    private val ratesRepository by kodein.instance<RatesRepository>()
 
     init {
         loadSupportedCurrencies()
@@ -88,6 +92,62 @@ class SwapInputViewModel(
                 setState { state.copy(selectedPair = newSelectedPair) }
                 refreshQuote()
             }
+
+            is SwapInputContract.Event.OriginCurrencyCryptoAmountChange -> withLoadedQuoteState { state, quoteState ->
+                val sourceFiatAmount = ratesRepository.getFiatForCrypto(
+                    cryptoAmount = event.amount,
+                    cryptoCode = state.selectedPair.baseCurrency,
+                    fiatCode = fiatIso
+                ) ?: BigDecimal.ZERO
+
+                val destinationCryptoAmount = sourceFiatAmount.multiply(
+                    quoteState.sellRate
+                )
+
+                val destinationFiatAmount = ratesRepository.getFiatForCrypto(
+                    cryptoAmount = destinationCryptoAmount,
+                    cryptoCode = state.selectedPair.baseCurrency,
+                    fiatCode = fiatIso
+                ) ?: BigDecimal.ZERO
+
+                /*setState {
+                    state.copy(
+                        sourceFiatAmount = sourceFiatAmount,
+                        sourceCryptoAmount = event.amount,
+                        destinationFiatAmount = destinationFiatAmount,
+                        destinationCryptoAmount = destinationCryptoAmount
+                    )
+                }*/
+            }
+
+            is SwapInputContract.Event.DestinationCurrencyCryptoAmountChange -> withLoadedQuoteState { state, quoteState ->
+                val destinationFiatAmount = ratesRepository.getFiatForCrypto(
+                    cryptoAmount = event.amount,
+                    cryptoCode = state.selectedPair.baseCurrency,
+                    fiatCode = fiatIso
+                ) ?: BigDecimal.ZERO
+
+                val sourceCryptoAmount = destinationFiatAmount.divide(
+                    quoteState.sellRate
+                )
+
+                val sourceFiatAmount = ratesRepository.getFiatForCrypto(
+                    cryptoAmount = event.amount,
+                    cryptoCode = state.selectedPair.baseCurrency,
+                    fiatCode = fiatIso
+                ) ?: BigDecimal.ZERO
+
+
+                /*setState {
+                    state.copy(
+                        sourceFiatAmount = sourceFiatAmount,
+                        sourceCryptoAmount = sourceCryptoAmount,
+                        destinationFiatAmount = destinationFiatAmount,
+                        destinationCryptoAmount = event.amount
+                    )
+                }*/
+            }
+
 
             /*
                        SwapInputContract.Event.OnMinAmountClicked ->
@@ -153,14 +213,6 @@ class SwapInputViewModel(
 
 
 
-
-                       is SwapInputContract.Event.OriginCurrencyFiatAmountChange -> {
-                           setState {
-                               copy(
-
-                               )
-                           }
-                       } //todo
 
                        is SwapInputContract.Event.OriginCurrencyCryptoAmountChange -> {
                            setState {
@@ -234,7 +286,7 @@ class SwapInputViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             val wallet = breadBox.wallets()
                 .first()
-                .find { it.currency.code.equals(currencyCode, ignoreCase = true)}
+                .find { it.currency.code.equals(currencyCode, ignoreCase = true) }
 
             if (wallet != null) {
                 withLoadedState {
@@ -265,7 +317,7 @@ class SwapInputViewModel(
                                 )
                             )
                         }
-                        //setupTimer()
+                        setupTimer()
                     }
 
                     Status.ERROR ->
@@ -287,6 +339,10 @@ class SwapInputViewModel(
         if (diffSec <= 0) {
             onTimerCompleted()
             return@withLoadedQuoteState
+        }
+
+        setState {
+            state.copy(timer = diffSec.toInt())
         }
 
         viewModelScope.launch {

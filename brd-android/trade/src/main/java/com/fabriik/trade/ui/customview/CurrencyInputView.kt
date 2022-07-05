@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.doAfterTextChanged
+import com.breadwallet.breadbox.formatCryptoForUi
 import com.fabriik.trade.R
 import com.fabriik.trade.databinding.ViewCurrencyInputBinding
 import java.math.BigDecimal
@@ -48,11 +49,23 @@ class CurrencyInputView @JvmOverloads constructor(
     }
 
     private fun onFiatAmountChanged(value: String) {
-        callback?.onFiatAmountChanged(BigDecimal.TEN) //todo: parse string
+        callback?.onFiatAmountChanged(value.trim().toBigDecimalOrNull() ?: BigDecimal.ZERO)
     }
 
     private fun onCryptoAmountChanged(value: String) {
-        callback?.onCryptoAmountChanged(BigDecimal.ONE)  //todo: parse string
+        callback?.onCryptoAmountChanged(value.trim().toBigDecimalOrNull() ?: BigDecimal.ZERO)
+    }
+
+    fun setFiatAmount(amount: BigDecimal) {
+        binding.etFiatAmount.setText(
+            amount.formatCryptoForUi("")
+        )
+    }
+
+    fun setCryptoAmount(amount: BigDecimal) {
+        binding.etCryptoAmount.setText(
+            amount.formatCryptoForUi("")
+        )
     }
 
     interface Callback {

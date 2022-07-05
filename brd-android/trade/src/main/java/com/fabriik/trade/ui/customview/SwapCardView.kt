@@ -88,6 +88,22 @@ class SwapCardView @JvmOverloads constructor(
         binding.viewInputSellingCurrency.setTitle(title)
     }
 
+    fun setSourceFiatAmount(amount: BigDecimal) {
+        binding.viewInputSellingCurrency.setFiatAmount(amount)
+    }
+
+    fun setSourceCryptoAmount(amount: BigDecimal) {
+        binding.viewInputSellingCurrency.setCryptoAmount(amount)
+    }
+
+    fun setDestinationFiatAmount(amount: BigDecimal) {
+        binding.viewInputBuyingCurrency.setFiatAmount(amount)
+    }
+
+    fun setDestinationCryptoAmount(amount: BigDecimal) {
+        binding.viewInputBuyingCurrency.setCryptoAmount(amount)
+    }
+
     interface Callback {
         fun onReplaceCurrenciesClicked()
         fun onBuyingCurrencySelectorClicked()

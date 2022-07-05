@@ -37,7 +37,11 @@ interface SwapInputContract {
             val tradingPairs: List<SupportedTradingPair>,
             val selectedPair: SupportedTradingPair,
             val quoteState: QuoteState = QuoteState.Loading,
-            val sourceCurrencyBalance: BigDecimal = BigDecimal.ZERO
+            val sourceFiatAmount: BigDecimal = BigDecimal.ZERO,
+            val sourceCryptoAmount: BigDecimal = BigDecimal.ZERO,
+            val sourceCurrencyBalance: BigDecimal = BigDecimal.ZERO,
+            val destinationFiatAmount: BigDecimal = BigDecimal.ZERO,
+            val destinationCryptoAmount: BigDecimal = BigDecimal.ZERO,
         ) : State()
     }
 
