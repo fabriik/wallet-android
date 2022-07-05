@@ -5,6 +5,7 @@ import com.fabriik.common.data.FabriikApiConstants
 import com.fabriik.common.data.Resource
 import com.fabriik.common.utils.FabriikApiResponseMapper
 import com.fabriik.trade.data.model.SupportedTradingPair
+import com.fabriik.trade.data.response.QuoteResponse
 import com.fabriik.trade.utils.adapter.BigDecimalAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -23,6 +24,21 @@ class SwapApi(
         return try {
             val response = service.getSupportedCurrencies()
             Resource.success(data = response.pairs)
+        } catch (ex: Exception) {
+            responseMapper.mapError(
+                context = context,
+                exception = ex
+            )
+        }
+    }
+
+    suspend fun getQuote(selectedTradingPair: SupportedTradingPair): Resource<QuoteResponse?> {
+        return try {
+            val response = service.getQuote(
+                sourceCurrency = selectedTradingPair.baseCurrency,
+                destinationCurrency = selectedTradingPair.termCurrency,
+            )
+            Resource.success(data = response)
         } catch (ex: Exception) {
             responseMapper.mapError(
                 context = context,
