@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:showBack="false"
         app:title="@string/Swap.Details.Title" />
 
     <androidx.cardview.widget.CardView
@@ -40,7 +41,7 @@
                 tools:src="@drawable/ic_status_pending" />
 
             <TextView
-                android:id="@+id/tv_details_status"
+                android:id="@+id/tv_swap_status"
                 style="@style/TextStyle.Title6.Light"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -7,6 +7,8 @@ interface SwapDetailsContract {
 
     sealed class Event : FabriikContract.Event {
         object DismissClicked : Event()
+        object OrderIdClicked : Event()
+        object TransactionIdClicked : Event()
     }
 
     sealed class Effect : FabriikContract.Effect {
@@ -14,7 +16,7 @@ interface SwapDetailsContract {
     }
 
     data class State(
-        val swapState: SwapStatus
+        val status: SwapStatus,
     ) : FabriikContract.State
 }
 
