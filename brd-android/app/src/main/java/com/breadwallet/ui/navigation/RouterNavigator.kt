@@ -425,18 +425,12 @@ class RouterNavigator(
     }
 
     override fun about() {
-//        router.pushController(
-//            AboutController().asTransaction(
-//                HorizontalChangeHandler(),
-//                HorizontalChangeHandler()
-//            )
-//        )
-
-        router.activity?.let {
-            it.startActivity(
-                SwapActivity.getStartIntent(it)
+        router.pushController(
+            AboutController().asTransaction(
+                HorizontalChangeHandler(),
+                HorizontalChangeHandler()
             )
-        }
+        )
     }
 
     override fun displayCurrency() {
