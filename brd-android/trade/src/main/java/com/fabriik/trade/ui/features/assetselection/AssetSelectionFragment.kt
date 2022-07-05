@@ -89,7 +89,7 @@ class AssetSelectionFragment : Fragment(),
         when (effect) {
             is AssetSelectionContract.Effect.Back -> {
                 val bundle = bundleOf(
-                    EXTRA_SELECTED_ASSET to effect.selectedAsset
+                    EXTRA_SELECTED_CURRENCY to effect.selectedCurrency
                 )
                 parentFragmentManager.setFragmentResult(effect.requestKey, bundle)
                 findNavController().popBackStack()
@@ -104,6 +104,6 @@ class AssetSelectionFragment : Fragment(),
     }
 
     companion object {
-        const val EXTRA_SELECTED_ASSET = "selected_asset_item"
+        const val EXTRA_SELECTED_CURRENCY = "selected_currency_item"
     }
 }

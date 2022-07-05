@@ -59,7 +59,7 @@ class AssetSelectionViewModel(
                 setEffect {
                     AssetSelectionContract.Effect.Back(
                         requestKey = arguments.requestKey,
-                        selectedAsset = event.asset
+                        selectedCurrency = event.asset.cryptoCurrencyCode
                     )
                 }
 
@@ -67,7 +67,7 @@ class AssetSelectionViewModel(
                 setEffect {
                     AssetSelectionContract.Effect.Back(
                         requestKey = arguments.requestKey,
-                        selectedAsset = null
+                        selectedCurrency = null
                     )
                 }
         }
