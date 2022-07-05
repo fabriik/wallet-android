@@ -12,6 +12,9 @@ import com.fabriik.common.ui.base.FabriikView
 import com.fabriik.trade.R
 import com.fabriik.trade.databinding.FragmentSwapDetailsBinding
 import kotlinx.coroutines.flow.collect
+import com.fabriik.trade.ui.features.swapdetails.SwapStatus.PENDING
+import com.fabriik.trade.ui.features.swapdetails.SwapStatus.COMPLETE
+import com.fabriik.trade.ui.features.swapdetails.SwapStatus.FAILED
 
 class SwapDetailsFragment : Fragment(),
     FabriikView<SwapDetailsContract.State, SwapDetailsContract.Effect> {
@@ -64,10 +67,28 @@ class SwapDetailsFragment : Fragment(),
 
     override fun render(state: SwapDetailsContract.State) {
         with(binding) {
+            icStatus.setImageResource(setStatusIcon(state.status))
+            tvStatus.text = requireContext().getString(setStatusTitle(state.status))
         }
     }
 
     override fun handleEffect(effect: SwapDetailsContract.Effect) {
         TODO("Not yet implemented")
+    }
+
+    private fun setStatusIcon(status: SwapStatus): Int {
+        return when (status) {
+            PENDING -> R.drawable.ic_status_pending
+            COMPLETE -> R.drawable.ic_status_complete
+            FAILED -> R.drawable.ic_status_failed
+        }
+    }
+
+    private fun setStatusTitle(status: SwapStatus): Int {
+        return when (status) {
+            PENDING -> R.string.Swap_Details_Status_Pending
+            COMPLETE -> R.string.Swap_Details_Status_Complete
+            FAILED -> R.string.Swap_Details_Status_Failed
+        }
     }
 }

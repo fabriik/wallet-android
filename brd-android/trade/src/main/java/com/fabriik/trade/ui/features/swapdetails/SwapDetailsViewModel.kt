@@ -11,7 +11,7 @@ class SwapDetailsViewModel(
     ) {
     override fun createInitialState(): SwapDetailsContract.State =
         SwapDetailsContract.State(
-            status = SwapStatus.PENDING
+            status = SwapStatus.PENDING,
         )
 
     override fun handleEvent(event: SwapDetailsContract.Event) {

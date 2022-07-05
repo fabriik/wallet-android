@@ -17,6 +17,12 @@ interface SwapDetailsContract {
 
     data class State(
         val status: SwapStatus,
+        val orderId: String,
+        val swapFromCurrency: String,
+        val swapToCurrency: String,
+        val timestamp: String,
+        val swapFromID: String,
+        val swapToId: String
     ) : FabriikContract.State
 }
 

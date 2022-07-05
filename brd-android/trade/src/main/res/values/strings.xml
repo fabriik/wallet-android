@@ -5,6 +5,8 @@
 
     <!-- Details Screen -->
     <string name="Swap.Details.Status.Pending">Pending</string>
+    <string name="Swap.Details.Status.Complete">Complete</string>
+    <string name="Swap.Details.Status.Failed">Failed</string>
     <string name="Swap.Details.Title">Swap details</string>
     <string name="Swap.Details.OrderId">Fabriik Order ID</string>
     <string name="Swap.Details.Timestamp">Timestamp</string>

@@ -41,7 +41,7 @@
                 tools:src="@drawable/ic_status_pending" />
 
             <TextView
-                android:id="@+id/tv_swap_status"
+                android:id="@+id/tv_status"
                 style="@style/TextStyle.Title6.Light"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
