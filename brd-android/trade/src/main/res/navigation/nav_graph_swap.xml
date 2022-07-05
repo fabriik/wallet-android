@@ -9,4 +9,8 @@
         android:name="com.fabriik.trade.ui.features.swap.SwapInputFragment"
         tools:layout="@layout/fragment_swap_input"/>
 
+    <fragment android:id="@+id/fragmentSwapDetails"
+        android:name="com.fabriik.trade.ui.features.swapdetails.SwapDetailsFragment"
+        tools:layout="@layout/fragment_swap_details"/>
+
 </navigation>

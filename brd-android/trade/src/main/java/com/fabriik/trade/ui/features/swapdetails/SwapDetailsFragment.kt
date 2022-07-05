@@ -74,9 +74,12 @@ class SwapDetailsFragment : Fragment(),
             tvSwapFrom.text = getString(R.string.Swap_Details_From, state.swapFromCurrency)
             tvSwapTo.text = getString(R.string.Swap_Details_To, state.swapToCurrency)
             tvFromCurrencyValue.text = state.swapFromCurrencyValue
-            tvToCurrencyValue.text = state.swapToCurrency
+            tvToCurrencyValue.text = state.swapToCurrencyValue
             tvSwapFromIdTitle.text =
-                getString(R.string.Swap_Details_TransactionIdFrom_Title, state.swapFromCurrency)
+                getString(
+                    R.string.Swap_Details_TransactionIdFrom_Title,
+                    state.swapFromCurrency
+                )
             tvSwapToIdTitle.text =
                 getString(R.string.Swap_Details_TransactionIdTo_Title, state.swapToCurrency)
 
@@ -89,6 +92,7 @@ class SwapDetailsFragment : Fragment(),
                 scope = tvSwapTo.viewScope,
                 currencyCode = state.swapToCurrency
             )
+            tvTimestamp.text = state.timestamp
 
             icStatus.setImageResource(setStatusIcon(state.status))
             tvStatus.text = getString(setStatusTitle(state.status))
