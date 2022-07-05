@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.fabriik.common.ui.base.FabriikView
+import com.fabriik.common.utils.viewScope
 import com.fabriik.trade.R
 import com.fabriik.trade.databinding.FragmentSwapDetailsBinding
 import kotlinx.coroutines.flow.collect
@@ -95,7 +96,11 @@ class SwapDetailsFragment : Fragment(),
     }
 
     override fun handleEffect(effect: SwapDetailsContract.Effect) {
-        TODO("Not yet implemented")
+        when (effect) {
+            SwapDetailsContract.Effect.Dismiss -> TODO()
+            SwapDetailsContract.Effect.CopyOrderId -> TODO()
+            SwapDetailsContract.Effect.CopyTransactionId -> TODO()
+        }
     }
 
     private fun setStatusIcon(status: SwapStatus): Int {

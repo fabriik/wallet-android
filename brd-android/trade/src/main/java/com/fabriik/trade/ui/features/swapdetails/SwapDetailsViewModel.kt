@@ -27,14 +27,11 @@ class SwapDetailsViewModel(
             SwapDetailsContract.Event.DismissClicked ->
                 setEffect { SwapDetailsContract.Effect.Dismiss }
 
-            SwapDetailsContract.Event.OrderIdClicked -> {
-                TODO()
-            }
+            SwapDetailsContract.Event.OrderIdClicked ->
+                setEffect { SwapDetailsContract.Effect.CopyOrderId }
 
-            SwapDetailsContract.Event.TransactionIdClicked -> {
-                TODO()
-            }
-
+            SwapDetailsContract.Event.TransactionIdClicked ->
+                setEffect { SwapDetailsContract.Effect.CopyTransactionId }
         }
     }
 }
