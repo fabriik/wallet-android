@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.breadwallet.breadbox.BreadBox
+import com.breadwallet.breadbox.containsCurrency
 import com.breadwallet.breadbox.formatCryptoForUi
 import com.breadwallet.breadbox.toBigDecimal
 import com.breadwallet.crypto.Wallet
@@ -77,17 +78,30 @@ class AssetSelectionViewModel(
         val supportedCurrencies = arguments.currencies
 
         viewModelScope.launch(Dispatchers.IO) {
-            val wallets = breadBox.wallets().first()
-            val assets = wallets.mapNotNull { wallet ->
-                val currencyCode = supportedCurrencies.firstOrNull {
-                    it.toLowerCase(Locale.ROOT) == wallet.currency.code
-                } ?: return@mapNotNull null
+            val system = breadBox.system().first()
+            val networks = system.networks
+            val availableWallets = system.wallets
 
-                mapToAssetSelectionItem(
-                    currencyCode = currencyCode,
-                    wallet = wallet
-                )
-            }
+            val assets = TokenUtil.getTokenItems()
+                .filter { token ->
+                    val hasNetwork = networks.any { it.containsCurrency(token.currencyId) }
+                    val isErc20 = token.type == "erc20"
+                    token.isSupported && (isErc20 || hasNetwork)
+                }
+                .mapNotNull { tokenItem ->
+                    val wallet = availableWallets.find {
+                        it.currency.code.equals(tokenItem.symbol)
+                    } ?: return@mapNotNull null
+
+                    val currencyCode = supportedCurrencies.firstOrNull {
+                        it.equals(tokenItem.symbol, ignoreCase = true)
+                    } ?: return@mapNotNull null
+
+                    mapToAssetSelectionItem(
+                        currencyCode = currencyCode,
+                        wallet = wallet
+                    )
+                }
 
             setState { copy(assets = assets) }
             applyFilters()

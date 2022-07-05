@@ -46,12 +46,16 @@ class SwapInputViewModel(
                 setEffect { SwapInputContract.Effect.Dismiss }
 
             SwapInputContract.Event.OriginCurrencyClicked -> {
-                val currencies = currentState.tradingPairs.map { it.baseCurrency }//todo: filter only enabled wallets
+                val currencies = currentState.tradingPairs.map { it.baseCurrency }.distinct()//todo: filter only enabled wallets
                 setEffect { SwapInputContract.Effect.OriginSelection(currencies) }
             }
 
             SwapInputContract.Event.DestinationCurrencyClicked -> {
-                val currencies = currentState.tradingPairs.map { it.termCurrency }
+                val currencies = currentState.tradingPairs
+                    .filter { it.baseCurrency == currentState.selectedTradingPair?.baseCurrency }
+                    .map { it.termCurrency }
+                    .distinct()
+
                 setEffect { SwapInputContract.Effect.DestinationSelection(currencies) }
             }
 
@@ -70,23 +74,51 @@ class SwapInputViewModel(
                         currentState.selectedTradingPair?.maxAmount ?: BigDecimal.ZERO
                     )
                 )
-/*
+
             SwapInputContract.Event.ReplaceCurrenciesClicked -> {
-                val originCurrency = currentState.originCurrency
-                val destinationCurrency = currentState.destinationCurrency
-                setState {
-                    copy(
-                        originCurrency = destinationCurrency,
-                        destinationCurrency = originCurrency,
-                    )
+                val originCurrency = currentState.selectedTradingPair?.baseCurrency
+                val destinationCurrency = currentState.selectedTradingPair?.termCurrency
+                val newTradingPair = currentState.tradingPairs.find {
+                    it.baseCurrency == destinationCurrency && it.termCurrency == originCurrency
+                }
+
+                if (newTradingPair == null) {
+                    setEffect {
+                        SwapInputContract.Effect.ShowToast(
+                            getString(R.string.Swap_Input_SwapNotSupported)
+                        )
+                    }
+                } else {
+                    setState { copy(selectedTradingPair = newTradingPair) }
                 }
             }
 
-            is SwapInputContract.Event.OriginCurrencyChanged ->
-                setState { copy(originCurrency = event.currencyCode) } //todo: update rates, call API
+            is SwapInputContract.Event.OriginCurrencyChanged -> {
+                val pairsWithSelectedBaseCurrency = currentState.tradingPairs.filter {
+                    it.baseCurrency == event.currencyCode
+                }
 
-            is SwapInputContract.Event.DestinationCurrencyChanged ->
-                setState { copy(destinationCurrency = event.currencyCode) } //todo: update rates, call API
+                val newSelectedPair = pairsWithSelectedBaseCurrency.find {
+                    it.termCurrency == currentState.selectedTradingPair?.termCurrency
+                } ?: pairsWithSelectedBaseCurrency.firstOrNull()
+
+                setState { copy(selectedTradingPair = newSelectedPair) } //todo: update rates, call API
+            }
+
+            is SwapInputContract.Event.DestinationCurrencyChanged -> {
+                val pairsWithSelectedBaseCurrency = currentState.tradingPairs.filter {
+                    it.baseCurrency == currentState.selectedTradingPair?.baseCurrency
+                }
+
+                val newSelectedPair = pairsWithSelectedBaseCurrency.find {
+                    it.termCurrency == event.currencyCode
+                } ?: currentState.selectedTradingPair
+
+                setState { copy(selectedTradingPair = newSelectedPair) } //todo: update rates, call API
+            }
+
+/*
+
 
             is SwapInputContract.Event.OriginCurrencyFiatAmountChange -> {
                 setState {
