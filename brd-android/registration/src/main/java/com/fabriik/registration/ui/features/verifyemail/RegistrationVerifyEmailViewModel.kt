@@ -6,6 +6,7 @@ import android.text.style.StyleSpan
 import androidx.core.text.toSpannable
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.breadwallet.tools.security.BrdUserManager
 import com.fabriik.common.data.Status
 import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.common.utils.getString
@@ -35,6 +36,7 @@ class RegistrationVerifyEmailViewModel(
     private val registrationApi by instance<RegistrationApi>()
 
     private lateinit var arguments: RegistrationVerifyEmailFragmentArgs
+    private val userManager by instance<BrdUserManager>()
 
     override fun parseArguments(savedStateHandle: SavedStateHandle) {
         arguments = RegistrationVerifyEmailFragmentArgs.fromBundle(
@@ -89,6 +91,7 @@ class RegistrationVerifyEmailViewModel(
             callback = {
                 when (it.status) {
                     Status.SUCCESS -> {
+                        userManager.updateVerifyPrompt(false)
                         SessionHolder.updateSession(
                             sessionKey = currentSession.key,
                             state = SessionState.VERIFIED

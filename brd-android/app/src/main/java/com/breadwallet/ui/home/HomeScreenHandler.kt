@@ -101,6 +101,7 @@ fun createHomeScreenHandler(
         // TODO: Move this logic elsewhere, a generic PromptManager
         BRSharedPrefs.promptChanges().mapLatest {
             val promptId = when {
+                brdUser.showVerifyPrompt() -> PromptItem.VERIFY_USER
                 BRSharedPrefs.appRatePromptShouldPromptDebug -> PromptItem.RATE_APP
                 !BRSharedPrefs.getEmailOptIn()
                     && !BRSharedPrefs.getEmailOptInDismissed() -> {
@@ -261,6 +262,7 @@ private fun getPromptName(prompt: PromptItem): String = when (prompt) {
     PromptItem.RECOMMEND_RESCAN -> EventUtils.PROMPT_RECOMMEND_RESCAN
     PromptItem.EMAIL_COLLECTION -> EventUtils.PROMPT_EMAIL
     PromptItem.RATE_APP -> EventUtils.PROMPT_RATE_APP
+    PromptItem.VERIFY_USER -> EventUtils.PROMPT_VERIFY_USER
 }
 
 private fun TokenItem.asWallet(

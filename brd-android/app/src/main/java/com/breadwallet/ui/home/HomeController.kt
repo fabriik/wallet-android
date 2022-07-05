@@ -25,9 +25,9 @@
 package com.breadwallet.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.content.Intent
+import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.ImageButton
@@ -39,12 +39,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.breadwallet.BuildConfig
 import com.breadwallet.R
 import com.breadwallet.databinding.ControllerHomeBinding
+import com.breadwallet.databinding.VerifyPromptBinding
 import com.breadwallet.legacy.presenter.customviews.BRButton
 import com.breadwallet.legacy.presenter.customviews.BREdit
 import com.breadwallet.legacy.presenter.customviews.BaseTextView
 import com.breadwallet.repository.RatesRepository
 import com.breadwallet.tools.animation.SpringAnimator
 import com.breadwallet.tools.manager.BRSharedPrefs
+import com.breadwallet.tools.security.BrdUserManager
 import com.breadwallet.ui.BaseMobiusController
 import com.breadwallet.ui.controllers.AlertDialogController
 import com.breadwallet.ui.formatFiatForUi
@@ -52,7 +54,6 @@ import com.breadwallet.ui.home.HomeScreen.E
 import com.breadwallet.ui.home.HomeScreen.F
 import com.breadwallet.ui.home.HomeScreen.M
 import com.breadwallet.util.isValidEmail
-import com.fabriik.registration.data.RegistrationApi
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.GenericFastAdapter
 import com.mikepenz.fastadapter.adapters.GenericModelAdapter
@@ -105,6 +106,7 @@ class HomeController(
     private var fastAdapter: GenericFastAdapter? = null
     private var walletAdapter: ModelAdapter<Wallet, WalletListItem>? = null
     private var addWalletAdapter: ItemAdapter<AddWalletItem>? = null
+    private val userManager by instance<BrdUserManager>()
 
     override fun bindView(output: Consumer<E>): Disposable {
         return with (binding) {
@@ -252,6 +254,7 @@ class HomeController(
                 return getEmailPrompt()
             }
             PromptItem.RATE_APP -> return getRateAppPrompt()
+            PromptItem.VERIFY_USER -> return getVerifyUserPrompt()
         }
         return baseLayout
     }
@@ -292,6 +295,22 @@ class HomeController(
         }
         return customLayout
     }
+
+    private fun getVerifyUserPrompt(): View {
+        val verifyPrompt = VerifyPromptBinding.inflate(LayoutInflater.from(activity))
+        verifyPrompt.btnCancel.setOnClickListener {
+            userManager.updateVerifyPrompt(false)
+            eventConsumer.accept(E.OnPromptDismissed(PromptItem.VERIFY_USER))
+        }
+
+        verifyPrompt.btnVerifyAccount.setOnClickListener {
+            eventConsumer.accept(E.OnProfileClicked)
+            binding.promptContainer.removeAllViews()
+        }
+
+        return verifyPrompt.root
+    }
+
 
     private fun getRateAppPrompt(): View {
         val act = checkNotNull(activity)

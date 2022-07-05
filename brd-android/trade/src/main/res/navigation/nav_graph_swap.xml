@@ -5,12 +5,29 @@
     android:id="@+id/nav_graph_swap"
     app:startDestination="@id/fragmentSwapInput">
 
-    <fragment android:id="@+id/fragmentSwapInput"
+    <fragment
+        android:id="@+id/fragmentSwapInput"
         android:name="com.fabriik.trade.ui.features.swap.SwapInputFragment"
-        tools:layout="@layout/fragment_swap_input"/>
+        tools:layout="@layout/fragment_swap_input">
+
+        <action
+            android:id="@+id/actionAssetSelection"
+            app:destination="@+id/fragmentAssetSelection" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragmentAssetSelection"
+        android:name="com.fabriik.trade.ui.features.assetselection.AssetSelectionFragment"
+        tools:layout="@layout/fragment_asset_selection">
+
+        <argument
+            android:name="requestKey"
+            app:argType="string" />
+
+    </fragment>
 
     <fragment android:id="@+id/fragmentSwapDetails"
         android:name="com.fabriik.trade.ui.features.swapdetails.SwapDetailsFragment"
         tools:layout="@layout/fragment_swap_details"/>
-
 </navigation>
