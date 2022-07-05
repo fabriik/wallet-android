@@ -68,7 +68,6 @@
             android:padding="21dp">
 
             <TextView
-                android:id="@+id/tv_order_id"
                 style="@style/TextStyle.Caption.Light"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -76,10 +75,12 @@
                 android:text="@string/Swap.Details.OrderId" />
 
             <TextView
+                android:id="@+id/tv_order_id"
                 style="@style/TextStyle.Subtitle2.Light"
-                android:layout_width="181dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginHorizontal="58dp"
                 android:layout_marginTop="6dp"
                 android:background="@drawable/bg_order_id"
                 android:drawableEnd="@drawable/ic_copy"
@@ -111,23 +112,24 @@
 
             <com.fabriik.trade.ui.customview.CryptoIconView
                 android:id="@+id/ic_swap_from"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/tv_send_from"
+                android:id="@+id/tv_swap_from"
                 style="@style/TextStyle.Subtitle2.Light"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                app:layout_constraintBottom_toBottomOf="@id/ic_swap_from"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/ic_swap_from"
-                app:layout_constraintTop_toTopOf="@id/ic_swap_from"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:text="From BSV" />
 
             <TextView
+                android:id="@+id/tv_from_currency_value"
                 style="@style/TextStyle.Subtitle2.Light"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -171,24 +173,25 @@
 
             <com.fabriik.trade.ui.customview.CryptoIconView
                 android:id="@+id/ic_swap_to"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/tv_send_to"
+                android:id="@+id/tv_swap_to"
                 style="@style/TextStyle.Subtitle2.Light"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                app:layout_constraintBottom_toBottomOf="@id/ic_swap_to"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/ic_swap_to"
-                app:layout_constraintTop_toTopOf="@id/ic_swap_to"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:text="To BSV" />
 
             <TextView
                 style="@style/TextStyle.Subtitle2.Light"
+                android:id="@+id/tv_to_currency_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="@id/ic_swap_to"
@@ -306,11 +309,12 @@
 
             <TextView
                 android:id="@+id/tv_swap_to_id"
-                style="@style/TextStyle.Subtitle2.Light"
+                style="@style/TextStyle.Body2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="4dp"
+                android:textColor="@color/light_text_04"
                 tools:text="Pending" />
         </LinearLayout>
 

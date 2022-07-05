@@ -22,7 +22,9 @@ interface SwapDetailsContract {
         val swapToCurrency: String,
         val timestamp: String,
         val swapFromID: String,
-        val swapToId: String
+        val swapToId: String,
+        val swapFromCurrencyValue: String,
+        val swapToCurrencyValue: String
     ) : FabriikContract.State
 }
 

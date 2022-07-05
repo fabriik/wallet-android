@@ -67,8 +67,30 @@ class SwapDetailsFragment : Fragment(),
 
     override fun render(state: SwapDetailsContract.State) {
         with(binding) {
+            tvOrderId.text = state.orderId
+            tvSwapFromId.text = state.swapFromID
+            tvSwapToId.text = state.swapToId
+            tvSwapFrom.text = getString(R.string.Swap_Details_From, state.swapFromCurrency)
+            tvSwapTo.text = getString(R.string.Swap_Details_To, state.swapToCurrency)
+            tvFromCurrencyValue.text = state.swapFromCurrencyValue
+            tvToCurrencyValue.text = state.swapToCurrency
+            tvSwapFromIdTitle.text =
+                getString(R.string.Swap_Details_TransactionIdFrom_Title, state.swapFromCurrency)
+            tvSwapToIdTitle.text =
+                getString(R.string.Swap_Details_TransactionIdTo_Title, state.swapToCurrency)
+
+            icSwapFrom.loadIcon(
+                scope = tvSwapFrom.viewScope,
+                currencyCode = state.swapFromCurrency
+            )
+
+            icSwapTo.loadIcon(
+                scope = tvSwapTo.viewScope,
+                currencyCode = state.swapToCurrency
+            )
+
             icStatus.setImageResource(setStatusIcon(state.status))
-            tvStatus.text = requireContext().getString(setStatusTitle(state.status))
+            tvStatus.text = getString(setStatusTitle(state.status))
         }
     }
 
