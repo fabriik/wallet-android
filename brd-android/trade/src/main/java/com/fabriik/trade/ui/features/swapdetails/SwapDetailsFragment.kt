@@ -83,15 +83,20 @@ class SwapDetailsFragment : Fragment(),
             tvSwapToIdTitle.text =
                 getString(R.string.Swap_Details_TransactionIdTo_Title, state.swapToCurrency)
 
-            icSwapFrom.loadIcon(
-                scope = tvSwapFrom.viewScope,
-                currencyCode = state.swapFromCurrency
-            )
+            binding.root.post {
+                icSwapFrom.loadIcon(
+                    scope = tvSwapFrom.viewScope,
+                    currencyCode = state.swapFromCurrency
+                )
+            }
 
-            icSwapTo.loadIcon(
-                scope = tvSwapTo.viewScope,
-                currencyCode = state.swapToCurrency
-            )
+            binding.root.post {
+                icSwapTo.loadIcon(
+                    scope = tvSwapTo.viewScope,
+                    currencyCode = state.swapToCurrency
+                )
+            }
+
             tvTimestamp.text = state.timestamp
 
             icStatus.setImageResource(setStatusIcon(state.status))
