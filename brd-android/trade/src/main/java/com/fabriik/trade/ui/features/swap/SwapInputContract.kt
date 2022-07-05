@@ -30,8 +30,17 @@ interface SwapInputContract {
         data class DestinationSelection(val currencies: List<String>) : Effect()
     }
 
-    data class State(
-        val quoteLoadingVisible: Boolean = false,
+    sealed class State : FabriikContract.State {
+        object Empty : State()
+        data class Loaded(
+            val tradingPairs: List<SupportedTradingPair>,
+            val selectedPair: SupportedTradingPair
+        ) : State()
+    }
+}
+
+
+        /*val quoteLoadingVisible: Boolean = false,
         val initialLoadingVisible: Boolean = false,
         val tradingPairs: List<SupportedTradingPair> = emptyList(),
         val quoteResponse: QuoteResponse? = null,
@@ -50,4 +59,4 @@ interface SwapInputContract {
         val receivingNetworkFee: String? = null,
         val rateOriginToDestinationCurrency: BigDecimal*/
     ) : FabriikContract.State
-}
+}*/

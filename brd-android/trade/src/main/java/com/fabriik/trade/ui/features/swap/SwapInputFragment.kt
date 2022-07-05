@@ -103,7 +103,10 @@ class SwapInputFragment : Fragment(),
         }
 
         // listen for origin currency changes
-        parentFragmentManager.setFragmentResultListener(REQUEST_KEY_ORIGIN_SELECTION, this) { _, bundle ->
+        parentFragmentManager.setFragmentResultListener(
+            REQUEST_KEY_ORIGIN_SELECTION,
+            this
+        ) { _, bundle ->
             val currency = bundle.getString(AssetSelectionFragment.EXTRA_SELECTED_CURRENCY)
             if (currency != null) {
                 viewModel.setEvent(
@@ -113,7 +116,10 @@ class SwapInputFragment : Fragment(),
         }
 
         // listen for destination currency changes
-        parentFragmentManager.setFragmentResultListener(REQUEST_KEY_DESTINATION_SELECTION, this) { _, bundle ->
+        parentFragmentManager.setFragmentResultListener(
+            REQUEST_KEY_DESTINATION_SELECTION,
+            this
+        ) { _, bundle ->
             val currency = bundle.getString(AssetSelectionFragment.EXTRA_SELECTED_CURRENCY)
             if (currency != null) {
                 viewModel.setEvent(
@@ -128,7 +134,21 @@ class SwapInputFragment : Fragment(),
     }
 
     override fun render(state: SwapInputContract.State) {
-        with(binding) {
+        when (state) {
+            is SwapInputContract.State.Empty -> with(binding) {
+                content.isVisible = false
+                initialLoadingIndicator.isVisible = true
+            }
+
+            is SwapInputContract.State.Loaded -> with(binding) {
+                content.isVisible = true
+                initialLoadingIndicator.isVisible = false
+
+                cvSwap.setOriginCurrency(state.selectedPair.baseCurrency)
+                cvSwap.setDestinationCurrency(state.selectedPair.termCurrency)
+            }
+        }
+        /*with(binding) {
             state.selectedTradingPair.let {
                 cvSwap.setOriginCurrency(it?.baseCurrency)
                 cvSwap.setDestinationCurrency(it?.termCurrency)
@@ -151,7 +171,7 @@ class SwapInputFragment : Fragment(),
 
             content.isVisible = !state.initialLoadingVisible
             initialLoadingIndicator.isVisible = state.initialLoadingVisible
-        }
+        }*/
     }
 
     override fun handleEffect(effect: SwapInputContract.Effect) {

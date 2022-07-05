@@ -30,133 +30,130 @@ class SwapInputViewModel(
         loadSupportedCurrencies()
     }
 
-    override fun createInitialState() = SwapInputContract.State(
-        /*timer = QUOTE_TIMER,
-        quoteLoading = true,
-        originCurrency = "BSV",
-        originCurrencyBalance = BigDecimal.TEN,
-        destinationCurrency = "BTC",
-        rateOriginToDestinationCurrency = BigDecimal.ONE,
-        initialLoadingVisible = true*/
-    )
+    override fun createInitialState() = SwapInputContract.State.Empty
 
     override fun handleEvent(event: SwapInputContract.Event) {
         when (event) {
             SwapInputContract.Event.DismissClicked ->
                 setEffect { SwapInputContract.Effect.Dismiss }
 
-            SwapInputContract.Event.OriginCurrencyClicked -> {
-                val currencies = currentState.tradingPairs.map { it.baseCurrency }.distinct()//todo: filter only enabled wallets
+            SwapInputContract.Event.OriginCurrencyClicked -> withLoadedState { state ->
+                val currencies = state.tradingPairs
+                    .map { it.baseCurrency }
+                    //todo: filter enabled wallets
+                    .distinct()
+
                 setEffect { SwapInputContract.Effect.OriginSelection(currencies) }
             }
 
-            SwapInputContract.Event.DestinationCurrencyClicked -> {
-                val currencies = currentState.tradingPairs
-                    .filter { it.baseCurrency == currentState.selectedTradingPair?.baseCurrency }
+            SwapInputContract.Event.DestinationCurrencyClicked -> withLoadedState { state ->
+                val currencies = state.tradingPairs
+                    .filter { it.baseCurrency == state.selectedPair.baseCurrency }
                     .map { it.termCurrency }
                     .distinct()
 
                 setEffect { SwapInputContract.Effect.DestinationSelection(currencies) }
             }
 
-            SwapInputContract.Event.OnMinAmountClicked ->
-                onBaseCurrencyCryptoChanged(
-                    min(
-                        currentState.baseCurrencyCryptoBalance,
-                        currentState.selectedTradingPair?.minAmount ?: BigDecimal.ZERO
-                    )
-                )
+            /*
+                       SwapInputContract.Event.OnMinAmountClicked ->
+                           onBaseCurrencyCryptoChanged(
+                               min(
+                                   currentState.baseCurrencyCryptoBalance,
+                                   currentState.selectedTradingPair?.minAmount ?: BigDecimal.ZERO
+                               )
+                           )
 
-            SwapInputContract.Event.OnMaxAmountClicked ->
-                onBaseCurrencyCryptoChanged(
-                    min(
-                        currentState.baseCurrencyCryptoBalance,
-                        currentState.selectedTradingPair?.maxAmount ?: BigDecimal.ZERO
-                    )
-                )
+                       SwapInputContract.Event.OnMaxAmountClicked ->
+                           onBaseCurrencyCryptoChanged(
+                               min(
+                                   currentState.baseCurrencyCryptoBalance,
+                                   currentState.selectedTradingPair?.maxAmount ?: BigDecimal.ZERO
+                               )
+                           )
 
-            SwapInputContract.Event.ReplaceCurrenciesClicked -> {
-                val originCurrency = currentState.selectedTradingPair?.baseCurrency
-                val destinationCurrency = currentState.selectedTradingPair?.termCurrency
-                val newTradingPair = currentState.tradingPairs.find {
-                    it.baseCurrency == destinationCurrency && it.termCurrency == originCurrency
-                }
+                       SwapInputContract.Event.ReplaceCurrenciesClicked -> {
+                           val originCurrency = currentState.selectedTradingPair?.baseCurrency
+                           val destinationCurrency = currentState.selectedTradingPair?.termCurrency
+                           val newTradingPair = currentState.tradingPairs.find {
+                               it.baseCurrency == destinationCurrency && it.termCurrency == originCurrency
+                           }
 
-                if (newTradingPair == null) {
-                    setEffect {
-                        SwapInputContract.Effect.ShowToast(
-                            getString(R.string.Swap_Input_SwapNotSupported)
-                        )
-                    }
-                } else {
-                    setState { copy(selectedTradingPair = newTradingPair) }
-                    refreshQuote()
-                }
-            }
+                           if (newTradingPair == null) {
+                               setEffect {
+                                   SwapInputContract.Effect.ShowToast(
+                                       getString(R.string.Swap_Input_SwapNotSupported)
+                                   )
+                               }
+                           } else {
+                               setState { copy(selectedTradingPair = newTradingPair) }
+                               refreshQuote()
+                           }
+                       }
 
-            is SwapInputContract.Event.OriginCurrencyChanged -> {
-                val pairsWithSelectedBaseCurrency = currentState.tradingPairs.filter {
-                    it.baseCurrency == event.currencyCode
-                }
+                       is SwapInputContract.Event.OriginCurrencyChanged -> {
+                           val pairsWithSelectedBaseCurrency = currentState.tradingPairs.filter {
+                               it.baseCurrency == event.currencyCode
+                           }
 
-                val newSelectedPair = pairsWithSelectedBaseCurrency.find {
-                    it.termCurrency == currentState.selectedTradingPair?.termCurrency
-                } ?: pairsWithSelectedBaseCurrency.firstOrNull()
+                           val newSelectedPair = pairsWithSelectedBaseCurrency.find {
+                               it.termCurrency == currentState.selectedTradingPair?.termCurrency
+                           } ?: pairsWithSelectedBaseCurrency.firstOrNull()
 
-                setState { copy(selectedTradingPair = newSelectedPair) } //todo: update rates
-                refreshQuote()
-            }
+                           setState { copy(selectedTradingPair = newSelectedPair) } //todo: update rates
+                           refreshQuote()
+                       }
 
-            is SwapInputContract.Event.DestinationCurrencyChanged -> {
-                val pairsWithSelectedBaseCurrency = currentState.tradingPairs.filter {
-                    it.baseCurrency == currentState.selectedTradingPair?.baseCurrency
-                }
+                       is SwapInputContract.Event.DestinationCurrencyChanged -> {
+                           val pairsWithSelectedBaseCurrency = currentState.tradingPairs.filter {
+                               it.baseCurrency == currentState.selectedTradingPair?.baseCurrency
+                           }
 
-                val newSelectedPair = pairsWithSelectedBaseCurrency.find {
-                    it.termCurrency == event.currencyCode
-                } ?: currentState.selectedTradingPair
+                           val newSelectedPair = pairsWithSelectedBaseCurrency.find {
+                               it.termCurrency == event.currencyCode
+                           } ?: currentState.selectedTradingPair
 
-                setState { copy(selectedTradingPair = newSelectedPair) } //todo: update rates
-                refreshQuote()
-            }
-
-/*
+                           setState { copy(selectedTradingPair = newSelectedPair) } //todo: update rates
+                           refreshQuote()
+                       }
 
 
-            is SwapInputContract.Event.OriginCurrencyFiatAmountChange -> {
-                setState {
-                    copy(
 
-                    )
-                }
-            } //todo
 
-            is SwapInputContract.Event.OriginCurrencyCryptoAmountChange -> {
-                setState {
-                    copy(
+                       is SwapInputContract.Event.OriginCurrencyFiatAmountChange -> {
+                           setState {
+                               copy(
 
-                    )
-                }
-            } //todo
+                               )
+                           }
+                       } //todo
 
-            is SwapInputContract.Event.DestinationCurrencyFiatAmountChange -> {
-                setState {
-                    copy(
+                       is SwapInputContract.Event.OriginCurrencyCryptoAmountChange -> {
+                           setState {
+                               copy(
 
-                    )
-                }
-            } //todo
+                               )
+                           }
+                       } //todo
 
-            is SwapInputContract.Event.DestinationCurrencyCryptoAmountChange -> {
-                setState {
-                    copy(
+                       is SwapInputContract.Event.DestinationCurrencyFiatAmountChange -> {
+                           setState {
+                               copy(
 
-                    )
-                }
-            }*/ //todo
+                               )
+                           }
+                       } //todo
+
+                       is SwapInputContract.Event.DestinationCurrencyCryptoAmountChange -> {
+                           setState {
+                               copy(
+
+                               )
+                           }
+                       }*/ //todo
         }
     }
-
+/*
     private fun startTimer() {
         /*setState { copy(timer = QUOTE_TIMER) }
 
@@ -197,23 +194,36 @@ class SwapInputViewModel(
                 }
             }
         )
-    }
+    }*/
 
     private fun loadSupportedCurrencies() {
         callApi(
-            endState = { copy(initialLoadingVisible = false) },
-            startState = { copy(initialLoadingVisible = true) },
+            endState = { currentState },
+            startState = { currentState },
             action = { swapApi.getSupportedTradingPairs() },
             callback = {
                 when (it.status) {
                     Status.SUCCESS -> {
+                        val tradingPairs = it.data ?: emptyList()
+                        val selectedPair = tradingPairs.firstOrNull()
+
+                        if (selectedPair == null) {
+                            setEffect {
+                                SwapInputContract.Effect.ShowToast(
+                                    getString(R.string.FabriikApi_DefaultError)
+                                )
+                            }
+                            return@callApi
+                        }
+
                         setState {
-                            copy(
-                                tradingPairs = it.data ?: emptyList(),
-                                selectedTradingPair = it.data?.firstOrNull()
+                            SwapInputContract.State.Loaded(
+                                tradingPairs = tradingPairs,
+                                selectedPair = selectedPair
                             )
                         }
-                        refreshQuote()
+
+                        //refreshQuote()
                     }
 
                     Status.ERROR ->
@@ -227,7 +237,14 @@ class SwapInputViewModel(
         )
     }
 
-    private fun onBaseCurrencyFiatChanged(amount: BigDecimal) {
+    private fun withLoadedState(unit: (SwapInputContract.State.Loaded) -> Unit) {
+        val state = currentState
+        if (state is SwapInputContract.State.Loaded) {
+            unit(state)
+        }
+    }
+
+    /*private fun onBaseCurrencyFiatChanged(amount: BigDecimal) {
 
     }
 
@@ -249,5 +266,5 @@ class SwapInputViewModel(
 
     companion object {
         const val QUOTE_TIMER = 15
-    }
+    }*/
 }
