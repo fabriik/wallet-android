@@ -59,7 +59,6 @@ import com.breadwallet.ui.receive.ReceiveController
 import com.breadwallet.ui.scanner.ScannerController
 import com.breadwallet.ui.send.SendSheetController
 import com.breadwallet.ui.settings.SettingsController
-import com.breadwallet.ui.settings.about.AboutController
 import com.breadwallet.ui.settings.analytics.ShareDataController
 import com.breadwallet.ui.settings.currency.DisplayCurrencyController
 import com.breadwallet.ui.settings.fastsync.FastSyncController
@@ -74,19 +73,18 @@ import com.breadwallet.ui.showkey.ShowPaperKeyController
 import com.breadwallet.ui.staking.SelectBakersController
 import com.breadwallet.ui.sync.SyncBlockchainController
 import com.breadwallet.ui.txdetails.TxDetailsController
+import com.breadwallet.ui.uigift.CreateGiftController
+import com.breadwallet.ui.uigift.ShareGiftController
+import com.breadwallet.ui.uistaking.StakingController
+import com.breadwallet.ui.verifyaccount.VerifyController
 import com.breadwallet.ui.wallet.BrdWalletController
 import com.breadwallet.ui.wallet.WalletController
 import com.breadwallet.ui.web.WebController
 import com.breadwallet.ui.writedownkey.WriteDownKeyController
-import com.breadwallet.ui.uistaking.StakingController
-import com.breadwallet.ui.uigift.CreateGiftController
-import com.breadwallet.ui.uigift.ShareGiftController
-import com.breadwallet.ui.verifyaccount.VerifyController
 import com.breadwallet.util.CryptoUriParser
 import com.breadwallet.util.isBrd
 import com.breadwallet.util.showFabriikGenericDialog
 import com.fabriik.buy.ui.BuyWebViewActivity
-import com.fabriik.common.ui.dialog.FabriikGenericDialog
 import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.kyc.ui.KycActivity
 import com.fabriik.kyc.ui.dialogs.InfoDialog
@@ -425,12 +423,17 @@ class RouterNavigator(
     }
 
     override fun about() {
-        router.pushController(
-            AboutController().asTransaction(
-                HorizontalChangeHandler(),
-                HorizontalChangeHandler()
+//        router.pushController(
+//            AboutController().asTransaction(
+//                HorizontalChangeHandler(),
+//                HorizontalChangeHandler()
+//            )
+//        )
+        router.activity?.let {
+            it.startActivity(
+                SwapActivity.getStartIntent(it)
             )
-        )
+        }
     }
 
     override fun displayCurrency() {

@@ -31,7 +31,7 @@
     </fragment>
 
     <fragment android:id="@+id/fragmentSwapProcessing"
-        android:name="com.fabriik.trade.ui.features.swap.SwapProcessFragment"
+        android:name="com.fabriik.trade.ui.features.swap.SwapProcessingFragment"
         tools:layout="@layout/fragment_swap_process">
         <argument android:name="coinFrom" app:nullable="false" app:argType="string"/>
         <argument android:name="coinTo" app:nullable="false" app:argType="string"/>
