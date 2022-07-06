@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.widget.doAfterTextChanged
 import com.breadwallet.breadbox.formatCryptoForUi
 import com.fabriik.common.utils.doAfterTextChangedWhenFocused
 import com.fabriik.trade.R

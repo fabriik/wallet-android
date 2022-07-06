@@ -4,7 +4,7 @@ import android.content.Context
 import com.fabriik.common.data.FabriikApiConstants
 import com.fabriik.common.data.Resource
 import com.fabriik.common.utils.FabriikApiResponseMapper
-import com.fabriik.trade.data.model.SupportedTradingPair
+import com.fabriik.trade.data.model.TradingPair
 import com.fabriik.trade.data.response.QuoteResponse
 import com.fabriik.trade.utils.adapter.BigDecimalAdapter
 import com.squareup.moshi.Moshi
@@ -20,9 +20,9 @@ class SwapApi(
 ) {
     private val responseMapper = FabriikApiResponseMapper()
 
-    suspend fun getSupportedTradingPairs(): Resource<List<SupportedTradingPair>?> {
+    suspend fun getTradingPairs(): Resource<List<TradingPair>?> {
         return try {
-            val response = service.getSupportedCurrencies()
+            val response = service.getTradingPairs()
             Resource.success(data = response.pairs)
         } catch (ex: Exception) {
             responseMapper.mapError(
@@ -32,7 +32,7 @@ class SwapApi(
         }
     }
 
-    suspend fun getQuote(selectedTradingPair: SupportedTradingPair): Resource<QuoteResponse?> {
+    suspend fun getQuote(selectedTradingPair: TradingPair): Resource<QuoteResponse?> {
         return try {
             val response = service.getQuote(selectedTradingPair.name)
             Resource.success(data = response)

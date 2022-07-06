@@ -2,9 +2,7 @@ package com.fabriik.trade.ui.features.swap
 
 import com.fabriik.common.ui.base.FabriikContract
 import com.fabriik.common.ui.customview.FabriikSwitch
-import com.fabriik.trade.data.model.SupportedTradingPair
-import com.fabriik.trade.data.response.QuoteResponse
-import com.fabriik.trade.ui.features.assetselection.AssetSelectionAdapter
+import com.fabriik.trade.data.model.TradingPair
 import java.math.BigDecimal
 
 interface SwapInputContract {
@@ -40,8 +38,8 @@ interface SwapInputContract {
         object Empty : State()
         data class Loaded(
             val timer: Int = 0,
-            val tradingPairs: List<SupportedTradingPair>,
-            val selectedPair: SupportedTradingPair,
+            val tradingPairs: List<TradingPair>,
+            val selectedPair: TradingPair,
             val sendingNetworkFee: BigDecimal? = null,
             val sendingNetworkFeeCurrency: String? = null,
             val receivingNetworkFee: BigDecimal? = null,

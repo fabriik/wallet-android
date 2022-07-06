@@ -4,7 +4,6 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.breadwallet.breadbox.*
-import com.breadwallet.crypto.Address
 import com.breadwallet.crypto.AddressScheme
 import com.breadwallet.crypto.Amount
 import com.breadwallet.crypto.errors.FeeEstimationError
@@ -21,12 +20,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import org.jetbrains.annotations.Contract
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
 import org.kodein.di.erased.instance
 import java.math.BigDecimal
 import java.util.concurrent.TimeUnit
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
 
 class SwapInputViewModel(
     application: Application
@@ -307,7 +308,7 @@ class SwapInputViewModel(
         callApi(
             endState = { currentState },
             startState = { currentState },
-            action = { swapApi.getSupportedTradingPairs() },
+            action = { swapApi.getTradingPairs() },
             callback = {
                 when (it.status) {
                     Status.SUCCESS -> {

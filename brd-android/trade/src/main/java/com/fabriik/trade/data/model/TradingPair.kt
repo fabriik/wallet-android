@@ -8,7 +8,7 @@ import java.math.BigDecimal
 
 @Parcelize
 @JsonClass(generateAdapter = true)
-data class SupportedTradingPair(
+data class TradingPair(
 
     @Json(name = "base_currency")
     val baseCurrency: String,

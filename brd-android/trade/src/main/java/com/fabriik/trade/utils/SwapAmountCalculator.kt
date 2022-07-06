@@ -2,10 +2,9 @@ package com.fabriik.trade.utils
 
 import com.breadwallet.ext.isZero
 import com.breadwallet.repository.RatesRepository
-import com.fabriik.trade.data.model.SupportedTradingPair
+import com.fabriik.trade.data.model.TradingPair
 import com.fabriik.trade.ui.features.swap.SwapInputContract
 import java.math.BigDecimal
-import java.math.MathContext
 import java.math.RoundingMode
 
 class SwapAmountCalculator(private val ratesRepository: RatesRepository) {
@@ -34,7 +33,7 @@ class SwapAmountCalculator(private val ratesRepository: RatesRepository) {
         ) ?: BigDecimal.ZERO
     }
 
-    fun convertCryptoToCrypto(cryptoAmount: BigDecimal, tradingPair: SupportedTradingPair, quoteState: SwapInputContract.QuoteState.Loaded, fromCryptoCode: String): BigDecimal {
+    fun convertCryptoToCrypto(cryptoAmount: BigDecimal, tradingPair: TradingPair, quoteState: SwapInputContract.QuoteState.Loaded, fromCryptoCode: String): BigDecimal {
         if (cryptoAmount.isZero()) {
             return BigDecimal.ZERO
         }

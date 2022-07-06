@@ -30,5 +30,4 @@
             app:argType="string[]" />
 
     </fragment>
-
 </navigation>
