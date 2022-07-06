@@ -1,6 +1,5 @@
 package com.fabriik.trade.ui.dialog
 
-import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -25,7 +24,6 @@ class ConfirmationDialog : DialogFragment() {
     ): View {
         binding = FragmentConfirmationDialogBinding.inflate(inflater, container, false)
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog?.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
 
         return binding.root
     }
