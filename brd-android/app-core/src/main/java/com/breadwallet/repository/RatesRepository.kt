@@ -36,6 +36,7 @@ import kotlinx.coroutines.channels.Channel.Factory.CONFLATED
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
 import java.math.BigDecimal
+import java.math.RoundingMode
 import java.util.Locale
 import java.util.concurrent.ConcurrentHashMap
 
@@ -132,7 +133,7 @@ class RatesRepository private constructor(private val mContext: Context) {
             Log.e(TAG, "getFiatForCrypto: No fiat rate for $cryptoCode")
             return null
         }
-        return fiatAmount / cryptoRate.rate.toBigDecimal()
+        return fiatAmount.divide(cryptoRate.rate.toBigDecimal(), 5, RoundingMode.HALF_UP)
     }
 
 

@@ -5,6 +5,8 @@ import com.breadwallet.repository.RatesRepository
 import com.fabriik.trade.data.model.SupportedTradingPair
 import com.fabriik.trade.ui.features.swap.SwapInputContract
 import java.math.BigDecimal
+import java.math.MathContext
+import java.math.RoundingMode
 
 class SwapAmountCalculator(private val ratesRepository: RatesRepository) {
 
@@ -38,9 +40,9 @@ class SwapAmountCalculator(private val ratesRepository: RatesRepository) {
         }
 
         return if (tradingPair.baseCurrency == fromCryptoCode) {
-            cryptoAmount * quoteState.buyRate
+            cryptoAmount.multiply(quoteState.buyRate)
         } else {
-            cryptoAmount / quoteState.sellRate
+            cryptoAmount.divide(quoteState.sellRate, 5, RoundingMode.HALF_UP)
         }
     }
 }
