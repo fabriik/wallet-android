@@ -1,5 +1,6 @@
 package com.fabriik.trade.data.response
 
+import com.google.common.primitives.UnsignedLong
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import java.math.BigDecimal
@@ -34,14 +35,14 @@ data class FeeEstimate(
     val tier: String,
 
     @Json(name = "fee")
-    val fee: Fee
+    val fee: Amount
 )
 
 @JsonClass(generateAdapter = true)
-data class Fee(
+data class Amount(
     @Json(name = "currency_id")
     val currencyId: String,
 
     @Json(name = "amount")
-    val amount: BigDecimal
+    val amount: String
 )

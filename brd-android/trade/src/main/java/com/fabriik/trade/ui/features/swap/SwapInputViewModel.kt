@@ -1,10 +1,13 @@
 package com.fabriik.trade.ui.features.swap
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.breadwallet.breadbox.BreadBox
-import com.breadwallet.breadbox.findByCurrencyId
-import com.breadwallet.breadbox.toBigDecimal
+import com.breadwallet.breadbox.*
+import com.breadwallet.crypto.Address
+import com.breadwallet.crypto.AddressScheme
+import com.breadwallet.crypto.Amount
+import com.breadwallet.crypto.errors.FeeEstimationError
 import com.breadwallet.repository.RatesRepository
 import com.breadwallet.tools.manager.BRSharedPrefs
 import com.fabriik.common.data.Status
@@ -193,9 +196,16 @@ class SwapInputViewModel(
                 fiatCode = fiatIso
             )
 
+            estimateSendingFee(sourceCryptoAmount)
+            estimateReceivingFee(destinationCryptoAmount)
+
             setEffect { SwapInputContract.Effect.UpdateSourceCryptoAmount(sourceCryptoAmount) }
             setEffect { SwapInputContract.Effect.UpdateDestinationFiatAmount(destinationFiatAmount) }
-            setEffect { SwapInputContract.Effect.UpdateDestinationCryptoAmount(destinationCryptoAmount) }
+            setEffect {
+                SwapInputContract.Effect.UpdateDestinationCryptoAmount(
+                    destinationCryptoAmount
+                )
+            }
         }
 
     private fun onSourceCurrencyCryptoAmountChanged(amount: BigDecimal) =
@@ -219,9 +229,16 @@ class SwapInputViewModel(
                 fiatCode = fiatIso
             )
 
+            estimateSendingFee(amount)
+            estimateReceivingFee(destinationCryptoAmount)
+
             setEffect { SwapInputContract.Effect.UpdateSourceFiatAmount(sourceFiatAmount) }
             setEffect { SwapInputContract.Effect.UpdateDestinationFiatAmount(destinationFiatAmount) }
-            setEffect { SwapInputContract.Effect.UpdateDestinationCryptoAmount(destinationCryptoAmount) }
+            setEffect {
+                SwapInputContract.Effect.UpdateDestinationCryptoAmount(
+                    destinationCryptoAmount
+                )
+            }
         }
 
     private fun onDestinationCurrencyFiatAmountChanged(amount: BigDecimal) =
@@ -245,9 +262,16 @@ class SwapInputViewModel(
                 fiatCode = fiatIso
             )
 
+            estimateSendingFee(sourceCryptoAmount)
+            estimateReceivingFee(destinationCryptoAmount)
+
             setEffect { SwapInputContract.Effect.UpdateSourceFiatAmount(sourceFiatAmount) }
             setEffect { SwapInputContract.Effect.UpdateSourceCryptoAmount(sourceCryptoAmount) }
-            setEffect { SwapInputContract.Effect.UpdateDestinationCryptoAmount(destinationCryptoAmount) }
+            setEffect {
+                SwapInputContract.Effect.UpdateDestinationCryptoAmount(
+                    destinationCryptoAmount
+                )
+            }
         }
 
     private fun onDestinationCurrencyCryptoAmountChanged(amount: BigDecimal) =
@@ -270,6 +294,9 @@ class SwapInputViewModel(
                 cryptoCode = state.selectedPair.baseCurrency,
                 fiatCode = fiatIso
             )
+
+            estimateSendingFee(sourceCryptoAmount)
+            estimateReceivingFee(amount)
 
             setEffect { SwapInputContract.Effect.UpdateSourceFiatAmount(sourceFiatAmount) }
             setEffect { SwapInputContract.Effect.UpdateSourceCryptoAmount(sourceCryptoAmount) }
@@ -417,6 +444,72 @@ class SwapInputViewModel(
                 unit(it, quoteState)
             }
         }
+
+    private fun estimateSendingFee(amount: BigDecimal) = withLoadedState{ state ->
+        estimateFee(
+            currencyCode = state.selectedPair.baseCurrency,
+            amountBig = amount
+        ) {
+            withLoadedState { state ->
+                setState {
+                    state.copy(
+                        sendingNetworkFee = it,
+                        sendingNetworkFeeCurrency = state.selectedPair.baseCurrency
+                    )
+                }
+            }
+        }
+    }
+
+    private fun estimateReceivingFee(amount: BigDecimal) = withLoadedState{ state ->
+        /*estimateFee(
+            currencyCode = state.selectedPair.termCurrency,
+            amountBig = amount
+        ) {
+            withLoadedState { state ->
+                setState {
+                    state.copy(
+                        receivingNetworkFee = it,
+                        receivingNetworkFeeCurrency = state.selectedPair.termCurrency
+                    )
+                }
+            }
+        }*/
+    }
+
+    private fun estimateFee(currencyCode: String, amountBig: BigDecimal, callback: (BigDecimal?) -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val wallet = breadBox.wallet(currencyCode).first()
+            val amount = Amount.create(amountBig.toDouble(), wallet.unit)
+            val address = if (wallet.currency.isBitcoin()) {
+                wallet.getTargetForScheme(
+                    when (BRSharedPrefs.getIsSegwitEnabled()) {
+                        true -> AddressScheme.BTC_SEGWIT
+                        false -> AddressScheme.BTC_LEGACY
+                    }
+                )
+            } else {
+                wallet.target
+            }
+
+            try {
+                val data = wallet.estimateFee(address, amount)
+                val fee = data.fee.toBigDecimal()
+                callback(fee)
+                //check(!fee.isZero()) { "Estimated fee was zero" }
+                //E.OnNetworkFeeUpdated(effect.address, effect.amount, fee, data)
+            } catch (e: FeeEstimationError) {
+                Log.i("Swap.estimateFee", "Failed get fee estimate", e)
+                callback(null)
+                //E.OnInsufficientBalance
+            } catch (e: IllegalStateException) {
+                Log.i("Swap.estimateFee", "Failed get fee estimate", e)
+                callback(null)
+                /*logError("Failed get fee estimate", e)
+                E.OnNetworkFeeError*/
+            }
+        }
+    }
 
     companion object {
         const val QUOTE_TIMER = 15

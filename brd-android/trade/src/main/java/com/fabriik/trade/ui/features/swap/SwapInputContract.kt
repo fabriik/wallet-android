@@ -42,6 +42,10 @@ interface SwapInputContract {
             val timer: Int = 0,
             val tradingPairs: List<SupportedTradingPair>,
             val selectedPair: SupportedTradingPair,
+            val sendingNetworkFee: BigDecimal? = null,
+            val sendingNetworkFeeCurrency: String? = null,
+            val receivingNetworkFee: BigDecimal? = null,
+            val receivingNetworkFeeCurrency: String? = null,
             val quoteState: QuoteState = QuoteState.Loading,
             val sourceFiatAmount: BigDecimal = BigDecimal.ZERO,
             val sourceCryptoAmount: BigDecimal = BigDecimal.ZERO,
@@ -61,25 +65,3 @@ interface SwapInputContract {
         ) : QuoteState()
     }
 }
-
-
-        /*val quoteLoadingVisible: Boolean = false,
-        val initialLoadingVisible: Boolean = false,
-        val tradingPairs: List<SupportedTradingPair> = emptyList(),
-        val quoteResponse: QuoteResponse? = null,
-        val selectedTradingPair: SupportedTradingPair? = null,
-        val baseCurrencyCryptoBalance: BigDecimal = BigDecimal.ZERO,
-        val termCurrencyCryptoBalance: BigDecimal = BigDecimal.ZERO,
-        /*val timer: Int,val quoteLoading: Boolean = false,
-        val originCurrency: String,
-        val originCurrencyBalance: BigDecimal,
-        val originFiatAmount: BigDecimal = BigDecimal.ZERO,
-        val originCryptoAmount: BigDecimal = BigDecimal.ZERO,
-        val destinationCurrency: String,
-        val destinationFiatAmount: BigDecimal = BigDecimal.ZERO,
-        val destinationCryptoAmount: BigDecimal = BigDecimal.ZERO,
-        val sendingNetworkFee: String? = null,
-        val receivingNetworkFee: String? = null,
-        val rateOriginToDestinationCurrency: BigDecimal*/
-    ) : FabriikContract.State
-}*/

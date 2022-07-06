@@ -11,7 +11,6 @@ interface SwapService {
 
     @GET("quote")
     suspend fun getQuote(
-        @Query("source_currency") sourceCurrency: String,
-        @Query("destination_currency") destinationCurrency: String
+        @Query("security") security: String
     ): QuoteResponse
 }

@@ -145,6 +145,8 @@ class SwapInputFragment : Fragment(),
                 content.isVisible = true
                 initialLoadingIndicator.isVisible = false
 
+                cvSwap.setSendingNetworkFee(state.sendingNetworkFee?.formatCryptoForUi(state.sendingNetworkFeeCurrency))
+                cvSwap.setReceivingNetworkFee(state.receivingNetworkFee?.formatCryptoForUi(state.receivingNetworkFeeCurrency))
                 cvSwap.setOriginCurrency(state.selectedPair.baseCurrency)
                 cvSwap.setDestinationCurrency(state.selectedPair.termCurrency)
                 cvSwap.setSellingCurrencyTitle(

@@ -34,10 +34,7 @@ class SwapApi(
 
     suspend fun getQuote(selectedTradingPair: SupportedTradingPair): Resource<QuoteResponse?> {
         return try {
-            val response = service.getQuote(
-                sourceCurrency = selectedTradingPair.baseCurrency,
-                destinationCurrency = selectedTradingPair.termCurrency,
-            )
+            val response = service.getQuote(selectedTradingPair.name)
             Resource.success(data = response)
         } catch (ex: Exception) {
             responseMapper.mapError(
