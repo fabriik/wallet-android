@@ -48,7 +48,7 @@ class SwapProcessingFragment : Fragment(),
 
         requireActivity().onBackPressedDispatcher.addCallback {
             viewModel.setEvent(
-                SwapProcessingContract.Event.DismissClicked
+               SwapProcessingContract.Event.DismissClicked
             )
         }
     }
@@ -59,10 +59,14 @@ class SwapProcessingFragment : Fragment(),
             tvProcessingBody.text = getString(R.string.Swap_Process_Body, state.destinationCurrency)
 
             btnHome.setOnClickListener {
-                requireActivity().finish()
+                viewModel.setEvent(
+                    SwapProcessingContract.Event.GoHomeClicked
+                )
             }
             btnDetails.setOnClickListener {
-                findNavController().navigate(SwapProcessingFragmentDirections.actionFragmentSwapProcessingToFragmentSwapDetails())
+                viewModel.setEvent(
+                    SwapProcessingContract.Event.OpenSwapDetails
+                )
             }
         }
     }
@@ -71,6 +75,10 @@ class SwapProcessingFragment : Fragment(),
         when (effect) {
             SwapProcessingContract.Effect.Dismiss ->
                 requireActivity().finish()
+            SwapProcessingContract.Effect.GoHome ->
+                requireActivity().finish()
+            SwapProcessingContract.Effect.OpenDetails ->
+                findNavController().navigate(SwapProcessingFragmentDirections.actionFragmentSwapProcessingToFragmentSwapDetails())
         }
     }
 }

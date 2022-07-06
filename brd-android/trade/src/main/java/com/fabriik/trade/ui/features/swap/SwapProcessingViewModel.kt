@@ -29,6 +29,10 @@ class SwapProcessingViewModel(
         when (event) {
             SwapProcessingContract.Event.DismissClicked ->
                 setEffect { SwapProcessingContract.Effect.Dismiss }
+            SwapProcessingContract.Event.GoHomeClicked ->
+                setEffect { SwapProcessingContract.Effect.GoHome }
+            SwapProcessingContract.Event.OpenSwapDetails ->
+                setEffect { SwapProcessingContract.Effect.OpenDetails }
         }
     }
 

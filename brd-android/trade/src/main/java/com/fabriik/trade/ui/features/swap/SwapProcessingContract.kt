@@ -8,13 +8,14 @@ interface SwapProcessingContract {
 
     sealed class Event : FabriikContract.Event {
         object DismissClicked : Event()
-        object GoHome : Event()
+        object GoHomeClicked : Event()
         object OpenSwapDetails : Event()
-        object DestinationCurrencyClicked : Event()
     }
 
     sealed class Effect : FabriikContract.Effect {
         object Dismiss : Effect()
+        object OpenDetails : Effect()
+        object GoHome : Effect()
     }
 
     data class State(
