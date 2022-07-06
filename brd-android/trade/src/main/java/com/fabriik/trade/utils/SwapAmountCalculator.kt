@@ -1,19 +1,46 @@
 package com.fabriik.trade.utils
 
+import com.breadwallet.ext.isZero
 import com.breadwallet.repository.RatesRepository
+import com.fabriik.trade.data.model.SupportedTradingPair
+import com.fabriik.trade.ui.features.swap.SwapInputContract
 import java.math.BigDecimal
 
 class SwapAmountCalculator(private val ratesRepository: RatesRepository) {
 
     fun convertFiatToCrypto(fiatAmount: BigDecimal, cryptoCode: String, fiatCode: String): BigDecimal {
-        TODO("Not yet implemented")
+        if (fiatAmount.isZero()) {
+            return BigDecimal.ZERO
+        }
+
+        return ratesRepository.getCryptoForFiat(
+            fiatAmount = fiatAmount,
+            cryptoCode = cryptoCode,
+            fiatCode = fiatCode
+        ) ?: BigDecimal.ZERO
     }
 
     fun convertCryptoToFiat(cryptoAmount: BigDecimal, cryptoCode: String, fiatCode: String): BigDecimal {
-        TODO("Not yet implemented")
+        if (cryptoAmount.isZero()) {
+            return BigDecimal.ZERO
+        }
+
+        return ratesRepository.getFiatForCrypto(
+            cryptoAmount = cryptoAmount,
+            cryptoCode = cryptoCode,
+            fiatCode = fiatCode
+        ) ?: BigDecimal.ZERO
     }
 
-    fun convertCryptoToCrypto(cryptoAmount: BigDecimal, fromCryptoCode: String, toCryptoCode: String): BigDecimal {
-        TODO("Not yet implemented")
+    fun convertCryptoToCrypto(cryptoAmount: BigDecimal, tradingPair: SupportedTradingPair, quoteState: SwapInputContract.QuoteState.Loaded, fromCryptoCode: String): BigDecimal {
+        if (cryptoAmount.isZero()) {
+            return BigDecimal.ZERO
+        }
+
+        return if (tradingPair.baseCurrency == fromCryptoCode) {
+            cryptoAmount * quoteState.buyRate
+        } else {
+            cryptoAmount / quoteState.sellRate
+        }
     }
 }

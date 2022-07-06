@@ -174,10 +174,6 @@ class SwapInputViewModel(
 
     private fun onSourceCurrencyFiatAmountChanged(amount: BigDecimal) =
         withLoadedQuoteState { state, quoteState ->
-            if (amount == state.sourceFiatAmount) {
-                return@withLoadedQuoteState
-            }
-
             val sourceCryptoAmount = swapAmountCalculator.convertFiatToCrypto(
                 fiatAmount = amount,
                 cryptoCode = state.selectedPair.baseCurrency,
@@ -185,8 +181,9 @@ class SwapInputViewModel(
             )
 
             val destinationCryptoAmount = swapAmountCalculator.convertCryptoToCrypto(
+                quoteState = quoteState,
+                tradingPair = state.selectedPair,
                 cryptoAmount = sourceCryptoAmount,
-                toCryptoCode = state.selectedPair.termCurrency,
                 fromCryptoCode = state.selectedPair.baseCurrency
             )
 
@@ -203,10 +200,6 @@ class SwapInputViewModel(
 
     private fun onSourceCurrencyCryptoAmountChanged(amount: BigDecimal) =
         withLoadedQuoteState { state, quoteState ->
-            if (amount == state.sourceCryptoAmount) {
-                return@withLoadedQuoteState
-            }
-
             val sourceFiatAmount = swapAmountCalculator.convertCryptoToFiat(
                 cryptoAmount = amount,
                 cryptoCode = state.selectedPair.baseCurrency,
@@ -214,8 +207,9 @@ class SwapInputViewModel(
             )
 
             val destinationCryptoAmount = swapAmountCalculator.convertCryptoToCrypto(
+                quoteState = quoteState,
+                tradingPair = state.selectedPair,
                 cryptoAmount = amount,
-                toCryptoCode = state.selectedPair.termCurrency,
                 fromCryptoCode = state.selectedPair.baseCurrency
             )
 
@@ -232,10 +226,6 @@ class SwapInputViewModel(
 
     private fun onDestinationCurrencyFiatAmountChanged(amount: BigDecimal) =
         withLoadedQuoteState { state, quoteState ->
-            if (amount == state.destinationFiatAmount) {
-                return@withLoadedQuoteState
-            }
-
             val destinationCryptoAmount = swapAmountCalculator.convertFiatToCrypto(
                 fiatAmount = amount,
                 cryptoCode = state.selectedPair.termCurrency,
@@ -243,8 +233,9 @@ class SwapInputViewModel(
             )
 
             val sourceCryptoAmount = swapAmountCalculator.convertCryptoToCrypto(
+                quoteState = quoteState,
+                tradingPair = state.selectedPair,
                 cryptoAmount = destinationCryptoAmount,
-                toCryptoCode = state.selectedPair.baseCurrency,
                 fromCryptoCode = state.selectedPair.termCurrency
             )
 
@@ -261,10 +252,6 @@ class SwapInputViewModel(
 
     private fun onDestinationCurrencyCryptoAmountChanged(amount: BigDecimal) =
         withLoadedQuoteState { state, quoteState ->
-            if (amount == state.destinationCryptoAmount) {
-                return@withLoadedQuoteState
-            }
-
             val destinationFiatAmount = swapAmountCalculator.convertCryptoToFiat(
                 cryptoAmount = amount,
                 cryptoCode = state.selectedPair.termCurrency,
@@ -272,8 +259,9 @@ class SwapInputViewModel(
             )
 
             val sourceCryptoAmount = swapAmountCalculator.convertCryptoToCrypto(
+                quoteState = quoteState,
+                tradingPair = state.selectedPair,
                 cryptoAmount = amount,
-                toCryptoCode = state.selectedPair.baseCurrency,
                 fromCryptoCode = state.selectedPair.termCurrency
             )
 
@@ -366,6 +354,7 @@ class SwapInputViewModel(
                             )
                         }
                         setupTimer()
+                        //todo: refresh amounts
                     }
 
                     Status.ERROR ->
