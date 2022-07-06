@@ -10,6 +10,7 @@ import com.breadwallet.tools.manager.BRSharedPrefs
 import com.fabriik.common.data.Status
 import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.common.utils.getString
+import com.fabriik.common.utils.min
 import com.fabriik.trade.R
 import com.fabriik.trade.data.SwapApi
 import kotlinx.coroutines.Dispatchers
@@ -46,199 +47,187 @@ class SwapInputViewModel(
             SwapInputContract.Event.DismissClicked ->
                 setEffect { SwapInputContract.Effect.Dismiss }
 
-            SwapInputContract.Event.OriginCurrencyClicked -> withLoadedState { state ->
-                val currencies = state.tradingPairs
-                    .map { it.baseCurrency }
-                    //todo: filter enabled wallets
-                    .distinct()
+            SwapInputContract.Event.OriginCurrencyClicked ->
+                onSourceCurrencyClicked()
 
-                setEffect { SwapInputContract.Effect.OriginSelection(currencies) }
-            }
+            is SwapInputContract.Event.OriginCurrencyChanged ->
+                onSourceCurrencyChanged(event.currencyCode)
 
-            is SwapInputContract.Event.OriginCurrencyChanged -> withLoadedState { state ->
-                val pairsWithSelectedBaseCurrency = state.tradingPairs.filter {
-                    it.baseCurrency == event.currencyCode
-                }
+            SwapInputContract.Event.DestinationCurrencyClicked ->
+                onDestinationCurrencyClicked()
 
-                val newSelectedPair = pairsWithSelectedBaseCurrency.find {
-                    it.termCurrency == state.selectedPair.termCurrency
-                } ?: pairsWithSelectedBaseCurrency.firstOrNull()
+            is SwapInputContract.Event.DestinationCurrencyChanged ->
+                onDestinationCurrencyChanged(event.currencyCode)
 
-                newSelectedPair?.let {
-                    setState { state.copy(selectedPair = newSelectedPair) }
-                    getWalletBalance(newSelectedPair.baseCurrency)
-                    refreshQuote()
-                }
-            }
+            is SwapInputContract.Event.OnMinAmountClicked ->
+                onMinAmountClicked()
 
-            SwapInputContract.Event.DestinationCurrencyClicked -> withLoadedState { state ->
-                val currencies = state.tradingPairs
-                    .filter { it.baseCurrency == state.selectedPair.baseCurrency }
-                    .map { it.termCurrency }
-                    .distinct()
+            is SwapInputContract.Event.OnMaxAmountClicked ->
+                onMaxAmountClicked()
 
-                setEffect { SwapInputContract.Effect.DestinationSelection(currencies) }
-            }
+            is SwapInputContract.Event.ReplaceCurrenciesClicked ->
+                onReplaceCurrenciesClicked()
 
-            is SwapInputContract.Event.DestinationCurrencyChanged -> withLoadedState { state ->
-                val pairsWithSelectedBaseCurrency = state.tradingPairs.filter {
-                    it.baseCurrency == state.selectedPair.baseCurrency
-                }
+            is SwapInputContract.Event.OriginCurrencyFiatAmountChange ->
+                onSourceCurrencyFiatAmountChanged(event.amount)
 
-                val newSelectedPair = pairsWithSelectedBaseCurrency.find {
-                    it.termCurrency == event.currencyCode
-                } ?: state.selectedPair
+            is SwapInputContract.Event.OriginCurrencyCryptoAmountChange ->
+                onSourceCurrencyCryptoAmountChanged(event.amount)
 
-                setState { state.copy(selectedPair = newSelectedPair) }
-                refreshQuote()
-            }
+            is SwapInputContract.Event.DestinationCurrencyFiatAmountChange ->
+                onDestinationCurrencyFiatAmountChanged(event.amount)
 
-            is SwapInputContract.Event.OriginCurrencyCryptoAmountChange -> withLoadedQuoteState { state, quoteState ->
-                val sourceFiatAmount = ratesRepository.getFiatForCrypto(
-                    cryptoAmount = event.amount,
-                    cryptoCode = state.selectedPair.baseCurrency,
-                    fiatCode = fiatIso
-                ) ?: BigDecimal.ZERO
-
-                val destinationCryptoAmount = sourceFiatAmount.multiply(
-                    quoteState.sellRate
-                )
-
-                val destinationFiatAmount = ratesRepository.getFiatForCrypto(
-                    cryptoAmount = destinationCryptoAmount,
-                    cryptoCode = state.selectedPair.baseCurrency,
-                    fiatCode = fiatIso
-                ) ?: BigDecimal.ZERO
-
-                /*setState {
-                    state.copy(
-                        sourceFiatAmount = sourceFiatAmount,
-                        sourceCryptoAmount = event.amount,
-                        destinationFiatAmount = destinationFiatAmount,
-                        destinationCryptoAmount = destinationCryptoAmount
-                    )
-                }*/
-            }
-
-            is SwapInputContract.Event.DestinationCurrencyCryptoAmountChange -> withLoadedQuoteState { state, quoteState ->
-                val destinationFiatAmount = ratesRepository.getFiatForCrypto(
-                    cryptoAmount = event.amount,
-                    cryptoCode = state.selectedPair.baseCurrency,
-                    fiatCode = fiatIso
-                ) ?: BigDecimal.ZERO
-
-                val sourceCryptoAmount = destinationFiatAmount.divide(
-                    quoteState.sellRate
-                )
-
-                val sourceFiatAmount = ratesRepository.getFiatForCrypto(
-                    cryptoAmount = event.amount,
-                    cryptoCode = state.selectedPair.baseCurrency,
-                    fiatCode = fiatIso
-                ) ?: BigDecimal.ZERO
-
-
-                /*setState {
-                    state.copy(
-                        sourceFiatAmount = sourceFiatAmount,
-                        sourceCryptoAmount = sourceCryptoAmount,
-                        destinationFiatAmount = destinationFiatAmount,
-                        destinationCryptoAmount = event.amount
-                    )
-                }*/
-            }
-
-
-            /*
-                       SwapInputContract.Event.OnMinAmountClicked ->
-                           onBaseCurrencyCryptoChanged(
-                               min(
-                                   currentState.baseCurrencyCryptoBalance,
-                                   currentState.selectedTradingPair?.minAmount ?: BigDecimal.ZERO
-                               )
-                           )
-
-                       SwapInputContract.Event.OnMaxAmountClicked ->
-                           onBaseCurrencyCryptoChanged(
-                               min(
-                                   currentState.baseCurrencyCryptoBalance,
-                                   currentState.selectedTradingPair?.maxAmount ?: BigDecimal.ZERO
-                               )
-                           )
-
-                       SwapInputContract.Event.ReplaceCurrenciesClicked -> {
-                           val originCurrency = currentState.selectedTradingPair?.baseCurrency
-                           val destinationCurrency = currentState.selectedTradingPair?.termCurrency
-                           val newTradingPair = currentState.tradingPairs.find {
-                               it.baseCurrency == destinationCurrency && it.termCurrency == originCurrency
-                           }
-
-                           if (newTradingPair == null) {
-                               setEffect {
-                                   SwapInputContract.Effect.ShowToast(
-                                       getString(R.string.Swap_Input_SwapNotSupported)
-                                   )
-                               }
-                           } else {
-                               setState { copy(selectedTradingPair = newTradingPair) }
-                               refreshQuote()
-                           }
-                       }
-
-                       is SwapInputContract.Event.OriginCurrencyChanged -> {
-                           val pairsWithSelectedBaseCurrency = currentState.tradingPairs.filter {
-                               it.baseCurrency == event.currencyCode
-                           }
-
-                           val newSelectedPair = pairsWithSelectedBaseCurrency.find {
-                               it.termCurrency == currentState.selectedTradingPair?.termCurrency
-                           } ?: pairsWithSelectedBaseCurrency.firstOrNull()
-
-                           setState { copy(selectedTradingPair = newSelectedPair) } //todo: update rates
-                           refreshQuote()
-                       }
-
-                       is SwapInputContract.Event.DestinationCurrencyChanged -> {
-                           val pairsWithSelectedBaseCurrency = currentState.tradingPairs.filter {
-                               it.baseCurrency == currentState.selectedTradingPair?.baseCurrency
-                           }
-
-                           val newSelectedPair = pairsWithSelectedBaseCurrency.find {
-                               it.termCurrency == event.currencyCode
-                           } ?: currentState.selectedTradingPair
-
-                           setState { copy(selectedTradingPair = newSelectedPair) } //todo: update rates
-                           refreshQuote()
-                       }
-
-
-
-
-                       is SwapInputContract.Event.OriginCurrencyCryptoAmountChange -> {
-                           setState {
-                               copy(
-
-                               )
-                           }
-                       } //todo
-
-                       is SwapInputContract.Event.DestinationCurrencyFiatAmountChange -> {
-                           setState {
-                               copy(
-
-                               )
-                           }
-                       } //todo
-
-                       is SwapInputContract.Event.DestinationCurrencyCryptoAmountChange -> {
-                           setState {
-                               copy(
-
-                               )
-                           }
-                       }*/ //todo
+            is SwapInputContract.Event.DestinationCurrencyCryptoAmountChange ->
+                onDestinationCurrencyCryptoAmountChanged(event.amount)
         }
     }
+
+    private fun onReplaceCurrenciesClicked() = withLoadedState { state ->
+        val sourceCurrency = state.selectedPair.baseCurrency
+        val destinationCurrency = state.selectedPair.termCurrency
+
+        val newTradingPair = state.tradingPairs.find {
+            it.baseCurrency == destinationCurrency && it.termCurrency == sourceCurrency
+        }
+
+        if (newTradingPair == null) {
+            setEffect {
+                SwapInputContract.Effect.ShowToast(
+                    getString(R.string.Swap_Input_SwapNotSupported)
+                )
+            }
+        } else {
+            setState { state.copy(selectedPair = newTradingPair) }
+            refreshQuote()
+        }
+    }
+
+    private fun onSourceCurrencyClicked() = withLoadedState { state ->
+        val currencies = state.tradingPairs
+            .map { it.baseCurrency }
+            //todo: filter enabled wallets
+            .distinct()
+
+        setEffect { SwapInputContract.Effect.OriginSelection(currencies) }
+    }
+
+    private fun onDestinationCurrencyClicked() = withLoadedState { state ->
+        val currencies = state.tradingPairs
+            .filter { it.baseCurrency == state.selectedPair.baseCurrency }
+            .map { it.termCurrency }
+            .distinct()
+
+        setEffect { SwapInputContract.Effect.DestinationSelection(currencies) }
+    }
+
+    private fun onSourceCurrencyChanged(currencyCode: String) = withLoadedState { state ->
+        val pairsWithSelectedBaseCurrency = state.tradingPairs.filter {
+            it.baseCurrency == currencyCode
+        }
+
+        val newSelectedPair = pairsWithSelectedBaseCurrency.find {
+            it.termCurrency == state.selectedPair.termCurrency
+        } ?: pairsWithSelectedBaseCurrency.firstOrNull()
+
+        newSelectedPair?.let {
+            setState { state.copy(selectedPair = newSelectedPair) }
+            getWalletBalance(newSelectedPair.baseCurrency)
+            refreshQuote()
+        }
+    }
+
+    private fun onDestinationCurrencyChanged(currencyCode: String) = withLoadedState { state ->
+        val pairsWithSelectedBaseCurrency = state.tradingPairs.filter {
+            it.baseCurrency == state.selectedPair.baseCurrency
+        }
+
+        val newSelectedPair = pairsWithSelectedBaseCurrency.find {
+            it.termCurrency == currencyCode
+        } ?: state.selectedPair
+
+        setState { state.copy(selectedPair = newSelectedPair) }
+        refreshQuote()
+    }
+
+    private fun onMinAmountClicked() = withLoadedState { state ->
+        onSourceCurrencyCryptoAmountChanged(
+            min(state.sourceCurrencyBalance, state.selectedPair.minAmount)
+        )
+    }
+
+    private fun onMaxAmountClicked() = withLoadedState { state ->
+        onSourceCurrencyCryptoAmountChanged(
+            min(state.sourceCurrencyBalance, state.selectedPair.maxAmount)
+        )
+    }
+
+    private fun onSourceCurrencyFiatAmountChanged(amount: BigDecimal) =
+        withLoadedQuoteState { state, quoteState ->
+
+        }
+
+    private fun onSourceCurrencyCryptoAmountChanged(amount: BigDecimal) =
+        withLoadedQuoteState { state, quoteState ->
+
+            val sourceFiatAmount = ratesRepository.getFiatForCrypto(
+                cryptoAmount = amount,
+                cryptoCode = state.selectedPair.baseCurrency,
+                fiatCode = fiatIso
+            ) ?: BigDecimal.ZERO
+
+            val destinationCryptoAmount = sourceFiatAmount.multiply(
+                quoteState.sellRate
+            )
+
+            val destinationFiatAmount = ratesRepository.getFiatForCrypto(
+                cryptoAmount = destinationCryptoAmount,
+                cryptoCode = state.selectedPair.baseCurrency,
+                fiatCode = fiatIso
+            ) ?: BigDecimal.ZERO
+
+            /*setState {
+                state.copy(
+                    sourceFiatAmount = sourceFiatAmount,
+                    sourceCryptoAmount = event.amount,
+                    destinationFiatAmount = destinationFiatAmount,
+                    destinationCryptoAmount = destinationCryptoAmount
+                )
+            }*/
+        }
+
+    private fun onDestinationCurrencyFiatAmountChanged(amount: BigDecimal) =
+        withLoadedQuoteState { state, quoteState ->
+
+        }
+
+    private fun onDestinationCurrencyCryptoAmountChanged(amount: BigDecimal) =
+        withLoadedQuoteState { state, quoteState ->
+            val destinationFiatAmount = ratesRepository.getFiatForCrypto(
+                cryptoAmount = amount,
+                cryptoCode = state.selectedPair.baseCurrency,
+                fiatCode = fiatIso
+            ) ?: BigDecimal.ZERO
+
+            val sourceCryptoAmount = destinationFiatAmount.divide(
+                quoteState.sellRate
+            )
+
+            val sourceFiatAmount = ratesRepository.getFiatForCrypto(
+                cryptoAmount = amount,
+                cryptoCode = state.selectedPair.baseCurrency,
+                fiatCode = fiatIso
+            ) ?: BigDecimal.ZERO
+
+
+            /*setState {
+                state.copy(
+                    sourceFiatAmount = sourceFiatAmount,
+                    sourceCryptoAmount = sourceCryptoAmount,
+                    destinationFiatAmount = destinationFiatAmount,
+                    destinationCryptoAmount = event.amount
+                )
+            }*/
+        }
 
     private fun loadSupportedCurrencies() {
         callApi(
