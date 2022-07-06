@@ -66,6 +66,10 @@ class SwapInputViewModel(
                 }
             } //todo
 
+
+            SwapInputContract.Event.ConfirmClicked ->
+                setEffect { SwapInputContract.Effect.ConfirmDialog }
+
             is SwapInputContract.Event.OriginCurrencyCryptoAmountChange -> {
                 setState {
                     copy(

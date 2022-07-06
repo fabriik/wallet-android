@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -18,6 +17,7 @@ import kotlinx.coroutines.flow.collect
 import java.math.BigDecimal
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
+import com.fabriik.trade.ui.dialog.ConfirmationDialog
 import com.fabriik.trade.ui.features.assetselection.AssetSelectionAdapter
 import com.fabriik.trade.ui.features.assetselection.AssetSelectionFragment
 
@@ -76,6 +76,10 @@ class SwapInputFragment : Fragment(),
 
             cvSwap.setFiatCurrency(BRSharedPrefs.getPreferredFiatIso())
             cvSwap.setCallback(cardSwapCallback)
+
+            btnConfirm.setOnClickListener {
+                viewModel.setEvent(SwapInputContract.Event.ConfirmClicked)
+            }
         }
 
         // collect UI state
@@ -154,7 +158,15 @@ class SwapInputFragment : Fragment(),
                         REQUEST_KEY_DESTINATION_SELECTION
                     )
                 )
+
+            SwapInputContract.Effect.ConfirmDialog ->
+                showConfirmDialog()
         }
+    }
+
+    private fun showConfirmDialog() {
+        val fm = requireActivity().supportFragmentManager
+        ConfirmationDialog().show(fm, ConfirmationDialog.CONFIRMATION_TAG)
     }
 
     companion object {

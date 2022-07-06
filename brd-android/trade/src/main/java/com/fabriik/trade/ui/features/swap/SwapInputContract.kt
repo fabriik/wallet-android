@@ -8,6 +8,7 @@ interface SwapInputContract {
 
     sealed class Event : FabriikContract.Event {
         object DismissClicked : Event()
+        object ConfirmClicked : Event()
         object OriginCurrencyClicked : Event()
         object ReplaceCurrenciesClicked : Event()
         object DestinationCurrencyClicked : Event()
@@ -21,6 +22,7 @@ interface SwapInputContract {
 
     sealed class Effect : FabriikContract.Effect {
         object Dismiss : Effect()
+        object ConfirmDialog : Effect()
         object OriginSelection : Effect()
         object DestinationSelection : Effect()
     }
