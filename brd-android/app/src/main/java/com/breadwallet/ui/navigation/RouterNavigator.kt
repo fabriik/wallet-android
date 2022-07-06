@@ -425,11 +425,9 @@ class RouterNavigator(
     }
 
     override fun about() {
-        router.pushController(
-            AboutController().asTransaction(
-                HorizontalChangeHandler(),
-                HorizontalChangeHandler()
-            )
+        AboutController().asTransaction(
+            HorizontalChangeHandler(),
+            HorizontalChangeHandler()
         )
     }
 
