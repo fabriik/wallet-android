@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.collect
 import java.math.BigDecimal
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
+import com.fabriik.trade.ui.dialog.ConfirmationArgs
 import com.fabriik.trade.ui.dialog.ConfirmationDialog
 import com.fabriik.trade.ui.features.assetselection.AssetSelectionAdapter
 import com.fabriik.trade.ui.features.assetselection.AssetSelectionFragment
@@ -166,7 +167,16 @@ class SwapInputFragment : Fragment(),
 
     private fun showConfirmDialog() {
         val fm = requireActivity().supportFragmentManager
-        ConfirmationDialog().show(fm, ConfirmationDialog.CONFIRMATION_TAG)
+        val args = ConfirmationArgs(
+            swapFromCurrency = "BSV",
+            swapFromValue = 1,
+            swapToCurrency = "BTC",
+            swapToValue = 1,
+            rate = "1 BSV = 0.0000333 BTC",
+            networkFee = 1,
+            totalCost = 1
+        )
+        ConfirmationDialog(args).show(fm, ConfirmationDialog.CONFIRMATION_TAG)
     }
 
     companion object {

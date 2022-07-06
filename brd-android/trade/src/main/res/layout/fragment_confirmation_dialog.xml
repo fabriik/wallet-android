@@ -52,7 +52,7 @@
         app:layout_constraintTop_toBottomOf="@id/view_divider" />
 
     <TextView
-        android:id="@+id/tv_send_value"
+        android:id="@+id/tv_from_value"
         style="@style/TextStyle.Body1.Light_3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -71,10 +71,10 @@
         android:layout_marginTop="16dp"
         android:text="@string/Swap.Confirmation.To"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_send_value" />
+        app:layout_constraintTop_toBottomOf="@id/tv_from_value" />
 
     <TextView
-        android:id="@+id/tv_to_address"
+        android:id="@+id/tv_to_value"
         style="@style/TextStyle.Body1.Light_3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -93,7 +93,7 @@
         android:layout_marginTop="16dp"
         android:text="@string/Swap.Confirmation.Rate"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_to_address" />
+        app:layout_constraintTop_toBottomOf="@id/tv_to_value" />
 
     <TextView
         android:id="@+id/tv_rate_value"
