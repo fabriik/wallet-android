@@ -81,4 +81,20 @@
         <item name="android:textColor">@color/light_primary</item>
     </style>
 
+    <style name="TextStyle.Title6.Light">
+        <item name="android:textColor">@color/light_text_03</item>
+    </style>
+
+    <style name="TextStyle.Body1.Light_3">
+        <item name="android:textColor">@color/light_text_03</item>
+    </style>
+
+    <style name="TextStyle.Body2.Light_2">
+        <item name="android:textColor">@color/light_text_02</item>
+    </style>
+
+    <style name="TextStyle.Body2.Light_3">
+        <item name="android:textColor">@color/light_text_03</item>
+    </style>
+
 </resources>

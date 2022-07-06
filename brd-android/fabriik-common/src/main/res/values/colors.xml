@@ -11,6 +11,7 @@
     <color name="light_tertiary">#EEF4FF</color>
     <color name="light_text_01">#2E3134</color>
     <color name="light_text_02">#5F6368</color>
+    <color name="light_text_03">#3C4043</color>
     <color name="light_error">#D72431</color>
     <color name="light_success">#00A86E</color>
     <color name="light_pending">#F8BA37</color>
