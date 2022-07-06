@@ -17,6 +17,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import org.jetbrains.annotations.Contract
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
 import org.kodein.di.erased.instance
@@ -171,29 +172,98 @@ class SwapInputViewModel(
 
     private fun onSourceCurrencyFiatAmountChanged(amount: BigDecimal) =
         withLoadedQuoteState { state, quoteState ->
+            if (amount == state.sourceFiatAmount) {
+                return@withLoadedQuoteState
+            }
 
+            val sourceCryptoAmount = ratesRepository.getCryptoForFiat(
+                fiatAmount = amount,
+                cryptoCode = state.selectedPair.baseCurrency,
+                fiatCode = fiatIso
+            ) ?: BigDecimal.ZERO
+
+            val destinationCryptoAmount = amount.multiply(
+                quoteState.buyRate
+            )
+
+            val destinationFiatAmount = ratesRepository.getFiatForCrypto(
+                cryptoAmount = destinationCryptoAmount,
+                cryptoCode = state.selectedPair.baseCurrency,
+                fiatCode = fiatIso
+            ) ?: BigDecimal.ZERO
+
+            setEffect { SwapInputContract.Effect.UpdateSourceCryptoAmount(sourceCryptoAmount) }
+            setEffect { SwapInputContract.Effect.UpdateDestinationFiatAmount(destinationFiatAmount) }
+            setEffect { SwapInputContract.Effect.UpdateDestinationCryptoAmount(destinationCryptoAmount) }
         }
 
     private fun onSourceCurrencyCryptoAmountChanged(amount: BigDecimal) =
         withLoadedQuoteState { state, quoteState ->
+            if (amount == state.sourceCryptoAmount) {
+                return@withLoadedQuoteState
+            }
 
-        }
-
-    private fun onDestinationCurrencyFiatAmountChanged(amount: BigDecimal) =
-        withLoadedQuoteState { state, quoteState ->
-
-        }
-
-    private fun onDestinationCurrencyCryptoAmountChanged(amount: BigDecimal) =
-        withLoadedQuoteState { state, quoteState ->
-
-            /*val destinationFiatAmount = ratesRepository.getFiatForCrypto(
+            val sourceFiatAmount = ratesRepository.getFiatForCrypto(
                 cryptoAmount = amount,
                 cryptoCode = state.selectedPair.baseCurrency,
                 fiatCode = fiatIso
             ) ?: BigDecimal.ZERO
 
-            val sourceCryptoAmount = destinationFiatAmount.divide(
+            val destinationCryptoAmount = amount.multiply(
+                quoteState.buyRate
+            )
+
+            val destinationFiatAmount = ratesRepository.getFiatForCrypto(
+                cryptoAmount = destinationCryptoAmount,
+                cryptoCode = state.selectedPair.baseCurrency,
+                fiatCode = fiatIso
+            ) ?: BigDecimal.ZERO
+
+            setEffect { SwapInputContract.Effect.UpdateSourceFiatAmount(sourceFiatAmount) }
+            setEffect { SwapInputContract.Effect.UpdateDestinationFiatAmount(destinationFiatAmount) }
+            setEffect { SwapInputContract.Effect.UpdateDestinationCryptoAmount(destinationCryptoAmount) }
+        }
+
+    private fun onDestinationCurrencyFiatAmountChanged(amount: BigDecimal) =
+        withLoadedQuoteState { state, quoteState ->
+            if (amount == state.destinationFiatAmount) {
+                return@withLoadedQuoteState
+            }
+
+            val destinationCryptoAmount = ratesRepository.getCryptoForFiat(
+                fiatAmount = amount,
+                cryptoCode = state.selectedPair.baseCurrency,
+                fiatCode = fiatIso
+            ) ?: BigDecimal.ZERO
+
+            val sourceCryptoAmount = amount.multiply(
+                quoteState.buyRate
+            )
+
+            val sourceFiatAmount = ratesRepository.getFiatForCrypto(
+                cryptoAmount = destinationCryptoAmount,
+                cryptoCode = state.selectedPair.baseCurrency,
+                fiatCode = fiatIso
+            ) ?: BigDecimal.ZERO
+
+            setEffect { SwapInputContract.Effect.UpdateSourceFiatAmount(sourceFiatAmount) }
+            setEffect { SwapInputContract.Effect.UpdateSourceCryptoAmount(sourceCryptoAmount) }
+            setEffect { SwapInputContract.Effect.UpdateDestinationCryptoAmount(destinationCryptoAmount) }
+        }
+
+    private fun onDestinationCurrencyCryptoAmountChanged(amount: BigDecimal) =
+        withLoadedQuoteState { state, quoteState ->
+            if (amount == state.destinationCryptoAmount) {
+                return@withLoadedQuoteState
+            }
+
+            val destinationFiatAmount = ratesRepository.getFiatForCrypto(
+                cryptoAmount = amount,
+                cryptoCode = state.selectedPair.baseCurrency,
+                fiatCode = fiatIso
+            ) ?: BigDecimal.ZERO
+
+            val sourceCryptoAmount = destinationFiatAmount.multiply(
                 quoteState.sellRate
             )
 
@@ -203,15 +273,9 @@ class SwapInputViewModel(
                 fiatCode = fiatIso
             ) ?: BigDecimal.ZERO
 
-
-            setState {
-                state.copy(
-                    sourceFiatAmount = sourceFiatAmount,
-                    sourceCryptoAmount = sourceCryptoAmount,
-                    destinationFiatAmount = destinationFiatAmount,
-                    destinationCryptoAmount = event.amount
-                )
-            }*/
+            setEffect { SwapInputContract.Effect.UpdateSourceFiatAmount(sourceFiatAmount) }
+            setEffect { SwapInputContract.Effect.UpdateSourceCryptoAmount(sourceCryptoAmount) }
+            setEffect { SwapInputContract.Effect.UpdateDestinationFiatAmount(destinationFiatAmount) }
         }
 
     private fun loadSupportedCurrencies() {

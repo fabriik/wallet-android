@@ -155,11 +155,6 @@ class SwapInputFragment : Fragment(),
                     )
                 )
 
-                cvSwap.setSourceFiatAmount(state.sourceFiatAmount)
-                cvSwap.setSourceCryptoAmount(state.sourceCryptoAmount)
-                cvSwap.setDestinationFiatAmount(state.destinationFiatAmount)
-                cvSwap.setDestinationCryptoAmount(state.destinationCryptoAmount)
-
                 when (state.quoteState) {
                     is SwapInputContract.QuoteState.Loading -> {
                         viewTimer.isVisible = false
@@ -218,6 +213,18 @@ class SwapInputFragment : Fragment(),
                 FabriikToastUtil.showInfo(
                     binding.root, effect.message
                 )
+
+            is SwapInputContract.Effect.UpdateSourceFiatAmount ->
+                binding.cvSwap.setSourceFiatAmount(effect.bigDecimal)
+
+            is SwapInputContract.Effect.UpdateSourceCryptoAmount ->
+                binding.cvSwap.setSourceCryptoAmount(effect.bigDecimal)
+
+            is SwapInputContract.Effect.UpdateDestinationFiatAmount ->
+                binding.cvSwap.setDestinationFiatAmount(effect.bigDecimal)
+
+            is SwapInputContract.Effect.UpdateDestinationCryptoAmount ->
+                binding.cvSwap.setDestinationCryptoAmount(effect.bigDecimal)
         }
     }
 

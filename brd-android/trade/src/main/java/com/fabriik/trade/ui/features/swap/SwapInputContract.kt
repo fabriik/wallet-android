@@ -30,6 +30,10 @@ interface SwapInputContract {
         data class ShowToast(val message: String): Effect()
         data class OriginSelection(val currencies: List<String>) : Effect()
         data class DestinationSelection(val currencies: List<String>) : Effect()
+        data class UpdateSourceFiatAmount(val bigDecimal: BigDecimal) : Effect()
+        data class UpdateSourceCryptoAmount(val bigDecimal: BigDecimal) : Effect()
+        data class UpdateDestinationFiatAmount(val bigDecimal: BigDecimal) : Effect()
+        data class UpdateDestinationCryptoAmount(val bigDecimal: BigDecimal) : Effect()
     }
 
     sealed class State : FabriikContract.State {

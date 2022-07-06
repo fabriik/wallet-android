@@ -10,6 +10,7 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.annotation.StringRes
 import androidx.core.os.bundleOf
+import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.SavedStateHandle
 import java.math.BigDecimal
@@ -54,6 +55,14 @@ fun min(a: BigDecimal, b: BigDecimal) = when {
 fun max(a: BigDecimal, b: BigDecimal) = when {
     b > a -> b
     else -> a
+}
+
+fun EditText.doAfterTextChangedWhenFocused(action: (text: Editable?) -> Unit) {
+    doAfterTextChanged {
+        if (hasFocus()) {
+            action(it)
+        }
+    }
 }
 
 val Int.dp: Int

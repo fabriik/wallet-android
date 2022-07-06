@@ -126,6 +126,16 @@ class RatesRepository private constructor(private val mContext: Context) {
         return getFiatForCrypto(BigDecimal.ONE, cryptoCode, fiatCode) ?: BigDecimal.ZERO
     }
 
+    fun getCryptoForFiat(fiatAmount: BigDecimal, cryptoCode: String, fiatCode: String): BigDecimal? {
+        val cryptoRate = getCurrencyByCode(cryptoCode, fiatCode)
+        if (cryptoRate == null) {
+            Log.e(TAG, "getFiatForCrypto: No fiat rate for $cryptoCode")
+            return null
+        }
+        return fiatAmount / cryptoRate.rate.toBigDecimal()
+    }
+
+
     /**
      * Generates the cache key that is or would be used to store the rate between the two given
      * currencies.
