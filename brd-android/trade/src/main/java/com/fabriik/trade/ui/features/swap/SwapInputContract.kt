@@ -1,6 +1,7 @@
 package com.fabriik.trade.ui.features.swap
 
 import com.fabriik.common.ui.base.FabriikContract
+import com.fabriik.common.ui.customview.FabriikSwitch
 import com.fabriik.trade.data.model.SupportedTradingPair
 import com.fabriik.trade.data.response.QuoteResponse
 import com.fabriik.trade.ui.features.assetselection.AssetSelectionAdapter
@@ -25,6 +26,7 @@ interface SwapInputContract {
 
     sealed class Effect : FabriikContract.Effect {
         object Dismiss : Effect()
+        object DeselectMinMaxSwitchItems : Effect()
         data class ShowToast(val message: String): Effect()
         data class OriginSelection(val currencies: List<String>) : Effect()
         data class DestinationSelection(val currencies: List<String>) : Effect()
@@ -42,6 +44,7 @@ interface SwapInputContract {
             val sourceCurrencyBalance: BigDecimal = BigDecimal.ZERO,
             val destinationFiatAmount: BigDecimal = BigDecimal.ZERO,
             val destinationCryptoAmount: BigDecimal = BigDecimal.ZERO,
+            @FabriikSwitch.Companion.SwitchOption val selectedMinMaxOption: Int = FabriikSwitch.OPTION_NONE,
         ) : State()
     }
 

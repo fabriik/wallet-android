@@ -195,6 +195,9 @@ class SwapInputFragment : Fragment(),
             SwapInputContract.Effect.Dismiss ->
                 requireActivity().finish()
 
+            SwapInputContract.Effect.DeselectMinMaxSwitchItems ->
+                binding.switchMinMax.setSelectedItem(FabriikSwitch.OPTION_NONE)
+
             is SwapInputContract.Effect.OriginSelection ->
                 findNavController().navigate(
                     SwapInputFragmentDirections.actionAssetSelection(
