@@ -23,11 +23,11 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:gravity="start"
+        android:text="@string/Swap.Input.SendingFeeTitle"
         android:textColor="@color/light_text_02"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view_input_selling_currency"
-        tools:text="Sending network fee\n(included)"
         tools:visibility="visible" />
 
     <TextView
@@ -71,10 +71,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        app:title="@string/Swap.Input.IWant"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn_swap" />
+        app:layout_constraintTop_toBottomOf="@id/btn_swap"
+        app:title="@string/Swap.Input.IWant" />
 
     <TextView
         android:id="@+id/tv_buying_currency_network_fee_title"
@@ -84,11 +84,11 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:gravity="start"
+        android:text="@string/Swap.Input.ReceivingFeeTitle"
         android:textColor="@color/light_text_02"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view_input_buying_currency"
-        tools:text="Receiving network fee\n(included)"
         tools:visibility="visible" />
 
     <TextView

@@ -19,6 +19,7 @@ import java.math.BigDecimal
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.breadwallet.breadbox.formatCryptoForUi
+import com.breadwallet.ui.formatFiatForUi
 import com.fabriik.common.ui.customview.FabriikSwitch
 import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.trade.ui.features.assetselection.AssetSelectionAdapter
@@ -146,8 +147,8 @@ class SwapInputFragment : Fragment(),
                 content.isVisible = true
                 initialLoadingIndicator.isVisible = false
 
-                cvSwap.setSendingNetworkFee(state.sendingNetworkFee?.formatCryptoForUi(state.sendingNetworkFeeCurrency))
-                cvSwap.setReceivingNetworkFee(state.receivingNetworkFee?.formatCryptoForUi(state.receivingNetworkFeeCurrency))
+                cvSwap.setSendingNetworkFee(state.sendingNetworkFee)
+                cvSwap.setReceivingNetworkFee(state.receivingNetworkFee)
                 cvSwap.setOriginCurrency(state.selectedPair.baseCurrency)
                 cvSwap.setDestinationCurrency(state.selectedPair.termCurrency)
                 cvSwap.setSellingCurrencyTitle(

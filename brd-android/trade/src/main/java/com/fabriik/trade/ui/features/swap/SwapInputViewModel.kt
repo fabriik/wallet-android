@@ -4,6 +4,7 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.breadwallet.breadbox.*
+import com.breadwallet.crypto.Address
 import com.breadwallet.crypto.AddressScheme
 import com.breadwallet.crypto.Amount
 import com.breadwallet.crypto.errors.FeeEstimationError
@@ -313,7 +314,7 @@ class SwapInputViewModel(
                 when (it.status) {
                     Status.SUCCESS -> {
                         val tradingPairs = it.data ?: emptyList()
-                        val selectedPair = tradingPairs.firstOrNull()
+                        val selectedPair = tradingPairs[0]
 
                         if (selectedPair == null) {
                             setEffect {
@@ -419,8 +420,10 @@ class SwapInputViewModel(
                     if (it == 0L) {
                         onTimerCompleted()
                     } else {
-                        setState {
-                            state.copy(timer = it.toInt())
+                        withLoadedState { latestState ->
+                            setState {
+                                latestState.copy(timer = it.toInt())
+                            }
                         }
                     }
                 }
@@ -450,12 +453,11 @@ class SwapInputViewModel(
         estimateFee(
             currencyCode = state.selectedPair.baseCurrency,
             amountBig = amount
-        ) {
+        ) { fee ->
             withLoadedState { state ->
                 setState {
                     state.copy(
-                        sendingNetworkFee = it,
-                        sendingNetworkFeeCurrency = state.selectedPair.baseCurrency
+                        sendingNetworkFee = fee
                     )
                 }
             }
@@ -463,40 +465,54 @@ class SwapInputViewModel(
     }
 
     private fun estimateReceivingFee(amount: BigDecimal) = withLoadedState{ state ->
-        /*estimateFee(
+        estimateFee(
             currencyCode = state.selectedPair.termCurrency,
             amountBig = amount
-        ) {
+        ) { fee ->
             withLoadedState { state ->
                 setState {
                     state.copy(
-                        receivingNetworkFee = it,
-                        receivingNetworkFeeCurrency = state.selectedPair.termCurrency
+                        receivingNetworkFee = fee
                     )
                 }
             }
-        }*/
+        }
     }
 
-    private fun estimateFee(currencyCode: String, amountBig: BigDecimal, callback: (BigDecimal?) -> Unit) {
+    private fun estimateFee(currencyCode: String, amountBig: BigDecimal, callback: (SwapInputContract.NetworkFeeData?) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             val wallet = breadBox.wallet(currencyCode).first()
             val amount = Amount.create(amountBig.toDouble(), wallet.unit)
             val address = if (wallet.currency.isBitcoin()) {
-                wallet.getTargetForScheme(
-                    when (BRSharedPrefs.getIsSegwitEnabled()) {
-                        true -> AddressScheme.BTC_SEGWIT
-                        false -> AddressScheme.BTC_LEGACY
-                    }
-                )
-            } else {
-                wallet.target
-            }
+            wallet.getTargetForScheme(
+                when (BRSharedPrefs.getIsSegwitEnabled()) {
+                    true -> AddressScheme.BTC_SEGWIT
+                    false -> AddressScheme.BTC_LEGACY
+                }
+            )
+        } else {
+            wallet.target
+        }
 
             try {
                 val data = wallet.estimateFee(address, amount)
-                val fee = data.fee.toBigDecimal()
-                callback(fee)
+                val cryptoFee = data.fee.toBigDecimal()
+                val cryptoCurrency = data.currency.code
+                val fiatFee = ratesRepository.getFiatForCrypto(
+                    cryptoAmount = cryptoFee,
+                    cryptoCode = cryptoCurrency,
+                    fiatCode = fiatIso
+                ) ?: return@launch
+
+                callback(
+                    SwapInputContract.NetworkFeeData(
+                        fiatAmount = fiatFee,
+                        fiatCurrency = fiatIso,
+                        cryptoAmount = cryptoFee,
+                        cryptoCurrency = cryptoCurrency
+                    )
+                )
+
                 //check(!fee.isZero()) { "Estimated fee was zero" }
                 //E.OnNetworkFeeUpdated(effect.address, effect.amount, fee, data)
             } catch (e: FeeEstimationError) {

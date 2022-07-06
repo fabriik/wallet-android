@@ -12,6 +12,7 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.*
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.math.BigDecimal
 import java.util.concurrent.TimeUnit
 
 class SwapApi(
@@ -21,7 +22,7 @@ class SwapApi(
     private val responseMapper = FabriikApiResponseMapper()
 
     suspend fun getTradingPairs(): Resource<List<TradingPair>?> {
-        return try {
+        /*return try {
             val response = service.getTradingPairs()
             Resource.success(data = response.pairs)
         } catch (ex: Exception) {
@@ -29,11 +30,23 @@ class SwapApi(
                 context = context,
                 exception = ex
             )
-        }
+        }*/
+
+        return Resource.success(
+            listOf(
+                TradingPair(
+                    name = "BTC-BSV",
+                    baseCurrency = "BTC",
+                    termCurrency = "BSV",
+                    minAmount = BigDecimal("0.000001"),
+                    maxAmount = BigDecimal("1000000")
+                )
+            )
+        )
     }
 
     suspend fun getQuote(selectedTradingPair: TradingPair): Resource<QuoteResponse?> {
-        return try {
+        /*return try {
             val response = service.getQuote(selectedTradingPair.name)
             Resource.success(data = response)
         } catch (ex: Exception) {
@@ -41,7 +54,17 @@ class SwapApi(
                 context = context,
                 exception = ex
             )
-        }
+        }*/
+        return Resource.success(
+            QuoteResponse(
+                securityId = "BTC_BSV",
+                closeAsk = BigDecimal.TEN,
+                closeBid = BigDecimal.TEN,
+                timestamp = System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(15),
+                outFeeEstimates = emptyList(),
+                inFeeEstimates = emptyList()
+            )
+        )
     }
 
     companion object {

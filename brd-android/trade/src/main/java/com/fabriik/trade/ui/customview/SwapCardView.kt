@@ -4,8 +4,11 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.core.view.isVisible
+import com.breadwallet.breadbox.formatCryptoForUi
+import com.breadwallet.ui.formatFiatForUi
 import com.fabriik.common.utils.dp
 import com.fabriik.trade.databinding.ViewSwapCardBinding
+import com.fabriik.trade.ui.features.swap.SwapInputContract
 import com.google.android.material.card.MaterialCardView
 import java.math.BigDecimal
 
@@ -72,16 +75,26 @@ class SwapCardView @JvmOverloads constructor(
         binding.viewInputBuyingCurrency.setCryptoCurrency(currency)
     }
 
-    fun setSendingNetworkFee(feeText: String?) {
-        binding.tvSellingCurrencyNetworkFee.text = feeText
-        binding.tvSellingCurrencyNetworkFee.isVisible = feeText != null
-        binding.tvSellingCurrencyNetworkFeeTitle.isVisible = feeText != null
+    fun setSendingNetworkFee(fee: SwapInputContract.NetworkFeeData?) {
+        binding.tvSellingCurrencyNetworkFee.isVisible = fee != null
+        binding.tvSellingCurrencyNetworkFeeTitle.isVisible = fee != null
+
+        fee?.let {
+            val fiatText = it.fiatAmount.formatFiatForUi(it.fiatCurrency)
+            val cryptoText = it.cryptoAmount.formatCryptoForUi(it.cryptoCurrency)
+            binding.tvSellingCurrencyNetworkFee.text = "$cryptoText\n$fiatText"
+        }
     }
 
-    fun setReceivingNetworkFee(feeText: String?) {
-        binding.tvBuyingCurrencyNetworkFee.text = feeText
-        binding.tvBuyingCurrencyNetworkFee.isVisible = feeText != null
-        binding.tvBuyingCurrencyNetworkFeeTitle.isVisible = feeText != null
+    fun setReceivingNetworkFee(fee: SwapInputContract.NetworkFeeData?) {
+        binding.tvBuyingCurrencyNetworkFee.isVisible = fee != null
+        binding.tvBuyingCurrencyNetworkFeeTitle.isVisible = fee != null
+
+        fee?.let {
+            val fiatText = it.fiatAmount.formatFiatForUi(it.fiatCurrency)
+            val cryptoText = it.cryptoAmount.formatCryptoForUi(it.cryptoCurrency)
+            binding.tvBuyingCurrencyNetworkFee.text = "$cryptoText\n$fiatText"
+        }
     }
 
     fun setSellingCurrencyTitle(title: String) {

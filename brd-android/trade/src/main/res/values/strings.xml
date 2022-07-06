@@ -7,6 +7,8 @@
     <string name="Swap.Input.Confirm">Confirm</string>
     <string name="Swap.Input.Rate">Rate:</string>
     <string name="Swap.Input.SwapNotSupported">Swap not supported</string>
+    <string name="Swap.Input.SendingFeeTitle">Sending network fee\n(included)</string>
+    <string name="Swap.Input.ReceivingFeeTitle">Receiving network fee\n(included)</string>
 
     <string name="Swap.AssetsSelection.Title">Select assets</string>
     <string name="Swap.AssetsSelection.SearchHint">Search</string>

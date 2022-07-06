@@ -40,10 +40,9 @@ interface SwapInputContract {
             val timer: Int = 0,
             val tradingPairs: List<TradingPair>,
             val selectedPair: TradingPair,
-            val sendingNetworkFee: BigDecimal? = null,
-            val sendingNetworkFeeCurrency: String? = null,
-            val receivingNetworkFee: BigDecimal? = null,
-            val receivingNetworkFeeCurrency: String? = null,
+            //todo: fee loading indicators, disable button
+            val sendingNetworkFee: NetworkFeeData? = null,
+            val receivingNetworkFee: NetworkFeeData? = null,
             val quoteState: QuoteState = QuoteState.Loading,
             val sourceFiatAmount: BigDecimal = BigDecimal.ZERO,
             val sourceCryptoAmount: BigDecimal = BigDecimal.ZERO,
@@ -62,4 +61,11 @@ interface SwapInputContract {
             val buyRate: BigDecimal
         ) : QuoteState()
     }
+
+    data class NetworkFeeData(
+        val fiatAmount: BigDecimal,
+        val fiatCurrency: String,
+        val cryptoAmount: BigDecimal,
+        val cryptoCurrency: String
+    )
 }
