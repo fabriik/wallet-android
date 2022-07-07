@@ -18,6 +18,7 @@ import com.fabriik.trade.R
 import com.fabriik.trade.data.SwapApi
 import com.fabriik.trade.utils.SwapAmountCalculator
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -43,6 +44,8 @@ class SwapInputViewModel(
     private val breadBox by kodein.instance<BreadBox>()
     private val ratesRepository by kodein.instance<RatesRepository>()
     private val swapAmountCalculator = SwapAmountCalculator(ratesRepository)
+
+    private var currentTimerJob: Job? = null
 
     init {
         loadSupportedCurrencies()
@@ -398,6 +401,8 @@ class SwapInputViewModel(
     }
 
     private fun setupTimer() = withLoadedQuoteState { state, quoteState ->
+        currentTimerJob?.cancel()
+
         val targetTimestamp = quoteState.timerTimestamp
         val currentTimestamp = System.currentTimeMillis()
         val diffSec = TimeUnit.MILLISECONDS.toSeconds(targetTimestamp - currentTimestamp)
@@ -411,7 +416,7 @@ class SwapInputViewModel(
             state.copy(timer = diffSec.toInt())
         }
 
-        viewModelScope.launch {
+        currentTimerJob = viewModelScope.launch {
             (diffSec downTo 0)
                 .asSequence()
                 .asFlow()
