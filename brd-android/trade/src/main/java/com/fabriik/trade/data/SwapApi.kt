@@ -35,12 +35,19 @@ class SwapApi(
         return Resource.success(
             listOf(
                 TradingPair(
-                    name = "BTC-BSV",
-                    baseCurrency = "BTC",
-                    termCurrency = "BSV",
-                    minAmount = BigDecimal("0.000001"),
+                    name = "BSV-BTC",
+                    baseCurrency = "BSV",
+                    termCurrency = "BTC",
+                    minAmount = BigDecimal("0.001"),
                     maxAmount = BigDecimal("1000000")
-                )
+                ),
+                TradingPair(
+                    name = "BTC-USDT",
+                    baseCurrency = "BTC",
+                    termCurrency = "USDT",
+                    minAmount = BigDecimal("0.001"),
+                    maxAmount = BigDecimal("1000000")
+                ),
             )
         )
     }
@@ -56,14 +63,25 @@ class SwapApi(
             )
         }*/
         return Resource.success(
-            QuoteResponse(
-                securityId = "BTC_BSV",
-                closeAsk = BigDecimal.TEN,
-                closeBid = BigDecimal.TEN,
-                timestamp = System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(15),
-                outFeeEstimates = emptyList(),
-                inFeeEstimates = emptyList()
-            )
+            if (selectedTradingPair.name == "BSV-BTC") {
+                QuoteResponse(
+                    securityId = "BSV-BTC",
+                    closeAsk = BigDecimal("0.002658"),
+                    closeBid = BigDecimal("0.002651"),
+                    timestamp = System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(15),
+                    outFeeEstimates = emptyList(),
+                    inFeeEstimates = emptyList()
+                )
+            } else {
+                QuoteResponse(
+                    securityId = "BTC-USDT",
+                    closeAsk = BigDecimal("19784"),
+                    closeBid = BigDecimal("19776"),
+                    timestamp = System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(15),
+                    outFeeEstimates = emptyList(),
+                    inFeeEstimates = emptyList()
+                )
+            }
         )
     }
 
