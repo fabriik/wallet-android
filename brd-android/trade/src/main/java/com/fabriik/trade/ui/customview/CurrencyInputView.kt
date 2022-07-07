@@ -5,6 +5,8 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.breadwallet.breadbox.formatCryptoForUi
+import com.breadwallet.tools.manager.BRSharedPrefs
+import com.breadwallet.ui.formatFiatForUi
 import com.fabriik.common.utils.doAfterTextChangedWhenFocused
 import com.fabriik.trade.R
 import com.fabriik.trade.databinding.ViewCurrencyInputBinding
@@ -57,7 +59,11 @@ class CurrencyInputView @JvmOverloads constructor(
     }
 
     fun setFiatAmount(amount: BigDecimal) {
-        val formatted = amount.formatCryptoForUi(null)
+        val formatted = amount.formatFiatForUi(
+            currencyCode = BRSharedPrefs.getPreferredFiatIso(),
+            showCurrencySymbol = false
+        )
+
         val text = binding.etFiatAmount.text?.toString() ?: ""
 
         if (text != formatted) {
