@@ -55,9 +55,9 @@ class SwapApi(
         )
     }
 
-    suspend fun getQuote(selectedTradingPair: TradingPair): Resource<QuoteResponse?> {
+    suspend fun getQuote(tradingPair: TradingPair): Resource<QuoteResponse?> {
         /*return try {
-            val response = service.getQuote(selectedTradingPair.name)
+            val response = service.getQuote(tradingPair.name)
             Resource.success(data = response)
         } catch (ex: Exception) {
             responseMapper.mapError(
@@ -68,7 +68,7 @@ class SwapApi(
         delay(2000)
 
         return Resource.success(
-            if (selectedTradingPair.name == "BSV-BTC") {
+            if (tradingPair.name == "BSV-BTC") {
                 QuoteResponse(
                     securityId = "BSV-BTC",
                     closeAsk = BigDecimal("0.002658"),

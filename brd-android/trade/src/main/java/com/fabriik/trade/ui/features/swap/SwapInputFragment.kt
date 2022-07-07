@@ -136,6 +136,9 @@ class SwapInputFragment : Fragment(),
 
     override fun render(state: SwapInputContract.State) {
         when (state) {
+            is SwapInputContract.State.Error ->
+                handleErrorState(state)
+
             is SwapInputContract.State.Loading ->
                 handleLoadingState(state)
 
@@ -186,6 +189,13 @@ class SwapInputFragment : Fragment(),
             cvSwap.setSendingNetworkFee(state.sendingNetworkFee)
             cvSwap.setReceivingNetworkFee(state.receivingNetworkFee)
         }*/
+    }
+
+    private fun handleErrorState(state: SwapInputContract.State.Error) {
+        with(binding) {
+            content.isVisible = false
+            initialLoadingIndicator.isVisible = true
+        }
     }
 
     private fun handleLoadingState(state: SwapInputContract.State.Loading) {

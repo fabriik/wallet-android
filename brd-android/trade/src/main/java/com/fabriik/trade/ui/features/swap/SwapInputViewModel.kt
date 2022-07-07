@@ -16,6 +16,8 @@ import com.fabriik.common.utils.getString
 import com.fabriik.common.utils.min
 import com.fabriik.trade.R
 import com.fabriik.trade.data.SwapApi
+import com.fabriik.trade.data.model.TradingPair
+import com.fabriik.trade.data.response.QuoteResponse
 import com.fabriik.trade.utils.SwapAmountCalculator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -50,14 +52,14 @@ class SwapInputViewModel(
     private var currentTimerJob: Job? = null*/
 
     init {
-        loadSupportedCurrencies()
+        loadInitialData()
     }
 
     override fun createInitialState() = SwapInputContract.State.Loading
 
     override fun handleEvent(event: SwapInputContract.Event) {
         when (event) {
-           SwapInputContract.Event.DismissClicked ->
+            SwapInputContract.Event.DismissClicked ->
                 setEffect { SwapInputContract.Effect.Dismiss }
 
             /* SwapInputContract.Event.ConfirmClicked -> withLoadedState { state ->
@@ -111,6 +113,59 @@ class SwapInputViewModel(
             }*/
         }
     }
+
+    private fun loadInitialData() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val tradingPairs = loadTradingPairs()
+            if (tradingPairs.isEmpty()) {
+                showErrorState()
+                return@launch
+            }
+
+            val selectedPair = tradingPairs.first()
+            val selectedPairQuote = loadQuote(selectedPair)
+            if (selectedPairQuote == null) {
+                showErrorState()
+                return@launch
+            }
+
+            setState {
+                SwapInputContract.State.Loaded(
+                    tradingPairs = tradingPairs,
+                    selectedPair = selectedPair
+                )
+            }
+        }
+    }
+
+    private fun showErrorState() {
+        setState { SwapInputContract.State.Error }
+        setEffect {
+            SwapInputContract.Effect.ShowToast(
+                getString(R.string.FabriikApi_DefaultError)
+            )
+        }
+    }
+
+    private suspend fun loadTradingPairs(): List<TradingPair> {
+        val response = swapApi.getTradingPairs()
+
+        return when (response.status) {
+            Status.SUCCESS -> response.data ?: emptyList()
+            Status.ERROR -> emptyList()
+        }
+    }
+
+
+    private suspend fun loadQuote(tradingPair: TradingPair): QuoteResponse? {
+        val response = swapApi.getQuote(tradingPair)
+
+        return when (response.status) {
+            Status.SUCCESS -> response.data
+            Status.ERROR -> null
+        }
+    }
+
 /*
     private fun onReplaceCurrenciesClicked() = withLoadedState { state ->
         val newTradingPair = state.selectedPair.invertCurrencies()
@@ -297,48 +352,6 @@ class SwapInputViewModel(
                 }
             }
         }*/
-
-    private fun loadSupportedCurrencies() {
-        callApi(
-            endState = { currentState },
-            startState = { currentState },
-            action = { swapApi.getTradingPairs() },
-            callback = {
-                when (it.status) {
-                    Status.SUCCESS -> {
-                        val tradingPairs = it.data ?: emptyList()
-                        val selectedPair = tradingPairs[0]
-
-                        if (selectedPair == null) {
-                            setEffect {
-                                SwapInputContract.Effect.ShowToast(
-                                    getString(R.string.FabriikApi_DefaultError)
-                                )
-                            }
-                            return@callApi
-                        }
-
-                        setState {
-                            SwapInputContract.State.Loaded(
-                                tradingPairs = tradingPairs,
-                                //selectedPair = selectedPair
-                            )
-                        }
-
-                        //getWalletBalance(selectedPair.baseCurrency)
-                       // refreshQuote()
-                    }
-
-                    Status.ERROR ->
-                        setEffect {
-                            SwapInputContract.Effect.ShowToast(
-                                it.message ?: getString(R.string.FabriikApi_DefaultError)
-                            )
-                        }
-                }
-            }
-        )
-    }
 
     /*private fun getWalletBalance(currencyCode: String) {
         viewModelScope.launch(Dispatchers.IO) {
