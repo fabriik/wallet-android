@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
+import org.kodein.di.direct
 import org.kodein.di.erased.instance
 import java.math.BigDecimal
 import java.util.*
@@ -31,6 +32,12 @@ class AssetSelectionViewModel(
 ), KodeinAware {
 
     override val kodein by closestKodein { application }
+
+    private val handler = AssetSelectionHandler(
+        direct.instance(),
+        direct.instance(),
+        direct.instance()
+    )
 
     private val fiatIso = BRSharedPrefs.getPreferredFiatIso()
     private val breadBox by kodein.instance<BreadBox>()
@@ -78,67 +85,19 @@ class AssetSelectionViewModel(
         val supportedCurrencies = arguments.currencies
 
         viewModelScope.launch(Dispatchers.IO) {
-            val system = breadBox.system().first()
-            val networks = system.networks
-            val availableWallets = system.wallets
-
-            val assets = TokenUtil.getTokenItems()
-                .filter { token ->
-                    val hasNetwork = networks.any { it.containsCurrency(token.currencyId) }
-                    val isErc20 = token.type == "erc20"
-                    token.isSupported && (isErc20 || hasNetwork)
-                }
-                .mapNotNull { tokenItem ->
-                    val wallet = availableWallets.find {
-                        it.currency.code.equals(tokenItem.symbol)
-                    } ?: return@mapNotNull null
-
-                    val currencyCode = supportedCurrencies.firstOrNull {
-                        it.equals(tokenItem.symbol, ignoreCase = true)
-                    } ?: return@mapNotNull null
-
-                    mapToAssetSelectionItem(
-                        currencyCode = currencyCode,
-                        wallet = wallet
-                    )
-                }
+            val assets = handler.getAssets(supportedCurrencies)
 
             setState { copy(assets = assets) }
             applyFilters()
         }
     }
 
-    private fun mapToAssetSelectionItem(
-        currencyCode: String, wallet: Wallet
-    ): AssetSelectionAdapter.AssetSelectionItem {
-        val token = TokenUtil.tokenForCode(currencyCode)
-        val currencyFullName = token?.name ?: currencyCode
-        val cryptoBalance = wallet.balance.toBigDecimal()
-        val fiatBalance = ratesRepository.getFiatForCrypto(
-            cryptoBalance, currencyCode, fiatIso
-        ) ?: BigDecimal.ZERO
-
-        return AssetSelectionAdapter.AssetSelectionItem(
-            title = currencyFullName,
-            subtitle = currencyCode,
-            fiatBalance = fiatBalance.formatFiatForUi(
-                currencyCode = fiatIso
-            ),
-            cryptoBalance = cryptoBalance.formatCryptoForUi(
-                currencyCode = currencyCode
-            ),
-            cryptoCurrencyCode = currencyCode
-        )
-    }
-
     private fun applyFilters() {
         setState {
             copy(
                 adapterItems = currentState.assets.filter {
-                    it.cryptoCurrencyCode.contains(
-                        other = currentState.search,
-                        ignoreCase = true
-                    )
+                    it.title.contains(currentState.search, true) ||
+                            it.subtitle.contains(currentState.search, true)
                 }
             )
         }
