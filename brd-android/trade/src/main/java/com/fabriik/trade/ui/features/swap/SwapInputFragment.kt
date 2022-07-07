@@ -106,10 +106,7 @@ class SwapInputFragment : Fragment(),
         }
 
         // listen for origin currency changes
-        parentFragmentManager.setFragmentResultListener(
-            REQUEST_KEY_ORIGIN_SELECTION,
-            this
-        ) { _, bundle ->
+        parentFragmentManager.setFragmentResultListener(REQUEST_KEY_ORIGIN_SELECTION, this) { _, bundle ->
             val currency = bundle.getString(AssetSelectionFragment.EXTRA_SELECTED_CURRENCY)
             if (currency != null) {
                 viewModel.setEvent(
@@ -119,10 +116,7 @@ class SwapInputFragment : Fragment(),
         }
 
         // listen for destination currency changes
-        parentFragmentManager.setFragmentResultListener(
-            REQUEST_KEY_DESTINATION_SELECTION,
-            this
-        ) { _, bundle ->
+        parentFragmentManager.setFragmentResultListener(REQUEST_KEY_DESTINATION_SELECTION, this) { _, bundle ->
             val currency = bundle.getString(AssetSelectionFragment.EXTRA_SELECTED_CURRENCY)
             if (currency != null) {
                 viewModel.setEvent(
