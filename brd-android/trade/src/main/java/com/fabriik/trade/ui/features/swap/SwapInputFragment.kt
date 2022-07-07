@@ -200,16 +200,17 @@ class SwapInputFragment : Fragment(),
             is SwapInputContract.Effect.OriginSelection ->
                 findNavController().navigate(
                     SwapInputFragmentDirections.actionAssetSelection(
-                        REQUEST_KEY_ORIGIN_SELECTION,
-                        effect.currencies.toTypedArray()
+                        requestKey = REQUEST_KEY_ORIGIN_SELECTION,
+                        currencies = effect.currencies.toTypedArray()
                     )
                 )
 
             is SwapInputContract.Effect.DestinationSelection ->
                 findNavController().navigate(
                     SwapInputFragmentDirections.actionAssetSelection(
-                        REQUEST_KEY_DESTINATION_SELECTION,
-                        effect.currencies.toTypedArray()
+                        requestKey = REQUEST_KEY_DESTINATION_SELECTION,
+                        currencies = effect.currencies.toTypedArray(),
+                        sourceCurrency = effect.sourceCurrency
                     )
                 )
 

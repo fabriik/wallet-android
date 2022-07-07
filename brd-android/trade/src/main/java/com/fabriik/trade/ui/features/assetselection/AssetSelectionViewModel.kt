@@ -39,10 +39,6 @@ class AssetSelectionViewModel(
         direct.instance()
     )
 
-    private val fiatIso = BRSharedPrefs.getPreferredFiatIso()
-    private val breadBox by kodein.instance<BreadBox>()
-    private val ratesRepository by kodein.instance<RatesRepository>()
-
     private lateinit var arguments: AssetSelectionFragmentArgs
 
     override fun parseArguments(savedStateHandle: SavedStateHandle) {
@@ -82,10 +78,11 @@ class AssetSelectionViewModel(
     }
 
     private fun loadAssets() {
-        val supportedCurrencies = arguments.currencies
-
         viewModelScope.launch(Dispatchers.IO) {
-            val assets = handler.getAssets(supportedCurrencies)
+            val assets = handler.getAssets(
+                supportedCurrencies = arguments.currencies,
+                sourceCurrency = arguments.sourceCurrency
+            )
 
             setState { copy(assets = assets) }
             applyFilters()

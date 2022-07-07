@@ -19,7 +19,7 @@ class AssetSelectionHandler(
 
     private val fiatIso = BRSharedPrefs.getPreferredFiatIso()
 
-    suspend fun getAssets(supportedCrypto: Array<String>): List<AssetSelectionAdapter.AssetSelectionItem> {
+    suspend fun getAssets(supportedCurrencies: Array<String>, sourceCurrency: String?): List<AssetSelectionAdapter.AssetSelectionItem> {
         val system = breadBox.system().first()
         val networks = system.networks
         val trackedWallets = acctMetaDataProvider.enabledWallets().first()
@@ -28,12 +28,12 @@ class AssetSelectionHandler(
             .filter { token ->
                 val hasNetwork = networks.any { it.containsCurrency(token.currencyId) }
                 val isErc20 = token.type == "erc20"
-                val isAlreadyAdded = trackedWallets.any { it == token.currencyId }
-                isAlreadyAdded || (token.isSupported && (isErc20 || hasNetwork))
+                val isSelectedSourceCurrency = sourceCurrency.equals(token.symbol, true)
+                (token.isSupported && (isErc20 || hasNetwork) && !isSelectedSourceCurrency)
             }
             .map { tokenItem ->
                 val enabled = trackedWallets.contains(tokenItem.currencyId)
-                        && supportedCrypto.contains(tokenItem.symbol, true)
+                        && supportedCurrencies.contains(tokenItem.symbol, true)
 
                 val wallet = when {
                     enabled -> system.wallets.findByCurrencyId(tokenItem.currencyId)

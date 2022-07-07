@@ -135,7 +135,12 @@ class SwapInputViewModel(
             .map { it.termCurrency }
             .distinct()
 
-        setEffect { SwapInputContract.Effect.DestinationSelection(currencies) }
+        setEffect {
+            SwapInputContract.Effect.DestinationSelection(
+                currencies = currencies,
+                sourceCurrency = state.selectedPair.baseCurrency
+            )
+        }
     }
 
     private fun onSourceCurrencyChanged(currencyCode: String) = withLoadedState { state ->
