@@ -124,7 +124,6 @@ class SwapInputViewModel(
     private fun onSourceCurrencyClicked() = withLoadedState { state ->
         val currencies = state.tradingPairs
             .map { it.baseCurrency }
-            //todo: filter enabled wallets
             .distinct()
 
         setEffect { SwapInputContract.Effect.OriginSelection(currencies) }

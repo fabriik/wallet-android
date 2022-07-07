@@ -7,6 +7,7 @@ import com.breadwallet.repository.RatesRepository
 import com.breadwallet.tools.manager.BRSharedPrefs
 import com.breadwallet.tools.util.TokenUtil
 import com.breadwallet.util.formatFiatForUi
+import com.fabriik.common.utils.contains
 import kotlinx.coroutines.flow.first
 import java.math.BigDecimal
 
@@ -31,38 +32,34 @@ class AssetSelectionHandler(
                 isAlreadyAdded || (token.isSupported && (isErc20 || hasNetwork))
             }
             .map { tokenItem ->
-                val currencyId = tokenItem.currencyId
-                val enabled = trackedWallets.contains(currencyId)
-                        && supportedCrypto.contains(currencyId)
+                val enabled = trackedWallets.contains(tokenItem.currencyId)
+                        && supportedCrypto.contains(tokenItem.symbol, true)
 
-                val wallet = if (enabled) {
-                    system.wallets.findByCurrencyId(tokenItem.currencyId)
-                } else {
-                    null
+                val wallet = when {
+                    enabled -> system.wallets.findByCurrencyId(tokenItem.currencyId)
+                    else -> null
                 }
 
                 val cryptoBalance = wallet?.balance?.toBigDecimal()
                 val fiatBalance = cryptoBalance?.let {
                     ratesRepository.getFiatForCrypto(
                         cryptoAmount = it,
-                        cryptoCode = currencyId,
+                        cryptoCode = tokenItem.symbol,
                         fiatCode = fiatIso
                     )
                 }
 
                 tokenItem.asAssetSelectionItem(
-                    enabled = trackedWallets.contains(currencyId)
-                            && supportedCrypto.contains(currencyId),
+                    enabled = enabled,
                     cryptoBalance = cryptoBalance,
                     fiatBalance = fiatBalance
                 )
             }
+            .sortedByDescending { it.enabled }
     }
 
     private fun TokenItem.asAssetSelectionItem(
-        enabled: Boolean,
-        fiatBalance: BigDecimal?,
-        cryptoBalance: BigDecimal?
+        enabled: Boolean, fiatBalance: BigDecimal?, cryptoBalance: BigDecimal?
     ): AssetSelectionAdapter.AssetSelectionItem {
         return AssetSelectionAdapter.AssetSelectionItem(
             title = name,
