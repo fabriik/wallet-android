@@ -31,7 +31,7 @@ class SwapInputFragment : Fragment(),
     private lateinit var binding: FragmentSwapInputBinding
     private val viewModel: SwapInputViewModel by viewModels()
 
-    private val cardSwapCallback = object : SwapCardView.Callback {
+    /*private val cardSwapCallback = object : SwapCardView.Callback {
         override fun onReplaceCurrenciesClicked() {
             viewModel.setEvent(SwapInputContract.Event.ReplaceCurrenciesClicked)
         }
@@ -59,7 +59,7 @@ class SwapInputFragment : Fragment(),
         override fun onBuyingCurrencyCryptoAmountChanged(amount: BigDecimal) {
             viewModel.setEvent(SwapInputContract.Event.DestinationCurrencyCryptoAmountChange(amount))
         }
-    }
+    }*/
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -78,7 +78,7 @@ class SwapInputFragment : Fragment(),
                 viewModel.setEvent(SwapInputContract.Event.DismissClicked)
             }
 
-            cvSwap.setFiatCurrency(BRSharedPrefs.getPreferredFiatIso())
+            /*cvSwap.setFiatCurrency(BRSharedPrefs.getPreferredFiatIso())
             cvSwap.setCallback(cardSwapCallback)
 
             switchMinMax.setCallback {
@@ -92,7 +92,7 @@ class SwapInputFragment : Fragment(),
 
             btnConfirm.setOnClickListener {
                 viewModel.setEvent(SwapInputContract.Event.ConfirmClicked)
-            }
+            }*/
         }
 
         // collect UI state
@@ -108,7 +108,7 @@ class SwapInputFragment : Fragment(),
                 handleEffect(it)
             }
         }
-
+/*
         // listen for origin currency changes
         parentFragmentManager.setFragmentResultListener(REQUEST_KEY_ORIGIN_SELECTION, this) { _, bundle ->
             val currency = bundle.getString(AssetSelectionFragment.EXTRA_SELECTED_CURRENCY)
@@ -131,17 +131,18 @@ class SwapInputFragment : Fragment(),
 
         requireActivity().onBackPressedDispatcher.addCallback {
             //User shouldn't be allowed to go back
-        }
+        }*/
     }
 
     override fun render(state: SwapInputContract.State) {
         when (state) {
-            is SwapInputContract.State.Empty -> with(binding) {
-                content.isVisible = false
-                initialLoadingIndicator.isVisible = true
-            }
+            is SwapInputContract.State.Loading ->
+                handleLoadingState(state)
 
-            is SwapInputContract.State.Loaded -> with(binding) {
+            is SwapInputContract.State.Loaded ->
+                handleLoadedState(state)
+
+            /*is SwapInputContract.State.Loaded -> with(binding) {
                 content.isVisible = true
                 initialLoadingIndicator.isVisible = false
 
@@ -178,7 +179,7 @@ class SwapInputFragment : Fragment(),
                         )
                     }
                 }
-            }
+            }*/
         }
 
         /*with(binding) {
@@ -187,12 +188,29 @@ class SwapInputFragment : Fragment(),
         }*/
     }
 
+    private fun handleLoadingState(state: SwapInputContract.State.Loading) {
+        with(binding) {
+            content.isVisible = false
+            initialLoadingIndicator.isVisible = true
+        }
+    }
+
+    private fun handleLoadedState(state: SwapInputContract.State.Loaded) {
+        with(binding) {
+            content.isVisible = true
+            initialLoadingIndicator.isVisible = false
+        }
+    }
+
     override fun handleEffect(effect: SwapInputContract.Effect) {
         when (effect) {
             SwapInputContract.Effect.Dismiss ->
                 requireActivity().finish()
 
-            is SwapInputContract.Effect.ContinueToSwapProcessing ->
+            is SwapInputContract.Effect.ShowToast ->
+                FabriikToastUtil.showInfo(binding.root, effect.message)
+
+            /*is SwapInputContract.Effect.ContinueToSwapProcessing ->
                 findNavController().navigate(
                     SwapInputFragmentDirections.actionSwapProcessing(
                         coinFrom = effect.sourceCurrency,
@@ -220,11 +238,6 @@ class SwapInputFragment : Fragment(),
                     )
                 )
 
-            is SwapInputContract.Effect.ShowToast ->
-                FabriikToastUtil.showInfo(
-                    binding.root, effect.message
-                )
-
             is SwapInputContract.Effect.UpdateSourceFiatAmount ->
                 binding.cvSwap.setSourceFiatAmount(effect.bigDecimal)
 
@@ -235,7 +248,7 @@ class SwapInputFragment : Fragment(),
                 binding.cvSwap.setDestinationFiatAmount(effect.bigDecimal)
 
             is SwapInputContract.Effect.UpdateDestinationCryptoAmount ->
-                binding.cvSwap.setDestinationCryptoAmount(effect.bigDecimal)
+                binding.cvSwap.setDestinationCryptoAmount(effect.bigDecimal)*/
         }
     }
 

@@ -75,7 +75,7 @@ class SwapCardView @JvmOverloads constructor(
         binding.viewInputBuyingCurrency.setCryptoCurrency(currency)
     }
 
-    fun setSendingNetworkFee(fee: SwapInputContract.NetworkFeeData?) {
+    /*fun setSendingNetworkFee(fee: SwapInputContract.NetworkFeeData?) {
         binding.tvSellingCurrencyNetworkFee.isVisible = fee != null
         binding.tvSellingCurrencyNetworkFeeTitle.isVisible = fee != null
 
@@ -95,7 +95,7 @@ class SwapCardView @JvmOverloads constructor(
             val cryptoText = it.cryptoAmount.formatCryptoForUi(it.cryptoCurrency)
             binding.tvBuyingCurrencyNetworkFee.text = "$cryptoText\n$fiatText"
         }
-    }
+    }*/
 
     fun setSellingCurrencyTitle(title: String) {
         binding.viewInputSellingCurrency.setTitle(title)

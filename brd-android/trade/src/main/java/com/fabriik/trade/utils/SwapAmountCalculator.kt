@@ -9,7 +9,7 @@ import java.math.RoundingMode
 
 class SwapAmountCalculator(private val ratesRepository: RatesRepository) {
 
-    fun convertFiatToCrypto(fiatAmount: BigDecimal, cryptoCode: String, fiatCode: String): BigDecimal {
+    /*fun convertFiatToCrypto(fiatAmount: BigDecimal, cryptoCode: String, fiatCode: String): BigDecimal {
         if (fiatAmount.isZero()) {
             return BigDecimal.ZERO
         }
@@ -43,5 +43,5 @@ class SwapAmountCalculator(private val ratesRepository: RatesRepository) {
         } else {
             cryptoAmount.divide(quoteState.sellRate, 5, RoundingMode.HALF_UP) //todo: plus sendingFee, plus receivingFee
         }
-    }
+    }*/
 }

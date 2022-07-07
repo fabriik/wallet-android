@@ -9,6 +9,8 @@ interface SwapInputContract {
 
     sealed class Event : FabriikContract.Event {
         object DismissClicked : Event()
+
+        /*
         object ConfirmClicked : Event()
         object OriginCurrencyClicked : Event()
         object ReplaceCurrenciesClicked : Event()
@@ -20,25 +22,29 @@ interface SwapInputContract {
         data class DestinationCurrencyFiatAmountChange(val amount: BigDecimal) : Event()
         data class DestinationCurrencyCryptoAmountChange(val amount: BigDecimal) : Event()
         data class OriginCurrencyChanged(val currencyCode: String) : Event()
-        data class DestinationCurrencyChanged(val currencyCode: String) : Event()
+        data class DestinationCurrencyChanged(val currencyCode: String) : Event()*/
     }
 
     sealed class Effect : FabriikContract.Effect {
         object Dismiss : Effect()
-        object DeselectMinMaxSwitchItems : Effect()
         data class ShowToast(val message: String): Effect()
+        /*object DeselectMinMaxSwitchItems : Effect()
         data class ContinueToSwapProcessing(val sourceCurrency: String, val destinationCurrency: String) : Effect()
         data class OriginSelection(val currencies: List<String>) : Effect()
         data class DestinationSelection(val currencies: List<String>, val sourceCurrency: String) : Effect()
         data class UpdateSourceFiatAmount(val bigDecimal: BigDecimal) : Effect()
         data class UpdateSourceCryptoAmount(val bigDecimal: BigDecimal) : Effect()
         data class UpdateDestinationFiatAmount(val bigDecimal: BigDecimal) : Effect()
-        data class UpdateDestinationCryptoAmount(val bigDecimal: BigDecimal) : Effect()
+        data class UpdateDestinationCryptoAmount(val bigDecimal: BigDecimal) : Effect()*/
     }
 
     sealed class State : FabriikContract.State {
-        object Empty : State()
+        object Loading : State()
         data class Loaded(
+            val tradingPairs: List<TradingPair>
+        ) : State()
+
+        /*data class Loaded(
             val timer: Int = 0,
             val tradingPairs: List<TradingPair>,
             val selectedPair: TradingPair,
@@ -52,10 +58,10 @@ interface SwapInputContract {
             val destinationFiatAmount: BigDecimal = BigDecimal.ZERO,
             val destinationCryptoAmount: BigDecimal = BigDecimal.ZERO,
             @FabriikSwitch.Companion.SwitchOption val selectedMinMaxOption: Int = FabriikSwitch.OPTION_NONE,
-        ) : State()
+        ) : State()*/
     }
 
-    sealed class QuoteState {
+    /*sealed class QuoteState {
         object Loading : QuoteState()
         data class Loaded(
             val timerTimestamp: Long,
@@ -69,5 +75,5 @@ interface SwapInputContract {
         val fiatCurrency: String,
         val cryptoAmount: BigDecimal,
         val cryptoCurrency: String
-    )
+    )*/
 }

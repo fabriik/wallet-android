@@ -9,6 +9,7 @@ import com.fabriik.trade.data.response.QuoteResponse
 import com.fabriik.trade.utils.adapter.BigDecimalAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import kotlinx.coroutines.delay
 import okhttp3.*
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -31,6 +32,8 @@ class SwapApi(
                 exception = ex
             )
         }*/
+
+        delay(2000)
 
         return Resource.success(
             listOf(
@@ -62,6 +65,8 @@ class SwapApi(
                 exception = ex
             )
         }*/
+        delay(2000)
+
         return Resource.success(
             if (selectedTradingPair.name == "BSV-BTC") {
                 QuoteResponse(

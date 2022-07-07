@@ -39,26 +39,28 @@ class SwapInputViewModel(
 
     override val kodein by closestKodein { application }
 
-    private val fiatIso = BRSharedPrefs.getPreferredFiatIso()
     private val swapApi = SwapApi.create(application)
+
+    /*private val fiatIso = BRSharedPrefs.getPreferredFiatIso()
+
     private val breadBox by kodein.instance<BreadBox>()
     private val ratesRepository by kodein.instance<RatesRepository>()
     private val swapAmountCalculator = SwapAmountCalculator(ratesRepository)
 
-    private var currentTimerJob: Job? = null
+    private var currentTimerJob: Job? = null*/
 
     init {
         loadSupportedCurrencies()
     }
 
-    override fun createInitialState() = SwapInputContract.State.Empty
+    override fun createInitialState() = SwapInputContract.State.Loading
 
     override fun handleEvent(event: SwapInputContract.Event) {
         when (event) {
-            SwapInputContract.Event.DismissClicked ->
+           SwapInputContract.Event.DismissClicked ->
                 setEffect { SwapInputContract.Effect.Dismiss }
 
-            SwapInputContract.Event.ConfirmClicked -> withLoadedState { state ->
+            /* SwapInputContract.Event.ConfirmClicked -> withLoadedState { state ->
                 setEffect {
                     SwapInputContract.Effect.ContinueToSwapProcessing(
                         sourceCurrency = state.selectedPair.baseCurrency,
@@ -106,28 +108,13 @@ class SwapInputViewModel(
             is SwapInputContract.Event.DestinationCurrencyCryptoAmountChange -> {
                 onDestinationCurrencyCryptoAmountChanged(event.amount)
                 setEffect { SwapInputContract.Effect.DeselectMinMaxSwitchItems }
-            }
+            }*/
         }
     }
-
+/*
     private fun onReplaceCurrenciesClicked() = withLoadedState { state ->
-        val sourceCurrency = state.selectedPair.baseCurrency
-        val destinationCurrency = state.selectedPair.termCurrency
-
-        val newTradingPair = state.tradingPairs.find {
-            it.baseCurrency == destinationCurrency && it.termCurrency == sourceCurrency
-        }
-
-        if (newTradingPair == null) {
-            setEffect {
-                SwapInputContract.Effect.ShowToast(
-                    getString(R.string.Swap_Input_SwapNotSupported)
-                )
-            }
-        } else {
-            setState { state.copy(selectedPair = newTradingPair) }
-            refreshQuote()
-        }
+        val newTradingPair = state.selectedPair.invertCurrencies()
+        setState { state.copy(selectedPair = newTradingPair) }
     }
 
     private fun onSourceCurrencyClicked() = withLoadedState { state ->
@@ -309,7 +296,7 @@ class SwapInputViewModel(
                     setEffect { SwapInputContract.Effect.UpdateDestinationCryptoAmount(receivedCryptoAmount) }
                 }
             }
-        }
+        }*/
 
     private fun loadSupportedCurrencies() {
         callApi(
@@ -334,12 +321,12 @@ class SwapInputViewModel(
                         setState {
                             SwapInputContract.State.Loaded(
                                 tradingPairs = tradingPairs,
-                                selectedPair = selectedPair
+                                //selectedPair = selectedPair
                             )
                         }
 
-                        getWalletBalance(selectedPair.baseCurrency)
-                        refreshQuote()
+                        //getWalletBalance(selectedPair.baseCurrency)
+                       // refreshQuote()
                     }
 
                     Status.ERROR ->
@@ -353,7 +340,7 @@ class SwapInputViewModel(
         )
     }
 
-    private fun getWalletBalance(currencyCode: String) {
+    /*private fun getWalletBalance(currencyCode: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val wallet = breadBox.wallets()
                 .first()
@@ -550,5 +537,5 @@ class SwapInputViewModel(
 
     companion object {
         const val QUOTE_TIMER = 15
-    }
+    }*/
 }
