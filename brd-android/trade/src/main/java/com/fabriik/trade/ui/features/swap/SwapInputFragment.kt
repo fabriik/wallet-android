@@ -69,7 +69,11 @@ class SwapInputFragment : Fragment(),
                 viewModel.setEvent(SwapInputContract.Event.DismissClicked)
             }
 
-            /*cvSwap.setFiatCurrency(BRSharedPrefs.getPreferredFiatIso())
+            viewTimer.setProgress(
+                SwapInputViewModel.QUOTE_TIMER, SwapInputViewModel.QUOTE_TIMER
+            )
+
+            /*
             cvSwap.setCallback(cardSwapCallback)
 
             switchMinMax.setCallback {
@@ -137,49 +141,20 @@ class SwapInputFragment : Fragment(),
                 handleLoadedState(state)
 
             /*is SwapInputContract.State.Loaded -> with(binding) {
-                content.isVisible = true
-                initialLoadingIndicator.isVisible = false
 
                 cvSwap.setSendingNetworkFee(state.sendingNetworkFee)
                 cvSwap.setReceivingNetworkFee(state.receivingNetworkFee)
-                cvSwap.setOriginCurrency(state.selectedPair.baseCurrency)
-                cvSwap.setDestinationCurrency(state.selectedPair.termCurrency)
-                cvSwap.setSellingCurrencyTitle(
-                    getString(
-                        R.string.Swap_Input_IHave, state.sourceCurrencyBalance.formatCryptoForUi(
-                            state.selectedPair.baseCurrency
-                        )
-                    )
-                )
 
                 when (state.quoteState) {
-                    is SwapInputContract.QuoteState.Loading -> {
-                        viewTimer.isVisible = false
-                        tvRateValue.isVisible = false
-                        quoteLoadingIndicator.isVisible = true
-                    }
 
                     is SwapInputContract.QuoteState.Loaded -> {
-                        viewTimer.isVisible = true
-                        tvRateValue.isVisible = true
-                        quoteLoadingIndicator.isVisible = false
 
                         viewTimer.setProgress(SwapInputViewModel.QUOTE_TIMER, state.timer)
-                        tvRateValue.text = RATE_FORMAT.format(
-                            state.selectedPair.baseCurrency,
-                            state.quoteState.buyRate.formatCryptoForUi(
-                                state.selectedPair.termCurrency
-                            )
-                        )
+
                     }
                 }
             }*/
         }
-
-        /*with(binding) {
-            cvSwap.setSendingNetworkFee(state.sendingNetworkFee)
-            cvSwap.setReceivingNetworkFee(state.receivingNetworkFee)
-        }*/
     }
 
     private fun handleErrorState(state: SwapInputContract.State.Error) {
@@ -198,15 +173,27 @@ class SwapInputFragment : Fragment(),
 
     private fun handleLoadedState(state: SwapInputContract.State.Loaded) {
         with(binding) {
-            cvSwap.setSourceCurrency(state.selectedPair.baseCurrency)
+            cvSwap.setFiatCurrency(state.fiatCurrency)
+            cvSwap.setSourceCurrency(state.sourceCryptoCurrency)
+            cvSwap.setDestinationCurrency(state.destinationCryptoCurrency)
             cvSwap.setSourceCurrencyTitle(
                 getString(
                     R.string.Swap_Input_IHave, state.sourceCryptoBalance.formatCryptoForUi(
-                        state.selectedPair.baseCurrency
+                        state.sourceCryptoCurrency
                     )
                 )
             )
-            cvSwap.setDestinationCurrency(state.selectedPair.termCurrency)
+
+            tvRateValue.text = RATE_FORMAT.format(
+                state.selectedPair.baseCurrency,
+                state.cryptoExchangeRate.formatCryptoForUi(
+                    state.destinationCryptoCurrency
+                )
+            )
+
+            viewTimer.isVisible = !state.cryptoExchangeRateLoading
+            tvRateValue.isVisible = !state.cryptoExchangeRateLoading
+            quoteLoadingIndicator.isVisible = state.cryptoExchangeRateLoading
 
             content.isVisible = true
             initialLoadingIndicator.isVisible = false

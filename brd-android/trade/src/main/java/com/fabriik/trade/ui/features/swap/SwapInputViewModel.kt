@@ -68,8 +68,8 @@ class SwapInputViewModel(
             SwapInputContract.Event.ConfirmClicked -> currentLoadedState?.let {
                 setEffect {
                     SwapInputContract.Effect.ContinueToSwapProcessing(
-                        sourceCurrency = it.selectedPair.baseCurrency,
-                        destinationCurrency = it.selectedPair.termCurrency
+                        sourceCurrency = it.sourceCryptoCurrency,
+                        destinationCurrency = it.destinationCryptoCurrency
                     )
                 }
             }
@@ -142,7 +142,12 @@ class SwapInputViewModel(
                 SwapInputContract.State.Loaded(
                     tradingPairs = tradingPairs,
                     selectedPair = selectedPair,
-                    sourceCryptoBalance = sourceCryptoBalance
+                    fiatCurrency = BRSharedPrefs.getPreferredFiatIso(),
+                    quoteResponse = selectedPairQuote,
+                    sourceCryptoCurrency = selectedPair.baseCurrency,
+                    destinationCryptoCurrency = selectedPair.termCurrency,
+                    sourceCryptoBalance = sourceCryptoBalance,
+                    cryptoExchangeRate = selectedPairQuote.closeAsk
                 )
             }
         }
@@ -528,9 +533,9 @@ class SwapInputViewModel(
                 E.OnNetworkFeeError*/
             }
         }
-    }
+    }*/
 
     companion object {
         const val QUOTE_TIMER = 15
-    }*/
+    }
 }

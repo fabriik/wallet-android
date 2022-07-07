@@ -3,6 +3,7 @@ package com.fabriik.trade.ui.features.swap
 import com.fabriik.common.ui.base.FabriikContract
 import com.fabriik.common.ui.customview.FabriikSwitch
 import com.fabriik.trade.data.model.TradingPair
+import com.fabriik.trade.data.response.QuoteResponse
 import java.math.BigDecimal
 
 interface SwapInputContract {
@@ -48,7 +49,13 @@ interface SwapInputContract {
         data class Loaded(
             val tradingPairs: List<TradingPair>,
             val selectedPair: TradingPair,
-            val sourceCryptoBalance: BigDecimal
+            val quoteResponse: QuoteResponse,
+            val fiatCurrency: String,
+            val sourceCryptoBalance: BigDecimal,
+            val sourceCryptoCurrency: String,
+            val destinationCryptoCurrency: String,
+            val cryptoExchangeRate: BigDecimal,
+            val cryptoExchangeRateLoading: Boolean = false
         ) : State()
 
         /*data class Loaded(
