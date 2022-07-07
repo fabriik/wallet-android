@@ -42,9 +42,10 @@
 
             <TextView
                 android:id="@+id/tv_status"
-                style="@style/TextStyle.Title6.Light"
+                style="@style/TextStyle.Title6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/light_text_03"
                 tools:text="@string/Swap.Details.Status.Pending" />
 
         </LinearLayout>
@@ -68,15 +69,16 @@
             android:padding="21dp">
 
             <TextView
-                style="@style/TextStyle.Caption.Light"
+                style="@style/TextStyle.Caption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="@string/Swap.Details.OrderId" />
+                android:text="@string/Swap.Details.OrderId"
+                android:textColor="@color/light_text_03" />
 
             <TextView
                 android:id="@+id/tv_order_id"
-                style="@style/TextStyle.Subtitle2.Light"
+                style="@style/TextStyle.Subtitle2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -88,6 +90,7 @@
                 android:maxLines="1"
                 android:paddingHorizontal="8dp"
                 android:paddingVertical="2dp"
+                android:textColor="@color/light_text_03"
                 tools:text="13rXEZoh5NFj4q9aasdfkLp2dfjskdfnsfkskdf" />
         </LinearLayout>
 
@@ -119,10 +122,11 @@
 
             <TextView
                 android:id="@+id/tv_swap_from"
-                style="@style/TextStyle.Subtitle2.Light"
+                style="@style/TextStyle.Subtitle2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
+                android:textColor="@color/light_text_03"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/ic_swap_from"
                 app:layout_constraintTop_toTopOf="parent"
@@ -130,9 +134,10 @@
 
             <TextView
                 android:id="@+id/tv_from_currency_value"
-                style="@style/TextStyle.Subtitle2.Light"
+                style="@style/TextStyle.Subtitle2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/light_text_03"
                 app:layout_constraintBottom_toBottomOf="@id/ic_swap_from"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/ic_swap_from"
@@ -180,20 +185,22 @@
 
             <TextView
                 android:id="@+id/tv_swap_to"
-                style="@style/TextStyle.Subtitle2.Light"
+                style="@style/TextStyle.Subtitle2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
+                android:textColor="@color/light_text_03"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/ic_swap_to"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="To BSV" />
 
             <TextView
-                style="@style/TextStyle.Subtitle2.Light"
                 android:id="@+id/tv_to_currency_value"
+                style="@style/TextStyle.Subtitle2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/light_text_03"
                 app:layout_constraintBottom_toBottomOf="@id/ic_swap_to"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/ic_swap_to"
@@ -231,11 +238,12 @@
 
             <TextView
                 android:id="@+id/tv_timestamp"
-                style="@style/TextStyle.Subtitle2.Light"
+                style="@style/TextStyle.Subtitle2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="4dp"
+                android:textColor="@color/light_text_03"
                 tools:text="22 Feb 2022, 1:29pm" />
         </LinearLayout>
 
