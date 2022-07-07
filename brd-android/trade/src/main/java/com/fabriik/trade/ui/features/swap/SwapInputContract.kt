@@ -43,7 +43,8 @@ interface SwapInputContract {
         object Loading : State()
         data class Loaded(
             val tradingPairs: List<TradingPair>,
-            val selectedPair: TradingPair
+            val selectedPair: TradingPair,
+            val sourceCryptoBalance: BigDecimal
         ) : State()
 
         /*data class Loaded(

@@ -4,26 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.breadwallet.tools.manager.BRSharedPrefs
 import com.fabriik.common.ui.base.FabriikView
 import com.fabriik.trade.R
 import com.fabriik.trade.databinding.FragmentSwapInputBinding
-import com.fabriik.trade.ui.customview.SwapCardView
 import kotlinx.coroutines.flow.collect
-import java.math.BigDecimal
 import androidx.core.view.isVisible
-import androidx.navigation.fragment.findNavController
 import com.breadwallet.breadbox.formatCryptoForUi
-import com.breadwallet.util.formatFiatForUi
-import com.fabriik.common.ui.customview.FabriikSwitch
 import com.fabriik.common.utils.FabriikToastUtil
-import com.fabriik.trade.ui.features.assetselection.AssetSelectionAdapter
-import com.fabriik.trade.ui.features.assetselection.AssetSelectionFragment
 
 class SwapInputFragment : Fragment(),
     FabriikView<SwapInputContract.State, SwapInputContract.Effect> {
@@ -207,6 +197,16 @@ class SwapInputFragment : Fragment(),
 
     private fun handleLoadedState(state: SwapInputContract.State.Loaded) {
         with(binding) {
+            cvSwap.setSourceCurrency(state.selectedPair.baseCurrency)
+            cvSwap.setSourceCurrencyTitle(
+                getString(
+                    R.string.Swap_Input_IHave, state.sourceCryptoBalance.formatCryptoForUi(
+                        state.selectedPair.baseCurrency
+                    )
+                )
+            )
+            cvSwap.setDestinationCurrency(state.selectedPair.termCurrency)
+
             content.isVisible = true
             initialLoadingIndicator.isVisible = false
         }

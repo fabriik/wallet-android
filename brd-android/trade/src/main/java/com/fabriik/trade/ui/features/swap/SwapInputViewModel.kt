@@ -41,11 +41,11 @@ class SwapInputViewModel(
 
     override val kodein by closestKodein { application }
 
+    private val breadBox by kodein.instance<BreadBox>()
     private val swapApi = SwapApi.create(application)
 
     /*private val fiatIso = BRSharedPrefs.getPreferredFiatIso()
 
-    private val breadBox by kodein.instance<BreadBox>()
     private val ratesRepository by kodein.instance<RatesRepository>()
     private val swapAmountCalculator = SwapAmountCalculator(ratesRepository)
 
@@ -129,10 +129,17 @@ class SwapInputViewModel(
                 return@launch
             }
 
+            val sourceCryptoBalance = loadCryptoBalance(selectedPair.baseCurrency)
+            if (sourceCryptoBalance == null) {
+                showErrorState()
+                return@launch
+            }
+
             setState {
                 SwapInputContract.State.Loaded(
                     tradingPairs = tradingPairs,
-                    selectedPair = selectedPair
+                    selectedPair = selectedPair,
+                    sourceCryptoBalance = sourceCryptoBalance
                 )
             }
         }
@@ -145,6 +152,14 @@ class SwapInputViewModel(
                 getString(R.string.FabriikApi_DefaultError)
             )
         }
+    }
+
+    private suspend fun loadCryptoBalance(currencyCode: String): BigDecimal? {
+        val wallet = breadBox.wallets()
+            .first()
+            .find { it.currency.code.equals(currencyCode, ignoreCase = true) }
+
+        return wallet?.balance?.toBigDecimal()
     }
 
     private suspend fun loadTradingPairs(): List<TradingPair> {
@@ -353,24 +368,7 @@ class SwapInputViewModel(
             }
         }*/
 
-    /*private fun getWalletBalance(currencyCode: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val wallet = breadBox.wallets()
-                .first()
-                .find { it.currency.code.equals(currencyCode, ignoreCase = true) }
-
-            if (wallet != null) {
-                withLoadedState {
-                    setState {
-                        it.copy(
-                            sourceCurrencyBalance = wallet.balance.toBigDecimal()
-                        )
-                    }
-                }
-            }
-        }
-    }
-
+    /*
     private fun refreshQuote() = withLoadedState { state ->
         callApi(
             endState = { currentState },
