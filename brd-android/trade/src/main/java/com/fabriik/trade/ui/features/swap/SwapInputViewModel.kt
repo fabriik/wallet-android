@@ -27,7 +27,8 @@ class SwapInputViewModel(
         originCurrency = "BSV",
         originCurrencyBalance = BigDecimal.TEN,
         destinationCurrency = "BTC",
-        rateOriginToDestinationCurrency = BigDecimal.ONE
+        rateOriginToDestinationCurrency = BigDecimal.ONE,
+        currencies = listOf("BTC", "BSV", "ETH")
     )
 
     override fun handleEvent(event: SwapInputContract.Event) {
@@ -36,10 +37,19 @@ class SwapInputViewModel(
                 setEffect { SwapInputContract.Effect.Dismiss }
 
             SwapInputContract.Event.OriginCurrencyClicked ->
-                setEffect { SwapInputContract.Effect.OriginSelection }
+                setEffect {
+                    SwapInputContract.Effect.OriginSelection(
+                        currentState.currencies
+                    )
+                }
 
             SwapInputContract.Event.DestinationCurrencyClicked ->
-                setEffect { SwapInputContract.Effect.DestinationSelection }
+                setEffect {
+                    SwapInputContract.Effect.DestinationSelection(
+                        currencies = currentState.currencies,
+                        sourceCurrency = currentState.originCurrency
+                    )
+                }
 
             SwapInputContract.Event.ReplaceCurrenciesClicked -> {
                 val originCurrency = currentState.originCurrency

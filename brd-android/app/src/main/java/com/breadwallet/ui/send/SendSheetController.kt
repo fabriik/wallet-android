@@ -40,7 +40,6 @@ import com.breadwallet.breadbox.TransferSpeed
 import com.breadwallet.breadbox.formatCryptoForUi
 import com.breadwallet.databinding.ControllerSendSheetBinding
 import com.breadwallet.effecthandler.metadata.MetaDataEffectHandler
-import com.breadwallet.ui.formatFiatForUi
 import com.breadwallet.legacy.presenter.customviews.BRKeyboard
 import com.breadwallet.logger.logError
 import com.breadwallet.tools.animation.SlideDetector
@@ -63,6 +62,7 @@ import com.breadwallet.ui.send.SendSheet.E
 import com.breadwallet.ui.send.SendSheet.E.OnAmountChange
 import com.breadwallet.ui.send.SendSheet.F
 import com.breadwallet.ui.send.SendSheet.M
+import com.breadwallet.util.formatFiatForUi
 import com.breadwallet.util.isErc20
 import com.breadwallet.util.isEthereum
 import com.fabriik.support.CashSupport

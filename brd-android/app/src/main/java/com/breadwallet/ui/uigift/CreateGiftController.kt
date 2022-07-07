@@ -40,13 +40,13 @@ import com.breadwallet.ui.changehandlers.DialogChangeHandler
 import com.breadwallet.ui.controllers.AlertDialogController
 import com.breadwallet.ui.flowbind.clicks
 import com.breadwallet.ui.flowbind.textChanges
-import com.breadwallet.ui.formatFiatForUi
 import com.breadwallet.ui.uigift.CreateGift.M
 import com.breadwallet.ui.uigift.CreateGift.E
 import com.breadwallet.ui.uigift.CreateGift.F
 import com.breadwallet.ui.uigift.CreateGift.State
 import com.breadwallet.ui.uigift.CreateGift.FiatAmountOption
 import com.breadwallet.util.CurrencyCode
+import com.breadwallet.util.formatFiatForUi
 import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
