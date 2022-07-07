@@ -12,9 +12,9 @@ import com.breadwallet.R
 import com.breadwallet.breadbox.formatCryptoForUi
 import com.breadwallet.databinding.WalletListItemBinding
 import com.breadwallet.legacy.presenter.customviews.ShimmerLayout
-import com.breadwallet.ui.formatFiatForUi
 import com.breadwallet.tools.manager.BRSharedPrefs
 import com.breadwallet.tools.util.TokenUtil
+import com.breadwallet.util.formatFiatForUi
 import com.breadwallet.util.isBrd
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.drag.IDraggable

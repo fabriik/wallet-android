@@ -76,8 +76,9 @@ class AssetSelectionAdapter(private val callback: (AssetSelectionItem) -> Unit) 
     class AssetSelectionItem(
         val title: String,
         val subtitle: String,
-        val fiatBalance: String,
-        val cryptoBalance: String,
+        val fiatBalance: String?,
+        val cryptoBalance: String?,
         val cryptoCurrencyCode: String,
+        val enabled: Boolean
     ) : Parcelable
 }
