@@ -58,6 +58,15 @@ class SwapInputViewModel(
             SwapInputContract.Event.DismissClicked ->
                 setEffect { SwapInputContract.Effect.Dismiss }
 
+            SwapInputContract.Event.ConfirmClicked -> withLoadedState { state ->
+                setEffect {
+                    SwapInputContract.Effect.ContinueToSwapProcessing(
+                        sourceCurrency = state.selectedPair.baseCurrency,
+                        destinationCurrency = state.selectedPair.termCurrency
+                    )
+                }
+            }
+
             SwapInputContract.Event.OriginCurrencyClicked ->
                 onSourceCurrencyClicked()
 

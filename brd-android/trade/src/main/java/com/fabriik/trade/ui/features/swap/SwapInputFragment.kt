@@ -91,9 +91,7 @@ class SwapInputFragment : Fragment(),
             }
 
             btnConfirm.setOnClickListener {
-                findNavController().navigate(SwapInputFragmentDirections
-                    .actionFragmentSwapInputToFragmentSwapProcessing(viewModel.currentState.originCurrency,
-                        viewModel.currentState.destinationCurrency))
+                viewModel.setEvent(SwapInputContract.Event.ConfirmClicked)
             }
         }
 
@@ -193,6 +191,14 @@ class SwapInputFragment : Fragment(),
         when (effect) {
             SwapInputContract.Effect.Dismiss ->
                 requireActivity().finish()
+
+            is SwapInputContract.Effect.ContinueToSwapProcessing ->
+                findNavController().navigate(
+                    SwapInputFragmentDirections.actionSwapProcessing(
+                        coinFrom = effect.sourceCurrency,
+                        coinTo = effect.destinationCurrency
+                    )
+                )
 
             SwapInputContract.Effect.DeselectMinMaxSwitchItems ->
                 binding.switchMinMax.setSelectedItem(FabriikSwitch.OPTION_NONE)

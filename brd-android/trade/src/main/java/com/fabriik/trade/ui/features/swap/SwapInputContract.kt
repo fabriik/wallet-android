@@ -9,6 +9,7 @@ interface SwapInputContract {
 
     sealed class Event : FabriikContract.Event {
         object DismissClicked : Event()
+        object ConfirmClicked : Event()
         object OriginCurrencyClicked : Event()
         object ReplaceCurrenciesClicked : Event()
         object DestinationCurrencyClicked : Event()
@@ -26,6 +27,7 @@ interface SwapInputContract {
         object Dismiss : Effect()
         object DeselectMinMaxSwitchItems : Effect()
         data class ShowToast(val message: String): Effect()
+        data class ContinueToSwapProcessing(val sourceCurrency: String, val destinationCurrency: String) : Effect()
         data class OriginSelection(val currencies: List<String>) : Effect()
         data class DestinationSelection(val currencies: List<String>, val sourceCurrency: String) : Effect()
         data class UpdateSourceFiatAmount(val bigDecimal: BigDecimal) : Effect()

@@ -1,4 +1,4 @@
-package com.fabriik.trade.ui.features.swap
+package com.fabriik.trade.ui.features.processing
 
 import android.app.Application
 import androidx.lifecycle.SavedStateHandle
@@ -25,15 +25,15 @@ class SwapProcessingViewModel(
     )
 
     override fun handleEvent(event: SwapProcessingContract.Event) {
-
         when (event) {
             SwapProcessingContract.Event.DismissClicked ->
                 setEffect { SwapProcessingContract.Effect.Dismiss }
+
             SwapProcessingContract.Event.GoHomeClicked ->
                 setEffect { SwapProcessingContract.Effect.GoHome }
+
             SwapProcessingContract.Event.OpenSwapDetails ->
                 setEffect { SwapProcessingContract.Effect.OpenDetails }
         }
     }
-
 }

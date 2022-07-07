@@ -1,4 +1,4 @@
-package com.fabriik.trade.ui.features.swap
+package com.fabriik.trade.ui.features.processing
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -63,6 +63,7 @@ class SwapProcessingFragment : Fragment(),
                     SwapProcessingContract.Event.GoHomeClicked
                 )
             }
+
             btnDetails.setOnClickListener {
                 viewModel.setEvent(
                     SwapProcessingContract.Event.OpenSwapDetails
@@ -75,10 +76,14 @@ class SwapProcessingFragment : Fragment(),
         when (effect) {
             SwapProcessingContract.Effect.Dismiss ->
                 requireActivity().finish()
+
             SwapProcessingContract.Effect.GoHome ->
                 requireActivity().finish()
+
             SwapProcessingContract.Effect.OpenDetails ->
-                findNavController().navigate(SwapProcessingFragmentDirections.actionFragmentSwapProcessingToFragmentSwapDetails())
+                findNavController().navigate(
+                    SwapProcessingFragmentDirections.actionSwapDetails()
+                )
         }
     }
 }
