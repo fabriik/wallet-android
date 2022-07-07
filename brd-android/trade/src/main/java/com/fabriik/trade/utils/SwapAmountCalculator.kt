@@ -39,9 +39,9 @@ class SwapAmountCalculator(private val ratesRepository: RatesRepository) {
         }
 
         return if (tradingPair.baseCurrency == fromCryptoCode) {
-            cryptoAmount.multiply(quoteState.buyRate)
+            cryptoAmount.multiply(quoteState.buyRate) //todo: minus sendingFee, minus receivingFee
         } else {
-            cryptoAmount.divide(quoteState.sellRate, 5, RoundingMode.HALF_UP)
+            cryptoAmount.divide(quoteState.sellRate, 5, RoundingMode.HALF_UP) //todo: plus sendingFee, plus receivingFee
         }
     }
 }
