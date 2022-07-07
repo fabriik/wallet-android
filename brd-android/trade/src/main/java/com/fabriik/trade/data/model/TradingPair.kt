@@ -26,7 +26,7 @@ data class TradingPair(
     val name: String
 ): Parcelable {
 
-    fun invertCurrencies(): TradingPair {
+    fun inverse(): TradingPair {
         return TradingPair(
             baseCurrency = termCurrency,
             termCurrency = baseCurrency,

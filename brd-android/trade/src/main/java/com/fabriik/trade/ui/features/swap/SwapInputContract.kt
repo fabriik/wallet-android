@@ -11,11 +11,11 @@ interface SwapInputContract {
     sealed class Event : FabriikContract.Event {
         object DismissClicked : Event()
         object ConfirmClicked : Event()
+        object ReplaceCurrenciesClicked : Event()
 
         /*
         object ConfirmClicked : Event()
         object OriginCurrencyClicked : Event()
-        object ReplaceCurrenciesClicked : Event()
         object DestinationCurrencyClicked : Event()
         object OnMinAmountClicked : Event()
         object OnMaxAmountClicked : Event()

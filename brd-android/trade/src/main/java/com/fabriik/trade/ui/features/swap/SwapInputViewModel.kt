@@ -74,6 +74,9 @@ class SwapInputViewModel(
                 }
             }
 
+            SwapInputContract.Event.ReplaceCurrenciesClicked ->
+                onReplaceCurrenciesClicked()
+
             /* SwapInputContract.Event.OriginCurrencyClicked ->
                  onSourceCurrencyClicked()
 
@@ -170,13 +173,28 @@ class SwapInputViewModel(
         return wallet?.balance?.toBigDecimal()
     }
 
-/*
-    private fun onReplaceCurrenciesClicked() = withLoadedState { state ->
-        val newTradingPair = state.selectedPair.invertCurrencies()
-        setState { state.copy(selectedPair = newTradingPair) }
+    private fun onReplaceCurrenciesClicked() {
+        val currentData = currentLoadedState ?: return
+
+        viewModelScope.launch(Dispatchers.IO) {
+            val balance = loadCryptoBalance(currentData.destinationCryptoCurrency) ?: return@launch
+
+            currentLoadedState?.let {
+                val change = it.copy(
+                    cryptoExchangeRate = when(it.sourceCryptoCurrency) {
+                        it.selectedPair.baseCurrency -> BigDecimal.ONE / it.quoteResponse.closeAsk
+                        else -> it.quoteResponse.closeAsk
+                    },
+                    sourceCryptoBalance = balance,
+                    sourceCryptoCurrency = currentData.destinationCryptoCurrency,
+                    destinationCryptoCurrency = currentData.sourceCryptoCurrency
+                )
+                setState { change }
+            }
+        }
     }
 
-    private fun onSourceCurrencyClicked() = withLoadedState { state ->
+/*    private fun onSourceCurrencyClicked() = withLoadedState { state ->
         val currencies = state.tradingPairs
             .map { it.baseCurrency }
             .distinct()
