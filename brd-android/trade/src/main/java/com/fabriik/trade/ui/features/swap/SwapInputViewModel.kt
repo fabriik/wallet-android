@@ -81,17 +81,17 @@ class SwapInputViewModel(
             SwapInputContract.Event.SourceCurrencyClicked ->
                 onSourceCurrencyClicked()
 
+            is SwapInputContract.Event.SourceCurrencyChanged ->
+                onSourceCurrencyChanged(event.currencyCode)
+
             SwapInputContract.Event.DestinationCurrencyClicked ->
                 onDestinationCurrencyClicked()
 
+            is SwapInputContract.Event.DestinationCurrencyChanged ->
+                onDestinationCurrencyChanged(event.currencyCode)
+
 
             /*
-
-             is SwapInputContract.Event.OriginCurrencyChanged ->
-                 onSourceCurrencyChanged(event.currencyCode)
-
-             is SwapInputContract.Event.DestinationCurrencyChanged ->
-                 onDestinationCurrencyChanged(event.currencyCode)
 
              is SwapInputContract.Event.OnMinAmountClicked ->
                  onMinAmountClicked()
@@ -260,6 +260,13 @@ class SwapInputViewModel(
         setEffect { SwapInputContract.Effect.SourceSelection(currencies) }
     }
 
+    private fun onSourceCurrencyChanged(currencyCode: String) {
+        val state = currentLoadedState ?: return
+
+         // TODO set state
+        requestNewQuote()
+    }
+
     private fun onDestinationCurrencyClicked() {
         val state = currentLoadedState ?: return
         val currencies = state.tradingPairs
@@ -281,6 +288,13 @@ class SwapInputViewModel(
                 sourceCurrency = state.sourceCryptoCurrency
             )
         }
+    }
+
+    private fun onDestinationCurrencyChanged(currencyCode: String) {
+        val state = currentLoadedState ?: return
+
+        // TODO, set state
+        requestNewQuote()
     }
 
 /*

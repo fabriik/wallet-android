@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -16,6 +17,7 @@ import androidx.navigation.fragment.findNavController
 import com.breadwallet.breadbox.formatCryptoForUi
 import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.trade.ui.customview.SwapCardView
+import com.fabriik.trade.ui.features.assetselection.AssetSelectionFragment
 import java.math.BigDecimal
 
 class SwapInputFragment : Fragment(),
@@ -104,13 +106,13 @@ class SwapInputFragment : Fragment(),
                 handleEffect(it)
             }
         }
-/*
+
         // listen for origin currency changes
         parentFragmentManager.setFragmentResultListener(REQUEST_KEY_ORIGIN_SELECTION, this) { _, bundle ->
             val currency = bundle.getString(AssetSelectionFragment.EXTRA_SELECTED_CURRENCY)
             if (currency != null) {
                 viewModel.setEvent(
-                    SwapInputContract.Event.OriginCurrencyChanged(currency)
+                    SwapInputContract.Event.SourceCurrencyChanged(currency)
                 )
             }
         }
@@ -127,7 +129,7 @@ class SwapInputFragment : Fragment(),
 
         requireActivity().onBackPressedDispatcher.addCallback {
             //User shouldn't be allowed to go back
-        }*/
+        }
     }
 
     override fun render(state: SwapInputContract.State) {
