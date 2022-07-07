@@ -44,6 +44,9 @@ class SwapInputViewModel(
     private val breadBox by kodein.instance<BreadBox>()
     private val swapApi = SwapApi.create(application)
 
+    private val currentLoadedState: SwapInputContract.State.Loaded?
+        get() = state.value as SwapInputContract.State.Loaded?
+
     /*private val fiatIso = BRSharedPrefs.getPreferredFiatIso()
 
     private val ratesRepository by kodein.instance<RatesRepository>()
@@ -62,55 +65,55 @@ class SwapInputViewModel(
             SwapInputContract.Event.DismissClicked ->
                 setEffect { SwapInputContract.Effect.Dismiss }
 
-            /* SwapInputContract.Event.ConfirmClicked -> withLoadedState { state ->
+            SwapInputContract.Event.ConfirmClicked -> currentLoadedState?.let {
                 setEffect {
                     SwapInputContract.Effect.ContinueToSwapProcessing(
-                        sourceCurrency = state.selectedPair.baseCurrency,
-                        destinationCurrency = state.selectedPair.termCurrency
+                        sourceCurrency = it.selectedPair.baseCurrency,
+                        destinationCurrency = it.selectedPair.termCurrency
                     )
                 }
             }
 
-            SwapInputContract.Event.OriginCurrencyClicked ->
-                onSourceCurrencyClicked()
+            /* SwapInputContract.Event.OriginCurrencyClicked ->
+                 onSourceCurrencyClicked()
 
-            is SwapInputContract.Event.OriginCurrencyChanged ->
-                onSourceCurrencyChanged(event.currencyCode)
+             is SwapInputContract.Event.OriginCurrencyChanged ->
+                 onSourceCurrencyChanged(event.currencyCode)
 
-            SwapInputContract.Event.DestinationCurrencyClicked ->
-                onDestinationCurrencyClicked()
+             SwapInputContract.Event.DestinationCurrencyClicked ->
+                 onDestinationCurrencyClicked()
 
-            is SwapInputContract.Event.DestinationCurrencyChanged ->
-                onDestinationCurrencyChanged(event.currencyCode)
+             is SwapInputContract.Event.DestinationCurrencyChanged ->
+                 onDestinationCurrencyChanged(event.currencyCode)
 
-            is SwapInputContract.Event.OnMinAmountClicked ->
-                onMinAmountClicked()
+             is SwapInputContract.Event.OnMinAmountClicked ->
+                 onMinAmountClicked()
 
-            is SwapInputContract.Event.OnMaxAmountClicked ->
-                onMaxAmountClicked()
+             is SwapInputContract.Event.OnMaxAmountClicked ->
+                 onMaxAmountClicked()
 
-            is SwapInputContract.Event.ReplaceCurrenciesClicked ->
-                onReplaceCurrenciesClicked()
+             is SwapInputContract.Event.ReplaceCurrenciesClicked ->
+                 onReplaceCurrenciesClicked()
 
-            is SwapInputContract.Event.OriginCurrencyFiatAmountChange -> {
-                onSourceCurrencyFiatAmountChanged(event.amount)
-                setEffect { SwapInputContract.Effect.DeselectMinMaxSwitchItems }
-            }
+             is SwapInputContract.Event.OriginCurrencyFiatAmountChange -> {
+                 onSourceCurrencyFiatAmountChanged(event.amount)
+                 setEffect { SwapInputContract.Effect.DeselectMinMaxSwitchItems }
+             }
 
-            is SwapInputContract.Event.OriginCurrencyCryptoAmountChange -> {
-                onSourceCurrencyCryptoAmountChanged(event.amount)
-                setEffect { SwapInputContract.Effect.DeselectMinMaxSwitchItems }
-            }
+             is SwapInputContract.Event.OriginCurrencyCryptoAmountChange -> {
+                 onSourceCurrencyCryptoAmountChanged(event.amount)
+                 setEffect { SwapInputContract.Effect.DeselectMinMaxSwitchItems }
+             }
 
-            is SwapInputContract.Event.DestinationCurrencyFiatAmountChange -> {
-                onDestinationCurrencyFiatAmountChanged(event.amount)
-                setEffect { SwapInputContract.Effect.DeselectMinMaxSwitchItems }
-            }
+             is SwapInputContract.Event.DestinationCurrencyFiatAmountChange -> {
+                 onDestinationCurrencyFiatAmountChanged(event.amount)
+                 setEffect { SwapInputContract.Effect.DeselectMinMaxSwitchItems }
+             }
 
-            is SwapInputContract.Event.DestinationCurrencyCryptoAmountChange -> {
-                onDestinationCurrencyCryptoAmountChanged(event.amount)
-                setEffect { SwapInputContract.Effect.DeselectMinMaxSwitchItems }
-            }*/
+             is SwapInputContract.Event.DestinationCurrencyCryptoAmountChange -> {
+                 onDestinationCurrencyCryptoAmountChanged(event.amount)
+                 setEffect { SwapInputContract.Effect.DeselectMinMaxSwitchItems }
+             }*/
         }
     }
 

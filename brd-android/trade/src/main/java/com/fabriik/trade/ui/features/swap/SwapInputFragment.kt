@@ -12,6 +12,7 @@ import com.fabriik.trade.R
 import com.fabriik.trade.databinding.FragmentSwapInputBinding
 import kotlinx.coroutines.flow.collect
 import androidx.core.view.isVisible
+import androidx.navigation.fragment.findNavController
 import com.breadwallet.breadbox.formatCryptoForUi
 import com.fabriik.common.utils.FabriikToastUtil
 
@@ -78,11 +79,11 @@ class SwapInputFragment : Fragment(),
                     FabriikSwitch.OPTION_RIGHT ->
                         viewModel.setEvent(SwapInputContract.Event.OnMaxAmountClicked)
                 }
-            }
+            }*/
 
             btnConfirm.setOnClickListener {
                 viewModel.setEvent(SwapInputContract.Event.ConfirmClicked)
-            }*/
+            }
         }
 
         // collect UI state
@@ -220,13 +221,15 @@ class SwapInputFragment : Fragment(),
             is SwapInputContract.Effect.ShowToast ->
                 FabriikToastUtil.showInfo(binding.root, effect.message)
 
-            /*is SwapInputContract.Effect.ContinueToSwapProcessing ->
+            is SwapInputContract.Effect.ContinueToSwapProcessing ->
                 findNavController().navigate(
                     SwapInputFragmentDirections.actionSwapProcessing(
                         coinFrom = effect.sourceCurrency,
                         coinTo = effect.destinationCurrency
                     )
                 )
+
+            /*
 
             SwapInputContract.Effect.DeselectMinMaxSwitchItems ->
                 binding.switchMinMax.setSelectedItem(FabriikSwitch.OPTION_NONE)
