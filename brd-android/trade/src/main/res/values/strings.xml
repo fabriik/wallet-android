@@ -9,4 +9,16 @@
     <!-- Transaction item custom view -->
     <string name="Swap.TransactionItem.Swapped">Swapped from</string>
     <string name="Swap.TransactionItem.Pending">Pending swap from</string>
+
+    <!-- Details Screen -->
+    <string name="Swap.Details.Status.Pending">Pending</string>
+    <string name="Swap.Details.Status.Complete">Complete</string>
+    <string name="Swap.Details.Status.Failed">Failed</string>
+    <string name="Swap.Details.Title">Swap details</string>
+    <string name="Swap.Details.OrderId">Fabriik Order ID</string>
+    <string name="Swap.Details.Timestamp">Timestamp</string>
+    <string name="Swap.Details.From">From %1$s</string>
+    <string name="Swap.Details.To">To %1$s</string>
+    <string name="Swap.Details.TransactionIdFrom.Title">Bitcoin %1$s Transaction ID</string>
+    <string name="Swap.Details.TransactionIdTo.Title">%1$s Transaction ID</string>
 </resources>
