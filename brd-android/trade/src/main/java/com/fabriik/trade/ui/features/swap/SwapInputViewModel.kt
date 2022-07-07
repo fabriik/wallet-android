@@ -12,6 +12,7 @@ import com.breadwallet.repository.RatesRepository
 import com.breadwallet.tools.manager.BRSharedPrefs
 import com.fabriik.common.data.Status
 import com.fabriik.common.ui.base.FabriikViewModel
+import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.common.utils.getString
 import com.fabriik.common.utils.min
 import com.fabriik.trade.R
@@ -50,9 +51,9 @@ class SwapInputViewModel(
     /*private val fiatIso = BRSharedPrefs.getPreferredFiatIso()
 
     private val ratesRepository by kodein.instance<RatesRepository>()
-    private val swapAmountCalculator = SwapAmountCalculator(ratesRepository)
+    private val swapAmountCalculator = SwapAmountCalculator(ratesRepository)*/
 
-    private var currentTimerJob: Job? = null*/
+    private var currentTimerJob: Job? = null
 
     init {
         loadInitialData()
@@ -153,6 +154,8 @@ class SwapInputViewModel(
                     cryptoExchangeRate = selectedPairQuote.closeAsk
                 )
             }
+
+            startQuoteTimer()
         }
     }
 
@@ -190,6 +193,57 @@ class SwapInputViewModel(
                     destinationCryptoCurrency = currentData.sourceCryptoCurrency
                 )
                 setState { change }
+            }
+        }
+    }
+
+    private fun startQuoteTimer() {
+        currentTimerJob?.cancel()
+
+        val state = currentLoadedState ?: return
+        val targetTimestamp = state.quoteResponse.timestamp
+        val currentTimestamp = System.currentTimeMillis()
+        val diffSec = TimeUnit.MILLISECONDS.toSeconds(targetTimestamp - currentTimestamp)
+
+        currentTimerJob = viewModelScope.launch {
+            (diffSec downTo 0)
+                .asSequence()
+                .asFlow()
+                .onStart { setEffect { SwapInputContract.Effect.UpdateTimer(QUOTE_TIMER) } }
+                .onEach { delay(1000) }
+                .collect {
+                    if (it == 0L) {
+                        requestNewQuote()
+                    } else {
+                        setEffect { SwapInputContract.Effect.UpdateTimer(it.toInt()) }
+                    }
+                }
+        }
+    }
+
+    private fun requestNewQuote() {
+        viewModelScope.launch {
+            val state = currentLoadedState ?: return@launch
+            setState { state.copy(cryptoExchangeRateLoading = true) }
+
+            val response = swapApi.getQuote(state.selectedPair)
+            when (response.status) {
+                Status.SUCCESS -> {
+                    val latestState = currentLoadedState ?: return@launch
+                    setState {
+                        latestState.copy(
+                            cryptoExchangeRateLoading = false,
+                            quoteResponse = requireNotNull(response.data)
+                        )
+                    }
+                    startQuoteTimer()
+                }
+                Status.ERROR ->
+                    setEffect {
+                        SwapInputContract.Effect.ShowToast(
+                            response.message ?: getString(R.string.FabriikApi_DefaultError)
+                        )
+                    }
             }
         }
     }

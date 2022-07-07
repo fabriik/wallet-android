@@ -217,6 +217,11 @@ class SwapInputFragment : Fragment(),
                     )
                 )
 
+            is SwapInputContract.Effect.UpdateTimer ->
+                binding.viewTimer.setProgress(
+                    SwapInputViewModel.QUOTE_TIMER, effect.timeLeft
+                )
+
             /*
 
             SwapInputContract.Effect.DeselectMinMaxSwitchItems ->

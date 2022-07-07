@@ -34,6 +34,7 @@ interface SwapInputContract {
             val sourceCurrency: String,
             val destinationCurrency: String
         ) : Effect()
+        data class UpdateTimer(val timeLeft: Int) : Effect()
         /*object DeselectMinMaxSwitchItems : Effect()
         data class OriginSelection(val currencies: List<String>) : Effect()
         data class DestinationSelection(val currencies: List<String>, val sourceCurrency: String) : Effect()
