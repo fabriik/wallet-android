@@ -22,7 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.breadwallet.ui
+package com.breadwallet.util
 
 import com.breadwallet.logger.logError
 import com.breadwallet.tools.util.BRConstants

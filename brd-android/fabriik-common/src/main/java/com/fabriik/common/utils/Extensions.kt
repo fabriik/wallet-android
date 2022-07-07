@@ -45,6 +45,10 @@ fun Editable?.textOrEmpty() = if (isNullOrEmpty()) "" else toString()
 
 fun Editable?.asInt() = if (isNullOrEmpty()) null else toString().toInt()
 
+fun Array<String>.contains(other: String, ignoreCase: Boolean = false): Boolean {
+    return any { it.equals(other, ignoreCase) }
+}
+
 val Int.dp: Int
     get() = (this * Resources.getSystem().displayMetrics.density).toInt()
 

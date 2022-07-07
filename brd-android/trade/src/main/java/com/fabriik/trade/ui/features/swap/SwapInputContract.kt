@@ -21,13 +21,14 @@ interface SwapInputContract {
 
     sealed class Effect : FabriikContract.Effect {
         object Dismiss : Effect()
-        object OriginSelection : Effect()
-        object DestinationSelection : Effect()
+        data class OriginSelection(val currencies: List<String>) : Effect()
+        data class DestinationSelection(val currencies: List<String>, val sourceCurrency: String) : Effect()
     }
 
     data class State(
         val timer: Int,
         val quoteLoading: Boolean = false,
+        val currencies: List<String>,
         val originCurrency: String,
         val originCurrencyBalance: BigDecimal,
         val originFiatAmount: BigDecimal = BigDecimal.ZERO,

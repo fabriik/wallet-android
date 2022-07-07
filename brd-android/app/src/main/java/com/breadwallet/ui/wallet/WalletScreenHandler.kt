@@ -27,7 +27,6 @@ package com.breadwallet.ui.wallet
 import android.content.Context
 import com.breadwallet.app.BreadApp
 import com.breadwallet.breadbox.*
-import com.breadwallet.ui.formatFiatForUi
 import com.breadwallet.crypto.Amount
 import com.breadwallet.crypto.Transfer
 import com.breadwallet.crypto.TransferDirection
@@ -42,6 +41,7 @@ import com.breadwallet.tools.util.TokenUtil
 import com.breadwallet.ui.models.TransactionState
 import com.breadwallet.ui.wallet.WalletScreen.E
 import com.breadwallet.ui.wallet.WalletScreen.F
+import com.breadwallet.util.formatFiatForUi
 import com.spotify.mobius.Connectable
 import drewcarlson.mobius.flow.flowTransformer
 import drewcarlson.mobius.flow.subtypeEffectHandler

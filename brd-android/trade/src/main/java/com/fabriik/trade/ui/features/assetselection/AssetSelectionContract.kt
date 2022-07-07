@@ -15,7 +15,7 @@ interface AssetSelectionContract {
         data class ShowToast(val message: String): Effect()
         data class Back(
             val requestKey: String,
-            val selectedAsset: AssetSelectionAdapter.AssetSelectionItem?
+            val selectedCurrency: String?
         ) : Effect()
     }
 
