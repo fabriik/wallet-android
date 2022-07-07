@@ -3,12 +3,8 @@ package com.fabriik.trade.ui.customview
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import androidx.core.view.isVisible
-import com.breadwallet.breadbox.formatCryptoForUi
-import com.breadwallet.util.formatFiatForUi
 import com.fabriik.common.utils.dp
 import com.fabriik.trade.databinding.ViewSwapCardBinding
-import com.fabriik.trade.ui.features.swap.SwapInputContract
 import com.google.android.material.card.MaterialCardView
 import java.math.BigDecimal
 
@@ -30,7 +26,7 @@ class SwapCardView @JvmOverloads constructor(
 
             viewInputBuyingCurrency.setCallback(object : CurrencyInputView.Callback {
                 override fun onCurrencySelectorClicked() {
-                    callback?.onBuyingCurrencySelectorClicked()
+                    callback?.onDestinationCurrencyClicked()
                 }
 
                 override fun onFiatAmountChanged(amount: BigDecimal) {
@@ -44,7 +40,7 @@ class SwapCardView @JvmOverloads constructor(
 
             viewInputSellingCurrency.setCallback(object : CurrencyInputView.Callback {
                 override fun onCurrencySelectorClicked() {
-                    callback?.onSellingCurrencySelectorClicked()
+                    callback?.onSourceCurrencyClicked()
                 }
 
                 override fun onFiatAmountChanged(amount: BigDecimal) {
@@ -119,8 +115,8 @@ class SwapCardView @JvmOverloads constructor(
 
     interface Callback {
         fun onReplaceCurrenciesClicked()
-        fun onBuyingCurrencySelectorClicked()
-        fun onSellingCurrencySelectorClicked()
+        fun onDestinationCurrencyClicked()
+        fun onSourceCurrencyClicked()
         fun onSellingCurrencyFiatAmountChanged(amount: BigDecimal)
         fun onSellingCurrencyCryptoAmountChanged(amount: BigDecimal)
         fun onBuyingCurrencyFiatAmountChanged(amount: BigDecimal)

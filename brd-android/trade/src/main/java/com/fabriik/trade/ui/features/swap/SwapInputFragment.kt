@@ -29,12 +29,12 @@ class SwapInputFragment : Fragment(),
             viewModel.setEvent(SwapInputContract.Event.ReplaceCurrenciesClicked)
         }
 
-        override fun onBuyingCurrencySelectorClicked() {
-            //viewModel.setEvent(SwapInputContract.Event.DestinationCurrencyClicked)
+        override fun onSourceCurrencyClicked() {
+            viewModel.setEvent(SwapInputContract.Event.SourceCurrencyClicked)
         }
 
-        override fun onSellingCurrencySelectorClicked() {
-            //viewModel.setEvent(SwapInputContract.Event.OriginCurrencyClicked)
+        override fun onDestinationCurrencyClicked() {
+            viewModel.setEvent(SwapInputContract.Event.DestinationCurrencyClicked)
         }
 
         override fun onSellingCurrencyFiatAmountChanged(amount: BigDecimal) {
@@ -222,12 +222,7 @@ class SwapInputFragment : Fragment(),
                     SwapInputViewModel.QUOTE_TIMER, effect.timeLeft
                 )
 
-            /*
-
-            SwapInputContract.Effect.DeselectMinMaxSwitchItems ->
-                binding.switchMinMax.setSelectedItem(FabriikSwitch.OPTION_NONE)
-
-            is SwapInputContract.Effect.OriginSelection ->
+            is SwapInputContract.Effect.SourceSelection ->
                 findNavController().navigate(
                     SwapInputFragmentDirections.actionAssetSelection(
                         requestKey = REQUEST_KEY_ORIGIN_SELECTION,
@@ -243,6 +238,9 @@ class SwapInputFragment : Fragment(),
                         sourceCurrency = effect.sourceCurrency
                     )
                 )
+
+            /*  SwapInputContract.Effect.DeselectMinMaxSwitchItems ->
+                binding.switchMinMax.setSelectedItem(FabriikSwitch.OPTION_NONE)
 
             is SwapInputContract.Effect.UpdateSourceFiatAmount ->
                 binding.cvSwap.setSourceFiatAmount(effect.bigDecimal)

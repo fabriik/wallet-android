@@ -12,11 +12,11 @@ interface SwapInputContract {
         object DismissClicked : Event()
         object ConfirmClicked : Event()
         object ReplaceCurrenciesClicked : Event()
+        object SourceCurrencyClicked : Event()
+        object DestinationCurrencyClicked : Event()
 
         /*
         object ConfirmClicked : Event()
-        object OriginCurrencyClicked : Event()
-        object DestinationCurrencyClicked : Event()
         object OnMinAmountClicked : Event()
         object OnMaxAmountClicked : Event()
         data class OriginCurrencyFiatAmountChange(val amount: BigDecimal) : Event()
@@ -35,9 +35,9 @@ interface SwapInputContract {
             val destinationCurrency: String
         ) : Effect()
         data class UpdateTimer(val timeLeft: Int) : Effect()
-        /*object DeselectMinMaxSwitchItems : Effect()
-        data class OriginSelection(val currencies: List<String>) : Effect()
+        data class SourceSelection(val currencies: List<String>) : Effect()
         data class DestinationSelection(val currencies: List<String>, val sourceCurrency: String) : Effect()
+        /*object DeselectMinMaxSwitchItems : Effect()
         data class UpdateSourceFiatAmount(val bigDecimal: BigDecimal) : Effect()
         data class UpdateSourceCryptoAmount(val bigDecimal: BigDecimal) : Effect()
         data class UpdateDestinationFiatAmount(val bigDecimal: BigDecimal) : Effect()

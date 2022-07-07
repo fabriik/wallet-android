@@ -78,14 +78,17 @@ class SwapInputViewModel(
             SwapInputContract.Event.ReplaceCurrenciesClicked ->
                 onReplaceCurrenciesClicked()
 
-            /* SwapInputContract.Event.OriginCurrencyClicked ->
-                 onSourceCurrencyClicked()
+            SwapInputContract.Event.SourceCurrencyClicked ->
+                onSourceCurrencyClicked()
+
+            SwapInputContract.Event.DestinationCurrencyClicked ->
+                onDestinationCurrencyClicked()
+
+
+            /*
 
              is SwapInputContract.Event.OriginCurrencyChanged ->
                  onSourceCurrencyChanged(event.currencyCode)
-
-             SwapInputContract.Event.DestinationCurrencyClicked ->
-                 onDestinationCurrencyClicked()
 
              is SwapInputContract.Event.DestinationCurrencyChanged ->
                  onDestinationCurrencyChanged(event.currencyCode)
@@ -248,27 +251,39 @@ class SwapInputViewModel(
         }
     }
 
-/*    private fun onSourceCurrencyClicked() = withLoadedState { state ->
+    private fun onSourceCurrencyClicked() {
+        val state = currentLoadedState ?: return
         val currencies = state.tradingPairs
             .map { it.baseCurrency }
             .distinct()
 
-        setEffect { SwapInputContract.Effect.OriginSelection(currencies) }
+        setEffect { SwapInputContract.Effect.SourceSelection(currencies) }
     }
 
-    private fun onDestinationCurrencyClicked() = withLoadedState { state ->
+    private fun onDestinationCurrencyClicked() {
+        val state = currentLoadedState ?: return
         val currencies = state.tradingPairs
-            .filter { it.baseCurrency == state.selectedPair.baseCurrency }
-            .map { it.termCurrency }
+            .filter {
+                it.baseCurrency == state.sourceCryptoCurrency ||
+                    it.termCurrency == state.sourceCryptoCurrency
+            }
+            .map {
+                when (state.sourceCryptoCurrency) {
+                    it.baseCurrency -> it.termCurrency
+                    else -> it.baseCurrency
+                }
+            }
             .distinct()
 
         setEffect {
             SwapInputContract.Effect.DestinationSelection(
                 currencies = currencies,
-                sourceCurrency = state.selectedPair.baseCurrency
+                sourceCurrency = state.sourceCryptoCurrency
             )
         }
     }
+
+/*
 
     private fun onSourceCurrencyChanged(currencyCode: String) = withLoadedState { state ->
         val pairsWithSelectedBaseCurrency = state.tradingPairs.filter {
