@@ -180,15 +180,21 @@ class SwapInputViewModel(
         )
     }
 
-    private fun onSourceCurrencyFiatAmountChanged(amount: BigDecimal) =
-        withLoadedQuoteState { state, quoteState ->
-            calculateReceivingAmount(amount, false)
-        }
+    private fun onSourceCurrencyFiatAmountChanged(amount: BigDecimal) {
+        calculateReceivingAmount(amount, false)
+    }
 
-    private fun onSourceCurrencyCryptoAmountChanged(amount: BigDecimal) =
-        withLoadedQuoteState { state, quoteState ->
-            calculateReceivingAmount(amount, true)
-        }
+    private fun onSourceCurrencyCryptoAmountChanged(amount: BigDecimal) {
+        calculateReceivingAmount(amount, true)
+    }
+
+    private fun onDestinationCurrencyFiatAmountChanged(amount: BigDecimal) {
+        calculateSendingAmount(amount, false)
+    }
+
+    private fun onDestinationCurrencyCryptoAmountChanged(amount: BigDecimal) {
+        calculateSendingAmount(amount, true)
+    }
 
     private fun calculateReceivingAmount(sourceAmount: BigDecimal, isCryptoAmount: Boolean) =
         withLoadedQuoteState { state, quoteState ->
@@ -213,16 +219,15 @@ class SwapInputViewModel(
             }
 
             estimateSendingFee(sourceCryptoAmount) { sendingFee ->
-                val destinationCryptoAmount = swapAmountCalculator.convertCryptoToCrypto(
+                var destinationCryptoAmount = swapAmountCalculator.convertCryptoToCrypto(
                     quoteState = quoteState,
                     tradingPair = state.selectedPair,
-                    cryptoAmount = sourceCryptoAmount - (sendingFee?.cryptoAmount
-                        ?: BigDecimal.ZERO),
+                    cryptoAmount = sourceCryptoAmount - (sendingFee?.cryptoAmount ?: BigDecimal.ZERO),
                     fromCryptoCode = state.selectedPair.baseCurrency
                 )
 
                 estimateReceivingFee(destinationCryptoAmount) { receivingFee ->
-                    destinationCryptoAmount - (receivingFee?.cryptoAmount ?: BigDecimal.ZERO)
+                    destinationCryptoAmount -= (receivingFee?.cryptoAmount ?: BigDecimal.ZERO)
 
                     val destinationFiatAmount = swapAmountCalculator.convertCryptoToFiat(
                         cryptoAmount = destinationCryptoAmount,
@@ -246,66 +251,51 @@ class SwapInputViewModel(
             }
         }
 
-    private fun onDestinationCurrencyFiatAmountChanged(amount: BigDecimal) =
+    private fun calculateSendingAmount(receivedAmount: BigDecimal, isCryptoAmount: Boolean) =
         withLoadedQuoteState { state, quoteState ->
-            val destinationCryptoAmount = swapAmountCalculator.convertFiatToCrypto(
-                fiatAmount = amount,
-                cryptoCode = state.selectedPair.termCurrency,
-                fiatCode = fiatIso
-            )
+            val receivedFiatAmount = if (isCryptoAmount) {
+                swapAmountCalculator.convertCryptoToFiat(
+                    cryptoAmount = receivedAmount,
+                    cryptoCode = state.selectedPair.termCurrency,
+                    fiatCode = fiatIso
+                )
+            } else {
+                receivedAmount
+            }
 
-            val sourceCryptoAmount = swapAmountCalculator.convertCryptoToCrypto(
-                quoteState = quoteState,
-                tradingPair = state.selectedPair,
-                cryptoAmount = destinationCryptoAmount,
-                fromCryptoCode = state.selectedPair.termCurrency
-            )
-
-            val sourceFiatAmount = swapAmountCalculator.convertCryptoToFiat(
-                cryptoAmount = sourceCryptoAmount,
-                cryptoCode = state.selectedPair.baseCurrency,
-                fiatCode = fiatIso
-            )
-
-            //estimateSendingFee(sourceCryptoAmount)
-            //estimateReceivingFee(destinationCryptoAmount)
-
-            setEffect { SwapInputContract.Effect.UpdateSourceFiatAmount(sourceFiatAmount) }
-            setEffect { SwapInputContract.Effect.UpdateSourceCryptoAmount(sourceCryptoAmount) }
-            setEffect {
-                SwapInputContract.Effect.UpdateDestinationCryptoAmount(
-                    destinationCryptoAmount
+            val receivedCryptoAmount = if (isCryptoAmount) {
+                receivedAmount
+            } else {
+                swapAmountCalculator.convertFiatToCrypto(
+                    fiatAmount = receivedAmount,
+                    cryptoCode = state.selectedPair.termCurrency,
+                    fiatCode = fiatIso
                 )
             }
-        }
 
-    private fun onDestinationCurrencyCryptoAmountChanged(amount: BigDecimal) =
-        withLoadedQuoteState { state, quoteState ->
-            val destinationFiatAmount = swapAmountCalculator.convertCryptoToFiat(
-                cryptoAmount = amount,
-                cryptoCode = state.selectedPair.termCurrency,
-                fiatCode = fiatIso
-            )
+            estimateReceivingFee(receivedCryptoAmount) { receivingFee ->
+                var sourceCryptoAmount = swapAmountCalculator.convertCryptoToCrypto(
+                    quoteState = quoteState,
+                    tradingPair = state.selectedPair,
+                    cryptoAmount = receivedCryptoAmount + (receivingFee?.cryptoAmount ?: BigDecimal.ZERO),
+                    fromCryptoCode = state.selectedPair.baseCurrency
+                )
 
-            val sourceCryptoAmount = swapAmountCalculator.convertCryptoToCrypto(
-                quoteState = quoteState,
-                tradingPair = state.selectedPair,
-                cryptoAmount = amount,
-                fromCryptoCode = state.selectedPair.termCurrency
-            )
+                estimateSendingFee(sourceCryptoAmount) { sendingFee ->
+                    sourceCryptoAmount += (sendingFee?.cryptoAmount ?: BigDecimal.ZERO)
 
-            val sourceFiatAmount = swapAmountCalculator.convertCryptoToFiat(
-                cryptoAmount = sourceCryptoAmount,
-                cryptoCode = state.selectedPair.baseCurrency,
-                fiatCode = fiatIso
-            )
+                    val sourceFiatAmount = swapAmountCalculator.convertCryptoToFiat(
+                        cryptoAmount = sourceCryptoAmount,
+                        cryptoCode = state.selectedPair.baseCurrency,
+                        fiatCode = fiatIso
+                    )
 
-            // estimateSendingFee(sourceCryptoAmount)
-            // estimateReceivingFee(amount)
-
-            setEffect { SwapInputContract.Effect.UpdateSourceFiatAmount(sourceFiatAmount) }
-            setEffect { SwapInputContract.Effect.UpdateSourceCryptoAmount(sourceCryptoAmount) }
-            setEffect { SwapInputContract.Effect.UpdateDestinationFiatAmount(destinationFiatAmount) }
+                    setEffect { SwapInputContract.Effect.UpdateSourceFiatAmount(sourceFiatAmount) }
+                    setEffect { SwapInputContract.Effect.UpdateSourceCryptoAmount(sourceCryptoAmount) }
+                    setEffect { SwapInputContract.Effect.UpdateDestinationFiatAmount(receivedFiatAmount) }
+                    setEffect { SwapInputContract.Effect.UpdateDestinationCryptoAmount(receivedCryptoAmount) }
+                }
+            }
         }
 
     private fun loadSupportedCurrencies() {
