@@ -33,7 +33,7 @@ import com.breadwallet.R
 import com.breadwallet.breadbox.TransferSpeed
 import com.breadwallet.breadbox.formatCryptoForUi
 import com.breadwallet.databinding.ControllerConfirmTxDetailsBinding
-import com.breadwallet.ui.formatFiatForUi
+import com.breadwallet.util.formatFiatForUi
 import com.breadwallet.tools.util.eth
 import com.breadwallet.ui.BaseController
 import com.breadwallet.ui.changehandlers.DialogChangeHandler

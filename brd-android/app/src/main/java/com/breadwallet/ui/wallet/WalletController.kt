@@ -47,7 +47,7 @@ import com.breadwallet.breadbox.WalletState
 import com.breadwallet.breadbox.formatCryptoForUi
 import com.breadwallet.databinding.ControllerWalletBinding
 import com.breadwallet.effecthandler.metadata.MetaDataEffectHandler
-import com.breadwallet.ui.formatFiatForUi
+import com.breadwallet.util.formatFiatForUi
 import com.breadwallet.logger.logDebug
 import com.breadwallet.model.PriceDataPoint
 import com.breadwallet.tools.animation.UiUtils

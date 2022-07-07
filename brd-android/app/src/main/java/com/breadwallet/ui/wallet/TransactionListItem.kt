@@ -9,7 +9,7 @@ import androidx.core.view.isVisible
 import com.breadwallet.R
 import com.breadwallet.breadbox.formatCryptoForUi
 import com.breadwallet.databinding.TxItemBinding
-import com.breadwallet.ui.formatFiatForUi
+import com.breadwallet.util.formatFiatForUi
 import com.breadwallet.tools.manager.BRSharedPrefs
 import com.breadwallet.tools.util.BRDateUtil
 import com.breadwallet.tools.util.Utils

@@ -27,7 +27,7 @@ package com.breadwallet.ui.wallet
 import android.content.Context
 import com.breadwallet.app.BreadApp
 import com.breadwallet.breadbox.*
-import com.breadwallet.ui.formatFiatForUi
+import com.breadwallet.util.formatFiatForUi
 import com.breadwallet.crypto.Amount
 import com.breadwallet.crypto.Transfer
 import com.breadwallet.crypto.TransferDirection

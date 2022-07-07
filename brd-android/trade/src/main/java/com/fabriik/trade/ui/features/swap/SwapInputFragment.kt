@@ -19,7 +19,7 @@ import java.math.BigDecimal
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.breadwallet.breadbox.formatCryptoForUi
-import com.breadwallet.ui.formatFiatForUi
+import com.breadwallet.util.formatFiatForUi
 import com.fabriik.common.ui.customview.FabriikSwitch
 import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.trade.ui.features.assetselection.AssetSelectionAdapter

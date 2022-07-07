@@ -40,7 +40,7 @@ import com.breadwallet.breadbox.TransferSpeed
 import com.breadwallet.breadbox.formatCryptoForUi
 import com.breadwallet.databinding.ControllerSendSheetBinding
 import com.breadwallet.effecthandler.metadata.MetaDataEffectHandler
-import com.breadwallet.ui.formatFiatForUi
+import com.breadwallet.util.formatFiatForUi
 import com.breadwallet.legacy.presenter.customviews.BRKeyboard
 import com.breadwallet.logger.logError
 import com.breadwallet.tools.animation.SlideDetector

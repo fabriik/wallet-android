@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.breadwallet.breadbox.formatCryptoForUi
 import com.breadwallet.tools.manager.BRSharedPrefs
-import com.breadwallet.ui.formatFiatForUi
+import com.breadwallet.util.formatFiatForUi
 import com.fabriik.common.utils.doAfterTextChangedWhenFocused
 import com.fabriik.trade.R
 import com.fabriik.trade.databinding.ViewCurrencyInputBinding

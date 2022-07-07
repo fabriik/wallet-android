@@ -40,7 +40,7 @@ import com.breadwallet.ui.changehandlers.DialogChangeHandler
 import com.breadwallet.ui.controllers.AlertDialogController
 import com.breadwallet.ui.flowbind.clicks
 import com.breadwallet.ui.flowbind.textChanges
-import com.breadwallet.ui.formatFiatForUi
+import com.breadwallet.util.formatFiatForUi
 import com.breadwallet.ui.uigift.CreateGift.M
 import com.breadwallet.ui.uigift.CreateGift.E
 import com.breadwallet.ui.uigift.CreateGift.F

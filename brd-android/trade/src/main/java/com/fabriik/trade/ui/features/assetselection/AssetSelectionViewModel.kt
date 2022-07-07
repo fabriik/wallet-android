@@ -11,7 +11,7 @@ import com.breadwallet.crypto.Wallet
 import com.breadwallet.repository.RatesRepository
 import com.breadwallet.tools.manager.BRSharedPrefs
 import com.breadwallet.tools.util.TokenUtil
-import com.breadwallet.ui.formatFiatForUi
+import com.breadwallet.util.formatFiatForUi
 import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.common.utils.toBundle
 import kotlinx.coroutines.Dispatchers

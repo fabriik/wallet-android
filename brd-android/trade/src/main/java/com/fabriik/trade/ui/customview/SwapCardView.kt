@@ -5,7 +5,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.core.view.isVisible
 import com.breadwallet.breadbox.formatCryptoForUi
-import com.breadwallet.ui.formatFiatForUi
+import com.breadwallet.util.formatFiatForUi
 import com.fabriik.common.utils.dp
 import com.fabriik.trade.databinding.ViewSwapCardBinding
 import com.fabriik.trade.ui.features.swap.SwapInputContract
