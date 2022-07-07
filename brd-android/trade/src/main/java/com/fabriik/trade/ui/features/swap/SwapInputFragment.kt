@@ -76,6 +76,12 @@ class SwapInputFragment : Fragment(),
 
             cvSwap.setFiatCurrency(BRSharedPrefs.getPreferredFiatIso())
             cvSwap.setCallback(cardSwapCallback)
+
+            btnConfirm.setOnClickListener {
+                findNavController().navigate(SwapInputFragmentDirections
+                    .actionFragmentSwapInputToFragmentSwapProcessing(viewModel.currentState.originCurrency,
+                        viewModel.currentState.destinationCurrency))
+            }
         }
 
         // collect UI state
