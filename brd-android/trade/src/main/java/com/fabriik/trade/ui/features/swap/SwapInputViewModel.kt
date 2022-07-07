@@ -119,14 +119,14 @@ class SwapInputViewModel(
 
     private fun loadInitialData() {
         viewModelScope.launch(Dispatchers.IO) {
-            val tradingPairs = loadTradingPairs()
+            val tradingPairs = swapApi.getTradingPairs().data ?: emptyList()
             if (tradingPairs.isEmpty()) {
                 showErrorState()
                 return@launch
             }
 
             val selectedPair = tradingPairs.first()
-            val selectedPairQuote = loadQuote(selectedPair)
+            val selectedPairQuote = swapApi.getQuote(selectedPair).data
             if (selectedPairQuote == null) {
                 showErrorState()
                 return@launch
@@ -163,25 +163,6 @@ class SwapInputViewModel(
             .find { it.currency.code.equals(currencyCode, ignoreCase = true) }
 
         return wallet?.balance?.toBigDecimal()
-    }
-
-    private suspend fun loadTradingPairs(): List<TradingPair> {
-        val response = swapApi.getTradingPairs()
-
-        return when (response.status) {
-            Status.SUCCESS -> response.data ?: emptyList()
-            Status.ERROR -> emptyList()
-        }
-    }
-
-
-    private suspend fun loadQuote(tradingPair: TradingPair): QuoteResponse? {
-        val response = swapApi.getQuote(tradingPair)
-
-        return when (response.status) {
-            Status.SUCCESS -> response.data
-            Status.ERROR -> null
-        }
     }
 
 /*
