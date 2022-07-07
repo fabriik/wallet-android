@@ -89,6 +89,12 @@ class SwapInputFragment : Fragment(),
                         viewModel.setEvent(SwapInputContract.Event.OnMaxAmountClicked)
                 }
             }
+
+            btnConfirm.setOnClickListener {
+                findNavController().navigate(SwapInputFragmentDirections
+                    .actionFragmentSwapInputToFragmentSwapProcessing(viewModel.currentState.originCurrency,
+                        viewModel.currentState.destinationCurrency))
+            }
         }
 
         // collect UI state
