@@ -43,6 +43,7 @@
         android:launchMode="singleTask"
         android:networkSecurityConfig="@xml/network_security_config"
         android:supportsRtl="true"
+        tools:replace="android:theme"
         android:theme="@style/AppTheme.Dark"
         android:windowSoftInputMode="stateVisible|adjustResize">
         <provider

@@ -313,6 +313,10 @@ object Libs {
         const val CashUi = "com.github.atmcoin.cash-ui-android:cashUI:$CASH_UI_VERSION"
     }
 
+    object Checkout {
+        const val Frames = "com.github.checkout:frames-android:3.1.2"
+    }
+
     object Compose {
         const val Ui = "androidx.compose.ui:ui:$COMPOSE_VERSION"
         const val Tooling = "androidx.compose.ui:ui-tooling:$COMPOSE_VERSION"

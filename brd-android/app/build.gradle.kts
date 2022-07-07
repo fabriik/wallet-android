@@ -166,6 +166,7 @@ dependencies {
     implementation(Libs.AndroidxCamera.Camera2)
     implementation(Libs.AndroidxCamera.Lifecycle)
     implementation(Libs.AndroidxCamera.View)
+    implementation(Libs.Checkout.Frames)
     androidTestImplementation(Libs.AndroidxTest.EspressoCore)
     androidTestImplementation(Libs.AndroidxTest.Runner)
     androidTestImplementation(Libs.AndroidxTest.Rules)

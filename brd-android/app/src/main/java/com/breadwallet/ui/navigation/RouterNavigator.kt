@@ -86,6 +86,7 @@ import com.breadwallet.util.CryptoUriParser
 import com.breadwallet.util.isBrd
 import com.breadwallet.util.showFabriikGenericDialog
 import com.fabriik.buy.ui.BuyWebViewActivity
+import com.fabriik.checkout.CheckoutActivity
 import com.fabriik.common.ui.dialog.FabriikGenericDialog
 import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.kyc.ui.KycActivity
@@ -425,10 +426,16 @@ class RouterNavigator(
     }
 
     override fun about() {
-        AboutController().asTransaction(
-            HorizontalChangeHandler(),
-            HorizontalChangeHandler()
-        )
+//        AboutController().asTransaction(
+//            HorizontalChangeHandler(),
+//            HorizontalChangeHandler()
+//        )
+
+        router.activity?.let {
+            it.startActivity(
+                CheckoutActivity.getStartIntent(it)
+            )
+        }
     }
 
     override fun displayCurrency() {
