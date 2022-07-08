@@ -40,6 +40,7 @@ interface NavigationTargetHandlerSpec {
         NavigationTarget.NativeApiExplorer -> nativeApiExplorer()
         NavigationTarget.TransactionComplete -> transactionComplete()
         NavigationTarget.About -> about()
+        NavigationTarget.Checkout -> checkout()
         NavigationTarget.DisplayCurrency -> displayCurrency()
         NavigationTarget.NotificationsSettings -> notificationsSettings()
         NavigationTarget.ShareDataSettings -> shareDataSettings()
@@ -120,6 +121,8 @@ interface NavigationTargetHandlerSpec {
     fun transactionComplete(): Unit
 
     fun about(): Unit
+
+    fun checkout(): Unit
 
     fun displayCurrency(): Unit
 

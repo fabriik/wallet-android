@@ -147,6 +147,7 @@ dependencies {
     implementation(project(":brd-android:support"))
     implementation(project(":brd-android:registration"))
     implementation(project(":brd-android:fabriik-common"))
+    implementation(project(":brd-android:checkout"))
     implementation(Libs.WalletKit.CoreAndroid)
 
     // AndroidX
@@ -239,4 +240,5 @@ dependencies {
 
     detektPlugins(Libs.Detekt.Formatting)
     implementation("com.airbnb.android:lottie:4.2.0")
+    implementation(Libs.Checkout.Frames)
 }

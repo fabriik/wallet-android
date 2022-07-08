@@ -71,10 +71,10 @@ fun createDisplayCurrencyHandler(
     }
 }
 
-private fun File.isExpired(): Boolean {
-    return (lastModified() - System.currentTimeMillis())
-        .toDuration(MILLISECONDS) > 1.days
-}
+//private fun File.isExpired(): Boolean {
+//    return (lastModified() - System.currentTimeMillis())
+//        .toDuration(MILLISECONDS) > 1.days
+//}
 
 private fun String.toFiatCurrencies(): List<String> {
     val jsonArray = try {

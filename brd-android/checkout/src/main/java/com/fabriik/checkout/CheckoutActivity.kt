@@ -17,8 +17,8 @@ class CheckoutActivity : AppCompatActivity() {
         setContentView(R.layout.activity_checkout)
 
         // initialise the payment from
-        val mPaymentForm = findViewById<PaymentForm>(R.id.checkout_card_form)
-        val mFormListener: PaymentForm.PaymentFormCallback = object : PaymentForm.PaymentFormCallback {
+        val paymentForm = findViewById<PaymentForm>(R.id.checkout_card_form)
+        val formListener: PaymentForm.PaymentFormCallback = object : PaymentForm.PaymentFormCallback {
             override fun onFormSubmit() {
                 Log.d("Tag", "onFormSubmit")
                 // form submit initiated; you can potentially display a loader
@@ -43,12 +43,17 @@ class CheckoutActivity : AppCompatActivity() {
             override fun onBackPressed() {
                 Log.d("Tag", "onBackPressed")
                 // the user decided to leave the payment page
-                mPaymentForm.clearForm() // this clears the Payment Form
+                paymentForm.clearForm() // this clears the Payment Form
             }
         }
-        mPaymentForm.setFormListener(mFormListener) // set the callback
+        paymentForm.setFormListener(formListener) // set the callback
             .setEnvironment(Environment.SANDBOX) // set the environemnt
             .setKey("pk_sbox_ees63clhrko6kta6j3cwloebg4#")
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
     }
 
     companion object {
