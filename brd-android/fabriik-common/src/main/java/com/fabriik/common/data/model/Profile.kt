@@ -5,6 +5,7 @@ import com.fabriik.common.data.enums.KycStatus
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import kotlinx.parcelize.Parcelize
+import java.math.BigDecimal
 import java.util.*
 
 @Parcelize
@@ -32,7 +33,7 @@ data class Profile(
     val kycFailureReason: String?,
 
     @Json(name = "exchange_limits")
-    val exchangeLimits: ExchangeLimits
+    val exchangeLimits: ExchangeLimits?
 ) : Parcelable
 
 fun Profile?.isUserRegistered() = when(this?.kycStatus) {
@@ -49,3 +50,5 @@ fun Profile?.canUseBuyTrade() = when(this?.kycStatus) {
     KycStatus.EMAIL_VERIFICATION_PENDING -> false
     else -> true
 }
+
+fun Profile?.nextExchangeLimit(): BigDecimal = this?.exchangeLimits?.nextExchangeLimit ?: BigDecimal.ZERO

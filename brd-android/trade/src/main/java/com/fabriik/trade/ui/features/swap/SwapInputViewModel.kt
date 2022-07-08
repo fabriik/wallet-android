@@ -11,6 +11,7 @@ import com.breadwallet.repository.RatesRepository
 import com.breadwallet.tools.manager.BRSharedPrefs
 import com.breadwallet.tools.security.ProfileManager
 import com.fabriik.common.data.Status
+import com.fabriik.common.data.model.nextExchangeLimit
 import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.common.utils.getString
 import com.fabriik.common.utils.min
@@ -39,16 +40,14 @@ class SwapInputViewModel(
 
     override val kodein by closestKodein { application }
 
+    private val swapApi by kodein.instance<SwapApi>()
     private val breadBox by kodein.instance<BreadBox>()
     private val profileManager by kodein.instance<ProfileManager>()
-    private val swapApi = SwapApi.create(application)
 
     private val currentLoadedState: SwapInputContract.State.Loaded?
         get() = state.value as SwapInputContract.State.Loaded?
 
-    private val maxAmountLimit = /*profileManager.getProfile().limit ?: BigDecimal.ZERO*/ BigDecimal.TEN //todo: use property from profile
-    /*private val fiatIso = BRSharedPrefs.getPreferredFiatIso()
-*/
+    private val maxAmountLimit = profileManager.getProfile().nextExchangeLimit()
     private val ratesRepository by kodein.instance<RatesRepository>()
     //private val swapAmountCalculator = SwapAmountCalculator(ratesRepository)
 

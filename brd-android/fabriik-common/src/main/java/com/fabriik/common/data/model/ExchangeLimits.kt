@@ -9,7 +9,7 @@ import java.math.BigDecimal
 import java.util.*
 
 @Parcelize
-@JsonClass(generateAdapter = true)
+@JsonClass(generateAdapter = false)
 data class ExchangeLimits(
     @Json(name = "allowance_lifetime")
     val allowanceLifetime: BigDecimal,
@@ -24,5 +24,8 @@ data class ExchangeLimits(
     val usedLifetime: BigDecimal,
 
     @Json(name = "used_daily")
-    val usedDaily: BigDecimal
+    val usedDaily: BigDecimal,
+
+    @Json(name = "next_exchange_limit")
+    val nextExchangeLimit: BigDecimal
 ) : Parcelable

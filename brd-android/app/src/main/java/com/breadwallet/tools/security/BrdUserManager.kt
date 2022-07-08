@@ -48,6 +48,7 @@ import com.breadwallet.tools.manager.BRReportsManager
 import com.breadwallet.tools.manager.BRSharedPrefs
 import com.breadwallet.platform.interfaces.AccountMetaDataProvider
 import com.fabriik.common.data.model.Profile
+import com.fabriik.common.utils.adapter.BigDecimalAdapter
 import com.fabriik.common.utils.adapter.CalendarJsonAdapter
 import com.platform.tools.Session
 import com.platform.tools.SessionState
@@ -76,6 +77,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
+import retrofit2.converter.moshi.MoshiConverterFactory
 import java.security.KeyStore
 import java.security.UnrecoverableKeyException
 import java.util.*
@@ -119,7 +121,8 @@ private const val MANUFACTURER_GOOGLE = "Google"
 class CryptoUserManager(
     context: Context,
     private val createStore: () -> SharedPreferences?,
-    private val metaDataProvider: AccountMetaDataProvider
+    private val metaDataProvider: AccountMetaDataProvider,
+    private val moshi: Moshi
 ) : BrdUserManager {
 
     private var store: SharedPreferences? = null
@@ -393,11 +396,11 @@ class CryptoUserManager(
     }
 
     @Synchronized
-    override fun getProfile() = profile ?: checkNotNull(store).getProfile()
+    override fun getProfile() = profile ?: getProfile(checkNotNull(store))
 
     @Synchronized
     override fun putProfile(profile: Profile?) {
-        checkNotNull(store).edit { putProfile(profile) }
+        putProfile(checkNotNull(store).edit(), profile)
         this.profile = profile
     }
 
@@ -719,27 +722,19 @@ class CryptoUserManager(
         val isOorAbove = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
         return isGoogleDevice && isOmr1 || !isGoogleDevice && isOorAbove
     }
-}
 
-fun SharedPreferences.getProfile() : Profile? {
-    val moshi = Moshi.Builder()
-        .add(Calendar::class.java, CalendarJsonAdapter())
-        .build()
+    private fun getProfile(prefs: SharedPreferences) : Profile? {
+        val adapter: JsonAdapter<Profile> = moshi.adapter(Profile::class.java)
+        val json = prefs.getString(KEY_PROFILE, null) ?: return null
+        return adapter.fromJson(json)
+    }
 
-    val adapter: JsonAdapter<Profile> = moshi.adapter(Profile::class.java)
-    val json = getString(KEY_PROFILE, null) ?: return null
-    return adapter.fromJson(json)
-}
-
-fun SharedPreferences.Editor.putProfile(profile: Profile?) {
-    val moshi = Moshi.Builder()
-        .add(Calendar::class.java, CalendarJsonAdapter())
-        .build()
-
-    val adapter: JsonAdapter<Profile> = moshi.adapter(Profile::class.java)
-    putString(
-        KEY_PROFILE, if (profile == null) null else adapter.toJson(profile)
-    )
+    private fun putProfile(editor: SharedPreferences.Editor, profile: Profile?) {
+        val adapter: JsonAdapter<Profile> = moshi.adapter(Profile::class.java)
+        editor.putString(
+            KEY_PROFILE, if (profile == null) null else adapter.toJson(profile)
+        ).apply()
+    }
 }
 
 fun SharedPreferences.getBytes(key: String, defaultValue: ByteArray?): ByteArray? {

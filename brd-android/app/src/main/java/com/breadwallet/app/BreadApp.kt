@@ -69,10 +69,13 @@ import com.breadwallet.ui.uigift.SharedPrefsGiftBackup
 import com.breadwallet.util.*
 import com.breadwallet.util.usermetrics.UserMetricsUtil
 import com.fabriik.common.data.FabriikApiConstants
+import com.fabriik.common.utils.adapter.BigDecimalAdapter
+import com.fabriik.common.utils.adapter.CalendarJsonAdapter
 import com.fabriik.registration.data.RegistrationApi
 import com.fabriik.registration.data.RegistrationApiInterceptor
 import com.fabriik.registration.utils.RegistrationUtils
 import com.fabriik.registration.utils.UserSessionManager
+import com.fabriik.trade.data.SwapApi
 import com.platform.APIClient
 import com.platform.HTTPServer
 import com.platform.interfaces.KVStoreProvider
@@ -82,6 +85,8 @@ import com.platform.sqlite.PlatformSqliteHelper
 import com.platform.tools.KVStoreManager
 import com.platform.tools.SessionHolder
 import com.platform.tools.TokenHolder
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import drewcarlson.blockset.BdbService
 import io.ktor.client.*
 import io.ktor.client.engine.okhttp.*
@@ -96,6 +101,7 @@ import org.kodein.di.direct
 import org.kodein.di.erased.bind
 import org.kodein.di.erased.instance
 import org.kodein.di.erased.singleton
+import retrofit2.converter.moshi.MoshiConverterFactory
 import java.io.File
 import java.io.UnsupportedEncodingException
 import java.util.*
@@ -269,7 +275,7 @@ class BreadApp : Application(), KodeinAware, CameraXConfig.Provider {
         }
 
         bind<BrdUserManager>() with singleton {
-            CryptoUserManager(this@BreadApp, ::createCryptoEncryptedPrefs, instance())
+            CryptoUserManager(this@BreadApp, ::createCryptoEncryptedPrefs, instance(), instance())
         }
 
         bind<GiftBackup>() with singleton {
@@ -287,6 +293,19 @@ class BreadApp : Application(), KodeinAware, CameraXConfig.Provider {
         bind<AccountMetaDataProvider>() with singleton { localMetadataManager }
 
         bind<OkHttpClient>() with singleton { OkHttpClient() }
+
+        bind<Moshi>() with singleton {
+            Moshi.Builder()
+                .add(BigDecimalAdapter)
+                .add(Calendar::class.java, CalendarJsonAdapter())
+                .addLast(KotlinJsonAdapterFactory())
+                .build()
+        }
+
+        bind<MoshiConverterFactory>() with singleton {
+            val moshi = instance<Moshi>()
+            MoshiConverterFactory.create(moshi)
+        }
 
         bind<BdbAuthInterceptor>() with singleton {
             val httpClient = instance<OkHttpClient>()
@@ -406,9 +425,17 @@ class BreadApp : Application(), KodeinAware, CameraXConfig.Provider {
             BRDApiClient.create(AndroidBRDAuthProvider(instance()))
         }
 
+        bind<SwapApi>() with singleton {
+            SwapApi.create(
+                this@BreadApp,
+                instance()
+            )
+        }
+
         bind<RegistrationApi>() with singleton {
             RegistrationApi.create(
                 this@BreadApp,
+                instance(),
                 instance()
             )
         }
