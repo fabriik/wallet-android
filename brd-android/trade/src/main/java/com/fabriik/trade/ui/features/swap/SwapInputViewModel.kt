@@ -96,31 +96,17 @@ class SwapInputViewModel(
             is SwapInputContract.Event.OnMaxAmountClicked ->
                 onMaxAmountClicked()
 
+            is SwapInputContract.Event.SourceCurrencyFiatAmountChange ->
+                onSourceCurrencyFiatAmountChanged(event.amount)
 
-            /*
+            is SwapInputContract.Event.SourceCurrencyCryptoAmountChange ->
+                onSourceCurrencyCryptoAmountChanged(event.amount)
 
-             is SwapInputContract.Event.ReplaceCurrenciesClicked ->
-                 onReplaceCurrenciesClicked()
+            is SwapInputContract.Event.DestinationCurrencyFiatAmountChange ->
+                onDestinationCurrencyFiatAmountChanged(event.amount)
 
-             is SwapInputContract.Event.OriginCurrencyFiatAmountChange -> {
-                 onSourceCurrencyFiatAmountChanged(event.amount)
-                 setEffect { SwapInputContract.Effect.DeselectMinMaxSwitchItems }
-             }
-
-             is SwapInputContract.Event.OriginCurrencyCryptoAmountChange -> {
-                 onSourceCurrencyCryptoAmountChanged(event.amount)
-                 setEffect { SwapInputContract.Effect.DeselectMinMaxSwitchItems }
-             }
-
-             is SwapInputContract.Event.DestinationCurrencyFiatAmountChange -> {
-                 onDestinationCurrencyFiatAmountChanged(event.amount)
-                 setEffect { SwapInputContract.Effect.DeselectMinMaxSwitchItems }
-             }
-
-             is SwapInputContract.Event.DestinationCurrencyCryptoAmountChange -> {
-                 onDestinationCurrencyCryptoAmountChanged(event.amount)
-                 setEffect { SwapInputContract.Effect.DeselectMinMaxSwitchItems }
-             }*/
+            is SwapInputContract.Event.DestinationCurrencyCryptoAmountChange ->
+                onDestinationCurrencyCryptoAmountChanged(event.amount)
         }
     }
 
@@ -341,7 +327,19 @@ class SwapInputViewModel(
         )
     }
 
+    private fun onSourceCurrencyFiatAmountChanged(amount: BigDecimal) {
+
+    }
+
     private fun onSourceCurrencyCryptoAmountChanged(amount: BigDecimal) {
+
+    }
+
+    private fun onDestinationCurrencyFiatAmountChanged(amount: BigDecimal) {
+
+    }
+
+    private fun onDestinationCurrencyCryptoAmountChanged(amount: BigDecimal) {
 
     }
 
@@ -464,94 +462,8 @@ class SwapInputViewModel(
                     setEffect { SwapInputContract.Effect.UpdateDestinationCryptoAmount(receivedCryptoAmount) }
                 }
             }
-        }*/
-
-    /*
-    private fun refreshQuote() = withLoadedState { state ->
-        callApi(
-            endState = { currentState },
-            startState = { state.copy(quoteState = SwapInputContract.QuoteState.Loading) },
-            action = { swapApi.getQuote(state.selectedPair) },
-            callback = {
-                when (it.status) {
-                    Status.SUCCESS -> withLoadedState { latestState ->
-                        setState {
-                            latestState.copy(
-                                quoteState = SwapInputContract.QuoteState.Loaded(
-                                    sellRate = it.data!!.closeBid,
-                                    buyRate = it.data!!.closeAsk,
-                                    timerTimestamp = it.data!!.timestamp
-                                )
-                            )
-                        }
-                        setupTimer()
-                        //todo: refresh amounts
-                    }
-
-                    Status.ERROR ->
-                        setEffect {
-                            SwapInputContract.Effect.ShowToast(
-                                it.message ?: getString(R.string.FabriikApi_DefaultError)
-                            )
-                        }
-                }
-            }
-        )
-    }
-
-    private fun setupTimer() = withLoadedQuoteState { state, quoteState ->
-        currentTimerJob?.cancel()
-
-        val targetTimestamp = quoteState.timerTimestamp
-        val currentTimestamp = System.currentTimeMillis()
-        val diffSec = TimeUnit.MILLISECONDS.toSeconds(targetTimestamp - currentTimestamp)
-
-        if (diffSec <= 0) {
-            onTimerCompleted()
-            return@withLoadedQuoteState
         }
 
-        setState {
-            state.copy(timer = diffSec.toInt())
-        }
-
-        currentTimerJob = viewModelScope.launch {
-            (diffSec downTo 0)
-                .asSequence()
-                .asFlow()
-                .onEach { delay(1000) }
-                .collect {
-                    if (it == 0L) {
-                        onTimerCompleted()
-                    } else {
-                        withLoadedState { latestState ->
-                            setState {
-                                latestState.copy(timer = it.toInt())
-                            }
-                        }
-                    }
-                }
-        }
-    }
-
-    private fun onTimerCompleted() {
-        refreshQuote()
-    }
-
-    private fun withLoadedState(unit: (SwapInputContract.State.Loaded) -> Unit) {
-        val state = currentState
-        if (state is SwapInputContract.State.Loaded) {
-            unit(state)
-        }
-    }
-
-    private fun withLoadedQuoteState(unit: (SwapInputContract.State.Loaded, SwapInputContract.QuoteState.Loaded) -> Unit) =
-        withLoadedState {
-            val quoteState = it.quoteState
-            if (quoteState is SwapInputContract.QuoteState.Loaded) {
-                unit(it, quoteState)
-            }
-        }
 
     private fun estimateSendingFee(
         amount: BigDecimal,

@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.collect
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.breadwallet.breadbox.formatCryptoForUi
+import com.fabriik.common.ui.customview.FabriikSwitch
 import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.trade.ui.customview.SwapCardView
 import com.fabriik.trade.ui.features.assetselection.AssetSelectionFragment
@@ -40,19 +41,19 @@ class SwapInputFragment : Fragment(),
         }
 
         override fun onSellingCurrencyFiatAmountChanged(amount: BigDecimal) {
-            //viewModel.setEvent(SwapInputContract.Event.OriginCurrencyFiatAmountChange(amount))
+            viewModel.setEvent(SwapInputContract.Event.SourceCurrencyFiatAmountChange(amount))
         }
 
         override fun onSellingCurrencyCryptoAmountChanged(amount: BigDecimal) {
-            //viewModel.setEvent(SwapInputContract.Event.OriginCurrencyCryptoAmountChange(amount))
+            viewModel.setEvent(SwapInputContract.Event.SourceCurrencyCryptoAmountChange(amount))
         }
 
         override fun onBuyingCurrencyFiatAmountChanged(amount: BigDecimal) {
-            //viewModel.setEvent(SwapInputContract.Event.DestinationCurrencyFiatAmountChange(amount))
+            viewModel.setEvent(SwapInputContract.Event.DestinationCurrencyFiatAmountChange(amount))
         }
 
         override fun onBuyingCurrencyCryptoAmountChanged(amount: BigDecimal) {
-            //viewModel.setEvent(SwapInputContract.Event.DestinationCurrencyCryptoAmountChange(amount))
+            viewModel.setEvent(SwapInputContract.Event.DestinationCurrencyCryptoAmountChange(amount))
         }
     }
 
@@ -77,8 +78,6 @@ class SwapInputFragment : Fragment(),
 
             cvSwap.setCallback(cardSwapCallback)
 
-            /*
-
             switchMinMax.setCallback {
                 when (it) {
                     FabriikSwitch.OPTION_LEFT ->
@@ -86,7 +85,7 @@ class SwapInputFragment : Fragment(),
                     FabriikSwitch.OPTION_RIGHT ->
                         viewModel.setEvent(SwapInputContract.Event.OnMaxAmountClicked)
                 }
-            }*/
+            }
 
             btnConfirm.setOnClickListener {
                 viewModel.setEvent(SwapInputContract.Event.ConfirmClicked)
@@ -151,8 +150,6 @@ class SwapInputFragment : Fragment(),
                 when (state.quoteState) {
 
                     is SwapInputContract.QuoteState.Loaded -> {
-
-                        viewTimer.setProgress(SwapInputViewModel.QUOTE_TIMER, state.timer)
 
                     }
                 }
