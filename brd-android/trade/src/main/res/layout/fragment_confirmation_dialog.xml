@@ -44,7 +44,8 @@
 
     <TextView
         android:id="@+id/tv_send_title"
-        style="@style/TextStyle.Body2.Light_2"
+        style="@style/TextStyle.Body2"
+        android:textColor="@color/light_text_02"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
@@ -67,7 +68,8 @@
 
     <TextView
         android:id="@+id/tv_to_title"
-        style="@style/TextStyle.Body2.Light_2"
+        style="@style/TextStyle.Body2"
+        android:textColor="@color/light_text_02"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -124,7 +126,7 @@
         app:layout_constraintTop_toBottomOf="@id/tv_rate_value" />
 
     <TextView
-        android:id="@+id/tv_sending_coin_value"
+        android:id="@+id/tv_origin_coin_value"
         style="@style/TextStyle.Body2"
         android:textColor="@color/light_text_03"
         android:layout_width="wrap_content"
@@ -136,7 +138,7 @@
         tools:text="0.1 BSV" />
 
     <TextView
-        android:id="@+id/tv_sending_fiat_value"
+        android:id="@+id/tv_origin_fiat_value"
         style="@style/TextStyle.Body2"
         android:textColor="@color/light_text_03"
         android:layout_width="wrap_content"
@@ -144,7 +146,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_sending_coin_value"
+        app:layout_constraintTop_toBottomOf="@+id/tv_origin_coin_value"
         tools:text="($0.01)" />
 
     <TextView
@@ -157,10 +159,10 @@
         android:layout_marginTop="8dp"
         android:text="@string/Swap.Confirmation.ReceivingFee"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_sending_fiat_value" />
+        app:layout_constraintTop_toBottomOf="@id/tv_origin_fiat_value" />
 
     <TextView
-        android:id="@+id/tv_receiving_coin_value"
+        android:id="@+id/tv_destination_coin_value"
         style="@style/TextStyle.Body2"
         android:textColor="@color/light_text_03"
         android:layout_width="wrap_content"
@@ -168,11 +170,11 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_sending_fiat_value"
+        app:layout_constraintTop_toBottomOf="@+id/tv_origin_fiat_value"
         tools:text="0.1 BSV" />
 
     <TextView
-        android:id="@+id/tv_receiving_fiat_value"
+        android:id="@+id/tv_destination_fiat_value"
         style="@style/TextStyle.Body2"
         android:textColor="@color/light_text_03"
         android:layout_width="wrap_content"
@@ -180,7 +182,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_receiving_coin_value"
+        app:layout_constraintTop_toBottomOf="@+id/tv_destination_coin_value"
         tools:text="($0.01)" />
 
     <TextView
@@ -193,7 +195,7 @@
         android:layout_marginTop="8dp"
         android:text="@string/Swap.Confirmation.Cost"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_receiving_fiat_value" />
+        app:layout_constraintTop_toBottomOf="@id/tv_destination_fiat_value" />
 
     <TextView
         android:id="@+id/tv_total_value"

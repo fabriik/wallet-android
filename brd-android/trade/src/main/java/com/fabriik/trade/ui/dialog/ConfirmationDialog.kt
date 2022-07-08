@@ -7,7 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import com.fabriik.trade.R
 import com.fabriik.trade.databinding.FragmentConfirmationDialogBinding
+import java.math.BigDecimal
 
 class ConfirmationDialog(val args: ConfirmationArgs) : DialogFragment() {
 
@@ -30,25 +32,49 @@ class ConfirmationDialog(val args: ConfirmationArgs) : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         with(binding) {
-            tvFromValue.text = args.swapFromCurrency
-            tvToValue.text = args.swapToCurrency
+            tvFromValue.text = formatCurrencyText(args.swapFromCurrency)
+            tvToValue.text = formatCurrencyText(args.swapToCurrency)
+
+            tvOriginCoinValue.text = args.swapFromCurrency.amount.toString()
+            tvOriginFiatValue.text = args.swapFromCurrency.fiatValue.toString()
+
+            tvDestinationCoinValue.text = args.swapToCurrency.amount.toString()
+            tvDestinationFiatValue.text = args.swapToCurrency.fiatValue.toString()
+
+            tvTotalValue.text = args.totalCost
             tvRateValue.text = args.rate
-            tvTotalValue.text = args.totalCost.toString()
+
+            btnDismiss.setOnClickListener {
+                dialog?.dismiss()
+            }
 
             btnCancel.setOnClickListener {
-                dialog?.cancel()
+                dialog?.dismiss()
             }
         }
     }
 
+    private fun formatCurrencyText(currency: Currency): String {
+        return getString(
+            R.string.Swap_Confirmation_Currency_Body,
+            currency.amount,
+            currency.title,
+            currency.fiatValue
+        )
+    }
 }
 
 data class ConfirmationArgs(
-    val swapFromCurrency: String,
-    val swapFromValue: Int,
-    val swapToCurrency: String,
-    val swapToValue: Int,
+    val swapFromCurrency: Currency,
+    val swapToCurrency: Currency,
+    val sendingFeeCurrency: Currency,
+    val receivingFeeCurrency: Currency,
     val rate: String,
-    val networkFee: Int,
-    val totalCost: Int,
+    val totalCost: String,
+)
+
+data class Currency(
+    val title: String,
+    val amount: BigDecimal,
+    val fiatValue: BigDecimal
 )

@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -20,7 +19,7 @@ import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.fabriik.trade.ui.dialog.ConfirmationArgs
 import com.fabriik.trade.ui.dialog.ConfirmationDialog
-import com.fabriik.trade.ui.features.assetselection.AssetSelectionAdapter
+import com.fabriik.trade.ui.dialog.Currency
 import com.fabriik.trade.ui.features.assetselection.AssetSelectionFragment
 
 class SwapInputFragment : Fragment(),
@@ -170,15 +169,32 @@ class SwapInputFragment : Fragment(),
     }
 
     private fun showConfirmDialog() {
+        val state = viewModel.currentState
         val fm = requireActivity().supportFragmentManager
+        val originCurrency =
+            Currency(
+                state.originCurrency,
+                state.originCryptoAmount,
+                state.originFiatAmount
+            )
+        val destinationCurrency =
+            Currency(
+                state.destinationCurrency,
+                state.destinationCryptoAmount,
+                state.destinationFiatAmount
+            )
+
+        //TODO: Update network fees
+        val sendingFeeCurrency = Currency("BSV", BigDecimal.ZERO, BigDecimal.ZERO)
+        val receivingFeeCurrency = Currency("BTC", BigDecimal.ZERO, BigDecimal.ZERO)
+
         val args = ConfirmationArgs(
-            swapFromCurrency = "BSV",
-            swapFromValue = 1,
-            swapToCurrency = "BTC",
-            swapToValue = 1,
-            rate = "1 BSV = 0.0000333 BTC",
-            networkFee = 1,
-            totalCost = 1
+            swapFromCurrency = originCurrency,
+            swapToCurrency = destinationCurrency,
+            sendingFeeCurrency = sendingFeeCurrency,
+            receivingFeeCurrency = receivingFeeCurrency,
+            rate = state.rateOriginToDestinationCurrency.toString(), //TODO prepare rate string
+            totalCost = state.sendingNetworkFee + state.receivingNetworkFee //TODO convert and calculate true rate
         )
         ConfirmationDialog(args).show(fm, ConfirmationDialog.CONFIRMATION_TAG)
     }
