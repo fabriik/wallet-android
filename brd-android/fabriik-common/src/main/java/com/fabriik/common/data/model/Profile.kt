@@ -29,8 +29,10 @@ data class Profile(
     val kycStatus: KycStatus,
 
     @Json(name = "kyc_failure_reason")
-    val kycFailureReason: String?
+    val kycFailureReason: String?,
 
+    @Json(name = "exchange_limits")
+    val exchangeLimits: ExchangeLimits
 ) : Parcelable
 
 fun Profile?.isUserRegistered() = when(this?.kycStatus) {

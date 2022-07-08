@@ -40,7 +40,7 @@ class SwapInputViewModel(
     private val currentLoadedState: SwapInputContract.State.Loaded?
         get() = state.value as SwapInputContract.State.Loaded?
 
-    private val maxAmountLimit = profileManager.getProfile().limit ?: BigDecimal.ZERO
+    private val maxAmountLimit = /*profileManager.getProfile().limit ?: BigDecimal.ZERO*/ BigDecimal.TEN //todo: use property from profile
     /*private val fiatIso = BRSharedPrefs.getPreferredFiatIso()
 
     private val ratesRepository by kodein.instance<RatesRepository>()
