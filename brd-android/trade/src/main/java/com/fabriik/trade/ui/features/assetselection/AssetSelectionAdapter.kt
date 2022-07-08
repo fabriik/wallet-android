@@ -39,7 +39,8 @@ class AssetSelectionAdapter(private val callback: (AssetSelectionItem) -> Unit) 
         holder.unbind()
     }
 
-    inner class ViewHolder(val binding: ListItemAssetBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(val binding: ListItemAssetBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         private val boundScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
@@ -51,7 +52,12 @@ class AssetSelectionAdapter(private val callback: (AssetSelectionItem) -> Unit) 
                 tvSubtitle.text = item.cryptoCurrencyCode
                 tvFiatAmount.text = item.fiatBalance
                 tvCryptoAmount.text = item.cryptoBalance
-                root.setOnClickListener { callback(item) }
+
+                if (item.enabled) {
+                    binding.root.setOnClickListener { callback(item) }
+                } else {
+                    setAlpha(binding)
+                }
             }
         }
 
@@ -81,4 +87,13 @@ class AssetSelectionAdapter(private val callback: (AssetSelectionItem) -> Unit) 
         val cryptoCurrencyCode: String,
         val enabled: Boolean
     ) : Parcelable
+
+    private fun setAlpha(binding: ListItemAssetBinding, alpha: Float = 0.5f) {
+        with(binding) {
+            tvCryptoAmount.alpha = alpha
+            tvSubtitle.alpha = alpha
+            tvTitle.alpha = alpha
+            tvFiatAmount.alpha = alpha
+        }
+    }
 }

@@ -30,9 +30,9 @@
 
         <argument
             android:name="sourceCurrency"
-            android:defaultValue="@null"
             app:argType="string"
-            app:nullable="true" />
+            app:nullable="true"
+            android:defaultValue="@null"/>
 
         <argument
             android:name="currencies"
