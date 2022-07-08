@@ -27,7 +27,8 @@
     <string name="Swap.Confirmation.From">From</string>
     <string name="Swap.Confirmation.To">To</string>
     <string name="Swap.Confirmation.Rate">Rate</string>
-    <string name="Swap.Confirmation.NetworkFee">NetworkFee</string>
+    <string name="Swap.Confirmation.SendingFee">Sending NetworkFee</string>
+    <string name="Swap.Confirmation.ReceivingFee">Receiving NetworkFee</string>
     <string name="Swap.Confirmation.Cost">Total cost</string>
     <string name="Swap.Confirmation.Disclaimer">Due to market volatility the final rate may slightly differ from current one.</string>
     <string name="Swap.Confirmation.Confirm">Confirm</string>
