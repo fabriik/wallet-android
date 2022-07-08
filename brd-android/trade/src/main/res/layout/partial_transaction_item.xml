@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:layout_height="wrap_content"
+    tools:layout_widht="match_parent"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ic_item_bg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="15dp"
+        android:layout_marginStart="15dp"
+        android:src="@drawable/ic_bg_transaction"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ic_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_transaction"
+        app:layout_constraintBottom_toBottomOf="@id/ic_item_bg"
+        app:layout_constraintEnd_toEndOf="@id/ic_item_bg"
+        app:layout_constraintStart_toStartOf="@id/ic_item_bg"
+        app:layout_constraintTop_toTopOf="@id/ic_item_bg" />
+
+    <TextView
+        android:id="@+id/tv_transaction_title"
+        style="@style/TextStyle.Title6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="18dp"
+        app:layout_constraintStart_toEndOf="@+id/ic_item_bg"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Pending swap from" />
+
+    <TextView
+        android:id="@+id/tv_transaction_currency"
+        style="@style/TextStyle.Title6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="18dp"
+        app:layout_constraintStart_toEndOf="@+id/tv_transaction_title"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="BSV" />
+
+    <TextView
+        android:id="@+id/tv_transaction_date"
+        style="@style/TextStyle.Body2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/tv_transaction_title"
+        app:layout_constraintTop_toBottomOf="@id/tv_transaction_title"
+        tools:text="June 15, 2022" />
+
+    <TextView
+        android:id="@+id/tv_transaction_value"
+        style="@style/TextStyle.Title6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="+0.00001703" />
+
+    <TextView
+        android:id="@+id/tv_transaction_value_dollars"
+        style="@style/TextStyle.Body2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_transaction_value"
+        tools:text="$48.79" />
+
+</merge>
