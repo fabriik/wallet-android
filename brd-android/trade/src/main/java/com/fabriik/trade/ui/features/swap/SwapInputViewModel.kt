@@ -1,25 +1,15 @@
 package com.fabriik.trade.ui.features.swap
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.breadwallet.breadbox.*
-import com.breadwallet.crypto.Address
-import com.breadwallet.crypto.AddressScheme
-import com.breadwallet.crypto.Amount
-import com.breadwallet.crypto.errors.FeeEstimationError
-import com.breadwallet.repository.RatesRepository
 import com.breadwallet.tools.manager.BRSharedPrefs
 import com.fabriik.common.data.Status
 import com.fabriik.common.ui.base.FabriikViewModel
-import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.common.utils.getString
 import com.fabriik.common.utils.min
 import com.fabriik.trade.R
 import com.fabriik.trade.data.SwapApi
-import com.fabriik.trade.data.model.TradingPair
-import com.fabriik.trade.data.response.QuoteResponse
-import com.fabriik.trade.utils.SwapAmountCalculator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -328,19 +318,72 @@ class SwapInputViewModel(
     }
 
     private fun onSourceCurrencyFiatAmountChanged(amount: BigDecimal) {
+        val state = currentLoadedState ?: return
 
+        setState {
+            state.copy(
+                sourceFiatAmount = amount,
+                sourceCryptoAmount = amount,
+                destinationFiatAmount = amount,
+                destinationCryptoAmount = amount
+            )
+        }
+
+        updateAmounts()
     }
 
     private fun onSourceCurrencyCryptoAmountChanged(amount: BigDecimal) {
+        val state = currentLoadedState ?: return
 
+        setState {
+            state.copy(
+                sourceFiatAmount = amount,
+                sourceCryptoAmount = amount,
+                destinationFiatAmount = amount,
+                destinationCryptoAmount = amount
+            )
+        }
+
+        updateAmounts()
     }
 
     private fun onDestinationCurrencyFiatAmountChanged(amount: BigDecimal) {
+        val state = currentLoadedState ?: return
 
+        setState {
+            state.copy(
+                sourceFiatAmount = amount,
+                sourceCryptoAmount = amount,
+                destinationFiatAmount = amount,
+                destinationCryptoAmount = amount
+            )
+        }
+
+        updateAmounts()
     }
 
     private fun onDestinationCurrencyCryptoAmountChanged(amount: BigDecimal) {
+        val state = currentLoadedState ?: return
 
+        setState {
+            state.copy(
+                sourceFiatAmount = amount,
+                sourceCryptoAmount = amount,
+                destinationFiatAmount = amount,
+                destinationCryptoAmount = amount
+            )
+        }
+
+        updateAmounts()
+    }
+
+    private fun updateAmounts() {
+        val state = currentLoadedState ?: return
+
+        setEffect { SwapInputContract.Effect.UpdateSourceFiatAmount(state.sourceFiatAmount) }
+        setEffect { SwapInputContract.Effect.UpdateSourceCryptoAmount(state.sourceCryptoAmount) }
+        setEffect { SwapInputContract.Effect.UpdateDestinationFiatAmount(state.destinationFiatAmount) }
+        setEffect { SwapInputContract.Effect.UpdateDestinationCryptoAmount(state.destinationCryptoAmount) }
     }
 
 /*

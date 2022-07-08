@@ -35,11 +35,11 @@ interface SwapInputContract {
         data class UpdateTimer(val timeLeft: Int) : Effect()
         data class SourceSelection(val currencies: List<String>) : Effect()
         data class DestinationSelection(val currencies: List<String>, val sourceCurrency: String) : Effect()
-        /*object DeselectMinMaxSwitchItems : Effect()
+        /*object DeselectMinMaxSwitchItems : Effect()*/
         data class UpdateSourceFiatAmount(val bigDecimal: BigDecimal) : Effect()
         data class UpdateSourceCryptoAmount(val bigDecimal: BigDecimal) : Effect()
         data class UpdateDestinationFiatAmount(val bigDecimal: BigDecimal) : Effect()
-        data class UpdateDestinationCryptoAmount(val bigDecimal: BigDecimal) : Effect()*/
+        data class UpdateDestinationCryptoAmount(val bigDecimal: BigDecimal) : Effect()
     }
 
     sealed class State : FabriikContract.State {
@@ -54,13 +54,14 @@ interface SwapInputContract {
             val sourceCryptoCurrency: String,
             val destinationCryptoCurrency: String,
             val cryptoExchangeRate: BigDecimal,
-            val cryptoExchangeRateLoading: Boolean = false
+            val cryptoExchangeRateLoading: Boolean = false,
+            val sourceFiatAmount: BigDecimal = BigDecimal.ZERO,
+            val sourceCryptoAmount: BigDecimal = BigDecimal.ZERO,
+            val destinationFiatAmount: BigDecimal = BigDecimal.ZERO,
+            val destinationCryptoAmount: BigDecimal = BigDecimal.ZERO,
         ) : State()
 
         /*data class Loaded(
-            val timer: Int = 0,
-            val tradingPairs: List<TradingPair>,
-            val selectedPair: TradingPair,
             //todo: fee loading indicators, disable button
             val sendingNetworkFee: NetworkFeeData? = null,
             val receivingNetworkFee: NetworkFeeData? = null,

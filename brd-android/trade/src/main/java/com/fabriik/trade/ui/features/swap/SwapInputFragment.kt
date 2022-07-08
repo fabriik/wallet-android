@@ -239,7 +239,7 @@ class SwapInputFragment : Fragment(),
                 )
 
             /*  SwapInputContract.Effect.DeselectMinMaxSwitchItems ->
-                binding.switchMinMax.setSelectedItem(FabriikSwitch.OPTION_NONE)
+                binding.switchMinMax.setSelectedItem(FabriikSwitch.OPTION_NONE)*/
 
             is SwapInputContract.Effect.UpdateSourceFiatAmount ->
                 binding.cvSwap.setSourceFiatAmount(effect.bigDecimal)
@@ -251,7 +251,7 @@ class SwapInputFragment : Fragment(),
                 binding.cvSwap.setDestinationFiatAmount(effect.bigDecimal)
 
             is SwapInputContract.Effect.UpdateDestinationCryptoAmount ->
-                binding.cvSwap.setDestinationCryptoAmount(effect.bigDecimal)*/
+                binding.cvSwap.setDestinationCryptoAmount(effect.bigDecimal)
         }
     }
 
