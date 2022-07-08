@@ -141,19 +141,6 @@ class SwapInputFragment : Fragment(),
 
             is SwapInputContract.State.Loaded ->
                 handleLoadedState(state)
-
-            /*is SwapInputContract.State.Loaded -> with(binding) {
-
-                cvSwap.setSendingNetworkFee(state.sendingNetworkFee)
-                cvSwap.setReceivingNetworkFee(state.receivingNetworkFee)
-
-                when (state.quoteState) {
-
-                    is SwapInputContract.QuoteState.Loaded -> {
-
-                    }
-                }
-            }*/
         }
     }
 
@@ -191,6 +178,9 @@ class SwapInputFragment : Fragment(),
                 )
             )
 
+            cvSwap.setSendingNetworkFee(state.sendingNetworkFee)
+            cvSwap.setReceivingNetworkFee(state.receivingNetworkFee)
+
             viewTimer.isVisible = !state.cryptoExchangeRateLoading
             tvRateValue.isVisible = !state.cryptoExchangeRateLoading
             quoteLoadingIndicator.isVisible = state.cryptoExchangeRateLoading
@@ -204,6 +194,9 @@ class SwapInputFragment : Fragment(),
         when (effect) {
             SwapInputContract.Effect.Dismiss ->
                 requireActivity().finish()
+
+            SwapInputContract.Effect.DeselectMinMaxSwitchItems ->
+                binding.switchMinMax.setSelectedItem(FabriikSwitch.OPTION_NONE)
 
             is SwapInputContract.Effect.ShowToast ->
                 FabriikToastUtil.showInfo(binding.root, effect.message)
@@ -237,9 +230,6 @@ class SwapInputFragment : Fragment(),
                         sourceCurrency = effect.sourceCurrency
                     )
                 )
-
-            /*  SwapInputContract.Effect.DeselectMinMaxSwitchItems ->
-                binding.switchMinMax.setSelectedItem(FabriikSwitch.OPTION_NONE)*/
 
             is SwapInputContract.Effect.UpdateSourceFiatAmount ->
                 binding.cvSwap.setSourceFiatAmount(effect.bigDecimal)

@@ -3,8 +3,12 @@ package com.fabriik.trade.ui.customview
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import androidx.core.view.isVisible
+import com.breadwallet.breadbox.formatCryptoForUi
+import com.breadwallet.util.formatFiatForUi
 import com.fabriik.common.utils.dp
 import com.fabriik.trade.databinding.ViewSwapCardBinding
+import com.fabriik.trade.ui.features.swap.SwapInputContract
 import com.google.android.material.card.MaterialCardView
 import java.math.BigDecimal
 
@@ -71,7 +75,7 @@ class SwapCardView @JvmOverloads constructor(
         binding.viewInputBuyingCurrency.setCryptoCurrency(currency)
     }
 
-    /*fun setSendingNetworkFee(fee: SwapInputContract.NetworkFeeData?) {
+    fun setSendingNetworkFee(fee: SwapInputContract.NetworkFeeData?) {
         binding.tvSellingCurrencyNetworkFee.isVisible = fee != null
         binding.tvSellingCurrencyNetworkFeeTitle.isVisible = fee != null
 
@@ -91,7 +95,7 @@ class SwapCardView @JvmOverloads constructor(
             val cryptoText = it.cryptoAmount.formatCryptoForUi(it.cryptoCurrency)
             binding.tvBuyingCurrencyNetworkFee.text = "$cryptoText\n$fiatText"
         }
-    }*/
+    }
 
     fun setSourceCurrencyTitle(title: String) {
         binding.viewInputSellingCurrency.setTitle(title)

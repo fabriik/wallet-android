@@ -27,6 +27,7 @@ interface SwapInputContract {
 
     sealed class Effect : FabriikContract.Effect {
         object Dismiss : Effect()
+        object DeselectMinMaxSwitchItems : Effect()
         data class ShowToast(val message: String): Effect()
         data class ContinueToSwapProcessing(
             val sourceCurrency: String,
@@ -35,7 +36,6 @@ interface SwapInputContract {
         data class UpdateTimer(val timeLeft: Int) : Effect()
         data class SourceSelection(val currencies: List<String>) : Effect()
         data class DestinationSelection(val currencies: List<String>, val sourceCurrency: String) : Effect()
-        /*object DeselectMinMaxSwitchItems : Effect()*/
         data class UpdateSourceFiatAmount(val bigDecimal: BigDecimal) : Effect()
         data class UpdateSourceCryptoAmount(val bigDecimal: BigDecimal) : Effect()
         data class UpdateDestinationFiatAmount(val bigDecimal: BigDecimal) : Effect()
@@ -59,29 +59,9 @@ interface SwapInputContract {
             val sourceCryptoAmount: BigDecimal = BigDecimal.ZERO,
             val destinationFiatAmount: BigDecimal = BigDecimal.ZERO,
             val destinationCryptoAmount: BigDecimal = BigDecimal.ZERO,
-        ) : State()
-
-        /*data class Loaded(
-            //todo: fee loading indicators, disable button
             val sendingNetworkFee: NetworkFeeData? = null,
             val receivingNetworkFee: NetworkFeeData? = null,
-            val quoteState: QuoteState = QuoteState.Loading,
-            val sourceFiatAmount: BigDecimal = BigDecimal.ZERO,
-            val sourceCryptoAmount: BigDecimal = BigDecimal.ZERO,
-            val sourceCurrencyBalance: BigDecimal = BigDecimal.ZERO,
-            val destinationFiatAmount: BigDecimal = BigDecimal.ZERO,
-            val destinationCryptoAmount: BigDecimal = BigDecimal.ZERO,
-            @FabriikSwitch.Companion.SwitchOption val selectedMinMaxOption: Int = FabriikSwitch.OPTION_NONE,
-        ) : State()*/
-    }
-
-    /*sealed class QuoteState {
-        object Loading : QuoteState()
-        data class Loaded(
-            val timerTimestamp: Long,
-            val sellRate: BigDecimal,
-            val buyRate: BigDecimal
-        ) : QuoteState()
+        ) : State()
     }
 
     data class NetworkFeeData(
@@ -89,5 +69,5 @@ interface SwapInputContract {
         val fiatCurrency: String,
         val cryptoAmount: BigDecimal,
         val cryptoCurrency: String
-    )*/
+    )
 }

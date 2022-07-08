@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.viewModelScope
 import com.breadwallet.breadbox.*
 import com.breadwallet.tools.manager.BRSharedPrefs
+import com.breadwallet.tools.security.ProfileManager
 import com.fabriik.common.data.Status
 import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.common.utils.getString
@@ -33,11 +34,13 @@ class SwapInputViewModel(
     override val kodein by closestKodein { application }
 
     private val breadBox by kodein.instance<BreadBox>()
+    private val profileManager by kodein.instance<ProfileManager>()
     private val swapApi = SwapApi.create(application)
 
     private val currentLoadedState: SwapInputContract.State.Loaded?
         get() = state.value as SwapInputContract.State.Loaded?
 
+    private val maxAmountLimit = profileManager.getProfile().limit ?: BigDecimal.ZERO
     /*private val fiatIso = BRSharedPrefs.getPreferredFiatIso()
 
     private val ratesRepository by kodein.instance<RatesRepository>()
@@ -305,7 +308,7 @@ class SwapInputViewModel(
         val state = currentLoadedState ?: return
 
         onSourceCurrencyCryptoAmountChanged(
-            state.selectedPair.minAmount
+            state.selectedPair.minAmount, false
         )
     }
 
@@ -313,7 +316,7 @@ class SwapInputViewModel(
         val state = currentLoadedState ?: return
 
         onSourceCurrencyCryptoAmountChanged(
-            min(state.sourceCryptoBalance, state.selectedPair.maxAmount)
+            min(state.sourceCryptoBalance, maxAmountLimit), false
         )
     }
 
@@ -332,7 +335,7 @@ class SwapInputViewModel(
         updateAmounts()
     }
 
-    private fun onSourceCurrencyCryptoAmountChanged(amount: BigDecimal) {
+    private fun onSourceCurrencyCryptoAmountChanged(amount: BigDecimal, changeByUser: Boolean = true) {
         val state = currentLoadedState ?: return
 
         setState {
@@ -344,7 +347,7 @@ class SwapInputViewModel(
             )
         }
 
-        updateAmounts()
+        updateAmounts(changeByUser)
     }
 
     private fun onDestinationCurrencyFiatAmountChanged(amount: BigDecimal) {
@@ -377,13 +380,17 @@ class SwapInputViewModel(
         updateAmounts()
     }
 
-    private fun updateAmounts() {
+    private fun updateAmounts(changeByUser: Boolean = true) {
         val state = currentLoadedState ?: return
 
         setEffect { SwapInputContract.Effect.UpdateSourceFiatAmount(state.sourceFiatAmount) }
         setEffect { SwapInputContract.Effect.UpdateSourceCryptoAmount(state.sourceCryptoAmount) }
         setEffect { SwapInputContract.Effect.UpdateDestinationFiatAmount(state.destinationFiatAmount) }
         setEffect { SwapInputContract.Effect.UpdateDestinationCryptoAmount(state.destinationCryptoAmount) }
+
+        if (changeByUser) {
+            setEffect { SwapInputContract.Effect.DeselectMinMaxSwitchItems }
+        }
     }
 
 /*
