@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -99,20 +100,20 @@ class SwapInputFragment : Fragment(),
 
         // listen for origin currency changes
         parentFragmentManager.setFragmentResultListener(REQUEST_KEY_ORIGIN_SELECTION, this) { _, bundle ->
-            val asset = bundle.getParcelable(AssetSelectionFragment.EXTRA_SELECTED_ASSET) as AssetSelectionAdapter.AssetSelectionItem?
-            if (asset != null) {
+            val currency = bundle.getString(AssetSelectionFragment.EXTRA_SELECTED_CURRENCY)
+            if (currency != null) {
                 viewModel.setEvent(
-                    SwapInputContract.Event.OriginCurrencyChanged(asset.cryptoCurrencyCode)
+                    SwapInputContract.Event.OriginCurrencyChanged(currency)
                 )
             }
         }
 
         // listen for destination currency changes
         parentFragmentManager.setFragmentResultListener(REQUEST_KEY_DESTINATION_SELECTION, this) { _, bundle ->
-            val asset = bundle.getParcelable(AssetSelectionFragment.EXTRA_SELECTED_ASSET) as AssetSelectionAdapter.AssetSelectionItem?
-            if (asset != null) {
+            val currency = bundle.getString(AssetSelectionFragment.EXTRA_SELECTED_CURRENCY)
+            if (currency != null) {
                 viewModel.setEvent(
-                    SwapInputContract.Event.DestinationCurrencyChanged(asset.cryptoCurrencyCode)
+                    SwapInputContract.Event.DestinationCurrencyChanged(currency)
                 )
             }
         }
@@ -146,17 +147,20 @@ class SwapInputFragment : Fragment(),
             SwapInputContract.Effect.Dismiss ->
                 requireActivity().finish()
 
-            SwapInputContract.Effect.OriginSelection ->
+            is SwapInputContract.Effect.OriginSelection ->
                 findNavController().navigate(
                     SwapInputFragmentDirections.actionAssetSelection(
-                        REQUEST_KEY_ORIGIN_SELECTION
+                        requestKey = REQUEST_KEY_ORIGIN_SELECTION,
+                        currencies = effect.currencies.toTypedArray(),
                     )
                 )
 
-            SwapInputContract.Effect.DestinationSelection ->
+            is SwapInputContract.Effect.DestinationSelection ->
                 findNavController().navigate(
                     SwapInputFragmentDirections.actionAssetSelection(
-                        REQUEST_KEY_DESTINATION_SELECTION
+                        requestKey = REQUEST_KEY_DESTINATION_SELECTION,
+                        currencies = effect.currencies.toTypedArray(),
+                        sourceCurrency = effect.sourceCurrency
                     )
                 )
 
