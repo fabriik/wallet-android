@@ -90,14 +90,14 @@ class SwapInputViewModel(
             is SwapInputContract.Event.DestinationCurrencyChanged ->
                 onDestinationCurrencyChanged(event.currencyCode)
 
+            is SwapInputContract.Event.OnMinAmountClicked ->
+                onMinAmountClicked()
+
+            is SwapInputContract.Event.OnMaxAmountClicked ->
+                onMaxAmountClicked()
+
 
             /*
-
-             is SwapInputContract.Event.OnMinAmountClicked ->
-                 onMinAmountClicked()
-
-             is SwapInputContract.Event.OnMaxAmountClicked ->
-                 onMaxAmountClicked()
 
              is SwapInputContract.Event.ReplaceCurrenciesClicked ->
                  onReplaceCurrenciesClicked()
@@ -325,48 +325,28 @@ class SwapInputViewModel(
         requestNewQuote()
     }
 
+    private fun onMinAmountClicked() {
+        val state = currentLoadedState ?: return
+
+        onSourceCurrencyCryptoAmountChanged(
+            state.selectedPair.minAmount
+        )
+    }
+
+    private fun onMaxAmountClicked() {
+        val state = currentLoadedState ?: return
+
+        onSourceCurrencyCryptoAmountChanged(
+            min(state.sourceCryptoBalance, state.selectedPair.maxAmount)
+        )
+    }
+
+    private fun onSourceCurrencyCryptoAmountChanged(amount: BigDecimal) {
+
+    }
+
 /*
 
-    private fun onSourceCurrencyChanged(currencyCode: String) = withLoadedState { state ->
-        val pairsWithSelectedBaseCurrency = state.tradingPairs.filter {
-            it.baseCurrency == currencyCode
-        }
-
-        val newSelectedPair = pairsWithSelectedBaseCurrency.find {
-            it.termCurrency == state.selectedPair.termCurrency
-        } ?: pairsWithSelectedBaseCurrency.firstOrNull()
-
-        newSelectedPair?.let {
-            setState { state.copy(selectedPair = newSelectedPair) }
-            getWalletBalance(newSelectedPair.baseCurrency)
-            refreshQuote()
-        }
-    }
-
-    private fun onDestinationCurrencyChanged(currencyCode: String) = withLoadedState { state ->
-        val pairsWithSelectedBaseCurrency = state.tradingPairs.filter {
-            it.baseCurrency == state.selectedPair.baseCurrency
-        }
-
-        val newSelectedPair = pairsWithSelectedBaseCurrency.find {
-            it.termCurrency == currencyCode
-        } ?: state.selectedPair
-
-        setState { state.copy(selectedPair = newSelectedPair) }
-        refreshQuote()
-    }
-
-    private fun onMinAmountClicked() = withLoadedState { state ->
-        onSourceCurrencyCryptoAmountChanged(
-            min(state.sourceCurrencyBalance, state.selectedPair.minAmount)
-        )
-    }
-
-    private fun onMaxAmountClicked() = withLoadedState { state ->
-        onSourceCurrencyCryptoAmountChanged(
-            min(state.sourceCurrencyBalance, state.selectedPair.maxAmount)
-        )
-    }
 
     private fun onSourceCurrencyFiatAmountChanged(amount: BigDecimal) {
         calculateReceivingAmount(amount, false)

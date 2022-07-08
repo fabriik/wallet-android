@@ -11,17 +11,16 @@ interface SwapInputContract {
     sealed class Event : FabriikContract.Event {
         object DismissClicked : Event()
         object ConfirmClicked : Event()
-        object ReplaceCurrenciesClicked : Event()
+        object OnMinAmountClicked : Event()
+        object OnMaxAmountClicked : Event()
         object SourceCurrencyClicked : Event()
+        object ReplaceCurrenciesClicked : Event()
         object DestinationCurrencyClicked : Event()
 
         data class SourceCurrencyChanged(val currencyCode: String) : Event()
         data class DestinationCurrencyChanged(val currencyCode: String) : Event()
-        /*
-        object ConfirmClicked : Event()
-        object OnMinAmountClicked : Event()
-        object OnMaxAmountClicked : Event()
-        data class OriginCurrencyFiatAmountChange(val amount: BigDecimal) : Event()
+
+    /*data class OriginCurrencyFiatAmountChange(val amount: BigDecimal) : Event()
         data class OriginCurrencyCryptoAmountChange(val amount: BigDecimal) : Event()
         data class DestinationCurrencyFiatAmountChange(val amount: BigDecimal) : Event()
         data class DestinationCurrencyCryptoAmountChange(val amount: BigDecimal) : Event()*/
