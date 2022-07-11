@@ -4,7 +4,10 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.widget.doAfterTextChanged
+import com.breadwallet.breadbox.formatCryptoForUi
+import com.breadwallet.tools.manager.BRSharedPrefs
+import com.breadwallet.util.formatFiatForUi
+import com.fabriik.common.utils.doAfterTextChangedWhenFocused
 import com.fabriik.trade.R
 import com.fabriik.trade.databinding.ViewCurrencyInputBinding
 import java.math.BigDecimal
@@ -26,8 +29,8 @@ class CurrencyInputView @JvmOverloads constructor(
             it.recycle()
         }
 
-        binding.etFiatAmount.doAfterTextChanged { onFiatAmountChanged(it.toString()) }
-        binding.etCryptoAmount.doAfterTextChanged { onCryptoAmountChanged(it.toString()) }
+        binding.etFiatAmount.doAfterTextChangedWhenFocused { onFiatAmountChanged(it.toString()) }
+        binding.etCryptoAmount.doAfterTextChangedWhenFocused { onCryptoAmountChanged(it.toString()) }
         binding.viewCurrencySelector.setOnClickListener { callback?.onCurrencySelectorClicked() }
     }
 
@@ -43,16 +46,38 @@ class CurrencyInputView @JvmOverloads constructor(
         binding.tvFiatCurrency.text = currency
     }
 
-    fun setCryptoCurrency(currency: String) {
-        binding.viewCurrencySelector.setCryptoCurrency(currency)
+    fun setCryptoCurrency(currency: String?) {
+        currency?.let { binding.viewCurrencySelector.setCryptoCurrency(it) }
     }
 
     private fun onFiatAmountChanged(value: String) {
-        callback?.onFiatAmountChanged(BigDecimal.TEN) //todo: parse string
+        callback?.onFiatAmountChanged(value.trim().toBigDecimalOrNull() ?: BigDecimal.ZERO)
     }
 
     private fun onCryptoAmountChanged(value: String) {
-        callback?.onCryptoAmountChanged(BigDecimal.ONE)  //todo: parse string
+        callback?.onCryptoAmountChanged(value.trim().toBigDecimalOrNull() ?: BigDecimal.ZERO)
+    }
+
+    fun setFiatAmount(amount: BigDecimal) {
+        val formatted = amount.formatFiatForUi(
+            currencyCode = BRSharedPrefs.getPreferredFiatIso(),
+            showCurrencySymbol = false
+        )
+
+        val text = binding.etFiatAmount.text?.toString() ?: ""
+
+        if (text != formatted) {
+            binding.etFiatAmount.setText(formatted)
+        }
+    }
+
+    fun setCryptoAmount(amount: BigDecimal) {
+        val formatted = amount.formatCryptoForUi(null)
+        val text = binding.etCryptoAmount.text?.toString() ?: ""
+
+        if (text != formatted) {
+            binding.etCryptoAmount.setText(formatted)
+        }
     }
 
     interface Callback {

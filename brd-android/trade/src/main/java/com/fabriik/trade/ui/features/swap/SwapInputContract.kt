@@ -45,6 +45,15 @@ interface SwapInputContract {
             val destinationCryptoCurrency: String,
             val cryptoExchangeRate: BigDecimal,
             val cryptoExchangeRateLoading: Boolean = false,
+            val sendingNetworkFee: NetworkFeeData? = null,
+            val receivingNetworkFee: NetworkFeeData? = null,
         ) : State()
     }
+
+    data class NetworkFeeData(
+        val fiatAmount: BigDecimal,
+        val fiatCurrency: String,
+        val cryptoAmount: BigDecimal,
+        val cryptoCurrency: String
+    )
 }

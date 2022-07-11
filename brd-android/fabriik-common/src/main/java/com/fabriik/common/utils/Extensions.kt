@@ -10,6 +10,7 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.annotation.StringRes
 import androidx.core.os.bundleOf
+import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.SavedStateHandle
 
@@ -44,6 +45,14 @@ fun EditText.hideKeyboard() {
 fun Editable?.textOrEmpty() = if (isNullOrEmpty()) "" else toString()
 
 fun Editable?.asInt() = if (isNullOrEmpty()) null else toString().toInt()
+
+fun EditText.doAfterTextChangedWhenFocused(action: (text: Editable?) -> Unit) {
+    doAfterTextChanged {
+        if (hasFocus()) {
+            action(it)
+        }
+    }
+}
 
 fun Array<String>.contains(other: String, ignoreCase: Boolean = false): Boolean {
     return any { it.equals(other, ignoreCase) }

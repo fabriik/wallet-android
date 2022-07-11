@@ -33,11 +33,11 @@ class SwapInputFragment : Fragment(),
             viewModel.setEvent(SwapInputContract.Event.ReplaceCurrenciesClicked)
         }
 
-        override fun onDestinationCurrencySelectorClicked() {
+        override fun onDestinationCurrencyClicked() {
             viewModel.setEvent(SwapInputContract.Event.DestinationCurrencyClicked)
         }
 
-        override fun onSourceCurrencySelectorClicked() {
+        override fun onSourceCurrencyClicked() {
             viewModel.setEvent(SwapInputContract.Event.SourceCurrencyClicked)
         }
 
@@ -221,6 +221,9 @@ class SwapInputFragment : Fragment(),
                     state.destinationCryptoCurrency
                 )
             )
+
+            cvSwap.setSendingNetworkFee(state.sendingNetworkFee)
+            cvSwap.setReceivingNetworkFee(state.receivingNetworkFee)
 
             viewTimer.isVisible = !state.cryptoExchangeRateLoading
             tvRateValue.isVisible = !state.cryptoExchangeRateLoading

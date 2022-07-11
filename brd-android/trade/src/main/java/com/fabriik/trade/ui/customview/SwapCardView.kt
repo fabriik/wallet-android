@@ -4,8 +4,11 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.core.view.isVisible
+import com.breadwallet.breadbox.formatCryptoForUi
+import com.breadwallet.util.formatFiatForUi
 import com.fabriik.common.utils.dp
 import com.fabriik.trade.databinding.ViewSwapCardBinding
+import com.fabriik.trade.ui.features.swap.SwapInputContract
 import com.google.android.material.card.MaterialCardView
 import java.math.BigDecimal
 
@@ -27,7 +30,7 @@ class SwapCardView @JvmOverloads constructor(
 
             viewInputBuyingCurrency.setCallback(object : CurrencyInputView.Callback {
                 override fun onCurrencySelectorClicked() {
-                    callback?.onDestinationCurrencySelectorClicked()
+                    callback?.onDestinationCurrencyClicked()
                 }
 
                 override fun onFiatAmountChanged(amount: BigDecimal) {
@@ -41,7 +44,7 @@ class SwapCardView @JvmOverloads constructor(
 
             viewInputSellingCurrency.setCallback(object : CurrencyInputView.Callback {
                 override fun onCurrencySelectorClicked() {
-                    callback?.onSourceCurrencySelectorClicked()
+                    callback?.onSourceCurrencyClicked()
                 }
 
                 override fun onFiatAmountChanged(amount: BigDecimal) {
@@ -64,34 +67,60 @@ class SwapCardView @JvmOverloads constructor(
         binding.viewInputSellingCurrency.setFiatCurrency(currency)
     }
 
-    fun setSourceCurrency(currency: String) {
+    fun setSourceCurrency(currency: String?) {
         binding.viewInputSellingCurrency.setCryptoCurrency(currency)
     }
 
-    fun setDestinationCurrency(currency: String) {
+    fun setDestinationCurrency(currency: String?) {
         binding.viewInputBuyingCurrency.setCryptoCurrency(currency)
     }
 
-    fun setSendingNetworkFee(feeText: String?) {
-        binding.tvSellingCurrencyNetworkFee.text = feeText
-        binding.tvSellingCurrencyNetworkFee.isVisible = feeText != null
-        binding.tvSellingCurrencyNetworkFeeTitle.isVisible = feeText != null
+    fun setSendingNetworkFee(fee: SwapInputContract.NetworkFeeData?) {
+        binding.tvSellingCurrencyNetworkFee.isVisible = fee != null
+        binding.tvSellingCurrencyNetworkFeeTitle.isVisible = fee != null
+
+        fee?.let {
+            val fiatText = it.fiatAmount.formatFiatForUi(it.fiatCurrency)
+            val cryptoText = it.cryptoAmount.formatCryptoForUi(it.cryptoCurrency)
+            binding.tvSellingCurrencyNetworkFee.text = "$cryptoText\n$fiatText"
+        }
     }
 
-    fun setReceivingNetworkFee(feeText: String?) {
-        binding.tvBuyingCurrencyNetworkFee.text = feeText
-        binding.tvBuyingCurrencyNetworkFee.isVisible = feeText != null
-        binding.tvBuyingCurrencyNetworkFeeTitle.isVisible = feeText != null
+    fun setReceivingNetworkFee(fee: SwapInputContract.NetworkFeeData?) {
+        binding.tvBuyingCurrencyNetworkFee.isVisible = fee != null
+        binding.tvBuyingCurrencyNetworkFeeTitle.isVisible = fee != null
+
+        fee?.let {
+            val fiatText = it.fiatAmount.formatFiatForUi(it.fiatCurrency)
+            val cryptoText = it.cryptoAmount.formatCryptoForUi(it.cryptoCurrency)
+            binding.tvBuyingCurrencyNetworkFee.text = "$cryptoText\n$fiatText"
+        }
     }
 
     fun setSourceCurrencyTitle(title: String) {
         binding.viewInputSellingCurrency.setTitle(title)
     }
 
+    fun setSourceFiatAmount(amount: BigDecimal) {
+        binding.viewInputSellingCurrency.setFiatAmount(amount)
+    }
+
+    fun setSourceCryptoAmount(amount: BigDecimal) {
+        binding.viewInputSellingCurrency.setCryptoAmount(amount)
+    }
+
+    fun setDestinationFiatAmount(amount: BigDecimal) {
+        binding.viewInputBuyingCurrency.setFiatAmount(amount)
+    }
+
+    fun setDestinationCryptoAmount(amount: BigDecimal) {
+        binding.viewInputBuyingCurrency.setCryptoAmount(amount)
+    }
+
     interface Callback {
         fun onReplaceCurrenciesClicked()
-        fun onDestinationCurrencySelectorClicked()
-        fun onSourceCurrencySelectorClicked()
+        fun onDestinationCurrencyClicked()
+        fun onSourceCurrencyClicked()
         fun onSellingCurrencyFiatAmountChanged(amount: BigDecimal)
         fun onSellingCurrencyCryptoAmountChanged(amount: BigDecimal)
         fun onBuyingCurrencyFiatAmountChanged(amount: BigDecimal)
