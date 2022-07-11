@@ -11,6 +11,8 @@ interface SwapInputContract {
     sealed class Event : FabriikContract.Event {
         object DismissClicked : Event()
         object ConfirmClicked : Event()
+        object OnMinAmountClicked : Event()
+        object OnMaxAmountClicked : Event()
         object SourceCurrencyClicked : Event()
         object ReplaceCurrenciesClicked : Event()
         object DestinationCurrencyClicked : Event()
@@ -25,6 +27,7 @@ interface SwapInputContract {
             val sourceCurrency: String,
             val destinationCurrency: String
         ) : Effect()
+        data class UpdateTimer(val timeLeft: Int) : Effect()
         data class SourceSelection(val currencies: List<String>) : Effect()
         data class DestinationSelection(val currencies: List<String>, val sourceCurrency: String) : Effect()
     }
@@ -40,6 +43,8 @@ interface SwapInputContract {
             val sourceCryptoBalance: BigDecimal,
             val sourceCryptoCurrency: String,
             val destinationCryptoCurrency: String,
+            val cryptoExchangeRate: BigDecimal,
+            val cryptoExchangeRateLoading: Boolean = false,
         ) : State()
     }
 }

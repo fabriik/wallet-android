@@ -18,6 +18,7 @@ import java.math.BigDecimal
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.breadwallet.breadbox.formatCryptoForUi
+import com.fabriik.common.ui.customview.FabriikSwitch
 import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.trade.ui.features.assetselection.AssetSelectionFragment
 
@@ -80,6 +81,15 @@ class SwapInputFragment : Fragment(),
 
             cvSwap.setFiatCurrency(BRSharedPrefs.getPreferredFiatIso())
             cvSwap.setCallback(cardSwapCallback)
+
+            switchMinMax.setCallback {
+                when (it) {
+                    FabriikSwitch.OPTION_LEFT ->
+                        viewModel.setEvent(SwapInputContract.Event.OnMinAmountClicked)
+                    FabriikSwitch.OPTION_RIGHT ->
+                        viewModel.setEvent(SwapInputContract.Event.OnMaxAmountClicked)
+                }
+            }
 
             btnConfirm.setOnClickListener {
                 viewModel.setEvent(SwapInputContract.Event.ConfirmClicked)
@@ -154,6 +164,11 @@ class SwapInputFragment : Fragment(),
                     )
                 )
 
+            is SwapInputContract.Effect.UpdateTimer ->
+                binding.viewTimer.setProgress(
+                    SwapInputViewModel.QUOTE_TIMER, effect.timeLeft
+                )
+
             is SwapInputContract.Effect.SourceSelection ->
                 findNavController().navigate(
                     SwapInputFragmentDirections.actionAssetSelection(
@@ -199,6 +214,20 @@ class SwapInputFragment : Fragment(),
                     )
                 )
             )
+
+            tvRateValue.text = RATE_FORMAT.format(
+                state.sourceCryptoCurrency,
+                state.cryptoExchangeRate.formatCryptoForUi(
+                    state.destinationCryptoCurrency
+                )
+            )
+
+            viewTimer.isVisible = !state.cryptoExchangeRateLoading
+            tvRateValue.isVisible = !state.cryptoExchangeRateLoading
+            quoteLoadingIndicator.isVisible = state.cryptoExchangeRateLoading
+
+            content.isVisible = true
+            initialLoadingIndicator.isVisible = false
         }
     }
 

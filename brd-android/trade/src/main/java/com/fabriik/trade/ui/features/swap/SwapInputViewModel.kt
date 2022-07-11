@@ -5,17 +5,22 @@ import androidx.lifecycle.viewModelScope
 import com.breadwallet.breadbox.BreadBox
 import com.breadwallet.breadbox.toBigDecimal
 import com.breadwallet.tools.manager.BRSharedPrefs
+import com.fabriik.common.data.Status
 import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.common.utils.getString
 import com.fabriik.trade.R
 import com.fabriik.trade.data.SwapApi
+import com.google.common.primitives.UnsignedBytes.toInt
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
 import org.kodein.di.erased.instance
 import java.math.BigDecimal
+import java.util.concurrent.TimeUnit
 
 class SwapInputViewModel(
     application: Application
@@ -29,6 +34,8 @@ class SwapInputViewModel(
 
     private val currentLoadedState: SwapInputContract.State.Loaded?
         get() = state.value as SwapInputContract.State.Loaded?
+
+    private var currentTimerJob: Job? = null
 
     init {
         loadInitialData()
@@ -64,6 +71,12 @@ class SwapInputViewModel(
 
             is SwapInputContract.Event.DestinationCurrencyChanged ->
                 onDestinationCurrencyChanged(event.currencyCode)
+
+            is SwapInputContract.Event.OnMinAmountClicked ->
+                onMinAmountClicked()
+
+            is SwapInputContract.Event.OnMaxAmountClicked ->
+                onMaxAmountClicked()
         }
     }
 
@@ -141,12 +154,71 @@ class SwapInputViewModel(
         requestNewQuote()
     }
 
+    private fun onMinAmountClicked() {
+        val state = currentLoadedState ?: return
+
+        //todo
+    }
+
+    private fun onMaxAmountClicked() {
+        val state = currentLoadedState ?: return
+
+        // todo
+    }
+
     private fun onReplaceCurrenciesClicked() {
         //todo
     }
 
+    private fun startQuoteTimer() {
+        currentTimerJob?.cancel()
+
+        val state = currentLoadedState ?: return
+        val targetTimestamp = state.quoteResponse.timestamp
+        val currentTimestamp = System.currentTimeMillis()
+        val diffSec = TimeUnit.MILLISECONDS.toSeconds(targetTimestamp - currentTimestamp)
+
+        currentTimerJob = viewModelScope.launch {
+            (diffSec downTo 0)
+                .asSequence()
+                .asFlow()
+                .onStart { setEffect { SwapInputContract.Effect.UpdateTimer(QUOTE_TIMER) } }
+                .onEach { delay(1000) }
+                .collect {
+                    if (it == 0L) {
+                        requestNewQuote()
+                    } else {
+                        setEffect { SwapInputContract.Effect.UpdateTimer(it.toInt()) }
+                    }
+                }
+        }
+    }
+
     private fun requestNewQuote() {
-        //todo
+        viewModelScope.launch {
+            val state = currentLoadedState ?: return@launch
+            setState { state.copy(cryptoExchangeRateLoading = true) }
+
+            val response = swapApi.getQuote(state.selectedPair)
+            when (response.status) {
+                Status.SUCCESS -> {
+                    val latestState = currentLoadedState ?: return@launch
+                    setState {
+                        latestState.copy(
+                            cryptoExchangeRateLoading = false,
+                            quoteResponse = requireNotNull(response.data)
+                        )
+                    }
+                    startQuoteTimer()
+                }
+                Status.ERROR ->
+                    setEffect {
+                        SwapInputContract.Effect.ShowToast(
+                            response.message ?: getString(R.string.FabriikApi_DefaultError)
+                        )
+                    }
+            }
+        }
     }
 
     private fun showErrorState() {
@@ -187,9 +259,12 @@ class SwapInputViewModel(
                     quoteResponse = selectedPairQuote,
                     sourceCryptoCurrency = selectedPair.baseCurrency,
                     destinationCryptoCurrency = selectedPair.termCurrency,
-                    sourceCryptoBalance = sourceCryptoBalance
+                    sourceCryptoBalance = sourceCryptoBalance,
+                    cryptoExchangeRate = selectedPairQuote.closeAsk
                 )
             }
+
+            startQuoteTimer()
         }
     }
 
