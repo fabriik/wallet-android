@@ -62,6 +62,10 @@ class ConfirmationDialog(val args: ConfirmationArgs) : DialogFragment() {
             btnCancel.setOnClickListener {
                 dialog?.dismiss()
             }
+
+            btnConfirm.setOnClickListener {
+                //TODO - navigate to pin screen
+            }
         }
     }
 
