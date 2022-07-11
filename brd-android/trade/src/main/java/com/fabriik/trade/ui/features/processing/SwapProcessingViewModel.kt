@@ -26,6 +26,7 @@ class SwapProcessingViewModel(
     )
 
     override fun handleEvent(event: SwapProcessingContract.Event) {
+
         when (event) {
             SwapProcessingContract.Event.DismissClicked ->
                 setEffect { SwapProcessingContract.Effect.Dismiss }
@@ -34,5 +35,6 @@ class SwapProcessingViewModel(
             SwapProcessingContract.Event.OpenSwapDetails ->
                 setEffect { SwapProcessingContract.Effect.OpenDetails }
         }
+
     }
 }

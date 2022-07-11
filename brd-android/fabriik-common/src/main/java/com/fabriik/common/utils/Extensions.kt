@@ -30,7 +30,7 @@ fun Button.underline() {
 }
 
 fun EditText.showKeyboard() {
-    postDelayed({
+    postDelayed( {
         val manager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
         requestFocus()
         manager?.showSoftInput(this, InputMethodManager.SHOW_FORCED)
