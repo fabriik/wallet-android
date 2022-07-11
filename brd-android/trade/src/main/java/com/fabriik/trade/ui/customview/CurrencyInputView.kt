@@ -59,11 +59,7 @@ class CurrencyInputView @JvmOverloads constructor(
     }
 
     fun setFiatAmount(amount: BigDecimal) {
-        val formatted = amount.formatFiatForUi(
-            currencyCode = BRSharedPrefs.getPreferredFiatIso(),
-            showCurrencySymbol = false
-        )
-
+        val formatted = amount.toString()
         val text = binding.etFiatAmount.text?.toString() ?: ""
 
         if (text != formatted) {
@@ -72,7 +68,7 @@ class CurrencyInputView @JvmOverloads constructor(
     }
 
     fun setCryptoAmount(amount: BigDecimal) {
-        val formatted = amount.formatCryptoForUi(null)
+        val formatted = amount.toString()
         val text = binding.etCryptoAmount.text?.toString() ?: ""
 
         if (text != formatted) {
