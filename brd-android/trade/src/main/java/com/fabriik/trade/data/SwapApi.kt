@@ -6,7 +6,6 @@ import com.fabriik.common.data.Resource
 import com.fabriik.common.utils.FabriikApiResponseMapper
 import com.fabriik.trade.data.model.TradingPair
 import com.fabriik.trade.data.response.QuoteResponse
-import com.fabriik.trade.utils.adapter.BigDecimalAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.*
@@ -54,7 +53,7 @@ class SwapApi(
 
     companion object {
 
-        fun create(context: Context) = SwapApi(
+        fun create(context: Context, moshiConverter: MoshiConverterFactory) = SwapApi(
             context = context,
             service = Retrofit.Builder()
                 .client(
@@ -67,14 +66,7 @@ class SwapApi(
                         .build()
                 )
                 .baseUrl(FabriikApiConstants.HOST_SWAP_API)
-                .addConverterFactory(
-                    MoshiConverterFactory.create(
-                        Moshi.Builder()
-                            .add(BigDecimalAdapter)
-                            .addLast(KotlinJsonAdapterFactory())
-                            .build()
-                    )
-                )
+                .addConverterFactory(moshiConverter)
                 .build()
                 .create(SwapService::class.java)
         )

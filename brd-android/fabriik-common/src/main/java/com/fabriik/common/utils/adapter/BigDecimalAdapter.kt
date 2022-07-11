@@ -1,4 +1,4 @@
-package com.fabriik.trade.utils.adapter
+package com.fabriik.common.utils.adapter
 
 import com.squareup.moshi.FromJson
 import com.squareup.moshi.ToJson
