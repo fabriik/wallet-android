@@ -171,7 +171,7 @@ class SwapInputViewModel(
             currentLoadedState?.let {
                 val change = it.copy(
                     cryptoExchangeRate = when (it.sourceCryptoCurrency) {
-                        it.selectedPair.baseCurrency -> BigDecimal.ONE / it.quoteResponse.closeAsk
+                        it.selectedPair.baseCurrency -> BigDecimal.ONE / it.quoteResponse.closeBid
                         else -> it.quoteResponse.closeAsk
                     },
                     sourceCryptoBalance = balance,
