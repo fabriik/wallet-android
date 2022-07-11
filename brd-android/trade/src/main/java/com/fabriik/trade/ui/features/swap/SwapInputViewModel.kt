@@ -72,17 +72,17 @@ class SwapInputViewModel(
                 }
             }
 
-            SwapInputContract.Event.ReplaceCurrenciesClicked ->
-                onReplaceCurrenciesClicked()
-
             SwapInputContract.Event.SourceCurrencyClicked ->
                 onSourceCurrencyClicked()
 
-            is SwapInputContract.Event.SourceCurrencyChanged ->
-                onSourceCurrencyChanged(event.currencyCode)
-
             SwapInputContract.Event.DestinationCurrencyClicked ->
                 onDestinationCurrencyClicked()
+
+            SwapInputContract.Event.ReplaceCurrenciesClicked ->
+                onReplaceCurrenciesClicked()
+
+            is SwapInputContract.Event.SourceCurrencyChanged ->
+                onSourceCurrencyChanged(event.currencyCode)
 
             is SwapInputContract.Event.DestinationCurrencyChanged ->
                 onDestinationCurrencyChanged(event.currencyCode)
@@ -105,6 +105,56 @@ class SwapInputViewModel(
             is SwapInputContract.Event.DestinationCurrencyCryptoAmountChange ->
                 onDestinationCurrencyCryptoAmountChanged(event.amount)
         }
+    }
+
+    private fun onSourceCurrencyChanged(currencyCode: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val state = currentLoadedState ?: return@launch
+            if (currencyCode.equals(state.sourceCryptoCurrency, true)) {
+                return@launch
+            }
+
+            val newSelectedPair = state.tradingPairs.firstOrNull {
+                currencyCode.equals(it.baseCurrency, true)
+            } ?: state.selectedPair
+
+            val sourceBalance = loadCryptoBalance(
+                newSelectedPair.baseCurrency
+            ) ?: BigDecimal.ZERO
+
+            val latestState = currentLoadedState ?: return@launch
+            setState {
+                latestState.copy(
+                    selectedPair = newSelectedPair,
+                    sourceCryptoBalance = sourceBalance,
+                    sourceCryptoCurrency = newSelectedPair.baseCurrency,
+                    destinationCryptoCurrency = newSelectedPair.termCurrency,
+                )
+            }
+
+            requestNewQuote()
+        }
+    }
+
+    private fun onDestinationCurrencyChanged(currencyCode: String) {
+        val state = currentLoadedState ?: return
+        if (currencyCode.equals(state.destinationCryptoCurrency, true)) {
+            return
+        }
+
+        val newSelectedPair = state.tradingPairs.firstOrNull {
+            currencyCode.equals(it.termCurrency, true) &&
+                    state.sourceCryptoCurrency.equals(it.baseCurrency, true)
+        } ?: state.selectedPair
+
+        setState {
+            state.copy(
+                selectedPair = newSelectedPair,
+                destinationCryptoCurrency = newSelectedPair.termCurrency
+            )
+        }
+
+        requestNewQuote()
     }
 
     private fun onMinAmountClicked() {
@@ -265,35 +315,6 @@ class SwapInputViewModel(
         setEffect { SwapInputContract.Effect.SourceSelection(currencies) }
     }
 
-    private fun onSourceCurrencyChanged(currencyCode: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val state = currentLoadedState ?: return@launch
-            if (currencyCode.equals(state.sourceCryptoCurrency, true)) {
-                return@launch
-            }
-
-            val newSelectedPair = state.tradingPairs.firstOrNull {
-                currencyCode.equals(it.baseCurrency, true)
-            } ?: state.selectedPair
-
-            val sourceBalance = loadCryptoBalance(
-                newSelectedPair.baseCurrency
-            ) ?: BigDecimal.ZERO
-
-            val latestState = currentLoadedState ?: return@launch
-            setState {
-                latestState.copy(
-                    selectedPair = newSelectedPair,
-                    sourceCryptoBalance = sourceBalance,
-                    sourceCryptoCurrency = newSelectedPair.baseCurrency,
-                    destinationCryptoCurrency = newSelectedPair.termCurrency,
-                )
-            }
-
-            requestNewQuote()
-        }
-    }
-
     private fun onDestinationCurrencyClicked() {
         val state = currentLoadedState ?: return
         val currencies = state.tradingPairs
@@ -307,27 +328,6 @@ class SwapInputViewModel(
                 sourceCurrency = state.sourceCryptoCurrency
             )
         }
-    }
-
-    private fun onDestinationCurrencyChanged(currencyCode: String) {
-        val state = currentLoadedState ?: return
-        if (currencyCode.equals(state.destinationCryptoCurrency, true)) {
-            return
-        }
-
-        val newSelectedPair = state.tradingPairs.firstOrNull {
-            currencyCode.equals(it.termCurrency, true) &&
-                    state.sourceCryptoCurrency.equals(it.baseCurrency, true)
-        } ?: state.selectedPair
-
-        setState {
-            state.copy(
-                selectedPair = newSelectedPair,
-                destinationCryptoCurrency = newSelectedPair.termCurrency
-            )
-        }
-
-        requestNewQuote()
     }
 
     private fun onSourceCurrencyFiatAmountChanged(sourceFiatAmount: BigDecimal) {
