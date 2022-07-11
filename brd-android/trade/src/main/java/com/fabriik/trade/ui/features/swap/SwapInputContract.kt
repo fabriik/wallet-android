@@ -1,7 +1,6 @@
 package com.fabriik.trade.ui.features.swap
 
 import com.fabriik.common.ui.base.FabriikContract
-import com.fabriik.trade.ui.features.assetselection.AssetSelectionAdapter
 import java.math.BigDecimal
 
 interface SwapInputContract {
@@ -31,15 +30,17 @@ interface SwapInputContract {
         val timer: Int,
         val quoteLoading: Boolean = false,
         val currencies: List<String>,
-        val originCurrency: String,
+        val originCurrency: Currency,
+        val destinationCurrency: Currency,
+        val sendingNetworkFee: Currency? = null,
+        val receivingNetworkFee: Currency? = null,
         val originCurrencyBalance: BigDecimal,
-        val originFiatAmount: BigDecimal = BigDecimal.ZERO,
-        val originCryptoAmount: BigDecimal = BigDecimal.ZERO,
-        val destinationCurrency: String,
-        val destinationFiatAmount: BigDecimal = BigDecimal.ZERO,
-        val destinationCryptoAmount: BigDecimal = BigDecimal.ZERO,
-        val sendingNetworkFee: String? = null,
-        val receivingNetworkFee: String? = null,
         val rateOriginToDestinationCurrency: BigDecimal
     ) : FabriikContract.State
 }
+
+data class Currency(
+    val title: String,
+    val amount: BigDecimal = BigDecimal.ZERO,
+    val fiatValue: BigDecimal = BigDecimal.ZERO
+)

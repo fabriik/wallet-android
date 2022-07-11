@@ -19,7 +19,6 @@ import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.fabriik.trade.ui.dialog.ConfirmationArgs
 import com.fabriik.trade.ui.dialog.ConfirmationDialog
-import com.fabriik.trade.ui.dialog.Currency
 import com.fabriik.trade.ui.features.assetselection.AssetSelectionFragment
 
 class SwapInputFragment : Fragment(),
@@ -124,15 +123,15 @@ class SwapInputFragment : Fragment(),
 
     override fun render(state: SwapInputContract.State) {
         with(binding) {
-            cvSwap.setSellingCurrencyTitle(getString(R.string.Swap_Input_IHave, state.originCurrencyBalance, state.originCurrency))
-            cvSwap.setOriginCurrency(state.originCurrency)
-            cvSwap.setSendingNetworkFee(state.sendingNetworkFee)
-            cvSwap.setDestinationCurrency(state.destinationCurrency)
-            cvSwap.setReceivingNetworkFee(state.receivingNetworkFee)
+            cvSwap.setSellingCurrencyTitle(getString(R.string.Swap_Input_IHave, state.originCurrencyBalance, state.originCurrency.title))
+            cvSwap.setOriginCurrency(state.originCurrency.title)
+            cvSwap.setSendingNetworkFee(state.sendingNetworkFee?.title)
+            cvSwap.setDestinationCurrency(state.destinationCurrency.title)
+            cvSwap.setReceivingNetworkFee(state.receivingNetworkFee?.title)
 
             viewTimer.setProgress(SwapInputViewModel.QUOTE_TIMER, state.timer)
             tvRateValue.text = RATE_FORMAT.format(
-                state.originCurrency, state.rateOriginToDestinationCurrency, state.destinationCurrency
+                state.originCurrency.title, state.rateOriginToDestinationCurrency, state.destinationCurrency.title
             )
 
             viewTimer.isVisible = !state.quoteLoading
@@ -171,30 +170,14 @@ class SwapInputFragment : Fragment(),
     private fun showConfirmDialog() {
         val state = viewModel.currentState
         val fm = requireActivity().supportFragmentManager
-        val originCurrency =
-            Currency(
-                state.originCurrency,
-                state.originCryptoAmount,
-                state.originFiatAmount
-            )
-        val destinationCurrency =
-            Currency(
-                state.destinationCurrency,
-                state.destinationCryptoAmount,
-                state.destinationFiatAmount
-            )
-
-        //TODO: Update network fees
-        val sendingFeeCurrency = Currency("BSV", BigDecimal.ZERO, BigDecimal.ZERO)
-        val receivingFeeCurrency = Currency("BTC", BigDecimal.ZERO, BigDecimal.ZERO)
 
         val args = ConfirmationArgs(
-            swapFromCurrency = originCurrency,
-            swapToCurrency = destinationCurrency,
-            sendingFeeCurrency = sendingFeeCurrency,
-            receivingFeeCurrency = receivingFeeCurrency,
+            swapFromCurrency = state.originCurrency,
+            swapToCurrency = state.destinationCurrency,
+            sendingFeeCurrency = state.sendingNetworkFee ?: Currency("BSV"),
+            receivingFeeCurrency = state.receivingNetworkFee ?: Currency("BSV"),
             rate = state.rateOriginToDestinationCurrency.toString(), //TODO prepare rate string
-            totalCost = (BigDecimal.ZERO) //TODO convert and calculate total cost
+            totalCost = BigDecimal.ZERO //TODO convert and calculate total cost
         )
         ConfirmationDialog(args).show(fm, ConfirmationDialog.CONFIRMATION_TAG)
     }
