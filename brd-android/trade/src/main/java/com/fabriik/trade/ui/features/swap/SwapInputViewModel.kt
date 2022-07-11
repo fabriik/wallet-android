@@ -191,7 +191,9 @@ class SwapInputViewModel(
                     destinationCryptoAmount = it.sourceCryptoAmount,
                     sourceCryptoBalance = balance,
                     sourceCryptoCurrency = currentData.destinationCryptoCurrency,
-                    destinationCryptoCurrency = currentData.sourceCryptoCurrency
+                    destinationCryptoCurrency = currentData.sourceCryptoCurrency,
+                    sendingNetworkFee = currentData.receivingNetworkFee,
+                    receivingNetworkFee = currentData.sendingNetworkFee,
                 )
 
                 setState { change }
@@ -268,7 +270,9 @@ class SwapInputViewModel(
                 return@launch
             }
 
-            val selectedPair = tradingPairs.first()
+            val selectedPair = tradingPairs.first {
+                it.baseCurrency == "BTC"
+            }
             val selectedPairQuote = swapApi.getQuote(selectedPair).data
             if (selectedPairQuote == null) {
                 showErrorState()
