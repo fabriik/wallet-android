@@ -107,59 +107,20 @@ class SwapInputViewModel(
         }
     }
 
-    private fun loadInitialData() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val tradingPairs = swapApi.getTradingPairs().data ?: emptyList()
-            if (tradingPairs.isEmpty()) {
-                showErrorState()
-                return@launch
-            }
+    private fun onMinAmountClicked() {
+        val state = currentLoadedState ?: return
 
-            val selectedPair = tradingPairs.first()
-            val selectedPairQuote = swapApi.getQuote(selectedPair).data
-            if (selectedPairQuote == null) {
-                showErrorState()
-                return@launch
-            }
-
-            val sourceCryptoBalance = loadCryptoBalance(selectedPair.baseCurrency)
-            if (sourceCryptoBalance == null) {
-                showErrorState()
-                return@launch
-            }
-
-            setState {
-                SwapInputContract.State.Loaded(
-                    tradingPairs = tradingPairs,
-                    selectedPair = selectedPair,
-                    fiatCurrency = BRSharedPrefs.getPreferredFiatIso(),
-                    quoteResponse = selectedPairQuote,
-                    sourceCryptoCurrency = selectedPair.baseCurrency,
-                    destinationCryptoCurrency = selectedPair.termCurrency,
-                    sourceCryptoBalance = sourceCryptoBalance,
-                    cryptoExchangeRate = selectedPairQuote.closeAsk
-                )
-            }
-
-            startQuoteTimer()
-        }
+        onSourceCurrencyCryptoAmountChanged(
+            min(state.selectedPair.minAmount, state.sourceCryptoBalance), false
+        )
     }
 
-    private fun showErrorState() {
-        setState { SwapInputContract.State.Error }
-        setEffect {
-            SwapInputContract.Effect.ShowToast(
-                getString(R.string.FabriikApi_DefaultError)
-            )
-        }
-    }
+    private fun onMaxAmountClicked() {
+        val state = currentLoadedState ?: return
 
-    private suspend fun loadCryptoBalance(currencyCode: String): BigDecimal? {
-        val wallet = breadBox.wallets()
-            .first()
-            .find { it.currency.code.equals(currencyCode, ignoreCase = true) }
-
-        return wallet?.balance?.toBigDecimal()
+        onSourceCurrencyCryptoAmountChanged(
+            min(state.sourceCryptoBalance, maxAmountLimit), false
+        )
     }
 
     private fun onReplaceCurrenciesClicked() {
@@ -240,6 +201,61 @@ class SwapInputViewModel(
         }
     }
 
+    private fun showErrorState() {
+        setState { SwapInputContract.State.Error }
+        setEffect {
+            SwapInputContract.Effect.ShowToast(
+                getString(R.string.FabriikApi_DefaultError)
+            )
+        }
+    }
+
+    private fun loadInitialData() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val tradingPairs = swapApi.getTradingPairs().data ?: emptyList()
+            if (tradingPairs.isEmpty()) {
+                showErrorState()
+                return@launch
+            }
+
+            val selectedPair = tradingPairs.first()
+            val selectedPairQuote = swapApi.getQuote(selectedPair).data
+            if (selectedPairQuote == null) {
+                showErrorState()
+                return@launch
+            }
+
+            val sourceCryptoBalance = loadCryptoBalance(selectedPair.baseCurrency)
+            if (sourceCryptoBalance == null) {
+                showErrorState()
+                return@launch
+            }
+
+            setState {
+                SwapInputContract.State.Loaded(
+                    tradingPairs = tradingPairs,
+                    selectedPair = selectedPair,
+                    fiatCurrency = BRSharedPrefs.getPreferredFiatIso(),
+                    quoteResponse = selectedPairQuote,
+                    sourceCryptoCurrency = selectedPair.baseCurrency,
+                    destinationCryptoCurrency = selectedPair.termCurrency,
+                    sourceCryptoBalance = sourceCryptoBalance,
+                    cryptoExchangeRate = selectedPairQuote.closeAsk
+                )
+            }
+
+            startQuoteTimer()
+        }
+    }
+
+    private suspend fun loadCryptoBalance(currencyCode: String): BigDecimal? {
+        val wallet = breadBox.wallets()
+            .first()
+            .find { it.currency.code.equals(currencyCode, ignoreCase = true) }
+
+        return wallet?.balance?.toBigDecimal()
+    }
+
     private fun onSourceCurrencyClicked() {
         val state = currentLoadedState ?: return
         val currencies = state.tradingPairs
@@ -312,22 +328,6 @@ class SwapInputViewModel(
         }
 
         requestNewQuote()
-    }
-
-    private fun onMinAmountClicked() {
-        val state = currentLoadedState ?: return
-
-        onSourceCurrencyCryptoAmountChanged(
-            min(state.selectedPair.minAmount, state.sourceCryptoBalance), false
-        )
-    }
-
-    private fun onMaxAmountClicked() {
-        val state = currentLoadedState ?: return
-
-        onSourceCurrencyCryptoAmountChanged(
-            min(state.sourceCryptoBalance, maxAmountLimit), false
-        )
     }
 
     private fun onSourceCurrencyFiatAmountChanged(sourceFiatAmount: BigDecimal) {
