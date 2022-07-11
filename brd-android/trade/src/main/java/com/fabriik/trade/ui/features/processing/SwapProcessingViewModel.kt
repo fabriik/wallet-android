@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.SavedStateHandle
 import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.common.utils.toBundle
+import com.fabriik.trade.ui.features.processing.SwapProcessingContract
 
 class SwapProcessingViewModel(
     application: Application,

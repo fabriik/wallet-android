@@ -48,7 +48,15 @@ class SwapApi(
         }
         /*return try {
             val response = service.getTradingPairs()
-            Resource.success(data = response.pairs)
+            val tradingPairs = response.pairs.flatMap {
+                listOf(
+                    it, it.copy(
+                        baseCurrency = it.termCurrency,
+                        termCurrency = it.baseCurrency
+                    )
+                )
+            }
+            Resource.success(data = tradingPairs)
         } catch (ex: Exception) {
             responseMapper.mapError(
                 context = context,

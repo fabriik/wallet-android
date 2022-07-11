@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.fabriik.common.ui.base.FabriikView
 import com.fabriik.trade.R
 import com.fabriik.trade.databinding.FragmentSwapProcessBinding
+import com.fabriik.trade.ui.features.processing.SwapProcessingContract
 import kotlinx.coroutines.flow.collect
 
 class SwapProcessingFragment : Fragment(),
