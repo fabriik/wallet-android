@@ -107,7 +107,7 @@ class SwapInputFragment : Fragment(),
         }
 
         // listen for origin currency changes
-        parentFragmentManager.setFragmentResultListener(REQUEST_KEY_ORIGIN_SELECTION, this) { _, bundle ->
+        parentFragmentManager.setFragmentResultListener(REQUEST_KEY_SOURCE_SELECTION, this) { _, bundle ->
             val currency = bundle.getString(AssetSelectionFragment.EXTRA_SELECTED_CURRENCY)
             if (currency != null) {
                 viewModel.setEvent(
@@ -144,10 +144,65 @@ class SwapInputFragment : Fragment(),
         }
     }
 
+    override fun handleEffect(effect: SwapInputContract.Effect) {
+        when (effect) {
+            SwapInputContract.Effect.Dismiss ->
+                requireActivity().finish()
+
+            SwapInputContract.Effect.DeselectMinMaxSwitchItems ->
+                binding.switchMinMax.setSelectedItem(FabriikSwitch.OPTION_NONE)
+
+            is SwapInputContract.Effect.ShowToast ->
+                FabriikToastUtil.showInfo(binding.root, effect.message)
+
+            is SwapInputContract.Effect.ContinueToSwapProcessing ->
+                findNavController().navigate(
+                    SwapInputFragmentDirections.actionSwapProcessing(
+                        coinFrom = effect.sourceCurrency,
+                        coinTo = effect.destinationCurrency
+                    )
+                )
+
+            is SwapInputContract.Effect.UpdateTimer ->
+                binding.viewTimer.setProgress(
+                    SwapInputViewModel.QUOTE_TIMER, effect.timeLeft
+                )
+
+            is SwapInputContract.Effect.SourceSelection ->
+                findNavController().navigate(
+                    SwapInputFragmentDirections.actionAssetSelection(
+                        requestKey = REQUEST_KEY_SOURCE_SELECTION,
+                        currencies = effect.currencies.toTypedArray(),
+                    )
+                )
+
+            is SwapInputContract.Effect.DestinationSelection ->
+                findNavController().navigate(
+                    SwapInputFragmentDirections.actionAssetSelection(
+                        requestKey = REQUEST_KEY_DESTINATION_SELECTION,
+                        currencies = effect.currencies.toTypedArray(),
+                        sourceCurrency = effect.sourceCurrency
+                    )
+                )
+
+            is SwapInputContract.Effect.UpdateSourceFiatAmount ->
+                binding.cvSwap.setSourceFiatAmount(effect.bigDecimal)
+
+            is SwapInputContract.Effect.UpdateSourceCryptoAmount ->
+                binding.cvSwap.setSourceCryptoAmount(effect.bigDecimal)
+
+            is SwapInputContract.Effect.UpdateDestinationFiatAmount ->
+                binding.cvSwap.setDestinationFiatAmount(effect.bigDecimal)
+
+            is SwapInputContract.Effect.UpdateDestinationCryptoAmount ->
+                binding.cvSwap.setDestinationCryptoAmount(effect.bigDecimal)
+        }
+    }
+
     private fun handleErrorState(state: SwapInputContract.State.Error) {
         with(binding) {
             content.isVisible = false
-            initialLoadingIndicator.isVisible = true
+            initialLoadingIndicator.isVisible = false
         }
     }
 
@@ -190,64 +245,9 @@ class SwapInputFragment : Fragment(),
         }
     }
 
-    override fun handleEffect(effect: SwapInputContract.Effect) {
-        when (effect) {
-            SwapInputContract.Effect.Dismiss ->
-                requireActivity().finish()
-
-            SwapInputContract.Effect.DeselectMinMaxSwitchItems ->
-                binding.switchMinMax.setSelectedItem(FabriikSwitch.OPTION_NONE)
-
-            is SwapInputContract.Effect.ShowToast ->
-                FabriikToastUtil.showInfo(binding.root, effect.message)
-
-            is SwapInputContract.Effect.ContinueToSwapProcessing ->
-                findNavController().navigate(
-                    SwapInputFragmentDirections.actionSwapProcessing(
-                        coinFrom = effect.sourceCurrency,
-                        coinTo = effect.destinationCurrency
-                    )
-                )
-
-            is SwapInputContract.Effect.UpdateTimer ->
-                binding.viewTimer.setProgress(
-                    SwapInputViewModel.QUOTE_TIMER, effect.timeLeft
-                )
-
-            is SwapInputContract.Effect.SourceSelection ->
-                findNavController().navigate(
-                    SwapInputFragmentDirections.actionAssetSelection(
-                        requestKey = REQUEST_KEY_ORIGIN_SELECTION,
-                        currencies = effect.currencies.toTypedArray()
-                    )
-                )
-
-            is SwapInputContract.Effect.DestinationSelection ->
-                findNavController().navigate(
-                    SwapInputFragmentDirections.actionAssetSelection(
-                        requestKey = REQUEST_KEY_DESTINATION_SELECTION,
-                        currencies = effect.currencies.toTypedArray(),
-                        sourceCurrency = effect.sourceCurrency
-                    )
-                )
-
-            is SwapInputContract.Effect.UpdateSourceFiatAmount ->
-                binding.cvSwap.setSourceFiatAmount(effect.bigDecimal)
-
-            is SwapInputContract.Effect.UpdateSourceCryptoAmount ->
-                binding.cvSwap.setSourceCryptoAmount(effect.bigDecimal)
-
-            is SwapInputContract.Effect.UpdateDestinationFiatAmount ->
-                binding.cvSwap.setDestinationFiatAmount(effect.bigDecimal)
-
-            is SwapInputContract.Effect.UpdateDestinationCryptoAmount ->
-                binding.cvSwap.setDestinationCryptoAmount(effect.bigDecimal)
-        }
-    }
-
     companion object {
         const val RATE_FORMAT = "1 %s = %s"
-        const val REQUEST_KEY_ORIGIN_SELECTION = "req_code_origin_select"
+        const val REQUEST_KEY_SOURCE_SELECTION = "req_code_origin_select"
         const val REQUEST_KEY_DESTINATION_SELECTION = "req_code_dest_select"
     }
 }

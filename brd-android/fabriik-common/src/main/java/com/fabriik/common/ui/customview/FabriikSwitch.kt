@@ -44,16 +44,16 @@ class FabriikSwitch @JvmOverloads constructor(
         callback?.onSelectionChanged(selectedOption)
     }
 
+    fun setCallback(callback: Callback) {
+        this.callback = callback
+    }
+
     private fun addOptionView(text: CharSequence, @SwitchOption option: Int) : TextView {
         val tvOption = TextView(ContextThemeWrapper(context, R.style.FabriikCustomSwitchItemStyle))
         tvOption.text = text
         tvOption.setOnClickListener { setSelectedItem(option) }
         addView(tvOption, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, 0.5f))
         return tvOption
-    }
-
-    fun setCallback(callback: Callback) {
-        this.callback = callback
     }
 
     fun interface Callback {
