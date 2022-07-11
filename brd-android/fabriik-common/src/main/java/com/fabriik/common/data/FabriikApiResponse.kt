@@ -21,5 +21,5 @@ data class FabriikApiResponseError(
     val code: String,
 
     @Json(name = "server_message")
-    val message: String
+    val message: String?
 )

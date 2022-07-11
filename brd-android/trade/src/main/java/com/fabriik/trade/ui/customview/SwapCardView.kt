@@ -27,7 +27,7 @@ class SwapCardView @JvmOverloads constructor(
 
             viewInputBuyingCurrency.setCallback(object : CurrencyInputView.Callback {
                 override fun onCurrencySelectorClicked() {
-                    callback?.onBuyingCurrencySelectorClicked()
+                    callback?.onDestinationCurrencySelectorClicked()
                 }
 
                 override fun onFiatAmountChanged(amount: BigDecimal) {
@@ -41,7 +41,7 @@ class SwapCardView @JvmOverloads constructor(
 
             viewInputSellingCurrency.setCallback(object : CurrencyInputView.Callback {
                 override fun onCurrencySelectorClicked() {
-                    callback?.onSellingCurrencySelectorClicked()
+                    callback?.onSourceCurrencySelectorClicked()
                 }
 
                 override fun onFiatAmountChanged(amount: BigDecimal) {
@@ -64,7 +64,7 @@ class SwapCardView @JvmOverloads constructor(
         binding.viewInputSellingCurrency.setFiatCurrency(currency)
     }
 
-    fun setOriginCurrency(currency: String) {
+    fun setSourceCurrency(currency: String) {
         binding.viewInputSellingCurrency.setCryptoCurrency(currency)
     }
 
@@ -84,14 +84,14 @@ class SwapCardView @JvmOverloads constructor(
         binding.tvBuyingCurrencyNetworkFeeTitle.isVisible = feeText != null
     }
 
-    fun setSellingCurrencyTitle(title: String) {
+    fun setSourceCurrencyTitle(title: String) {
         binding.viewInputSellingCurrency.setTitle(title)
     }
 
     interface Callback {
         fun onReplaceCurrenciesClicked()
-        fun onBuyingCurrencySelectorClicked()
-        fun onSellingCurrencySelectorClicked()
+        fun onDestinationCurrencySelectorClicked()
+        fun onSourceCurrencySelectorClicked()
         fun onSellingCurrencyFiatAmountChanged(amount: BigDecimal)
         fun onSellingCurrencyCryptoAmountChanged(amount: BigDecimal)
         fun onBuyingCurrencyFiatAmountChanged(amount: BigDecimal)

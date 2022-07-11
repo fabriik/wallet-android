@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -18,7 +17,8 @@ import kotlinx.coroutines.flow.collect
 import java.math.BigDecimal
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
-import com.fabriik.trade.ui.features.assetselection.AssetSelectionAdapter
+import com.breadwallet.breadbox.formatCryptoForUi
+import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.trade.ui.features.assetselection.AssetSelectionFragment
 
 class SwapInputFragment : Fragment(),
@@ -32,28 +32,28 @@ class SwapInputFragment : Fragment(),
             viewModel.setEvent(SwapInputContract.Event.ReplaceCurrenciesClicked)
         }
 
-        override fun onBuyingCurrencySelectorClicked() {
+        override fun onDestinationCurrencySelectorClicked() {
             viewModel.setEvent(SwapInputContract.Event.DestinationCurrencyClicked)
         }
 
-        override fun onSellingCurrencySelectorClicked() {
-            viewModel.setEvent(SwapInputContract.Event.OriginCurrencyClicked)
+        override fun onSourceCurrencySelectorClicked() {
+            viewModel.setEvent(SwapInputContract.Event.SourceCurrencyClicked)
         }
 
         override fun onSellingCurrencyFiatAmountChanged(amount: BigDecimal) {
-            viewModel.setEvent(SwapInputContract.Event.OriginCurrencyFiatAmountChange(amount))
+            //todo
         }
 
         override fun onSellingCurrencyCryptoAmountChanged(amount: BigDecimal) {
-            viewModel.setEvent(SwapInputContract.Event.OriginCurrencyCryptoAmountChange(amount))
+            //todo
         }
 
         override fun onBuyingCurrencyFiatAmountChanged(amount: BigDecimal) {
-            viewModel.setEvent(SwapInputContract.Event.DestinationCurrencyFiatAmountChange(amount))
+            //todo
         }
 
         override fun onBuyingCurrencyCryptoAmountChanged(amount: BigDecimal) {
-            viewModel.setEvent(SwapInputContract.Event.DestinationCurrencyCryptoAmountChange(amount))
+            //todo
         }
     }
 
@@ -74,13 +74,15 @@ class SwapInputFragment : Fragment(),
                 viewModel.setEvent(SwapInputContract.Event.DismissClicked)
             }
 
+            viewTimer.setProgress(
+                SwapInputViewModel.QUOTE_TIMER, SwapInputViewModel.QUOTE_TIMER
+            )
+
             cvSwap.setFiatCurrency(BRSharedPrefs.getPreferredFiatIso())
             cvSwap.setCallback(cardSwapCallback)
 
             btnConfirm.setOnClickListener {
-                findNavController().navigate(SwapInputFragmentDirections
-                    .actionSwapProcessing(viewModel.currentState.originCurrency,
-                        viewModel.currentState.destinationCurrency))
+                viewModel.setEvent(SwapInputContract.Event.ConfirmClicked)
             }
         }
 
@@ -99,11 +101,11 @@ class SwapInputFragment : Fragment(),
         }
 
         // listen for origin currency changes
-        parentFragmentManager.setFragmentResultListener(REQUEST_KEY_ORIGIN_SELECTION, this) { _, bundle ->
+        parentFragmentManager.setFragmentResultListener(REQUEST_KEY_SOURCE_SELECTION, this) { _, bundle ->
             val currency = bundle.getString(AssetSelectionFragment.EXTRA_SELECTED_CURRENCY)
             if (currency != null) {
                 viewModel.setEvent(
-                    SwapInputContract.Event.OriginCurrencyChanged(currency)
+                    SwapInputContract.Event.SourceCurrencyChanged(currency)
                 )
             }
         }
@@ -124,21 +126,15 @@ class SwapInputFragment : Fragment(),
     }
 
     override fun render(state: SwapInputContract.State) {
-        with(binding) {
-            cvSwap.setSellingCurrencyTitle(getString(R.string.Swap_Input_IHave, state.originCurrencyBalance, state.originCurrency))
-            cvSwap.setOriginCurrency(state.originCurrency)
-            cvSwap.setSendingNetworkFee(state.sendingNetworkFee)
-            cvSwap.setDestinationCurrency(state.destinationCurrency)
-            cvSwap.setReceivingNetworkFee(state.receivingNetworkFee)
+        when (state) {
+            is SwapInputContract.State.Error ->
+                handleErrorState(state)
 
-            viewTimer.setProgress(SwapInputViewModel.QUOTE_TIMER, state.timer)
-            tvRateValue.text = RATE_FORMAT.format(
-                state.originCurrency, state.rateOriginToDestinationCurrency, state.destinationCurrency
-            )
+            is SwapInputContract.State.Loading ->
+                handleLoadingState(state)
 
-            viewTimer.isVisible = !state.quoteLoading
-            tvRateValue.isVisible = !state.quoteLoading
-            quoteLoadingIndicator.isVisible = state.quoteLoading
+            is SwapInputContract.State.Loaded ->
+                handleLoadedState(state)
         }
     }
 
@@ -147,10 +143,21 @@ class SwapInputFragment : Fragment(),
             SwapInputContract.Effect.Dismiss ->
                 requireActivity().finish()
 
-            is SwapInputContract.Effect.OriginSelection ->
+            is SwapInputContract.Effect.ShowToast ->
+                FabriikToastUtil.showInfo(binding.root, effect.message)
+
+            is SwapInputContract.Effect.ContinueToSwapProcessing ->
+                findNavController().navigate(
+                    SwapInputFragmentDirections.actionSwapProcessing(
+                        coinFrom = effect.sourceCurrency,
+                        coinTo = effect.destinationCurrency
+                    )
+                )
+
+            is SwapInputContract.Effect.SourceSelection ->
                 findNavController().navigate(
                     SwapInputFragmentDirections.actionAssetSelection(
-                        requestKey = REQUEST_KEY_ORIGIN_SELECTION,
+                        requestKey = REQUEST_KEY_SOURCE_SELECTION,
                         currencies = effect.currencies.toTypedArray(),
                     )
                 )
@@ -166,9 +173,38 @@ class SwapInputFragment : Fragment(),
         }
     }
 
+    private fun handleErrorState(state: SwapInputContract.State.Error) {
+        with(binding) {
+            content.isVisible = false
+            initialLoadingIndicator.isVisible = true
+        }
+    }
+
+    private fun handleLoadingState(state: SwapInputContract.State.Loading) {
+        with(binding) {
+            content.isVisible = false
+            initialLoadingIndicator.isVisible = true
+        }
+    }
+
+    private fun handleLoadedState(state: SwapInputContract.State.Loaded) {
+        with(binding) {
+            cvSwap.setFiatCurrency(state.fiatCurrency)
+            cvSwap.setSourceCurrency(state.sourceCryptoCurrency)
+            cvSwap.setDestinationCurrency(state.destinationCryptoCurrency)
+            cvSwap.setSourceCurrencyTitle(
+                getString(
+                    R.string.Swap_Input_IHave, state.sourceCryptoBalance.formatCryptoForUi(
+                        state.sourceCryptoCurrency
+                    )
+                )
+            )
+        }
+    }
+
     companion object {
         const val RATE_FORMAT = "1 %s = %f %s"
-        const val REQUEST_KEY_ORIGIN_SELECTION = "req_code_origin_select"
+        const val REQUEST_KEY_SOURCE_SELECTION = "req_code_source_select"
         const val REQUEST_KEY_DESTINATION_SELECTION = "req_code_dest_select"
     }
 }

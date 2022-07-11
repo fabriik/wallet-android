@@ -73,6 +73,7 @@ import com.fabriik.registration.data.RegistrationApi
 import com.fabriik.registration.data.RegistrationApiInterceptor
 import com.fabriik.registration.utils.RegistrationUtils
 import com.fabriik.registration.utils.UserSessionManager
+import com.fabriik.trade.data.SwapApi
 import com.platform.APIClient
 import com.platform.HTTPServer
 import com.platform.interfaces.KVStoreProvider
@@ -404,6 +405,12 @@ class BreadApp : Application(), KodeinAware, CameraXConfig.Provider {
 
         bind<BRDApiClient>() with singleton {
             BRDApiClient.create(AndroidBRDAuthProvider(instance()))
+        }
+
+        bind<SwapApi>() with singleton {
+            SwapApi.create(
+                this@BreadApp
+            )
         }
 
         bind<RegistrationApi>() with singleton {
