@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import com.breadwallet.breadbox.formatCryptoForUi
 import com.fabriik.trade.R
 import com.fabriik.trade.databinding.FragmentConfirmationDialogBinding
 import java.math.BigDecimal
@@ -35,13 +36,23 @@ class ConfirmationDialog(val args: ConfirmationArgs) : DialogFragment() {
             tvFromValue.text = formatCurrencyText(args.swapFromCurrency)
             tvToValue.text = formatCurrencyText(args.swapToCurrency)
 
-            tvOriginCoinValue.text = args.swapFromCurrency.amount.toString()
-            tvOriginFiatValue.text = args.swapFromCurrency.fiatValue.toString()
+            tvOriginCoinValue.text = args.swapFromCurrency.amount.formatCryptoForUi(
+                args.swapFromCurrency.title
+            )
+            tvOriginFiatValue.text = getString(
+                R.string.swap_Confirmation_ValueInDollars,
+                args.swapFromCurrency.fiatValue
+            )
 
-            tvDestinationCoinValue.text = args.swapToCurrency.amount.toString()
-            tvDestinationFiatValue.text = args.swapToCurrency.fiatValue.toString()
+            tvDestinationCoinValue.text = args.swapToCurrency.amount.formatCryptoForUi(
+                args.swapToCurrency.title
+            )
+            tvDestinationFiatValue.text = getString(
+                R.string.swap_Confirmation_ValueInDollars,
+                args.swapToCurrency.fiatValue
+            )
 
-            tvTotalValue.text = args.totalCost
+            tvTotalValue.text = args.totalCost.formatCryptoForUi(args.swapFromCurrency.title)
             tvRateValue.text = args.rate
 
             btnDismiss.setOnClickListener {
@@ -70,7 +81,7 @@ data class ConfirmationArgs(
     val sendingFeeCurrency: Currency,
     val receivingFeeCurrency: Currency,
     val rate: String,
-    val totalCost: String,
+    val totalCost: BigDecimal,
 )
 
 data class Currency(

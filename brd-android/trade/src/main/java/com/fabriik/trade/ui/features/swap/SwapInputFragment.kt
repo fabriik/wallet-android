@@ -194,7 +194,7 @@ class SwapInputFragment : Fragment(),
             sendingFeeCurrency = sendingFeeCurrency,
             receivingFeeCurrency = receivingFeeCurrency,
             rate = state.rateOriginToDestinationCurrency.toString(), //TODO prepare rate string
-            totalCost = state.sendingNetworkFee + state.receivingNetworkFee //TODO convert and calculate true rate
+            totalCost = (BigDecimal.ZERO) //TODO convert and calculate total cost
         )
         ConfirmationDialog(args).show(fm, ConfirmationDialog.CONFIRMATION_TAG)
     }
