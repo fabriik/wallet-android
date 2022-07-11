@@ -358,12 +358,12 @@ class SwapInputViewModel(
 
             setState {
                 state.copy(
-                    sourceFiatAmount = sourceFiatAmount,
-                    sourceCryptoAmount = sourceCryptoAmount,
                     destinationFiatAmount = destFiatAmount,
                     destinationCryptoAmount = destCryptoAmount,
-                    sendingNetworkFee = destCryptoAmountData.first,
-                    receivingNetworkFee = destCryptoAmountData.second
+                    sourceFiatAmount = sourceFiatAmount,
+                    sourceCryptoAmount = sourceCryptoAmount,
+                    receivingNetworkFee = destCryptoAmountData.second,
+                    sendingNetworkFee = destCryptoAmountData.first
                 )
             }
 
@@ -396,8 +396,8 @@ class SwapInputViewModel(
             setState {
                 state.copy(
                     sourceFiatAmount = sourceFiatAmount,
-                    sourceCryptoAmount = sourceCryptoAmount,
                     destinationFiatAmount = destFiatAmount,
+                    sourceCryptoAmount = sourceCryptoAmount,
                     destinationCryptoAmount = destCryptoAmount,
                     sendingNetworkFee = destCryptoAmountData.first,
                     receivingNetworkFee = destCryptoAmountData.second
@@ -433,11 +433,11 @@ class SwapInputViewModel(
             setState {
                 state.copy(
                     sourceFiatAmount = sourceFiatAmount,
+                    destinationCryptoAmount = destCryptoAmount,
                     sourceCryptoAmount = sourceCryptoAmount,
                     destinationFiatAmount = destFiatAmount,
-                    destinationCryptoAmount = destCryptoAmount,
-                    sendingNetworkFee = sourceCryptoAmountData.first,
-                    receivingNetworkFee = sourceCryptoAmountData.second
+                    receivingNetworkFee = sourceCryptoAmountData.second,
+                    sendingNetworkFee = sourceCryptoAmountData.first
                 )
             }
 
