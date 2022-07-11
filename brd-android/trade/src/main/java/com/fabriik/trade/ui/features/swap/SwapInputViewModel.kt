@@ -543,22 +543,22 @@ class SwapInputViewModel(
 
     private suspend fun BigDecimal.convertSource(fromCryptoCurrency: String, toCryptoCurrency: String, rate: BigDecimal): Triple<SwapInputContract.NetworkFeeData?, SwapInputContract.NetworkFeeData?, BigDecimal> {
         val state = currentLoadedState ?: return Triple(null, null, BigDecimal.ZERO)
-        val sourceFee = estimateFee(this, fromCryptoCurrency, state.fiatCurrency)
-        val destAmount = (this - (sourceFee?.cryptoAmount ?: BigDecimal.ZERO)).multiply(rate)
+
+        val destAmount = this.multiply(rate)
         val destFee = estimateFee(destAmount, toCryptoCurrency, state.fiatCurrency)
-        return Triple(
-            sourceFee, destFee, (destAmount - (destFee?.cryptoAmount ?: BigDecimal.ZERO))
-        )
+        val sourceFee = estimateFee(this, fromCryptoCurrency, state.fiatCurrency)
+
+        return Triple(sourceFee, destFee, destAmount)
     }
 
     private suspend fun BigDecimal.convertDestination(fromCryptoCurrency: String, toCryptoCurrency: String, rate: BigDecimal): Triple<SwapInputContract.NetworkFeeData?, SwapInputContract.NetworkFeeData?, BigDecimal> {
         val state = currentLoadedState ?: return Triple(null, null, BigDecimal.ZERO)
-        val destFee = estimateFee(this, fromCryptoCurrency, state.fiatCurrency)
-        val sourceAmount = (this + (destFee?.cryptoAmount ?: BigDecimal.ZERO)).divide(rate, 5, RoundingMode.HALF_UP)
+
+        val sourceAmount = this.divide(rate, 5, RoundingMode.HALF_UP)
         val sourceFee = estimateFee(sourceAmount, toCryptoCurrency, state.fiatCurrency)
-        return Triple(
-            sourceFee, destFee, (sourceAmount + (sourceFee?.cryptoAmount ?: BigDecimal.ZERO))
-        )
+        val destFee = estimateFee(this, fromCryptoCurrency, state.fiatCurrency)
+
+        return Triple(sourceFee, destFee, sourceAmount)
     }
 
     companion object {

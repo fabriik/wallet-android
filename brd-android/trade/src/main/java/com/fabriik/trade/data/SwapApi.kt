@@ -45,23 +45,9 @@ class SwapApi(
                     maxAmount = BigDecimal("1000000")
                 ),
                 TradingPair(
-                    name = "BSV-BTC",
-                    baseCurrency = "BTC",
-                    termCurrency = "BSV",
-                    minAmount = BigDecimal("0.001"),
-                    maxAmount = BigDecimal("1000000")
-                ),
-                TradingPair(
                     name = "BTC-USDT",
                     baseCurrency = "BTC",
                     termCurrency = "USDT",
-                    minAmount = BigDecimal("0.001"),
-                    maxAmount = BigDecimal("1000000")
-                ),
-                TradingPair(
-                    name = "BTC-USDT",
-                    baseCurrency = "USDT",
-                    termCurrency = "BTC",
                     minAmount = BigDecimal("0.001"),
                     maxAmount = BigDecimal("1000000")
                 )
