@@ -176,7 +176,7 @@ class SwapInputFragment : Fragment(),
     private fun handleErrorState(state: SwapInputContract.State.Error) {
         with(binding) {
             content.isVisible = false
-            initialLoadingIndicator.isVisible = true
+            initialLoadingIndicator.isVisible = false
         }
     }
 
