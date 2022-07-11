@@ -23,6 +23,29 @@ class SwapApi(
     private val responseMapper = FabriikApiResponseMapper()
 
     suspend fun getTradingPairs(): Resource<List<TradingPair>?> {
+        val pairs = listOf(
+            TradingPair(
+                name = "BSV-BTC",
+                baseCurrency = "BSV",
+                termCurrency = "BTC",
+                minAmount = BigDecimal("0.001"),
+                maxAmount = BigDecimal("1000000")
+            ),
+            TradingPair(
+                name = "BTC-USDT",
+                baseCurrency = "BTC",
+                termCurrency = "USDT",
+                minAmount = BigDecimal("0.001"),
+                maxAmount = BigDecimal("1000000")
+            )
+        ).flatMap {
+            listOf(
+                it, it.copy(
+                    baseCurrency = it.termCurrency,
+                    termCurrency = it.baseCurrency
+                )
+            )
+        }
         /*return try {
             val response = service.getTradingPairs()
             Resource.success(data = response.pairs)
@@ -35,24 +58,7 @@ class SwapApi(
 
         delay(2000)
 
-        return Resource.success(
-            listOf(
-                TradingPair(
-                    name = "BSV-BTC",
-                    baseCurrency = "BSV",
-                    termCurrency = "BTC",
-                    minAmount = BigDecimal("0.001"),
-                    maxAmount = BigDecimal("1000000")
-                ),
-                TradingPair(
-                    name = "BTC-USDT",
-                    baseCurrency = "BTC",
-                    termCurrency = "USDT",
-                    minAmount = BigDecimal("0.001"),
-                    maxAmount = BigDecimal("1000000")
-                )
-            )
-        )
+        return Resource.success(pairs)
     }
 
     suspend fun getQuote(tradingPair: TradingPair): Resource<QuoteResponse?> {
