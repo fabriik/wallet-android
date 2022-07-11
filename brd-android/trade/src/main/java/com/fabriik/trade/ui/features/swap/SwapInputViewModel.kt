@@ -171,14 +171,20 @@ class SwapInputViewModel(
             currentLoadedState?.let {
                 val change = it.copy(
                     cryptoExchangeRate = when (it.sourceCryptoCurrency) {
-                        it.selectedPair.baseCurrency -> BigDecimal.ONE / it.quoteResponse.closeBid
+                        it.selectedPair.baseCurrency -> BigDecimal.ONE.divide(it.quoteResponse.closeBid, 10, RoundingMode.HALF_UP)
                         else -> it.quoteResponse.closeAsk
                     },
+                    sourceFiatAmount = it.destinationFiatAmount,
+                    sourceCryptoAmount = it.destinationCryptoAmount,
+                    destinationFiatAmount = it.sourceFiatAmount,
+                    destinationCryptoAmount = it.sourceCryptoAmount,
                     sourceCryptoBalance = balance,
                     sourceCryptoCurrency = currentData.destinationCryptoCurrency,
                     destinationCryptoCurrency = currentData.sourceCryptoCurrency
                 )
+
                 setState { change }
+                updateAmounts()
             }
         }
     }
@@ -312,7 +318,7 @@ class SwapInputViewModel(
         val state = currentLoadedState ?: return
 
         onSourceCurrencyCryptoAmountChanged(
-            state.selectedPair.minAmount, false
+            min(state.selectedPair.minAmount, state.sourceCryptoBalance), false
         )
     }
 
