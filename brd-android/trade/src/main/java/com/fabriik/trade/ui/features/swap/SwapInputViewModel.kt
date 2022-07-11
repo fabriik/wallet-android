@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.breadwallet.breadbox.*
 import com.breadwallet.crypto.AddressScheme
 import com.breadwallet.crypto.Amount
-import com.breadwallet.crypto.errors.FeeEstimationError
 import com.breadwallet.repository.RatesRepository
 import com.breadwallet.tools.manager.BRSharedPrefs
 import com.breadwallet.tools.security.ProfileManager
@@ -31,6 +30,7 @@ import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import java.lang.Exception
+import java.math.RoundingMode
 
 class SwapInputViewModel(
     application: Application
@@ -327,125 +327,149 @@ class SwapInputViewModel(
     private fun onSourceCurrencyFiatAmountChanged(sourceFiatAmount: BigDecimal) {
         val state = currentLoadedState ?: return
 
-        val sourceCryptoAmount = sourceFiatAmount.toCrypto(
-            cryptoCurrency = state.sourceCryptoCurrency,
-            fiatCurrency = state.fiatCurrency
-        )
-
-        val destCryptoAmount = sourceCryptoAmount.convert(
-            fromCryptoCurrency = state.sourceCryptoCurrency,
-            toCryptoCurrency = state.destinationCryptoCurrency,
-            rate = state.cryptoExchangeRate
-        )
-
-        val destFiatAmount = destCryptoAmount.toFiat(
-            cryptoCurrency = state.destinationCryptoCurrency,
-            fiatCurrency = state.fiatCurrency
-        )
-
-        setState {
-            state.copy(
-                sourceFiatAmount = sourceFiatAmount,
-                sourceCryptoAmount = sourceCryptoAmount,
-                destinationFiatAmount = destFiatAmount,
-                destinationCryptoAmount = destCryptoAmount
+        viewModelScope.launch(Dispatchers.IO) {
+            val sourceCryptoAmount = sourceFiatAmount.toCrypto(
+                cryptoCurrency = state.sourceCryptoCurrency,
+                fiatCurrency = state.fiatCurrency
             )
-        }
 
-        updateAmounts()
+            val destCryptoAmountData = sourceCryptoAmount.convertSource(
+                fromCryptoCurrency = state.sourceCryptoCurrency,
+                toCryptoCurrency = state.destinationCryptoCurrency,
+                rate = state.cryptoExchangeRate
+            )
+
+            val destCryptoAmount = destCryptoAmountData.third
+
+            val destFiatAmount = destCryptoAmount.toFiat(
+                cryptoCurrency = state.destinationCryptoCurrency,
+                fiatCurrency = state.fiatCurrency
+            )
+
+            setState {
+                state.copy(
+                    sourceFiatAmount = sourceFiatAmount,
+                    sourceCryptoAmount = sourceCryptoAmount,
+                    destinationFiatAmount = destFiatAmount,
+                    destinationCryptoAmount = destCryptoAmount,
+                    sendingNetworkFee = destCryptoAmountData.first,
+                    receivingNetworkFee = destCryptoAmountData.second
+                )
+            }
+
+            updateAmounts()
+        }
     }
 
     private fun onSourceCurrencyCryptoAmountChanged(sourceCryptoAmount: BigDecimal, changeByUser: Boolean = true) {
         val state = currentLoadedState ?: return
 
-        val sourceFiatAmount = sourceCryptoAmount.toFiat(
-            cryptoCurrency = state.sourceCryptoCurrency,
-            fiatCurrency = state.fiatCurrency
-        )
-
-        val destCryptoAmount = sourceCryptoAmount.convert(
-            fromCryptoCurrency = state.sourceCryptoCurrency,
-            toCryptoCurrency = state.destinationCryptoCurrency,
-            rate = state.cryptoExchangeRate
-        )
-
-        val destFiatAmount = destCryptoAmount.toFiat(
-            cryptoCurrency = state.destinationCryptoCurrency,
-            fiatCurrency = state.fiatCurrency
-        )
-
-        setState {
-            state.copy(
-                sourceFiatAmount = sourceFiatAmount,
-                sourceCryptoAmount = sourceCryptoAmount,
-                destinationFiatAmount = destFiatAmount,
-                destinationCryptoAmount = destCryptoAmount
+        viewModelScope.launch(Dispatchers.IO) {
+            val sourceFiatAmount = sourceCryptoAmount.toFiat(
+                cryptoCurrency = state.sourceCryptoCurrency,
+                fiatCurrency = state.fiatCurrency
             )
-        }
 
-        updateAmounts(changeByUser)
+            val destCryptoAmountData = sourceCryptoAmount.convertSource(
+                fromCryptoCurrency = state.sourceCryptoCurrency,
+                toCryptoCurrency = state.destinationCryptoCurrency,
+                rate = state.cryptoExchangeRate
+            )
+
+            val destCryptoAmount = destCryptoAmountData.third
+
+            val destFiatAmount = destCryptoAmount.toFiat(
+                cryptoCurrency = state.destinationCryptoCurrency,
+                fiatCurrency = state.fiatCurrency
+            )
+
+            setState {
+                state.copy(
+                    sourceFiatAmount = sourceFiatAmount,
+                    sourceCryptoAmount = sourceCryptoAmount,
+                    destinationFiatAmount = destFiatAmount,
+                    destinationCryptoAmount = destCryptoAmount,
+                    sendingNetworkFee = destCryptoAmountData.first,
+                    receivingNetworkFee = destCryptoAmountData.second
+                )
+            }
+
+            updateAmounts(changeByUser)
+        }
     }
 
     private fun onDestinationCurrencyFiatAmountChanged(destFiatAmount: BigDecimal) {
         val state = currentLoadedState ?: return
 
-        val destCryptoAmount = destFiatAmount.toCrypto(
-            cryptoCurrency = state.destinationCryptoCurrency,
-            fiatCurrency = state.fiatCurrency
-        )
-
-        val sourceCryptoAmount = destCryptoAmount.convert(
-            fromCryptoCurrency = state.destinationCryptoCurrency,
-            toCryptoCurrency = state.sourceCryptoCurrency,
-            rate = state.cryptoExchangeRate
-        )
-
-        val sourceFiatAmount = sourceCryptoAmount.toFiat(
-            cryptoCurrency = state.sourceCryptoCurrency,
-            fiatCurrency = state.fiatCurrency
-        )
-
-        setState {
-            state.copy(
-                sourceFiatAmount = sourceFiatAmount,
-                sourceCryptoAmount = sourceCryptoAmount,
-                destinationFiatAmount = destFiatAmount,
-                destinationCryptoAmount = destCryptoAmount
+        viewModelScope.launch(Dispatchers.IO) {
+            val destCryptoAmount = destFiatAmount.toCrypto(
+                cryptoCurrency = state.destinationCryptoCurrency,
+                fiatCurrency = state.fiatCurrency
             )
-        }
 
-        updateAmounts()
+            val sourceCryptoAmountData = destCryptoAmount.convertDestination(
+                fromCryptoCurrency = state.destinationCryptoCurrency,
+                toCryptoCurrency = state.sourceCryptoCurrency,
+                rate = state.cryptoExchangeRate
+            )
+
+            val sourceCryptoAmount = sourceCryptoAmountData.third
+
+            val sourceFiatAmount = sourceCryptoAmount.toFiat(
+                cryptoCurrency = state.sourceCryptoCurrency,
+                fiatCurrency = state.fiatCurrency
+            )
+
+            setState {
+                state.copy(
+                    sourceFiatAmount = sourceFiatAmount,
+                    sourceCryptoAmount = sourceCryptoAmount,
+                    destinationFiatAmount = destFiatAmount,
+                    destinationCryptoAmount = destCryptoAmount,
+                    sendingNetworkFee = sourceCryptoAmountData.first,
+                    receivingNetworkFee = sourceCryptoAmountData.second
+                )
+            }
+
+            updateAmounts()
+        }
     }
 
     private fun onDestinationCurrencyCryptoAmountChanged(destCryptoAmount: BigDecimal) {
         val state = currentLoadedState ?: return
 
-        val destFiatAmount = destCryptoAmount.toFiat(
-            cryptoCurrency = state.destinationCryptoCurrency,
-            fiatCurrency = state.fiatCurrency
-        )
-
-        val sourceCryptoAmount = destCryptoAmount.convert(
-            fromCryptoCurrency = state.destinationCryptoCurrency,
-            toCryptoCurrency = state.sourceCryptoCurrency,
-            rate = state.cryptoExchangeRate
-        )
-
-        val sourceFiatAmount = sourceCryptoAmount.toFiat(
-            cryptoCurrency = state.sourceCryptoCurrency,
-            fiatCurrency = state.fiatCurrency
-        )
-
-        setState {
-            state.copy(
-                sourceFiatAmount = sourceFiatAmount,
-                sourceCryptoAmount = sourceCryptoAmount,
-                destinationFiatAmount = destFiatAmount,
-                destinationCryptoAmount = destCryptoAmount
+        viewModelScope.launch(Dispatchers.IO) {
+            val destFiatAmount = destCryptoAmount.toFiat(
+                cryptoCurrency = state.destinationCryptoCurrency,
+                fiatCurrency = state.fiatCurrency
             )
-        }
 
-        updateAmounts()
+            val sourceCryptoAmountData = destCryptoAmount.convertDestination(
+                fromCryptoCurrency = state.destinationCryptoCurrency,
+                toCryptoCurrency = state.sourceCryptoCurrency,
+                rate = state.cryptoExchangeRate
+            )
+
+            val sourceCryptoAmount = sourceCryptoAmountData.third
+
+            val sourceFiatAmount = sourceCryptoAmount.toFiat(
+                cryptoCurrency = state.sourceCryptoCurrency,
+                fiatCurrency = state.fiatCurrency
+            )
+
+            setState {
+                state.copy(
+                    sourceFiatAmount = sourceFiatAmount,
+                    sourceCryptoAmount = sourceCryptoAmount,
+                    destinationFiatAmount = destFiatAmount,
+                    destinationCryptoAmount = destCryptoAmount,
+                    sendingNetworkFee = sourceCryptoAmountData.first,
+                    receivingNetworkFee = sourceCryptoAmountData.second
+                )
+            }
+
+            updateAmounts()
+        }
     }
 
     private fun updateAmounts(changeByUser: Boolean = true) {
@@ -461,141 +485,10 @@ class SwapInputViewModel(
         }
     }
 
-    /*
-
-
-        private fun onSourceCurrencyFiatAmountChanged(amount: BigDecimal) {
-            calculateReceivingAmount(amount, false)
-        }
-
-        private fun onSourceCurrencyCryptoAmountChanged(amount: BigDecimal) {
-            calculateReceivingAmount(amount, true)
-        }
-
-        private fun onDestinationCurrencyFiatAmountChanged(amount: BigDecimal) {
-            calculateSendingAmount(amount, false)
-        }
-
-        private fun onDestinationCurrencyCryptoAmountChanged(amount: BigDecimal) {
-            calculateSendingAmount(amount, true)
-        }
-
-        private fun calculateReceivingAmount(sourceAmount: BigDecimal, isCryptoAmount: Boolean) =
-            withLoadedQuoteState { state, quoteState ->
-                val sourceFiatAmount = if (isCryptoAmount) {
-                    swapAmountCalculator.convertCryptoToFiat(
-                        cryptoAmount = sourceAmount,
-                        cryptoCode = state.selectedPair.baseCurrency,
-                        fiatCode = fiatIso
-                    )
-                } else {
-                    sourceAmount
-                }
-
-                val sourceCryptoAmount = if (isCryptoAmount) {
-                    sourceAmount
-                } else {
-                    swapAmountCalculator.convertFiatToCrypto(
-                        fiatAmount = sourceAmount,
-                        cryptoCode = state.selectedPair.baseCurrency,
-                        fiatCode = fiatIso
-                    )
-                }
-
-                estimateSendingFee(sourceCryptoAmount) { sendingFee ->
-                    var destinationCryptoAmount = swapAmountCalculator.convertCryptoToCrypto(
-                        quoteState = quoteState,
-                        tradingPair = state.selectedPair,
-                        cryptoAmount = sourceCryptoAmount - (sendingFee?.cryptoAmount ?: BigDecimal.ZERO),
-                        fromCryptoCode = state.selectedPair.baseCurrency
-                    )
-
-                    estimateReceivingFee(destinationCryptoAmount) { receivingFee ->
-                        destinationCryptoAmount -= (receivingFee?.cryptoAmount ?: BigDecimal.ZERO)
-
-                        val destinationFiatAmount = swapAmountCalculator.convertCryptoToFiat(
-                            cryptoAmount = destinationCryptoAmount,
-                            cryptoCode = state.selectedPair.termCurrency,
-                            fiatCode = fiatIso
-                        )
-
-                        setEffect { SwapInputContract.Effect.UpdateSourceFiatAmount(sourceFiatAmount) }
-                        setEffect { SwapInputContract.Effect.UpdateSourceCryptoAmount(sourceCryptoAmount) }
-                        setEffect {
-                            SwapInputContract.Effect.UpdateDestinationFiatAmount(
-                                destinationFiatAmount
-                            )
-                        }
-                        setEffect {
-                            SwapInputContract.Effect.UpdateDestinationCryptoAmount(
-                                destinationCryptoAmount
-                            )
-                        }
-                    }
-                }
-            }
-
-        private fun calculateSendingAmount(receivedAmount: BigDecimal, isCryptoAmount: Boolean) =
-            withLoadedQuoteState { state, quoteState ->
-                val receivedFiatAmount = if (isCryptoAmount) {
-                    swapAmountCalculator.convertCryptoToFiat(
-                        cryptoAmount = receivedAmount,
-                        cryptoCode = state.selectedPair.termCurrency,
-                        fiatCode = fiatIso
-                    )
-                } else {
-                    receivedAmount
-                }
-
-                val receivedCryptoAmount = if (isCryptoAmount) {
-                    receivedAmount
-                } else {
-                    swapAmountCalculator.convertFiatToCrypto(
-                        fiatAmount = receivedAmount,
-                        cryptoCode = state.selectedPair.termCurrency,
-                        fiatCode = fiatIso
-                    )
-                }
-
-                estimateReceivingFee(receivedCryptoAmount) { receivingFee ->
-                    var sourceCryptoAmount = swapAmountCalculator.convertCryptoToCrypto(
-                        quoteState = quoteState,
-                        tradingPair = state.selectedPair,
-                        cryptoAmount = receivedCryptoAmount + (receivingFee?.cryptoAmount ?: BigDecimal.ZERO),
-                        fromCryptoCode = state.selectedPair.baseCurrency
-                    )
-
-                    estimateSendingFee(sourceCryptoAmount) { sendingFee ->
-                        sourceCryptoAmount += (sendingFee?.cryptoAmount ?: BigDecimal.ZERO)
-
-                        val sourceFiatAmount = swapAmountCalculator.convertCryptoToFiat(
-                            cryptoAmount = sourceCryptoAmount,
-                            cryptoCode = state.selectedPair.baseCurrency,
-                            fiatCode = fiatIso
-                        )
-
-                        setEffect { SwapInputContract.Effect.UpdateSourceFiatAmount(sourceFiatAmount) }
-                        setEffect { SwapInputContract.Effect.UpdateSourceCryptoAmount(sourceCryptoAmount) }
-                        setEffect { SwapInputContract.Effect.UpdateDestinationFiatAmount(receivedFiatAmount) }
-                        setEffect { SwapInputContract.Effect.UpdateDestinationCryptoAmount(receivedCryptoAmount) }
-                    }
-                }
-            }
-    */
-    private suspend fun estimateSendingFee(amount: BigDecimal): SwapInputContract.NetworkFeeData? {
-        val state = currentLoadedState ?: return null
-        return estimateFee(amount, state.sourceCryptoCurrency, state)
-    }
-
-    private suspend fun estimateReceivingFee(amount: BigDecimal): SwapInputContract.NetworkFeeData? {
-        val state = currentLoadedState ?: return null
-        return estimateFee(amount, state.destinationCryptoCurrency, state)
-    }
-
     private suspend fun estimateFee(
         cryptoAmount: BigDecimal,
         currencyCode: String,
-        state: SwapInputContract.State.Loaded
+        fiatCode: String
     ): SwapInputContract.NetworkFeeData? {
         val wallet = breadBox.wallet(currencyCode).first()
         val amount = Amount.create(cryptoAmount.toDouble(), wallet.unit)
@@ -617,12 +510,12 @@ class SwapInputViewModel(
             val fiatFee = ratesRepository.getFiatForCrypto(
                 cryptoAmount = cryptoFee,
                 cryptoCode = cryptoCurrency,
-                fiatCode = state.fiatCurrency
+                fiatCode = fiatCode
             ) ?: return null
 
             return SwapInputContract.NetworkFeeData(
                 fiatAmount = fiatFee,
-                fiatCurrency = state.fiatCurrency,
+                fiatCurrency = fiatCode,
                 cryptoAmount = cryptoFee,
                 cryptoCurrency = cryptoCurrency
             )
@@ -632,7 +525,6 @@ class SwapInputViewModel(
         }
     }
 
-    //todo: new class for CryptoAmount
     private fun BigDecimal.toCrypto(cryptoCurrency: String, fiatCurrency: String): BigDecimal {
         return ratesRepository.getCryptoForFiat(
             fiatAmount = this,
@@ -641,7 +533,6 @@ class SwapInputViewModel(
         ) ?: BigDecimal.ZERO
     }
 
-    //todo: new class for FiatAmount
     private fun BigDecimal.toFiat(cryptoCurrency: String, fiatCurrency: String): BigDecimal {
         return ratesRepository.getFiatForCrypto(
             cryptoAmount = this,
@@ -650,8 +541,24 @@ class SwapInputViewModel(
         ) ?: BigDecimal.ZERO
     }
 
-    private fun BigDecimal.convert(fromCryptoCurrency: String, toCryptoCurrency: String, rate: BigDecimal): BigDecimal {
-        return BigDecimal.ONE //todo:
+    private suspend fun BigDecimal.convertSource(fromCryptoCurrency: String, toCryptoCurrency: String, rate: BigDecimal): Triple<SwapInputContract.NetworkFeeData?, SwapInputContract.NetworkFeeData?, BigDecimal> {
+        val state = currentLoadedState ?: return Triple(null, null, BigDecimal.ZERO)
+        val sourceFee = estimateFee(this, fromCryptoCurrency, state.fiatCurrency)
+        val destAmount = (this - (sourceFee?.cryptoAmount ?: BigDecimal.ZERO)).multiply(rate)
+        val destFee = estimateFee(destAmount, toCryptoCurrency, state.fiatCurrency)
+        return Triple(
+            sourceFee, destFee, (destAmount - (destFee?.cryptoAmount ?: BigDecimal.ZERO))
+        )
+    }
+
+    private suspend fun BigDecimal.convertDestination(fromCryptoCurrency: String, toCryptoCurrency: String, rate: BigDecimal): Triple<SwapInputContract.NetworkFeeData?, SwapInputContract.NetworkFeeData?, BigDecimal> {
+        val state = currentLoadedState ?: return Triple(null, null, BigDecimal.ZERO)
+        val destFee = estimateFee(this, fromCryptoCurrency, state.fiatCurrency)
+        val sourceAmount = (this + (destFee?.cryptoAmount ?: BigDecimal.ZERO)).divide(rate, 5, RoundingMode.HALF_UP)
+        val sourceFee = estimateFee(sourceAmount, toCryptoCurrency, state.fiatCurrency)
+        return Triple(
+            sourceFee, destFee, (sourceAmount + (sourceFee?.cryptoAmount ?: BigDecimal.ZERO))
+        )
     }
 
     companion object {
