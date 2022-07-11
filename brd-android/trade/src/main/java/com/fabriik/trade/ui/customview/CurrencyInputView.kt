@@ -4,10 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.breadwallet.breadbox.formatCryptoForUi
-import com.breadwallet.tools.manager.BRSharedPrefs
-import com.breadwallet.util.formatFiatForUi
-import com.fabriik.common.utils.doAfterTextChangedWhenFocused
+import com.fabriik.common.utils.afterTextChangedDebounceFocused
 import com.fabriik.trade.R
 import com.fabriik.trade.databinding.ViewCurrencyInputBinding
 import java.math.BigDecimal
@@ -29,8 +26,8 @@ class CurrencyInputView @JvmOverloads constructor(
             it.recycle()
         }
 
-        binding.etFiatAmount.doAfterTextChangedWhenFocused { onFiatAmountChanged(it.toString()) }
-        binding.etCryptoAmount.doAfterTextChangedWhenFocused { onCryptoAmountChanged(it.toString()) }
+        binding.etFiatAmount.afterTextChangedDebounceFocused { onFiatAmountChanged(it.toString()) }
+        binding.etCryptoAmount.afterTextChangedDebounceFocused { onCryptoAmountChanged(it.toString()) }
         binding.viewCurrencySelector.setOnClickListener { callback?.onCurrencySelectorClicked() }
     }
 

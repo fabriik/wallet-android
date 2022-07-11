@@ -13,6 +13,7 @@ import androidx.core.os.bundleOf
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.SavedStateHandle
+import kotlinx.coroutines.*
 import java.math.BigDecimal
 
 fun AndroidViewModel.getString(@StringRes string: Int, vararg formatArgs: Any?): String {
@@ -30,7 +31,7 @@ fun Button.underline() {
 }
 
 fun EditText.showKeyboard() {
-    postDelayed( {
+    postDelayed({
         val manager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
         requestFocus()
         manager?.showSoftInput(this, InputMethodManager.SHOW_FORCED)
@@ -57,10 +58,35 @@ fun max(a: BigDecimal, b: BigDecimal) = when {
     else -> a
 }
 
-fun EditText.doAfterTextChangedWhenFocused(action: (text: Editable?) -> Unit) {
-    doAfterTextChanged {
+fun EditText.afterTextChangedDebounceFocused(action: (text: Editable?) -> Unit) {
+    afterTextChangedDebounce(500) {
         if (hasFocus()) {
             action(it)
+        }
+    }
+}
+
+fun EditText.afterTextChangedDebounce(delayMillis: Long, callback: (Editable) -> Unit) {
+    var lastInput = ""
+    var debounceJob: Job? = null
+    val uiScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
+
+    doAfterTextChanged {
+        if (it != null) {
+            val newInput = it.toString()
+            debounceJob?.cancel()
+
+            if (lastInput != newInput) {
+                lastInput = newInput
+
+                debounceJob = uiScope.launch {
+                    delay(delayMillis)
+
+                    if (lastInput == newInput) {
+                        callback(it)
+                    }
+                }
+            }
         }
     }
 }
