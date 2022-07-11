@@ -24,15 +24,4 @@ data class TradingPair(
 
     @Json(name = "name")
     val name: String
-): Parcelable {
-
-    fun inverse(): TradingPair {
-        return TradingPair(
-            baseCurrency = termCurrency,
-            termCurrency = baseCurrency,
-            minAmount = minAmount,
-            maxAmount = maxAmount,
-            name = name
-        )
-    }
-}
+): Parcelable

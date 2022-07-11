@@ -247,7 +247,7 @@ class SwapInputFragment : Fragment(),
 
     companion object {
         const val RATE_FORMAT = "1 %s = %s"
-        const val REQUEST_KEY_SOURCE_SELECTION = "req_code_origin_select"
+        const val REQUEST_KEY_SOURCE_SELECTION = "req_code_source_select"
         const val REQUEST_KEY_DESTINATION_SELECTION = "req_code_dest_select"
     }
 }
