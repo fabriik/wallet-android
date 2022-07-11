@@ -62,16 +62,16 @@ class CurrencyInputView @JvmOverloads constructor(
         val formatted = "%.2f".format(amount)
         val text = binding.etFiatAmount.text?.toString() ?: ""
 
-        if (text != formatted) {
+        if (text != formatted && !binding.etFiatAmount.hasFocus()) {
             binding.etFiatAmount.setText(formatted)
         }
     }
 
     fun setCryptoAmount(amount: BigDecimal) {
-        val formatted = "%.2f".format(amount)
+        val formatted = "%.5f".format(amount)
         val text = binding.etCryptoAmount.text?.toString() ?: ""
 
-        if (text != formatted) {
+        if (text != formatted && !binding.etCryptoAmount.hasFocus()) {
             binding.etCryptoAmount.setText(formatted)
         }
     }
