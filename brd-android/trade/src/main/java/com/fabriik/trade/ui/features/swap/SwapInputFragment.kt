@@ -79,7 +79,7 @@ class SwapInputFragment : Fragment(),
 
             btnConfirm.setOnClickListener {
                 findNavController().navigate(SwapInputFragmentDirections
-                    .actionFragmentSwapInputToFragmentSwapProcessing(viewModel.currentState.originCurrency,
+                    .actionSwapProcessing(viewModel.currentState.originCurrency,
                         viewModel.currentState.destinationCurrency))
             }
         }

@@ -1,8 +1,6 @@
-package com.fabriik.trade.ui.features.swap
+package com.fabriik.trade.ui.features.processing
 
 import com.fabriik.common.ui.base.FabriikContract
-import com.fabriik.trade.ui.features.assetselection.AssetSelectionAdapter
-import java.math.BigDecimal
 
 interface SwapProcessingContract {
 
