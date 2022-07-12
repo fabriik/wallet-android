@@ -76,6 +76,7 @@ import com.fabriik.registration.data.RegistrationApiInterceptor
 import com.fabriik.registration.utils.RegistrationUtils
 import com.fabriik.registration.utils.UserSessionManager
 import com.fabriik.trade.data.SwapApi
+import com.fabriik.trade.data.SwapApiInterceptor
 import com.platform.APIClient
 import com.platform.HTTPServer
 import com.platform.interfaces.KVStoreProvider
@@ -428,7 +429,15 @@ class BreadApp : Application(), KodeinAware, CameraXConfig.Provider {
         bind<SwapApi>() with singleton {
             SwapApi.create(
                 this@BreadApp,
+                instance(),
                 instance()
+            )
+        }
+
+        bind<SwapApiInterceptor>() with singleton {
+            SwapApiInterceptor(
+                this@BreadApp,
+                applicationScope
             )
         }
 

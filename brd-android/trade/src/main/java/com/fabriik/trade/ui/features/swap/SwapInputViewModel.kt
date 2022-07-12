@@ -264,8 +264,10 @@ class SwapInputViewModel(
 
     private fun loadInitialData() {
         viewModelScope.launch(Dispatchers.IO) {
-            val tradingPairs = swapApi.getTradingPairs().data ?: emptyList()
-            if (tradingPairs.isEmpty()) {
+            val pairsResponse = swapApi.getTradingPairs()
+            val tradingPairs = pairsResponse.data ?: emptyList()
+
+            if (pairsResponse.status == Status.ERROR || tradingPairs.isEmpty()) {
                 showErrorState()
                 return@launch
             }
@@ -273,8 +275,10 @@ class SwapInputViewModel(
             val selectedPair = tradingPairs.first {
                 it.baseCurrency == "BTC"
             }
+
+            val quoteResponse = swapApi.getQuote(selectedPair)
             val selectedPairQuote = swapApi.getQuote(selectedPair).data
-            if (selectedPairQuote == null) {
+            if (quoteResponse.status == Status.ERROR || selectedPairQuote == null) {
                 showErrorState()
                 return@launch
             }

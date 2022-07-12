@@ -51,7 +51,7 @@ class SwapApi(
 
     companion object {
 
-        fun create(context: Context, moshiConverter: MoshiConverterFactory) = SwapApi(
+        fun create(context: Context, swapApiInterceptor: SwapApiInterceptor, moshiConverter: MoshiConverterFactory) = SwapApi(
             context = context,
             service = Retrofit.Builder()
                 .client(
@@ -60,7 +60,7 @@ class SwapApi(
                         .callTimeout(30, TimeUnit.SECONDS)
                         .writeTimeout(30, TimeUnit.SECONDS)
                         .connectTimeout(30, TimeUnit.SECONDS)
-                        .addInterceptor(SwapApiInterceptor())
+                        .addInterceptor(swapApiInterceptor)
                         .build()
                 )
                 .baseUrl(FabriikApiConstants.HOST_SWAP_API)
