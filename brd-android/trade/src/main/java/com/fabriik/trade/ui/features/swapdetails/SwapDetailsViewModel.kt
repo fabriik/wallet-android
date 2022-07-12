@@ -9,6 +9,7 @@ class SwapDetailsViewModel(
     FabriikViewModel<SwapDetailsContract.State, SwapDetailsContract.Event, SwapDetailsContract.Effect>(
         application
     ) {
+
     override fun createInitialState(): SwapDetailsContract.State =
         SwapDetailsContract.State(
             status = SwapStatus.PENDING,
@@ -28,10 +29,10 @@ class SwapDetailsViewModel(
                 setEffect { SwapDetailsContract.Effect.Dismiss }
 
             SwapDetailsContract.Event.OrderIdClicked ->
-                setEffect { SwapDetailsContract.Effect.CopyOrderId }
+                setEffect { SwapDetailsContract.Effect.CopyToClipboard(currentState.orderId) }
 
             SwapDetailsContract.Event.TransactionIdClicked ->
-                setEffect { SwapDetailsContract.Effect.CopyTransactionId }
+                setEffect { SwapDetailsContract.Effect.CopyToClipboard(currentState.swapFromID) }
         }
     }
 }
