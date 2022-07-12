@@ -1,4 +1,4 @@
-package com.fabriik.trade.ui.features.swap
+package com.fabriik.trade.ui.features.processing
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.fabriik.common.ui.base.FabriikView
 import com.fabriik.trade.R
 import com.fabriik.trade.databinding.FragmentSwapProcessBinding
+import com.fabriik.trade.ui.features.processing.SwapProcessingContract
 import kotlinx.coroutines.flow.collect
 
 class SwapProcessingFragment : Fragment(),
@@ -78,7 +79,9 @@ class SwapProcessingFragment : Fragment(),
             SwapProcessingContract.Effect.GoHome ->
                 requireActivity().finish()
             SwapProcessingContract.Effect.OpenDetails ->
-                findNavController().navigate(SwapProcessingFragmentDirections.actionFragmentSwapProcessingToFragmentSwapDetails())
+                findNavController().navigate(
+                    SwapProcessingFragmentDirections.actionSwapDetails()
+                )
         }
     }
 }

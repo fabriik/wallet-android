@@ -15,7 +15,7 @@
             app:destination="@+id/fragmentAssetSelection" />
 
         <action
-            android:id="@+id/action_fragmentSwapInput_to_fragmentSwapProcessing"
+            android:id="@+id/actionSwapProcessing"
             app:destination="@id/fragmentSwapProcessing" />
     </fragment>
 
@@ -40,14 +40,25 @@
 
     </fragment>
 
-    <fragment android:id="@+id/fragmentSwapProcessing"
-        android:name="com.fabriik.trade.ui.features.swap.SwapProcessingFragment"
+    <fragment
+        android:id="@+id/fragmentSwapProcessing"
+        android:name="com.fabriik.trade.ui.features.processing.SwapProcessingFragment"
         tools:layout="@layout/fragment_swap_process">
-        <argument android:name="coinFrom" app:nullable="false" app:argType="string"/>
-        <argument android:name="coinTo" app:nullable="false" app:argType="string"/>
+
+        <argument
+            android:name="coinFrom"
+            app:argType="string"
+            app:nullable="false" />
+
+        <argument
+            android:name="coinTo"
+            app:argType="string"
+            app:nullable="false" />
+
         <action
-            android:id="@+id/action_fragmentSwapProcessing_to_fragmentSwapDetails"
+            android:id="@+id/actionSwapDetails"
             app:destination="@id/fragmentSwapDetails" />
+
     </fragment>
 
     <fragment android:id="@+id/fragmentSwapDetails"
