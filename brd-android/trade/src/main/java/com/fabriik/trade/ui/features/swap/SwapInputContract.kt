@@ -27,6 +27,7 @@ interface SwapInputContract {
 
     sealed class Effect : FabriikContract.Effect {
         object Dismiss : Effect()
+        object ConfirmDialog : Effect()
         object DeselectMinMaxSwitchItems : Effect()
         data class ShowToast(val message: String): Effect()
         data class ContinueToSwapProcessing(

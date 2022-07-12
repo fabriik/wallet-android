@@ -149,6 +149,9 @@ class SwapInputFragment : Fragment(),
             SwapInputContract.Effect.Dismiss ->
                 requireActivity().finish()
 
+            SwapInputContract.Effect.ConfirmDialog ->
+                showConfirmDialog()
+
             SwapInputContract.Effect.DeselectMinMaxSwitchItems ->
                 binding.switchMinMax.setSelectedItem(FabriikSwitch.OPTION_NONE)
 
@@ -245,6 +248,10 @@ class SwapInputFragment : Fragment(),
             content.isVisible = true
             initialLoadingIndicator.isVisible = false
         }
+    }
+
+    private fun showConfirmDialog() {
+        //todo
     }
 
     companion object {
