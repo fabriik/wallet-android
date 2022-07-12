@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -18,7 +17,8 @@ import kotlinx.coroutines.flow.collect
 import java.math.BigDecimal
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
-import com.fabriik.trade.ui.features.assetselection.AssetSelectionAdapter
+import com.fabriik.trade.ui.dialog.ConfirmationArgs
+import com.fabriik.trade.ui.dialog.ConfirmationDialog
 import com.fabriik.trade.ui.features.assetselection.AssetSelectionFragment
 
 class SwapInputFragment : Fragment(),
@@ -78,9 +78,7 @@ class SwapInputFragment : Fragment(),
             cvSwap.setCallback(cardSwapCallback)
 
             btnConfirm.setOnClickListener {
-                findNavController().navigate(SwapInputFragmentDirections
-                    .actionSwapProcessing(viewModel.currentState.originCurrency,
-                        viewModel.currentState.destinationCurrency))
+                viewModel.setEvent(SwapInputContract.Event.ConfirmClicked)
             }
         }
 
@@ -125,15 +123,15 @@ class SwapInputFragment : Fragment(),
 
     override fun render(state: SwapInputContract.State) {
         with(binding) {
-            cvSwap.setSellingCurrencyTitle(getString(R.string.Swap_Input_IHave, state.originCurrencyBalance, state.originCurrency))
-            cvSwap.setOriginCurrency(state.originCurrency)
-            cvSwap.setSendingNetworkFee(state.sendingNetworkFee)
-            cvSwap.setDestinationCurrency(state.destinationCurrency)
-            cvSwap.setReceivingNetworkFee(state.receivingNetworkFee)
+            cvSwap.setSellingCurrencyTitle(getString(R.string.Swap_Input_IHave, state.originCurrencyBalance, state.originCurrency.title))
+            cvSwap.setOriginCurrency(state.originCurrency.title)
+            cvSwap.setSendingNetworkFee(state.sendingNetworkFee?.title)
+            cvSwap.setDestinationCurrency(state.destinationCurrency.title)
+            cvSwap.setReceivingNetworkFee(state.receivingNetworkFee?.title)
 
             viewTimer.setProgress(SwapInputViewModel.QUOTE_TIMER, state.timer)
             tvRateValue.text = RATE_FORMAT.format(
-                state.originCurrency, state.rateOriginToDestinationCurrency, state.destinationCurrency
+                state.originCurrency.title, state.rateOriginToDestinationCurrency, state.destinationCurrency.title
             )
 
             viewTimer.isVisible = !state.quoteLoading
@@ -163,7 +161,25 @@ class SwapInputFragment : Fragment(),
                         sourceCurrency = effect.sourceCurrency
                     )
                 )
+
+            SwapInputContract.Effect.ConfirmDialog ->
+                showConfirmDialog()
         }
+    }
+
+    private fun showConfirmDialog() {
+        val state = viewModel.currentState
+        val fm = requireActivity().supportFragmentManager
+
+        val args = ConfirmationArgs(
+            swapFromCurrency = state.originCurrency,
+            swapToCurrency = state.destinationCurrency,
+            sendingFeeCurrency = state.sendingNetworkFee ?: Currency("BSV"),
+            receivingFeeCurrency = state.receivingNetworkFee ?: Currency("BSV"),
+            rate = state.rateOriginToDestinationCurrency.toString(), //TODO prepare rate string
+            totalCost = BigDecimal.ZERO //TODO convert and calculate total cost
+        )
+        ConfirmationDialog(args).show(fm, ConfirmationDialog.CONFIRMATION_TAG)
     }
 
     companion object {

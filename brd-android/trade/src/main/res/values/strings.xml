@@ -21,4 +21,18 @@
     <string name="Swap.Details.To">To %1$s</string>
     <string name="Swap.Details.TransactionIdFrom.Title">Bitcoin %1$s Transaction ID</string>
     <string name="Swap.Details.TransactionIdTo.Title">%1$s Transaction ID</string>
+
+    <!-- Confirmation dialog -->
+    <string name="Swap.Confirmation.Title">Confirmation</string>
+    <string name="Swap.Confirmation.From">From</string>
+    <string name="Swap.Confirmation.To">To</string>
+    <string name="Swap.Confirmation.Rate">Rate</string>
+    <string name="Swap.Confirmation.SendingFee">Sending NetworkFee</string>
+    <string name="Swap.Confirmation.ReceivingFee">Receiving NetworkFee</string>
+    <string name="Swap.Confirmation.Cost">Total cost</string>
+    <string name="Swap.Confirmation.Disclaimer">Due to market volatility the final rate may slightly differ from current one.</string>
+    <string name="Swap.Confirmation.Confirm">Confirm</string>
+    <string name="Swap.Confirmation.Cancel">Cancel</string>
+    <string name="Swap.Confirmation.Currency.Body">%1$s %2$s ($%3$s)</string>
+    <string name="swap.Confirmation.ValueInDollars">($%1$s)</string>
 </resources>

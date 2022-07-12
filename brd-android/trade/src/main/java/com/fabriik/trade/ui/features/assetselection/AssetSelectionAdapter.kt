@@ -90,6 +90,7 @@ class AssetSelectionAdapter(private val callback: (AssetSelectionItem) -> Unit) 
 
     private fun setAlpha(binding: ListItemAssetBinding, alpha: Float = 0.5f) {
         with(binding) {
+            ivLogo.alpha = alpha
             tvCryptoAmount.alpha = alpha
             tvSubtitle.alpha = alpha
             tvTitle.alpha = alpha
