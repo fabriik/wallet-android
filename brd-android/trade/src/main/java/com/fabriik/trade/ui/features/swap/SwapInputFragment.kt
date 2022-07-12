@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
 import android.view.animation.TranslateAnimation
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
@@ -223,23 +224,28 @@ class SwapInputFragment : Fragment(),
 
             sourceSelectionView.startAnimation(
                 TranslateAnimation(0f, 0f, 0f, diffY).apply {
-                    duration = 20000
+                    duration = REPLACE_CURRENCIES_DURATION
                 }
             )
 
             destinationSelectionView.startAnimation(
                 TranslateAnimation(0f, 0f, 0f, -diffY).apply {
-                    duration = 20000
+                    duration = REPLACE_CURRENCIES_DURATION
+                    setAnimationListener(object : Animation.AnimationListener {
+                        override fun onAnimationStart(animation: Animation?) {}
+
+                        override fun onAnimationRepeat(animation: Animation?) {}
+
+                        override fun onAnimationEnd(animation: Animation?) {
+                            viewModel.setEvent(
+                                SwapInputContract.Event.OnCurrenciesReplaceAnimationCompleted(
+                                    stateChange
+                                )
+                            )
+                        }
+                    })
                 }
             )
-
-            sourceSelectionView.postDelayed(20000) {
-                viewModel.setEvent(
-                    SwapInputContract.Event.OnCurrenciesReplaceAnimationCompleted(
-                        stateChange
-                    )
-                )
-            }
         }
     }
 
@@ -297,6 +303,7 @@ class SwapInputFragment : Fragment(),
 
     companion object {
         const val RATE_FORMAT = "1 %s = %s"
+        const val REPLACE_CURRENCIES_DURATION = 200L
         const val REQUEST_KEY_SOURCE_SELECTION = "req_code_source_select"
         const val REQUEST_KEY_DESTINATION_SELECTION = "req_code_dest_select"
     }

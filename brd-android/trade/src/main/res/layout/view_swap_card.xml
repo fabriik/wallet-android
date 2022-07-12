@@ -8,17 +8,6 @@
     android:clipToPadding="false"
     android:clipChildren="false">
 
-    <com.fabriik.trade.ui.customview.CurrencyInputView
-        android:id="@+id/view_input_selling_currency"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:title="@string/Swap.Input.IHave" />
-
     <TextView
         android:id="@+id/tv_selling_currency_network_fee_title"
         style="@style/TextStyle.Caption"
@@ -70,18 +59,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_selling_currency_network_fee_title" />
 
-    <com.fabriik.trade.ui.customview.CurrencyInputView
-        android:id="@+id/view_input_buying_currency"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn_swap"
-        app:title="@string/Swap.Input.IWant" />
-
     <TextView
         android:id="@+id/tv_buying_currency_network_fee_title"
         style="@style/TextStyle.Caption"
@@ -111,5 +88,28 @@
         app:layout_constraintTop_toBottomOf="@+id/view_input_buying_currency"
         tools:text="0.0005 BTC\n$1.51 USD"
         tools:visibility="visible" />
+
+    <com.fabriik.trade.ui.customview.CurrencyInputView
+        android:id="@+id/view_input_buying_currency"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_swap"
+        app:title="@string/Swap.Input.IWant" />
+
+    <com.fabriik.trade.ui.customview.CurrencyInputView
+        android:id="@+id/view_input_selling_currency"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:title="@string/Swap.Input.IHave" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
