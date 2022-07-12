@@ -16,7 +16,7 @@
         android:layout_marginEnd="16dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:padding="8dp"
-        android:src="@drawable/ic_kyc_dismiss" />
+        android:src="@drawable/ic_dismiss" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"

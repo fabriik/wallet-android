@@ -24,9 +24,9 @@ class SwapInputViewModel(
     override fun createInitialState() = SwapInputContract.State(
         timer = QUOTE_TIMER,
         quoteLoading = true,
-        originCurrency = "BSV",
+        originCurrency = Currency("BSV"),
         originCurrencyBalance = BigDecimal.TEN,
-        destinationCurrency = "BTC",
+        destinationCurrency = Currency("BSV"),
         rateOriginToDestinationCurrency = BigDecimal.ONE,
         currencies = listOf("BTC", "BSV", "ETH")
     )
@@ -47,7 +47,7 @@ class SwapInputViewModel(
                 setEffect {
                     SwapInputContract.Effect.DestinationSelection(
                         currencies = currentState.currencies,
-                        sourceCurrency = currentState.originCurrency
+                        sourceCurrency = currentState.originCurrency.title
                     )
                 }
 
@@ -63,10 +63,10 @@ class SwapInputViewModel(
             }
 
             is SwapInputContract.Event.OriginCurrencyChanged ->
-                setState { copy(originCurrency = event.currencyCode) } //todo: update rates, call API
+                setState { copy(originCurrency = Currency(event.currencyCode)) } //todo: update rates, call API
 
             is SwapInputContract.Event.DestinationCurrencyChanged ->
-                setState { copy(destinationCurrency = event.currencyCode) } //todo: update rates, call API
+                setState { copy(destinationCurrency = Currency(event.currencyCode)) } //todo: update rates, call API
 
             is SwapInputContract.Event.OriginCurrencyFiatAmountChange -> {
                 setState {
@@ -75,6 +75,10 @@ class SwapInputViewModel(
                     )
                 }
             } //todo
+
+
+            SwapInputContract.Event.ConfirmClicked ->
+                setEffect { SwapInputContract.Effect.ConfirmDialog }
 
             is SwapInputContract.Event.OriginCurrencyCryptoAmountChange -> {
                 setState {
