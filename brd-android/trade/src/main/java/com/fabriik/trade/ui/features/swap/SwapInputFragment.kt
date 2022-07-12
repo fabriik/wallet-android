@@ -143,6 +143,9 @@ class SwapInputFragment : Fragment(),
             SwapInputContract.Effect.Dismiss ->
                 requireActivity().finish()
 
+            SwapInputContract.Effect.ConfirmDialog ->
+                showConfirmDialog()
+
             is SwapInputContract.Effect.ShowToast ->
                 FabriikToastUtil.showInfo(binding.root, effect.message)
 
@@ -200,6 +203,10 @@ class SwapInputFragment : Fragment(),
                 )
             )
         }
+    }
+
+    private fun showConfirmDialog() {
+        //todo
     }
 
     companion object {

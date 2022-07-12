@@ -20,6 +20,7 @@ interface SwapInputContract {
 
     sealed class Effect : FabriikContract.Effect {
         object Dismiss : Effect()
+        object ConfirmDialog : Effect()
         data class ShowToast(val message: String): Effect()
         data class ContinueToSwapProcessing(
             val sourceCurrency: String,
