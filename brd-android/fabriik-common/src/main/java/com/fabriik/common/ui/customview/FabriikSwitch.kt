@@ -17,6 +17,8 @@ class FabriikSwitch @JvmOverloads constructor(
     private val tvLeftOption : TextView
     private val tvRightOption : TextView
 
+    private var callback: Callback? = null
+
     init {
         weightSum = 1f
         orientation = HORIZONTAL
@@ -36,9 +38,14 @@ class FabriikSwitch @JvmOverloads constructor(
         setSelectedItem(selectedOption)
     }
 
-    private fun setSelectedItem(@SwitchOption selectedOption: Int) {
+    fun setSelectedItem(@SwitchOption selectedOption: Int) {
         tvLeftOption.isActivated = selectedOption == OPTION_LEFT
         tvRightOption.isActivated = selectedOption == OPTION_RIGHT
+        callback?.onSelectionChanged(selectedOption)
+    }
+
+    fun setCallback(callback: Callback) {
+        this.callback = callback
     }
 
     private fun addOptionView(text: CharSequence, @SwitchOption option: Int) : TextView {
@@ -47,6 +54,10 @@ class FabriikSwitch @JvmOverloads constructor(
         tvOption.setOnClickListener { setSelectedItem(option) }
         addView(tvOption, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, 0.5f))
         return tvOption
+    }
+
+    fun interface Callback {
+        fun onSelectionChanged(@SwitchOption option: Int)
     }
 
     companion object {

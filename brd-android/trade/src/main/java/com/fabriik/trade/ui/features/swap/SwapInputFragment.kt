@@ -18,6 +18,7 @@ import java.math.BigDecimal
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.breadwallet.breadbox.formatCryptoForUi
+import com.fabriik.common.ui.customview.FabriikSwitch
 import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.trade.ui.features.assetselection.AssetSelectionFragment
 
@@ -32,11 +33,11 @@ class SwapInputFragment : Fragment(),
             viewModel.setEvent(SwapInputContract.Event.ReplaceCurrenciesClicked)
         }
 
-        override fun onDestinationCurrencySelectorClicked() {
+        override fun onDestinationCurrencyClicked() {
             viewModel.setEvent(SwapInputContract.Event.DestinationCurrencyClicked)
         }
 
-        override fun onSourceCurrencySelectorClicked() {
+        override fun onSourceCurrencyClicked() {
             viewModel.setEvent(SwapInputContract.Event.SourceCurrencyClicked)
         }
 
@@ -80,6 +81,15 @@ class SwapInputFragment : Fragment(),
 
             cvSwap.setFiatCurrency(BRSharedPrefs.getPreferredFiatIso())
             cvSwap.setCallback(cardSwapCallback)
+
+            switchMinMax.setCallback {
+                when (it) {
+                    FabriikSwitch.OPTION_LEFT ->
+                        viewModel.setEvent(SwapInputContract.Event.OnMinAmountClicked)
+                    FabriikSwitch.OPTION_RIGHT ->
+                        viewModel.setEvent(SwapInputContract.Event.OnMaxAmountClicked)
+                }
+            }
 
             btnConfirm.setOnClickListener {
                 viewModel.setEvent(SwapInputContract.Event.ConfirmClicked)
@@ -129,10 +139,10 @@ class SwapInputFragment : Fragment(),
         when (state) {
             is SwapInputContract.State.Error ->
                 handleErrorState(state)
-
+               
             is SwapInputContract.State.Loading ->
                 handleLoadingState(state)
-
+                
             is SwapInputContract.State.Loaded ->
                 handleLoadedState(state)
         }
@@ -155,6 +165,11 @@ class SwapInputFragment : Fragment(),
                         coinFrom = effect.sourceCurrency,
                         coinTo = effect.destinationCurrency
                     )
+                )
+
+            is SwapInputContract.Effect.UpdateTimer ->
+                binding.viewTimer.setProgress(
+                    SwapInputViewModel.QUOTE_TIMER, effect.timeLeft
                 )
 
             is SwapInputContract.Effect.SourceSelection ->
@@ -202,6 +217,23 @@ class SwapInputFragment : Fragment(),
                     )
                 )
             )
+
+            tvRateValue.text = RATE_FORMAT.format(
+                state.sourceCryptoCurrency,
+                state.cryptoExchangeRate.formatCryptoForUi(
+                    state.destinationCryptoCurrency
+                )
+            )
+
+            cvSwap.setSendingNetworkFee(state.sendingNetworkFee)
+            cvSwap.setReceivingNetworkFee(state.receivingNetworkFee)
+
+            viewTimer.isVisible = !state.cryptoExchangeRateLoading
+            tvRateValue.isVisible = !state.cryptoExchangeRateLoading
+            quoteLoadingIndicator.isVisible = state.cryptoExchangeRateLoading
+
+            content.isVisible = true
+            initialLoadingIndicator.isVisible = false
         }
     }
 

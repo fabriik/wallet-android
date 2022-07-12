@@ -36,6 +36,7 @@ import kotlinx.coroutines.channels.Channel.Factory.CONFLATED
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
 import java.math.BigDecimal
+import java.math.RoundingMode
 import java.util.Locale
 import java.util.concurrent.ConcurrentHashMap
 
@@ -125,6 +126,16 @@ class RatesRepository private constructor(private val mContext: Context) {
     fun getFiatPerCryptoUnit(cryptoCode: String, fiatCode: String): BigDecimal {
         return getFiatForCrypto(BigDecimal.ONE, cryptoCode, fiatCode) ?: BigDecimal.ZERO
     }
+
+    fun getCryptoForFiat(fiatAmount: BigDecimal, cryptoCode: String, fiatCode: String): BigDecimal? {
+        val cryptoRate = getCurrencyByCode(cryptoCode, fiatCode)
+        if (cryptoRate == null) {
+            Log.e(TAG, "getFiatForCrypto: No fiat rate for $cryptoCode")
+            return null
+        }
+        return fiatAmount.divide(cryptoRate.rate.toBigDecimal(), 5, RoundingMode.HALF_UP)
+    }
+
 
     /**
      * Generates the cache key that is or would be used to store the rate between the two given
