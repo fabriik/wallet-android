@@ -1,5 +1,6 @@
 package com.fabriik.trade.ui.features.swap
 
+import android.graphics.Rect
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import com.fabriik.trade.R
 import com.fabriik.trade.databinding.FragmentSwapInputBinding
 import kotlinx.coroutines.flow.collect
 import androidx.core.view.isVisible
+import androidx.core.view.postDelayed
 import androidx.navigation.fragment.findNavController
 import androidx.transition.TransitionManager
 import com.breadwallet.breadbox.formatCryptoForUi
@@ -157,8 +159,8 @@ class SwapInputFragment : Fragment(),
             SwapInputContract.Effect.DeselectMinMaxSwitchItems ->
                 binding.switchMinMax.setSelectedItem(FabriikSwitch.OPTION_NONE)
 
-            SwapInputContract.Effect.CurrenciesReplaceAnimation ->
-                startCurrenciesReplaceAnimation()
+            is SwapInputContract.Effect.CurrenciesReplaceAnimation ->
+                startCurrenciesReplaceAnimation(effect.stateChange)
 
             is SwapInputContract.Effect.ShowToast ->
                 FabriikToastUtil.showInfo(binding.root, effect.message)
@@ -207,22 +209,37 @@ class SwapInputFragment : Fragment(),
         }
     }
 
-    private fun startCurrenciesReplaceAnimation() {
+    private fun startCurrenciesReplaceAnimation(stateChange: SwapInputContract.State.Loaded) {
         with(binding.cvSwap) {
             val sourceSelectionView = this.getSourceSelectionView()
+            val sourceSelectionViewPosition = IntArray(2)
+            sourceSelectionView.getLocationOnScreen(sourceSelectionViewPosition)
+
             val destinationSelectionView = this.getDestinationSelectionView()
+            val destinationSelectionViewPosition = IntArray(2)
+            destinationSelectionView.getLocationOnScreen(destinationSelectionViewPosition)
+
+            val diffY = (destinationSelectionViewPosition[1] - sourceSelectionViewPosition[1]).toFloat()
 
             sourceSelectionView.startAnimation(
-                TranslateAnimation(0f, 0f, destinationSelectionView.y, sourceSelectionView.y).apply {
-                    duration = 2000
+                TranslateAnimation(0f, 0f, 0f, diffY).apply {
+                    duration = 20000
                 }
             )
 
             destinationSelectionView.startAnimation(
-                TranslateAnimation(0f, 0f, destinationSelectionView.y, -sourceSelectionView.y).apply {
-                    duration = 2000
+                TranslateAnimation(0f, 0f, 0f, -diffY).apply {
+                    duration = 20000
                 }
             )
+
+            sourceSelectionView.postDelayed(20000) {
+                viewModel.setEvent(
+                    SwapInputContract.Event.OnCurrenciesReplaceAnimationCompleted(
+                        stateChange
+                    )
+                )
+            }
         }
     }
 

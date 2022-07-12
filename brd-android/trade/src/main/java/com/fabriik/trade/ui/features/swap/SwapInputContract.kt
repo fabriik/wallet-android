@@ -1,7 +1,6 @@
 package com.fabriik.trade.ui.features.swap
 
 import com.fabriik.common.ui.base.FabriikContract
-import com.fabriik.common.ui.customview.FabriikSwitch
 import com.fabriik.trade.data.model.TradingPair
 import com.fabriik.trade.data.response.QuoteResponse
 import java.math.BigDecimal
@@ -23,13 +22,14 @@ interface SwapInputContract {
         data class SourceCurrencyCryptoAmountChange(val amount: BigDecimal) : Event()
         data class DestinationCurrencyFiatAmountChange(val amount: BigDecimal) : Event()
         data class DestinationCurrencyCryptoAmountChange(val amount: BigDecimal) : Event()
+        data class OnCurrenciesReplaceAnimationCompleted(val stateChange: State.Loaded) : Event()
     }
 
     sealed class Effect : FabriikContract.Effect {
         object Dismiss : Effect()
         object ConfirmDialog : Effect()
         object DeselectMinMaxSwitchItems : Effect()
-        object CurrenciesReplaceAnimation : Effect()
+        data class CurrenciesReplaceAnimation(val stateChange: State.Loaded) : Effect()
         data class ShowToast(val message: String): Effect()
         data class ContinueToSwapProcessing(
             val sourceCurrency: String,
