@@ -8,7 +8,9 @@ import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.breadwallet.tools.manager.BRClipboardManager
 import com.fabriik.common.ui.base.FabriikView
+import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.common.utils.viewScope
 import com.fabriik.trade.R
 import com.fabriik.trade.databinding.FragmentSwapDetailsBinding
@@ -36,7 +38,7 @@ class SwapDetailsFragment : Fragment(),
         binding = FragmentSwapDetailsBinding.bind(view)
 
         with(binding) {
-            toolbar.setBackButtonClickListener {
+            toolbar.setDismissButtonClickListener {
                 viewModel.setEvent(SwapDetailsContract.Event.DismissClicked)
             }
             tvOrderId.setOnClickListener {
@@ -106,9 +108,11 @@ class SwapDetailsFragment : Fragment(),
 
     override fun handleEffect(effect: SwapDetailsContract.Effect) {
         when (effect) {
-            SwapDetailsContract.Effect.Dismiss -> TODO()
-            SwapDetailsContract.Effect.CopyOrderId -> TODO()
-            SwapDetailsContract.Effect.CopyTransactionId -> TODO()
+            SwapDetailsContract.Effect.Dismiss ->
+                requireActivity().finish()
+
+            is SwapDetailsContract.Effect.CopyToClipboard ->
+                copyToClipboard(effect.data)
         }
     }
 
@@ -126,5 +130,13 @@ class SwapDetailsFragment : Fragment(),
             COMPLETE -> R.string.Swap_Details_Status_Complete
             FAILED -> R.string.Swap_Details_Status_Failed
         }
+    }
+
+    private fun copyToClipboard(data: String) {
+        BRClipboardManager.putClipboard(data)
+
+        FabriikToastUtil.showInfo(
+            binding.root, getString(R.string.Swap_Details_Copied)
+        )
     }
 }

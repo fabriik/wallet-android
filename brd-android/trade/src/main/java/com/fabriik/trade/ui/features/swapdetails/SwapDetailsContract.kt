@@ -12,8 +12,7 @@ interface SwapDetailsContract {
 
     sealed class Effect : FabriikContract.Effect {
         object Dismiss : Effect()
-        object CopyOrderId : Effect()
-        object CopyTransactionId : Effect()
+        data class CopyToClipboard(val data: String) : Effect()
     }
 
     data class State(

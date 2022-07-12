@@ -28,6 +28,7 @@
     <string name="Swap.Details.To">To %1$s</string>
     <string name="Swap.Details.TransactionIdFrom.Title">Bitcoin %1$s Transaction ID</string>
     <string name="Swap.Details.TransactionIdTo.Title">%1$s Transaction ID</string>
+    <string name="Swap.Details.Copied">Copied to clipboard.</string>
 
     <!-- Confirmation dialog -->
     <string name="Swap.Confirmation.Title">Confirmation</string>
