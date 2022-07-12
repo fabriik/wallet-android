@@ -79,6 +79,10 @@ class CurrencyInputView @JvmOverloads constructor(
 
     fun getSelectionView(): View = binding.viewCurrencySelector
 
+    fun getAnimatedViews() : List<View> = listOf(
+        binding.tvTitle, binding.tvFiatCurrency, binding.etFiatAmount, binding.etCryptoAmount
+    )
+
     interface Callback {
         fun onCurrencySelectorClicked()
         fun onFiatAmountChanged(amount: BigDecimal)

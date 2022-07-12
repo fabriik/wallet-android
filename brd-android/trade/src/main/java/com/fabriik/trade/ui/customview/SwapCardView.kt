@@ -1,8 +1,13 @@
 package com.fabriik.trade.ui.customview
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
+import android.view.animation.Animation
+import android.view.animation.TranslateAnimation
 import androidx.core.view.isVisible
 import com.breadwallet.breadbox.formatCryptoForUi
 import com.breadwallet.util.formatFiatForUi
@@ -18,6 +23,8 @@ class SwapCardView @JvmOverloads constructor(
 
     private val binding: ViewSwapCardBinding
     private var callback: Callback? = null
+
+    private val alphaAnimationForAnimatedViews : List<ObjectAnimator>
 
     init {
         radius = 16.dp.toFloat()
@@ -55,6 +62,18 @@ class SwapCardView @JvmOverloads constructor(
                     callback?.onSellingCurrencyCryptoAmountChanged(amount)
                 }
             })
+
+            val animatedViews = mutableListOf<View>(
+                tvBuyingCurrencyNetworkFee, tvBuyingCurrencyNetworkFeeTitle,
+                tvSellingCurrencyNetworkFee, tvSellingCurrencyNetworkFeeTitle
+            ).apply {
+                addAll(viewInputBuyingCurrency.getAnimatedViews())
+                addAll(viewInputSellingCurrency.getAnimatedViews())
+            }
+
+            alphaAnimationForAnimatedViews = animatedViews.map {
+                ObjectAnimator.ofFloat(it, "alpha", 1f, 0f, 1f)
+            }
         }
     }
 
@@ -117,9 +136,43 @@ class SwapCardView @JvmOverloads constructor(
         binding.viewInputBuyingCurrency.setCryptoAmount(amount)
     }
 
-    fun getSourceSelectionView() = binding.viewInputSellingCurrency.getSelectionView()
+    fun startReplaceAnimation(replaceAnimationCompleted: () -> Unit) {
+        val sourceSelectionView = binding.viewInputSellingCurrency.getSelectionView()
+        val sourceSelectionViewPosition = IntArray(2)
+        sourceSelectionView.getLocationOnScreen(sourceSelectionViewPosition)
 
-    fun getDestinationSelectionView() = binding.viewInputBuyingCurrency.getSelectionView()
+        val destinationSelectionView = binding.viewInputBuyingCurrency.getSelectionView()
+        val destinationSelectionViewPosition = IntArray(2)
+        destinationSelectionView.getLocationOnScreen(destinationSelectionViewPosition)
+
+        val diffY = (destinationSelectionViewPosition[1] - sourceSelectionViewPosition[1]).toFloat()
+
+        sourceSelectionView.startAnimation(
+            TranslateAnimation(0f, 0f, 0f, diffY).apply {
+                duration = REPLACE_CURRENCIES_DURATION
+            }
+        )
+
+        destinationSelectionView.startAnimation(
+            TranslateAnimation(0f, 0f, 0f, -diffY).apply {
+                duration = REPLACE_CURRENCIES_DURATION
+                setAnimationListener(object : Animation.AnimationListener {
+                    override fun onAnimationStart(animation: Animation?) {}
+
+                    override fun onAnimationRepeat(animation: Animation?) {}
+
+                    override fun onAnimationEnd(animation: Animation?) {
+                        replaceAnimationCompleted()
+                    }
+                })
+            }
+        )
+
+        val animatorSet = AnimatorSet()
+        animatorSet.duration = FADE_ANIMATION_DURATION
+        animatorSet.playTogether(alphaAnimationForAnimatedViews)
+        animatorSet.start()
+    }
 
     interface Callback {
         fun onReplaceCurrenciesClicked()
@@ -129,5 +182,10 @@ class SwapCardView @JvmOverloads constructor(
         fun onSellingCurrencyCryptoAmountChanged(amount: BigDecimal)
         fun onBuyingCurrencyFiatAmountChanged(amount: BigDecimal)
         fun onBuyingCurrencyCryptoAmountChanged(amount: BigDecimal)
+    }
+
+    companion object {
+        const val FADE_ANIMATION_DURATION = 1000L
+        const val REPLACE_CURRENCIES_DURATION = 500L
     }
 }
