@@ -10,7 +10,6 @@ import androidx.fragment.app.DialogFragment
 import com.breadwallet.breadbox.formatCryptoForUi
 import com.fabriik.trade.R
 import com.fabriik.trade.databinding.FragmentConfirmationDialogBinding
-import com.fabriik.trade.ui.features.swap.Currency
 import java.math.BigDecimal
 
 class ConfirmationDialog(val args: ConfirmationArgs) : DialogFragment() {
@@ -87,4 +86,10 @@ data class ConfirmationArgs(
     val receivingFeeCurrency: Currency,
     val rate: String,
     val totalCost: BigDecimal,
+)
+
+data class Currency(
+    val title: String,
+    val amount: BigDecimal = BigDecimal.ZERO,
+    val fiatValue: BigDecimal = BigDecimal.ZERO
 )
