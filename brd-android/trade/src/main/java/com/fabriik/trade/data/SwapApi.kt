@@ -6,8 +6,6 @@ import com.fabriik.common.data.Resource
 import com.fabriik.common.utils.FabriikApiResponseMapper
 import com.fabriik.trade.data.model.TradingPair
 import com.fabriik.trade.data.response.QuoteResponse
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.*
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -20,7 +18,7 @@ class SwapApi(
     private val responseMapper = FabriikApiResponseMapper()
 
     suspend fun getTradingPairs(): Resource<List<TradingPair>?> {
-        return try {
+       return try {
             val response = service.getTradingPairs()
             val tradingPairs = response.pairs.flatMap {
                 listOf(
@@ -39,9 +37,9 @@ class SwapApi(
         }
     }
 
-    suspend fun getQuote(selectedTradingPair: TradingPair): Resource<QuoteResponse?> {
+    suspend fun getQuote(tradingPair: TradingPair): Resource<QuoteResponse?> {
         return try {
-            val response = service.getQuote(selectedTradingPair.name)
+            val response = service.getQuote(tradingPair.name)
             Resource.success(data = response)
         } catch (ex: Exception) {
             responseMapper.mapError(

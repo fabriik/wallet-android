@@ -35,6 +35,6 @@ class SwapProcessingViewModel(
             SwapProcessingContract.Event.OpenSwapDetails ->
                 setEffect { SwapProcessingContract.Effect.OpenDetails }
         }
-    }
 
+    }
 }

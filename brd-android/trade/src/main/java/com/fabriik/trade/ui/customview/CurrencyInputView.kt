@@ -4,10 +4,8 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.breadwallet.breadbox.formatCryptoForUi
-import com.breadwallet.tools.manager.BRSharedPrefs
-import com.breadwallet.util.formatFiatForUi
-import com.fabriik.common.utils.doAfterTextChangedWhenFocused
+import com.fabriik.common.utils.DecimalDigitsInputFilter
+import com.fabriik.common.utils.afterTextChangedDebounceFocused
 import com.fabriik.trade.R
 import com.fabriik.trade.databinding.ViewCurrencyInputBinding
 import java.math.BigDecimal
@@ -29,8 +27,10 @@ class CurrencyInputView @JvmOverloads constructor(
             it.recycle()
         }
 
-        binding.etFiatAmount.doAfterTextChangedWhenFocused { onFiatAmountChanged(it.toString()) }
-        binding.etCryptoAmount.doAfterTextChangedWhenFocused { onCryptoAmountChanged(it.toString()) }
+        binding.etFiatAmount.filters = arrayOf(DecimalDigitsInputFilter(digitsAfterZero = 2))
+        binding.etFiatAmount.afterTextChangedDebounceFocused { onFiatAmountChanged(it.toString()) }
+        binding.etCryptoAmount.filters = arrayOf(DecimalDigitsInputFilter())
+        binding.etCryptoAmount.afterTextChangedDebounceFocused { onCryptoAmountChanged(it.toString()) }
         binding.viewCurrencySelector.setOnClickListener { callback?.onCurrencySelectorClicked() }
     }
 
@@ -59,23 +59,19 @@ class CurrencyInputView @JvmOverloads constructor(
     }
 
     fun setFiatAmount(amount: BigDecimal) {
-        val formatted = amount.formatFiatForUi(
-            currencyCode = BRSharedPrefs.getPreferredFiatIso(),
-            showCurrencySymbol = false
-        )
-
+        val formatted = "%.2f".format(amount)
         val text = binding.etFiatAmount.text?.toString() ?: ""
 
-        if (text != formatted) {
+        if (text != formatted && !binding.etFiatAmount.hasFocus()) {
             binding.etFiatAmount.setText(formatted)
         }
     }
 
     fun setCryptoAmount(amount: BigDecimal) {
-        val formatted = amount.formatCryptoForUi(null)
+        val formatted = "%.5f".format(amount)
         val text = binding.etCryptoAmount.text?.toString() ?: ""
 
-        if (text != formatted) {
+        if (text != formatted && !binding.etCryptoAmount.hasFocus()) {
             binding.etCryptoAmount.setText(formatted)
         }
     }

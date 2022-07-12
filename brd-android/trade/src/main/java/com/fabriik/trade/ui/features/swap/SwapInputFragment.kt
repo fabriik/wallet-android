@@ -8,19 +8,18 @@ import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.breadwallet.tools.manager.BRSharedPrefs
 import com.fabriik.common.ui.base.FabriikView
 import com.fabriik.trade.R
 import com.fabriik.trade.databinding.FragmentSwapInputBinding
-import com.fabriik.trade.ui.customview.SwapCardView
 import kotlinx.coroutines.flow.collect
-import java.math.BigDecimal
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.breadwallet.breadbox.formatCryptoForUi
 import com.fabriik.common.ui.customview.FabriikSwitch
 import com.fabriik.common.utils.FabriikToastUtil
+import com.fabriik.trade.ui.customview.SwapCardView
 import com.fabriik.trade.ui.features.assetselection.AssetSelectionFragment
+import java.math.BigDecimal
 
 class SwapInputFragment : Fragment(),
     FabriikView<SwapInputContract.State, SwapInputContract.Effect> {
@@ -33,35 +32,33 @@ class SwapInputFragment : Fragment(),
             viewModel.setEvent(SwapInputContract.Event.ReplaceCurrenciesClicked)
         }
 
-        override fun onDestinationCurrencyClicked() {
-            viewModel.setEvent(SwapInputContract.Event.DestinationCurrencyClicked)
-        }
-
         override fun onSourceCurrencyClicked() {
             viewModel.setEvent(SwapInputContract.Event.SourceCurrencyClicked)
         }
 
+        override fun onDestinationCurrencyClicked() {
+            viewModel.setEvent(SwapInputContract.Event.DestinationCurrencyClicked)
+        }
+
         override fun onSellingCurrencyFiatAmountChanged(amount: BigDecimal) {
-            //todo
+            viewModel.setEvent(SwapInputContract.Event.SourceCurrencyFiatAmountChange(amount))
         }
 
         override fun onSellingCurrencyCryptoAmountChanged(amount: BigDecimal) {
-            //todo
+            viewModel.setEvent(SwapInputContract.Event.SourceCurrencyCryptoAmountChange(amount))
         }
 
         override fun onBuyingCurrencyFiatAmountChanged(amount: BigDecimal) {
-            //todo
+            viewModel.setEvent(SwapInputContract.Event.DestinationCurrencyFiatAmountChange(amount))
         }
 
         override fun onBuyingCurrencyCryptoAmountChanged(amount: BigDecimal) {
-            //todo
+            viewModel.setEvent(SwapInputContract.Event.DestinationCurrencyCryptoAmountChange(amount))
         }
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_swap_input, container, false)
     }
@@ -79,7 +76,6 @@ class SwapInputFragment : Fragment(),
                 SwapInputViewModel.QUOTE_TIMER, SwapInputViewModel.QUOTE_TIMER
             )
 
-            cvSwap.setFiatCurrency(BRSharedPrefs.getPreferredFiatIso())
             cvSwap.setCallback(cardSwapCallback)
 
             switchMinMax.setCallback {
@@ -156,6 +152,9 @@ class SwapInputFragment : Fragment(),
             SwapInputContract.Effect.ConfirmDialog ->
                 showConfirmDialog()
 
+            SwapInputContract.Effect.DeselectMinMaxSwitchItems ->
+                binding.switchMinMax.setSelectedItem(FabriikSwitch.OPTION_NONE)
+
             is SwapInputContract.Effect.ShowToast ->
                 FabriikToastUtil.showInfo(binding.root, effect.message)
 
@@ -188,6 +187,18 @@ class SwapInputFragment : Fragment(),
                         sourceCurrency = effect.sourceCurrency
                     )
                 )
+
+            is SwapInputContract.Effect.UpdateSourceFiatAmount ->
+                binding.cvSwap.setSourceFiatAmount(effect.bigDecimal)
+
+            is SwapInputContract.Effect.UpdateSourceCryptoAmount ->
+                binding.cvSwap.setSourceCryptoAmount(effect.bigDecimal)
+
+            is SwapInputContract.Effect.UpdateDestinationFiatAmount ->
+                binding.cvSwap.setDestinationFiatAmount(effect.bigDecimal)
+
+            is SwapInputContract.Effect.UpdateDestinationCryptoAmount ->
+                binding.cvSwap.setDestinationCryptoAmount(effect.bigDecimal)
         }
     }
 
@@ -228,6 +239,8 @@ class SwapInputFragment : Fragment(),
             cvSwap.setSendingNetworkFee(state.sendingNetworkFee)
             cvSwap.setReceivingNetworkFee(state.receivingNetworkFee)
 
+            btnConfirm.isEnabled = state.confirmButtonEnabled
+
             viewTimer.isVisible = !state.cryptoExchangeRateLoading
             tvRateValue.isVisible = !state.cryptoExchangeRateLoading
             quoteLoadingIndicator.isVisible = state.cryptoExchangeRateLoading
@@ -242,7 +255,7 @@ class SwapInputFragment : Fragment(),
     }
 
     companion object {
-        const val RATE_FORMAT = "1 %s = %f %s"
+        const val RATE_FORMAT = "1 %s = %s"
         const val REQUEST_KEY_SOURCE_SELECTION = "req_code_source_select"
         const val REQUEST_KEY_DESTINATION_SELECTION = "req_code_dest_select"
     }
