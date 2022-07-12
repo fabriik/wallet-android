@@ -9,7 +9,7 @@ class SwapApiInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain) = chain.request()
         .newBuilder()
         .addHeader("X-Device-ID", BRSharedPrefs.getDeviceId())
-        .addHeader("sessionKey", SessionHolder.getSessionKey())
+        .addHeader("Authorization", SessionHolder.getSessionKey())
         .build()
         .run(chain::proceed)
 }
