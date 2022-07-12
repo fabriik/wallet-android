@@ -131,6 +131,8 @@ class SwapInputViewModel(
                 sourceCurrency = state.sourceCryptoCurrency
             )
         }
+
+        requestNewQuote()
     }
 
     private fun onDestinationCurrencyChanged(currencyCode: String) {

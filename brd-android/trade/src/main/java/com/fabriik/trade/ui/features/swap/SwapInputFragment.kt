@@ -139,10 +139,10 @@ class SwapInputFragment : Fragment(),
         when (state) {
             is SwapInputContract.State.Error ->
                 handleErrorState(state)
-
+               
             is SwapInputContract.State.Loading ->
                 handleLoadingState(state)
-
+                
             is SwapInputContract.State.Loaded ->
                 handleLoadedState(state)
         }
