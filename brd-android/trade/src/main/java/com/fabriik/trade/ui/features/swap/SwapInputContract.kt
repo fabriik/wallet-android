@@ -61,6 +61,7 @@ interface SwapInputContract {
             val destinationCryptoAmount: BigDecimal = BigDecimal.ZERO,
             val sendingNetworkFee: NetworkFeeData? = null,
             val receivingNetworkFee: NetworkFeeData? = null,
+            val confirmButtonEnabled: Boolean = false
         ) : State()
     }
 

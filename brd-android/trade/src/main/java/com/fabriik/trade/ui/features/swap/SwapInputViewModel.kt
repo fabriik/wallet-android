@@ -364,7 +364,7 @@ class SwapInputViewModel(
                     sourceCryptoAmount = sourceCryptoAmount,
                     receivingNetworkFee = destCryptoAmountData.second,
                     sendingNetworkFee = destCryptoAmountData.first
-                )
+                ).validate()
             }
 
             updateAmounts()
@@ -401,7 +401,7 @@ class SwapInputViewModel(
                     destinationCryptoAmount = destCryptoAmount,
                     sendingNetworkFee = destCryptoAmountData.first,
                     receivingNetworkFee = destCryptoAmountData.second
-                )
+                ).validate()
             }
 
             updateAmounts(changeByUser)
@@ -438,7 +438,7 @@ class SwapInputViewModel(
                     destinationFiatAmount = destFiatAmount,
                     receivingNetworkFee = sourceCryptoAmountData.second,
                     sendingNetworkFee = sourceCryptoAmountData.first
-                )
+                ).validate()
             }
 
             updateAmounts()
@@ -475,7 +475,7 @@ class SwapInputViewModel(
                     destinationCryptoAmount = destCryptoAmount,
                     sendingNetworkFee = sourceCryptoAmountData.first,
                     receivingNetworkFee = sourceCryptoAmountData.second
-                )
+                ).validate()
             }
 
             updateAmounts()
@@ -570,6 +570,11 @@ class SwapInputViewModel(
 
         return Triple(sourceFee, destFee, sourceAmount)
     }
+
+    private fun SwapInputContract.State.Loaded.validate() = copy(
+        confirmButtonEnabled = sourceCryptoAmount != BigDecimal.ZERO &&
+                destinationCryptoAmount != BigDecimal.ZERO
+    )
 
     companion object {
         const val QUOTE_TIMER = 15
