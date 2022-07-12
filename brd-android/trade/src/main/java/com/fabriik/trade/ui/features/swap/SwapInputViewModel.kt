@@ -81,6 +81,9 @@ class SwapInputViewModel(
             SwapInputContract.Event.ReplaceCurrenciesClicked ->
                 onReplaceCurrenciesClicked()
 
+            is SwapInputContract.Event.OnCurrenciesReplaceAnimationCompleted ->
+                onReplaceCurrenciesAnimationCompleted(event.stateChange)
+
             is SwapInputContract.Event.SourceCurrencyChanged ->
                 onSourceCurrencyChanged(event.currencyCode)
 
@@ -180,7 +183,7 @@ class SwapInputViewModel(
             val balance = loadCryptoBalance(currentData.destinationCryptoCurrency) ?: return@launch
 
             currentLoadedState?.let {
-                val change = it.copy(
+                val stateChange = it.copy(
                     cryptoExchangeRate = when (it.sourceCryptoCurrency) {
                         it.selectedPair.baseCurrency -> BigDecimal.ONE.divide(it.quoteResponse.closeBid, 10, RoundingMode.HALF_UP)
                         else -> it.quoteResponse.closeAsk
@@ -196,10 +199,14 @@ class SwapInputViewModel(
                     receivingNetworkFee = currentData.sendingNetworkFee,
                 )
 
-                setState { change }
-                updateAmounts()
+                setEffect { SwapInputContract.Effect.CurrenciesReplaceAnimation(stateChange) }
             }
         }
+    }
+
+    private fun onReplaceCurrenciesAnimationCompleted(state: SwapInputContract.State.Loaded) {
+        setState { state }
+        updateAmounts()
     }
 
     private fun startQuoteTimer() {

@@ -3,6 +3,7 @@ package com.fabriik.trade.ui.customview
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.fabriik.common.utils.DecimalDigitsInputFilter
 import com.fabriik.common.utils.afterTextChangedDebounceFocused
@@ -75,6 +76,12 @@ class CurrencyInputView @JvmOverloads constructor(
             binding.etCryptoAmount.setText(formatted)
         }
     }
+
+    fun getSelectionView(): View = binding.viewCurrencySelector
+
+    fun getAnimatedViews() : List<View> = listOf(
+        binding.tvTitle, binding.tvFiatCurrency, binding.etFiatAmount, binding.etCryptoAmount
+    )
 
     interface Callback {
         fun onCurrencySelectorClicked()
