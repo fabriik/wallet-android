@@ -155,6 +155,9 @@ class SwapInputFragment : Fragment(),
             SwapInputContract.Effect.DeselectMinMaxSwitchItems ->
                 binding.switchMinMax.setSelectedItem(FabriikSwitch.OPTION_NONE)
 
+            is SwapInputContract.Effect.CurrenciesReplaceAnimation ->
+                startCurrenciesReplaceAnimation(effect.stateChange)
+
             is SwapInputContract.Effect.ShowToast ->
                 FabriikToastUtil.showInfo(binding.root, effect.message)
 
@@ -199,6 +202,16 @@ class SwapInputFragment : Fragment(),
 
             is SwapInputContract.Effect.UpdateDestinationCryptoAmount ->
                 binding.cvSwap.setDestinationCryptoAmount(effect.bigDecimal)
+        }
+    }
+
+    private fun startCurrenciesReplaceAnimation(stateChange: SwapInputContract.State.Loaded) {
+        binding.cvSwap.startReplaceAnimation {
+            viewModel.setEvent(
+                SwapInputContract.Event.OnCurrenciesReplaceAnimationCompleted(
+                    stateChange
+                )
+            )
         }
     }
 

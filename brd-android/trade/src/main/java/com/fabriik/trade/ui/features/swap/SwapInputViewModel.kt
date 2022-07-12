@@ -81,6 +81,9 @@ class SwapInputViewModel(
             SwapInputContract.Event.ReplaceCurrenciesClicked ->
                 onReplaceCurrenciesClicked()
 
+            is SwapInputContract.Event.OnCurrenciesReplaceAnimationCompleted ->
+                onReplaceCurrenciesAnimationCompleted(event.stateChange)
+
             is SwapInputContract.Event.SourceCurrencyChanged ->
                 onSourceCurrencyChanged(event.currencyCode)
 
@@ -180,7 +183,7 @@ class SwapInputViewModel(
             val balance = loadCryptoBalance(currentData.destinationCryptoCurrency) ?: return@launch
 
             currentLoadedState?.let {
-                val change = it.copy(
+                val stateChange = it.copy(
                     cryptoExchangeRate = when (it.sourceCryptoCurrency) {
                         it.selectedPair.baseCurrency -> BigDecimal.ONE.divide(it.quoteResponse.closeBid, 10, RoundingMode.HALF_UP)
                         else -> it.quoteResponse.closeAsk
@@ -196,10 +199,14 @@ class SwapInputViewModel(
                     receivingNetworkFee = currentData.sendingNetworkFee,
                 )
 
-                setState { change }
-                updateAmounts()
+                setEffect { SwapInputContract.Effect.CurrenciesReplaceAnimation(stateChange) }
             }
         }
+    }
+
+    private fun onReplaceCurrenciesAnimationCompleted(state: SwapInputContract.State.Loaded) {
+        setState { state }
+        updateAmounts()
     }
 
     private fun startQuoteTimer() {
@@ -264,8 +271,10 @@ class SwapInputViewModel(
 
     private fun loadInitialData() {
         viewModelScope.launch(Dispatchers.IO) {
-            val tradingPairs = swapApi.getTradingPairs().data ?: emptyList()
-            if (tradingPairs.isEmpty()) {
+            val pairsResponse = swapApi.getTradingPairs()
+            val tradingPairs = pairsResponse.data ?: emptyList()
+
+            if (pairsResponse.status == Status.ERROR || tradingPairs.isEmpty()) {
                 showErrorState()
                 return@launch
             }
@@ -273,8 +282,10 @@ class SwapInputViewModel(
             val selectedPair = tradingPairs.first {
                 it.baseCurrency == "BTC"
             }
+
+            val quoteResponse = swapApi.getQuote(selectedPair)
             val selectedPairQuote = swapApi.getQuote(selectedPair).data
-            if (selectedPairQuote == null) {
+            if (quoteResponse.status == Status.ERROR || selectedPairQuote == null) {
                 showErrorState()
                 return@launch
             }
