@@ -196,6 +196,7 @@ class SwapInputViewModel(
                     receivingNetworkFee = currentData.sendingNetworkFee,
                 )
 
+                setEffect { SwapInputContract.Effect.CurrenciesReplaceAnimation }
                 setState { change }
                 updateAmounts()
             }

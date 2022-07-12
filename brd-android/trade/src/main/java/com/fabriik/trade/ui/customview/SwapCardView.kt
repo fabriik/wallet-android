@@ -117,6 +117,10 @@ class SwapCardView @JvmOverloads constructor(
         binding.viewInputBuyingCurrency.setCryptoAmount(amount)
     }
 
+    fun getSourceSelectionView() = binding.viewInputSellingCurrency.getSelectionView()
+
+    fun getDestinationSelectionView() = binding.viewInputBuyingCurrency.getSelectionView()
+
     interface Callback {
         fun onReplaceCurrenciesClicked()
         fun onDestinationCurrencyClicked()

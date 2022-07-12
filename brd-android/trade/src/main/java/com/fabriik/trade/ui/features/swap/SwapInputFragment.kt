@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.TranslateAnimation
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -14,6 +15,7 @@ import com.fabriik.trade.databinding.FragmentSwapInputBinding
 import kotlinx.coroutines.flow.collect
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
+import androidx.transition.TransitionManager
 import com.breadwallet.breadbox.formatCryptoForUi
 import com.fabriik.common.ui.customview.FabriikSwitch
 import com.fabriik.common.utils.FabriikToastUtil
@@ -155,6 +157,9 @@ class SwapInputFragment : Fragment(),
             SwapInputContract.Effect.DeselectMinMaxSwitchItems ->
                 binding.switchMinMax.setSelectedItem(FabriikSwitch.OPTION_NONE)
 
+            SwapInputContract.Effect.CurrenciesReplaceAnimation ->
+                startCurrenciesReplaceAnimation()
+
             is SwapInputContract.Effect.ShowToast ->
                 FabriikToastUtil.showInfo(binding.root, effect.message)
 
@@ -199,6 +204,25 @@ class SwapInputFragment : Fragment(),
 
             is SwapInputContract.Effect.UpdateDestinationCryptoAmount ->
                 binding.cvSwap.setDestinationCryptoAmount(effect.bigDecimal)
+        }
+    }
+
+    private fun startCurrenciesReplaceAnimation() {
+        with(binding.cvSwap) {
+            val sourceSelectionView = this.getSourceSelectionView()
+            val destinationSelectionView = this.getDestinationSelectionView()
+
+            sourceSelectionView.startAnimation(
+                TranslateAnimation(0f, 0f, destinationSelectionView.y, sourceSelectionView.y).apply {
+                    duration = 2000
+                }
+            )
+
+            destinationSelectionView.startAnimation(
+                TranslateAnimation(0f, 0f, destinationSelectionView.y, -sourceSelectionView.y).apply {
+                    duration = 2000
+                }
+            )
         }
     }
 

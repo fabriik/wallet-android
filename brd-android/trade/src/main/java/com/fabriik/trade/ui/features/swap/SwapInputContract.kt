@@ -29,6 +29,7 @@ interface SwapInputContract {
         object Dismiss : Effect()
         object ConfirmDialog : Effect()
         object DeselectMinMaxSwitchItems : Effect()
+        object CurrenciesReplaceAnimation : Effect()
         data class ShowToast(val message: String): Effect()
         data class ContinueToSwapProcessing(
             val sourceCurrency: String,
