@@ -184,9 +184,13 @@ class SwapInputViewModel(
 
             currentLoadedState?.let {
                 val stateChange = it.copy(
-                    cryptoExchangeRate = when (it.sourceCryptoCurrency) {
-                        it.selectedPair.baseCurrency -> BigDecimal.ONE.divide(it.quoteResponse.closeBid, 10, RoundingMode.HALF_UP)
-                        else -> it.quoteResponse.closeAsk
+                    cryptoExchangeRate = when {
+                        currentData.quoteResponse.securityId.startsWith(it.sourceCryptoCurrency) ->
+                            BigDecimal.ONE.divide(
+                                it.quoteResponse.closeAsk, 10, RoundingMode.HALF_UP
+                            )
+                        else ->
+                            it.quoteResponse.closeBid
                     },
                     sourceFiatAmount = it.destinationFiatAmount,
                     sourceCryptoAmount = it.destinationCryptoAmount,
@@ -242,10 +246,20 @@ class SwapInputViewModel(
             when (response.status) {
                 Status.SUCCESS -> {
                     val latestState = currentLoadedState ?: return@launch
+                    val responseData = requireNotNull(response.data)
+
                     setState {
                         latestState.copy(
                             cryptoExchangeRateLoading = false,
-                            quoteResponse = requireNotNull(response.data)
+                            quoteResponse = responseData,
+                            cryptoExchangeRate = when {
+                                responseData.securityId.startsWith(latestState.sourceCryptoCurrency) ->
+                                    responseData.closeBid
+                                else ->
+                                    BigDecimal.ONE.divide(
+                                        responseData.closeAsk, 10, RoundingMode.HALF_UP
+                                    )
+                            }
                         )
                     }
                     startQuoteTimer()
@@ -305,7 +319,7 @@ class SwapInputViewModel(
                     sourceCryptoCurrency = selectedPair.baseCurrency,
                     destinationCryptoCurrency = selectedPair.termCurrency,
                     sourceCryptoBalance = sourceCryptoBalance,
-                    cryptoExchangeRate = selectedPairQuote.closeAsk
+                    cryptoExchangeRate = selectedPairQuote.closeBid
                 )
             }
 
