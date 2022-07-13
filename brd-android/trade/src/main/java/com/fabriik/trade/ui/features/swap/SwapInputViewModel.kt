@@ -184,14 +184,6 @@ class SwapInputViewModel(
 
             currentLoadedState?.let {
                 val stateChange = it.copy(
-                    cryptoExchangeRate = when {
-                        currentData.quoteResponse.securityId.startsWith(it.sourceCryptoCurrency) ->
-                            BigDecimal.ONE.divide(
-                                it.quoteResponse.closeAsk, 10, RoundingMode.HALF_UP
-                            )
-                        else ->
-                            it.quoteResponse.closeBid
-                    },
                     sourceFiatAmount = it.destinationFiatAmount,
                     sourceCryptoAmount = it.destinationCryptoAmount,
                     destinationFiatAmount = it.sourceFiatAmount,
@@ -251,15 +243,7 @@ class SwapInputViewModel(
                     setState {
                         latestState.copy(
                             cryptoExchangeRateLoading = false,
-                            quoteResponse = responseData,
-                            cryptoExchangeRate = when {
-                                responseData.securityId.startsWith(latestState.sourceCryptoCurrency) ->
-                                    responseData.closeBid
-                                else ->
-                                    BigDecimal.ONE.divide(
-                                        responseData.closeAsk, 10, RoundingMode.HALF_UP
-                                    )
-                            }
+                            quoteResponse = responseData
                         )
                     }
                     startQuoteTimer()
@@ -318,8 +302,7 @@ class SwapInputViewModel(
                     quoteResponse = selectedPairQuote,
                     sourceCryptoCurrency = selectedPair.baseCurrency,
                     destinationCryptoCurrency = selectedPair.termCurrency,
-                    sourceCryptoBalance = sourceCryptoBalance,
-                    cryptoExchangeRate = selectedPairQuote.closeBid
+                    sourceCryptoBalance = sourceCryptoBalance
                 )
             }
 
