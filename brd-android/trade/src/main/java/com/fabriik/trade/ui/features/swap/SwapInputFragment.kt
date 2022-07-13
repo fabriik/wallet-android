@@ -18,6 +18,7 @@ import com.breadwallet.breadbox.formatCryptoForUi
 import com.fabriik.common.ui.customview.FabriikSwitch
 import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.trade.ui.customview.SwapCardView
+import com.fabriik.trade.ui.dialog.SwapConfirmationDialog
 import com.fabriik.trade.ui.features.assetselection.AssetSelectionFragment
 import java.math.BigDecimal
 
@@ -126,6 +127,16 @@ class SwapInputFragment : Fragment(),
             }
         }
 
+        // listen for confirmation dialog result
+        parentFragmentManager.setFragmentResultListener(REQUEST_KEY_SWAP_CONFIRMATION_DIALOG, this) { _, bundle ->
+            val resultKey = bundle.getString(SwapConfirmationDialog.EXTRA_RESULT)
+            if (resultKey == SwapConfirmationDialog.RESULT_CONFIRM) {
+                binding.root.post {
+                    viewModel.setEvent(SwapInputContract.Event.OnConfirmationDialogConfirmed)
+                }
+            }
+        }
+
         requireActivity().onBackPressedDispatcher.addCallback {
             //User shouldn't be allowed to go back
         }
@@ -149,11 +160,20 @@ class SwapInputFragment : Fragment(),
             SwapInputContract.Effect.Dismiss ->
                 requireActivity().finish()
 
-            SwapInputContract.Effect.ConfirmDialog ->
-                showConfirmDialog()
-
             SwapInputContract.Effect.DeselectMinMaxSwitchItems ->
                 binding.switchMinMax.setSelectedItem(FabriikSwitch.OPTION_NONE)
+
+            is SwapInputContract.Effect.ConfirmDialog ->
+                findNavController().navigate(
+                    SwapInputFragmentDirections.actionConfirmationDialog(
+                        requestKey = REQUEST_KEY_SWAP_CONFIRMATION_DIALOG,
+                        toAmount = effect.to,
+                        fromAmount = effect.from,
+                        rateAmount = effect.rate,
+                        sendingFeeAmount = effect.sendingFee,
+                        receivingFeeAmount = effect.receivingFee
+                    )
+                )
 
             is SwapInputContract.Effect.CurrenciesReplaceAnimation ->
                 startCurrenciesReplaceAnimation(effect.stateChange)
@@ -263,13 +283,10 @@ class SwapInputFragment : Fragment(),
         }
     }
 
-    private fun showConfirmDialog() {
-        //todo
-    }
-
     companion object {
         const val RATE_FORMAT = "1 %s = %s"
         const val REQUEST_KEY_SOURCE_SELECTION = "req_code_source_select"
         const val REQUEST_KEY_DESTINATION_SELECTION = "req_code_dest_select"
+        const val REQUEST_KEY_SWAP_CONFIRMATION_DIALOG = "req_code_swap_confirmation"
     }
 }

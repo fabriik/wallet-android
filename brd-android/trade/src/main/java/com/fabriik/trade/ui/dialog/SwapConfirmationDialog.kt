@@ -6,26 +6,24 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
+import androidx.navigation.fragment.navArgs
 import com.breadwallet.breadbox.formatCryptoForUi
-import com.fabriik.trade.R
-import com.fabriik.trade.databinding.FragmentConfirmationDialogBinding
-import java.math.BigDecimal
+import com.breadwallet.util.formatFiatForUi
+import com.fabriik.trade.data.model.AmountData
+import com.fabriik.trade.databinding.FragmentSwapConfirmationDialogBinding
 
-class ConfirmationDialog(val args: ConfirmationArgs) : DialogFragment() {
+class SwapConfirmationDialog : DialogFragment() {
 
-    companion object {
-        const val CONFIRMATION_TAG = "Confirmation_dialog"
-    }
+    private val args by navArgs<SwapConfirmationDialogArgs>()
 
-    lateinit var binding: FragmentConfirmationDialogBinding
+    private lateinit var binding: FragmentSwapConfirmationDialogBinding
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        binding = FragmentConfirmationDialogBinding.inflate(inflater, container, false)
+        binding = FragmentSwapConfirmationDialogBinding.inflate(inflater, container, false)
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         return binding.root
@@ -33,63 +31,78 @@ class ConfirmationDialog(val args: ConfirmationArgs) : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         with(binding) {
-            tvFromValue.text = formatCurrencyText(args.swapFromCurrency)
-            tvToValue.text = formatCurrencyText(args.swapToCurrency)
+            tvToValue.text = formatCurrencyAmount(args.toAmount)
+            tvFromValue.text = formatCurrencyAmount(args.fromAmount)
 
-            tvOriginCoinValue.text = args.swapFromCurrency.amount.formatCryptoForUi(
-                args.swapFromCurrency.title
-            )
-            tvOriginFiatValue.text = getString(
-                R.string.swap_Confirmation_ValueInDollars,
-                args.swapFromCurrency.fiatValue
-            )
-
-            tvDestinationCoinValue.text = args.swapToCurrency.amount.formatCryptoForUi(
-                args.swapToCurrency.title
-            )
-            tvDestinationFiatValue.text = getString(
-                R.string.swap_Confirmation_ValueInDollars,
-                args.swapToCurrency.fiatValue
+            tvRateValue.text = RATE_FORMAT.format(
+                args.fromAmount.cryptoCurrency,
+                args.rateAmount.formatCryptoForUi(
+                    args.toAmount.cryptoCurrency
+                )
             )
 
-            tvTotalValue.text = args.totalCost.formatCryptoForUi(args.swapFromCurrency.title)
-            tvRateValue.text = args.rate
+            args.sendingFeeAmount.run {
+                tvSendingFeeFiatValue.text = fiatAmount.formatFiatForUi(
+                    fiatCurrency
+                )
+
+                tvSendingFeeCryptoValue.text = cryptoAmount.formatCryptoForUi(
+                    cryptoCurrency
+                )
+            }
+
+            args.receivingFeeAmount.run {
+                tvReceivingFeeFiatValue.text = fiatAmount.formatFiatForUi(
+                    fiatCurrency
+                )
+
+                tvReceivingFeeCryptoValue.text = cryptoAmount.formatCryptoForUi(
+                    cryptoCurrency
+                )
+            }
+
+            tvTotalValue.text = args.fromAmount.cryptoAmount.formatCryptoForUi( // todo: sum fees ??
+                args.fromAmount.cryptoCurrency
+            )
 
             btnDismiss.setOnClickListener {
-                dialog?.dismiss()
+                notifyListener(RESULT_CANCEL)
             }
 
             btnCancel.setOnClickListener {
-                dialog?.dismiss()
+                notifyListener(RESULT_CANCEL)
             }
 
             btnConfirm.setOnClickListener {
-                //TODO - navigate to pin screen
+                notifyListener(RESULT_CONFIRM)
             }
         }
     }
 
-    private fun formatCurrencyText(currency: Currency): String {
-        return getString(
-            R.string.Swap_Confirmation_Currency_Body,
-            currency.amount,
-            currency.title,
-            currency.fiatValue
+    private fun notifyListener(result: String) {
+        dismissAllowingStateLoss()
+
+        parentFragmentManager.setFragmentResult(
+            args.requestKey, bundleOf(EXTRA_RESULT to result)
         )
     }
+
+    private fun formatCurrencyAmount(data: AmountData): String {
+        val fiatText = data.fiatAmount.formatFiatForUi(
+            data.fiatCurrency
+        )
+
+        val cryptoText = data.cryptoAmount.formatCryptoForUi(
+            data.cryptoCurrency
+        )
+
+        return "$cryptoText ($fiatText)"
+    }
+
+    companion object {
+        const val RATE_FORMAT = "1 %s = %s"
+        const val RESULT_CONFIRM = "res_confirm"
+        const val RESULT_CANCEL = "res_cancel"
+        const val EXTRA_RESULT = "extra_result"
+    }
 }
-
-data class ConfirmationArgs(
-    val swapFromCurrency: Currency,
-    val swapToCurrency: Currency,
-    val sendingFeeCurrency: Currency,
-    val receivingFeeCurrency: Currency,
-    val rate: String,
-    val totalCost: BigDecimal,
-)
-
-data class Currency(
-    val title: String,
-    val amount: BigDecimal = BigDecimal.ZERO,
-    val fiatValue: BigDecimal = BigDecimal.ZERO
-)

@@ -12,8 +12,8 @@ import androidx.core.view.isVisible
 import com.breadwallet.breadbox.formatCryptoForUi
 import com.breadwallet.util.formatFiatForUi
 import com.fabriik.common.utils.dp
+import com.fabriik.trade.data.model.AmountData
 import com.fabriik.trade.databinding.ViewSwapCardBinding
-import com.fabriik.trade.ui.features.swap.SwapInputContract
 import com.google.android.material.card.MaterialCardView
 import java.math.BigDecimal
 
@@ -94,7 +94,7 @@ class SwapCardView @JvmOverloads constructor(
         binding.viewInputBuyingCurrency.setCryptoCurrency(currency)
     }
 
-    fun setSendingNetworkFee(fee: SwapInputContract.NetworkFeeData?) {
+    fun setSendingNetworkFee(fee: AmountData?) {
         binding.tvSellingCurrencyNetworkFee.isVisible = fee != null
         binding.tvSellingCurrencyNetworkFeeTitle.isVisible = fee != null
 
@@ -105,7 +105,7 @@ class SwapCardView @JvmOverloads constructor(
         }
     }
 
-    fun setReceivingNetworkFee(fee: SwapInputContract.NetworkFeeData?) {
+    fun setReceivingNetworkFee(fee: AmountData?) {
         binding.tvBuyingCurrencyNetworkFee.isVisible = fee != null
         binding.tvBuyingCurrencyNetworkFeeTitle.isVisible = fee != null
 
