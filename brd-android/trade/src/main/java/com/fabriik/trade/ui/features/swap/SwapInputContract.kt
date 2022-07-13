@@ -1,6 +1,7 @@
 package com.fabriik.trade.ui.features.swap
 
 import com.fabriik.common.ui.base.FabriikContract
+import com.fabriik.trade.data.model.AmountData
 import com.fabriik.trade.data.model.TradingPair
 import com.fabriik.trade.data.response.QuoteResponse
 import java.math.BigDecimal
@@ -16,6 +17,7 @@ interface SwapInputContract {
         object SourceCurrencyClicked : Event()
         object ReplaceCurrenciesClicked : Event()
         object DestinationCurrencyClicked : Event()
+        object OnConfirmationDialogConfirmed : Event()
 
         data class SourceCurrencyChanged(val currencyCode: String) : Event()
         data class DestinationCurrencyChanged(val currencyCode: String) : Event()
@@ -28,8 +30,14 @@ interface SwapInputContract {
 
     sealed class Effect : FabriikContract.Effect {
         object Dismiss : Effect()
-        object ConfirmDialog : Effect()
         object DeselectMinMaxSwitchItems : Effect()
+        data class ConfirmDialog(
+            val to: AmountData,
+            val from: AmountData,
+            val rate: BigDecimal,
+            val sendingFee: AmountData,
+            val receivingFee: AmountData,
+        ) : Effect()
         data class CurrenciesReplaceAnimation(val stateChange: State.Loaded) : Effect()
         data class ShowToast(val message: String): Effect()
         data class ContinueToSwapProcessing(
@@ -61,8 +69,8 @@ interface SwapInputContract {
             val sourceCryptoAmount: BigDecimal = BigDecimal.ZERO,
             val destinationFiatAmount: BigDecimal = BigDecimal.ZERO,
             val destinationCryptoAmount: BigDecimal = BigDecimal.ZERO,
-            val sendingNetworkFee: NetworkFeeData? = null,
-            val receivingNetworkFee: NetworkFeeData? = null,
+            val sendingNetworkFee: AmountData? = null,
+            val receivingNetworkFee: AmountData? = null,
             val confirmButtonEnabled: Boolean = false
         ) : State() {
 
@@ -76,10 +84,4 @@ interface SwapInputContract {
         }
     }
 
-    data class NetworkFeeData(
-        val fiatAmount: BigDecimal,
-        val fiatCurrency: String,
-        val cryptoAmount: BigDecimal,
-        val cryptoCurrency: String
-    )
 }

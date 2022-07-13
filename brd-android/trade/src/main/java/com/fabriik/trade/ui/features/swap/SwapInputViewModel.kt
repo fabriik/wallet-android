@@ -16,6 +16,7 @@ import com.fabriik.common.utils.getString
 import com.fabriik.common.utils.min
 import com.fabriik.trade.R
 import com.fabriik.trade.data.SwapApi
+import com.fabriik.trade.data.model.AmountData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -47,7 +48,7 @@ class SwapInputViewModel(
     private val currentLoadedState: SwapInputContract.State.Loaded?
         get() = state.value as SwapInputContract.State.Loaded?
 
-    private val maxAmountLimit = profileManager.getProfile().nextExchangeLimit()
+    private val maxAmountLimitFiat = profileManager.getProfile().nextExchangeLimit()
     private val ratesRepository by kodein.instance<RatesRepository>()
 
     private var currentTimerJob: Job? = null
@@ -63,7 +64,10 @@ class SwapInputViewModel(
             SwapInputContract.Event.DismissClicked ->
                 setEffect { SwapInputContract.Effect.Dismiss }
 
-            SwapInputContract.Event.ConfirmClicked -> currentLoadedState?.let {
+            SwapInputContract.Event.ConfirmClicked ->
+                onConfirmClicked()
+
+            SwapInputContract.Event.OnConfirmationDialogConfirmed -> currentLoadedState?.let {
                 setEffect {
                     SwapInputContract.Effect.ContinueToSwapProcessing(
                         sourceCurrency = it.sourceCryptoCurrency,
@@ -171,8 +175,13 @@ class SwapInputViewModel(
     private fun onMaxAmountClicked() {
         val state = currentLoadedState ?: return
 
+        val maxAmountLimitCrypto = maxAmountLimitFiat.toCrypto(
+            cryptoCurrency = state.sourceCryptoCurrency,
+            fiatCurrency = state.fiatCurrency
+        )
+
         onSourceCurrencyCryptoAmountChanged(
-            min(state.sourceCryptoBalance, maxAmountLimit), false
+            min(state.sourceCryptoBalance, maxAmountLimitCrypto), false
         )
     }
 
@@ -298,7 +307,7 @@ class SwapInputViewModel(
                 SwapInputContract.State.Loaded(
                     tradingPairs = tradingPairs,
                     selectedPair = selectedPair,
-                    fiatCurrency = BRSharedPrefs.getPreferredFiatIso(),
+                    fiatCurrency = "USD",
                     quoteResponse = selectedPairQuote,
                     sourceCryptoCurrency = selectedPair.baseCurrency,
                     destinationCryptoCurrency = selectedPair.termCurrency,
@@ -490,6 +499,45 @@ class SwapInputViewModel(
         }
     }
 
+    private fun onConfirmClicked() {
+        val state = currentLoadedState
+        val sendingFee = state?.sendingNetworkFee
+        val receivingFee = state?.receivingNetworkFee
+
+        if (sendingFee == null || receivingFee == null) {
+            setEffect {
+                SwapInputContract.Effect.ShowToast(
+                    getString(R.string.FabriikApi_DefaultError)
+                )
+            }
+            return
+        }
+
+        val toAmount = AmountData(
+            fiatAmount = state.destinationFiatAmount,
+            fiatCurrency = state.fiatCurrency,
+            cryptoAmount = state.destinationCryptoAmount,
+            cryptoCurrency = state.destinationCryptoCurrency
+        )
+
+        val fromAmount = AmountData(
+            fiatAmount = state.sourceFiatAmount,
+            fiatCurrency = state.fiatCurrency,
+            cryptoAmount = state.sourceCryptoAmount,
+            cryptoCurrency = state.sourceCryptoCurrency
+        )
+
+        setEffect {
+            SwapInputContract.Effect.ConfirmDialog(
+                to = toAmount,
+                from = fromAmount,
+                rate = state.cryptoExchangeRate,
+                sendingFee = sendingFee,
+                receivingFee = receivingFee,
+            )
+        }
+    }
+
     private fun updateAmounts(changeByUser: Boolean = true) {
         val state = currentLoadedState ?: return
 
@@ -504,10 +552,8 @@ class SwapInputViewModel(
     }
 
     private suspend fun estimateFee(
-        cryptoAmount: BigDecimal,
-        currencyCode: String,
-        fiatCode: String
-    ): SwapInputContract.NetworkFeeData? {
+        cryptoAmount: BigDecimal, currencyCode: String, fiatCode: String
+    ): AmountData? {
         val wallet = breadBox.wallet(currencyCode).first()
         val amount = Amount.create(cryptoAmount.toDouble(), wallet.unit)
         val address = if (wallet.currency.isBitcoin()) {
@@ -531,7 +577,7 @@ class SwapInputViewModel(
                 fiatCode = fiatCode
             ) ?: return null
 
-            return SwapInputContract.NetworkFeeData(
+            return AmountData(
                 fiatAmount = fiatFee,
                 fiatCurrency = fiatCode,
                 cryptoAmount = cryptoFee,
