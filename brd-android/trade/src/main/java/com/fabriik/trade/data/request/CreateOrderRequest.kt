@@ -5,7 +5,7 @@ import com.squareup.moshi.JsonClass
 import java.math.BigDecimal
 
 @JsonClass(generateAdapter = true)
-data class SwapCreateOrderRequest(
+data class CreateOrderRequest(
     @Json(name = "quote_id")
     val quoteId: String,
 

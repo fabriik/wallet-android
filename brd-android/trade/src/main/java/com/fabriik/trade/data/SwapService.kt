@@ -1,6 +1,7 @@
 package com.fabriik.trade.data
 
-import com.fabriik.trade.data.request.SwapCreateOrderRequest
+import com.fabriik.trade.data.request.CreateOrderRequest
+import com.fabriik.trade.data.response.CreateOrderResponse
 import com.fabriik.trade.data.response.QuoteResponse
 import com.fabriik.trade.data.response.TradingPairsResponse
 import okhttp3.ResponseBody
@@ -18,6 +19,6 @@ interface SwapService {
 
     @POST("create")
     suspend fun createOrder(
-        @Body body: SwapCreateOrderRequest
-    ): ResponseBody
+        @Body body: CreateOrderRequest
+    ): CreateOrderResponse
 }

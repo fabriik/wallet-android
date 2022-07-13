@@ -6,7 +6,8 @@ import com.fabriik.common.data.FabriikApiConstants
 import com.fabriik.common.data.Resource
 import com.fabriik.common.utils.FabriikApiResponseMapper
 import com.fabriik.trade.data.model.TradingPair
-import com.fabriik.trade.data.request.SwapCreateOrderRequest
+import com.fabriik.trade.data.request.CreateOrderRequest
+import com.fabriik.trade.data.response.CreateOrderResponse
 import com.fabriik.trade.data.response.QuoteResponse
 import okhttp3.*
 import retrofit2.Retrofit
@@ -52,10 +53,10 @@ class SwapApi(
         }
     }
 
-    suspend fun createOrder(amount: BigDecimal, quoteResponse: QuoteResponse, destinationAddress: String, destinationCurrency: String): Resource<ResponseBody?> {
+    suspend fun createOrder(amount: BigDecimal, quoteResponse: QuoteResponse, destinationAddress: String, destinationCurrency: String): Resource<CreateOrderResponse?> {
         return try {
             val response = service.createOrder(
-                SwapCreateOrderRequest(
+                CreateOrderRequest(
                     quoteId = quoteResponse.quoteId,
                     quantity = amount,
                     destination = destinationAddress,
