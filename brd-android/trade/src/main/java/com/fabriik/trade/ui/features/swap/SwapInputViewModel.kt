@@ -605,7 +605,7 @@ class SwapInputViewModel(
         ) ?: BigDecimal.ZERO
     }
 
-    private suspend fun BigDecimal.convertSource(fromCryptoCurrency: String, toCryptoCurrency: String, rate: BigDecimal): Triple<SwapInputContract.NetworkFeeData?, SwapInputContract.NetworkFeeData?, BigDecimal> {
+    private suspend fun BigDecimal.convertSource(fromCryptoCurrency: String, toCryptoCurrency: String, rate: BigDecimal): Triple<AmountData?, AmountData?, BigDecimal> {
         val state = currentLoadedState ?: return Triple(null, null, BigDecimal.ZERO)
 
         val destAmount = this.multiply(rate)
@@ -615,7 +615,7 @@ class SwapInputViewModel(
         return Triple(sourceFee, destFee, destAmount)
     }
 
-    private suspend fun BigDecimal.convertDestination(fromCryptoCurrency: String, toCryptoCurrency: String, rate: BigDecimal): Triple<SwapInputContract.NetworkFeeData?, SwapInputContract.NetworkFeeData?, BigDecimal> {
+    private suspend fun BigDecimal.convertDestination(fromCryptoCurrency: String, toCryptoCurrency: String, rate: BigDecimal): Triple<AmountData?, AmountData?, BigDecimal> {
         val state = currentLoadedState ?: return Triple(null, null, BigDecimal.ZERO)
 
         val sourceAmount = this.divide(rate, 5, RoundingMode.HALF_UP)
