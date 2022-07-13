@@ -17,6 +17,11 @@
         <action
             android:id="@+id/actionSwapProcessing"
             app:destination="@id/fragmentSwapProcessing" />
+
+        <action
+            android:id="@+id/actionConfirmationDialog"
+            app:destination="@id/dialogSwapConfirmation" />
+
     </fragment>
 
     <fragment
@@ -64,4 +69,34 @@
     <fragment android:id="@+id/fragmentSwapDetails"
         android:name="com.fabriik.trade.ui.features.swapdetails.SwapDetailsFragment"
         tools:layout="@layout/fragment_swap_details"/>
+
+    <dialog
+        android:id="@+id/dialogSwapConfirmation"
+        android:name="com.fabriik.trade.ui.dialog.SwapConfirmationDialog"
+        tools:layout="@layout/fragment_swap_confirmation_dialog">
+
+        <argument
+            android:name="requestKey"
+            app:argType="string" />
+
+        <argument
+            android:name="toAmount"
+            app:argType="com.fabriik.trade.data.model.AmountData" />
+
+        <argument
+            android:name="fromAmount"
+            app:argType="com.fabriik.trade.data.model.AmountData" />
+
+        <argument
+            android:name="rateAmount"
+            app:argType="java.math.BigDecimal" />
+
+        <argument
+            android:name="sendingFeeAmount"
+            app:argType="com.fabriik.trade.data.model.AmountData" />
+
+        <argument
+            android:name="receivingFeeAmount"
+            app:argType="com.fabriik.trade.data.model.AmountData" />
+    </dialog>
 </navigation>

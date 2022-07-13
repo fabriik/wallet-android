@@ -41,6 +41,4 @@
     <string name="Swap.Confirmation.Disclaimer">Due to market volatility the final rate may slightly differ from current one.</string>
     <string name="Swap.Confirmation.Confirm">Confirm</string>
     <string name="Swap.Confirmation.Cancel">Cancel</string>
-    <string name="Swap.Confirmation.Currency.Body">%1$s %2$s ($%3$s)</string>
-    <string name="swap.Confirmation.ValueInDollars">($%1$s)</string>
 </resources>

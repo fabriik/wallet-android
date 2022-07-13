@@ -16,6 +16,7 @@ import com.fabriik.common.utils.getString
 import com.fabriik.common.utils.min
 import com.fabriik.trade.R
 import com.fabriik.trade.data.SwapApi
+import com.fabriik.trade.data.model.AmountData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -63,7 +64,10 @@ class SwapInputViewModel(
             SwapInputContract.Event.DismissClicked ->
                 setEffect { SwapInputContract.Effect.Dismiss }
 
-            SwapInputContract.Event.ConfirmClicked -> currentLoadedState?.let {
+            SwapInputContract.Event.ConfirmClicked ->
+                onConfirmClicked()
+
+            SwapInputContract.Event.OnConfirmationDialogConfirmed -> currentLoadedState?.let {
                 setEffect {
                     SwapInputContract.Effect.ContinueToSwapProcessing(
                         sourceCurrency = it.sourceCryptoCurrency,
@@ -185,7 +189,11 @@ class SwapInputViewModel(
             currentLoadedState?.let {
                 val stateChange = it.copy(
                     cryptoExchangeRate = when (it.sourceCryptoCurrency) {
-                        it.selectedPair.baseCurrency -> BigDecimal.ONE.divide(it.quoteResponse.closeBid, 10, RoundingMode.HALF_UP)
+                        it.selectedPair.baseCurrency -> BigDecimal.ONE.divide(
+                            it.quoteResponse.closeBid,
+                            10,
+                            RoundingMode.HALF_UP
+                        )
                         else -> it.quoteResponse.closeAsk
                     },
                     sourceFiatAmount = it.destinationFiatAmount,
@@ -382,7 +390,10 @@ class SwapInputViewModel(
         }
     }
 
-    private fun onSourceCurrencyCryptoAmountChanged(sourceCryptoAmount: BigDecimal, changeByUser: Boolean = true) {
+    private fun onSourceCurrencyCryptoAmountChanged(
+        sourceCryptoAmount: BigDecimal,
+        changeByUser: Boolean = true
+    ) {
         val state = currentLoadedState ?: return
 
         viewModelScope.launch(Dispatchers.IO) {
@@ -493,6 +504,45 @@ class SwapInputViewModel(
         }
     }
 
+    private fun onConfirmClicked() {
+        val state = currentLoadedState
+        val sendingFee = state?.sendingNetworkFee
+        val receivingFee = state?.receivingNetworkFee
+
+        if (sendingFee == null || receivingFee == null) {
+            setEffect {
+                SwapInputContract.Effect.ShowToast(
+                    getString(R.string.FabriikApi_DefaultError)
+                )
+            }
+            return
+        }
+
+        val toAmount = AmountData(
+            fiatAmount = state.destinationFiatAmount,
+            fiatCurrency = state.fiatCurrency,
+            cryptoAmount = state.destinationCryptoAmount,
+            cryptoCurrency = state.destinationCryptoCurrency
+        )
+
+        val fromAmount = AmountData(
+            fiatAmount = state.sourceFiatAmount,
+            fiatCurrency = state.fiatCurrency,
+            cryptoAmount = state.sourceCryptoAmount,
+            cryptoCurrency = state.sourceCryptoCurrency
+        )
+
+        setEffect {
+            SwapInputContract.Effect.ConfirmDialog(
+                to = toAmount,
+                from = fromAmount,
+                rate = state.cryptoExchangeRate,
+                sendingFee = sendingFee,
+                receivingFee = receivingFee,
+            )
+        }
+    }
+
     private fun updateAmounts(changeByUser: Boolean = true) {
         val state = currentLoadedState ?: return
 
@@ -510,7 +560,7 @@ class SwapInputViewModel(
         cryptoAmount: BigDecimal,
         currencyCode: String,
         fiatCode: String
-    ): SwapInputContract.NetworkFeeData? {
+    ): AmountData? {
         val wallet = breadBox.wallet(currencyCode).first()
         val amount = Amount.create(cryptoAmount.toDouble(), wallet.unit)
         val address = if (wallet.currency.isBitcoin()) {
@@ -534,7 +584,7 @@ class SwapInputViewModel(
                 fiatCode = fiatCode
             ) ?: return null
 
-            return SwapInputContract.NetworkFeeData(
+            return AmountData(
                 fiatAmount = fiatFee,
                 fiatCurrency = fiatCode,
                 cryptoAmount = cryptoFee,
@@ -562,7 +612,11 @@ class SwapInputViewModel(
         ) ?: BigDecimal.ZERO
     }
 
-    private suspend fun BigDecimal.convertSource(fromCryptoCurrency: String, toCryptoCurrency: String, rate: BigDecimal): Triple<SwapInputContract.NetworkFeeData?, SwapInputContract.NetworkFeeData?, BigDecimal> {
+    private suspend fun BigDecimal.convertSource(
+        fromCryptoCurrency: String,
+        toCryptoCurrency: String,
+        rate: BigDecimal
+    ): Triple<AmountData?, AmountData?, BigDecimal> {
         val state = currentLoadedState ?: return Triple(null, null, BigDecimal.ZERO)
 
         val destAmount = this.multiply(rate)
@@ -572,7 +626,11 @@ class SwapInputViewModel(
         return Triple(sourceFee, destFee, destAmount)
     }
 
-    private suspend fun BigDecimal.convertDestination(fromCryptoCurrency: String, toCryptoCurrency: String, rate: BigDecimal): Triple<SwapInputContract.NetworkFeeData?, SwapInputContract.NetworkFeeData?, BigDecimal> {
+    private suspend fun BigDecimal.convertDestination(
+        fromCryptoCurrency: String,
+        toCryptoCurrency: String,
+        rate: BigDecimal
+    ): Triple<AmountData?, AmountData?, BigDecimal> {
         val state = currentLoadedState ?: return Triple(null, null, BigDecimal.ZERO)
 
         val sourceAmount = this.divide(rate, 5, RoundingMode.HALF_UP)

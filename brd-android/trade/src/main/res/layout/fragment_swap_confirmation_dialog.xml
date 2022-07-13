@@ -60,8 +60,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
-        android:layout_marginTop="8dp"
-        android:textColor="@color/light_text_03"
+        android:layout_marginTop="4dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_send_title"
         tools:text="0,1 BSV ($6.63)" />
@@ -84,8 +83,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
-        android:layout_marginTop="8dp"
-        android:textColor="@color/light_text_03"
+        android:layout_marginTop="4dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_to_title"
         tools:text="0,0023 BTC ($20.192,30)" />
@@ -98,7 +96,6 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
         android:text="@string/Swap.Confirmation.Rate"
-        android:textColor="@color/light_text_03"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_to_value" />
 
@@ -108,7 +105,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
-        android:textColor="@color/light_text_03"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tv_rate_title"
         tools:text="1 BSV = 0.0000333 BTC" />
@@ -121,32 +117,29 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
         android:text="@string/Swap.Confirmation.SendingFee"
-        android:textColor="@color/light_text_03"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_rate_value" />
 
     <TextView
-        android:id="@+id/tv_origin_coin_value"
+        android:id="@+id/tv_sending_fee_crypto_value"
         style="@style/TextStyle.Body2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
-        android:textColor="@color/light_text_03"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_rate_value"
         tools:text="0.1 BSV" />
 
     <TextView
-        android:id="@+id/tv_origin_fiat_value"
+        android:id="@+id/tv_sending_fee_fiat_value"
         style="@style/TextStyle.Body2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
-        android:textColor="@color/light_text_03"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_origin_coin_value"
+        app:layout_constraintTop_toBottomOf="@+id/tv_sending_fee_crypto_value"
         tools:text="($0.01)" />
 
     <TextView
@@ -157,32 +150,29 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
         android:text="@string/Swap.Confirmation.ReceivingFee"
-        android:textColor="@color/light_text_03"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_origin_fiat_value" />
+        app:layout_constraintTop_toBottomOf="@id/tv_sending_fee_fiat_value" />
 
     <TextView
-        android:id="@+id/tv_destination_coin_value"
+        android:id="@+id/tv_receiving_fee_crypto_value"
         style="@style/TextStyle.Body2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
-        android:textColor="@color/light_text_03"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_origin_fiat_value"
+        app:layout_constraintTop_toBottomOf="@+id/tv_sending_fee_fiat_value"
         tools:text="0.1 BSV" />
 
     <TextView
-        android:id="@+id/tv_destination_fiat_value"
+        android:id="@+id/tv_receiving_fee_fiat_value"
         style="@style/TextStyle.Body2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
-        android:textColor="@color/light_text_03"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_destination_coin_value"
+        app:layout_constraintTop_toBottomOf="@+id/tv_receiving_fee_crypto_value"
         tools:text="($0.01)" />
 
     <TextView
@@ -193,9 +183,8 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
         android:text="@string/Swap.Confirmation.Cost"
-        android:textColor="@color/light_text_03"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_destination_fiat_value" />
+        app:layout_constraintTop_toBottomOf="@id/tv_receiving_fee_fiat_value" />
 
     <TextView
         android:id="@+id/tv_total_value"
@@ -203,7 +192,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
-        android:textColor="@color/light_text_03"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tv_total_title"
         tools:text="0.1 BSV" />
@@ -214,18 +202,21 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:src="@drawable/ic_info_black"
+        app:tint="@color/light_icons_02"
         app:layout_constraintBottom_toBottomOf="@id/tv_disclaimer"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/tv_disclaimer" />
 
     <TextView
         android:id="@+id/tv_disclaimer"
+        style="@style/TextStyle.Body2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="24dp"
         android:text="@string/Swap.Confirmation.Disclaimer"
+        android:textColor="@color/light_text_02"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/ic_info"
         app:layout_constraintTop_toBottomOf="@id/tv_total_title" />
