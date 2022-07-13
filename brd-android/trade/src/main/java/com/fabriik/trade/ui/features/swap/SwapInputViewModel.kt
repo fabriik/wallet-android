@@ -48,7 +48,7 @@ class SwapInputViewModel(
     private val currentLoadedState: SwapInputContract.State.Loaded?
         get() = state.value as SwapInputContract.State.Loaded?
 
-    private val maxAmountLimit = profileManager.getProfile().nextExchangeLimit()
+    private val maxAmountLimitFiat = profileManager.getProfile().nextExchangeLimit()
     private val ratesRepository by kodein.instance<RatesRepository>()
 
     private var currentTimerJob: Job? = null
@@ -175,8 +175,13 @@ class SwapInputViewModel(
     private fun onMaxAmountClicked() {
         val state = currentLoadedState ?: return
 
+        val maxAmountLimitCrypto = maxAmountLimitFiat.toCrypto(
+            cryptoCurrency = state.sourceCryptoCurrency,
+            fiatCurrency = state.fiatCurrency
+        )
+
         onSourceCurrencyCryptoAmountChanged(
-            min(state.sourceCryptoBalance, maxAmountLimit), false
+            min(state.sourceCryptoBalance, maxAmountLimitCrypto), false
         )
     }
 
@@ -308,7 +313,7 @@ class SwapInputViewModel(
                 SwapInputContract.State.Loaded(
                     tradingPairs = tradingPairs,
                     selectedPair = selectedPair,
-                    fiatCurrency = BRSharedPrefs.getPreferredFiatIso(),
+                    fiatCurrency = "USD",
                     quoteResponse = selectedPairQuote,
                     sourceCryptoCurrency = selectedPair.baseCurrency,
                     destinationCryptoCurrency = selectedPair.termCurrency,
