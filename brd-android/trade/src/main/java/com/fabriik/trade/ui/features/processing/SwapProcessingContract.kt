@@ -12,8 +12,8 @@ interface SwapProcessingContract {
 
     sealed class Effect : FabriikContract.Effect {
         object Dismiss : Effect()
-        object OpenDetails : Effect()
         object GoHome : Effect()
+        data class OpenDetails(val id: String) : Effect()
     }
 
     data class State(

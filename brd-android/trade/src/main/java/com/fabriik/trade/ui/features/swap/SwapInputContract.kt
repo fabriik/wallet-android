@@ -41,6 +41,7 @@ interface SwapInputContract {
         data class CurrenciesReplaceAnimation(val stateChange: State.Loaded) : Effect()
         data class ShowToast(val message: String): Effect()
         data class ContinueToSwapProcessing(
+            val exchangeId: String,
             val sourceCurrency: String,
             val destinationCurrency: String
         ) : Effect()

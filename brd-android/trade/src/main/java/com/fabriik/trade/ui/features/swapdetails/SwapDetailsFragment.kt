@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -16,14 +17,9 @@ import com.fabriik.common.ui.base.FabriikView
 import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.common.utils.viewScope
 import com.fabriik.trade.R
-import com.fabriik.trade.data.response.ExchangeOrder
 import com.fabriik.trade.data.response.ExchangeOrderStatus
-import com.fabriik.trade.data.response.Status
 import com.fabriik.trade.databinding.FragmentSwapDetailsBinding
 import kotlinx.coroutines.flow.collect
-import com.fabriik.trade.ui.features.swapdetails.SwapStatus.PENDING
-import com.fabriik.trade.ui.features.swapdetails.SwapStatus.COMPLETE
-import com.fabriik.trade.ui.features.swapdetails.SwapStatus.FAILED
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -104,11 +100,17 @@ class SwapDetailsFragment : Fragment(),
     }
 
     private fun showErrorState() {
-
+        with(binding) {
+            content.isVisible = false
+            initialLoadingIndicator.isVisible = false
+        }
     }
 
     private fun showLoadingState() {
-
+        with(binding) {
+            content.isVisible = false
+            initialLoadingIndicator.isVisible = true
+        }
     }
 
     private fun showLoadedState(state: SwapDetailsContract.State.Loaded) {
@@ -174,6 +176,9 @@ class SwapDetailsFragment : Fragment(),
 
             icStatus.setImageResource(setStatusIcon(data.status))
             tvStatus.text = getString(setStatusTitle(data.status))
+
+            content.isVisible = true
+            initialLoadingIndicator.isVisible = false
         }
     }
 

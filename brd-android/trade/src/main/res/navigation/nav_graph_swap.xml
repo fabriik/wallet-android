@@ -51,6 +51,10 @@
         tools:layout="@layout/fragment_swap_process">
 
         <argument
+            android:name="exchangeId"
+            app:argType="string" />
+
+        <argument
             android:name="coinFrom"
             app:argType="string"
             app:nullable="false" />

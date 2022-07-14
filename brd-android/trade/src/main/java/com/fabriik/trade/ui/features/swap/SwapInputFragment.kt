@@ -185,7 +185,8 @@ class SwapInputFragment : Fragment(),
                 findNavController().navigate(
                     SwapInputFragmentDirections.actionSwapProcessing(
                         coinFrom = effect.sourceCurrency,
-                        coinTo = effect.destinationCurrency
+                        coinTo = effect.destinationCurrency,
+                        exchangeId = effect.exchangeId
                     )
                 )
 

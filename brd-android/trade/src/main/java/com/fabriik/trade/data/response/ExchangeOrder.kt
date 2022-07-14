@@ -22,6 +22,7 @@ data class ExchangeOrder(
     val timestamp: Long,
 )
 
+@JsonClass(generateAdapter = true)
 data class ExchangeSource(
     @Json(name = "currency")
     val currency: String,
