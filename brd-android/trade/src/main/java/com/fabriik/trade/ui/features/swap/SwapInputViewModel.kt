@@ -67,7 +67,10 @@ class SwapInputViewModel(
             SwapInputContract.Event.ConfirmClicked ->
                 onConfirmClicked()
 
-            SwapInputContract.Event.OnConfirmationDialogConfirmed -> currentLoadedState?.let {
+            SwapInputContract.Event.OnConfirmationDialogConfirmed ->
+                setEffect { SwapInputContract.Effect.RequestUserAuthentication }
+
+            SwapInputContract.Event.OnUserAuthenticationSucceed -> currentLoadedState?.let {
                 setEffect {
                     SwapInputContract.Effect.ContinueToSwapProcessing(
                         sourceCurrency = it.sourceCryptoCurrency,

@@ -163,6 +163,11 @@ class SwapInputFragment : Fragment(),
             SwapInputContract.Effect.DeselectMinMaxSwitchItems ->
                 binding.switchMinMax.setSelectedItem(FabriikSwitch.OPTION_NONE)
 
+            SwapInputContract.Effect.RequestUserAuthentication ->
+                findNavController().navigate(
+                    SwapInputFragmentDirections.actionSwapAuthentication()
+                )
+
             is SwapInputContract.Effect.ConfirmDialog ->
                 findNavController().navigate(
                     SwapInputFragmentDirections.actionConfirmationDialog(

@@ -17,6 +17,7 @@ interface SwapInputContract {
         object ReplaceCurrenciesClicked : Event()
         object DestinationCurrencyClicked : Event()
         object OnConfirmationDialogConfirmed : Event()
+        object OnUserAuthenticationSucceed : Event()
 
         data class SourceCurrencyChanged(val currencyCode: String) : Event()
         data class DestinationCurrencyChanged(val currencyCode: String) : Event()
@@ -30,6 +31,7 @@ interface SwapInputContract {
     sealed class Effect : FabriikContract.Effect {
         object Dismiss : Effect()
         object DeselectMinMaxSwitchItems : Effect()
+        object RequestUserAuthentication : Effect()
         data class ConfirmDialog(
             val to: AmountData,
             val from: AmountData,
