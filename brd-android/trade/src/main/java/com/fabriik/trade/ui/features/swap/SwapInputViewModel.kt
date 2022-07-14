@@ -193,14 +193,6 @@ class SwapInputViewModel(
 
             currentLoadedState?.let {
                 val stateChange = it.copy(
-                    cryptoExchangeRate = when (it.sourceCryptoCurrency) {
-                        it.selectedPair.baseCurrency -> BigDecimal.ONE.divide(
-                            it.quoteResponse.closeBid,
-                            10,
-                            RoundingMode.HALF_UP
-                        )
-                        else -> it.quoteResponse.closeAsk
-                    },
                     sourceFiatAmount = it.destinationFiatAmount,
                     sourceCryptoAmount = it.destinationCryptoAmount,
                     destinationFiatAmount = it.sourceFiatAmount,
@@ -255,10 +247,12 @@ class SwapInputViewModel(
             when (response.status) {
                 Status.SUCCESS -> {
                     val latestState = currentLoadedState ?: return@launch
+                    val responseData = requireNotNull(response.data)
+
                     setState {
                         latestState.copy(
                             cryptoExchangeRateLoading = false,
-                            quoteResponse = requireNotNull(response.data)
+                            quoteResponse = responseData
                         )
                     }
                     startQuoteTimer()
@@ -317,8 +311,7 @@ class SwapInputViewModel(
                     quoteResponse = selectedPairQuote,
                     sourceCryptoCurrency = selectedPair.baseCurrency,
                     destinationCryptoCurrency = selectedPair.termCurrency,
-                    sourceCryptoBalance = sourceCryptoBalance,
-                    cryptoExchangeRate = selectedPairQuote.closeAsk
+                    sourceCryptoBalance = sourceCryptoBalance
                 )
             }
 
@@ -395,10 +388,7 @@ class SwapInputViewModel(
         }
     }
 
-    private fun onSourceCurrencyCryptoAmountChanged(
-        sourceCryptoAmount: BigDecimal,
-        changeByUser: Boolean = true
-    ) {
+    private fun onSourceCurrencyCryptoAmountChanged(sourceCryptoAmount: BigDecimal, changeByUser: Boolean = true) {
         val state = currentLoadedState ?: return
 
         viewModelScope.launch(Dispatchers.IO) {
@@ -562,9 +552,7 @@ class SwapInputViewModel(
     }
 
     private suspend fun estimateFee(
-        cryptoAmount: BigDecimal,
-        currencyCode: String,
-        fiatCode: String
+        cryptoAmount: BigDecimal, currencyCode: String, fiatCode: String
     ): AmountData? {
         val wallet = breadBox.wallet(currencyCode).first()
         val amount = Amount.create(cryptoAmount.toDouble(), wallet.unit)
@@ -617,11 +605,7 @@ class SwapInputViewModel(
         ) ?: BigDecimal.ZERO
     }
 
-    private suspend fun BigDecimal.convertSource(
-        fromCryptoCurrency: String,
-        toCryptoCurrency: String,
-        rate: BigDecimal
-    ): Triple<AmountData?, AmountData?, BigDecimal> {
+    private suspend fun BigDecimal.convertSource(fromCryptoCurrency: String, toCryptoCurrency: String, rate: BigDecimal): Triple<AmountData?, AmountData?, BigDecimal> {
         val state = currentLoadedState ?: return Triple(null, null, BigDecimal.ZERO)
 
         val destAmount = this.multiply(rate)
@@ -631,11 +615,7 @@ class SwapInputViewModel(
         return Triple(sourceFee, destFee, destAmount)
     }
 
-    private suspend fun BigDecimal.convertDestination(
-        fromCryptoCurrency: String,
-        toCryptoCurrency: String,
-        rate: BigDecimal
-    ): Triple<AmountData?, AmountData?, BigDecimal> {
+    private suspend fun BigDecimal.convertDestination(fromCryptoCurrency: String, toCryptoCurrency: String, rate: BigDecimal): Triple<AmountData?, AmountData?, BigDecimal> {
         val state = currentLoadedState ?: return Triple(null, null, BigDecimal.ZERO)
 
         val sourceAmount = this.divide(rate, 5, RoundingMode.HALF_UP)
