@@ -1,12 +1,14 @@
 package com.fabriik.trade.data.response
 
-import com.google.common.primitives.UnsignedLong
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import java.math.BigDecimal
 
 @JsonClass(generateAdapter = true)
 data class QuoteResponse(
+    @Json(name = "quote_id")
+    val quoteId: String,
+
     @Json(name = "security_id")
     val securityId: String,
 
