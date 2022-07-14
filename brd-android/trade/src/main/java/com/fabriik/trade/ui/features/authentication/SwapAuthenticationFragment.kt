@@ -36,6 +36,16 @@ class SwapAuthenticationFragment : Fragment(),
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentSwapAuthenticationBinding.bind(view)
 
+        with (binding) {
+            toolbar.setBackButtonClickListener {
+                viewModel.setEvent(SwapAuthenticationContract.Event.BackClicked)
+            }
+
+            toolbar.setDismissButtonClickListener {
+                viewModel.setEvent(SwapAuthenticationContract.Event.DismissClicked)
+            }
+        }
+
         biometricPrompt = BiometricPrompt(
             requireActivity(),
             ContextCompat.getMainExecutor(requireActivity()),

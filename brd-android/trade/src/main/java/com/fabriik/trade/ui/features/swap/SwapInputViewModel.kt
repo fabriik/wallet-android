@@ -65,7 +65,8 @@ class SwapInputViewModel(
                 setEffect { SwapInputContract.Effect.Dismiss }
 
             SwapInputContract.Event.ConfirmClicked ->
-                onConfirmClicked()
+                setEffect { SwapInputContract.Effect.RequestUserAuthentication } //todo: revert
+                //onConfirmClicked()
 
             SwapInputContract.Event.OnConfirmationDialogConfirmed ->
                 setEffect { SwapInputContract.Effect.RequestUserAuthentication }
