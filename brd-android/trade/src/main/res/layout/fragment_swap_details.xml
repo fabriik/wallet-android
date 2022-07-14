@@ -320,10 +320,11 @@
                 style="@style/TextStyle.Body2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:layout_marginTop="4dp"
-                android:textColor="@color/light_text_04"
-                tools:text="Pending" />
+                android:drawableEnd="@drawable/ic_copy"
+                android:textColor="@color/light_link_02"
+                tools:text="39246726y89e1ruhut7e3xy78e1xg17gx71x2xuih7y7y8y8y8y2782yx78x8382643j21" />
+
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>

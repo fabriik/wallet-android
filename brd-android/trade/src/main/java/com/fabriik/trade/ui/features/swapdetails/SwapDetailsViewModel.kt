@@ -1,38 +1,82 @@
 package com.fabriik.trade.ui.features.swapdetails
 
 import android.app.Application
+import androidx.lifecycle.SavedStateHandle
+import com.fabriik.common.data.Status
 import com.fabriik.common.ui.base.FabriikViewModel
+import com.fabriik.common.utils.getString
+import com.fabriik.common.utils.toBundle
+import com.fabriik.trade.R
+import com.fabriik.trade.data.SwapApi
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.closestKodein
+import org.kodein.di.erased.instance
 
 class SwapDetailsViewModel(
-    application: Application
+    application: Application,
+    savedStateHandle: SavedStateHandle
 ) :
     FabriikViewModel<SwapDetailsContract.State, SwapDetailsContract.Event, SwapDetailsContract.Effect>(
-        application
-    ) {
+        application, savedStateHandle
+    ), KodeinAware {
 
-    override fun createInitialState(): SwapDetailsContract.State =
-        SwapDetailsContract.State(
-            status = SwapStatus.PENDING,
-            orderId = "39246726y89e1ruhut7e3xy78e2xuih7y7y8y8y8y2782yx78x8382643j21",
-            swapFromCurrency = "BSV",
-            swapToCurrency = "BTC",
-            swapFromID = "39246726y89e1ruhut7e3xy78e1xg17gx71x2xuih7y7y8y8y8y2782yx78x8382643j21",
-            swapToId = "Pending",
-            timestamp = "22 Feb 2022, 1:29pm",
-            swapFromCurrencyValue = "50 / \$2,859.00 USD",
-            swapToCurrencyValue = "0.095 / \$2,857.48 USD"
+    override val kodein by closestKodein { application }
+
+    private val swapApi by kodein.instance<SwapApi>()
+
+    private lateinit var arguments: SwapDetailsFragmentArgs
+
+    private val currentLoadedState: SwapDetailsContract.State.Loaded?
+        get() = state.value as SwapDetailsContract.State.Loaded?
+
+    override fun parseArguments(savedStateHandle: SavedStateHandle) {
+        arguments = SwapDetailsFragmentArgs.fromBundle(
+            savedStateHandle.toBundle()
         )
+    }
+
+    override fun createInitialState() = SwapDetailsContract.State.Loading
 
     override fun handleEvent(event: SwapDetailsContract.Event) {
         when (event) {
+            SwapDetailsContract.Event.LoadData ->
+                loadData()
+
             SwapDetailsContract.Event.DismissClicked ->
                 setEffect { SwapDetailsContract.Effect.Dismiss }
 
-            SwapDetailsContract.Event.OrderIdClicked ->
-                setEffect { SwapDetailsContract.Effect.CopyToClipboard(currentState.orderId) }
+            SwapDetailsContract.Event.OrderIdClicked -> {
+                val state = currentLoadedState ?: return
+                setEffect { SwapDetailsContract.Effect.CopyToClipboard(state.data.orderId) }
+            }
 
-            SwapDetailsContract.Event.TransactionIdClicked ->
-                setEffect { SwapDetailsContract.Effect.CopyToClipboard(currentState.swapFromID) }
+            SwapDetailsContract.Event.TransactionIdClicked -> {
+                val state = currentLoadedState ?: return
+                setEffect { SwapDetailsContract.Effect.CopyToClipboard(state.data.orderId) } //todo: transaction id
+            }
         }
+    }
+
+    private fun loadData() {
+        callApi(
+            endState = { currentState },
+            startState = { currentState },
+            action = { swapApi.getExchangeOrder(arguments.exchangeId) },
+            callback = {
+                when (it.status) {
+                    Status.SUCCESS ->
+                        setState { SwapDetailsContract.State.Loaded(requireNotNull(it.data)) }
+
+                    Status.ERROR -> {
+                        setState { SwapDetailsContract.State.Error }
+                        setEffect {
+                            SwapDetailsContract.Effect.ShowToast(
+                                it.message ?: getString(R.string.FabriikApi_DefaultError)
+                            )
+                        }
+                    }
+                }
+            }
+        )
     }
 }
