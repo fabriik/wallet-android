@@ -627,20 +627,20 @@ class SwapInputViewModel(
             val amount = Amount.create(order.amount.toDouble(), wallet.unit)
 
             if (address == null || wallet.containsAddress(address)) {
-                //todo: error message
+                showGenericError()
                 return@launch
             }
 
             val attributes = wallet.getTransferAttributesFor(address)
             if (attributes.any { wallet.validateTransferAttribute(it).isPresent }) {
-                //todo: error message
+                showGenericError()
                 return@launch
             }
 
             val phrase = try {
                 checkNotNull(userManager.getPhrase())
             } catch (e: UserNotAuthenticatedException) {
-                //todo: error message
+                showGenericError()
                 return@launch
             }
 
@@ -651,7 +651,7 @@ class SwapInputViewModel(
             )
 
             if (feeBasis == null) {
-                //todo: error message
+                showGenericError()
                 return@launch
             }
 
@@ -659,7 +659,7 @@ class SwapInputViewModel(
                 wallet.createTransfer(address, amount, feeBasis, attributes).orNull()
 
             if (newTransfer == null) {
-                //todo: error message
+                showGenericError()
             } else {
                 wallet.walletManager.submit(newTransfer, phrase)
                 breadBox.walletTransfer(order.currency, newTransfer)
@@ -717,7 +717,7 @@ class SwapInputViewModel(
         return try {
             val data = wallet.estimateFee(address, amount, networkFee)
             val fee = data.fee.toBigDecimal()
-            //check(!fee.isZero()) { "Estimated fee was zero" }
+            check(!fee.isZero()) { "Estimated fee was zero" }
             data
         } catch (e: FeeEstimationError) {
             logError("Failed get fee estimate", e)
@@ -762,6 +762,14 @@ class SwapInputViewModel(
         val destFee = estimateFee(this, fromCryptoCurrency, state.fiatCurrency)
 
         return Triple(sourceFee, destFee, sourceAmount)
+    }
+
+    private fun showGenericError() {
+        setEffect {
+            SwapInputContract.Effect.ShowToast(
+                getString(R.string.FabriikApi_DefaultError)
+            )
+        }
     }
 
     private fun SwapInputContract.State.Loaded.validate() = copy(
