@@ -4,6 +4,7 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.breadwallet.breadbox.*
+import com.breadwallet.crypto.Address
 import com.breadwallet.crypto.AddressScheme
 import com.breadwallet.crypto.Amount
 import com.breadwallet.repository.RatesRepository
@@ -71,14 +72,8 @@ class SwapInputViewModel(
             SwapInputContract.Event.OnConfirmationDialogConfirmed ->
                 setEffect { SwapInputContract.Effect.RequestUserAuthentication }
 
-            SwapInputContract.Event.OnUserAuthenticationSucceed -> currentLoadedState?.let {
-                setEffect {
-                    SwapInputContract.Effect.ContinueToSwapProcessing(
-                        sourceCurrency = it.sourceCryptoCurrency,
-                        destinationCurrency = it.destinationCryptoCurrency
-                    )
-                }
-            }
+            SwapInputContract.Event.OnUserAuthenticationSucceed ->
+                createSwapOrder()
 
             SwapInputContract.Event.SourceCurrencyClicked ->
                 onSourceCurrencyClicked()
@@ -194,6 +189,7 @@ class SwapInputViewModel(
 
         viewModelScope.launch(Dispatchers.IO) {
             val balance = loadCryptoBalance(currentData.destinationCryptoCurrency) ?: return@launch
+            val destinationAddress = loadAddress(currentData.destinationCryptoCurrency) ?: return@launch
 
             currentLoadedState?.let {
                 val stateChange = it.copy(
@@ -204,6 +200,7 @@ class SwapInputViewModel(
                     sourceCryptoBalance = balance,
                     sourceCryptoCurrency = currentData.destinationCryptoCurrency,
                     destinationCryptoCurrency = currentData.sourceCryptoCurrency,
+                    destinationAddress = destinationAddress.toString(),
                     sendingNetworkFee = currentData.receivingNetworkFee,
                     receivingNetworkFee = currentData.sendingNetworkFee,
                 )
@@ -307,6 +304,12 @@ class SwapInputViewModel(
                 return@launch
             }
 
+            val destinationAddress = loadAddress(selectedPair.termCurrency)
+            if (destinationAddress == null) {
+                showErrorState()
+                return@launch
+            }
+
             setState {
                 SwapInputContract.State.Loaded(
                     tradingPairs = tradingPairs,
@@ -315,6 +318,7 @@ class SwapInputViewModel(
                     quoteResponse = selectedPairQuote,
                     sourceCryptoCurrency = selectedPair.baseCurrency,
                     destinationCryptoCurrency = selectedPair.termCurrency,
+                    destinationAddress = destinationAddress.toString(),
                     sourceCryptoBalance = sourceCryptoBalance
                 )
             }
@@ -329,6 +333,25 @@ class SwapInputViewModel(
             .find { it.currency.code.equals(currencyCode, ignoreCase = true) }
 
         return wallet?.balance?.toBigDecimal()
+    }
+
+    private suspend fun loadAddress(currencyCode: String): Address? {
+        val wallet = breadBox.wallets()
+            .first()
+            .find {
+                it.currency.code.equals(currencyCode, ignoreCase = true)
+            } ?: return null
+
+        return if (wallet.currency.isBitcoin()) {
+            wallet.getTargetForScheme(
+                when (BRSharedPrefs.getIsSegwitEnabled()) {
+                    true -> AddressScheme.BTC_SEGWIT
+                    false -> AddressScheme.BTC_LEGACY
+                }
+            )
+        } else {
+            wallet.target
+        }
     }
 
     private fun onSourceCurrencyClicked() {
@@ -555,21 +578,49 @@ class SwapInputViewModel(
         }
     }
 
+    private fun createSwapOrder() {
+        val state = currentLoadedState ?: return
+
+        /*callApi( //todo: enable when API is ready
+            endState = { state.copy() }, //todo: loading
+            startState = { state.copy() }, //todo: loading
+            action = {
+                swapApi.createOrder(
+                    amount = state.sourceCryptoAmount,
+                    quoteResponse = state.quoteResponse,
+                    destinationAddress = state.destinationAddress,
+                    destinationCurrency = state.destinationCryptoCurrency
+                )
+            },
+            callback = {
+                when (it.status) {
+                    Status.SUCCESS ->*/
+                        setEffect {
+                            SwapInputContract.Effect.ContinueToSwapProcessing(
+                                sourceCurrency = state.sourceCryptoCurrency,
+                                destinationCurrency = state.destinationCryptoCurrency
+                            )
+                        }
+
+                    /*Status.ERROR ->
+                        setEffect {
+                            SwapInputContract.Effect.ShowToast(
+                                it.message ?: getString(
+                                    R.string.FabriikApi_DefaultError
+                                )
+                            )
+                        }
+                }
+            }
+        )*/
+    }
+
     private suspend fun estimateFee(
         cryptoAmount: BigDecimal, currencyCode: String, fiatCode: String
     ): AmountData? {
         val wallet = breadBox.wallet(currencyCode).first()
         val amount = Amount.create(cryptoAmount.toDouble(), wallet.unit)
-        val address = if (wallet.currency.isBitcoin()) {
-            wallet.getTargetForScheme(
-                when (BRSharedPrefs.getIsSegwitEnabled()) {
-                    true -> AddressScheme.BTC_SEGWIT
-                    false -> AddressScheme.BTC_LEGACY
-                }
-            )
-        } else {
-            wallet.target
-        }
+        val address = loadAddress(wallet.currency.code) ?: return null
 
         return try {
             val data = wallet.estimateFee(address, amount)
