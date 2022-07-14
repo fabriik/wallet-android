@@ -20,6 +20,7 @@
         <item name="materialCardViewStyle">@style/FabriikCardViewStyle</item>
         <item name="android:colorControlHighlight">@color/fabriik_ripple_color</item>
         <item name="colorControlHighlight">@color/fabriik_ripple_color</item>
+        <item name="pin_pad_delete_src">@drawable/ic_fabriik_delete</item>
     </style>
 
 </resources>

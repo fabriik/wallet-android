@@ -12,11 +12,10 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.breadwallet.R;
-import com.breadwallet.app.BreadApp;
+import com.breadwallet.appcore.R;
+import com.breadwallet.app.KodeinProvider;
 import com.breadwallet.tools.security.BrdUserState;
 import com.breadwallet.tools.security.BrdUserManager;
-import com.breadwallet.tools.security.BrdUserManagerKt;
 import com.breadwallet.tools.util.EventUtils;
 
 import java.util.ArrayList;
@@ -59,11 +58,11 @@ public class PinLayout extends LinearLayout implements BRKeyboard.OnInsertListen
     private BRKeyboard mKeyboard;
     private int mBaseResourceID;
     private StringBuilder mPinStringBuilder = new StringBuilder();
-    private int mPinLimit = BrdUserManagerKt.PIN_LENGTH;
+    private int mPinLimit = BrdUserManager.PIN_LENGTH;
     private PinLayoutListener mOnPinInsertedListener;
     private boolean mIsPinUpdating;
     private int mPinDotBackground;
-    private BrdUserManager mUserManager = BreadApp.getKodeinInstance().Instance(TT(BrdUserManager.class), null);
+    private BrdUserManager mUserManager = KodeinProvider.get().Instance(TT(BrdUserManager.class), null);
 
     public PinLayout(Context context) {
         super(context);
@@ -111,7 +110,7 @@ public class PinLayout extends LinearLayout implements BRKeyboard.OnInsertListen
         View first = mPinDigitViewsAll.get(FIRST_INDEX);
         View last = mPinDigitViewsAll.get(SIXTH_INDEX);
         if (useNewLimit) {
-            mPinLimit = BrdUserManagerKt.PIN_LENGTH;
+            mPinLimit = BrdUserManager.PIN_LENGTH;
             first.setVisibility(View.VISIBLE);
             last.setVisibility(View.VISIBLE);
             if (!mPinDigitViews.contains(first)) {
@@ -121,7 +120,7 @@ public class PinLayout extends LinearLayout implements BRKeyboard.OnInsertListen
                 mPinDigitViews.add(last);
             }
         } else {
-            mPinLimit = BrdUserManagerKt.LEGACY_PIN_LENGTH;
+            mPinLimit = BrdUserManager.LEGACY_PIN_LENGTH;
             first.setVisibility(View.GONE);
             last.setVisibility(View.GONE);
             if (mPinDigitViews.contains(first)) {

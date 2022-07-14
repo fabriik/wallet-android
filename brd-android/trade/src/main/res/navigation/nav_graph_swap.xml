@@ -22,7 +22,15 @@
             android:id="@+id/actionConfirmationDialog"
             app:destination="@id/dialogSwapConfirmation" />
 
+        <action
+            android:id="@+id/actionSwapAuthentication"
+            app:destination="@id/fragmentSwapAuthentication" />
+
     </fragment>
+
+    <fragment android:id="@+id/fragmentSwapAuthentication"
+        android:name="com.fabriik.trade.ui.features.authentication.SwapAuthenticationFragment"
+        tools:layout="@layout/fragment_swap_authentication"/>
 
     <fragment
         android:id="@+id/fragmentAssetSelection"

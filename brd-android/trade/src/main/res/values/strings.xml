@@ -13,6 +13,10 @@
     <string name="Swap.AssetsSelection.Title">Select assets</string>
     <string name="Swap.AssetsSelection.SearchHint">Search</string>
 
+    <!-- Pin auth screen -->
+    <string name="Swap.PinAuth.Title">Enter your PIN</string>
+    <string name="Swap.PinAuth.Subtitle">Please enter your PIN to confirm the transaction</string>
+
     <!-- Transaction item custom view -->
     <string name="Swap.TransactionItem.Swapped">Swapped from</string>
     <string name="Swap.TransactionItem.Pending">Pending swap from</string>

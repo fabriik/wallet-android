@@ -86,8 +86,6 @@ import java.util.concurrent.atomic.AtomicInteger
 import javax.crypto.Cipher
 import kotlin.math.pow
 
-const val PIN_LENGTH = 6
-const val LEGACY_PIN_LENGTH = 4
 private const val MAX_UNLOCK_ATTEMPTS = 3
 private const val JWT_EXP_PADDING_MS = 10_000L
 private const val ANDROID_KEY_STORE = "AndroidKeyStore"
@@ -325,7 +323,7 @@ class CryptoUserManager(
 
     override suspend fun configurePinCode(pinCode: String) {
         checkNotNull(getPhrase()) { "Phrase is null, cannot set pin code." }
-        check(pinCode.length == PIN_LENGTH && pinCode.toIntOrNull() != null) {
+        check(pinCode.length == BrdUserManager.PIN_LENGTH && pinCode.toIntOrNull() != null) {
             "Invalid pin code."
         }
 
@@ -366,7 +364,7 @@ class CryptoUserManager(
     override fun hasPinCode() = getPinCode().isNotBlank()
 
     override fun pinCodeNeedsUpgrade() =
-        getPinCode().let { it.isNotBlank() && it.length != PIN_LENGTH }
+        getPinCode().let { it.isNotBlank() && it.length != BrdUserManager.PIN_LENGTH }
 
     override fun lock() {
         if (!locked.getAndSet(true)) {
@@ -549,7 +547,7 @@ class CryptoUserManager(
 
     private fun disabledUntil(failCount: Int, failTimestamp: Long): Long {
         val pow =
-            PIN_LENGTH.toDouble()
+            BrdUserManager.PIN_LENGTH.toDouble()
                 .pow((failCount - MAX_UNLOCK_ATTEMPTS).toDouble()) * DateUtils.MINUTE_IN_MILLIS
         return (failTimestamp + pow).toLong()
     }
