@@ -5,6 +5,7 @@ import com.fabriik.trade.data.model.AmountData
 import com.fabriik.trade.data.model.TradingPair
 import com.fabriik.trade.data.response.QuoteResponse
 import java.math.BigDecimal
+import java.math.RoundingMode
 
 interface SwapInputContract {
 
@@ -65,7 +66,6 @@ interface SwapInputContract {
             val sourceCryptoBalance: BigDecimal,
             val sourceCryptoCurrency: String,
             val destinationCryptoCurrency: String,
-            val cryptoExchangeRate: BigDecimal,
             val cryptoExchangeRateLoading: Boolean = false,
             val sourceFiatAmount: BigDecimal = BigDecimal.ZERO,
             val sourceCryptoAmount: BigDecimal = BigDecimal.ZERO,
@@ -74,7 +74,16 @@ interface SwapInputContract {
             val sendingNetworkFee: AmountData? = null,
             val receivingNetworkFee: AmountData? = null,
             val confirmButtonEnabled: Boolean = false
-        ) : State()
+        ) : State() {
+
+            val cryptoExchangeRate: BigDecimal
+                get() = when {
+                    quoteResponse.securityId.startsWith(sourceCryptoCurrency) ->
+                        quoteResponse.closeBid
+                    else ->
+                        BigDecimal.ONE.divide(quoteResponse.closeAsk, 20, RoundingMode.HALF_UP)
+                }
+        }
     }
 
 }

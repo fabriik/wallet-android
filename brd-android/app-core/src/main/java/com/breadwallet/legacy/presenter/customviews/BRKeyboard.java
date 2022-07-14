@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
-import com.breadwallet.R;
+import com.breadwallet.appcore.R;
 import com.breadwallet.tools.util.Utils;
 
 import java.util.ArrayList;
@@ -77,10 +77,8 @@ public class BRKeyboard extends LinearLayout implements View.OnClickListener {
         final int attributeCount = attributes.getIndexCount();
         for (int i = 0; i < attributeCount; ++i) {
             int attr = attributes.getIndex(i);
-            switch (attr) {
-                case R.styleable.BRKeyboard_showAlphabet:
-                    showAlphabet = attributes.getBoolean(attr, false);
-                    break;
+            if (attr == R.styleable.BRKeyboard_showAlphabet) {
+                showAlphabet = attributes.getBoolean(attr, false);
             }
         }
         attributes.recycle();

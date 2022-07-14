@@ -499,6 +499,7 @@ class BreadApp : Application(), KodeinAware, CameraXConfig.Provider {
         TokenHolder.provideContext(this)
         SessionHolder.provideContext(this)
         UserSessionManager.provideContext(this)
+        KodeinProvider.provideKodein(getKodeinInstance())
 
         ProcessLifecycleOwner.get().lifecycle.addObserver(ApplicationLifecycleObserver())
         ApplicationLifecycleObserver.addApplicationLifecycleListener { event ->
