@@ -76,4 +76,9 @@ interface BrdUserManager {
     fun updateVerifyPrompt(showVerifyPrompt: Boolean)
 
     fun onActivityResult(requestCode: Int, resultCode: Int)
+
+    companion object {
+        const val PIN_LENGTH = 6
+        const val LEGACY_PIN_LENGTH = 4
+    }
 }
