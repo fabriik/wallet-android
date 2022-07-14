@@ -48,7 +48,10 @@ class SwapDetailsFragment : Fragment(),
                 viewModel.setEvent(SwapDetailsContract.Event.OrderIdClicked)
             }
             tvSwapFromId.setOnClickListener {
-                viewModel.setEvent(SwapDetailsContract.Event.TransactionIdClicked)
+                viewModel.setEvent(SwapDetailsContract.Event.SourceTransactionIdClicked)
+            }
+            tvSwapToId.setOnClickListener {
+                viewModel.setEvent(SwapDetailsContract.Event.DestinationTransactionIdClicked)
             }
         }
 

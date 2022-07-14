@@ -9,7 +9,8 @@ interface SwapDetailsContract {
         object LoadData : Event()
         object DismissClicked : Event()
         object OrderIdClicked : Event()
-        object TransactionIdClicked : Event()
+        object SourceTransactionIdClicked : Event()
+        object DestinationTransactionIdClicked : Event()
     }
 
     sealed class Effect : FabriikContract.Effect {

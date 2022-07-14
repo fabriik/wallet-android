@@ -50,9 +50,14 @@ class SwapDetailsViewModel(
                 setEffect { SwapDetailsContract.Effect.CopyToClipboard(state.data.orderId) }
             }
 
-            SwapDetailsContract.Event.TransactionIdClicked -> {
-                val state = currentLoadedState ?: return
-                setEffect { SwapDetailsContract.Effect.CopyToClipboard(state.data.orderId) } //todo: transaction id
+            SwapDetailsContract.Event.SourceTransactionIdClicked -> {
+                val transactionID = currentLoadedState?.data?.source?.transactionId ?: return
+                setEffect { SwapDetailsContract.Effect.CopyToClipboard(transactionID) }
+            }
+
+            SwapDetailsContract.Event.DestinationTransactionIdClicked -> {
+                val transactionID = currentLoadedState?.data?.destination?.transactionId ?: return
+                setEffect { SwapDetailsContract.Effect.CopyToClipboard(transactionID) }
             }
         }
     }
