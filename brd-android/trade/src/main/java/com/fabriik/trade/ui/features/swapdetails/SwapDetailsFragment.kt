@@ -26,7 +26,7 @@ import java.util.*
 class SwapDetailsFragment : Fragment(),
     FabriikView<SwapDetailsContract.State, SwapDetailsContract.Effect> {
 
-    private val dateFormatter = SimpleDateFormat("DD MMM yyyy, HH:mma", Locale.getDefault())
+    private val dateFormatter = SimpleDateFormat("dd MMM yyyy, h:mm a", Locale.getDefault())
 
     private lateinit var binding: FragmentSwapDetailsBinding
     private val viewModel: SwapDetailsViewModel by viewModels()
@@ -69,6 +69,8 @@ class SwapDetailsFragment : Fragment(),
         requireActivity().onBackPressedDispatcher.addCallback {
             //User shouldn't be allowed to go back
         }
+
+        viewModel.setEvent(SwapDetailsContract.Event.LoadData)
     }
 
     override fun render(state: SwapDetailsContract.State) {
@@ -141,15 +143,15 @@ class SwapDetailsFragment : Fragment(),
 
                 val formatFiatTo = data.destination.usdAmount.formatFiatForUi("USD")
                 val formatCryptoTo = data.destination.currencyAmount.formatCryptoForUi(null)
-                tvToCurrencyValue.text = "$formatFiatTo / $formatCryptoTo"
+                tvToCurrencyValue.text = "$formatCryptoTo / $formatFiatTo"
 
-                tvSwapFrom.text = getString(R.string.Swap_Details_To, data.source.currency)
+                tvSwapFrom.text = getString(R.string.Swap_Details_From, data.source.currency)
                 tvSwapFromId.text = data.source.transactionId ?: getString(
                     R.string.Swap_Details_Status_Pending
                 )
 
                 tvSwapFromIdTitle.text = getString(
-                    R.string.Swap_Details_TransactionIdTo_Title, data.source.currency
+                    R.string.Swap_Details_TransactionIdFrom_Title, data.source.currency
                 )
 
                 if (data.source.transactionId.isNullOrEmpty()) {
@@ -168,7 +170,7 @@ class SwapDetailsFragment : Fragment(),
 
                 val formatFiatFrom = data.source.usdAmount.formatFiatForUi("USD")
                 val formatCryptoFrom = data.source.currencyAmount.formatCryptoForUi(null)
-                tvFromCurrencyValue.text = "$formatFiatFrom / $formatCryptoFrom"
+                tvFromCurrencyValue.text = "$formatCryptoFrom / $formatFiatFrom"
             }
 
             val date = Date(data.timestamp)
