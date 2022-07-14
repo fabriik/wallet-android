@@ -619,6 +619,8 @@ class SwapInputViewModel(
     }
 
     private fun createTransaction(order: CreateOrderResponse) {
+        val state = currentLoadedState ?: return
+
         viewModelScope.launch(Dispatchers.IO) {
             val wallet = breadBox.wallet(order.currency).first()
             val address = wallet.addressFor(order.address)
@@ -662,6 +664,13 @@ class SwapInputViewModel(
                 wallet.walletManager.submit(newTransfer, phrase)
                 breadBox.walletTransfer(order.currency, newTransfer)
                     .first()
+
+                setEffect {
+                    SwapInputContract.Effect.ContinueToSwapProcessing(
+                        sourceCurrency = state.sourceCryptoCurrency,
+                        destinationCurrency = state.destinationCryptoCurrency
+                    )
+                }
             }
         }
     }
@@ -708,7 +717,7 @@ class SwapInputViewModel(
         return try {
             val data = wallet.estimateFee(address, amount, networkFee)
             val fee = data.fee.toBigDecimal()
-            check(!fee.isZero()) { "Estimated fee was zero" }
+            //check(!fee.isZero()) { "Estimated fee was zero" }
             data
         } catch (e: FeeEstimationError) {
             logError("Failed get fee estimate", e)
