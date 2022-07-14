@@ -315,8 +315,7 @@ class SwapInputViewModel(
                     sourceCryptoCurrency = selectedPair.baseCurrency,
                     destinationCryptoCurrency = selectedPair.termCurrency,
                     destinationAddress = destinationAddress.toString(),
-                    sourceCryptoBalance = sourceCryptoBalance,
-                    cryptoExchangeRate = selectedPairQuote.closeAsk
+                    sourceCryptoBalance = sourceCryptoBalance
                 )
             }
 
