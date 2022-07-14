@@ -40,6 +40,14 @@ class SwapAuthenticationViewModel(
             SwapAuthenticationContract.Event.DismissClicked ->
                 setEffect { SwapAuthenticationContract.Effect.Dismiss }
 
+            is SwapAuthenticationContract.Event.PinValidated ->
+                setEffect {
+                    when (event.valid) {
+                        true -> SwapAuthenticationContract.Effect.Back(RESULT_KEY_SUCCESS)
+                        false -> SwapAuthenticationContract.Effect.ShakeError
+                    }
+                }
+
             is SwapAuthenticationContract.Event.AuthFailed -> when (currentState.authMode) {
                 SwapAuthenticationContract.AuthMode.USER_PREFERRED ->
                     setState {

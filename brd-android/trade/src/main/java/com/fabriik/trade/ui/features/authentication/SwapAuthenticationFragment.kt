@@ -13,6 +13,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.breadwallet.legacy.presenter.customviews.PinLayout
+import com.breadwallet.tools.animation.SpringAnimator
 import com.fabriik.common.ui.base.FabriikView
 import com.fabriik.trade.R
 import com.fabriik.trade.databinding.FragmentSwapAuthenticationBinding
@@ -44,6 +46,16 @@ class SwapAuthenticationFragment : Fragment(),
             toolbar.setDismissButtonClickListener {
                 viewModel.setEvent(SwapAuthenticationContract.Event.DismissClicked)
             }
+
+            pinLayout.setup(keyboard, object: PinLayout.PinLayoutListener {
+                override fun onPinInserted(pin: String?, isPinCorrect: Boolean) {
+                    viewModel.setEvent(SwapAuthenticationContract.Event.PinValidated(isPinCorrect))
+                }
+
+                override fun onPinLocked() {
+                    // empty
+                }
+            })
         }
 
         biometricPrompt = BiometricPrompt(
@@ -82,9 +94,7 @@ class SwapAuthenticationFragment : Fragment(),
         super.onAttach(context)
 
         when (viewModel.state.value.authMode) {
-            SwapAuthenticationContract.AuthMode.PIN_REQUIRED -> {
-                //todo
-            }
+            SwapAuthenticationContract.AuthMode.PIN_REQUIRED -> Unit //nothing to do
             SwapAuthenticationContract.AuthMode.BIOMETRIC_REQUIRED, SwapAuthenticationContract.AuthMode.USER_PREFERRED -> {
                 biometricPrompt.authenticate(
                     BiometricPrompt.PromptInfo.Builder()
@@ -98,8 +108,7 @@ class SwapAuthenticationFragment : Fragment(),
 
     override fun onDetach() {
         super.onDetach()
-        //todo: clear pin on detach
-        // binding.pinDigits.cleanUp()
+        binding.pinLayout.cleanUp()
     }
 
     override fun render(state: SwapAuthenticationContract.State) {
@@ -111,6 +120,9 @@ class SwapAuthenticationFragment : Fragment(),
         when (effect) {
             SwapAuthenticationContract.Effect.Dismiss ->
                 requireActivity().finish()
+
+            SwapAuthenticationContract.Effect.ShakeError ->
+                SpringAnimator.failShakeAnimation(requireContext(), binding.pinLayout)
 
             is SwapAuthenticationContract.Effect.Back -> {
                 parentFragmentManager.setFragmentResult(

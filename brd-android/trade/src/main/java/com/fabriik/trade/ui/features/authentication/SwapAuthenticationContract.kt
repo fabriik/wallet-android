@@ -9,10 +9,12 @@ interface SwapAuthenticationContract {
         object DismissClicked : Event()
         object AuthSucceeded : Event()
         data class AuthFailed(val errorCode: Int) : Event()
+        data class PinValidated(val valid: Boolean) : Event()
     }
 
     sealed class Effect : FabriikContract.Effect {
         object Dismiss : Effect()
+        object ShakeError : Effect()
         data class Back(val resultKey: String) : Effect()
     }
 

@@ -17,8 +17,8 @@ interface SwapInputContract {
         object SourceCurrencyClicked : Event()
         object ReplaceCurrenciesClicked : Event()
         object DestinationCurrencyClicked : Event()
-        object OnConfirmationDialogConfirmed : Event()
         object OnUserAuthenticationSucceed : Event()
+        object OnConfirmationDialogConfirmed : Event()
 
         data class SourceCurrencyChanged(val currencyCode: String) : Event()
         data class DestinationCurrencyChanged(val currencyCode: String) : Event()

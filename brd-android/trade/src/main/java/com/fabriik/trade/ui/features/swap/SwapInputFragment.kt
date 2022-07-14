@@ -20,6 +20,7 @@ import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.trade.ui.customview.SwapCardView
 import com.fabriik.trade.ui.dialog.SwapConfirmationDialog
 import com.fabriik.trade.ui.features.assetselection.AssetSelectionFragment
+import com.fabriik.trade.ui.features.authentication.SwapAuthenticationViewModel
 import java.math.BigDecimal
 
 class SwapInputFragment : Fragment(),
@@ -133,6 +134,16 @@ class SwapInputFragment : Fragment(),
             if (resultKey == SwapConfirmationDialog.RESULT_CONFIRM) {
                 binding.root.post {
                     viewModel.setEvent(SwapInputContract.Event.OnConfirmationDialogConfirmed)
+                }
+            }
+        }
+
+        // listen for user authentication result
+        parentFragmentManager.setFragmentResultListener(SwapAuthenticationViewModel.REQUEST_KEY, this) { _, bundle ->
+            val resultKey = bundle.getString(SwapAuthenticationViewModel.EXTRA_RESULT)
+            if (resultKey == SwapAuthenticationViewModel.RESULT_KEY_SUCCESS) {
+                binding.root.post {
+                    viewModel.setEvent(SwapInputContract.Event.OnUserAuthenticationSucceed)
                 }
             }
         }
