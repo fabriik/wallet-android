@@ -133,6 +133,9 @@ jobs:
       - store_artifacts:
           path: ~/artifacts
 workflows:
+  test:
+    jobs:
+      - test
   test_and_build:
     jobs:
       - test:
