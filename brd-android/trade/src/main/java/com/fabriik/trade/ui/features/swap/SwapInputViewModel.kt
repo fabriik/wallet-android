@@ -588,7 +588,7 @@ class SwapInputViewModel(
     private fun createSwapOrder() {
         val state = currentLoadedState ?: return
 
-        callApi( //todo: enable when API is ready
+        callApi(
             endState = { state.copy() }, //todo: loading
             startState = { state.copy() }, //todo: loading
             action = {

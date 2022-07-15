@@ -78,9 +78,9 @@ class SwapProcessingFragment : Fragment(),
                 requireActivity().finish()
             SwapProcessingContract.Effect.GoHome ->
                 requireActivity().finish()
-            SwapProcessingContract.Effect.OpenDetails ->
+            is SwapProcessingContract.Effect.OpenDetails ->
                 findNavController().navigate(
-                    SwapProcessingFragmentDirections.actionSwapDetails()
+                    SwapProcessingFragmentDirections.actionSwapDetails(effect.id)
                 )
         }
     }

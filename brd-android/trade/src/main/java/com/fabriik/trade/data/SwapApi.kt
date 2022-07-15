@@ -8,6 +8,7 @@ import com.fabriik.common.utils.FabriikApiResponseMapper
 import com.fabriik.trade.data.model.TradingPair
 import com.fabriik.trade.data.request.CreateOrderRequest
 import com.fabriik.trade.data.response.CreateOrderResponse
+import com.fabriik.trade.data.response.ExchangeOrder
 import com.fabriik.trade.data.response.QuoteResponse
 import okhttp3.*
 import retrofit2.Retrofit
@@ -63,6 +64,18 @@ class SwapApi(
                     destinationCurrency = destinationCurrency,
                 )
             )
+            Resource.success(data = response)
+        } catch (ex: Exception) {
+            responseMapper.mapError(
+                context = context,
+                exception = ex
+            )
+        }
+    }
+
+    suspend fun getExchangeOrder(exchangeId: String): Resource<ExchangeOrder?> {
+        return try {
+            val response = service.getExchange(exchangeId)
             Resource.success(data = response)
         } catch (ex: Exception) {
             responseMapper.mapError(
