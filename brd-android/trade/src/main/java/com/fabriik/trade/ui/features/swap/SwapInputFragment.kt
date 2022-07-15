@@ -20,6 +20,7 @@ import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.trade.ui.customview.SwapCardView
 import com.fabriik.trade.ui.dialog.SwapConfirmationDialog
 import com.fabriik.trade.ui.features.assetselection.AssetSelectionFragment
+import com.fabriik.trade.ui.features.authentication.SwapAuthenticationViewModel
 import java.math.BigDecimal
 
 class SwapInputFragment : Fragment(),
@@ -137,6 +138,16 @@ class SwapInputFragment : Fragment(),
             }
         }
 
+        // listen for user authentication result
+        parentFragmentManager.setFragmentResultListener(SwapAuthenticationViewModel.REQUEST_KEY, this) { _, bundle ->
+            val resultKey = bundle.getString(SwapAuthenticationViewModel.EXTRA_RESULT)
+            if (resultKey == SwapAuthenticationViewModel.RESULT_KEY_SUCCESS) {
+                binding.root.post {
+                    viewModel.setEvent(SwapInputContract.Event.OnUserAuthenticationSucceed)
+                }
+            }
+        }
+
         requireActivity().onBackPressedDispatcher.addCallback {
             //User shouldn't be allowed to go back
         }
@@ -162,6 +173,11 @@ class SwapInputFragment : Fragment(),
 
             SwapInputContract.Effect.DeselectMinMaxSwitchItems ->
                 binding.switchMinMax.setSelectedItem(FabriikSwitch.OPTION_NONE)
+
+            SwapInputContract.Effect.RequestUserAuthentication ->
+                findNavController().navigate(
+                    SwapInputFragmentDirections.actionSwapAuthentication()
+                )
 
             is SwapInputContract.Effect.ConfirmDialog ->
                 findNavController().navigate(

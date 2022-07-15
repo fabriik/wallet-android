@@ -69,6 +69,9 @@ class SwapInputViewModel(
                 onConfirmClicked()
 
             SwapInputContract.Event.OnConfirmationDialogConfirmed ->
+                setEffect { SwapInputContract.Effect.RequestUserAuthentication }
+
+            SwapInputContract.Event.OnUserAuthenticationSucceed ->
                 createSwapOrder()
 
             SwapInputContract.Event.SourceCurrencyClicked ->
