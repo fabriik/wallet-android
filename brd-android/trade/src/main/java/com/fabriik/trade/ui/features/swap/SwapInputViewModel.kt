@@ -593,7 +593,7 @@ class SwapInputViewModel(
             startState = { state.copy() }, //todo: loading
             action = {
                 swapApi.createOrder(
-                    amount = state.sourceCryptoAmount,
+                    amount = state.destinationCryptoAmount,
                     quoteResponse = state.quoteResponse,
                     destinationAddress = state.destinationAddress,
                     destinationCurrency = state.destinationCryptoCurrency
