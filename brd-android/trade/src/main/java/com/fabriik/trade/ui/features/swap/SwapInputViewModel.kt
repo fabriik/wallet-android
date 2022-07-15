@@ -1,7 +1,6 @@
 package com.fabriik.trade.ui.features.swap
 
 import android.app.Application
-import android.os.UserManager
 import android.security.keystore.UserNotAuthenticatedException
 import android.util.Log
 import androidx.lifecycle.viewModelScope
@@ -296,7 +295,7 @@ class SwapInputViewModel(
             }
 
             val selectedPair = tradingPairs.first {
-                it.baseCurrency == "BTC"
+                it.baseCurrency == "BTC" //todo: get first pair for enabled wallets
             }
 
             val quoteResponse = swapApi.getQuote(selectedPair)
@@ -645,9 +644,9 @@ class SwapInputViewModel(
             }
 
             val feeBasis = estimateFeeBasis(
-                address = order.address,
                 currency = order.currency,
-                amount = order.amount
+                orderAmount = order.amount,
+                orderAddress = order.address
             )
 
             if (feeBasis == null) {
@@ -656,7 +655,7 @@ class SwapInputViewModel(
             }
 
             val newTransfer =
-                wallet.createTransfer(address, amount, feeBasis, attributes).orNull()
+                wallet.createTransfer(address, amount, feeBasis, attributes, order.exchangeId).orNull()
 
             if (newTransfer == null) {
                 showGenericError()
@@ -704,14 +703,14 @@ class SwapInputViewModel(
         }
     }
 
-    private suspend fun estimateFeeBasis(address: String, currency: String, amount: BigDecimal) : TransferFeeBasis? {
+    private suspend fun estimateFeeBasis(orderAddress: String, currency: String, orderAmount: BigDecimal) : TransferFeeBasis? {
         val wallet = breadBox.wallet(currency).first()
 
         // Skip if address is not valid
-        val address = wallet.addressFor(address) ?: return null
+        val address = wallet.addressFor(orderAddress) ?: return null
         if (wallet.containsAddress(address))
             return null
-        val amount = Amount.create(amount.toDouble(), wallet.unit)
+        val amount = Amount.create(orderAmount.toDouble(), wallet.unit)
         val networkFee = wallet.feeForSpeed(TransferSpeed.Regular(currency))
 
         return try {
