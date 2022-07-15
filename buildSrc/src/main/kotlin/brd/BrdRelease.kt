@@ -24,7 +24,7 @@
  */
 package brd
 
-private val ciTag = System.getenv("CI_COMMIT_TAG")
+private val ciTag = (System.getenv("CI_COMMIT_TAG") ?: System.getenv("CIRCLE_TAG"))
     ?.split("-") // <target>-x.x.x.x
     ?.lastOrNull()
     ?.split(".")
