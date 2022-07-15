@@ -23,7 +23,7 @@ interface SwapService {
         @Body body: CreateOrderRequest
     ): CreateOrderResponse
 
-    @GET("{exchangeId}")
+    @GET("exchange/{exchangeId}")
     suspend fun getExchange(
         @Path("exchangeId") exchangeId: String
     ): ExchangeOrder

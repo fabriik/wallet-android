@@ -144,7 +144,7 @@ class SwapDetailsFragment : Fragment(),
                     currencyCode = data.destination.currency
                 )
 
-                val formatFiatTo = data.destination.usdAmount.formatFiatForUi("USD")
+                val formatFiatTo = data.destination.usdAmount?.formatFiatForUi("USD") ?: "? USD"
                 val formatCryptoTo = data.destination.currencyAmount.formatCryptoForUi(null)
                 tvToCurrencyValue.text = "$formatCryptoTo / $formatFiatTo"
 
@@ -171,7 +171,7 @@ class SwapDetailsFragment : Fragment(),
                     currencyCode = data.source.currency
                 )
 
-                val formatFiatFrom = data.source.usdAmount.formatFiatForUi("USD")
+                val formatFiatFrom = data.source.usdAmount?.formatFiatForUi("USD") ?: "? USD"
                 val formatCryptoFrom = data.source.currencyAmount.formatCryptoForUi(null)
                 tvFromCurrencyValue.text = "$formatCryptoFrom / $formatFiatFrom"
             }

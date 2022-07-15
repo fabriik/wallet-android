@@ -1,14 +1,20 @@
 package com.fabriik.trade.ui.features.swap
 
 import android.app.Application
+import android.security.keystore.UserNotAuthenticatedException
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.breadwallet.breadbox.*
 import com.breadwallet.crypto.Address
 import com.breadwallet.crypto.AddressScheme
 import com.breadwallet.crypto.Amount
+import com.breadwallet.crypto.TransferFeeBasis
+import com.breadwallet.crypto.errors.FeeEstimationError
+import com.breadwallet.ext.isZero
+import com.breadwallet.logger.logError
 import com.breadwallet.repository.RatesRepository
 import com.breadwallet.tools.manager.BRSharedPrefs
+import com.breadwallet.tools.security.BrdUserManager
 import com.breadwallet.tools.security.ProfileManager
 import com.fabriik.common.data.Status
 import com.fabriik.common.data.model.nextExchangeLimit
@@ -18,6 +24,7 @@ import com.fabriik.common.utils.min
 import com.fabriik.trade.R
 import com.fabriik.trade.data.SwapApi
 import com.fabriik.trade.data.model.AmountData
+import com.fabriik.trade.data.response.CreateOrderResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -44,6 +51,7 @@ class SwapInputViewModel(
 
     private val swapApi by kodein.instance<SwapApi>()
     private val breadBox by kodein.instance<BreadBox>()
+    private val userManager by kodein.instance<BrdUserManager>()
     private val profileManager by kodein.instance<ProfileManager>()
 
     private val currentLoadedState: SwapInputContract.State.Loaded?
@@ -287,7 +295,7 @@ class SwapInputViewModel(
             }
 
             val selectedPair = tradingPairs.first {
-                it.baseCurrency == "BTC"
+                it.baseCurrency == "BTC" //todo: get first pair for enabled wallets
             }
 
             val quoteResponse = swapApi.getQuote(selectedPair)
@@ -580,7 +588,7 @@ class SwapInputViewModel(
     private fun createSwapOrder() {
         val state = currentLoadedState ?: return
 
-        callApi( //todo: enable when API is ready
+        callApi(
             endState = { state.copy() }, //todo: loading
             startState = { state.copy() }, //todo: loading
             action = {
@@ -594,13 +602,7 @@ class SwapInputViewModel(
             callback = {
                 when (it.status) {
                     Status.SUCCESS ->
-                        setEffect {
-                            SwapInputContract.Effect.ContinueToSwapProcessing(
-                                exchangeId = requireNotNull(it.data).exchangeId,
-                                sourceCurrency = state.sourceCryptoCurrency,
-                                destinationCurrency = state.destinationCryptoCurrency
-                            )
-                        }
+                        createTransaction(requireNotNull(it.data))
 
                     Status.ERROR ->
                         setEffect {
@@ -613,6 +615,64 @@ class SwapInputViewModel(
                 }
             }
         )
+    }
+
+    private fun createTransaction(order: CreateOrderResponse) {
+        val state = currentLoadedState ?: return
+
+        viewModelScope.launch(Dispatchers.IO) {
+            val wallet = breadBox.wallet(order.currency).first()
+            val address = wallet.addressFor(order.address)
+            val amount = Amount.create(order.amount.toDouble(), wallet.unit)
+
+            if (address == null || wallet.containsAddress(address)) {
+                showGenericError()
+                return@launch
+            }
+
+            val attributes = wallet.getTransferAttributesFor(address)
+            if (attributes.any { wallet.validateTransferAttribute(it).isPresent }) {
+                showGenericError()
+                return@launch
+            }
+
+            val phrase = try {
+                checkNotNull(userManager.getPhrase())
+            } catch (e: UserNotAuthenticatedException) {
+                showGenericError()
+                return@launch
+            }
+
+            val feeBasis = estimateFeeBasis(
+                currency = order.currency,
+                orderAmount = order.amount,
+                orderAddress = order.address
+            )
+
+            if (feeBasis == null) {
+                showGenericError()
+                return@launch
+            }
+
+            val newTransfer =
+                wallet.createTransfer(address, amount, feeBasis, attributes/*, order.exchangeId*/).orNull()
+
+            if (newTransfer == null) {
+                showGenericError()
+            } else {
+                wallet.walletManager.submit(newTransfer, phrase)
+                breadBox.walletTransfer(order.currency, newTransfer)
+                    .first()
+
+                setEffect {
+                    SwapInputContract.Effect.ContinueToSwapProcessing(
+                        exchangeId = order.exchangeId,
+                        sourceCurrency = state.sourceCryptoCurrency,
+                        destinationCurrency = state.destinationCryptoCurrency
+                    )
+                }
+            }
+        }
     }
 
     private suspend fun estimateFee(
@@ -640,6 +700,30 @@ class SwapInputViewModel(
             )
         } catch (e: Exception) {
             Log.d("SwapInputViewModel", "Fee estimation failed: ${e.message}")
+            null
+        }
+    }
+
+    private suspend fun estimateFeeBasis(orderAddress: String, currency: String, orderAmount: BigDecimal) : TransferFeeBasis? {
+        val wallet = breadBox.wallet(currency).first()
+
+        // Skip if address is not valid
+        val address = wallet.addressFor(orderAddress) ?: return null
+        if (wallet.containsAddress(address))
+            return null
+        val amount = Amount.create(orderAmount.toDouble(), wallet.unit)
+        val networkFee = wallet.feeForSpeed(TransferSpeed.Regular(currency))
+
+        return try {
+            val data = wallet.estimateFee(address, amount, networkFee)
+            val fee = data.fee.toBigDecimal()
+            check(!fee.isZero()) { "Estimated fee was zero" }
+            data
+        } catch (e: FeeEstimationError) {
+            logError("Failed get fee estimate", e)
+            null
+        } catch (e: IllegalStateException) {
+            logError("Failed get fee estimate", e)
             null
         }
     }
@@ -678,6 +762,14 @@ class SwapInputViewModel(
         val destFee = estimateFee(this, fromCryptoCurrency, state.fiatCurrency)
 
         return Triple(sourceFee, destFee, sourceAmount)
+    }
+
+    private fun showGenericError() {
+        setEffect {
+            SwapInputContract.Effect.ShowToast(
+                getString(R.string.FabriikApi_DefaultError)
+            )
+        }
     }
 
     private fun SwapInputContract.State.Loaded.validate() = copy(
