@@ -6,7 +6,7 @@ import java.math.BigDecimal
 
 @JsonClass(generateAdapter = true)
 data class ExchangeOrder(
-    @Json(name = "order_id")
+    @Json(name = "orderid")
     val orderId: String,
 
     @Json(name = "status")
@@ -27,13 +27,13 @@ data class ExchangeSource(
     @Json(name = "currency")
     val currency: String,
 
-    @Json(name = "usd_amount")
-    val usdAmount: BigDecimal,
+    @Json(name = "usdamount")
+    val usdAmount: BigDecimal?,
 
-    @Json(name = "currency_amount")
+    @Json(name = "currencyamount")
     val currencyAmount: BigDecimal,
 
-    @Json(name = "transaction_id")
+    @Json(name = "transactionid")
     val transactionId: String?
 )
 

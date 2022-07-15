@@ -666,6 +666,7 @@ class SwapInputViewModel(
 
                 setEffect {
                     SwapInputContract.Effect.ContinueToSwapProcessing(
+                        exchangeId = order.exchangeId,
                         sourceCurrency = state.sourceCryptoCurrency,
                         destinationCurrency = state.destinationCryptoCurrency
                     )
