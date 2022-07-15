@@ -143,7 +143,7 @@ object WalletScreen {
         data class OnSendRequestGiven(val cryptoRequest: CryptoRequest) : E()
         object OnReceiveClicked : E()
 
-        data class OnTransactionClicked(@Redacted val txHash: String) : E()
+        data class OnTransactionClicked(@Redacted val txHash: String, @Redacted val exchangeId: String?) : E()
 
         data class OnIsCryptoPreferredLoaded(val isCryptoPreferred: Boolean) : E()
 
@@ -191,6 +191,13 @@ object WalletScreen {
             ) : Nav() {
                 override val navigationTarget =
                     NavigationTarget.ViewTransaction(currencyId, txHash)
+            }
+
+            data class GoToExchangeTransaction(
+                val exchangeId: String
+            ) : Nav() {
+                override val navigationTarget =
+                    NavigationTarget.ViewExchangeTransaction(exchangeId)
             }
 
             object GoBack : Nav() {

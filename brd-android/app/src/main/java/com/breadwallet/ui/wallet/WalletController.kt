@@ -160,7 +160,12 @@ open class WalletController(args: Bundle) : BaseMobiusController<M, E, F>(args),
             checkNotNull(fastAdapter).onClickListener = { _, _, item, _ ->
                 when (item) {
                     is TransactionListItem ->
-                        eventConsumer.accept(E.OnTransactionClicked(item.model.txHash))
+                        eventConsumer.accept(
+                            E.OnTransactionClicked(
+                                txHash = item.model.txHash,
+                                exchangeId = item.model.exchangeId
+                            )
+                        )
                     is StakingItem -> eventConsumer.accept(E.OnStakingCellClicked)
                 }
                 true
