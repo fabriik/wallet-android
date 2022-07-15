@@ -5,30 +5,33 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
+import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.breadwallet.breadbox.formatCryptoForUi
 import com.breadwallet.tools.manager.BRClipboardManager
+import com.breadwallet.util.formatFiatForUi
 import com.fabriik.common.ui.base.FabriikView
 import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.common.utils.viewScope
 import com.fabriik.trade.R
+import com.fabriik.trade.data.response.ExchangeOrderStatus
 import com.fabriik.trade.databinding.FragmentSwapDetailsBinding
 import kotlinx.coroutines.flow.collect
-import com.fabriik.trade.ui.features.swapdetails.SwapStatus.PENDING
-import com.fabriik.trade.ui.features.swapdetails.SwapStatus.COMPLETE
-import com.fabriik.trade.ui.features.swapdetails.SwapStatus.FAILED
+import java.text.SimpleDateFormat
+import java.util.*
 
 class SwapDetailsFragment : Fragment(),
     FabriikView<SwapDetailsContract.State, SwapDetailsContract.Effect> {
 
+    private val dateFormatter = SimpleDateFormat("dd MMM yyyy, h:mm a", Locale.getDefault())
+
     private lateinit var binding: FragmentSwapDetailsBinding
     private val viewModel: SwapDetailsViewModel by viewModels()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_swap_details, container, false)
     }
@@ -45,7 +48,10 @@ class SwapDetailsFragment : Fragment(),
                 viewModel.setEvent(SwapDetailsContract.Event.OrderIdClicked)
             }
             tvSwapFromId.setOnClickListener {
-                viewModel.setEvent(SwapDetailsContract.Event.TransactionIdClicked)
+                viewModel.setEvent(SwapDetailsContract.Event.SourceTransactionIdClicked)
+            }
+            tvSwapToId.setOnClickListener {
+                viewModel.setEvent(SwapDetailsContract.Event.DestinationTransactionIdClicked)
             }
         }
 
@@ -66,43 +72,20 @@ class SwapDetailsFragment : Fragment(),
         requireActivity().onBackPressedDispatcher.addCallback {
             //User shouldn't be allowed to go back
         }
+
+        viewModel.setEvent(SwapDetailsContract.Event.LoadData)
     }
 
     override fun render(state: SwapDetailsContract.State) {
-        with(binding) {
-            tvOrderId.text = state.orderId
-            tvSwapFromId.text = state.swapFromID
-            tvSwapToId.text = state.swapToId
-            tvSwapFrom.text = getString(R.string.Swap_Details_From, state.swapFromCurrency)
-            tvSwapTo.text = getString(R.string.Swap_Details_To, state.swapToCurrency)
-            tvFromCurrencyValue.text = state.swapFromCurrencyValue
-            tvToCurrencyValue.text = state.swapToCurrencyValue
-            tvSwapFromIdTitle.text =
-                getString(
-                    R.string.Swap_Details_TransactionIdFrom_Title,
-                    state.swapFromCurrency
-                )
-            tvSwapToIdTitle.text =
-                getString(R.string.Swap_Details_TransactionIdTo_Title, state.swapToCurrency)
+        when (state) {
+            is SwapDetailsContract.State.Error ->
+                showErrorState()
 
-            binding.root.post {
-                icSwapFrom.loadIcon(
-                    scope = tvSwapFrom.viewScope,
-                    currencyCode = state.swapFromCurrency
-                )
-            }
+            is SwapDetailsContract.State.Loading ->
+                showLoadingState()
 
-            binding.root.post {
-                icSwapTo.loadIcon(
-                    scope = tvSwapTo.viewScope,
-                    currencyCode = state.swapToCurrency
-                )
-            }
-
-            tvTimestamp.text = state.timestamp
-
-            icStatus.setImageResource(setStatusIcon(state.status))
-            tvStatus.text = getString(setStatusTitle(state.status))
+            is SwapDetailsContract.State.Loaded ->
+                showLoadedState(state)
         }
     }
 
@@ -111,24 +94,114 @@ class SwapDetailsFragment : Fragment(),
             SwapDetailsContract.Effect.Dismiss ->
                 requireActivity().finish()
 
+            is SwapDetailsContract.Effect.ShowToast ->
+                FabriikToastUtil.showInfo(
+                    binding.root, effect.message
+                )
+
             is SwapDetailsContract.Effect.CopyToClipboard ->
                 copyToClipboard(effect.data)
         }
     }
 
-    private fun setStatusIcon(status: SwapStatus): Int {
-        return when (status) {
-            PENDING -> R.drawable.ic_status_pending
-            COMPLETE -> R.drawable.ic_status_complete
-            FAILED -> R.drawable.ic_status_failed
+    private fun showErrorState() {
+        with(binding) {
+            content.isVisible = false
+            initialLoadingIndicator.isVisible = false
         }
     }
 
-    private fun setStatusTitle(status: SwapStatus): Int {
+    private fun showLoadingState() {
+        with(binding) {
+            content.isVisible = false
+            initialLoadingIndicator.isVisible = true
+        }
+    }
+
+    private fun showLoadedState(state: SwapDetailsContract.State.Loaded) {
+        val data = state.data
+
+        with(binding) {
+            tvOrderId.text = data.orderId
+
+            binding.root.post {
+                tvSwapTo.text = getString(R.string.Swap_Details_To, data.destination.currency)
+                tvSwapToIdTitle.text = getString(
+                    R.string.Swap_Details_TransactionIdTo_Title, data.destination.currency
+                )
+
+                if (data.destination.transactionId.isNullOrEmpty()) {
+                    tvSwapToId.text = getString(R.string.Swap_Details_Status_Pending)
+                    tvSwapToId.setCompoundDrawablesRelative(null, null, null, null)
+                    tvSwapToId.setTextColor(ContextCompat.getColor(requireContext(), R.color.light_text_02))
+                } else {
+                    tvSwapToId.text = data.destination.transactionId
+                    tvSwapToId.setTextColor(ContextCompat.getColor(requireContext(), R.color.light_link_02))
+                }
+
+                icSwapTo.loadIcon(
+                    scope = tvSwapFrom.viewScope,
+                    currencyCode = data.destination.currency
+                )
+
+                val formatFiatTo = data.destination.usdAmount.formatFiatForUi("USD")
+                val formatCryptoTo = data.destination.currencyAmount.formatCryptoForUi(null)
+                tvToCurrencyValue.text = "$formatCryptoTo / $formatFiatTo"
+
+                tvSwapFrom.text = getString(R.string.Swap_Details_From, data.source.currency)
+                tvSwapFromId.text = data.source.transactionId ?: getString(
+                    R.string.Swap_Details_Status_Pending
+                )
+
+                tvSwapFromIdTitle.text = getString(
+                    R.string.Swap_Details_TransactionIdFrom_Title, data.source.currency
+                )
+
+                if (data.source.transactionId.isNullOrEmpty()) {
+                    tvSwapFromId.text = getString(R.string.Swap_Details_Status_Pending)
+                    tvSwapFromId.setCompoundDrawablesRelative(null, null, null, null)
+                    tvSwapFromId.setTextColor(ContextCompat.getColor(requireContext(), R.color.light_text_02))
+                } else {
+                    tvSwapFromId.text = data.source.transactionId
+                    tvSwapFromId.setTextColor(ContextCompat.getColor(requireContext(), R.color.light_link_02))
+                }
+
+                icSwapFrom.loadIcon(
+                    scope = tvSwapFrom.viewScope,
+                    currencyCode = data.source.currency
+                )
+
+                val formatFiatFrom = data.source.usdAmount.formatFiatForUi("USD")
+                val formatCryptoFrom = data.source.currencyAmount.formatCryptoForUi(null)
+                tvFromCurrencyValue.text = "$formatCryptoFrom / $formatFiatFrom"
+            }
+
+            val date = Date(data.timestamp)
+            tvTimestamp.text = dateFormatter.format(date)
+
+            icStatus.setImageResource(setStatusIcon(data.status))
+            tvStatus.text = getString(setStatusTitle(data.status))
+
+            content.isVisible = true
+            initialLoadingIndicator.isVisible = false
+        }
+    }
+
+    private fun setStatusIcon(status: ExchangeOrderStatus): Int {
         return when (status) {
-            PENDING -> R.string.Swap_Details_Status_Pending
-            COMPLETE -> R.string.Swap_Details_Status_Complete
-            FAILED -> R.string.Swap_Details_Status_Failed
+            ExchangeOrderStatus.PENDING -> R.drawable.ic_status_pending
+            ExchangeOrderStatus.FAILED -> R.drawable.ic_status_failed
+            ExchangeOrderStatus.COMPLETE -> R.drawable.ic_status_complete
+            ExchangeOrderStatus.REFUNDED -> R.drawable.ic_status_complete
+        }
+    }
+
+    private fun setStatusTitle(status: ExchangeOrderStatus): Int {
+        return when (status) {
+            ExchangeOrderStatus.PENDING -> R.string.Swap_Details_Status_Pending
+            ExchangeOrderStatus.COMPLETE -> R.string.Swap_Details_Status_Complete
+            ExchangeOrderStatus.FAILED -> R.string.Swap_Details_Status_Failed
+            ExchangeOrderStatus.REFUNDED -> R.string.Swap_Details_Status_Refunded
         }
     }
 

@@ -59,6 +59,10 @@
         tools:layout="@layout/fragment_swap_process">
 
         <argument
+            android:name="exchangeId"
+            app:argType="string" />
+
+        <argument
             android:name="coinFrom"
             app:argType="string"
             app:nullable="false" />
@@ -76,7 +80,13 @@
 
     <fragment android:id="@+id/fragmentSwapDetails"
         android:name="com.fabriik.trade.ui.features.swapdetails.SwapDetailsFragment"
-        tools:layout="@layout/fragment_swap_details"/>
+        tools:layout="@layout/fragment_swap_details">
+
+        <argument
+            android:name="exchangeId"
+            app:argType="string" />
+
+    </fragment>
 
     <dialog
         android:id="@+id/dialogSwapConfirmation"

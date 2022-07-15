@@ -580,7 +580,7 @@ class SwapInputViewModel(
     private fun createSwapOrder() {
         val state = currentLoadedState ?: return
 
-        /*callApi( //todo: enable when API is ready
+        callApi( //todo: enable when API is ready
             endState = { state.copy() }, //todo: loading
             startState = { state.copy() }, //todo: loading
             action = {
@@ -593,15 +593,16 @@ class SwapInputViewModel(
             },
             callback = {
                 when (it.status) {
-                    Status.SUCCESS ->*/
+                    Status.SUCCESS ->
                         setEffect {
                             SwapInputContract.Effect.ContinueToSwapProcessing(
+                                exchangeId = requireNotNull(it.data).exchangeId,
                                 sourceCurrency = state.sourceCryptoCurrency,
                                 destinationCurrency = state.destinationCryptoCurrency
                             )
                         }
 
-                    /*Status.ERROR ->
+                    Status.ERROR ->
                         setEffect {
                             SwapInputContract.Effect.ShowToast(
                                 it.message ?: getString(
@@ -611,7 +612,7 @@ class SwapInputViewModel(
                         }
                 }
             }
-        )*/
+        )
     }
 
     private suspend fun estimateFee(
