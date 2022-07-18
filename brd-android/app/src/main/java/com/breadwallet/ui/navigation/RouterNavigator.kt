@@ -267,6 +267,16 @@ class RouterNavigator(
         router.pushController(RouterTransaction.with(controller))
     }
 
+    override fun viewExchangeTransaction(effect: NavigationTarget.ViewExchangeTransaction) {
+        router.activity?.let {
+            it.startActivity(
+                SwapActivity.getStartIntentForSwapDetails(
+                    it, effect.exchangeId
+                )
+            )
+        }
+    }
+
     override fun deepLink(effect: NavigationTarget.DeepLink) {
         scope.launch(Dispatchers.Main) {
             val link = effect.url?.asLink(breadBox, uriParser) ?: effect.link

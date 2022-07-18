@@ -47,7 +47,8 @@ data class WalletTransaction(
     val feeToken: String = "",
     val confirmationsUntilFinal: Int,
     val gift: GiftMetaData? = null,
-    val isStaking: Boolean = false
+    val isStaking: Boolean = false,
+    val exchangeId: String? = null
 ) {
     val isFeeForToken: Boolean = feeToken.isNotBlank()
 }
