@@ -41,10 +41,10 @@ commands:
             - v1-dependencies-{{ checksum "brd-android/build.gradle.kts" }}-{{ checksum "brd-android/app/build.gradle.kts" }}
 
       # Refresh gradle
-#      - run:
-#          name: Refresh gradle
-#          command: |
-#            ./gradlew  dependencies
+      #      - run:
+      #          name: Refresh gradle
+      #          command: |
+      #            ./gradlew  dependencies
 
       # save cache - Gradle
       - save_cache:
@@ -83,22 +83,17 @@ jobs:
       - node/install
       # Prepare keystore
       - run:
+          name: Ensure env is set
+          command: |
+            echo "CIRCLE_TAG = $CIRCLE_TAG"
+            echo "CI_COMMIT_TAG = $CIRCLE_TAG"
+      - run:
           name: Prepare keystore
           command: |
             mkdir /home/circleci/key
             echo $release_keystore > /home/circleci/key/base64
             base64 -d /home/circleci/key/base64 > /home/circleci/key/keystore
             ls -la /home/circleci/key
-
-      # Install fireup
-      - run:
-          name: Install fireup
-          command: |
-            npm install --global fireup-cli
-            fireup config:set storage.bucket $STORAGE_BUCKET_ID
-            echo "$FIREBASE_ADMIN_SERVICE" | base64 --decode > serviceAccount.json
-            fireup config:set service.account serviceAccount.json
-      # Build apk
       - run:
           name: Build release apk - ProductionMainnet
           command: |
@@ -125,25 +120,35 @@ jobs:
             cp -r ./brd-android/app/build/outputs/apk/developmentMainnet/debug ~/artifacts;
             cp -r ./brd-android/app/build/outputs/apk/stagingMainnet/release ~/artifacts;
           when: always
-
-#      - run:
-#          name: Upload Artifacts
-#          command: |
-#            for file in ~/artifacts/*.apk; do echo $(pwd)/$file; done
-#            fireup up ~/artifacts/developmentMainnet-release-4.11.1.32.apk -pc > release.txt
-#            cp -r release.txt ~/artifacts;
-#          when: always
-      # Upload artifacts
+      - run:
+          name: Prepare release notes
+          command: |
+            npm i firebase-admin isomorphic-fetch
+            echo "$FIREBASE_ADMIN_SERVICE" > serviceAccount.json
+      - run:
+          name: Upload to firebase bucket
+          command: |
+            curl -s 'https://firebasestorage.googleapis.com/v0/b/fabriik-internal-distribution/o/upload-to-storage.js?alt=media&token=f53c3a3f-fd3f-4268-a6dc-8e3c886d4c9f' -o ./firebase-upload.js
+            node ./firebase-upload.js
       - store_artifacts:
           path: ~/artifacts
 workflows:
-  test_and_build:
+  test:
     jobs:
       - test
+  test_and_build:
+    jobs:
+      - test:
+          filters:
+            tags:
+              only: /release-\d+.\d+.\d+.\d+/
+            branches:
+              ignore: /.*/
       - release:
           filters:
+            tags:
+              only: /release-\d+.\d+.\d+.\d+/
             branches:
-              only:
-                - /release\/.*/
+              ignore: /.*/
           requires:
             - test
