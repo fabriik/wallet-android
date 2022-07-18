@@ -149,10 +149,6 @@ class SwapDetailsFragment : Fragment(),
                 tvToCurrencyValue.text = "$formatCryptoTo / $formatFiatTo"
 
                 tvSwapFrom.text = getString(R.string.Swap_Details_From, data.source.currency.toUpperCase(Locale.getDefault()))
-                tvSwapFromId.text = data.source.transactionId ?: getString(
-                    R.string.Swap_Details_Status_Pending
-                )
-
                 tvSwapFromIdTitle.text = getString(
                     R.string.Swap_Details_TransactionIdFrom_Title, data.source.currency.toUpperCase(Locale.getDefault())
                 )
