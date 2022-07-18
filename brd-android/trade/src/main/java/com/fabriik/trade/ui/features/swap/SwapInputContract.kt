@@ -40,16 +40,20 @@ interface SwapInputContract {
             val sendingFee: AmountData,
             val receivingFee: AmountData,
         ) : Effect()
+
         data class CurrenciesReplaceAnimation(val stateChange: State.Loaded) : Effect()
-        data class ShowToast(val message: String): Effect()
+        data class ShowToast(val message: String) : Effect()
         data class ContinueToSwapProcessing(
             val exchangeId: String,
             val sourceCurrency: String,
             val destinationCurrency: String
         ) : Effect()
+
         data class UpdateTimer(val timeLeft: Int) : Effect()
         data class SourceSelection(val currencies: List<String>) : Effect()
-        data class DestinationSelection(val currencies: List<String>, val sourceCurrency: String) : Effect()
+        data class DestinationSelection(val currencies: List<String>, val sourceCurrency: String) :
+            Effect()
+
         data class UpdateSourceFiatAmount(val bigDecimal: BigDecimal) : Effect()
         data class UpdateSourceCryptoAmount(val bigDecimal: BigDecimal) : Effect()
         data class UpdateDestinationFiatAmount(val bigDecimal: BigDecimal) : Effect()
@@ -75,7 +79,8 @@ interface SwapInputContract {
             val destinationAddress: String,
             val sendingNetworkFee: AmountData? = null,
             val receivingNetworkFee: AmountData? = null,
-            val confirmButtonEnabled: Boolean = false
+            val confirmButtonEnabled: Boolean = false,
+            val swapErrorMessage: String? = null
         ) : State() {
 
             val cryptoExchangeRate: BigDecimal

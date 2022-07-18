@@ -295,6 +295,9 @@ class SwapInputFragment : Fragment(),
             tvRateValue.isVisible = !state.cryptoExchangeRateLoading
             quoteLoadingIndicator.isVisible = state.cryptoExchangeRateLoading
 
+            tvError.isVisible = state.swapErrorMessage != null
+            tvError.text = state.swapErrorMessage
+
             content.isVisible = true
             initialLoadingIndicator.isVisible = false
         }
