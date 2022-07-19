@@ -279,7 +279,7 @@ class SwapInputViewModel(
         setState { SwapInputContract.State.Error }
         setEffect {
             SwapInputContract.Effect.ShowToast(
-                getString(R.string.FabriikApi_DefaultError)
+                getString(R.string.Swap_Input_Error_Network)
             )
         }
     }
@@ -415,7 +415,7 @@ class SwapInputViewModel(
                     sourceCryptoAmount = sourceCryptoAmount,
                     receivingNetworkFee = destCryptoAmountData.second,
                     sendingNetworkFee = destCryptoAmountData.first
-                ).validate()
+                ).validateAmounts()
             }
 
             updateAmounts()
@@ -452,7 +452,7 @@ class SwapInputViewModel(
                     destinationCryptoAmount = destCryptoAmount,
                     sendingNetworkFee = destCryptoAmountData.first,
                     receivingNetworkFee = destCryptoAmountData.second
-                ).validate()
+                ).validateAmounts()
             }
 
             updateAmounts(changeByUser)
@@ -489,7 +489,7 @@ class SwapInputViewModel(
                     destinationFiatAmount = destFiatAmount,
                     receivingNetworkFee = sourceCryptoAmountData.second,
                     sendingNetworkFee = sourceCryptoAmountData.first
-                ).validate()
+                ).validateAmounts()
             }
 
             updateAmounts()
@@ -526,7 +526,7 @@ class SwapInputViewModel(
                     destinationCryptoAmount = destCryptoAmount,
                     sendingNetworkFee = sourceCryptoAmountData.first,
                     receivingNetworkFee = sourceCryptoAmountData.second
-                ).validate()
+                ).validateAmounts()
             }
 
             updateAmounts()
@@ -535,15 +535,18 @@ class SwapInputViewModel(
 
     private fun onConfirmClicked() {
         val state = currentLoadedState
-        val sendingFee = state?.sendingNetworkFee
-        val receivingFee = state?.receivingNetworkFee
-
-        if (sendingFee == null || receivingFee == null) {
+        if (state == null) {
             setEffect {
                 SwapInputContract.Effect.ShowToast(
-                    getString(R.string.FabriikApi_DefaultError)
+                    getString(R.string.Swap_Input_Error_Network)
                 )
             }
+            return
+        }
+
+        val validationError = validate(state)
+        if (validationError != null) {
+            showSwapError(validationError)
             return
         }
 
@@ -566,8 +569,8 @@ class SwapInputViewModel(
                 to = toAmount,
                 from = fromAmount,
                 rate = state.cryptoExchangeRate,
-                sendingFee = sendingFee,
-                receivingFee = receivingFee,
+                sendingFee = state.sendingNetworkFee!!,
+                receivingFee = state.receivingNetworkFee!!,
             )
         }
     }
@@ -764,6 +767,33 @@ class SwapInputViewModel(
         return Triple(sourceFee, destFee, sourceAmount)
     }
 
+    private fun validate(state: SwapInputContract.State.Loaded) = when {
+        state.sendingNetworkFee == null || state.receivingNetworkFee == null ->
+            SwapInputContract.ErrorMessage.NetworkIssues
+        state.sourceCryptoBalance < state.sourceCryptoAmount  ->
+            SwapInputContract.ErrorMessage.InsufficientFunds(state.sourceCryptoCurrency)
+        state.sourceFiatAmount > state.maxFiatAmount ->
+            SwapInputContract.ErrorMessage.MaxSwapAmount(state.maxFiatAmount, state.sourceCryptoCurrency)
+        state.sourceFiatAmount < state.minFiatAmount ->
+            SwapInputContract.ErrorMessage.MinSwapAmount(state.minFiatAmount, state.sourceCryptoCurrency)
+        else -> null
+    }
+
+    private fun SwapInputContract.State.Loaded.validateAmounts() = copy(
+        confirmButtonEnabled = sourceCryptoAmount != BigDecimal.ZERO &&
+                destinationCryptoAmount != BigDecimal.ZERO
+    )
+
+    private fun showSwapError(error: SwapInputContract.ErrorMessage) {
+        val state = currentLoadedState ?: return
+        setState {
+            state.copy(
+                swapErrorMessage = error,
+                confirmButtonEnabled = false
+            )
+        }
+    }
+
     private fun showGenericError() {
         setEffect {
             SwapInputContract.Effect.ShowToast(
@@ -771,11 +801,6 @@ class SwapInputViewModel(
             )
         }
     }
-
-    private fun SwapInputContract.State.Loaded.validate() = copy(
-        confirmButtonEnabled = sourceCryptoAmount != BigDecimal.ZERO &&
-                destinationCryptoAmount != BigDecimal.ZERO
-    )
 
     companion object {
         const val QUOTE_TIMER = 15

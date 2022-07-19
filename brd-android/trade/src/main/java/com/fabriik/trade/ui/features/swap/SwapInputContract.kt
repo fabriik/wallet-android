@@ -1,6 +1,9 @@
 package com.fabriik.trade.ui.features.swap
 
+import android.content.Context
+import com.breadwallet.breadbox.formatCryptoForUi
 import com.fabriik.common.ui.base.FabriikContract
+import com.fabriik.trade.R
 import com.fabriik.trade.data.model.AmountData
 import com.fabriik.trade.data.model.TradingPair
 import com.fabriik.trade.data.response.QuoteResponse
@@ -64,6 +67,8 @@ interface SwapInputContract {
         object Error : State()
         object Loading : State()
         data class Loaded(
+            val minFiatAmount: BigDecimal,
+            val maxFiatAmount: BigDecimal,
             val tradingPairs: List<TradingPair>,
             val selectedPair: TradingPair,
             val quoteResponse: QuoteResponse,
@@ -80,7 +85,7 @@ interface SwapInputContract {
             val sendingNetworkFee: AmountData? = null,
             val receivingNetworkFee: AmountData? = null,
             val confirmButtonEnabled: Boolean = false,
-            val swapErrorMessage: String? = null
+            val swapErrorMessage: ErrorMessage? = null
         ) : State() {
 
             val cryptoExchangeRate: BigDecimal
@@ -93,4 +98,50 @@ interface SwapInputContract {
         }
     }
 
+    sealed class ErrorMessage {
+
+        abstract fun toString(context: Context): String
+
+        object NetworkIssues : ErrorMessage() {
+            override fun toString(context: Context) = context.getString(
+                R.string.Swap_Input_Error_Network
+            )
+        }
+
+        class InsufficientFunds(private val currencyCode: String) : ErrorMessage() {
+            override fun toString(context: Context) = context.getString(
+                R.string.Swap_Input_Error_InsuficientFunds, currencyCode, currencyCode
+            )
+        }
+
+        object InsufficientFundsForFee : ErrorMessage() {
+            override fun toString(context: Context) = context.getString(
+                R.string.Swap_Input_Error_FeeFunds
+            )
+        }
+
+        class MinSwapAmount(private val minAmount: BigDecimal, private val currencyCode: String) : ErrorMessage() {
+            override fun toString(context: Context) = context.getString(
+                R.string.Swap_Input_Error_MinAmount, minAmount.formatCryptoForUi(currencyCode)
+            )
+        }
+
+        class MaxSwapAmount(private val maxAmount: BigDecimal, private val currencyCode: String) : ErrorMessage() {
+            override fun toString(context: Context) = context.getString(
+                R.string.Swap_Input_Error_MaxAmount, maxAmount.formatCryptoForUi(currencyCode)
+            )
+        }
+
+        object DailyLimitReached : ErrorMessage() {
+            override fun toString(context: Context) = context.getString(
+                R.string.Swap_Input_Error_Kyc1DailyLimit
+            )
+        }
+
+        object LifetimeLimitReached : ErrorMessage() {
+            override fun toString(context: Context) = context.getString(
+                R.string.Swap_Input_Error_Kyc1LifetimeLimit
+            )
+        }
+    }
 }
