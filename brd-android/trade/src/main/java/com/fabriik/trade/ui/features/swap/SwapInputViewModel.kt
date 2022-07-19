@@ -18,6 +18,7 @@ import com.breadwallet.tools.manager.BRSharedPrefs
 import com.breadwallet.tools.security.BrdUserManager
 import com.breadwallet.tools.security.ProfileManager
 import com.breadwallet.tools.util.TokenUtil
+import com.fabriik.common.data.Resource
 import com.fabriik.common.data.Status
 import com.fabriik.common.data.model.availableDailyLimit
 import com.fabriik.common.data.model.availableLifetimeLimit
@@ -201,7 +202,6 @@ class SwapInputViewModel(
 
         viewModelScope.launch(Dispatchers.IO) {
             val balance = loadCryptoBalance(currentData.destinationCryptoCurrency) ?: return@launch
-            val destinationAddress = loadAddress(currentData.destinationCryptoCurrency) ?: return@launch
 
             currentLoadedState?.let {
                 val stateChange = it.copy(
@@ -212,7 +212,6 @@ class SwapInputViewModel(
                     sourceCryptoBalance = balance,
                     sourceCryptoCurrency = currentData.destinationCryptoCurrency,
                     destinationCryptoCurrency = currentData.sourceCryptoCurrency,
-                    destinationAddress = destinationAddress.toString(),
                     sendingNetworkFee = currentData.receivingNetworkFee,
                     receivingNetworkFee = currentData.sendingNetworkFee,
                 )
@@ -300,7 +299,7 @@ class SwapInputViewModel(
             }
 
             val enabledWallets = acctMetaDataProvider.enabledWallets().first()
-            val selectedPair = tradingPairs.firstOrNull() {
+            val selectedPair = tradingPairs.firstOrNull {
                 isWalletEnabled(enabledWallets, it.baseCurrency) &&
                         isWalletEnabled(enabledWallets, it.termCurrency)
             }
@@ -318,12 +317,6 @@ class SwapInputViewModel(
                 return@launch
             }
 
-            val destinationAddress = loadAddress(selectedPair.termCurrency)
-            if (destinationAddress == null) {
-                showErrorState()
-                return@launch
-            }
-
             setState {
                 SwapInputContract.State.Loaded(
                     tradingPairs = tradingPairs,
@@ -332,7 +325,6 @@ class SwapInputViewModel(
                     quoteResponse = selectedPairQuote,
                     sourceCryptoCurrency = selectedPair.baseCurrency,
                     destinationCryptoCurrency = selectedPair.termCurrency,
-                    destinationAddress = destinationAddress.toString(),
                     sourceCryptoBalance = sourceCryptoBalance,
                     minFiatAmount = requireNotNull(quoteResponse.data).minUsdValue,
                     maxFiatAmount = profile.nextExchangeLimit(),
@@ -611,10 +603,15 @@ class SwapInputViewModel(
             endState = { state.copy(fullScreenLoadingVisible = false) },
             startState = { state.copy(fullScreenLoadingVisible = true) },
             action = {
+                val destinationAddress =
+                    loadAddress(state.destinationCryptoCurrency) ?: return@callApi Resource.error(
+                        message = getString(R.string.FabriikApi_DefaultError)
+                    )
+
                 swapApi.createOrder(
                     amount = state.destinationCryptoAmount,
                     quoteResponse = state.quoteResponse,
-                    destinationAddress = state.destinationAddress,
+                    destinationAddress = destinationAddress.toString(),
                     destinationCurrency = state.destinationCryptoCurrency
                 )
             },
