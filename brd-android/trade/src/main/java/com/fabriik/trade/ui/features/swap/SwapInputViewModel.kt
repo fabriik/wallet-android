@@ -655,7 +655,7 @@ class SwapInputViewModel(
             }
 
             val newTransfer =
-                wallet.createTransfer(address, amount, feeBasis, attributes/*, order.exchangeId*/).orNull()
+                wallet.createTransfer(address, amount, feeBasis, attributes, order.exchangeId).orNull()
 
             if (newTransfer == null) {
                 showGenericError()
