@@ -148,6 +148,8 @@ class AuthenticationController(
                             if (isPinCorrect) {
                                 findListener<Listener>()?.onAuthenticationSuccess()
                                 router.popCurrentController()
+                            } else {
+                                bindingPin.pinDigits.resetPin()
                             }
                         }
 

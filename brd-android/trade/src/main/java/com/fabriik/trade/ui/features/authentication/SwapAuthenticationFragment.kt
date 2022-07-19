@@ -121,8 +121,10 @@ class SwapAuthenticationFragment : Fragment(),
             SwapAuthenticationContract.Effect.Dismiss ->
                 requireActivity().finish()
 
-            SwapAuthenticationContract.Effect.ShakeError ->
+            SwapAuthenticationContract.Effect.ShakeError -> {
+                binding.pinLayout.resetPin()
                 SpringAnimator.failShakeAnimation(requireContext(), binding.pinLayout)
+            }
 
             is SwapAuthenticationContract.Effect.Back -> {
                 parentFragmentManager.setFragmentResult(
