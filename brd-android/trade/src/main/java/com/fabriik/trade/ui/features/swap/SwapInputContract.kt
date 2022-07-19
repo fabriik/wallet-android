@@ -69,6 +69,8 @@ interface SwapInputContract {
         data class Loaded(
             val minFiatAmount: BigDecimal,
             val maxFiatAmount: BigDecimal,
+            val dailyFiatLimit: BigDecimal,
+            val lifetimeFiatLimit: BigDecimal,
             val tradingPairs: List<TradingPair>,
             val selectedPair: TradingPair,
             val quoteResponse: QuoteResponse,
@@ -85,7 +87,8 @@ interface SwapInputContract {
             val sendingNetworkFee: AmountData? = null,
             val receivingNetworkFee: AmountData? = null,
             val confirmButtonEnabled: Boolean = false,
-            val swapErrorMessage: ErrorMessage? = null
+            val swapErrorMessage: ErrorMessage? = null,
+            val fullScreenLoadingVisible: Boolean = false
         ) : State() {
 
             val cryptoExchangeRate: BigDecimal
@@ -108,9 +111,9 @@ interface SwapInputContract {
             )
         }
 
-        class InsufficientFunds(private val currencyCode: String) : ErrorMessage() {
+        class InsufficientFunds(private val balance: BigDecimal, private val currencyCode: String) : ErrorMessage() {
             override fun toString(context: Context) = context.getString(
-                R.string.Swap_Input_Error_InsuficientFunds, currencyCode, currencyCode
+                R.string.Swap_Input_Error_InsuficientFunds, currencyCode, currencyCode, balance.formatCryptoForUi(null)
             )
         }
 

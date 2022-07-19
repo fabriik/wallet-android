@@ -18,6 +18,9 @@ data class QuoteResponse(
     @Json(name = "close_bid")
     val closeBid: BigDecimal,
 
+    @Json(name = "minimum_usd_value")
+    val minUsdValue: BigDecimal,
+
     @Json(name = "timestamp")
     val timestamp: Long,
 

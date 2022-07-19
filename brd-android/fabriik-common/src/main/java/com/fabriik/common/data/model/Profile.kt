@@ -52,3 +52,7 @@ fun Profile?.canUseBuyTrade() = when(this?.kycStatus) {
 }
 
 fun Profile?.nextExchangeLimit(): BigDecimal = this?.exchangeLimits?.nextExchangeLimit ?: BigDecimal.ZERO
+
+fun Profile?.availableDailyLimit(): BigDecimal = this?.exchangeLimits?.availableDaily() ?: BigDecimal.ZERO
+
+fun Profile?.availableLifetimeLimit(): BigDecimal = this?.exchangeLimits?.availableLifetime() ?: BigDecimal.ZERO

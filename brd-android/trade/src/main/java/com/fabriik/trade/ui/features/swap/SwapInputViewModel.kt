@@ -17,6 +17,8 @@ import com.breadwallet.tools.manager.BRSharedPrefs
 import com.breadwallet.tools.security.BrdUserManager
 import com.breadwallet.tools.security.ProfileManager
 import com.fabriik.common.data.Status
+import com.fabriik.common.data.model.availableDailyLimit
+import com.fabriik.common.data.model.availableLifetimeLimit
 import com.fabriik.common.data.model.nextExchangeLimit
 import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.common.utils.getString
@@ -57,7 +59,7 @@ class SwapInputViewModel(
     private val currentLoadedState: SwapInputContract.State.Loaded?
         get() = state.value as SwapInputContract.State.Loaded?
 
-    private val maxAmountLimitFiat = profileManager.getProfile().nextExchangeLimit()
+    private val profile = profileManager.getProfile()
     private val ratesRepository by kodein.instance<RatesRepository>()
 
     private var currentTimerJob: Job? = null
@@ -173,15 +175,15 @@ class SwapInputViewModel(
     private fun onMinAmountClicked() {
         val state = currentLoadedState ?: return
 
-        onSourceCurrencyCryptoAmountChanged(
-            min(state.selectedPair.minAmount, state.sourceCryptoBalance), false
+        onSourceCurrencyFiatAmountChanged(
+            state.minFiatAmount, false
         )
     }
 
     private fun onMaxAmountClicked() {
         val state = currentLoadedState ?: return
 
-        val maxAmountLimitCrypto = maxAmountLimitFiat.toCrypto(
+        val maxAmountLimitCrypto = state.maxFiatAmount.toCrypto(
             cryptoCurrency = state.sourceCryptoCurrency,
             fiatCurrency = state.fiatCurrency
         )
@@ -326,7 +328,11 @@ class SwapInputViewModel(
                     sourceCryptoCurrency = selectedPair.baseCurrency,
                     destinationCryptoCurrency = selectedPair.termCurrency,
                     destinationAddress = destinationAddress.toString(),
-                    sourceCryptoBalance = sourceCryptoBalance
+                    sourceCryptoBalance = sourceCryptoBalance,
+                    minFiatAmount = requireNotNull(quoteResponse.data).minUsdValue,
+                    maxFiatAmount = profile.nextExchangeLimit(),
+                    dailyFiatLimit = profile.availableDailyLimit(),
+                    lifetimeFiatLimit = profile.availableLifetimeLimit()
                 )
             }
 
@@ -385,7 +391,7 @@ class SwapInputViewModel(
         }
     }
 
-    private fun onSourceCurrencyFiatAmountChanged(sourceFiatAmount: BigDecimal) {
+    private fun onSourceCurrencyFiatAmountChanged(sourceFiatAmount: BigDecimal, changeByUser: Boolean = true) {
         val state = currentLoadedState ?: return
 
         viewModelScope.launch(Dispatchers.IO) {
@@ -418,7 +424,7 @@ class SwapInputViewModel(
                 ).validateAmounts()
             }
 
-            updateAmounts()
+            updateAmounts(changeByUser)
         }
     }
 
@@ -592,8 +598,8 @@ class SwapInputViewModel(
         val state = currentLoadedState ?: return
 
         callApi(
-            endState = { state.copy() }, //todo: loading
-            startState = { state.copy() }, //todo: loading
+            endState = { state.copy(fullScreenLoadingVisible = false) },
+            startState = { state.copy(fullScreenLoadingVisible = true) },
             action = {
                 swapApi.createOrder(
                     amount = state.destinationCryptoAmount,
@@ -622,6 +628,8 @@ class SwapInputViewModel(
 
     private fun createTransaction(order: CreateOrderResponse) {
         val state = currentLoadedState ?: return
+
+        setState { state.copy(fullScreenLoadingVisible = true) }
 
         viewModelScope.launch(Dispatchers.IO) {
             val wallet = breadBox.wallet(order.currency).first()
@@ -663,9 +671,11 @@ class SwapInputViewModel(
             if (newTransfer == null) {
                 showGenericError()
             } else {
-                wallet.walletManager.submit(newTransfer, phrase)
+                /*wallet.walletManager.submit(newTransfer, phrase)
                 breadBox.walletTransfer(order.currency, newTransfer)
-                    .first()
+                    .first()*/
+
+                setState { state.copy(fullScreenLoadingVisible = false) }
 
                 setEffect {
                     SwapInputContract.Effect.ContinueToSwapProcessing(
@@ -771,15 +781,20 @@ class SwapInputViewModel(
         state.sendingNetworkFee == null || state.receivingNetworkFee == null ->
             SwapInputContract.ErrorMessage.NetworkIssues
         state.sourceCryptoBalance < state.sourceCryptoAmount  ->
-            SwapInputContract.ErrorMessage.InsufficientFunds(state.sourceCryptoCurrency)
+            SwapInputContract.ErrorMessage.InsufficientFunds(state.sourceCryptoBalance, state.sourceCryptoCurrency)
         state.sourceFiatAmount > state.maxFiatAmount ->
-            SwapInputContract.ErrorMessage.MaxSwapAmount(state.maxFiatAmount, state.sourceCryptoCurrency)
+            SwapInputContract.ErrorMessage.MaxSwapAmount(state.maxFiatAmount, state.fiatCurrency)
         state.sourceFiatAmount < state.minFiatAmount ->
-            SwapInputContract.ErrorMessage.MinSwapAmount(state.minFiatAmount, state.sourceCryptoCurrency)
+            SwapInputContract.ErrorMessage.MinSwapAmount(state.minFiatAmount, state.fiatCurrency)
+        state.dailyFiatLimit < state.sourceFiatAmount ->
+            SwapInputContract.ErrorMessage.DailyLimitReached
+        state.lifetimeFiatLimit < state.sourceFiatAmount ->
+            SwapInputContract.ErrorMessage.LifetimeLimitReached
         else -> null
     }
 
     private fun SwapInputContract.State.Loaded.validateAmounts() = copy(
+        swapErrorMessage = null,
         confirmButtonEnabled = sourceCryptoAmount != BigDecimal.ZERO &&
                 destinationCryptoAmount != BigDecimal.ZERO
     )
@@ -795,6 +810,9 @@ class SwapInputViewModel(
     }
 
     private fun showGenericError() {
+        val state = currentLoadedState ?: return
+        setState { state.copy(fullScreenLoadingVisible = false) }
+
         setEffect {
             SwapInputContract.Effect.ShowToast(
                 getString(R.string.FabriikApi_DefaultError)
