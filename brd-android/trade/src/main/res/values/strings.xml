@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Swap input screen -->
     <string name="Swap.Input.IHave">I have %s</string>
     <string name="Swap.Input.IWant">I want</string>
     <string name="Swap.Input.LeftSwitchOption">Min</string>
@@ -10,6 +11,16 @@
     <string name="Swap.Input.SendingFeeTitle">Sending network fee\n(included)</string>
     <string name="Swap.Input.ReceivingFeeTitle">Receiving network fee\n(included)</string>
 
+    <!-- Swap input screen errors -->
+    <string name="Swap.Input.Error.InsuficientFunds">You don\'t have enough %s to complete this swap. Your current %s balance is %s</string>
+    <string name="Swap.Input.Error.MinAmount">The amount is lower than the swap minimum of %s</string>
+    <string name="Swap.Input.Error.MaxAmount">The amount is higher than the swap maximum of %s</string>
+    <string name="Swap.Input.Error.Network">Our trading network is experiencing connection issues. Swapping assets is temporarily unavailable.</string>
+    <string name="Swap.Input.Error.Kyc1DailyLimit">You have reached your swap limit of 1,000 USD a day. Please upgrade your limits or change the amount for this swap.</string>
+    <string name="Swap.Input.Error.Kyc1LifetimeLimit">You have reached your lifetime swap limit of 10,000 USD. Please upgrade your limits or change the amount for this swap.</string>
+    <string name="Swap.Input.Error.FeeFunds">This swap doesn\'t cover the included network fee. Please add more funds to your wallet or change the amount you\'re swapping</string>
+
+    <!-- Asset selection screen -->
     <string name="Swap.AssetsSelection.Title">Select assets</string>
     <string name="Swap.AssetsSelection.SearchHint">Search</string>
 

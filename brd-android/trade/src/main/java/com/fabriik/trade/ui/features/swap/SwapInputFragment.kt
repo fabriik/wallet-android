@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.collect
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.breadwallet.breadbox.formatCryptoForUi
+import com.breadwallet.tools.util.Utils.hideKeyboard
 import com.fabriik.common.ui.customview.FabriikSwitch
 import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.trade.ui.customview.SwapCardView
@@ -90,6 +91,7 @@ class SwapInputFragment : Fragment(),
             }
 
             btnConfirm.setOnClickListener {
+                hideKeyboard(binding.root.context)
                 viewModel.setEvent(SwapInputContract.Event.ConfirmClicked)
             }
         }
@@ -295,7 +297,11 @@ class SwapInputFragment : Fragment(),
             tvRateValue.isVisible = !state.cryptoExchangeRateLoading
             quoteLoadingIndicator.isVisible = state.cryptoExchangeRateLoading
 
+            tvError.isVisible = state.swapErrorMessage != null
+            tvError.text = state.swapErrorMessage?.toString(binding.root.context)
+
             content.isVisible = true
+            fullScreenLoadingView.root.isVisible = false
             initialLoadingIndicator.isVisible = false
         }
     }

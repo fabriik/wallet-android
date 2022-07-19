@@ -17,6 +17,8 @@ import com.breadwallet.tools.manager.BRSharedPrefs
 import com.breadwallet.tools.security.BrdUserManager
 import com.breadwallet.tools.security.ProfileManager
 import com.fabriik.common.data.Status
+import com.fabriik.common.data.model.availableDailyLimit
+import com.fabriik.common.data.model.availableLifetimeLimit
 import com.fabriik.common.data.model.nextExchangeLimit
 import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.common.utils.getString
@@ -57,7 +59,7 @@ class SwapInputViewModel(
     private val currentLoadedState: SwapInputContract.State.Loaded?
         get() = state.value as SwapInputContract.State.Loaded?
 
-    private val maxAmountLimitFiat = profileManager.getProfile().nextExchangeLimit()
+    private val profile = profileManager.getProfile()
     private val ratesRepository by kodein.instance<RatesRepository>()
 
     private var currentTimerJob: Job? = null
@@ -173,15 +175,15 @@ class SwapInputViewModel(
     private fun onMinAmountClicked() {
         val state = currentLoadedState ?: return
 
-        onSourceCurrencyCryptoAmountChanged(
-            min(state.selectedPair.minAmount, state.sourceCryptoBalance), false
+        onSourceCurrencyFiatAmountChanged(
+            state.minFiatAmount, false
         )
     }
 
     private fun onMaxAmountClicked() {
         val state = currentLoadedState ?: return
 
-        val maxAmountLimitCrypto = maxAmountLimitFiat.toCrypto(
+        val maxAmountLimitCrypto = state.maxFiatAmount.toCrypto(
             cryptoCurrency = state.sourceCryptoCurrency,
             fiatCurrency = state.fiatCurrency
         )
@@ -279,7 +281,7 @@ class SwapInputViewModel(
         setState { SwapInputContract.State.Error }
         setEffect {
             SwapInputContract.Effect.ShowToast(
-                getString(R.string.FabriikApi_DefaultError)
+                getString(R.string.Swap_Input_Error_Network)
             )
         }
     }
@@ -326,7 +328,11 @@ class SwapInputViewModel(
                     sourceCryptoCurrency = selectedPair.baseCurrency,
                     destinationCryptoCurrency = selectedPair.termCurrency,
                     destinationAddress = destinationAddress.toString(),
-                    sourceCryptoBalance = sourceCryptoBalance
+                    sourceCryptoBalance = sourceCryptoBalance,
+                    minFiatAmount = requireNotNull(quoteResponse.data).minUsdValue,
+                    maxFiatAmount = profile.nextExchangeLimit(),
+                    dailyFiatLimit = profile.availableDailyLimit(),
+                    lifetimeFiatLimit = profile.availableLifetimeLimit()
                 )
             }
 
@@ -385,7 +391,7 @@ class SwapInputViewModel(
         }
     }
 
-    private fun onSourceCurrencyFiatAmountChanged(sourceFiatAmount: BigDecimal) {
+    private fun onSourceCurrencyFiatAmountChanged(sourceFiatAmount: BigDecimal, changeByUser: Boolean = true) {
         val state = currentLoadedState ?: return
 
         viewModelScope.launch(Dispatchers.IO) {
@@ -415,10 +421,10 @@ class SwapInputViewModel(
                     sourceCryptoAmount = sourceCryptoAmount,
                     receivingNetworkFee = destCryptoAmountData.second,
                     sendingNetworkFee = destCryptoAmountData.first
-                ).validate()
+                ).validateAmounts()
             }
 
-            updateAmounts()
+            updateAmounts(changeByUser)
         }
     }
 
@@ -452,7 +458,7 @@ class SwapInputViewModel(
                     destinationCryptoAmount = destCryptoAmount,
                     sendingNetworkFee = destCryptoAmountData.first,
                     receivingNetworkFee = destCryptoAmountData.second
-                ).validate()
+                ).validateAmounts()
             }
 
             updateAmounts(changeByUser)
@@ -489,7 +495,7 @@ class SwapInputViewModel(
                     destinationFiatAmount = destFiatAmount,
                     receivingNetworkFee = sourceCryptoAmountData.second,
                     sendingNetworkFee = sourceCryptoAmountData.first
-                ).validate()
+                ).validateAmounts()
             }
 
             updateAmounts()
@@ -526,7 +532,7 @@ class SwapInputViewModel(
                     destinationCryptoAmount = destCryptoAmount,
                     sendingNetworkFee = sourceCryptoAmountData.first,
                     receivingNetworkFee = sourceCryptoAmountData.second
-                ).validate()
+                ).validateAmounts()
             }
 
             updateAmounts()
@@ -535,15 +541,18 @@ class SwapInputViewModel(
 
     private fun onConfirmClicked() {
         val state = currentLoadedState
-        val sendingFee = state?.sendingNetworkFee
-        val receivingFee = state?.receivingNetworkFee
-
-        if (sendingFee == null || receivingFee == null) {
+        if (state == null) {
             setEffect {
                 SwapInputContract.Effect.ShowToast(
-                    getString(R.string.FabriikApi_DefaultError)
+                    getString(R.string.Swap_Input_Error_Network)
                 )
             }
+            return
+        }
+
+        val validationError = validate(state)
+        if (validationError != null) {
+            showSwapError(validationError)
             return
         }
 
@@ -566,8 +575,8 @@ class SwapInputViewModel(
                 to = toAmount,
                 from = fromAmount,
                 rate = state.cryptoExchangeRate,
-                sendingFee = sendingFee,
-                receivingFee = receivingFee,
+                sendingFee = state.sendingNetworkFee!!,
+                receivingFee = state.receivingNetworkFee!!,
             )
         }
     }
@@ -589,8 +598,8 @@ class SwapInputViewModel(
         val state = currentLoadedState ?: return
 
         callApi(
-            endState = { state.copy() }, //todo: loading
-            startState = { state.copy() }, //todo: loading
+            endState = { state.copy(fullScreenLoadingVisible = false) },
+            startState = { state.copy(fullScreenLoadingVisible = true) },
             action = {
                 swapApi.createOrder(
                     amount = state.destinationCryptoAmount,
@@ -619,6 +628,8 @@ class SwapInputViewModel(
 
     private fun createTransaction(order: CreateOrderResponse) {
         val state = currentLoadedState ?: return
+
+        setState { state.copy(fullScreenLoadingVisible = true) }
 
         viewModelScope.launch(Dispatchers.IO) {
             val wallet = breadBox.wallet(order.currency).first()
@@ -663,6 +674,8 @@ class SwapInputViewModel(
                 wallet.walletManager.submit(newTransfer, phrase)
                 breadBox.walletTransfer(order.currency, newTransfer)
                     .first()
+
+                setState { state.copy(fullScreenLoadingVisible = false) }
 
                 setEffect {
                     SwapInputContract.Effect.ContinueToSwapProcessing(
@@ -764,18 +777,48 @@ class SwapInputViewModel(
         return Triple(sourceFee, destFee, sourceAmount)
     }
 
+    private fun validate(state: SwapInputContract.State.Loaded) = when {
+        state.sendingNetworkFee == null || state.receivingNetworkFee == null ->
+            SwapInputContract.ErrorMessage.NetworkIssues
+        state.sourceCryptoBalance < state.sourceCryptoAmount  ->
+            SwapInputContract.ErrorMessage.InsufficientFunds(state.sourceCryptoBalance, state.sourceCryptoCurrency)
+        state.sourceFiatAmount > state.maxFiatAmount ->
+            SwapInputContract.ErrorMessage.MaxSwapAmount(state.maxFiatAmount, state.fiatCurrency)
+        state.sourceFiatAmount < state.minFiatAmount ->
+            SwapInputContract.ErrorMessage.MinSwapAmount(state.minFiatAmount, state.fiatCurrency)
+        state.dailyFiatLimit < state.sourceFiatAmount ->
+            SwapInputContract.ErrorMessage.DailyLimitReached
+        state.lifetimeFiatLimit < state.sourceFiatAmount ->
+            SwapInputContract.ErrorMessage.LifetimeLimitReached
+        else -> null
+    }
+
+    private fun SwapInputContract.State.Loaded.validateAmounts() = copy(
+        swapErrorMessage = null,
+        confirmButtonEnabled = sourceCryptoAmount != BigDecimal.ZERO &&
+                destinationCryptoAmount != BigDecimal.ZERO
+    )
+
+    private fun showSwapError(error: SwapInputContract.ErrorMessage) {
+        val state = currentLoadedState ?: return
+        setState {
+            state.copy(
+                swapErrorMessage = error,
+                confirmButtonEnabled = false
+            )
+        }
+    }
+
     private fun showGenericError() {
+        val state = currentLoadedState ?: return
+        setState { state.copy(fullScreenLoadingVisible = false) }
+
         setEffect {
             SwapInputContract.Effect.ShowToast(
                 getString(R.string.FabriikApi_DefaultError)
             )
         }
     }
-
-    private fun SwapInputContract.State.Loaded.validate() = copy(
-        confirmButtonEnabled = sourceCryptoAmount != BigDecimal.ZERO &&
-                destinationCryptoAmount != BigDecimal.ZERO
-    )
 
     companion object {
         const val QUOTE_TIMER = 15

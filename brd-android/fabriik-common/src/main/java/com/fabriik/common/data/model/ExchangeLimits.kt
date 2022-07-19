@@ -28,4 +28,9 @@ data class ExchangeLimits(
 
     @Json(name = "next_exchange_limit")
     val nextExchangeLimit: BigDecimal
-) : Parcelable
+) : Parcelable {
+
+    fun availableDaily() = allowanceDaily - usedDaily
+
+    fun availableLifetime() = allowanceLifetime - usedLifetime
+}
