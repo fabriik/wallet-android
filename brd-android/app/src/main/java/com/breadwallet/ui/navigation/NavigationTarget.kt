@@ -48,6 +48,10 @@ sealed class NavigationTarget : INavigationTarget {
         val txHash: String
     ) : NavigationTarget()
 
+    data class ViewExchangeTransaction(
+        val exchangeId: String
+    ) : NavigationTarget()
+
     object Back : NavigationTarget()
     object ReviewBrd : NavigationTarget()
     object GoToKyc : NavigationTarget()

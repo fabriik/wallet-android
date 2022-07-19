@@ -54,6 +54,7 @@ interface NavigationTargetHandlerSpec {
         is NavigationTarget.SendSheet -> sendSheet(effect)
         is NavigationTarget.ReceiveSheet -> receiveSheet(effect)
         is NavigationTarget.ViewTransaction -> viewTransaction(effect)
+        is NavigationTarget.ViewExchangeTransaction -> viewExchangeTransaction(effect)
         is NavigationTarget.DeepLink -> deepLink(effect)
         is NavigationTarget.GoToInAppMessage -> goToInAppMessage(effect)
         is NavigationTarget.Wallet -> wallet(effect)
@@ -146,6 +147,8 @@ interface NavigationTargetHandlerSpec {
     fun receiveSheet(effect: NavigationTarget.ReceiveSheet): Unit
 
     fun viewTransaction(effect: NavigationTarget.ViewTransaction): Unit
+
+    fun viewExchangeTransaction(effect: NavigationTarget.ViewExchangeTransaction): Unit
 
     fun deepLink(effect: NavigationTarget.DeepLink): Unit
 
