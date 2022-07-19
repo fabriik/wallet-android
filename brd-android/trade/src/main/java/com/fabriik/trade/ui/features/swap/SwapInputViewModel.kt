@@ -299,7 +299,7 @@ class SwapInputViewModel(
             }
 
             val enabledWallets = acctMetaDataProvider.enabledWallets().first()
-            val selectedPair = tradingPairs.firstOrNull() {
+            val selectedPair = tradingPairs.firstOrNull {
                 isWalletEnabled(enabledWallets, it.baseCurrency) &&
                         isWalletEnabled(enabledWallets, it.termCurrency)
             }
@@ -553,10 +553,10 @@ class SwapInputViewModel(
         }
 
         val validationError = validate(state)
-        /*if (validationError != null) {
+        if (validationError != null) {
             showSwapError(validationError)
             return
-        }*/
+        }
 
         val toAmount = AmountData(
             fiatAmount = state.destinationFiatAmount,
@@ -678,9 +678,11 @@ class SwapInputViewModel(
             if (newTransfer == null) {
                 showGenericError()
             } else {
-                /*wallet.walletManager.submit(newTransfer, phrase)
+                wallet.walletManager.submit(newTransfer, phrase)
                 breadBox.walletTransfer(order.currency, newTransfer)
-                    .first()*/
+                    .first()
+
+                setState { state.copy(fullScreenLoadingVisible = false) }
 
                 setState { state.copy(fullScreenLoadingVisible = false) }
 
