@@ -125,9 +125,9 @@ class SwapDetailsFragment : Fragment(),
             tvOrderId.text = data.orderId
 
             binding.root.post {
-                tvSwapTo.text = getString(R.string.Swap_Details_To, data.destination.currency)
+                tvSwapTo.text = getString(R.string.Swap_Details_To, data.destination.currency.toUpperCase(Locale.getDefault()))
                 tvSwapToIdTitle.text = getString(
-                    R.string.Swap_Details_TransactionIdTo_Title, data.destination.currency
+                    R.string.Swap_Details_TransactionIdTo_Title, data.destination.currency.toUpperCase(Locale.getDefault())
                 )
 
                 if (data.destination.transactionId.isNullOrEmpty()) {
@@ -148,13 +148,9 @@ class SwapDetailsFragment : Fragment(),
                 val formatCryptoTo = data.destination.currencyAmount.formatCryptoForUi(null)
                 tvToCurrencyValue.text = "$formatCryptoTo / $formatFiatTo"
 
-                tvSwapFrom.text = getString(R.string.Swap_Details_From, data.source.currency)
-                tvSwapFromId.text = data.source.transactionId ?: getString(
-                    R.string.Swap_Details_Status_Pending
-                )
-
+                tvSwapFrom.text = getString(R.string.Swap_Details_From, data.source.currency.toUpperCase(Locale.getDefault()))
                 tvSwapFromIdTitle.text = getString(
-                    R.string.Swap_Details_TransactionIdFrom_Title, data.source.currency
+                    R.string.Swap_Details_TransactionIdFrom_Title, data.source.currency.toUpperCase(Locale.getDefault())
                 )
 
                 if (data.source.transactionId.isNullOrEmpty()) {
