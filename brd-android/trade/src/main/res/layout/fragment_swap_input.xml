@@ -136,7 +136,7 @@
         android:layout_gravity="center" />
 
     <include
-        android:id="@+id/loading_view"
+        android:id="@+id/full_screen_loading_view"
         layout="@layout/view_fabriik_loading"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

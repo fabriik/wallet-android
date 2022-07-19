@@ -2,6 +2,7 @@ package com.fabriik.trade.ui.features.swap
 
 import android.content.Context
 import com.breadwallet.breadbox.formatCryptoForUi
+import com.breadwallet.util.formatFiatForUi
 import com.fabriik.common.ui.base.FabriikContract
 import com.fabriik.trade.R
 import com.fabriik.trade.data.model.AmountData
@@ -123,15 +124,15 @@ interface SwapInputContract {
             )
         }
 
-        class MinSwapAmount(private val minAmount: BigDecimal, private val currencyCode: String) : ErrorMessage() {
+        class MinSwapAmount(private val minAmount: BigDecimal, private val fiatCurrency: String) : ErrorMessage() {
             override fun toString(context: Context) = context.getString(
-                R.string.Swap_Input_Error_MinAmount, minAmount.formatCryptoForUi(currencyCode)
+                R.string.Swap_Input_Error_MinAmount, minAmount.formatFiatForUi(fiatCurrency)
             )
         }
 
-        class MaxSwapAmount(private val maxAmount: BigDecimal, private val currencyCode: String) : ErrorMessage() {
+        class MaxSwapAmount(private val maxAmount: BigDecimal, private val fiatCurrency: String) : ErrorMessage() {
             override fun toString(context: Context) = context.getString(
-                R.string.Swap_Input_Error_MaxAmount, maxAmount.formatCryptoForUi(currencyCode)
+                R.string.Swap_Input_Error_MaxAmount, maxAmount.formatFiatForUi(fiatCurrency)
             )
         }
 

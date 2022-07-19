@@ -671,9 +671,9 @@ class SwapInputViewModel(
             if (newTransfer == null) {
                 showGenericError()
             } else {
-                /*wallet.walletManager.submit(newTransfer, phrase)
+                wallet.walletManager.submit(newTransfer, phrase)
                 breadBox.walletTransfer(order.currency, newTransfer)
-                    .first()*/
+                    .first()
 
                 setState { state.copy(fullScreenLoadingVisible = false) }
 
