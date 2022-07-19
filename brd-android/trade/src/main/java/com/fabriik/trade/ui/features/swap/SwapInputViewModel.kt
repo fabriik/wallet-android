@@ -12,10 +12,12 @@ import com.breadwallet.crypto.TransferFeeBasis
 import com.breadwallet.crypto.errors.FeeEstimationError
 import com.breadwallet.ext.isZero
 import com.breadwallet.logger.logError
+import com.breadwallet.platform.interfaces.AccountMetaDataProvider
 import com.breadwallet.repository.RatesRepository
 import com.breadwallet.tools.manager.BRSharedPrefs
 import com.breadwallet.tools.security.BrdUserManager
 import com.breadwallet.tools.security.ProfileManager
+import com.breadwallet.tools.util.TokenUtil
 import com.fabriik.common.data.Status
 import com.fabriik.common.data.model.availableDailyLimit
 import com.fabriik.common.data.model.availableLifetimeLimit
@@ -55,6 +57,7 @@ class SwapInputViewModel(
     private val breadBox by kodein.instance<BreadBox>()
     private val userManager by kodein.instance<BrdUserManager>()
     private val profileManager by kodein.instance<ProfileManager>()
+    private val acctMetaDataProvider by kodein.instance<AccountMetaDataProvider>()
 
     private val currentLoadedState: SwapInputContract.State.Loaded?
         get() = state.value as SwapInputContract.State.Loaded?
@@ -296,13 +299,15 @@ class SwapInputViewModel(
                 return@launch
             }
 
-            val selectedPair = tradingPairs.first {
-                it.baseCurrency == "BTC" //todo: get first pair for enabled wallets
+            val enabledWallets = acctMetaDataProvider.enabledWallets().first()
+            val selectedPair = tradingPairs.firstOrNull() {
+                isWalletEnabled(enabledWallets, it.baseCurrency) &&
+                        isWalletEnabled(enabledWallets, it.termCurrency)
             }
 
-            val quoteResponse = swapApi.getQuote(selectedPair)
-            val selectedPairQuote = swapApi.getQuote(selectedPair).data
-            if (quoteResponse.status == Status.ERROR || selectedPairQuote == null) {
+            val quoteResponse = selectedPair?.let { swapApi.getQuote(selectedPair) }
+            val selectedPairQuote = quoteResponse?.data
+            if (quoteResponse == null || quoteResponse.status == Status.ERROR || selectedPairQuote == null) {
                 showErrorState()
                 return@launch
             }
@@ -338,6 +343,11 @@ class SwapInputViewModel(
 
             startQuoteTimer()
         }
+    }
+
+    private fun isWalletEnabled(enabledWallets: List<String>, currencyCode: String): Boolean {
+        val token = TokenUtil.tokenForCode(currencyCode) ?: return false
+        return token.isSupported && enabledWallets.contains(token.currencyId)
     }
 
     private suspend fun loadCryptoBalance(currencyCode: String): BigDecimal? {
