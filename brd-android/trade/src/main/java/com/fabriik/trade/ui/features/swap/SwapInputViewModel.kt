@@ -684,8 +684,6 @@ class SwapInputViewModel(
 
                 setState { state.copy(fullScreenLoadingVisible = false) }
 
-                setState { state.copy(fullScreenLoadingVisible = false) }
-
                 setEffect {
                     SwapInputContract.Effect.ContinueToSwapProcessing(
                         exchangeId = order.exchangeId,
