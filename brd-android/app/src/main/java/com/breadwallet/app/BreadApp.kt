@@ -664,22 +664,11 @@ class BreadApp : Application(), KodeinAware, CameraXConfig.Provider {
     }
 
     fun createHttpHeaders(): Map<String, String> {
-        // Split the default device user agent string by spaces and take the first string.
-        // Example user agent string: "Dalvik/1.6.0 (Linux; U;Android 5.1; LG-F320SBuild/KOT49I.F320S22g) Android/9"
-        // We only want: "Dalvik/1.6.0"
-        val deviceUserAgent =
-            (System.getProperty(APIClient.SYSTEM_PROPERTY_USER_AGENT) ?: "")
-                .split("\\s".toRegex())
-                .firstOrNull()
-
-        // The BRD server expects the following user agent: appName/appVersion engine/engineVersion plaform/plaformVersion
-        val brdUserAgent = "${APIClient.UA_APP_NAME}${BuildConfig.VERSION_CODE} $deviceUserAgent ${APIClient.UA_PLATFORM}${Build.VERSION.RELEASE}"
-
         return mapOf(
             APIClient.HEADER_IS_INTERNAL to if (BuildConfig.IS_INTERNAL_BUILD) BRConstants.TRUE else BRConstants.FALSE,
             APIClient.HEADER_TESTFLIGHT to if (BuildConfig.DEBUG) BRConstants.TRUE else BRConstants.FALSE,
             APIClient.HEADER_TESTNET to if (BuildConfig.BITCOIN_TESTNET) BRConstants.TRUE else BRConstants.FALSE,
-            APIClient.HEADER_USER_AGENT to brdUserAgent
+            FabriikApiConstants.HEADER_USER_AGENT to FabriikApiConstants.USER_AGENT_VALUE
         )
     }
 }
