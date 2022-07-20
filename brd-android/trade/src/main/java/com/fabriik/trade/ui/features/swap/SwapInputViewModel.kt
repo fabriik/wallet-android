@@ -29,6 +29,7 @@ import com.fabriik.common.utils.min
 import com.fabriik.trade.R
 import com.fabriik.trade.data.SwapApi
 import com.fabriik.trade.data.model.AmountData
+import com.fabriik.trade.data.request.CreateOrderRequest
 import com.fabriik.trade.data.response.CreateOrderResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -608,11 +609,27 @@ class SwapInputViewModel(
                         message = getString(R.string.FabriikApi_DefaultError)
                     )
 
+                val (baseQuantity, termQuantity, tradeSide) = when {
+                    state.quoteResponse.securityId.startsWith(state.sourceCryptoCurrency, true) ->
+                        Triple(
+                            state.sourceCryptoAmount, // baseQuantity
+                            state.destinationCryptoAmount, // termQuantity
+                            CreateOrderRequest.TradeSide.SELL // tradeSide
+                        )
+                    else ->
+                        Triple(
+                            state.destinationCryptoAmount, // baseQuantity
+                            state.sourceCryptoAmount, // termQuantity
+                            CreateOrderRequest.TradeSide.BUY // tradeSide
+                        )
+                }
+
                 swapApi.createOrder(
-                    amount = state.destinationCryptoAmount,
-                    quoteResponse = state.quoteResponse,
-                    destinationAddress = destinationAddress.toString(),
-                    destinationCurrency = state.destinationCryptoCurrency
+                    quoteId = state.quoteResponse.quoteId,
+                    tradeSide = tradeSide,
+                    baseQuantity = baseQuantity,
+                    termQuantity = termQuantity,
+                    destination = destinationAddress.toString(),
                 )
             },
             callback = {
