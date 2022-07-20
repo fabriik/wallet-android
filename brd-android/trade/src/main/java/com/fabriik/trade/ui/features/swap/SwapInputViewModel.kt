@@ -148,9 +148,16 @@ class SwapInputViewModel(
                     sourceCryptoBalance = sourceBalance,
                     sourceCryptoCurrency = newSelectedPair.baseCurrency,
                     destinationCryptoCurrency = newSelectedPair.termCurrency,
+                    sourceFiatAmount = BigDecimal.ZERO,
+                    sourceCryptoAmount = BigDecimal.ZERO,
+                    destinationFiatAmount = BigDecimal.ZERO,
+                    destinationCryptoAmount = BigDecimal.ZERO,
+                    sendingNetworkFee = null,
+                    receivingNetworkFee = null
                 )
             }
 
+            updateAmounts(false)
             requestNewQuote()
         }
     }
@@ -169,10 +176,17 @@ class SwapInputViewModel(
         setState {
             state.copy(
                 selectedPair = newSelectedPair,
-                destinationCryptoCurrency = newSelectedPair.termCurrency
+                destinationCryptoCurrency = newSelectedPair.termCurrency,
+                sourceFiatAmount = BigDecimal.ZERO,
+                sourceCryptoAmount = BigDecimal.ZERO,
+                destinationFiatAmount = BigDecimal.ZERO,
+                destinationCryptoAmount = BigDecimal.ZERO,
+                sendingNetworkFee = null,
+                receivingNetworkFee = null
             )
         }
 
+        updateAmounts(false)
         requestNewQuote()
     }
 
