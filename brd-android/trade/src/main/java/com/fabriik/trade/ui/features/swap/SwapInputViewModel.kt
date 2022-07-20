@@ -2,7 +2,6 @@ package com.fabriik.trade.ui.features.swap
 
 import android.app.Application
 import android.security.keystore.UserNotAuthenticatedException
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.breadwallet.breadbox.*
 import com.breadwallet.crypto.Address
@@ -13,7 +12,6 @@ import com.breadwallet.crypto.errors.FeeEstimationError
 import com.breadwallet.ext.isZero
 import com.breadwallet.logger.logError
 import com.breadwallet.platform.interfaces.AccountMetaDataProvider
-import com.breadwallet.repository.RatesRepository
 import com.breadwallet.tools.manager.BRSharedPrefs
 import com.breadwallet.tools.security.BrdUserManager
 import com.breadwallet.tools.security.ProfileManager
@@ -44,8 +42,6 @@ import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import org.kodein.di.direct
-import java.lang.Exception
-import java.math.RoundingMode
 
 class SwapInputViewModel(
     application: Application
@@ -73,7 +69,6 @@ class SwapInputViewModel(
         get() = state.value as SwapInputContract.State.Loaded?
 
     private val profile = profileManager.getProfile()
-    private val ratesRepository by kodein.instance<RatesRepository>()
 
     private var currentTimerJob: Job? = null
 
@@ -196,9 +191,9 @@ class SwapInputViewModel(
     private fun onMaxAmountClicked() {
         val state = currentLoadedState ?: return
 
-        val maxAmountLimitCrypto = state.maxFiatAmount.toCrypto(
-            cryptoCurrency = state.sourceCryptoCurrency,
-            fiatCurrency = state.fiatCurrency
+        val maxAmountLimitCrypto = amountConverter.fiatToCrypto(
+            amount = state.maxFiatAmount,
+            cryptoCurrency = state.sourceCryptoCurrency
         )
 
         onSourceCurrencyCryptoAmountChanged(
@@ -462,7 +457,7 @@ class SwapInputViewModel(
         }
     }
 
-    private fun updateAmounts(amounts: Amounts, state: SwapInputContract.State.Loaded, changeByUser: Boolean = true) {
+    private fun updateAmounts(amounts: SwapInputContract.Amounts, state: SwapInputContract.State.Loaded, changeByUser: Boolean = true) {
         setState {
             state.copy(
                 sourceFiatAmount = amounts.sourceFiatAmount,
@@ -631,35 +626,6 @@ class SwapInputViewModel(
         }
     }
 
-    private suspend fun estimateFee(
-        cryptoAmount: BigDecimal, currencyCode: String, fiatCode: String
-    ): AmountData? {
-        val wallet = breadBox.wallet(currencyCode).first()
-        val amount = Amount.create(cryptoAmount.toDouble(), wallet.unit)
-        val address = loadAddress(wallet.currency.code) ?: return null
-
-        return try {
-            val data = wallet.estimateFee(address, amount)
-            val cryptoFee = data.fee.toBigDecimal()
-            val cryptoCurrency = data.currency.code
-            val fiatFee = ratesRepository.getFiatForCrypto(
-                cryptoAmount = cryptoFee,
-                cryptoCode = cryptoCurrency,
-                fiatCode = fiatCode
-            ) ?: return null
-
-            return AmountData(
-                fiatAmount = fiatFee,
-                fiatCurrency = fiatCode,
-                cryptoAmount = cryptoFee,
-                cryptoCurrency = cryptoCurrency
-            )
-        } catch (e: Exception) {
-            Log.d("SwapInputViewModel", "Fee estimation failed: ${e.message}")
-            null
-        }
-    }
-
     private suspend fun estimateFeeBasis(orderAddress: String, currency: String, orderAmount: BigDecimal) : TransferFeeBasis? {
         val wallet = breadBox.wallet(currency).first()
 
@@ -682,42 +648,6 @@ class SwapInputViewModel(
             logError("Failed get fee estimate", e)
             null
         }
-    }
-
-    private fun BigDecimal.toCrypto(cryptoCurrency: String, fiatCurrency: String): BigDecimal {
-        return ratesRepository.getCryptoForFiat(
-            fiatAmount = this,
-            cryptoCode = cryptoCurrency,
-            fiatCode = fiatCurrency
-        ) ?: BigDecimal.ZERO
-    }
-
-    private fun BigDecimal.toFiat(cryptoCurrency: String, fiatCurrency: String): BigDecimal {
-        return ratesRepository.getFiatForCrypto(
-            cryptoAmount = this,
-            cryptoCode = cryptoCurrency,
-            fiatCode = fiatCurrency
-        ) ?: BigDecimal.ZERO
-    }
-
-    private suspend fun BigDecimal.convertSource(fromCryptoCurrency: String, toCryptoCurrency: String, rate: BigDecimal): Triple<AmountData?, AmountData?, BigDecimal> {
-        val state = currentLoadedState ?: return Triple(null, null, BigDecimal.ZERO)
-
-        val destAmount = this.multiply(rate)
-        val destFee = estimateFee(destAmount, toCryptoCurrency, state.fiatCurrency)
-        val sourceFee = estimateFee(this, fromCryptoCurrency, state.fiatCurrency)
-
-        return Triple(sourceFee, destFee, destAmount)
-    }
-
-    private suspend fun BigDecimal.convertDestination(fromCryptoCurrency: String, toCryptoCurrency: String, rate: BigDecimal): Triple<AmountData?, AmountData?, BigDecimal> {
-        val state = currentLoadedState ?: return Triple(null, null, BigDecimal.ZERO)
-
-        val sourceAmount = this.divide(rate, 5, RoundingMode.HALF_UP)
-        val sourceFee = estimateFee(sourceAmount, toCryptoCurrency, state.fiatCurrency)
-        val destFee = estimateFee(this, fromCryptoCurrency, state.fiatCurrency)
-
-        return Triple(sourceFee, destFee, sourceAmount)
     }
 
     private fun validate(state: SwapInputContract.State.Loaded) = when {
@@ -761,103 +691,6 @@ class SwapInputViewModel(
                 getString(R.string.FabriikApi_DefaultError)
             )
         }
-    }
-
-    class ConvertSourceFiatAmount(private val converter: AmountConverter) {
-        suspend operator fun invoke(sourceFiatAmount: BigDecimal, exchangeRate: BigDecimal, sourceCryptoCurrency: String, destinationCryptoCurrency: String): Amounts {
-            val sourceCryptoAmount = converter.fiatToCrypto(sourceFiatAmount, sourceCryptoCurrency)
-            val destinationCryptoAmountData = converter.sourceCryptoToDestinationCrypto(sourceCryptoAmount, exchangeRate, sourceCryptoCurrency, destinationCryptoCurrency)
-            val destinationCryptoAmount = destinationCryptoAmountData.first
-            val destinationFiatAmount = converter.cryptoToFiat(destinationCryptoAmount, destinationCryptoCurrency)
-
-            return Amounts(
-                sourceFeeData = destinationCryptoAmountData.second,
-                sourceFiatAmount = sourceFiatAmount,
-                sourceCryptoAmount = sourceCryptoAmount,
-                destinationFeeData = destinationCryptoAmountData.third,
-                destinationFiatAmount = destinationFiatAmount,
-                destinationCryptoAmount = destinationCryptoAmount,
-            )
-        }
-    }
-
-    class ConvertSourceCryptoAmount(private val converter: AmountConverter) {
-        suspend operator fun invoke(sourceCryptoAmount: BigDecimal, exchangeRate: BigDecimal, sourceCryptoCurrency: String, destinationCryptoCurrency: String): Amounts {
-            val sourceFiatAmount = converter.cryptoToFiat(sourceCryptoAmount, sourceCryptoCurrency)
-            val destinationCryptoAmountData = converter.sourceCryptoToDestinationCrypto(sourceCryptoAmount, exchangeRate, sourceCryptoCurrency, destinationCryptoCurrency)
-            val destinationCryptoAmount = destinationCryptoAmountData.first
-            val destinationFiatAmount = converter.cryptoToFiat(destinationCryptoAmount, destinationCryptoCurrency)
-
-            return Amounts(
-                sourceFeeData = destinationCryptoAmountData.second,
-                sourceFiatAmount = sourceFiatAmount,
-                sourceCryptoAmount = sourceCryptoAmount,
-                destinationFeeData = destinationCryptoAmountData.third,
-                destinationFiatAmount = destinationFiatAmount,
-                destinationCryptoAmount = destinationCryptoAmount
-            )
-        }
-    }
-
-    class ConvertDestinationFiatAmount(private val converter: AmountConverter) {
-        suspend operator fun invoke(destinationFiatAmount: BigDecimal, exchangeRate: BigDecimal, sourceCryptoCurrency: String, destinationCryptoCurrency: String): Amounts {
-            val destinationCryptoAmount = converter.fiatToCrypto(destinationFiatAmount, destinationCryptoCurrency)
-            val sourceCryptoAmountData = converter.destinationCryptoToSourceCrypto(destinationCryptoAmount, exchangeRate, destinationCryptoCurrency, sourceCryptoCurrency)
-            val sourceCryptoAmount = sourceCryptoAmountData.first
-            val sourceFiatAmount = converter.cryptoToFiat(sourceCryptoAmount, sourceCryptoCurrency)
-
-            return Amounts(
-                sourceFeeData = sourceCryptoAmountData.second,
-                sourceFiatAmount = sourceFiatAmount,
-                sourceCryptoAmount = sourceCryptoAmount,
-                destinationFeeData = sourceCryptoAmountData.third,
-                destinationFiatAmount = destinationFiatAmount,
-                destinationCryptoAmount = destinationCryptoAmount
-            )
-        }
-    }
-
-    class ConvertDestinationCryptoAmount(private val converter: AmountConverter) {
-        suspend operator fun invoke(destinationCryptoAmount: BigDecimal, exchangeRate: BigDecimal, sourceCryptoCurrency: String, destinationCryptoCurrency: String): Amounts {
-            val destinationFiatAmount = converter.cryptoToFiat(destinationCryptoAmount, destinationCryptoCurrency)
-            val sourceCryptoAmountData = converter.destinationCryptoToSourceCrypto(destinationCryptoAmount, exchangeRate, destinationCryptoCurrency, sourceCryptoCurrency)
-            val sourceCryptoAmount = sourceCryptoAmountData.first
-            val sourceFiatAmount = converter.cryptoToFiat(sourceCryptoAmount, sourceCryptoCurrency)
-
-            return Amounts(
-                sourceFeeData = sourceCryptoAmountData.second,
-                sourceFiatAmount = sourceFiatAmount,
-                sourceCryptoAmount = sourceCryptoAmount,
-                destinationFeeData = sourceCryptoAmountData.third,
-                destinationFiatAmount = destinationFiatAmount,
-                destinationCryptoAmount = destinationCryptoAmount
-            )
-        }
-    }
-
-    data class Amounts(
-        val sourceFeeData: FeeData,
-        val sourceFiatAmount: BigDecimal,
-        val sourceCryptoAmount: BigDecimal,
-        val destinationFeeData: FeeData,
-        val destinationFiatAmount: BigDecimal,
-        val destinationCryptoAmount: BigDecimal,
-    )
-
-    data class FeeData(
-        val fiatFeeAmount: BigDecimal,
-        val fiatFeeCurrency: String,
-        val cryptoOriginalFeeAmount: BigDecimal,
-        val cryptoOriginalFeeCurrency: String,
-        val cryptoConvertedFeeAmount: BigDecimal,
-        val cryptoConvertedFeeCurrency: String,
-    ) {
-        fun toAmountData() = AmountData(
-            fiatAmount = fiatFeeAmount,
-            fiatCurrency = fiatFeeCurrency,
-            cryptoAmount = cryptoOriginalFeeAmount,
-            cryptoCurrency = cryptoOriginalFeeCurrency
-        )
     }
 
     companion object {

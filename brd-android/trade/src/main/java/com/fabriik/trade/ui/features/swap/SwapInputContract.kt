@@ -147,4 +147,29 @@ interface SwapInputContract {
             )
         }
     }
+
+    data class Amounts(
+        val sourceFeeData: FeeData,
+        val sourceFiatAmount: BigDecimal,
+        val sourceCryptoAmount: BigDecimal,
+        val destinationFeeData: FeeData,
+        val destinationFiatAmount: BigDecimal,
+        val destinationCryptoAmount: BigDecimal,
+    )
+
+    data class FeeData(
+        val fiatFeeAmount: BigDecimal,
+        val fiatFeeCurrency: String,
+        val cryptoOriginalFeeAmount: BigDecimal,
+        val cryptoOriginalFeeCurrency: String,
+        val cryptoConvertedFeeAmount: BigDecimal,
+        val cryptoConvertedFeeCurrency: String,
+    ) {
+        fun toAmountData() = AmountData(
+            fiatAmount = fiatFeeAmount,
+            fiatCurrency = fiatFeeCurrency,
+            cryptoAmount = cryptoOriginalFeeAmount,
+            cryptoCurrency = cryptoOriginalFeeCurrency
+        )
+    }
 }

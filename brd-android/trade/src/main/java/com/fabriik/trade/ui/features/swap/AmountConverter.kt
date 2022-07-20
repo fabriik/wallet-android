@@ -33,23 +33,23 @@ class AmountConverter(
         cryptoAmount = amount
     )?: BigDecimal.ZERO
 
-    suspend fun sourceCryptoToDestinationCrypto(amount: BigDecimal, exchangeRate: BigDecimal, fromCryptoCurrency: String, toCryptoCurrency: String): Triple<BigDecimal, SwapInputViewModel.FeeData, SwapInputViewModel.FeeData> {
+    suspend fun sourceCryptoToDestinationCrypto(amount: BigDecimal, exchangeRate: BigDecimal, fromCryptoCurrency: String, toCryptoCurrency: String): Triple<BigDecimal, SwapInputContract.FeeData, SwapInputContract.FeeData> {
         val sourceFee = estimateFee(amount, fromCryptoCurrency) ?: throw IllegalStateException("Source fee not returned")
         val destAmount = amount.multiply(exchangeRate - sourceFee.cryptoConvertedFeeAmount)
         val destFee = estimateFee(destAmount, toCryptoCurrency) ?: throw IllegalStateException("Destination fee not returned")
         return Triple(destAmount - destFee.cryptoConvertedFeeAmount, sourceFee, destFee)
     }
 
-    suspend fun destinationCryptoToSourceCrypto(amount: BigDecimal, exchangeRate: BigDecimal, fromCryptoCurrency: String, toCryptoCurrency: String): Triple<BigDecimal, SwapInputViewModel.FeeData, SwapInputViewModel.FeeData> {
+    suspend fun destinationCryptoToSourceCrypto(amount: BigDecimal, exchangeRate: BigDecimal, fromCryptoCurrency: String, toCryptoCurrency: String): Triple<BigDecimal, SwapInputContract.FeeData, SwapInputContract.FeeData> {
         val destFee = estimateFee(amount, fromCryptoCurrency) ?: throw IllegalStateException("Destination fee not returned")
         val sourceAmount = amount.divide(exchangeRate, 20, RoundingMode.HALF_UP)
         val sourceFee = estimateFee(sourceAmount, toCryptoCurrency) ?: throw IllegalStateException("Source fee not returned")
         return Triple(sourceAmount + sourceFee.cryptoConvertedFeeAmount + destFee.cryptoConvertedFeeAmount, sourceFee, destFee)
     }
 
-    private suspend fun estimateFee(value: BigDecimal, cryptoCurrency: String) : SwapInputViewModel.FeeData? {
+    private suspend fun estimateFee(value: BigDecimal, cryptoCurrency: String) : SwapInputContract.FeeData? {
         if (value == BigDecimal.ZERO) {
-            return SwapInputViewModel.FeeData(
+            return SwapInputContract.FeeData(
                 fiatFeeAmount = BigDecimal.ZERO,
                 fiatFeeCurrency = fiatCurrency,
                 cryptoOriginalFeeAmount = BigDecimal.ZERO,
@@ -73,7 +73,7 @@ class AmountConverter(
                 else -> cryptoFee
             }
 
-            return SwapInputViewModel.FeeData(
+            return SwapInputContract.FeeData(
                 fiatFeeAmount = fiatFee,
                 fiatFeeCurrency = fiatCurrency,
                 cryptoOriginalFeeAmount = cryptoFee,
