@@ -5,6 +5,9 @@ import android.content.Context
 import android.content.res.Resources
 import android.graphics.Paint
 import android.text.Editable
+import android.view.ActionMode
+import android.view.Menu
+import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
@@ -56,6 +59,20 @@ fun min(a: BigDecimal, b: BigDecimal) = when {
 fun max(a: BigDecimal, b: BigDecimal) = when {
     b > a -> b
     else -> a
+}
+
+fun EditText.disableCopyPaste() {
+    isLongClickable = false
+    setTextIsSelectable(false)
+    customSelectionActionModeCallback = object: ActionMode.Callback {
+        override fun onCreateActionMode(mode: ActionMode?, menu: Menu?) = false
+
+        override fun onPrepareActionMode(mode: ActionMode?, menu: Menu?) = false
+
+        override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?) = false
+
+        override fun onDestroyActionMode(mode: ActionMode?) {}
+    }
 }
 
 fun EditText.afterTextChangedDebounceFocused(action: (text: Editable?) -> Unit) {
