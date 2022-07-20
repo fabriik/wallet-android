@@ -90,6 +90,7 @@ object InputPin {
         object AssociateNewDevice : F()
         object ContinueWithFlow : F()
         object CheckIfPinExists : F()
+        object ResetPin : F(), ViewEffect
         data class SetupPin(
             @Redacted val pin: String
         ) : F() {

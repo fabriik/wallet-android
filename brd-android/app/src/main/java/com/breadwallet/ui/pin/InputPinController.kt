@@ -104,6 +104,7 @@ class InputPinController(args: Bundle) : BaseMobiusController<M, E, F>(args) {
         when (effect) {
             F.ErrorShake -> SpringAnimator.failShakeAnimation(applicationContext, binding.pinDigits)
             F.ShowPinError -> toastLong(R.string.UpdatePin_setPinError)
+            F.ResetPin -> binding.pinDigits.resetPin()
         }
     }
 
