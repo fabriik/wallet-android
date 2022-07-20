@@ -114,16 +114,16 @@ class SwapInputViewModel(
                 onMaxAmountClicked()
 
             is SwapInputContract.Event.SourceCurrencyFiatAmountChange ->
-                onSourceCurrencyFiatAmountChanged(event.amount)
+                onSourceCurrencyFiatAmountChanged(event.amount, true)
 
             is SwapInputContract.Event.SourceCurrencyCryptoAmountChange ->
-                onSourceCurrencyCryptoAmountChanged(event.amount)
+                onSourceCurrencyCryptoAmountChanged(event.amount, true)
 
             is SwapInputContract.Event.DestinationCurrencyFiatAmountChange ->
-                onDestinationCurrencyFiatAmountChanged(event.amount)
+                onDestinationCurrencyFiatAmountChanged(event.amount, true)
 
             is SwapInputContract.Event.DestinationCurrencyCryptoAmountChange ->
-                onDestinationCurrencyCryptoAmountChanged(event.amount)
+                onDestinationCurrencyCryptoAmountChanged(event.amount, true)
         }
     }
 
@@ -149,8 +149,21 @@ class SwapInputViewModel(
                     sourceCryptoBalance = sourceBalance,
                     sourceCryptoCurrency = newSelectedPair.baseCurrency,
                     destinationCryptoCurrency = newSelectedPair.termCurrency,
+                    sourceFiatAmount = BigDecimal.ZERO,
+                    sourceCryptoAmount = BigDecimal.ZERO,
+                    destinationFiatAmount = BigDecimal.ZERO,
+                    destinationCryptoAmount = BigDecimal.ZERO,
+                    sendingNetworkFee = null,
+                    receivingNetworkFee = null
                 )
             }
+
+            updateAmounts(
+                sourceFiatAmountChangedByUser = false,
+                sourceCryptoAmountChangedByUser = false,
+                destinationFiatAmountChangedByUser = false,
+                destinationCryptoAmountChangedByUser = false
+            )
 
             requestNewQuote()
         }
@@ -170,9 +183,22 @@ class SwapInputViewModel(
         setState {
             state.copy(
                 selectedPair = newSelectedPair,
-                destinationCryptoCurrency = newSelectedPair.termCurrency
+                destinationCryptoCurrency = newSelectedPair.termCurrency,
+                sourceFiatAmount = BigDecimal.ZERO,
+                sourceCryptoAmount = BigDecimal.ZERO,
+                destinationFiatAmount = BigDecimal.ZERO,
+                destinationCryptoAmount = BigDecimal.ZERO,
+                sendingNetworkFee = null,
+                receivingNetworkFee = null
             )
         }
+
+        updateAmounts(
+            sourceFiatAmountChangedByUser = false,
+            sourceCryptoAmountChangedByUser = false,
+            destinationFiatAmountChangedByUser = false,
+            destinationCryptoAmountChangedByUser = false
+        )
 
         requestNewQuote()
     }
@@ -224,7 +250,13 @@ class SwapInputViewModel(
 
     private fun onReplaceCurrenciesAnimationCompleted(state: SwapInputContract.State.Loaded) {
         setState { state }
-        updateAmounts()
+
+        updateAmounts(
+            sourceFiatAmountChangedByUser = false,
+            sourceCryptoAmountChangedByUser = false,
+            destinationFiatAmountChangedByUser = false,
+            destinationCryptoAmountChangedByUser = false,
+        )
     }
 
     private fun startQuoteTimer() {
@@ -394,7 +426,7 @@ class SwapInputViewModel(
         }
     }
 
-    private fun onSourceCurrencyFiatAmountChanged(sourceFiatAmount: BigDecimal, changeByUser: Boolean = true) {
+    private fun onSourceCurrencyFiatAmountChanged(sourceFiatAmount: BigDecimal, changeByUser: Boolean) {
         val state = currentLoadedState ?: return
 
         viewModelScope.launch(Dispatchers.IO) {
@@ -427,11 +459,16 @@ class SwapInputViewModel(
                 ).validateAmounts()
             }
 
-            updateAmounts(changeByUser)
+            updateAmounts(
+                sourceFiatAmountChangedByUser = changeByUser,
+                sourceCryptoAmountChangedByUser = false,
+                destinationFiatAmountChangedByUser = false,
+                destinationCryptoAmountChangedByUser = false,
+            )
         }
     }
 
-    private fun onSourceCurrencyCryptoAmountChanged(sourceCryptoAmount: BigDecimal, changeByUser: Boolean = true) {
+    private fun onSourceCurrencyCryptoAmountChanged(sourceCryptoAmount: BigDecimal, changeByUser: Boolean) {
         val state = currentLoadedState ?: return
 
         viewModelScope.launch(Dispatchers.IO) {
@@ -464,11 +501,16 @@ class SwapInputViewModel(
                 ).validateAmounts()
             }
 
-            updateAmounts(changeByUser)
+            updateAmounts(
+                sourceFiatAmountChangedByUser = false,
+                sourceCryptoAmountChangedByUser = changeByUser,
+                destinationFiatAmountChangedByUser = false,
+                destinationCryptoAmountChangedByUser = false,
+            )
         }
     }
 
-    private fun onDestinationCurrencyFiatAmountChanged(destFiatAmount: BigDecimal) {
+    private fun onDestinationCurrencyFiatAmountChanged(destFiatAmount: BigDecimal, changeByUser: Boolean) {
         val state = currentLoadedState ?: return
 
         viewModelScope.launch(Dispatchers.IO) {
@@ -501,11 +543,16 @@ class SwapInputViewModel(
                 ).validateAmounts()
             }
 
-            updateAmounts()
+            updateAmounts(
+                sourceFiatAmountChangedByUser = false,
+                sourceCryptoAmountChangedByUser = false,
+                destinationFiatAmountChangedByUser = changeByUser,
+                destinationCryptoAmountChangedByUser = false,
+            )
         }
     }
 
-    private fun onDestinationCurrencyCryptoAmountChanged(destCryptoAmount: BigDecimal) {
+    private fun onDestinationCurrencyCryptoAmountChanged(destCryptoAmount: BigDecimal, changeByUser: Boolean) {
         val state = currentLoadedState ?: return
 
         viewModelScope.launch(Dispatchers.IO) {
@@ -538,7 +585,12 @@ class SwapInputViewModel(
                 ).validateAmounts()
             }
 
-            updateAmounts()
+            updateAmounts(
+                sourceFiatAmountChangedByUser = false,
+                sourceCryptoAmountChangedByUser = false,
+                destinationFiatAmountChangedByUser = false,
+                destinationCryptoAmountChangedByUser = changeByUser,
+            )
         }
     }
 
@@ -584,15 +636,20 @@ class SwapInputViewModel(
         }
     }
 
-    private fun updateAmounts(changeByUser: Boolean = true) {
+    private fun updateAmounts(
+        sourceFiatAmountChangedByUser: Boolean,
+        sourceCryptoAmountChangedByUser: Boolean,
+        destinationFiatAmountChangedByUser: Boolean,
+        destinationCryptoAmountChangedByUser: Boolean
+    ) {
         val state = currentLoadedState ?: return
 
-        setEffect { SwapInputContract.Effect.UpdateSourceFiatAmount(state.sourceFiatAmount) }
-        setEffect { SwapInputContract.Effect.UpdateSourceCryptoAmount(state.sourceCryptoAmount) }
-        setEffect { SwapInputContract.Effect.UpdateDestinationFiatAmount(state.destinationFiatAmount) }
-        setEffect { SwapInputContract.Effect.UpdateDestinationCryptoAmount(state.destinationCryptoAmount) }
+        setEffect { SwapInputContract.Effect.UpdateSourceFiatAmount(state.sourceFiatAmount, sourceFiatAmountChangedByUser) }
+        setEffect { SwapInputContract.Effect.UpdateSourceCryptoAmount(state.sourceCryptoAmount, sourceCryptoAmountChangedByUser) }
+        setEffect { SwapInputContract.Effect.UpdateDestinationFiatAmount(state.destinationFiatAmount, destinationFiatAmountChangedByUser) }
+        setEffect { SwapInputContract.Effect.UpdateDestinationCryptoAmount(state.destinationCryptoAmount, destinationCryptoAmountChangedByUser) }
 
-        if (changeByUser) {
+        if (sourceFiatAmountChangedByUser || sourceCryptoAmountChangedByUser || destinationFiatAmountChangedByUser || destinationCryptoAmountChangedByUser) {
             setEffect { SwapInputContract.Effect.DeselectMinMaxSwitchItems }
         }
     }
