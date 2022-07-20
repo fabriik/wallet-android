@@ -28,10 +28,6 @@
     <string name="Swap.PinAuth.Title">Enter your PIN</string>
     <string name="Swap.PinAuth.Subtitle">Please enter your PIN to confirm the transaction</string>
 
-    <!-- Transaction item custom view -->
-    <string name="Swap.TransactionItem.Swapped">Swapped from</string>
-    <string name="Swap.TransactionItem.Pending">Pending swap from</string>
-
     <!-- Details Screen -->
     <string name="Swap.Details.Status.Pending">Pending</string>
     <string name="Swap.Details.Status.Complete">Complete</string>

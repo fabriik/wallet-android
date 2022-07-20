@@ -1502,4 +1502,8 @@
 
     <string name="Swap.Process.Header">Swapping  %1$s/%2$s</string>
     <string name="Swap.Process.Body">In approximately 30 minutes or less your %1$s will arrive. You can continue to use you wallet safely, we will notify you when it’s done.</string>
+
+    <!-- Transaction item custom view -->
+    <string name="Swap.TransactionItem.Swapped">Swapped from %s</string>
+    <string name="Swap.TransactionItem.Pending">Pending swap %s</string>
 </resources>
