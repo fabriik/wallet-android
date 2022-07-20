@@ -59,20 +59,20 @@ class CurrencyInputView @JvmOverloads constructor(
         callback?.onCryptoAmountChanged(value.trim().toBigDecimalOrNull() ?: BigDecimal.ZERO)
     }
 
-    fun setFiatAmount(amount: BigDecimal) {
+    fun setFiatAmount(amount: BigDecimal, changeByUser: Boolean) {
         val formatted = "%.2f".format(amount)
         val text = binding.etFiatAmount.text?.toString() ?: ""
 
-        if (text != formatted && !binding.etFiatAmount.hasFocus()) {
+        if (text != formatted && !changeByUser) {
             binding.etFiatAmount.setText(formatted)
         }
     }
 
-    fun setCryptoAmount(amount: BigDecimal) {
+    fun setCryptoAmount(amount: BigDecimal, changeByUser: Boolean) {
         val formatted = "%.5f".format(amount)
         val text = binding.etCryptoAmount.text?.toString() ?: ""
 
-        if (text != formatted && !binding.etCryptoAmount.hasFocus()) {
+        if (text != formatted && !changeByUser) {
             binding.etCryptoAmount.setText(formatted)
         }
     }
