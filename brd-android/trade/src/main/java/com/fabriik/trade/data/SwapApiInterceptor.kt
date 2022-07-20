@@ -2,6 +2,7 @@ package com.fabriik.trade.data
 
 import android.content.Context
 import com.breadwallet.tools.manager.BRSharedPrefs
+import com.fabriik.common.data.FabriikApiConstants
 import com.fabriik.registration.utils.UserSessionManager
 import com.platform.tools.SessionHolder
 import kotlinx.coroutines.CoroutineScope
@@ -16,8 +17,9 @@ class SwapApiInterceptor(
     override fun intercept(chain: Interceptor.Chain) : Response {
         val response = chain.request()
             .newBuilder()
-            .addHeader("X-Device-ID", BRSharedPrefs.getDeviceId())
-            .addHeader("Authorization", SessionHolder.getSessionKey())
+            .addHeader(FabriikApiConstants.HEADER_DEVICE_ID, BRSharedPrefs.getDeviceId())
+            .addHeader(FabriikApiConstants.HEADER_USER_AGENT, FabriikApiConstants.USER_AGENT_VALUE)
+            .addHeader(FabriikApiConstants.HEADER_AUTHORIZATION, SessionHolder.getSessionKey())
             .build()
             .run(chain::proceed)
 
