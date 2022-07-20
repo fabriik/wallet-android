@@ -1,7 +1,6 @@
 package com.fabriik.trade.data
 
 import android.content.Context
-import com.breadwallet.crypto.Address
 import com.fabriik.common.data.FabriikApiConstants
 import com.fabriik.common.data.Resource
 import com.fabriik.common.utils.FabriikApiResponseMapper
@@ -54,14 +53,15 @@ class SwapApi(
         }
     }
 
-    suspend fun createOrder(amount: BigDecimal, quoteResponse: QuoteResponse, destinationAddress: String, destinationCurrency: String): Resource<CreateOrderResponse?> {
+    suspend fun createOrder(baseQuantity: BigDecimal, termQuantity: BigDecimal, quoteId: String, destination: String, tradeSide: CreateOrderRequest.TradeSide): Resource<CreateOrderResponse?> {
         return try {
             val response = service.createOrder(
                 CreateOrderRequest(
-                    quoteId = quoteResponse.quoteId,
-                    quantity = amount,
-                    destination = destinationAddress,
-                    destinationCurrency = destinationCurrency,
+                    quoteId = quoteId,
+                    tradeSide = tradeSide,
+                    destination = destination,
+                    baseQuantity = baseQuantity,
+                    termQuantity = termQuantity
                 )
             )
             Resource.success(data = response)
