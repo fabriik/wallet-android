@@ -25,6 +25,7 @@
 package com.breadwallet.ui.wallet
 
 import com.breadwallet.platform.entities.GiftMetaData
+import com.fabriik.trade.data.response.ExchangeOrderStatus
 import dev.zacsweers.redacted.annotations.Redacted
 import java.math.BigDecimal
 
@@ -48,7 +49,12 @@ data class WalletTransaction(
     val confirmationsUntilFinal: Int,
     val gift: GiftMetaData? = null,
     val isStaking: Boolean = false,
-    val exchangeId: String? = null
+    val exchangeData: ExchangeData? = null
 ) {
     val isFeeForToken: Boolean = feeToken.isNotBlank()
 }
+
+data class ExchangeData(
+    val exchangeId: String,
+    val status: ExchangeOrderStatus
+)

@@ -163,7 +163,7 @@ open class WalletController(args: Bundle) : BaseMobiusController<M, E, F>(args),
                         eventConsumer.accept(
                             E.OnTransactionClicked(
                                 txHash = item.model.txHash,
-                                exchangeId = item.model.exchangeId
+                                exchangeId = item.model.exchangeData?.exchangeId
                             )
                         )
                     is StakingItem -> eventConsumer.accept(E.OnStakingCellClicked)

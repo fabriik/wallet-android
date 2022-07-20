@@ -316,7 +316,7 @@ class TxDetailsController(
             }
 
             ifChanged(M::confirmationDate) {
-                txDate.text = BRDateUtil.getFullDate((confirmationDate ?: Date()).time)
+                txTitle.text = BRDateUtil.getFullDate((confirmationDate ?: Date()).time)
             }
 
             ifChanged(M::transactionHash) {
