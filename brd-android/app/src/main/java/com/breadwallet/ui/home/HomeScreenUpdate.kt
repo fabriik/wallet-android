@@ -32,7 +32,7 @@ import com.breadwallet.ui.home.HomeScreen.F
 import com.breadwallet.ui.home.HomeScreen.M
 import com.fabriik.common.data.model.canUseBuyTrade
 import com.fabriik.common.data.model.isUserRegistered
-import com.platform.tools.SessionHolder
+import com.fabriik.common.data.model.isUserVerificationRequired
 import com.spotify.mobius.Effects.effects
 import com.spotify.mobius.Next.dispatch
 import com.spotify.mobius.Next.next
@@ -95,7 +95,7 @@ val HomeScreenUpdate = Update<M, E, F> { model, event ->
         is E.OnAddWalletsClicked -> dispatch(effects(F.GoToAddWallet))
         E.OnBuyClicked -> when {
             !model.profile.isUserRegistered() -> dispatch(effects(F.GoToRegistration))
-            !SessionHolder.isUserSessionVerified() -> dispatch(effects(F.RequestSessionVerification))
+            model.profile.isUserVerificationRequired() -> dispatch(effects(F.RequestSessionVerification))
             !model.profile.canUseBuyTrade() -> dispatch(effects(F.GoToVerifyProfile))
             else -> {
                 val isBuyAlertNeeded = model.isBuyAlertNeeded
@@ -120,7 +120,7 @@ val HomeScreenUpdate = Update<M, E, F> { model, event ->
             effects(
                 when {
                     !model.profile.isUserRegistered() -> F.GoToRegistration
-                    !SessionHolder.isUserSessionVerified() -> F.RequestSessionVerification
+                    model.profile.isUserVerificationRequired() -> F.RequestSessionVerification
                     !model.profile.canUseBuyTrade() -> F.GoToVerifyProfile
                     else -> F.GoToTrade
                 }
@@ -132,7 +132,7 @@ val HomeScreenUpdate = Update<M, E, F> { model, event ->
             effects(
                 when {
                     !model.profile.isUserRegistered() -> F.GoToRegistration
-                    !SessionHolder.isUserSessionVerified() -> F.RequestSessionVerification
+                    model.profile.isUserVerificationRequired() -> F.RequestSessionVerification
                     else -> F.GoToProfile
                 }
             )

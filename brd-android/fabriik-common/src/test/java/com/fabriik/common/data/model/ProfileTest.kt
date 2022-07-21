@@ -1,6 +1,6 @@
 package com.fabriik.common.data.model
 
-import com.fabriik.common.data.enums.KycStatus
+import com.fabriik.common.data.enums.ProfileRole
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -15,114 +15,110 @@ class ProfileTest {
     lateinit var profile: Profile
 
     @Test
-    fun isUserRegistered_statusIsNull_returnFalse() {
+    fun isUserRegistered_rolesIsNull_returnFalse() {
         isUserRegistered_checkResult(null, false)
     }
 
     @Test
-    fun isUserRegistered_statusIsDefault_returnFalse() {
-        isUserRegistered_checkResult(KycStatus.DEFAULT, false)
+    fun isUserRegistered_rolesIsEmpty_returnFalse() {
+        isUserRegistered_checkResult(emptyList(), false)
     }
 
     @Test
-    fun isUserRegistered_statusIsEmailVerificationPending_returnFalse() {
-        isUserRegistered_checkResult(KycStatus.EMAIL_VERIFICATION_PENDING, false)
+    fun isUserRegistered_rolesDoesNotContainCustomerRole_returnFalse() {
+        isUserRegistered_checkResult(listOf(ProfileRole.UNVERIFIED), false)
     }
 
     @Test
-    fun isUserRegistered_statusIsEmailVerified_returnTrue() {
-        isUserRegistered_checkResult(KycStatus.EMAIL_VERIFIED, true)
+    fun isUserRegistered_rolesContainsCustomerRole_returnTrue() {
+        isUserRegistered_checkResult(listOf(ProfileRole.CUSTOMER), true)
     }
 
     @Test
-    fun isUserRegistered_statusIsKyc1_returnTrue() {
-        isUserRegistered_checkResult(KycStatus.KYC1, true)
-    }
-
-    @Test
-    fun isUserRegistered_statusIsKyc2Expired_returnTrue() {
-        isUserRegistered_checkResult(KycStatus.KYC2_EXPIRED, true)
-    }
-
-    @Test
-    fun isUserRegistered_statusIsKyc2Declined_returnTrue() {
-        isUserRegistered_checkResult(KycStatus.KYC2_DECLINED, true)
-    }
-
-    @Test
-    fun isUserRegistered_statusIsKyc2Submitted_returnTrue() {
-        isUserRegistered_checkResult(KycStatus.KYC2_SUBMITTED, true)
-    }
-
-    @Test
-    fun isUserRegistered_statusIsKyc2ResubmissionRequested_returnTrue() {
-        isUserRegistered_checkResult(KycStatus.KYC2_RESUBMISSION_REQUESTED, true)
-    }
-
-    @Test
-    fun isUserRegistered_statusIsKyc2_returnTrue() {
-        isUserRegistered_checkResult(KycStatus.KYC2, true)
-    }
-
-    @Test
-    fun canUseBuyTrade_statusIsNull_returnFalse() {
+    fun canUseBuyTrade_rolesIsNull_returnFalse() {
         canUseBuyTrade_checkResult(null, false)
     }
 
     @Test
-    fun canUseBuyTrade_statusIsDefault_returnFalse() {
-        canUseBuyTrade_checkResult(KycStatus.DEFAULT, false)
+    fun canUseBuyTrade_rolesIsEmpty_returnFalse() {
+        canUseBuyTrade_checkResult(emptyList(), false)
     }
 
     @Test
-    fun canUseBuyTrade_statusIsEmailVerificationPending_returnFalse() {
-        canUseBuyTrade_checkResult(KycStatus.EMAIL_VERIFICATION_PENDING, false)
+    fun canUseBuyTrade_rolesContainsOnlyCustomerRole_returnFalse() {
+        canUseBuyTrade_checkResult(listOf(ProfileRole.CUSTOMER), false)
     }
 
     @Test
-    fun canUseBuyTrade_statusIsEmailVerified_returnFalse() {
-        canUseBuyTrade_checkResult(KycStatus.EMAIL_VERIFIED, false)
+    fun canUseBuyTrade_rolesContainsKyc1AndUnverifiedRoles_returnFalse() {
+        canUseBuyTrade_checkResult(listOf(ProfileRole.CUSTOMER, ProfileRole.KYC_LEVEL_1, ProfileRole.UNVERIFIED), false)
     }
 
     @Test
-    fun canUseBuyTrade_statusIsKyc1_returnTrue() {
-        canUseBuyTrade_checkResult(KycStatus.KYC1, true)
+    fun canUseBuyTrade_rolesContainsKyc2AndUnverifiedRoles_returnFalse() {
+        canUseBuyTrade_checkResult(listOf(ProfileRole.CUSTOMER, ProfileRole.KYC_LEVEL_1, ProfileRole.UNVERIFIED), false)
     }
 
     @Test
-    fun canUseBuyTrade_statusIsKyc2Expired_returnTrue() {
-        canUseBuyTrade_checkResult(KycStatus.KYC2_EXPIRED, true)
+    fun canUseBuyTrade_rolesContainsKyc1Role_returnTrue() {
+        canUseBuyTrade_checkResult(listOf(ProfileRole.CUSTOMER, ProfileRole.KYC_LEVEL_1), true)
     }
 
     @Test
-    fun canUseBuyTrade_statusIsKyc2Declined_returnTrue() {
-        canUseBuyTrade_checkResult(KycStatus.KYC2_DECLINED, true)
+    fun canUseBuyTrade_rolesContainsKyc2Role_returnTrue() {
+        canUseBuyTrade_checkResult(listOf(ProfileRole.CUSTOMER, ProfileRole.KYC_LEVEL_1), true)
     }
 
     @Test
-    fun canUseBuyTrade_statusIsKyc2Submitted_returnTrue() {
-        canUseBuyTrade_checkResult(KycStatus.KYC2_SUBMITTED, true)
+    fun isUserVerificationRequired_rolesIsNull_returnFalse() {
+        isUserVerificationRequired_checkResult(null, false)
     }
 
     @Test
-    fun canUseBuyTrade_statusIsKyc2ResubmissionRequested_returnTrue() {
-        canUseBuyTrade_checkResult(KycStatus.KYC2_RESUBMISSION_REQUESTED, true)
+    fun isUserVerificationRequired_rolesIsEmpty_returnFalse() {
+        isUserVerificationRequired_checkResult(emptyList(), false)
     }
 
     @Test
-    fun canUseBuyTrade_statusIsKyc2_returnTrue() {
-        canUseBuyTrade_checkResult(KycStatus.KYC2, true)
+    fun isUserVerificationRequired_rolesContainsCustomerRole_returnFalse() {
+        isUserVerificationRequired_checkResult(listOf(ProfileRole.CUSTOMER), false)
     }
 
-    private fun isUserRegistered_checkResult(status: KycStatus?, expectedResult: Boolean) {
-        Mockito.`when`(profile.kycStatus).thenReturn(status)
+    @Test
+    fun isUserVerificationRequired_rolesContainsCustomerAndKyc1Roles_returnFalse() {
+        isUserVerificationRequired_checkResult(listOf(ProfileRole.CUSTOMER, ProfileRole.KYC_LEVEL_1), false)
+    }
+
+    @Test
+    fun isUserVerificationRequired_rolesContainsCustomerAndKyc2Roles_returnFalse() {
+        isUserVerificationRequired_checkResult(listOf(ProfileRole.CUSTOMER, ProfileRole.KYC_LEVEL_2), false)
+    }
+
+    @Test
+    fun isUserVerificationRequired_rolesContainsUnverifiedRole_returnTrue() {
+        isUserVerificationRequired_checkResult(listOf(ProfileRole.UNVERIFIED), true)
+    }
+
+    @Test
+    fun isUserVerificationRequired_rolesContainsCustomerAndUnverifiedRoles_returnTrue() {
+        isUserVerificationRequired_checkResult(listOf(ProfileRole.CUSTOMER, ProfileRole.UNVERIFIED), true)
+    }
+
+    private fun isUserRegistered_checkResult(roles: List<ProfileRole>?, expectedResult: Boolean) {
+        Mockito.`when`(profile.roles).thenReturn(roles)
         val actual = profile.isUserRegistered()
         Assert.assertEquals(expectedResult, actual)
     }
 
-    private fun canUseBuyTrade_checkResult(status: KycStatus?, expectedResult: Boolean) {
-        Mockito.`when`(profile.kycStatus).thenReturn(status)
+    private fun canUseBuyTrade_checkResult(roles: List<ProfileRole>?, expectedResult: Boolean) {
+        Mockito.`when`(profile.roles).thenReturn(roles)
         val actual = profile.canUseBuyTrade()
+        Assert.assertEquals(expectedResult, actual)
+    }
+
+    private fun isUserVerificationRequired_checkResult(roles: List<ProfileRole>?, expectedResult: Boolean) {
+        Mockito.`when`(profile.roles).thenReturn(roles)
+        val actual = profile.isUserVerificationRequired()
         Assert.assertEquals(expectedResult, actual)
     }
 }
