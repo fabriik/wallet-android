@@ -263,7 +263,8 @@ class SwapInputViewModel(
         currentTimerJob?.cancel()
 
         val state = currentLoadedState ?: return
-        val targetTimestamp = state.quoteResponse.timestamp
+        val quoteResponse = state.quoteResponse ?: return
+        val targetTimestamp = quoteResponse.timestamp
         val currentTimestamp = System.currentTimeMillis()
         val diffSec = TimeUnit.MILLISECONDS.toSeconds(targetTimestamp - currentTimestamp)
 
@@ -302,12 +303,22 @@ class SwapInputViewModel(
                     }
                     startQuoteTimer()
                 }
-                Status.ERROR ->
-                    setEffect {
-                        SwapInputContract.Effect.ShowToast(
-                            response.message ?: getString(R.string.FabriikApi_DefaultError)
+                Status.ERROR -> {
+                    val latestState = currentLoadedState ?: return@launch
+
+                    setState {
+                        latestState.copy(
+                            cryptoExchangeRateLoading = false,
+                            quoteResponse = null
                         )
                     }
+
+                    setEffect {
+                        SwapInputContract.Effect.ShowToast(
+                            getString(R.string.Swap_Input_Error_NoSelectedPairData)
+                        )
+                    }
+                }
             }
         }
     }
@@ -337,12 +348,13 @@ class SwapInputViewModel(
                         isWalletEnabled(enabledWallets, it.termCurrency)
             }
 
-            val quoteResponse = selectedPair?.let { swapApi.getQuote(selectedPair) }
-            val selectedPairQuote = quoteResponse?.data
-            if (quoteResponse == null || quoteResponse.status == Status.ERROR || selectedPairQuote == null) {
+            if (selectedPair == null) {
                 showErrorState()
                 return@launch
             }
+
+            val quoteResponse = swapApi.getQuote(selectedPair)
+            val selectedPairQuote = quoteResponse.data
 
             val sourceCryptoBalance = loadCryptoBalance(selectedPair.baseCurrency)
             if (sourceCryptoBalance == null) {
@@ -359,14 +371,22 @@ class SwapInputViewModel(
                     sourceCryptoCurrency = selectedPair.baseCurrency,
                     destinationCryptoCurrency = selectedPair.termCurrency,
                     sourceCryptoBalance = sourceCryptoBalance,
-                    minFiatAmount = requireNotNull(quoteResponse.data).minUsdValue,
+                    minFiatAmount = quoteResponse.data?.minUsdValue ?: BigDecimal.ZERO,
                     maxFiatAmount = profile.nextExchangeLimit(),
                     dailyFiatLimit = profile.availableDailyLimit(),
                     lifetimeFiatLimit = profile.availableLifetimeLimit()
                 )
             }
 
-            startQuoteTimer()
+            if (selectedPairQuote == null) {
+                setEffect {
+                    SwapInputContract.Effect.ShowToast(
+                        getString(R.string.Swap_Input_Error_NoSelectedPairData)
+                    )
+                }
+            } else {
+                startQuoteTimer()
+            }
         }
     }
 
@@ -656,6 +676,7 @@ class SwapInputViewModel(
 
     private fun createSwapOrder() {
         val state = currentLoadedState ?: return
+        val quoteResponse =  state.quoteResponse ?: return
 
         callApi(
             endState = { state.copy(fullScreenLoadingVisible = false) },
@@ -667,7 +688,7 @@ class SwapInputViewModel(
                     )
 
                 val (baseQuantity, termQuantity, tradeSide) = when {
-                    state.quoteResponse.securityId.startsWith(state.sourceCryptoCurrency, true) ->
+                    quoteResponse.securityId.startsWith(state.sourceCryptoCurrency, true) ->
                         Triple(
                             state.sourceCryptoAmount, // baseQuantity
                             state.destinationCryptoAmount, // termQuantity
@@ -682,7 +703,7 @@ class SwapInputViewModel(
                 }
 
                 swapApi.createOrder(
-                    quoteId = state.quoteResponse.quoteId,
+                    quoteId = quoteResponse.quoteId,
                     tradeSide = tradeSide,
                     baseQuantity = baseQuantity,
                     termQuantity = termQuantity,

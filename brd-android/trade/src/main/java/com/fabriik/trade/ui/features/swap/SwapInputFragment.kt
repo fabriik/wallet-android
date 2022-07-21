@@ -288,13 +288,15 @@ class SwapInputFragment : Fragment(),
                 )
             )
 
+            cvSwap.setInputFieldsEnabled(state.quoteResponse != null)
             cvSwap.setSendingNetworkFee(state.sendingNetworkFee)
             cvSwap.setReceivingNetworkFee(state.receivingNetworkFee)
 
             btnConfirm.isEnabled = state.confirmButtonEnabled
+            switchMinMax.isEnabled = state.quoteResponse != null
 
-            viewTimer.isVisible = !state.cryptoExchangeRateLoading
-            tvRateValue.isVisible = !state.cryptoExchangeRateLoading
+            viewTimer.isVisible = !state.cryptoExchangeRateLoading && state.quoteResponse != null
+            tvRateValue.isVisible = !state.cryptoExchangeRateLoading && state.quoteResponse != null
             quoteLoadingIndicator.isVisible = state.cryptoExchangeRateLoading
 
             tvError.isVisible = state.swapErrorMessage != null

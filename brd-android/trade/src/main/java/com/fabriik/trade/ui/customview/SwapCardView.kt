@@ -174,6 +174,11 @@ class SwapCardView @JvmOverloads constructor(
         animatorSet.start()
     }
 
+    fun setInputFieldsEnabled(enabled: Boolean) {
+        binding.viewInputBuyingCurrency.setInputFieldsEnabled(enabled)
+        binding.viewInputSellingCurrency.setInputFieldsEnabled(enabled)
+    }
+
     interface Callback {
         fun onReplaceCurrenciesClicked()
         fun onDestinationCurrencyClicked()

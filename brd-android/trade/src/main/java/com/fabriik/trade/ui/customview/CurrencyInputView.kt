@@ -87,6 +87,12 @@ class CurrencyInputView @JvmOverloads constructor(
         binding.tvTitle, binding.tvFiatCurrency, binding.etFiatAmount, binding.etCryptoAmount
     )
 
+    fun setInputFieldsEnabled(enabled: Boolean) {
+        binding.etFiatAmount.isEnabled = enabled
+        binding.etCryptoAmount.isEnabled = enabled
+        binding.tvFiatCurrency.isEnabled = enabled
+    }
+
     interface Callback {
         fun onCurrencySelectorClicked()
         fun onFiatAmountChanged(amount: BigDecimal)
