@@ -38,6 +38,12 @@ class FabriikSwitch @JvmOverloads constructor(
         setSelectedItem(selectedOption)
     }
 
+    override fun setEnabled(enabled: Boolean) {
+        super.setEnabled(enabled)
+        tvLeftOption.isEnabled = enabled
+        tvRightOption.isEnabled = enabled
+    }
+
     fun setSelectedItem(@SwitchOption selectedOption: Int) {
         tvLeftOption.isActivated = selectedOption == OPTION_LEFT
         tvRightOption.isActivated = selectedOption == OPTION_RIGHT

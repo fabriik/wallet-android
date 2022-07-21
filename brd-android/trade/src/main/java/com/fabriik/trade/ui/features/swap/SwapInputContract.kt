@@ -74,7 +74,7 @@ interface SwapInputContract {
             val lifetimeFiatLimit: BigDecimal,
             val tradingPairs: List<TradingPair>,
             val selectedPair: TradingPair,
-            val quoteResponse: QuoteResponse,
+            val quoteResponse: QuoteResponse?,
             val fiatCurrency: String,
             val sourceCryptoBalance: BigDecimal,
             val sourceCryptoCurrency: String,
@@ -93,6 +93,7 @@ interface SwapInputContract {
 
             val cryptoExchangeRate: BigDecimal
                 get() = when {
+                    quoteResponse == null -> BigDecimal.ZERO
                     quoteResponse.securityId.startsWith(sourceCryptoCurrency) ->
                         quoteResponse.closeBid
                     else ->
