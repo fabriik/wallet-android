@@ -28,7 +28,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:padding="10dp"
-        android:text="@string/StartViewController.createButton"
+        android:text="@string/Onboarding.getStarted"
         android:textColor="@color/white"
         android:textSize="@dimen/button_text_size"
         app:buttonColor="@color/on_boarding_buy_button"
@@ -73,7 +73,7 @@
         app:layout_constraintBottom_toTopOf="@+id/button_new_wallet"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/animationView"
+        app:layout_constraintTop_toBottomOf="@+id/logo_view"
         app:layout_constraintVertical_bias="0.13" />
 
     <ImageButton
