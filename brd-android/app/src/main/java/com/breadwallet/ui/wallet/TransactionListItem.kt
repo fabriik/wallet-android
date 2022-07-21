@@ -1,21 +1,25 @@
 package com.breadwallet.ui.wallet
 
+import android.content.res.ColorStateList
 import android.graphics.Paint
-import android.os.Build
 import android.text.format.DateUtils
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.breadwallet.R
 import com.breadwallet.breadbox.formatCryptoForUi
+import com.breadwallet.databinding.ItemSwapDetailsBinding
 import com.breadwallet.databinding.TxItemBinding
 import com.breadwallet.tools.manager.BRSharedPrefs
 import com.breadwallet.tools.util.BRDateUtil
 import com.breadwallet.tools.util.Utils
 import com.breadwallet.util.formatFiatForUi
 import com.breadwallet.util.isBitcoinLike
+import com.fabriik.trade.data.response.ExchangeOrderStatus.COMPLETE
+import com.fabriik.trade.data.response.ExchangeOrderStatus.PENDING
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.ModelAbstractItem
+import java.util.*
 
 private const val DP_120 = 120
 private const val PROGRESS_FULL = 100
@@ -25,7 +29,9 @@ class TransactionListItem(
     var isCryptoPreferred: Boolean
 ) : ModelAbstractItem<WalletTransaction, TransactionListItem.ViewHolder>(transaction) {
 
-    override val layoutRes: Int = R.layout.tx_item
+    override val layoutRes: Int =
+        if (transaction.exchangeData != null) R.layout.item_swap_details else
+            R.layout.tx_item
 
     override val type: Int = R.id.transaction_item
 
@@ -33,29 +39,81 @@ class TransactionListItem(
 
     override fun getViewHolder(v: View) = ViewHolder(v)
 
+    private val isSwap = transaction.exchangeData != null
+
     inner class ViewHolder(
         v: View
     ) : FastAdapter.ViewHolder<TransactionListItem>(v) {
 
-        var binding: TxItemBinding? = null
-
         override fun bindView(item: TransactionListItem, payloads: List<Any>) {
-            binding = TxItemBinding.bind(itemView)
-            setTexts(binding!!, item.model, item.isCryptoPreferred)
+            if (isSwap) {
+                val binding = ItemSwapDetailsBinding.bind(itemView)
+                setSwapContent(binding, item.model)
+            } else {
+                val binding = TxItemBinding.bind(itemView)
+                setTransferContent(binding, item.model, item.isCryptoPreferred)
+
+            }
         }
 
         override fun unbindView(item: TransactionListItem) {
-            with(binding ?: return) {
-                txAmount.text = null
-                txDate.text = null
-                txDescriptionValue.text = null
-                txDescriptionLabel.text = null
+            unbindView(item)
+        }
+
+        private fun setSwapContent(
+            binding: ItemSwapDetailsBinding,
+            transaction: WalletTransaction
+        ) {
+            val status = transaction.exchangeData?.status!!
+            val context = itemView.context
+            val transactionTitle =
+                if (status == PENDING) {
+                    context.getString(
+                        R.string.Swap_TransactionItem_Pending,
+                        transaction.currencyCode.toUpperCase(Locale.ROOT)
+                    )
+                } else {
+                    context.getString(
+                        R.string.Swap_TransactionItem_Swapped,
+                        transaction.currencyCode.toUpperCase(Locale.ROOT)
+                    )
+                }
+
+            with(binding) {
+                tvTransactionTitle.text = transactionTitle
+                tvTransactionDate.text = BRDateUtil.getShortDate(transaction.timeStamp)
+                tvTransactionValue.text = transaction.amount.toString()
+                tvTransactionValueDollars.text =
+                    transaction.amountInFiat.formatFiatForUi(BRSharedPrefs.getPreferredFiatIso())
             }
-            binding = null
+
+            when (status) {
+                COMPLETE -> {
+                    binding.icItemBg.imageTintList =
+                        ColorStateList.valueOf(
+                            ContextCompat.getColor(
+                                context,
+                                com.fabriik.trade.R.color.swap_light_green
+                            )
+                        )
+
+                    binding.icItem.imageTintList =
+                        ColorStateList.valueOf(
+                            ContextCompat.getColor(
+                                context,
+                                com.fabriik.trade.R.color.swap_green
+                            )
+                        )
+
+                    binding.tvTransactionValue.setTextColor(context.getColor(R.color.swap_green))
+                }
+
+                else -> Unit
+            }
         }
 
         @Suppress("LongMethod", "ComplexMethod")
-        private fun setTexts(
+        private fun setTransferContent(
             binding: TxItemBinding,
             transaction: WalletTransaction,
             isCryptoPreferred: Boolean
@@ -164,7 +222,7 @@ class TransactionListItem(
             }
 
             val timeStamp = transaction.timeStamp
-            binding.txDate.text = when {
+            binding.txTitle.text = when {
                 timeStamp == 0L || transaction.isPending -> buildString {
                     append(transaction.confirmations)
                     append('/')
@@ -186,13 +244,14 @@ class TransactionListItem(
 
         private fun showTransactionProgress(progress: Int) {
             val context = itemView.context
-            with(binding!!) {
-                txDate.isVisible = true
+            val binding = TxItemBinding.bind(itemView)
+            with(binding) {
+                txTitle.isVisible = true
                 txAmount.isVisible = true
                 imageTransferDirection.isVisible = true
 
                 val textColor = context.getColor(R.color.total_assets_usd_color)
-                txDate.setTextColor(textColor)
+                txTitle.setTextColor(textColor)
                 txAmount.paintFlags = 0 // clear strike-through
 
                 if (progress < PROGRESS_FULL) {
@@ -203,11 +262,7 @@ class TransactionListItem(
                                 R.drawable.transfer_progress_drawable
                             )
                     }
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        imageTransferDirection.setProgress(progress, true)
-                    } else {
-                        imageTransferDirection.progress = progress
-                    }
+                    imageTransferDirection.setProgress(progress, true)
                     txDescriptionValue.maxWidth = Utils.getPixelsFromDps(context, DP_120)
                 } else {
                     imageTransferDirection.progressDrawable = null
@@ -218,12 +273,13 @@ class TransactionListItem(
 
         private fun showTransactionFailed() {
             val context = itemView.context
-            with(binding!!) {
+            val binding = TxItemBinding.bind(itemView)
+            with(binding) {
                 imageTransferDirection.progressDrawable = null
 
                 val errorColor = context.getColor(R.color.ui_error)
-                txDate.setText(R.string.Transaction_failed)
-                txDate.setTextColor(errorColor)
+                txTitle.setText(R.string.Transaction_failed)
+                txTitle.setTextColor(errorColor)
                 txAmount.setTextColor(errorColor)
                 txAmount.paintFlags = txAmount.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
             }

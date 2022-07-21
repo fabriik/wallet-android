@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:layout_height="wrap_content"
-    tools:layout_widht="match_parent"
-    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:foreground="?android:attr/selectableItemBackground">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/ic_item_bg"
@@ -22,7 +23,7 @@
         android:id="@+id/ic_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_transaction"
+        android:src="@drawable/ic_swap"
         app:layout_constraintBottom_toBottomOf="@id/ic_item_bg"
         app:layout_constraintEnd_toEndOf="@id/ic_item_bg"
         app:layout_constraintStart_toStartOf="@id/ic_item_bg"
@@ -30,42 +31,34 @@
 
     <TextView
         android:id="@+id/tv_transaction_title"
-        style="@style/TextStyle.Title6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:layout_marginTop="18dp"
+        android:textColor="@color/total_assets_usd_color"
+        android:textSize="14sp"
         app:layout_constraintStart_toEndOf="@+id/ic_item_bg"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Pending swap from" />
 
     <TextView
-        android:id="@+id/tv_transaction_currency"
-        style="@style/TextStyle.Title6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="18dp"
-        app:layout_constraintStart_toEndOf="@+id/tv_transaction_title"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="BSV" />
-
-    <TextView
         android:id="@+id/tv_transaction_date"
-        style="@style/TextStyle.Body2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/total_assets_usd_color"
+        android:textSize="12sp"
         app:layout_constraintStart_toStartOf="@id/tv_transaction_title"
         app:layout_constraintTop_toBottomOf="@id/tv_transaction_title"
         tools:text="June 15, 2022" />
 
     <TextView
         android:id="@+id/tv_transaction_value"
-        style="@style/TextStyle.Title6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="18dp"
         android:layout_marginEnd="16dp"
+        android:textColor="@color/total_assets_usd_color"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="+0.00001703" />
@@ -75,9 +68,17 @@
         style="@style/TextStyle.Body2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="12dp"
+        android:textColor="@color/total_assets_usd_color"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_transaction_value"
         tools:text="$48.79" />
 
-</merge>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/light_gray"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
