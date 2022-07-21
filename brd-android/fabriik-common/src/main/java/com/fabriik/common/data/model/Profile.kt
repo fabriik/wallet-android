@@ -40,13 +40,13 @@ data class Profile(
     val roles: List<ProfileRole?>?
 ) : Parcelable
 
-fun Profile?.isUserRegistered() = hasRole(ProfileRole.CUSTOMER)
+fun Profile?.isRegistrationNeeded() = this == null || (!hasRole(ProfileRole.CUSTOMER) && !hasRole(ProfileRole.UNVERIFIED))
+
+fun Profile?.isEmailVerificationNeeded() = hasRole(ProfileRole.UNVERIFIED)
 
 fun Profile?.canUseBuyTrade() = hasRole(ProfileRole.CUSTOMER) &&
         !hasRole(ProfileRole.UNVERIFIED) &&
         (hasRole(ProfileRole.KYC_LEVEL_1) || hasRole(ProfileRole.KYC_LEVEL_2))
-
-fun Profile?.isUserVerificationRequired() = hasRole(ProfileRole.UNVERIFIED)
 
 fun Profile?.nextExchangeLimit(): BigDecimal = this?.exchangeLimits?.nextExchangeLimit ?: BigDecimal.ZERO
 

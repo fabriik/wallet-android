@@ -31,8 +31,9 @@ import com.breadwallet.ui.home.HomeScreen.E
 import com.breadwallet.ui.home.HomeScreen.F
 import com.breadwallet.ui.home.HomeScreen.M
 import com.fabriik.common.data.model.canUseBuyTrade
-import com.fabriik.common.data.model.isUserRegistered
-import com.fabriik.common.data.model.isUserVerificationRequired
+import com.fabriik.common.data.model.isRegistrationNeeded
+import com.fabriik.common.data.model.isEmailVerificationNeeded
+import com.platform.tools.SessionHolder
 import com.spotify.mobius.Effects.effects
 import com.spotify.mobius.Next.dispatch
 import com.spotify.mobius.Next.next
@@ -94,8 +95,9 @@ val HomeScreenUpdate = Update<M, E, F> { model, event ->
         }
         is E.OnAddWalletsClicked -> dispatch(effects(F.GoToAddWallet))
         E.OnBuyClicked -> when {
-            !model.profile.isUserRegistered() -> dispatch(effects(F.GoToRegistration))
-            model.profile.isUserVerificationRequired() -> dispatch(effects(F.RequestSessionVerification))
+            model.profile.isRegistrationNeeded() -> dispatch(effects(F.GoToRegistration))
+            model.profile.isEmailVerificationNeeded() || !SessionHolder.isUserSessionVerified() ->
+                dispatch(effects(F.RequestSessionVerification))
             !model.profile.canUseBuyTrade() -> dispatch(effects(F.GoToVerifyProfile))
             else -> {
                 val isBuyAlertNeeded = model.isBuyAlertNeeded
@@ -119,8 +121,9 @@ val HomeScreenUpdate = Update<M, E, F> { model, event ->
         E.OnTradeClicked -> dispatch(
             effects(
                 when {
-                    !model.profile.isUserRegistered() -> F.GoToRegistration
-                    model.profile.isUserVerificationRequired() -> F.RequestSessionVerification
+                    model.profile.isRegistrationNeeded() -> F.GoToRegistration
+                    model.profile.isEmailVerificationNeeded() || !SessionHolder.isUserSessionVerified() ->
+                        F.RequestSessionVerification
                     !model.profile.canUseBuyTrade() -> F.GoToVerifyProfile
                     else -> F.GoToTrade
                 }
@@ -131,8 +134,9 @@ val HomeScreenUpdate = Update<M, E, F> { model, event ->
         E.OnProfileClicked -> dispatch(
             effects(
                 when {
-                    !model.profile.isUserRegistered() -> F.GoToRegistration
-                    model.profile.isUserVerificationRequired() -> F.RequestSessionVerification
+                    model.profile.isRegistrationNeeded() -> F.GoToRegistration
+                    model.profile.isEmailVerificationNeeded() || !SessionHolder.isUserSessionVerified() ->
+                        F.RequestSessionVerification
                     else -> F.GoToProfile
                 }
             )
@@ -282,7 +286,7 @@ val HomeScreenUpdate = Update<M, E, F> { model, event ->
 
         is E.OnVerifyPromptClicked -> {
             when {
-                !model.profile.isUserRegistered() -> dispatch(effects(F.GoToRegistration))
+                model.profile.isRegistrationNeeded() -> dispatch(effects(F.GoToRegistration))
                 else -> dispatch(effects(F.GoToKyc))
             }
         }

@@ -59,6 +59,12 @@ object SessionHolder : KodeinAware {
     fun isDefaultSession() = getSession().isDefaultSession()
 
     @Synchronized
+    fun isUserSessionVerified() : Boolean {
+        val session = getSession()
+        return !session.isDefaultSession() && session.state == SessionState.VERIFIED
+    }
+
+    @Synchronized
     fun clear() {
         userManager.removeSession()
         mApiSession = null
