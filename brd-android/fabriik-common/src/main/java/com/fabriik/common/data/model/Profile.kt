@@ -40,13 +40,13 @@ data class Profile(
     val roles: List<ProfileRole?>?
 ) : Parcelable
 
-fun Profile?.isRegistrationNeeded() = this == null || (!hasRole(ProfileRole.CUSTOMER) && !hasRole(ProfileRole.UNVERIFIED))
+fun Profile?.isRegistrationNeeded() = this == null || noRole(ProfileRole.CUSTOMER)
 
-fun Profile?.isEmailVerificationNeeded() = hasRole(ProfileRole.UNVERIFIED)
+fun Profile?.isEmailVerificationNeeded() = allRoles(ProfileRole.CUSTOMER, ProfileRole.UNVERIFIED)
 
 fun Profile?.canUseBuyTrade() = hasRole(ProfileRole.CUSTOMER) &&
-        !hasRole(ProfileRole.UNVERIFIED) &&
-        (hasRole(ProfileRole.KYC_LEVEL_1) || hasRole(ProfileRole.KYC_LEVEL_2))
+        anyRole(ProfileRole.KYC_LEVEL_1, ProfileRole.KYC_LEVEL_2) &&
+        noRole(ProfileRole.UNVERIFIED)
 
 fun Profile?.nextExchangeLimit(): BigDecimal = this?.exchangeLimits?.nextExchangeLimit ?: BigDecimal.ZERO
 
@@ -54,4 +54,10 @@ fun Profile?.availableDailyLimit(): BigDecimal = this?.exchangeLimits?.available
 
 fun Profile?.availableLifetimeLimit(): BigDecimal = this?.exchangeLimits?.availableLifetime() ?: BigDecimal.ZERO
 
+private fun Profile?.noRole(role: ProfileRole) = !hasRole(role)
+
 private fun Profile?.hasRole(role: ProfileRole) = this?.roles?.contains(role) ?: false
+
+private fun Profile?.anyRole(vararg roles: ProfileRole) = roles.any { hasRole(it) }
+
+private fun Profile?.allRoles(vararg roles: ProfileRole) = roles.all { hasRole(it) }

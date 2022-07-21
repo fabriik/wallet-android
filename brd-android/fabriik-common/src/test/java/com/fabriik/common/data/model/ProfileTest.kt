@@ -14,6 +14,14 @@ class ProfileTest {
     @Mock
     lateinit var profile: Profile
 
+    private val profileNull: Profile? = null
+
+    @Test
+    fun isRegistrationNeeded_profileIsNull_returnTrue() {
+        val actual = profileNull.isRegistrationNeeded()
+        Assert.assertTrue(actual)
+    }
+
     @Test
     fun isRegistrationNeeded_rolesPropertyIsNull_returnTrue() {
         isRegistrationNeeded_checkResult(null, true)
@@ -35,8 +43,14 @@ class ProfileTest {
     }
 
     @Test
-    fun isRegistrationNeeded_rolesPropertyContainsOnlyUnverifiedRole_returnFalse() {
-        isRegistrationNeeded_checkResult(listOf(ProfileRole.UNVERIFIED), false)
+    fun isRegistrationNeeded_rolesPropertyContainsOnlyUnverifiedRole_returnTrue() {
+        isRegistrationNeeded_checkResult(listOf(ProfileRole.UNVERIFIED), true)
+    }
+
+    @Test
+    fun isEmailVerificationNeeded_profileIsNull_returnFalse() {
+        val actual = profileNull.isEmailVerificationNeeded()
+        Assert.assertFalse(actual)
     }
 
     @Test
@@ -55,18 +69,20 @@ class ProfileTest {
     }
 
     @Test
+    fun isEmailVerificationNeeded_rolesPropertyContainsOnlyUnverifiedRole_returnFalse() {
+        isEmailVerificationNeeded_checkResult(listOf(ProfileRole.UNVERIFIED), false)
+    }
+
+    @Test
     fun isEmailVerificationNeeded_rolesPropertyContainsCustomerAndKyc1Roles_returnFalse() {
-        isEmailVerificationNeeded_checkResult(listOf(ProfileRole.CUSTOMER, ProfileRole.KYC_LEVEL_1), false)
+        isEmailVerificationNeeded_checkResult(listOf(ProfileRole.CUSTOMER, ProfileRole.KYC_LEVEL_1), false
+        )
     }
 
     @Test
     fun isEmailVerificationNeeded_rolesPropertyContainsCustomerAndKyc2Roles_returnFalse() {
-        isEmailVerificationNeeded_checkResult(listOf(ProfileRole.CUSTOMER, ProfileRole.KYC_LEVEL_2), false)
-    }
-
-    @Test
-    fun isEmailVerificationNeeded_rolesPropertyContainsUnverifiedRole_returnTrue() {
-        isEmailVerificationNeeded_checkResult(listOf(ProfileRole.UNVERIFIED), true)
+        isEmailVerificationNeeded_checkResult(listOf(ProfileRole.CUSTOMER, ProfileRole.KYC_LEVEL_2), false
+        )
     }
 
     @Test
@@ -76,12 +92,19 @@ class ProfileTest {
 
     @Test
     fun isEmailVerificationNeeded_rolesPropertyContainsCustomerKycLevel1AndUnverifiedRoles_returnTrue() {
-        isEmailVerificationNeeded_checkResult(listOf(ProfileRole.CUSTOMER, ProfileRole.KYC_LEVEL_1, ProfileRole.UNVERIFIED), true)
+        isEmailVerificationNeeded_checkResult(listOf(ProfileRole.CUSTOMER, ProfileRole.KYC_LEVEL_1, ProfileRole.UNVERIFIED), true
+        )
     }
 
     @Test
     fun isEmailVerificationNeeded_rolesPropertyContainsCustomerKycLevel2AndUnverifiedRoles_returnTrue() {
         isEmailVerificationNeeded_checkResult(listOf(ProfileRole.CUSTOMER, ProfileRole.KYC_LEVEL_2, ProfileRole.UNVERIFIED), true)
+    }
+
+    @Test
+    fun canUseBuyTrade_profileIsNull_returnFalse() {
+        val actual = profileNull.canUseBuyTrade()
+        Assert.assertFalse(actual)
     }
 
     @Test
