@@ -157,9 +157,6 @@ public class PinLayout extends LinearLayout implements BRKeyboard.OnInsertListen
                             authFailed();
                         }
                     }
-
-                    updatePinUi(0);
-                    mPinStringBuilder = new StringBuilder();
                 }
             }, PIN_INSERTED_DELAY_MILLISECONDS);
 
@@ -228,6 +225,11 @@ public class PinLayout extends LinearLayout implements BRKeyboard.OnInsertListen
 
     public void setIsPinUpdating(boolean updating) {
         mIsPinUpdating = updating;
+    }
+
+    public void resetPin() {
+        mPinStringBuilder = new StringBuilder();
+        updatePinUi(0);
     }
 
     public interface PinLayoutListener {

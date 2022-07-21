@@ -138,6 +138,7 @@ class LoginController(args: Bundle? = null) :
                     if (isPinCorrect) {
                         E.OnAuthenticationSuccess
                     } else {
+                        binding.pinDigits.resetPin()
                         E.OnAuthenticationFailed
                     }
                 )

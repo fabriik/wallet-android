@@ -231,16 +231,16 @@ class SwapInputFragment : Fragment(),
                 )
 
             is SwapInputContract.Effect.UpdateSourceFiatAmount ->
-                binding.cvSwap.setSourceFiatAmount(effect.bigDecimal)
+                binding.cvSwap.setSourceFiatAmount(effect.bigDecimal, effect.changeByUser)
 
             is SwapInputContract.Effect.UpdateSourceCryptoAmount ->
-                binding.cvSwap.setSourceCryptoAmount(effect.bigDecimal)
+                binding.cvSwap.setSourceCryptoAmount(effect.bigDecimal, effect.changeByUser)
 
             is SwapInputContract.Effect.UpdateDestinationFiatAmount ->
-                binding.cvSwap.setDestinationFiatAmount(effect.bigDecimal)
+                binding.cvSwap.setDestinationFiatAmount(effect.bigDecimal, effect.changeByUser)
 
             is SwapInputContract.Effect.UpdateDestinationCryptoAmount ->
-                binding.cvSwap.setDestinationCryptoAmount(effect.bigDecimal)
+                binding.cvSwap.setDestinationCryptoAmount(effect.bigDecimal, effect.changeByUser)
         }
     }
 

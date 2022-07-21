@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.fabriik.common.utils.DecimalDigitsInputFilter
+import com.fabriik.common.utils.disableCopyPaste
 import com.fabriik.common.utils.afterTextChangedDebounceFocused
 import com.fabriik.trade.R
 import com.fabriik.trade.databinding.ViewCurrencyInputBinding
@@ -28,8 +29,11 @@ class CurrencyInputView @JvmOverloads constructor(
             it.recycle()
         }
 
+        binding.etFiatAmount.disableCopyPaste()
         binding.etFiatAmount.filters = arrayOf(DecimalDigitsInputFilter(digitsAfterZero = 2))
         binding.etFiatAmount.afterTextChangedDebounceFocused { onFiatAmountChanged(it.toString()) }
+
+        binding.etCryptoAmount.disableCopyPaste()
         binding.etCryptoAmount.filters = arrayOf(DecimalDigitsInputFilter())
         binding.etCryptoAmount.afterTextChangedDebounceFocused { onCryptoAmountChanged(it.toString()) }
         binding.viewCurrencySelector.setOnClickListener { callback?.onCurrencySelectorClicked() }
@@ -59,20 +63,20 @@ class CurrencyInputView @JvmOverloads constructor(
         callback?.onCryptoAmountChanged(value.trim().toBigDecimalOrNull() ?: BigDecimal.ZERO)
     }
 
-    fun setFiatAmount(amount: BigDecimal) {
+    fun setFiatAmount(amount: BigDecimal, changeByUser: Boolean) {
         val formatted = "%.2f".format(amount)
         val text = binding.etFiatAmount.text?.toString() ?: ""
 
-        if (text != formatted && !binding.etFiatAmount.hasFocus()) {
+        if (text != formatted && !changeByUser) {
             binding.etFiatAmount.setText(formatted)
         }
     }
 
-    fun setCryptoAmount(amount: BigDecimal) {
+    fun setCryptoAmount(amount: BigDecimal, changeByUser: Boolean) {
         val formatted = "%.5f".format(amount)
         val text = binding.etCryptoAmount.text?.toString() ?: ""
 
-        if (text != formatted && !binding.etCryptoAmount.hasFocus()) {
+        if (text != formatted && !changeByUser) {
             binding.etCryptoAmount.setText(formatted)
         }
     }

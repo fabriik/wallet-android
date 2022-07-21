@@ -17,7 +17,8 @@ class FabriikAuthInterceptor(
     override fun intercept(chain: Interceptor.Chain): Response {
         val requestBuilderWithDeviceId = chain.request()
             .newBuilder()
-            .addHeader("X-Device-ID", BRSharedPrefs.getDeviceId())
+            .addHeader(FabriikApiConstants.HEADER_DEVICE_ID, BRSharedPrefs.getDeviceId())
+            .addHeader(FabriikApiConstants.HEADER_USER_AGENT, FabriikApiConstants.USER_AGENT_VALUE)
 
         val requestUrl = chain.request().url.toString()
         if (!requestUrl.startsWith(FabriikApiConstants.HOST_BLOCKSATOSHI_API)) {
@@ -27,7 +28,7 @@ class FabriikAuthInterceptor(
         }
 
         val response = requestBuilderWithDeviceId
-            .addHeader("Authorization", SessionHolder.getSessionKey())
+            .addHeader(FabriikApiConstants.HEADER_AUTHORIZATION, SessionHolder.getSessionKey())
             .build()
             .run(chain::proceed)
 
