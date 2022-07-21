@@ -5,6 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <com.fabriik.common.ui.customview.FabriikToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:showBack="false"
+        app:title="@string/Swap.Details.Title" />
+
     <ScrollView
         android:id="@+id/content"
         android:layout_width="match_parent"
@@ -16,15 +25,6 @@
             android:layout_height="wrap_content"
             android:background="@color/white">
 
-            <com.fabriik.common.ui.customview.FabriikToolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:showBack="false"
-                app:title="@string/Swap.Details.Title" />
-
             <androidx.cardview.widget.CardView
                 android:id="@+id/cv_swap_status"
                 android:layout_width="match_parent"
@@ -34,7 +34,7 @@
                 android:backgroundTint="@color/light_tertiary"
                 app:cardCornerRadius="15dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/toolbar">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <LinearLayout
                     android:layout_width="match_parent"
