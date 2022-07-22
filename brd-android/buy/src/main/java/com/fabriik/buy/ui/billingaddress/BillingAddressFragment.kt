@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.collect
 class BillingAddressFragment : Fragment(),
     FabriikView<BillingAddressContract.State, BillingAddressContract.Effect> {
 
-    lateinit var binding: FragmentBillingAddressBinding
+    private lateinit var binding: FragmentBillingAddressBinding
     private val viewModel: BillingAddressViewModel by viewModels()
 
     override fun onCreateView(
@@ -67,7 +67,8 @@ class BillingAddressFragment : Fragment(),
 
     override fun handleEffect(effect: BillingAddressContract.Effect) {
         when (effect) {
-            BillingAddressContract.Effect.Back -> TODO()
+            BillingAddressContract.Effect.Back ->
+                findNavController().popBackStack()
 
             BillingAddressContract.Effect.Dismiss ->
                 activity?.finish()
