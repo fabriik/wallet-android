@@ -42,6 +42,7 @@ android {
 dependencies {
     implementation(project(":brd-android:app-core"))
     implementation(project(":brd-android:fabriik-common"))
+    implementation(project(":brd-android:trade"))
 
     implementation(Libs.Androidx.AppCompat)
     implementation(Libs.Androidx.CoreKtx)
