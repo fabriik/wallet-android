@@ -202,18 +202,14 @@ class RouterNavigator(
             )
         }
 
-        if (BuildConfig.DEBUG) {
-            router.activity?.let {
-                it.startActivity(BuyActivity.getStartIntent(it))
-            }
-        } else {
-            router.activity?.let {
-                it.startActivity(
-                    BuyWebViewActivity.getStartIntent(
-                        it
-                    )
-                )
-            }
+        router.activity?.let {
+            it.startActivity(
+                if (BuildConfig.DEBUG) {
+                    BuyActivity.getStartIntent(it)
+                } else {
+                    BuyWebViewActivity.getStartIntent(it)
+                }
+            )
         }
     }
 
