@@ -77,6 +77,8 @@ import com.fabriik.registration.utils.RegistrationUtils
 import com.fabriik.registration.utils.UserSessionManager
 import com.fabriik.trade.data.SwapApi
 import com.fabriik.trade.data.SwapApiInterceptor
+import com.fabriik.trade.data.SwapTransactionsFetcher
+import com.fabriik.trade.data.SwapTransactionsRepository
 import com.platform.APIClient
 import com.platform.HTTPServer
 import com.platform.interfaces.KVStoreProvider
@@ -426,6 +428,13 @@ class BreadApp : Application(), KodeinAware, CameraXConfig.Provider {
             BRDApiClient.create(AndroidBRDAuthProvider(instance()))
         }
 
+        bind<SwapTransactionsRepository>() with singleton {
+            SwapTransactionsRepository()
+        }
+        bind<SwapTransactionsFetcher>() with singleton {
+            SwapTransactionsFetcher(instance(), instance())
+        }
+
         bind<SwapApi>() with singleton {
             SwapApi.create(
                 this@BreadApp,
@@ -486,6 +495,7 @@ class BreadApp : Application(), KodeinAware, CameraXConfig.Provider {
     private val ratesFetcher by instance<RatesFetcher>()
     private val accountMetaData by instance<AccountMetaDataProvider>()
     private val conversionTracker by instance<ConversionTracker>()
+    private val swapTransactionsFetcher by instance<SwapTransactionsFetcher>()
     private val connectivityStateProvider by instance<ConnectivityStateProvider>()
     private val CHANNEL = "kyc-platform-channels"
     override fun onCreate() {
@@ -598,8 +608,8 @@ class BreadApp : Application(), KodeinAware, CameraXConfig.Provider {
         }
 
         ratesFetcher.start(startedScope)
-        
         conversionTracker.start(startedScope)
+        swapTransactionsFetcher.start(startedScope)
     }
 
     private fun incrementAppForegroundedCounter() {
