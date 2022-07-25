@@ -46,10 +46,9 @@ class TransactionListItem(
         private var binding: ViewBinding? = null
 
         override fun bindView(item: TransactionListItem, payloads: List<Any>) {
-            val exchangeData = model.exchangeData
-            if (exchangeData != null) {
+            if (item.model.exchangeData != null) {
                 binding = ItemSwapDetailsBinding.bind(itemView)
-                setSwapContent(binding as ItemSwapDetailsBinding, model, exchangeData)
+                setSwapContent(binding as ItemSwapDetailsBinding, item.model, item.model.exchangeData!!)
             } else {
                 binding = TxItemBinding.bind(itemView)
                 setTransferContent(binding as TxItemBinding, item.model, item.isCryptoPreferred)
