@@ -29,6 +29,7 @@ import com.fabriik.common.utils.min
 import com.fabriik.trade.R
 import com.fabriik.trade.data.SwapApi
 import com.fabriik.trade.data.model.AmountData
+import com.fabriik.trade.data.model.FeeAmountData
 import com.fabriik.trade.data.request.CreateOrderRequest
 import com.fabriik.trade.data.response.CreateOrderResponse
 import kotlinx.coroutines.Dispatchers
@@ -456,8 +457,8 @@ class SwapInputViewModel(
             )
 
             val destCryptoAmountData = sourceCryptoAmount.convertSource(
-                fromCryptoCurrency = state.sourceCryptoCurrency,
-                toCryptoCurrency = state.destinationCryptoCurrency,
+                sourceCurrency = state.sourceCryptoCurrency,
+                destinationCurrency = state.destinationCryptoCurrency,
                 rate = state.cryptoExchangeRate
             )
 
@@ -498,8 +499,8 @@ class SwapInputViewModel(
             )
 
             val destCryptoAmountData = sourceCryptoAmount.convertSource(
-                fromCryptoCurrency = state.sourceCryptoCurrency,
-                toCryptoCurrency = state.destinationCryptoCurrency,
+                sourceCurrency = state.sourceCryptoCurrency,
+                destinationCurrency = state.destinationCryptoCurrency,
                 rate = state.cryptoExchangeRate
             )
 
@@ -540,8 +541,8 @@ class SwapInputViewModel(
             )
 
             val sourceCryptoAmountData = destCryptoAmount.convertDestination(
-                fromCryptoCurrency = state.destinationCryptoCurrency,
-                toCryptoCurrency = state.sourceCryptoCurrency,
+                destinationCurrency = state.destinationCryptoCurrency,
+                sourceCurrency = state.sourceCryptoCurrency,
                 rate = state.cryptoExchangeRate
             )
 
@@ -582,8 +583,8 @@ class SwapInputViewModel(
             )
 
             val sourceCryptoAmountData = destCryptoAmount.convertDestination(
-                fromCryptoCurrency = state.destinationCryptoCurrency,
-                toCryptoCurrency = state.sourceCryptoCurrency,
+                destinationCurrency = state.destinationCryptoCurrency,
+                sourceCurrency = state.sourceCryptoCurrency,
                 rate = state.cryptoExchangeRate
             )
 
@@ -792,7 +793,7 @@ class SwapInputViewModel(
 
     private suspend fun estimateFee(
         cryptoAmount: BigDecimal, currencyCode: String, fiatCode: String
-    ): AmountData? {
+    ): FeeAmountData? {
         val wallet = breadBox.wallet(currencyCode).first()
         val amount = Amount.create(cryptoAmount.toDouble(), wallet.unit)
         val address = loadAddress(wallet.currency.code) ?: return null
@@ -807,11 +808,12 @@ class SwapInputViewModel(
                 fiatCode = fiatCode
             ) ?: return null
 
-            return AmountData(
+            return FeeAmountData(
                 fiatAmount = fiatFee,
                 fiatCurrency = fiatCode,
                 cryptoAmount = cryptoFee,
-                cryptoCurrency = cryptoCurrency
+                cryptoCurrency = cryptoCurrency,
+                included = currencyCode.equals(cryptoCurrency, true)
             )
         } catch (e: Exception) {
             Log.d("SwapInputViewModel", "Fee estimation failed: ${e.message}")
@@ -859,42 +861,30 @@ class SwapInputViewModel(
         ) ?: BigDecimal.ZERO
     }
 
-    private suspend fun BigDecimal.convertSource(fromCryptoCurrency: String, toCryptoCurrency: String, rate: BigDecimal): Triple<AmountData?, AmountData?, BigDecimal> {
+    private suspend fun BigDecimal.convertSource(sourceCurrency: String, destinationCurrency: String, rate: BigDecimal): Triple<FeeAmountData?, FeeAmountData?, BigDecimal> {
         val state = currentLoadedState ?: return Triple(null, null, BigDecimal.ZERO)
 
-        val sourceFee = estimateFee(this, fromCryptoCurrency, state.fiatCurrency)
-        val sourceAmount = when (sourceFee?.cryptoCurrency) {
-            fromCryptoCurrency -> this - sourceFee.cryptoAmount
-            else -> this
-        }
+        val sourceFee = estimateFee(this, sourceCurrency, state.fiatCurrency)
+        val sourceAmount = if (sourceFee?.included == true) this - sourceFee.cryptoAmount else this
 
         val convertedAmount = sourceAmount.multiply(rate)
 
-        val destFee = estimateFee(convertedAmount, toCryptoCurrency, state.fiatCurrency)
-        val destAmount = when (destFee?.cryptoCurrency) {
-            toCryptoCurrency -> convertedAmount - destFee.cryptoAmount
-            else -> convertedAmount
-        }
+        val destFee = estimateFee(convertedAmount, destinationCurrency, state.fiatCurrency)
+        val destAmount = if (destFee?.included == true) convertedAmount - destFee.cryptoAmount else convertedAmount
 
         return Triple(sourceFee, destFee, destAmount)
     }
 
-    private suspend fun BigDecimal.convertDestination(fromCryptoCurrency: String, toCryptoCurrency: String, rate: BigDecimal): Triple<AmountData?, AmountData?, BigDecimal> {
+    private suspend fun BigDecimal.convertDestination(sourceCurrency: String, destinationCurrency: String, rate: BigDecimal): Triple<FeeAmountData?, FeeAmountData?, BigDecimal> {
         val state = currentLoadedState ?: return Triple(null, null, BigDecimal.ZERO)
 
-        val destFee = estimateFee(this, fromCryptoCurrency, state.fiatCurrency)
-        val destAmount = when (destFee?.cryptoCurrency) {
-            fromCryptoCurrency -> this + destFee.cryptoAmount
-            else -> this
-        }
+        val destFee = estimateFee(this, destinationCurrency, state.fiatCurrency)
+        val destAmount = if (destFee?.included == true) this + destFee.cryptoAmount else this
 
         val convertedAmount = destAmount.divide(rate, 5, RoundingMode.HALF_UP)
 
-        val sourceFee = estimateFee(convertedAmount, toCryptoCurrency, state.fiatCurrency)
-        val sourceAmount = when (sourceFee?.cryptoCurrency) {
-            toCryptoCurrency -> convertedAmount + sourceFee.cryptoAmount
-            else -> convertedAmount
-        }
+        val sourceFee = estimateFee(convertedAmount, sourceCurrency, state.fiatCurrency)
+        val sourceAmount = if (sourceFee?.included == true) convertedAmount + sourceFee.cryptoAmount else convertedAmount
 
         return Triple(sourceFee, destFee, sourceAmount)
     }

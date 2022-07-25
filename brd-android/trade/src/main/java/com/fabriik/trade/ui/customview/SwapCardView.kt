@@ -12,7 +12,8 @@ import androidx.core.view.isVisible
 import com.breadwallet.breadbox.formatCryptoForUi
 import com.breadwallet.util.formatFiatForUi
 import com.fabriik.common.utils.dp
-import com.fabriik.trade.data.model.AmountData
+import com.fabriik.trade.R
+import com.fabriik.trade.data.model.FeeAmountData
 import com.fabriik.trade.databinding.ViewSwapCardBinding
 import com.google.android.material.card.MaterialCardView
 import java.math.BigDecimal
@@ -94,7 +95,7 @@ class SwapCardView @JvmOverloads constructor(
         binding.viewInputBuyingCurrency.setCryptoCurrency(currency)
     }
 
-    fun setSendingNetworkFee(fee: AmountData?) {
+    fun setSendingNetworkFee(fee: FeeAmountData?) {
         binding.tvSellingCurrencyNetworkFee.isVisible = fee != null
         binding.tvSellingCurrencyNetworkFeeTitle.isVisible = fee != null
 
@@ -102,10 +103,17 @@ class SwapCardView @JvmOverloads constructor(
             val fiatText = it.fiatAmount.formatFiatForUi(it.fiatCurrency, SCALE_FIAT)
             val cryptoText = it.cryptoAmount.formatCryptoForUi(it.cryptoCurrency, SCALE_CRYPTO)
             binding.tvSellingCurrencyNetworkFee.text = "$cryptoText\n$fiatText"
+            binding.tvSellingCurrencyNetworkFeeTitle.setText(
+                if (it.included) {
+                    R.string.Swap_Input_SendingFeeIncludedTitle
+                } else {
+                    R.string.Swap_Input_SendingFeeTitle
+                }
+            )
         }
     }
 
-    fun setReceivingNetworkFee(fee: AmountData?) {
+    fun setReceivingNetworkFee(fee: FeeAmountData?) {
         binding.tvBuyingCurrencyNetworkFee.isVisible = fee != null
         binding.tvBuyingCurrencyNetworkFeeTitle.isVisible = fee != null
 
@@ -113,6 +121,13 @@ class SwapCardView @JvmOverloads constructor(
             val fiatText = it.fiatAmount.formatFiatForUi(it.fiatCurrency, SCALE_FIAT)
             val cryptoText = it.cryptoAmount.formatCryptoForUi(it.cryptoCurrency, SCALE_CRYPTO)
             binding.tvBuyingCurrencyNetworkFee.text = "$cryptoText\n$fiatText"
+            binding.tvBuyingCurrencyNetworkFeeTitle.setText(
+                if (it.included) {
+                    R.string.Swap_Input_ReceivingFeeIncludedTitle
+                } else {
+                    R.string.Swap_Input_ReceivingFeeTitle
+                }
+            )
         }
     }
 
