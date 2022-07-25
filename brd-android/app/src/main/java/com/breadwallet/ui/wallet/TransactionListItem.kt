@@ -31,7 +31,7 @@ class TransactionListItem(
 ) : ModelAbstractItem<WalletTransaction, TransactionListItem.ViewHolder>(transaction) {
 
     override val layoutRes: Int =
-        if (transaction.exchangeData != null) R.layout.item_swap_details else
+        if (model.exchangeData != null) R.layout.item_swap_details else
             R.layout.tx_item
 
     override val type: Int = R.id.transaction_item
@@ -40,24 +40,42 @@ class TransactionListItem(
 
     override fun getViewHolder(v: View) = ViewHolder(v)
 
-    private val isSwap = transaction.exchangeData != null
-
     inner class ViewHolder(
         v: View
     ) : FastAdapter.ViewHolder<TransactionListItem>(v) {
 
+        private var binding: ViewBinding? = null
+
         override fun bindView(item: TransactionListItem, payloads: List<Any>) {
-            if (isSwap) {
-                val binding = ItemSwapDetailsBinding.bind(itemView)
-                setSwapContent(binding, item.model)
+            if (model.exchangeData != null) {
+                binding = ItemSwapDetailsBinding.bind(itemView)
+                setSwapContent(binding as ItemSwapDetailsBinding, item.model)
             } else {
-                val binding = TxItemBinding.bind(itemView)
-                setTransferContent(binding, item.model, item.isCryptoPreferred)
+                binding = TxItemBinding.bind(itemView)
+                setTransferContent(binding as TxItemBinding, item.model, item.isCryptoPreferred)
             }
         }
 
         override fun unbindView(item: TransactionListItem) {
-            //empty
+            val binding = this.binding
+
+            // unbind ItemSwapDetailsBinding
+            if(binding is ItemSwapDetailsBinding) {
+                binding.tvTransactionDate.text = null
+                binding.tvTransactionValue.text = null
+                binding.tvTransactionTitle.text = null
+                binding.tvTransactionValueDollars.text = null
+            }
+
+            // unbind TxItemBinding
+            if(binding is TxItemBinding) {
+                binding.txTitle.text = null
+                binding.txAmount.text = null
+                binding.txDescriptionValue.text = null
+                binding.txDescriptionLabel.text = null
+            }
+
+            this.binding = null
         }
 
         private fun setSwapContent(
@@ -82,7 +100,7 @@ class TransactionListItem(
             with(binding) {
                 tvTransactionTitle.text = transactionTitle
                 tvTransactionDate.text = BRDateUtil.getShortDate(transaction.timeStamp)
-                tvTransactionValue.text = transaction.amount.toString()
+                tvTransactionValue.text = transaction.amount.formatCryptoForUi(transaction.currencyCode)
                 tvTransactionValueDollars.text =
                     transaction.amountInFiat.formatFiatForUi(BRSharedPrefs.getPreferredFiatIso())
             }
