@@ -174,12 +174,12 @@ object WalletScreenHandler {
                         mapToWalletTransaction(it, currencyId, swapRepository)
                     }
 
-                val pendingWithdrawalTransactions = swapRepository.getPendingSwapWithdrawals(currencyCode)
+                val unlinkedWithdrawalTransactions = swapRepository.getUnlinkedSwapWithdrawals(currencyCode)
                         .mapNotNullOrExceptional { mapPendingSwapWithdrawalToWalletTransaction(it) }
 
                 val transactions = mutableListOf<WalletTransaction>().apply {
                     addAll(walletTransactions)
-                    addAll(pendingWithdrawalTransactions)
+                    addAll(unlinkedWithdrawalTransactions)
                 }
 
                 E.OnTransactionsUpdated(

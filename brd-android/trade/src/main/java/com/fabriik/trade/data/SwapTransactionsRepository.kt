@@ -23,7 +23,7 @@ class SwapTransactionsRepository {
         it.source.transactionId == hash || it.destination.transactionId == hash
     }
 
-    fun getPendingSwapWithdrawals(currency: String): List<SwapTransactionData> {
+    fun getUnlinkedSwapWithdrawals(currency: String): List<SwapTransactionData> {
         return swapTransactions.filter {
             it.destination.currency.equals(currency, true) && it.destination.transactionId == null
         }
