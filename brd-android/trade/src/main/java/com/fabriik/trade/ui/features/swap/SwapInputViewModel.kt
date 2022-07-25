@@ -135,7 +135,7 @@ class SwapInputViewModel(
             }
 
             val newSelectedPair = state.tradingPairs.firstOrNull {
-                currencyCode.equals(it.baseCurrency, true)
+                currencyCode.equals(it.baseCurrency, true) && isWalletEnabled(it.termCurrency)
             } ?: state.selectedPair
 
             val sourceBalance = loadCryptoBalance(
@@ -342,10 +342,8 @@ class SwapInputViewModel(
                 return@launch
             }
 
-            val enabledWallets = acctMetaDataProvider.enabledWallets().first()
             val selectedPair = tradingPairs.firstOrNull {
-                isWalletEnabled(enabledWallets, it.baseCurrency) &&
-                        isWalletEnabled(enabledWallets, it.termCurrency)
+                isWalletEnabled(it.baseCurrency) && isWalletEnabled(it.termCurrency)
             }
 
             if (selectedPair == null) {
@@ -390,7 +388,8 @@ class SwapInputViewModel(
         }
     }
 
-    private fun isWalletEnabled(enabledWallets: List<String>, currencyCode: String): Boolean {
+    private suspend fun isWalletEnabled(currencyCode: String): Boolean {
+        val enabledWallets = acctMetaDataProvider.enabledWallets().first()
         val token = TokenUtil.tokenForCode(currencyCode) ?: return false
         return token.isSupported && enabledWallets.contains(token.currencyId)
     }
