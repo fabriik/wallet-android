@@ -2,4 +2,5 @@
 <resources>
     <string name="view_coroutine_scope">view_scope</string>
     <string name="FabriikApi.DefaultError">Something went wrong! Try again later.</string>
+    <string name="FabriikButton.Confirm">Confirm</string>
 </resources>

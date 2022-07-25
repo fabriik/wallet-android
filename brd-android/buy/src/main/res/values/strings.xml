@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Billing address screen -->
+    <string name="Buy.BillingAdress.Title">Billing address</string>
+    <string name="Buy.BillingAddress.FirstName">First Name</string>
+    <string name="Buy.BillingAddress.LastName">Last Name</string>
+    <string name="Buy.BillingAddress.Country">Country</string>
+    <string name="Buy.BillingAddress.StateProvince">State/Province</string>
+    <string name="Buy.BillingAddress.PostalCode">ZIP/Postal Code</string>
+    <string name="Buy.BillingAddress.Address">Address</string>
+    <string name="Buy.BillingAddress.City">City</string>
+</resources>

@@ -3,7 +3,6 @@ package com.fabriik.buy.ui
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import com.fabriik.buy.R
@@ -11,10 +10,10 @@ import com.fabriik.buy.databinding.ActivityBuyBinding
 
 class BuyActivity : AppCompatActivity() {
 
-    lateinit var navHostFragment: NavHostFragment
-    lateinit var binding: ActivityBuyBinding
+    private lateinit var navHostFragment: NavHostFragment
+    private lateinit var binding: ActivityBuyBinding
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityBuyBinding.inflate(layoutInflater)
         setContentView(binding.root)
