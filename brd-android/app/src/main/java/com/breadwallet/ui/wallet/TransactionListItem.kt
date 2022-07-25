@@ -17,10 +17,8 @@ import com.breadwallet.tools.util.Utils
 import com.breadwallet.util.formatFiatForUi
 import com.breadwallet.util.isBitcoinLike
 import com.fabriik.trade.data.response.ExchangeOrderStatus.COMPLETE
-import com.fabriik.trade.data.response.ExchangeOrderStatus.PENDING
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.ModelAbstractItem
-import java.util.*
 
 private const val DP_120 = 120
 private const val PROGRESS_FULL = 100
@@ -48,9 +46,10 @@ class TransactionListItem(
         private var binding: ViewBinding? = null
 
         override fun bindView(item: TransactionListItem, payloads: List<Any>) {
-            if (model.exchangeData != null) {
+            val exchangeData = model.exchangeData
+            if (exchangeData != null) {
                 binding = ItemSwapDetailsBinding.bind(itemView)
-                setSwapContent(binding as ItemSwapDetailsBinding, item.model)
+                setSwapContent(binding as ItemSwapDetailsBinding, model, exchangeData)
             } else {
                 binding = TxItemBinding.bind(itemView)
                 setTransferContent(binding as TxItemBinding, item.model, item.isCryptoPreferred)
@@ -80,33 +79,19 @@ class TransactionListItem(
         }
 
         private fun setSwapContent(
-            binding: ItemSwapDetailsBinding,
-            transaction: WalletTransaction
+            binding: ItemSwapDetailsBinding, transaction: WalletTransaction, exchangeData: ExchangeData
         ) {
-            val status = transaction.exchangeData?.status!!
             val context = itemView.context
-            val transactionTitle =
-                if (status == PENDING) {
-                    context.getString(
-                        R.string.Swap_TransactionItem_Pending,
-                        transaction.currencyCode.toUpperCase(Locale.ROOT)
-                    )
-                } else {
-                    context.getString(
-                        R.string.Swap_TransactionItem_Swapped,
-                        transaction.currencyCode.toUpperCase(Locale.ROOT)
-                    )
-                }
 
             with(binding) {
-                tvTransactionTitle.text = transactionTitle
                 tvTransactionDate.text = BRDateUtil.getShortDate(transaction.timeStamp)
+                tvTransactionTitle.text = exchangeData.getTransactionTitle(context)
                 tvTransactionValue.text = transaction.amount.formatCryptoForUi(transaction.currencyCode)
                 tvTransactionValueDollars.text =
                     transaction.amountInFiat.formatFiatForUi(BRSharedPrefs.getPreferredFiatIso())
             }
 
-            when (status) {
+            when (exchangeData.swapTransactionData.exchangeStatus) {
                 COMPLETE -> {
                     binding.icItemBg.imageTintList =
                         ColorStateList.valueOf(

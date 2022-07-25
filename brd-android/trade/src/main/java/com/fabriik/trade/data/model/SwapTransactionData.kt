@@ -6,6 +6,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import kotlinx.parcelize.Parcelize
 import java.math.BigDecimal
+import java.util.*
 
 @Parcelize
 @JsonClass(generateAdapter = true)
@@ -37,4 +38,8 @@ data class SwapTransactionData(
 
     @Json(name = "timestamp")
     val timestamp: Long
-): Parcelable
+): Parcelable {
+    fun getDepositCurrencyUpperCase() = depositCurrency.toUpperCase(Locale.ROOT)
+
+    fun getWithdrawalCurrencyUpperCase() = withdrawalCurrency.toUpperCase(Locale.ROOT)
+}

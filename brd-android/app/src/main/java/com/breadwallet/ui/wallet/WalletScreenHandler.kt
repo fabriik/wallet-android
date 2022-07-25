@@ -171,14 +171,10 @@ object WalletScreenHandler {
                 val walletTransactions = transfers
                     .filter { it.hash.isPresent }
                     .mapNotNullOrExceptional {
-                        mapToWalletTransaction(
-                            it, currencyId,
-                            swapRepository
-                        )
+                        mapToWalletTransaction(it, currencyId, swapRepository)
                     }
 
-                val pendingWithdrawalTransactions =
-                    swapRepository.getPendingSwapWithdrawals(currencyCode)
+                val pendingWithdrawalTransactions = swapRepository.getPendingSwapWithdrawals(currencyCode)
                         .mapNotNullOrExceptional { mapPendingSwapWithdrawalToWalletTransaction(it) }
 
                 val transactions = mutableListOf<WalletTransaction>().apply {
@@ -200,10 +196,11 @@ object WalletScreenHandler {
 
         return swapTransaction?.let {
             walletTransaction.copy(
-                exchangeData = ExchangeData(
-                    status = swapTransaction.exchangeStatus,
-                    exchangeId = swapTransaction.exchangeId
-                )
+                exchangeData = when(transfer.hashString()) {
+                    swapTransaction.depositHash -> ExchangeData.Deposit(swapTransaction)
+                    swapTransaction.withdrawalHash -> ExchangeData.Withdrawal(swapTransaction)
+                    else -> null
+                }
             )
         } ?: walletTransaction
     }
@@ -223,10 +220,7 @@ object WalletScreenHandler {
             isPending = swapTransaction.exchangeStatus == ExchangeOrderStatus.PENDING,
             isErrored = swapTransaction.exchangeStatus == ExchangeOrderStatus.FAILED,
             isComplete = swapTransaction.exchangeStatus == ExchangeOrderStatus.COMPLETE,
-            exchangeData = ExchangeData(
-                exchangeId = swapTransaction.exchangeId,
-                status = swapTransaction.exchangeStatus
-            ),
+            exchangeData = ExchangeData.Withdrawal(swapTransaction),
             fromAddress = "",
             toAddress = "",
             fee = BigDecimal.ZERO,
