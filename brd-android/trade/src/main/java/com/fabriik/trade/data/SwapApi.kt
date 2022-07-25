@@ -89,24 +89,15 @@ class SwapApi(
     }
 
     suspend fun getSwapTransactions(): Resource<List<SwapTransactionData>?> {
-        // todo: call API
-        delay(1000)
-
-        return Resource.success(
-            data = listOf(
-                SwapTransactionData(
-                    exchangeId = "15140",
-                    exchangeStatus = ExchangeOrderStatus.COMPLETE,
-                    depositCurrency = "BSV",
-                    depositQuantity = BigDecimal("1.234"),
-                    depositHash = "3bfc614fef6c7de13f3f19611a0fa3cd25df8826078d17a8e2cce1c4f6806c35",
-                    withdrawalHash = null,
-                    withdrawalCurrency = "BTC",
-                    withdrawalQuantity = BigDecimal("0.123"),
-                    timestamp = System.currentTimeMillis()
-                )
+        return try {
+            val response = service.getExchanges()
+            Resource.success(data = response.exchanges)
+        } catch (ex: Exception) {
+            responseMapper.mapError(
+                context = context,
+                exception = ex
             )
-        )
+        }
     }
 
     companion object {

@@ -22,18 +22,12 @@ class SwapTransactionsFetcher(
     }
 
     private suspend fun updateData() {
-        Log.d("SwapTransactionsFetcher", "Fetching data...")
         val transactions = swapApi.getSwapTransactions()
         val transactionsData = transactions.data ?: emptyList()
         if (transactions.status == Status.ERROR || transactionsData.isEmpty()) {
-            Log.d("SwapTransactionsFetcher", "Error or empty data received")
             return
         }
 
-        Log.d("SwapTransactionsFetcher", "Updating data...")
-
         transactionsRepository.updateData(transactionsData)
-
-        Log.d("SwapTransactionsFetcher", "Data updated!")
     }
 }

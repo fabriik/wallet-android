@@ -12,34 +12,39 @@ import java.util.*
 @JsonClass(generateAdapter = true)
 data class SwapTransactionData(
 
-    @Json(name = "exchange_id")
+    @Json(name = "order_id")
     val exchangeId: String,
 
-    @Json(name = "exchange_status")
+    @Json(name = "status")
     val exchangeStatus: ExchangeOrderStatus,
 
-    @Json(name = "deposit_currency")
-    val depositCurrency: String,
+    @Json(name = "status_details")
+    val exchangeStatusDetails: String,
 
-    @Json(name = "deposit_quantity")
-    val depositQuantity: BigDecimal,
+    @Json(name = "source")
+    val source: Data,
 
-    @Json(name = "deposit_hash")
-    val depositHash: String?,
-
-    @Json(name = "withdrawal_currency")
-    val withdrawalCurrency: String,
-
-    @Json(name = "withdrawal_quantity")
-    val withdrawalQuantity: BigDecimal,
-
-    @Json(name = "withdrawal_hash")
-    val withdrawalHash: String?,
+    @Json(name = "destination")
+    val destination: Data,
 
     @Json(name = "timestamp")
     val timestamp: Long
 ): Parcelable {
-    fun getDepositCurrencyUpperCase() = depositCurrency.toUpperCase(Locale.ROOT)
+    fun getDepositCurrencyUpperCase() = source.currency.toUpperCase(Locale.ROOT)
 
-    fun getWithdrawalCurrencyUpperCase() = withdrawalCurrency.toUpperCase(Locale.ROOT)
+    fun getWithdrawalCurrencyUpperCase() = destination.currency.toUpperCase(Locale.ROOT)
 }
+
+@Parcelize
+@JsonClass(generateAdapter = true)
+data class Data(
+
+    @Json(name = "currency")
+    val currency: String,
+
+    @Json(name = "currency_amount")
+    val currencyAmount: BigDecimal,
+
+    @Json(name = "transaction_id")
+    val transactionId: String?
+): Parcelable

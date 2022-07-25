@@ -197,8 +197,8 @@ object WalletScreenHandler {
         return swapTransaction?.let {
             walletTransaction.copy(
                 exchangeData = when(transfer.hashString()) {
-                    swapTransaction.depositHash -> ExchangeData.Deposit(swapTransaction)
-                    swapTransaction.withdrawalHash -> ExchangeData.Withdrawal(swapTransaction)
+                    swapTransaction.source.transactionId -> ExchangeData.Deposit(swapTransaction)
+                    swapTransaction.destination.transactionId -> ExchangeData.Withdrawal(swapTransaction)
                     else -> null
                 }
             )
@@ -207,15 +207,15 @@ object WalletScreenHandler {
 
     private fun mapPendingSwapWithdrawalToWalletTransaction(swapTransaction: SwapTransactionData): WalletTransaction {
         return WalletTransaction(
-            txHash = swapTransaction.withdrawalHash ?: "",
+            txHash = swapTransaction.destination.transactionId ?: "",
             timeStamp = swapTransaction.timestamp,
-            amount = swapTransaction.withdrawalQuantity,
+            amount = swapTransaction.destination.currencyAmount,
             amountInFiat = getBalanceInFiat(
-                balance = swapTransaction.withdrawalQuantity,
-                currencyCode = swapTransaction.withdrawalCurrency,
+                balance = swapTransaction.destination.currencyAmount,
+                currencyCode = swapTransaction.destination.currency,
                 fiatCode = "USD"
             ),
-            currencyCode = swapTransaction.withdrawalCurrency,
+            currencyCode = swapTransaction.destination.currency,
             isReceived = true,
             isPending = swapTransaction.exchangeStatus == ExchangeOrderStatus.PENDING,
             isErrored = swapTransaction.exchangeStatus == ExchangeOrderStatus.FAILED,

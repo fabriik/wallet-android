@@ -20,12 +20,12 @@ class SwapTransactionsRepository {
     fun changes(): Flow<Unit> = changeEventChannel.asFlow()
 
     fun getSwapByHash(hash: String) : SwapTransactionData? = swapTransactions.find {
-        it.depositHash == hash || it.withdrawalHash == hash
+        it.source.transactionId == hash || it.destination.transactionId == hash
     }
 
     fun getPendingSwapWithdrawals(currency: String): List<SwapTransactionData> {
         return swapTransactions.filter {
-            it.withdrawalCurrency.equals(currency, true) && it.withdrawalHash == null
+            it.destination.currency.equals(currency, true) && it.destination.transactionId == null
         }
     }
 }

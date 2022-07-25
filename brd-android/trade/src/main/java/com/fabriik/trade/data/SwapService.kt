@@ -1,10 +1,7 @@
 package com.fabriik.trade.data
 
 import com.fabriik.trade.data.request.CreateOrderRequest
-import com.fabriik.trade.data.response.CreateOrderResponse
-import com.fabriik.trade.data.response.ExchangeOrder
-import com.fabriik.trade.data.response.QuoteResponse
-import com.fabriik.trade.data.response.TradingPairsResponse
+import com.fabriik.trade.data.response.*
 import okhttp3.ResponseBody
 import retrofit2.http.*
 
@@ -27,4 +24,8 @@ interface SwapService {
     suspend fun getExchange(
         @Path("exchangeId") exchangeId: String
     ): ExchangeOrder
+
+    @GET("exchanges")
+    suspend fun getExchanges(): ExchangesResponse
+
 }
