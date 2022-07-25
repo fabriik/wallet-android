@@ -42,6 +42,7 @@ import com.breadwallet.ui.models.TransactionState
 import com.breadwallet.ui.wallet.WalletScreen.E
 import com.breadwallet.ui.wallet.WalletScreen.F
 import com.breadwallet.util.formatFiatForUi
+import com.fabriik.trade.data.SwapTransactionsRepository
 import com.spotify.mobius.Connectable
 import drewcarlson.mobius.flow.flowTransformer
 import drewcarlson.mobius.flow.subtypeEffectHandler
@@ -62,12 +63,13 @@ object WalletScreenHandler {
         breadBox: BreadBox,
         metadataEffectHandler: Connectable<MetaDataEffect, MetaDataEvent>,
         ratesFetcher: RatesFetcher,
-        connectivityStateProvider: ConnectivityStateProvider
+        connectivityStateProvider: ConnectivityStateProvider,
+        swapTransactionsRepository: SwapTransactionsRepository
     ) = subtypeEffectHandler<F, E> {
         addTransformer(handleLoadPricePerUnit(context))
 
         addTransformer(handleLoadBalance(breadBox))
-        addTransformer(handleLoadTransactions(breadBox))
+        addTransformer(handleLoadTransactions(breadBox, swapTransactionsRepository))
         addTransformer(handleLoadCurrencyName(breadBox))
         addTransformer(handleLoadSyncState(breadBox))
         addTransformer(handleWalletState(breadBox))
@@ -151,7 +153,8 @@ object WalletScreenHandler {
     }
 
     private fun handleLoadTransactions(
-        breadBox: BreadBox
+        breadBox: BreadBox,
+        swapRepository: SwapTransactionsRepository
     ) = flowTransformer<F.LoadTransactions, E> { effects ->
         effects
             .flatMapLatest { effect ->
@@ -166,10 +169,24 @@ object WalletScreenHandler {
                 E.OnTransactionsUpdated(
                     transactions
                         .filter { it.hash.isPresent }
-                        .mapNotNullOrExceptional { it.asWalletTransaction(currencyId) }
+                        .mapNotNullOrExceptional { mapToWalletTransaction(it, currencyId, swapRepository) }
                         .sortedByDescending(WalletTransaction::timeStamp)
                 )
             }
+    }
+
+    private fun mapToWalletTransaction(transfer: Transfer, currencyId: String, swapRepository: SwapTransactionsRepository): WalletTransaction {
+        val swapTransaction = swapRepository.getSwapDataByTransactionId(transfer.hashString())
+        val walletTransaction = transfer.asWalletTransaction(currencyId)
+
+        return swapTransaction?.let {
+            walletTransaction.copy(
+                exchangeData = ExchangeData(
+                    exchangeId = swapTransaction.exchangeId,
+                    status = swapTransaction.status
+                )
+            )
+        } ?: walletTransaction
     }
 
     private fun handleLoadBalance(breadBox: BreadBox) =

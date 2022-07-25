@@ -6,6 +6,7 @@ import android.text.format.DateUtils
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.viewbinding.ViewBinding
 import com.breadwallet.R
 import com.breadwallet.breadbox.formatCryptoForUi
 import com.breadwallet.databinding.ItemSwapDetailsBinding
@@ -52,12 +53,11 @@ class TransactionListItem(
             } else {
                 val binding = TxItemBinding.bind(itemView)
                 setTransferContent(binding, item.model, item.isCryptoPreferred)
-
             }
         }
 
         override fun unbindView(item: TransactionListItem) {
-            unbindView(item)
+            //empty
         }
 
         private fun setSwapContent(

@@ -221,6 +221,7 @@ object WalletScreen {
         data class LoadSyncState(val currencyCode: String) : F()
         data class LoadWalletBalance(val currencyCode: String) : F()
         data class LoadTransactions(val currencyCode: String) : F()
+        data class LoadSwapTransactions(val currencyCode: String) : F()
         data class LoadFiatPricePerUnit(val currencyCode: String) : F()
         data class LoadTransactionMetaData(
             val currencyCode: String,

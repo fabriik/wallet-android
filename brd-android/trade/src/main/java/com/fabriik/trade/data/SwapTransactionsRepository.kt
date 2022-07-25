@@ -20,5 +20,5 @@ class SwapTransactionsRepository {
 
     fun changes(): Flow<Unit> = changeEventChannel.asFlow()
 
-    fun getSwapTransactionData(transactionId: String) = swapTransactions[transactionId]
+    fun getSwapDataByTransactionId(transactionId: String) = swapTransactions[transactionId]
 }
