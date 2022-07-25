@@ -862,9 +862,19 @@ class SwapInputViewModel(
     private suspend fun BigDecimal.convertSource(fromCryptoCurrency: String, toCryptoCurrency: String, rate: BigDecimal): Triple<AmountData?, AmountData?, BigDecimal> {
         val state = currentLoadedState ?: return Triple(null, null, BigDecimal.ZERO)
 
-        val destAmount = this.multiply(rate)
-        val destFee = estimateFee(destAmount, toCryptoCurrency, state.fiatCurrency)
         val sourceFee = estimateFee(this, fromCryptoCurrency, state.fiatCurrency)
+        val sourceAmount = when (sourceFee?.cryptoCurrency) {
+            fromCryptoCurrency -> this - sourceFee.cryptoAmount
+            else -> this
+        }
+
+        val convertedAmount = sourceAmount.multiply(rate)
+
+        val destFee = estimateFee(convertedAmount, toCryptoCurrency, state.fiatCurrency)
+        val destAmount = when (destFee?.cryptoCurrency) {
+            toCryptoCurrency -> convertedAmount - destFee.cryptoAmount
+            else -> convertedAmount
+        }
 
         return Triple(sourceFee, destFee, destAmount)
     }
@@ -872,9 +882,19 @@ class SwapInputViewModel(
     private suspend fun BigDecimal.convertDestination(fromCryptoCurrency: String, toCryptoCurrency: String, rate: BigDecimal): Triple<AmountData?, AmountData?, BigDecimal> {
         val state = currentLoadedState ?: return Triple(null, null, BigDecimal.ZERO)
 
-        val sourceAmount = this.divide(rate, 5, RoundingMode.HALF_UP)
-        val sourceFee = estimateFee(sourceAmount, toCryptoCurrency, state.fiatCurrency)
         val destFee = estimateFee(this, fromCryptoCurrency, state.fiatCurrency)
+        val destAmount = when (destFee?.cryptoCurrency) {
+            fromCryptoCurrency -> this + destFee.cryptoAmount
+            else -> this
+        }
+
+        val convertedAmount = destAmount.divide(rate, 5, RoundingMode.HALF_UP)
+
+        val sourceFee = estimateFee(convertedAmount, toCryptoCurrency, state.fiatCurrency)
+        val sourceAmount = when (sourceFee?.cryptoCurrency) {
+            toCryptoCurrency -> convertedAmount + sourceFee.cryptoAmount
+            else -> convertedAmount
+        }
 
         return Triple(sourceFee, destFee, sourceAmount)
     }
