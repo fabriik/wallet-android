@@ -175,7 +175,7 @@ object WalletScreenHandler {
                     }
 
                 val unlinkedWithdrawalTransactions = swapRepository.getUnlinkedSwapWithdrawals(currencyCode)
-                        .mapNotNullOrExceptional { mapPendingSwapWithdrawalToWalletTransaction(it) }
+                        .mapNotNullOrExceptional { mapUnlinkedSwapWithdrawalToWalletTransaction(it) }
 
                 val transactions = mutableListOf<WalletTransaction>().apply {
                     addAll(walletTransactions)
@@ -205,7 +205,7 @@ object WalletScreenHandler {
         } ?: walletTransaction
     }
 
-    private fun mapPendingSwapWithdrawalToWalletTransaction(swapTransaction: SwapTransactionData): WalletTransaction {
+    private fun mapUnlinkedSwapWithdrawalToWalletTransaction(swapTransaction: SwapTransactionData): WalletTransaction {
         return WalletTransaction(
             txHash = swapTransaction.destination.transactionId ?: "",
             timeStamp = swapTransaction.timestamp,
