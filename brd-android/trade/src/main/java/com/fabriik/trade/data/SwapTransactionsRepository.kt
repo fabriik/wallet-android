@@ -5,20 +5,33 @@ import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.channels.Channel.Factory.CONFLATED
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
-import java.util.concurrent.ConcurrentHashMap
 
 class SwapTransactionsRepository {
 
-    private val swapTransactions = ConcurrentHashMap<String, SwapTransactionData>()
+    private val swapTransactions: MutableList<SwapTransactionData> = mutableListOf()
     private val changeEventChannel = BroadcastChannel<Unit>(CONFLATED)
 
-    fun updateData(data: Map<String, SwapTransactionData>) {
+    fun updateData(data: List<SwapTransactionData>) {
         swapTransactions.clear()
-        swapTransactions.putAll(data)
+        swapTransactions.addAll(data)
         changeEventChannel.offer(Unit)
     }
 
     fun changes(): Flow<Unit> = changeEventChannel.asFlow()
 
-    fun getSwapDataByTransactionId(transactionId: String) = swapTransactions[transactionId]
+    fun getSwapByHash(hash: String) : SwapTransactionData? = swapTransactions.find {
+        it.depositHash == hash || it.withdrawalHash == hash
+    }
+
+    fun getSwapsByDepositCurrency(currency: String): List<SwapTransactionData> {
+        return swapTransactions.filter {
+            it.depositCurrency == currency
+        }
+    }
+
+    fun getSwapsByWithdrawalCurrency(currency: String): List<SwapTransactionData> {
+        return swapTransactions.filter {
+            it.withdrawalCurrency == currency
+        }
+    }
 }

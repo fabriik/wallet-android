@@ -24,20 +24,16 @@ class SwapTransactionsFetcher(
     private suspend fun updateData() {
         Log.d("SwapTransactionsFetcher", "Fetching data...")
         val transactions = swapApi.getSwapTransactions()
-        val transactionsData = transactions.data
-        if (transactions.status == Status.ERROR || transactionsData.isNullOrEmpty()) {
+        val transactionsData = transactions.data ?: emptyList()
+        if (transactions.status == Status.ERROR || transactionsData.isEmpty()) {
             Log.d("SwapTransactionsFetcher", "Error or empty data received")
             return
         }
 
         Log.d("SwapTransactionsFetcher", "Updating data...")
 
-        val dataChanges = mutableMapOf<String, SwapTransactionData>()
-        transactionsData.forEach {
-            dataChanges[it.transactionId] = it
-        }
+        transactionsRepository.updateData(transactionsData)
 
-        transactionsRepository.updateData(dataChanges)
         Log.d("SwapTransactionsFetcher", "Data updated!")
     }
 }

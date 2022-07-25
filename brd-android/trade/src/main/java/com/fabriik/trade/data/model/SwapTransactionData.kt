@@ -11,12 +11,30 @@ import java.math.BigDecimal
 @JsonClass(generateAdapter = true)
 data class SwapTransactionData(
 
-    @Json(name = "transaction_id")
-    val transactionId: String,
-
     @Json(name = "exchange_id")
     val exchangeId: String,
 
-    @Json(name = "status")
-    val status: ExchangeOrderStatus
+    @Json(name = "exchange_status")
+    val exchangeStatus: ExchangeOrderStatus,
+
+    @Json(name = "deposit_currency")
+    val depositCurrency: String,
+
+    @Json(name = "deposit_quantity")
+    val depositQuantity: BigDecimal,
+
+    @Json(name = "deposit_hash")
+    val depositHash: String?,
+
+    @Json(name = "withdrawal_currency")
+    val withdrawalCurrency: String,
+
+    @Json(name = "withdrawal_quantity")
+    val withdrawalQuantity: BigDecimal,
+
+    @Json(name = "withdrawal_hash")
+    val withdrawalHash: String?,
+
+    @Json(name = "timestamp")
+    val timestamp: Long
 ): Parcelable

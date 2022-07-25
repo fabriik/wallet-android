@@ -43,6 +43,8 @@ import com.breadwallet.ui.wallet.WalletScreen.E
 import com.breadwallet.ui.wallet.WalletScreen.F
 import com.breadwallet.util.formatFiatForUi
 import com.fabriik.trade.data.SwapTransactionsRepository
+import com.fabriik.trade.data.model.SwapTransactionData
+import com.fabriik.trade.data.response.ExchangeOrderStatus
 import com.spotify.mobius.Connectable
 import drewcarlson.mobius.flow.flowTransformer
 import drewcarlson.mobius.flow.subtypeEffectHandler
@@ -176,14 +178,14 @@ object WalletScreenHandler {
     }
 
     private fun mapToWalletTransaction(transfer: Transfer, currencyId: String, swapRepository: SwapTransactionsRepository): WalletTransaction {
-        val swapTransaction = swapRepository.getSwapDataByTransactionId(transfer.hashString())
+        val swapTransaction = swapRepository.getSwapByHash(transfer.hashString())
         val walletTransaction = transfer.asWalletTransaction(currencyId)
 
         return swapTransaction?.let {
             walletTransaction.copy(
                 exchangeData = ExchangeData(
-                    exchangeId = swapTransaction.exchangeId,
-                    status = swapTransaction.status
+                    status = swapTransaction.exchangeStatus,
+                    exchangeId = swapTransaction.exchangeId
                 )
             )
         } ?: walletTransaction
@@ -289,11 +291,15 @@ object WalletScreenHandler {
 }
 
 private fun getBalanceInFiat(balanceAmt: Amount): BigDecimal {
+    return getBalanceInFiat(
+        balanceAmt.toBigDecimal(), balanceAmt.currency.code, BRSharedPrefs.getPreferredFiatIso()
+    )
+}
+
+private fun getBalanceInFiat(balance: BigDecimal, currencyCode: String, fiatCode: String): BigDecimal {
     val context = BreadApp.getBreadContext()
     return RatesRepository.getInstance(context).getFiatForCrypto(
-        balanceAmt.toBigDecimal(),
-        balanceAmt.currency.code,
-        BRSharedPrefs.getPreferredFiatIso()
+        balance, currencyCode, fiatCode
     ) ?: BigDecimal.ZERO
 }
 

@@ -94,9 +94,17 @@ class SwapApi(
 
         return Resource.success(
             data = listOf(
-                SwapTransactionData("3bfc614fef6c7de13f3f19611a0fa3cd25df8826078d17a8e2cce1c4f6806c35", "15140", ExchangeOrderStatus.PENDING),
-                SwapTransactionData("id2", "15140", ExchangeOrderStatus.COMPLETE),
-                SwapTransactionData("id3", "15140", ExchangeOrderStatus.FAILED),
+                SwapTransactionData(
+                    exchangeId = "15140",
+                    exchangeStatus = ExchangeOrderStatus.PENDING,
+                    depositCurrency = "BSV",
+                    depositQuantity = BigDecimal("1.234"),
+                    depositHash = "3bfc614fef6c7de13f3f19611a0fa3cd25df8826078d17a8e2cce1c4f6806c35",
+                    withdrawalHash = null,
+                    withdrawalCurrency = "BTC",
+                    withdrawalQuantity = BigDecimal("0.123"),
+                    timestamp = System.currentTimeMillis()
+                )
             )
         )
     }

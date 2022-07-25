@@ -34,7 +34,8 @@ class TransactionListItem(
         if (model.exchangeData != null) R.layout.item_swap_details else
             R.layout.tx_item
 
-    override val type: Int = R.id.transaction_item
+    override val type: Int = if (model.exchangeData != null) R.id.swap_transaction_item else
+        R.id.transaction_item
 
     override var identifier: Long = model.txHash.hashCode().toLong()
 
