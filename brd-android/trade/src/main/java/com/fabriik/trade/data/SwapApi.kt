@@ -96,7 +96,7 @@ class SwapApi(
             data = listOf(
                 SwapTransactionData(
                     exchangeId = "15140",
-                    exchangeStatus = ExchangeOrderStatus.PENDING,
+                    exchangeStatus = ExchangeOrderStatus.COMPLETE,
                     depositCurrency = "BSV",
                     depositQuantity = BigDecimal("1.234"),
                     depositHash = "3bfc614fef6c7de13f3f19611a0fa3cd25df8826078d17a8e2cce1c4f6806c35",

@@ -23,15 +23,9 @@ class SwapTransactionsRepository {
         it.depositHash == hash || it.withdrawalHash == hash
     }
 
-    fun getSwapsByDepositCurrency(currency: String): List<SwapTransactionData> {
+    fun getPendingSwapWithdrawals(currency: String): List<SwapTransactionData> {
         return swapTransactions.filter {
-            it.depositCurrency == currency
-        }
-    }
-
-    fun getSwapsByWithdrawalCurrency(currency: String): List<SwapTransactionData> {
-        return swapTransactions.filter {
-            it.withdrawalCurrency == currency
+            it.withdrawalCurrency.equals(currency, true) && it.withdrawalHash == null
         }
     }
 }

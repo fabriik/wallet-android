@@ -165,19 +165,36 @@ object WalletScreenHandler {
                         .mapLatest { Pair(it.walletManager.network.height, it.currencyId) }
                         .distinctUntilChangedBy { it.first }
                 )
-                { transfers, (_, currencyId) -> Pair(transfers, currencyId) }
+                { transfers, (_, currencyId) -> Triple(transfers, effect.currencyCode, currencyId) }
             }
-            .mapLatest { (transactions, currencyId) ->
+            .mapLatest { (transfers, currencyCode, currencyId) ->
+                val walletTransactions = transfers
+                    .filter { it.hash.isPresent }
+                    .mapNotNullOrExceptional {
+                        mapToWalletTransaction(
+                            it, currencyId,
+                            swapRepository
+                        )
+                    }
+
+                val pendingWithdrawalTransactions =
+                    swapRepository.getPendingSwapWithdrawals(currencyCode)
+                        .mapNotNullOrExceptional { mapPendingSwapWithdrawalToWalletTransaction(it) }
+
+                val transactions = mutableListOf<WalletTransaction>().apply {
+                    addAll(walletTransactions)
+                    addAll(pendingWithdrawalTransactions)
+                }
+
                 E.OnTransactionsUpdated(
-                    transactions
-                        .filter { it.hash.isPresent }
-                        .mapNotNullOrExceptional { mapToWalletTransaction(it, currencyId, swapRepository) }
-                        .sortedByDescending(WalletTransaction::timeStamp)
+                    transactions.sortedByDescending(WalletTransaction::timeStamp)
                 )
             }
     }
 
-    private fun mapToWalletTransaction(transfer: Transfer, currencyId: String, swapRepository: SwapTransactionsRepository): WalletTransaction {
+    private fun mapToWalletTransaction(
+        transfer: Transfer, currencyId: String, swapRepository: SwapTransactionsRepository
+    ): WalletTransaction {
         val swapTransaction = swapRepository.getSwapByHash(transfer.hashString())
         val walletTransaction = transfer.asWalletTransaction(currencyId)
 
@@ -189,6 +206,35 @@ object WalletScreenHandler {
                 )
             )
         } ?: walletTransaction
+    }
+
+    private fun mapPendingSwapWithdrawalToWalletTransaction(swapTransaction: SwapTransactionData): WalletTransaction {
+        return WalletTransaction(
+            txHash = swapTransaction.withdrawalHash ?: "",
+            timeStamp = swapTransaction.timestamp,
+            amount = swapTransaction.withdrawalQuantity,
+            amountInFiat = getBalanceInFiat(
+                balance = swapTransaction.withdrawalQuantity,
+                currencyCode = swapTransaction.withdrawalCurrency,
+                fiatCode = "USD"
+            ),
+            currencyCode = swapTransaction.withdrawalCurrency,
+            isReceived = true,
+            isPending = swapTransaction.exchangeStatus == ExchangeOrderStatus.PENDING,
+            isErrored = swapTransaction.exchangeStatus == ExchangeOrderStatus.FAILED,
+            isComplete = swapTransaction.exchangeStatus == ExchangeOrderStatus.COMPLETE,
+            exchangeData = ExchangeData(
+                exchangeId = swapTransaction.exchangeId,
+                status = swapTransaction.exchangeStatus
+            ),
+            fromAddress = "",
+            toAddress = "",
+            fee = BigDecimal.ZERO,
+            feeToken = "",
+            confirmationsUntilFinal = 1,
+            confirmations = 1,
+            progress = 1,
+        )
     }
 
     private fun handleLoadBalance(breadBox: BreadBox) =
@@ -296,7 +342,11 @@ private fun getBalanceInFiat(balanceAmt: Amount): BigDecimal {
     )
 }
 
-private fun getBalanceInFiat(balance: BigDecimal, currencyCode: String, fiatCode: String): BigDecimal {
+private fun getBalanceInFiat(
+    balance: BigDecimal,
+    currencyCode: String,
+    fiatCode: String
+): BigDecimal {
     val context = BreadApp.getBreadContext()
     return RatesRepository.getInstance(context).getFiatForCrypto(
         balance, currencyCode, fiatCode
@@ -352,7 +402,7 @@ public inline fun <T, R : Any> Iterable<T>.mapNotNullOrExceptional(
 ): List<R> = mapNotNull { elem: T ->
     try {
         transform(elem)
-    } catch (e : Exception) {
+    } catch (e: Exception) {
         logError("Exception caught, transform skipped", e)
         BRReportsManager.reportBug(e)
         null
