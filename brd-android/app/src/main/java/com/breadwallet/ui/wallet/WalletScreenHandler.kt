@@ -175,7 +175,7 @@ object WalletScreenHandler {
                     }
 
                 val unlinkedWithdrawalTransactions = swapRepository.getUnlinkedSwapWithdrawals(currencyCode)
-                        .mapNotNullOrExceptional { mapUnlinkedSwapWithdrawalToWalletTransaction(it) }
+                        .mapNotNullOrExceptional { it.withdrawalAsWalletTransaction() }
 
                 val transactions = mutableListOf<WalletTransaction>().apply {
                     addAll(walletTransactions)
@@ -203,32 +203,6 @@ object WalletScreenHandler {
                 }
             )
         } ?: walletTransaction
-    }
-
-    private fun mapUnlinkedSwapWithdrawalToWalletTransaction(swapTransaction: SwapTransactionData): WalletTransaction {
-        return WalletTransaction(
-            txHash = swapTransaction.destination.transactionId ?: "",
-            timeStamp = swapTransaction.timestamp,
-            amount = swapTransaction.destination.currencyAmount,
-            amountInFiat = getBalanceInFiat(
-                balance = swapTransaction.destination.currencyAmount,
-                currencyCode = swapTransaction.destination.currency,
-                fiatCode = "USD"
-            ),
-            currencyCode = swapTransaction.destination.currency,
-            isReceived = true,
-            isPending = swapTransaction.exchangeStatus == ExchangeOrderStatus.PENDING,
-            isErrored = swapTransaction.exchangeStatus == ExchangeOrderStatus.FAILED,
-            isComplete = swapTransaction.exchangeStatus == ExchangeOrderStatus.COMPLETE,
-            exchangeData = ExchangeData.Withdrawal(swapTransaction),
-            fromAddress = "",
-            toAddress = "",
-            fee = BigDecimal.ZERO,
-            feeToken = "",
-            confirmationsUntilFinal = 1,
-            confirmations = 1,
-            progress = 1,
-        )
     }
 
     private fun handleLoadBalance(breadBox: BreadBox) =
@@ -388,6 +362,32 @@ fun Transfer.asWalletTransaction(currencyId: String): WalletTransaction {
         currencyCode = wallet.currency.code,
         feeToken = feeForToken,
         confirmationsUntilFinal = wallet.walletManager.network.confirmationsUntilFinal.toInt()
+    )
+}
+
+private fun SwapTransactionData.withdrawalAsWalletTransaction(): WalletTransaction {
+    return WalletTransaction(
+        txHash = destination.transactionId ?: "",
+        timeStamp = timestamp,
+        amount = destination.currencyAmount,
+        amountInFiat = getBalanceInFiat(
+            balance = destination.currencyAmount,
+            currencyCode = destination.currency,
+            fiatCode = "USD"
+        ),
+        currencyCode = destination.currency,
+        isReceived = true,
+        isPending = exchangeStatus == ExchangeOrderStatus.PENDING,
+        isErrored = exchangeStatus == ExchangeOrderStatus.FAILED,
+        isComplete = exchangeStatus == ExchangeOrderStatus.COMPLETE,
+        exchangeData = ExchangeData.Withdrawal(this),
+        fromAddress = "",
+        toAddress = "",
+        fee = BigDecimal.ZERO,
+        feeToken = "",
+        confirmationsUntilFinal = 1,
+        confirmations = 1,
+        progress = 1,
     )
 }
 
