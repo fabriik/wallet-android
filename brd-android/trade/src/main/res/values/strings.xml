@@ -19,6 +19,7 @@
     <string name="Swap.Input.Dialog.Button.GotIt">Got it!</string>
 
     <!-- Swap input screen errors -->
+    <string name="Swap.Input.Error.QuoteExpired">Your swap request timed out. Please try again.</string>
     <string name="Swap.Input.Error.InsuficientFunds">You don\'t have enough %s to complete this swap. Your current %s balance is %s</string>
     <string name="Swap.Input.Error.MinAmount">The amount is lower than the swap minimum of %s</string>
     <string name="Swap.Input.Error.MaxAmount">The amount is higher than the swap maximum of %s</string>

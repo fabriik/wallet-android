@@ -724,7 +724,7 @@ class SwapInputViewModel(
                             SwapInputContract.Effect.ShowToast(
                                 it.message ?: getString(
                                     R.string.FabriikApi_DefaultError
-                                )
+                                ), true
                             )
                         }
                 }

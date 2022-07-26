@@ -4,6 +4,7 @@ import android.content.Context
 import com.fabriik.common.data.FabriikApiConstants
 import com.fabriik.common.data.Resource
 import com.fabriik.common.utils.FabriikApiResponseMapper
+import com.fabriik.trade.R
 import com.fabriik.trade.data.model.TradingPair
 import com.fabriik.trade.data.request.CreateOrderRequest
 import com.fabriik.trade.data.response.CreateOrderResponse
@@ -66,10 +67,18 @@ class SwapApi(
             )
             Resource.success(data = response)
         } catch (ex: Exception) {
-            responseMapper.mapError(
+            val error: Resource<CreateOrderResponse?> = responseMapper.mapError(
                 context = context,
                 exception = ex
             )
+
+            if (error.message?.contains("expired quote", true) == true) {
+                return Resource.error(
+                    message = context.getString(R.string.Swap_Input_Error_QuoteExpired)
+                )
+            } else {
+                error
+            }
         }
     }
 
