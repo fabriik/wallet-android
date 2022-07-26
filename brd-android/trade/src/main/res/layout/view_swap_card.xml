@@ -16,12 +16,12 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:gravity="start"
-        android:text="@string/Swap.Input.SendingFeeTitle"
         android:textColor="@color/light_text_02"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view_input_selling_currency"
-        tools:visibility="visible" />
+        tools:visibility="visible"
+        tools:text="@string/Swap.Input.SendingFeeTitle" />
 
     <TextView
         android:id="@+id/tv_selling_currency_network_fee"
@@ -67,12 +67,12 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:gravity="start"
-        android:text="@string/Swap.Input.ReceivingFeeTitle"
         android:textColor="@color/light_text_02"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view_input_buying_currency"
-        tools:visibility="visible" />
+        tools:visibility="visible"
+        tools:text="@string/Swap.Input.ReceivingFeeTitle" />
 
     <TextView
         android:id="@+id/tv_buying_currency_network_fee"
