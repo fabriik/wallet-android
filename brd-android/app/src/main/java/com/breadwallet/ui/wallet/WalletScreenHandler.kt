@@ -42,6 +42,9 @@ import com.breadwallet.ui.models.TransactionState
 import com.breadwallet.ui.wallet.WalletScreen.E
 import com.breadwallet.ui.wallet.WalletScreen.F
 import com.breadwallet.util.formatFiatForUi
+import com.fabriik.trade.data.SwapTransactionsRepository
+import com.fabriik.trade.data.model.SwapTransactionData
+import com.fabriik.trade.data.response.ExchangeOrderStatus
 import com.spotify.mobius.Connectable
 import drewcarlson.mobius.flow.flowTransformer
 import drewcarlson.mobius.flow.subtypeEffectHandler
@@ -62,12 +65,13 @@ object WalletScreenHandler {
         breadBox: BreadBox,
         metadataEffectHandler: Connectable<MetaDataEffect, MetaDataEvent>,
         ratesFetcher: RatesFetcher,
-        connectivityStateProvider: ConnectivityStateProvider
+        connectivityStateProvider: ConnectivityStateProvider,
+        swapTransactionsRepository: SwapTransactionsRepository
     ) = subtypeEffectHandler<F, E> {
         addTransformer(handleLoadPricePerUnit(context))
 
         addTransformer(handleLoadBalance(breadBox))
-        addTransformer(handleLoadTransactions(breadBox))
+        addTransformer(handleLoadTransactions(breadBox, swapTransactionsRepository))
         addTransformer(handleLoadCurrencyName(breadBox))
         addTransformer(handleLoadSyncState(breadBox))
         addTransformer(handleWalletState(breadBox))
@@ -151,7 +155,8 @@ object WalletScreenHandler {
     }
 
     private fun handleLoadTransactions(
-        breadBox: BreadBox
+        breadBox: BreadBox,
+        swapRepository: SwapTransactionsRepository
     ) = flowTransformer<F.LoadTransactions, E> { effects ->
         effects
             .flatMapLatest { effect ->
@@ -160,16 +165,44 @@ object WalletScreenHandler {
                         .mapLatest { Pair(it.walletManager.network.height, it.currencyId) }
                         .distinctUntilChangedBy { it.first }
                 )
-                { transfers, (_, currencyId) -> Pair(transfers, currencyId) }
+                { transfers, (_, currencyId) -> Triple(transfers, effect.currencyCode, currencyId) }
             }
-            .mapLatest { (transactions, currencyId) ->
+            .mapLatest { (transfers, currencyCode, currencyId) ->
+                val walletTransactions = transfers
+                    .filter { it.hash.isPresent }
+                    .mapNotNullOrExceptional {
+                        mapToWalletTransaction(it, currencyId, swapRepository)
+                    }
+
+                val unlinkedWithdrawalTransactions = swapRepository.getUnlinkedSwapWithdrawals(currencyCode)
+                        .mapNotNullOrExceptional { it.withdrawalAsWalletTransaction() }
+
+                val transactions = mutableListOf<WalletTransaction>().apply {
+                    addAll(walletTransactions)
+                    addAll(unlinkedWithdrawalTransactions)
+                }
+
                 E.OnTransactionsUpdated(
-                    transactions
-                        .filter { it.hash.isPresent }
-                        .mapNotNullOrExceptional { it.asWalletTransaction(currencyId) }
-                        .sortedByDescending(WalletTransaction::timeStamp)
+                    transactions.sortedByDescending(WalletTransaction::timeStamp)
                 )
             }
+    }
+
+    private fun mapToWalletTransaction(
+        transfer: Transfer, currencyId: String, swapRepository: SwapTransactionsRepository
+    ): WalletTransaction {
+        val swapTransaction = swapRepository.getSwapByHash(transfer.hashString())
+        val walletTransaction = transfer.asWalletTransaction(currencyId)
+
+        return swapTransaction?.let {
+            walletTransaction.copy(
+                exchangeData = when(transfer.hashString()) {
+                    swapTransaction.source.transactionId -> ExchangeData.Deposit(swapTransaction)
+                    swapTransaction.destination.transactionId -> ExchangeData.Withdrawal(swapTransaction)
+                    else -> null
+                }
+            )
+        } ?: walletTransaction
     }
 
     private fun handleLoadBalance(breadBox: BreadBox) =
@@ -272,11 +305,19 @@ object WalletScreenHandler {
 }
 
 private fun getBalanceInFiat(balanceAmt: Amount): BigDecimal {
+    return getBalanceInFiat(
+        balanceAmt.toBigDecimal(), balanceAmt.currency.code, BRSharedPrefs.getPreferredFiatIso()
+    )
+}
+
+private fun getBalanceInFiat(
+    balance: BigDecimal,
+    currencyCode: String,
+    fiatCode: String
+): BigDecimal {
     val context = BreadApp.getBreadContext()
     return RatesRepository.getInstance(context).getFiatForCrypto(
-        balanceAmt.toBigDecimal(),
-        balanceAmt.currency.code,
-        BRSharedPrefs.getPreferredFiatIso()
+        balance, currencyCode, fiatCode
     ) ?: BigDecimal.ZERO
 }
 
@@ -324,12 +365,38 @@ fun Transfer.asWalletTransaction(currencyId: String): WalletTransaction {
     )
 }
 
+private fun SwapTransactionData.withdrawalAsWalletTransaction(): WalletTransaction {
+    return WalletTransaction(
+        txHash = destination.transactionId ?: "",
+        timeStamp = timestamp,
+        amount = destination.currencyAmount,
+        amountInFiat = getBalanceInFiat(
+            balance = destination.currencyAmount,
+            currencyCode = destination.currency,
+            fiatCode = "USD"
+        ),
+        currencyCode = destination.currency,
+        isReceived = true,
+        isPending = exchangeStatus == ExchangeOrderStatus.PENDING,
+        isErrored = exchangeStatus == ExchangeOrderStatus.FAILED,
+        isComplete = exchangeStatus == ExchangeOrderStatus.COMPLETE,
+        exchangeData = ExchangeData.Withdrawal(this),
+        fromAddress = "",
+        toAddress = "",
+        fee = BigDecimal.ZERO,
+        feeToken = "",
+        confirmationsUntilFinal = 1,
+        confirmations = 1,
+        progress = 1,
+    )
+}
+
 public inline fun <T, R : Any> Iterable<T>.mapNotNullOrExceptional(
     crossinline transform: (T) -> R?
 ): List<R> = mapNotNull { elem: T ->
     try {
         transform(elem)
-    } catch (e : Exception) {
+    } catch (e: Exception) {
         logError("Exception caught, transform skipped", e)
         BRReportsManager.reportBug(e)
         null
