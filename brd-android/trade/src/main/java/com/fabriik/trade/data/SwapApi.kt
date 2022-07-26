@@ -5,11 +5,14 @@ import com.fabriik.common.data.FabriikApiConstants
 import com.fabriik.common.data.Resource
 import com.fabriik.common.utils.FabriikApiResponseMapper
 import com.fabriik.trade.R
+import com.fabriik.trade.data.model.SwapTransactionData
 import com.fabriik.trade.data.model.TradingPair
 import com.fabriik.trade.data.request.CreateOrderRequest
 import com.fabriik.trade.data.response.CreateOrderResponse
 import com.fabriik.trade.data.response.ExchangeOrder
+import com.fabriik.trade.data.response.ExchangeOrderStatus
 import com.fabriik.trade.data.response.QuoteResponse
+import kotlinx.coroutines.delay
 import okhttp3.*
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -86,6 +89,18 @@ class SwapApi(
         return try {
             val response = service.getExchange(exchangeId)
             Resource.success(data = response)
+        } catch (ex: Exception) {
+            responseMapper.mapError(
+                context = context,
+                exception = ex
+            )
+        }
+    }
+
+    suspend fun getSwapTransactions(): Resource<List<SwapTransactionData>?> {
+        return try {
+            val response = service.getExchanges()
+            Resource.success(data = response.exchanges)
         } catch (ex: Exception) {
             responseMapper.mapError(
                 context = context,

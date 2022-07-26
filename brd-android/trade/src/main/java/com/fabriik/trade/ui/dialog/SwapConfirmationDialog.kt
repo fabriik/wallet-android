@@ -61,7 +61,7 @@ class SwapConfirmationDialog : DialogFragment() {
                 )
             }
 
-            tvTotalValue.text = args.fromAmount.cryptoAmount.formatCryptoForUi( // todo: sum fees ??
+            tvTotalValue.text = args.fromAmount.cryptoAmount.formatCryptoForUi(
                 args.fromAmount.cryptoCurrency
             )
 

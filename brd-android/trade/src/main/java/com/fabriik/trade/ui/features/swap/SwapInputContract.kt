@@ -7,6 +7,7 @@ import com.fabriik.common.ui.base.FabriikContract
 import com.fabriik.common.ui.dialog.FabriikGenericDialogArgs
 import com.fabriik.trade.R
 import com.fabriik.trade.data.model.AmountData
+import com.fabriik.trade.data.model.FeeAmountData
 import com.fabriik.trade.data.model.TradingPair
 import com.fabriik.trade.data.response.QuoteResponse
 import java.math.BigDecimal
@@ -44,8 +45,8 @@ interface SwapInputContract {
             val to: AmountData,
             val from: AmountData,
             val rate: BigDecimal,
-            val sendingFee: AmountData,
-            val receivingFee: AmountData,
+            val sendingFee: FeeAmountData,
+            val receivingFee: FeeAmountData,
         ) : Effect()
 
         data class CurrenciesReplaceAnimation(val stateChange: State.Loaded) : Effect()
@@ -88,8 +89,8 @@ interface SwapInputContract {
             val sourceCryptoAmount: BigDecimal = BigDecimal.ZERO,
             val destinationFiatAmount: BigDecimal = BigDecimal.ZERO,
             val destinationCryptoAmount: BigDecimal = BigDecimal.ZERO,
-            val sendingNetworkFee: AmountData? = null,
-            val receivingNetworkFee: AmountData? = null,
+            val sendingNetworkFee: FeeAmountData? = null,
+            val receivingNetworkFee: FeeAmountData? = null,
             val confirmButtonEnabled: Boolean = false,
             val swapErrorMessage: ErrorMessage? = null,
             val fullScreenLoadingVisible: Boolean = false

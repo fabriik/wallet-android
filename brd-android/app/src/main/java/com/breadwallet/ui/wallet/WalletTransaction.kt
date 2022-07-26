@@ -24,10 +24,14 @@
  */
 package com.breadwallet.ui.wallet
 
+import android.content.Context
+import com.breadwallet.R
 import com.breadwallet.platform.entities.GiftMetaData
+import com.fabriik.trade.data.model.SwapTransactionData
 import com.fabriik.trade.data.response.ExchangeOrderStatus
 import dev.zacsweers.redacted.annotations.Redacted
 import java.math.BigDecimal
+import java.util.*
 
 data class WalletTransaction(
     @Redacted val txHash: String,
@@ -54,7 +58,42 @@ data class WalletTransaction(
     val isFeeForToken: Boolean = feeToken.isNotBlank()
 }
 
-data class ExchangeData(
-    val exchangeId: String,
-    val status: ExchangeOrderStatus
-)
+sealed class ExchangeData(
+    val swapTransactionData: SwapTransactionData
+) {
+    abstract fun getTransactionTitle(context: Context): String?
+
+    class Deposit(swapTransactionData: SwapTransactionData) : ExchangeData(swapTransactionData) {
+        override fun getTransactionTitle(context: Context): String? {
+            return when (swapTransactionData.exchangeStatus) {
+                ExchangeOrderStatus.PENDING -> context.getString(
+                    R.string.Swap_TransactionItem_PendingTo, swapTransactionData.getWithdrawalCurrencyUpperCase()
+                )
+                ExchangeOrderStatus.COMPLETE -> context.getString(
+                    R.string.Swap_TransactionItem_SwappedTo, swapTransactionData.getWithdrawalCurrencyUpperCase()
+                )
+                ExchangeOrderStatus.FAILED -> context.getString(
+                    R.string.Swap_TransactionItem_SwapToFailed, swapTransactionData.getWithdrawalCurrencyUpperCase()
+                )
+                else -> null
+            }
+        }
+    }
+
+    class Withdrawal(swapTransactionData: SwapTransactionData) : ExchangeData(swapTransactionData) {
+        override fun getTransactionTitle(context: Context): String? {
+            return when (swapTransactionData.exchangeStatus) {
+                ExchangeOrderStatus.PENDING -> context.getString(
+                    R.string.Swap_TransactionItem_PendingFrom, swapTransactionData.getDepositCurrencyUpperCase()
+                )
+                ExchangeOrderStatus.COMPLETE -> context.getString(
+                    R.string.Swap_TransactionItem_SwappedFrom, swapTransactionData.getDepositCurrencyUpperCase()
+                )
+                ExchangeOrderStatus.FAILED -> context.getString(
+                    R.string.Swap_TransactionItem_SwapFromFailed, swapTransactionData.getDepositCurrencyUpperCase()
+                )
+                else -> null
+            }
+        }
+    }
+}
