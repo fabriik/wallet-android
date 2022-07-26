@@ -125,6 +125,7 @@ val HomeScreenUpdate = Update<M, E, F> { model, event ->
                     model.profile.isEmailVerificationNeeded() || !SessionHolder.isUserSessionVerified() ->
                         F.RequestSessionVerification
                     !model.profile.canUseBuyTrade() -> F.GoToVerifyProfile
+                    !model.hasInternet -> F.GoToNoInternetScreen
                     else -> F.GoToTrade
                 }
             )
