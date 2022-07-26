@@ -209,8 +209,11 @@ class SwapInputFragment : Fragment(),
             is SwapInputContract.Effect.CurrenciesReplaceAnimation ->
                 startCurrenciesReplaceAnimation(effect.stateChange)
 
-            is SwapInputContract.Effect.ShowToast ->
+            is SwapInputContract.Effect.ShowToast -> if (effect.redInfo) {
+                FabriikToastUtil.showRedInfo(binding.root, effect.message)
+            } else {
                 FabriikToastUtil.showInfo(binding.root, effect.message)
+            }
 
             is SwapInputContract.Effect.ShowDialog ->
                 FabriikGenericDialog.newInstance(effect.args)
