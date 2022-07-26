@@ -11,6 +11,13 @@
     <string name="Swap.Input.SendingFeeTitle">Sending network fee\n(included)</string>
     <string name="Swap.Input.ReceivingFeeTitle">Receiving network fee\n(included)</string>
 
+    <!-- Swap input screen dialogs -->
+    <string name="Swap.Input.Dialog.CheckAssets.Title">Check your assets!</string>
+    <string name="Swap.Input.Dialog.CheckAssets.Message">In order to successfully perform a swap, make sure you have two or more of our supported swap assets activated and funded within your wallet.</string>
+    <string name="Swap.Input.Dialog.TemporarlyUnavailable.Title">Swap is temporarily unavailable</string>
+    <string name="Swap.Input.Dialog.TemporarlyUnavailable.Message">We are having temporary issues connecting to our network. Please try again later.</string>
+    <string name="Swap.Input.Dialog.Button.GotIt">Got it!</string>
+
     <!-- Swap input screen errors -->
     <string name="Swap.Input.Error.InsuficientFunds">You don\'t have enough %s to complete this swap. Your current %s balance is %s</string>
     <string name="Swap.Input.Error.MinAmount">The amount is lower than the swap minimum of %s</string>

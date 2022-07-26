@@ -24,6 +24,7 @@ import com.fabriik.common.data.model.availableDailyLimit
 import com.fabriik.common.data.model.availableLifetimeLimit
 import com.fabriik.common.data.model.nextExchangeLimit
 import com.fabriik.common.ui.base.FabriikViewModel
+import com.fabriik.common.ui.dialog.FabriikGenericDialogArgs
 import com.fabriik.common.utils.getString
 import com.fabriik.common.utils.min
 import com.fabriik.trade.R
@@ -97,6 +98,10 @@ class SwapInputViewModel(
 
             SwapInputContract.Event.ReplaceCurrenciesClicked ->
                 onReplaceCurrenciesClicked()
+
+            is SwapInputContract.Event.OnCheckAssetsDialogResult,
+            is SwapInputContract.Event.OnTempUnavailableDialogResult ->
+                setEffect { SwapInputContract.Effect.Dismiss }
 
             is SwapInputContract.Event.OnCurrenciesReplaceAnimationCompleted ->
                 onReplaceCurrenciesAnimationCompleted(event.stateChange)
@@ -338,7 +343,7 @@ class SwapInputViewModel(
             val tradingPairs = pairsResponse.data ?: emptyList()
 
             if (pairsResponse.status == Status.ERROR || tradingPairs.isEmpty()) {
-                showErrorState()
+                setEffect { SwapInputContract.Effect.ShowDialog(DIALOG_TEMP_UNAVAILABLE_ARGS) }
                 return@launch
             }
 
@@ -347,7 +352,7 @@ class SwapInputViewModel(
             }
 
             if (selectedPair == null) {
-                showErrorState()
+                setEffect { SwapInputContract.Effect.ShowDialog(DIALOG_CHECK_ASSETS_ARGS) }
                 return@launch
             }
 
@@ -923,5 +928,30 @@ class SwapInputViewModel(
 
     companion object {
         const val QUOTE_TIMER = 15
+        const val DIALOG_RESULT_GOT_IT = "result_got_it"
+        const val DIALOG_REQUEST_CHECK_ASSETS = "request_check_assets"
+        const val DIALOG_REQUEST_TEMP_UNAVAILABLE = "request_temp_unvailable"
+
+        val DIALOG_CHECK_ASSETS_ARGS = FabriikGenericDialogArgs(
+            titleRes = R.string.Swap_Input_Dialog_CheckAssets_Title,
+            descriptionRes = R.string.Swap_Input_Dialog_CheckAssets_Message,
+            showDismissButton = true,
+            positive = FabriikGenericDialogArgs.ButtonData(
+                titleRes = R.string.Swap_Input_Dialog_Button_GotIt,
+                resultKey = DIALOG_RESULT_GOT_IT
+            ),
+            requestKey = DIALOG_REQUEST_CHECK_ASSETS
+        )
+
+        val DIALOG_TEMP_UNAVAILABLE_ARGS = FabriikGenericDialogArgs(
+            titleRes = R.string.Swap_Input_Dialog_TemporarlyUnavailable_Title,
+            descriptionRes = R.string.Swap_Input_Dialog_TemporarlyUnavailable_Message,
+            showDismissButton = true,
+            positive = FabriikGenericDialogArgs.ButtonData(
+                titleRes = R.string.Swap_Input_Dialog_Button_GotIt,
+                resultKey = DIALOG_RESULT_GOT_IT
+            ),
+            requestKey = DIALOG_REQUEST_TEMP_UNAVAILABLE
+        )
     }
 }
