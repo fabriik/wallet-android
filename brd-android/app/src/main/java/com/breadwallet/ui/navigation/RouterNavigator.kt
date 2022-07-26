@@ -89,6 +89,7 @@ import com.breadwallet.util.showFabriikGenericDialog
 import com.fabriik.buy.ui.BuyActivity
 import com.fabriik.buy.ui.BuyWebViewActivity
 import com.fabriik.common.ui.dialog.FabriikGenericDialog
+import com.fabriik.common.ui.features.nointernet.NoInternetActivity
 import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.kyc.ui.KycActivity
 import com.fabriik.kyc.ui.dialogs.InfoDialog
@@ -733,6 +734,14 @@ class RouterNavigator(
 
     override fun selectBaker(effect: NavigationTarget.SelectBakerScreen) {
         router.pushController(RouterTransaction.with(SelectBakersController(effect.bakers)))
+    }
+
+    override fun noInternetScreen() {
+        router.activity?.let {
+            it.startActivity(
+                NoInternetActivity.getStartIntent(it)
+            )
+        }
     }
 
     override fun fabriikToast(effect: NavigationTarget.FabriikToast) {

@@ -4,6 +4,7 @@ import android.content.Context
 import com.breadwallet.breadbox.formatCryptoForUi
 import com.breadwallet.util.formatFiatForUi
 import com.fabriik.common.ui.base.FabriikContract
+import com.fabriik.common.ui.dialog.FabriikGenericDialogArgs
 import com.fabriik.trade.R
 import com.fabriik.trade.data.model.AmountData
 import com.fabriik.trade.data.model.FeeAmountData
@@ -24,6 +25,8 @@ interface SwapInputContract {
         object DestinationCurrencyClicked : Event()
         object OnUserAuthenticationSucceed : Event()
         object OnConfirmationDialogConfirmed : Event()
+        data class OnCheckAssetsDialogResult(val result: String?) : Event()
+        data class OnTempUnavailableDialogResult(val result: String?) : Event()
 
         data class SourceCurrencyChanged(val currencyCode: String) : Event()
         data class DestinationCurrencyChanged(val currencyCode: String) : Event()
@@ -47,7 +50,8 @@ interface SwapInputContract {
         ) : Effect()
 
         data class CurrenciesReplaceAnimation(val stateChange: State.Loaded) : Effect()
-        data class ShowToast(val message: String) : Effect()
+        data class ShowToast(val message: String, val redInfo: Boolean = false) : Effect()
+        data class ShowDialog(val args: FabriikGenericDialogArgs) : Effect()
         data class ContinueToSwapProcessing(
             val exchangeId: String,
             val sourceCurrency: String,

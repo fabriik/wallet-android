@@ -2,4 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.fabriik.common">
 
+    <application
+        android:allowBackup="false"
+        android:usesCleartextTraffic="false">
+
+        <activity
+            android:name=".ui.features.nointernet.NoInternetActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Fabriik"/>
+
+    </application>
 </manifest>
