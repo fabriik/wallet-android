@@ -9,4 +9,11 @@
     <string name="Buy.BillingAddress.PostalCode">ZIP/Postal Code</string>
     <string name="Buy.BillingAddress.Address">Address</string>
     <string name="Buy.BillingAddress.City">City</string>
+
+    <!-- Add card screen -->
+    <string name="Buy.AddCard.Title">Add card</string>
+    <string name="Buy.AddCard.Subtitle1">Card number</string>
+    <string name="Buy.AddCard.Subtitle2">Expiration date</string>
+    <string name="Buy.AddCard.Subtitle3">Security code (CVV)</string>
+    <string name="Buy.AddCard.Hint2">MM/YY</string>
 </resources>

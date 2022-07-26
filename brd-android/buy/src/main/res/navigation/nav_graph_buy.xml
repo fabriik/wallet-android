@@ -3,11 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph_buy"
-    app:startDestination="@id/fragmentBillingAddress">
+    app:startDestination="@id/fragmentAddCard">
 
     <fragment
         android:id="@+id/fragmentBillingAddress"
         android:name="com.fabriik.buy.ui.billingaddress.BillingAddressFragment"
         tools:layout="@layout/fragment_billing_address" />
+
+    <fragment
+        android:id="@+id/fragmentAddCard"
+        android:name="com.fabriik.buy.ui.addcard.AddCardFragment"
+        tools:layout="@layout/fragment_add_card" />
 
 </navigation>
