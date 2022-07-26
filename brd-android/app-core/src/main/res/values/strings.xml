@@ -1490,7 +1490,7 @@
 
     <!-- Profile info dialog -->
     <string name="Profile.InfoDialog.title">Why should I verify my account?</string>
-    <string name="Profile.InfoDialog.description">If you verify your account, you are given acces to:\n\t\u2022 Unlimited deposits/withdraws\n\t\u2022 Enhanced security\n\t\u2022 Full asset support\n\t\u2022 Buy crypto with card\n\t\u2022 24/7/365 live customer support</string>
+    <string name="Profile.InfoDialog.description">If you verify your account, you are given access to:\n\t\u2022 Unlimited deposits/withdrawals\n\t\u2022 Enhanced security\n\t\u2022 Full asset support\n\t\u2022 Buy assets with credit card\n\t\u2022 24/7/365 live customer support</string>
 
     <!-- Verify account screen -->
     <string name="VerifyAccount.Title">Verify your account to get full access to your Fabriik wallet!</string>
