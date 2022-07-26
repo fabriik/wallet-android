@@ -384,7 +384,7 @@ class SwapInputViewModel(
             if (selectedPairQuote == null) {
                 setEffect {
                     SwapInputContract.Effect.ShowToast(
-                        getString(R.string.Swap_Input_Error_NoSelectedPairData)
+                        getString(R.string.Swap_Input_Error_NoSelectedPairData), true
                     )
                 }
             } else {
