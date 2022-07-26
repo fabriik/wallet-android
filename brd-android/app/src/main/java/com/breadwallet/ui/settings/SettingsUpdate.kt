@@ -130,6 +130,7 @@ object SettingsUpdate : Update<M, E, F>, SettingsScreenUpdateSpec {
                     SettingsOption.SUPPORT -> F.GoToSupport
                     SettingsOption.SUBMIT_REVIEW -> F.GoToGooglePlay
                     SettingsOption.ABOUT -> F.GoToAbout
+                    SettingsOption.CHECKOUT_DEMO -> F.GoToCheckout
                     SettingsOption.ATM_FINDER -> F.SendAtmFinderRequest
                     SettingsOption.DEVELOPER_OPTIONS -> F.GoToSection(SettingsSection.DEVELOPER_OPTION)
                     SettingsOption.CURRENCY -> F.GoToDisplayCurrency

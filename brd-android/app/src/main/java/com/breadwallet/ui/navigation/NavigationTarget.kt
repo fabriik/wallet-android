@@ -146,6 +146,7 @@ sealed class NavigationTarget : INavigationTarget {
 
     object TransactionComplete : NavigationTarget()
     object About : NavigationTarget()
+    object Checkout : NavigationTarget()
     object DisplayCurrency : NavigationTarget()
     object NotificationsSettings : NavigationTarget()
     object ShareDataSettings : NavigationTarget()

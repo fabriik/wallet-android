@@ -136,6 +136,10 @@ object SettingsScreen {
             override val navigationTarget = NavigationTarget.About
         }
 
+        object GoToCheckout : F(), NavigationEffect {
+            override val navigationTarget = NavigationTarget.Checkout
+        }
+
         object GoToDisplayCurrency : F(), NavigationEffect {
             override val navigationTarget = NavigationTarget.DisplayCurrency
         }

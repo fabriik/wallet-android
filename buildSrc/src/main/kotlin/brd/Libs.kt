@@ -24,7 +24,7 @@
  */
 package brd
 
-const val KOTLIN_VERSION = "1.4.31"
+const val KOTLIN_VERSION = "1.5.0"
 private const val KTOR_VERSION = "1.5.2"
 private const val KOTLINX_ATOMICFU_VERSION = "0.15.0"
 private const val KOTLINX_DATETIME_VERSION = "0.2.0"
@@ -311,6 +311,10 @@ object Libs {
 
     object Atmcoin {
         const val CashUi = "com.github.atmcoin.cash-ui-android:cashUI:$CASH_UI_VERSION"
+    }
+
+    object Checkout {
+        const val Frames = "com.github.checkout:frames-android:3.1.2"
     }
 
     object Compose {

@@ -287,6 +287,11 @@ class SettingsScreenHandler(
                 R.drawable.ic_about
             ),
             SettingsItem(
+                "Checkout demo",
+                SettingsOption.CHECKOUT_DEMO,
+                R.drawable.ic_menu_trade
+            ),
+            SettingsItem(
                 context.getString(R.string.Settings_preferences),
                 SettingsOption.PREFERENCES,
                 R.drawable.ic_preferences

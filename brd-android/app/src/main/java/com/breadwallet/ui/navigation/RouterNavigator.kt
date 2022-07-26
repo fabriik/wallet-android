@@ -88,7 +88,7 @@ import com.breadwallet.util.isBrd
 import com.breadwallet.util.showFabriikGenericDialog
 import com.fabriik.buy.ui.BuyActivity
 import com.fabriik.buy.ui.BuyWebViewActivity
-import com.fabriik.common.ui.dialog.FabriikGenericDialog
+import com.fabriik.checkout.CheckoutActivity
 import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.kyc.ui.KycActivity
 import com.fabriik.kyc.ui.dialogs.InfoDialog
@@ -443,6 +443,14 @@ class RouterNavigator(
             HorizontalChangeHandler(),
             HorizontalChangeHandler()
         )
+    }
+
+    override fun checkout() {
+        router.activity?.let {
+            it.startActivity(
+                CheckoutActivity.getStartIntent(it)
+            )
+        }
     }
 
     override fun displayCurrency() {
