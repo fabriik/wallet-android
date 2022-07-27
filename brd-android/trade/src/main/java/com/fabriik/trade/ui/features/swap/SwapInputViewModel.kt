@@ -491,6 +491,11 @@ class SwapInputViewModel(
                 destinationFiatAmountChangedByUser = false,
                 destinationCryptoAmountChangedByUser = false,
             )
+
+            checkEthFeeBalance(
+                sourceFeeData = destCryptoAmountData.first,
+                destinationFeeData = destCryptoAmountData.second,
+            )
         }
     }
 
@@ -532,6 +537,11 @@ class SwapInputViewModel(
                 sourceCryptoAmountChangedByUser = changeByUser,
                 destinationFiatAmountChangedByUser = false,
                 destinationCryptoAmountChangedByUser = false,
+            )
+
+            checkEthFeeBalance(
+                sourceFeeData = destCryptoAmountData.first,
+                destinationFeeData = destCryptoAmountData.second,
             )
         }
     }
@@ -575,6 +585,11 @@ class SwapInputViewModel(
                 destinationFiatAmountChangedByUser = changeByUser,
                 destinationCryptoAmountChangedByUser = false,
             )
+
+            checkEthFeeBalance(
+                sourceFeeData = sourceCryptoAmountData.first,
+                destinationFeeData = sourceCryptoAmountData.second,
+            )
         }
     }
 
@@ -617,6 +632,42 @@ class SwapInputViewModel(
                 destinationFiatAmountChangedByUser = false,
                 destinationCryptoAmountChangedByUser = changeByUser,
             )
+
+            checkEthFeeBalance(
+                sourceFeeData = sourceCryptoAmountData.first,
+                destinationFeeData = sourceCryptoAmountData.second,
+            )
+        }
+    }
+
+    private suspend fun checkEthFeeBalance(sourceFeeData: FeeAmountData?, destinationFeeData: FeeAmountData?) {
+        val sourceFeeEthAmount = when {
+            sourceFeeData != null && !sourceFeeData.included -> sourceFeeData.cryptoAmount
+            else -> BigDecimal.ZERO
+        }
+
+        val destinationFeeEthAmount = when {
+            destinationFeeData != null && !destinationFeeData.included -> destinationFeeData.cryptoAmount
+            else -> BigDecimal.ZERO
+        }
+
+        val ethSumFee = sourceFeeEthAmount + destinationFeeEthAmount
+        if (ethSumFee.isZero()) return
+
+        val ethBalance = loadCryptoBalance("ETH") ?: BigDecimal.ZERO
+        if (ethBalance < ethSumFee) {
+            setEffect {
+                SwapInputContract.Effect.ShowToast(
+                    message = getString(R.string.Swap_Input_Error_EthFeeBalance),
+                    redInfo = true
+                )
+            }
+        } else if (ethBalance > BigDecimal.ZERO) {
+            setEffect {
+                SwapInputContract.Effect.ShowToast(
+                    message = getString(R.string.Swap_Input_Warning_EthFeeBalance)
+                )
+            }
         }
     }
 

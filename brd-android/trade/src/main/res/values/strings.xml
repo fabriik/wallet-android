@@ -32,6 +32,9 @@
     <string name="Swap.Input.Error.FeeFunds">This swap doesn\'t cover the included network fee. Please add more funds to your wallet or change the amount you\'re swapping</string>
     <string name="Swap.Input.Error.NoSelectedPairData">We are currently having issues making a swap between this pair of coins. Please try again later.</string>
 
+    <string name="Swap.Input.Error.EthFeeBalance">Please make sure you have enough ETH to cover for the network fees while swapping within Ethereum-based assets.</string>
+    <string name="Swap.Input.Warning.EthFeeBalance">It seems that your transaction takes place in the Ethereum network, please keep in mind that network fees will be charged in ETH</string>
+
     <!-- Asset selection screen -->
     <string name="Swap.AssetsSelection.Title">Select assets</string>
     <string name="Swap.AssetsSelection.SearchHint">Search</string>
