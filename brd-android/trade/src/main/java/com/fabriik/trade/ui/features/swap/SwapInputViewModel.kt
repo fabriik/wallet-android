@@ -48,6 +48,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import java.lang.Exception
 import java.math.RoundingMode
+import java.util.concurrent.atomic.AtomicBoolean
 
 class SwapInputViewModel(
     application: Application
@@ -70,6 +71,8 @@ class SwapInputViewModel(
     private val ratesRepository by kodein.instance<RatesRepository>()
 
     private var currentTimerJob: Job? = null
+    private var ethErrorSeen = false
+    private var ethWarningSeen = false
 
     init {
         loadInitialData()
@@ -171,6 +174,9 @@ class SwapInputViewModel(
                 destinationCryptoAmountChangedByUser = false
             )
 
+            ethErrorSeen = false
+            ethWarningSeen = false
+
             requestNewQuote()
         }
     }
@@ -205,6 +211,9 @@ class SwapInputViewModel(
             destinationFiatAmountChangedByUser = false,
             destinationCryptoAmountChangedByUser = false
         )
+
+        ethErrorSeen = false
+        ethWarningSeen = false
 
         requestNewQuote()
     }
@@ -652,17 +661,27 @@ class SwapInputViewModel(
         }
 
         val ethSumFee = sourceFeeEthAmount + destinationFeeEthAmount
-        if (ethSumFee.isZero()) return
+        if (ethSumFee.isZero()) {
+            ethErrorSeen = false
+            ethWarningSeen = false
+            return
+        }
 
         val ethBalance = loadCryptoBalance("ETH") ?: BigDecimal.ZERO
-        if (ethBalance < ethSumFee) {
+        if (ethBalance < ethSumFee && !ethErrorSeen) {
+            ethErrorSeen = true
+            ethWarningSeen = false
+
             setEffect {
                 SwapInputContract.Effect.ShowToast(
                     message = getString(R.string.Swap_Input_Error_EthFeeBalance),
                     redInfo = true
                 )
             }
-        } else if (ethBalance > BigDecimal.ZERO) {
+        } else if (ethBalance > BigDecimal.ZERO && !ethWarningSeen) {
+            ethErrorSeen = false
+            ethWarningSeen = true
+
             setEffect {
                 SwapInputContract.Effect.ShowToast(
                     message = getString(R.string.Swap_Input_Warning_EthFeeBalance)
