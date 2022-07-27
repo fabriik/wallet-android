@@ -17,6 +17,7 @@ import androidx.navigation.fragment.findNavController
 import com.breadwallet.breadbox.formatCryptoForUi
 import com.breadwallet.tools.util.Utils.hideKeyboard
 import com.fabriik.common.ui.customview.FabriikSwitch
+import com.fabriik.common.ui.dialog.FabriikGenericDialog
 import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.trade.ui.customview.SwapCardView
 import com.fabriik.trade.ui.dialog.SwapConfirmationDialog
@@ -150,6 +151,18 @@ class SwapInputFragment : Fragment(),
             }
         }
 
+        // listen for check assets dialog result
+        requireActivity().supportFragmentManager.setFragmentResultListener(SwapInputViewModel.DIALOG_CHECK_ASSETS_ARGS.requestKey, this) { _, bundle ->
+            val resultKey = bundle.getString(FabriikGenericDialog.EXTRA_RESULT)
+            binding.root.post { viewModel.setEvent(SwapInputContract.Event.OnCheckAssetsDialogResult(resultKey)) }
+        }
+
+        // listen for temp unavailable dialog result
+        requireActivity().supportFragmentManager.setFragmentResultListener(SwapInputViewModel.DIALOG_TEMP_UNAVAILABLE_ARGS.requestKey, this) { _, bundle ->
+            val resultKey = bundle.getString(FabriikGenericDialog.EXTRA_RESULT)
+            binding.root.post { viewModel.setEvent(SwapInputContract.Event.OnTempUnavailableDialogResult(resultKey)) }
+        }
+
         requireActivity().onBackPressedDispatcher.addCallback {
             //User shouldn't be allowed to go back
         }
@@ -196,8 +209,15 @@ class SwapInputFragment : Fragment(),
             is SwapInputContract.Effect.CurrenciesReplaceAnimation ->
                 startCurrenciesReplaceAnimation(effect.stateChange)
 
-            is SwapInputContract.Effect.ShowToast ->
+            is SwapInputContract.Effect.ShowToast -> if (effect.redInfo) {
+                FabriikToastUtil.showRedInfo(binding.root, effect.message)
+            } else {
                 FabriikToastUtil.showInfo(binding.root, effect.message)
+            }
+
+            is SwapInputContract.Effect.ShowDialog ->
+                FabriikGenericDialog.newInstance(effect.args)
+                    .show(parentFragmentManager)
 
             is SwapInputContract.Effect.ContinueToSwapProcessing ->
                 findNavController().navigate(

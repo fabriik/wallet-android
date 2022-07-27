@@ -61,6 +61,7 @@ sealed class NavigationTarget : INavigationTarget {
     object LogcatViewer : NavigationTarget()
     object MetadataViewer : NavigationTarget()
     object VerifyProfile : NavigationTarget()
+    object NoInternetScreen : NavigationTarget()
 
     data class DeepLink(
         val url: String? = null,

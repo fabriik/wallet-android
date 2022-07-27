@@ -34,6 +34,7 @@ interface NavigationTargetHandlerSpec {
         NavigationTarget.Buy -> buy()
         NavigationTarget.Profile -> profile()
         NavigationTarget.VerifyProfile -> verifyProfile()
+        NavigationTarget.NoInternetScreen -> noInternetScreen()
         NavigationTarget.Trade -> trade()
         NavigationTarget.AddWallet -> addWallet()
         NavigationTarget.DisabledScreen -> disabledScreen()
@@ -191,6 +192,8 @@ interface NavigationTargetHandlerSpec {
     fun showSupportPage(effect: NavigationTarget.SupportDialog): Unit
 
     fun showInfoDialog(effect: NavigationTarget.ShowInfoDialog): Unit
+
+    fun noInternetScreen() : Unit
 
     fun fabriikToast(effect: NavigationTarget.FabriikToast): Unit
 

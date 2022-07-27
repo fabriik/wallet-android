@@ -4,8 +4,10 @@ import android.content.Context
 import com.breadwallet.breadbox.formatCryptoForUi
 import com.breadwallet.util.formatFiatForUi
 import com.fabriik.common.ui.base.FabriikContract
+import com.fabriik.common.ui.dialog.FabriikGenericDialogArgs
 import com.fabriik.trade.R
 import com.fabriik.trade.data.model.AmountData
+import com.fabriik.trade.data.model.FeeAmountData
 import com.fabriik.trade.data.model.TradingPair
 import com.fabriik.trade.data.response.QuoteResponse
 import java.math.BigDecimal
@@ -23,6 +25,8 @@ interface SwapInputContract {
         object DestinationCurrencyClicked : Event()
         object OnUserAuthenticationSucceed : Event()
         object OnConfirmationDialogConfirmed : Event()
+        data class OnCheckAssetsDialogResult(val result: String?) : Event()
+        data class OnTempUnavailableDialogResult(val result: String?) : Event()
 
         data class SourceCurrencyChanged(val currencyCode: String) : Event()
         data class DestinationCurrencyChanged(val currencyCode: String) : Event()
@@ -41,12 +45,13 @@ interface SwapInputContract {
             val to: AmountData,
             val from: AmountData,
             val rate: BigDecimal,
-            val sendingFee: AmountData,
-            val receivingFee: AmountData,
+            val sendingFee: FeeAmountData,
+            val receivingFee: FeeAmountData,
         ) : Effect()
 
         data class CurrenciesReplaceAnimation(val stateChange: State.Loaded) : Effect()
-        data class ShowToast(val message: String) : Effect()
+        data class ShowToast(val message: String, val redInfo: Boolean = false) : Effect()
+        data class ShowDialog(val args: FabriikGenericDialogArgs) : Effect()
         data class ContinueToSwapProcessing(
             val exchangeId: String,
             val sourceCurrency: String,
@@ -72,6 +77,7 @@ interface SwapInputContract {
             val maxFiatAmount: BigDecimal,
             val dailyFiatLimit: BigDecimal,
             val lifetimeFiatLimit: BigDecimal,
+            val kyc2ExchangeFiatLimit: BigDecimal? = null,
             val tradingPairs: List<TradingPair>,
             val selectedPair: TradingPair,
             val quoteResponse: QuoteResponse?,
@@ -84,8 +90,8 @@ interface SwapInputContract {
             val sourceCryptoAmount: BigDecimal = BigDecimal.ZERO,
             val destinationFiatAmount: BigDecimal = BigDecimal.ZERO,
             val destinationCryptoAmount: BigDecimal = BigDecimal.ZERO,
-            val sendingNetworkFee: AmountData? = null,
-            val receivingNetworkFee: AmountData? = null,
+            val sendingNetworkFee: FeeAmountData? = null,
+            val receivingNetworkFee: FeeAmountData? = null,
             val confirmButtonEnabled: Boolean = false,
             val swapErrorMessage: ErrorMessage? = null,
             val fullScreenLoadingVisible: Boolean = false
@@ -136,15 +142,21 @@ interface SwapInputContract {
             )
         }
 
-        object DailyLimitReached : ErrorMessage() {
+        object Kyc1DailyLimitReached : ErrorMessage() {
             override fun toString(context: Context) = context.getString(
                 R.string.Swap_Input_Error_Kyc1DailyLimit
             )
         }
 
-        object LifetimeLimitReached : ErrorMessage() {
+        object Kyc1LifetimeLimitReached : ErrorMessage() {
             override fun toString(context: Context) = context.getString(
                 R.string.Swap_Input_Error_Kyc1LifetimeLimit
+            )
+        }
+
+        object Kyc2ExchangeLimitReached : ErrorMessage() {
+            override fun toString(context: Context) = context.getString(
+                R.string.Swap_Input_Error_Kyc2ExchangeLimit
             )
         }
     }

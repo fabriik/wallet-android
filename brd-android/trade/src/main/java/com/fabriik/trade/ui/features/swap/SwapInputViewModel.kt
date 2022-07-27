@@ -11,7 +11,6 @@ import com.breadwallet.crypto.Amount
 import com.breadwallet.crypto.TransferFeeBasis
 import com.breadwallet.crypto.errors.FeeEstimationError
 import com.breadwallet.ext.isZero
-import com.breadwallet.logger.logError
 import com.breadwallet.platform.interfaces.AccountMetaDataProvider
 import com.breadwallet.repository.RatesRepository
 import com.breadwallet.tools.manager.BRSharedPrefs
@@ -23,12 +22,15 @@ import com.fabriik.common.data.Status
 import com.fabriik.common.data.model.availableDailyLimit
 import com.fabriik.common.data.model.availableLifetimeLimit
 import com.fabriik.common.data.model.nextExchangeLimit
+import com.fabriik.common.data.model.kyc2ExchangeLimit
 import com.fabriik.common.ui.base.FabriikViewModel
+import com.fabriik.common.ui.dialog.FabriikGenericDialogArgs
 import com.fabriik.common.utils.getString
 import com.fabriik.common.utils.min
 import com.fabriik.trade.R
 import com.fabriik.trade.data.SwapApi
 import com.fabriik.trade.data.model.AmountData
+import com.fabriik.trade.data.model.FeeAmountData
 import com.fabriik.trade.data.request.CreateOrderRequest
 import com.fabriik.trade.data.response.CreateOrderResponse
 import kotlinx.coroutines.Dispatchers
@@ -46,6 +48,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import java.lang.Exception
 import java.math.RoundingMode
+import java.util.concurrent.atomic.AtomicBoolean
 
 class SwapInputViewModel(
     application: Application
@@ -68,6 +71,8 @@ class SwapInputViewModel(
     private val ratesRepository by kodein.instance<RatesRepository>()
 
     private var currentTimerJob: Job? = null
+    private var ethErrorSeen = false
+    private var ethWarningSeen = false
 
     init {
         loadInitialData()
@@ -97,6 +102,10 @@ class SwapInputViewModel(
 
             SwapInputContract.Event.ReplaceCurrenciesClicked ->
                 onReplaceCurrenciesClicked()
+
+            is SwapInputContract.Event.OnCheckAssetsDialogResult,
+            is SwapInputContract.Event.OnTempUnavailableDialogResult ->
+                setEffect { SwapInputContract.Effect.Dismiss }
 
             is SwapInputContract.Event.OnCurrenciesReplaceAnimationCompleted ->
                 onReplaceCurrenciesAnimationCompleted(event.stateChange)
@@ -165,6 +174,9 @@ class SwapInputViewModel(
                 destinationCryptoAmountChangedByUser = false
             )
 
+            ethErrorSeen = false
+            ethWarningSeen = false
+
             requestNewQuote()
         }
     }
@@ -199,6 +211,9 @@ class SwapInputViewModel(
             destinationFiatAmountChangedByUser = false,
             destinationCryptoAmountChangedByUser = false
         )
+
+        ethErrorSeen = false
+        ethWarningSeen = false
 
         requestNewQuote()
     }
@@ -315,7 +330,7 @@ class SwapInputViewModel(
 
                     setEffect {
                         SwapInputContract.Effect.ShowToast(
-                            getString(R.string.Swap_Input_Error_NoSelectedPairData)
+                            getString(R.string.Swap_Input_Error_NoSelectedPairData), true
                         )
                     }
                 }
@@ -338,7 +353,7 @@ class SwapInputViewModel(
             val tradingPairs = pairsResponse.data ?: emptyList()
 
             if (pairsResponse.status == Status.ERROR || tradingPairs.isEmpty()) {
-                showErrorState()
+                setEffect { SwapInputContract.Effect.ShowDialog(DIALOG_TEMP_UNAVAILABLE_ARGS) }
                 return@launch
             }
 
@@ -347,7 +362,7 @@ class SwapInputViewModel(
             }
 
             if (selectedPair == null) {
-                showErrorState()
+                setEffect { SwapInputContract.Effect.ShowDialog(DIALOG_CHECK_ASSETS_ARGS) }
                 return@launch
             }
 
@@ -372,14 +387,15 @@ class SwapInputViewModel(
                     minFiatAmount = quoteResponse.data?.minUsdValue ?: BigDecimal.ZERO,
                     maxFiatAmount = profile.nextExchangeLimit(),
                     dailyFiatLimit = profile.availableDailyLimit(),
-                    lifetimeFiatLimit = profile.availableLifetimeLimit()
+                    lifetimeFiatLimit = profile.availableLifetimeLimit(),
+                    kyc2ExchangeFiatLimit = profile.kyc2ExchangeLimit()
                 )
             }
 
             if (selectedPairQuote == null) {
                 setEffect {
                     SwapInputContract.Effect.ShowToast(
-                        getString(R.string.Swap_Input_Error_NoSelectedPairData)
+                        getString(R.string.Swap_Input_Error_NoSelectedPairData), true
                     )
                 }
             } else {
@@ -455,8 +471,8 @@ class SwapInputViewModel(
             )
 
             val destCryptoAmountData = sourceCryptoAmount.convertSource(
-                fromCryptoCurrency = state.sourceCryptoCurrency,
-                toCryptoCurrency = state.destinationCryptoCurrency,
+                sourceCurrency = state.sourceCryptoCurrency,
+                destinationCurrency = state.destinationCryptoCurrency,
                 rate = state.cryptoExchangeRate
             )
 
@@ -484,6 +500,11 @@ class SwapInputViewModel(
                 destinationFiatAmountChangedByUser = false,
                 destinationCryptoAmountChangedByUser = false,
             )
+
+            checkEthFeeBalance(
+                sourceFeeData = destCryptoAmountData.first,
+                destinationFeeData = destCryptoAmountData.second,
+            )
         }
     }
 
@@ -497,8 +518,8 @@ class SwapInputViewModel(
             )
 
             val destCryptoAmountData = sourceCryptoAmount.convertSource(
-                fromCryptoCurrency = state.sourceCryptoCurrency,
-                toCryptoCurrency = state.destinationCryptoCurrency,
+                sourceCurrency = state.sourceCryptoCurrency,
+                destinationCurrency = state.destinationCryptoCurrency,
                 rate = state.cryptoExchangeRate
             )
 
@@ -526,6 +547,11 @@ class SwapInputViewModel(
                 destinationFiatAmountChangedByUser = false,
                 destinationCryptoAmountChangedByUser = false,
             )
+
+            checkEthFeeBalance(
+                sourceFeeData = destCryptoAmountData.first,
+                destinationFeeData = destCryptoAmountData.second,
+            )
         }
     }
 
@@ -539,8 +565,8 @@ class SwapInputViewModel(
             )
 
             val sourceCryptoAmountData = destCryptoAmount.convertDestination(
-                fromCryptoCurrency = state.destinationCryptoCurrency,
-                toCryptoCurrency = state.sourceCryptoCurrency,
+                destinationCurrency = state.destinationCryptoCurrency,
+                sourceCurrency = state.sourceCryptoCurrency,
                 rate = state.cryptoExchangeRate
             )
 
@@ -568,6 +594,11 @@ class SwapInputViewModel(
                 destinationFiatAmountChangedByUser = changeByUser,
                 destinationCryptoAmountChangedByUser = false,
             )
+
+            checkEthFeeBalance(
+                sourceFeeData = sourceCryptoAmountData.first,
+                destinationFeeData = sourceCryptoAmountData.second,
+            )
         }
     }
 
@@ -581,8 +612,8 @@ class SwapInputViewModel(
             )
 
             val sourceCryptoAmountData = destCryptoAmount.convertDestination(
-                fromCryptoCurrency = state.destinationCryptoCurrency,
-                toCryptoCurrency = state.sourceCryptoCurrency,
+                destinationCurrency = state.destinationCryptoCurrency,
+                sourceCurrency = state.sourceCryptoCurrency,
                 rate = state.cryptoExchangeRate
             )
 
@@ -610,6 +641,52 @@ class SwapInputViewModel(
                 destinationFiatAmountChangedByUser = false,
                 destinationCryptoAmountChangedByUser = changeByUser,
             )
+
+            checkEthFeeBalance(
+                sourceFeeData = sourceCryptoAmountData.first,
+                destinationFeeData = sourceCryptoAmountData.second,
+            )
+        }
+    }
+
+    private suspend fun checkEthFeeBalance(sourceFeeData: FeeAmountData?, destinationFeeData: FeeAmountData?) {
+        val sourceFeeEthAmount = when {
+            sourceFeeData != null && !sourceFeeData.included -> sourceFeeData.cryptoAmount
+            else -> BigDecimal.ZERO
+        }
+
+        val destinationFeeEthAmount = when {
+            destinationFeeData != null && !destinationFeeData.included -> destinationFeeData.cryptoAmount
+            else -> BigDecimal.ZERO
+        }
+
+        val ethSumFee = sourceFeeEthAmount + destinationFeeEthAmount
+        if (ethSumFee.isZero()) {
+            ethErrorSeen = false
+            ethWarningSeen = false
+            return
+        }
+
+        val ethBalance = loadCryptoBalance("ETH") ?: BigDecimal.ZERO
+        if (ethBalance < ethSumFee && !ethErrorSeen) {
+            ethErrorSeen = true
+            ethWarningSeen = false
+
+            setEffect {
+                SwapInputContract.Effect.ShowToast(
+                    message = getString(R.string.Swap_Input_Error_EthFeeBalance),
+                    redInfo = true
+                )
+            }
+        } else if (ethBalance > BigDecimal.ZERO && !ethWarningSeen) {
+            ethErrorSeen = false
+            ethWarningSeen = true
+
+            setEffect {
+                SwapInputContract.Effect.ShowToast(
+                    message = getString(R.string.Swap_Input_Warning_EthFeeBalance)
+                )
+            }
         }
     }
 
@@ -719,7 +796,7 @@ class SwapInputViewModel(
                             SwapInputContract.Effect.ShowToast(
                                 it.message ?: getString(
                                     R.string.FabriikApi_DefaultError
-                                )
+                                ), true
                             )
                         }
                 }
@@ -755,19 +832,32 @@ class SwapInputViewModel(
                 return@launch
             }
 
-            val feeBasis = estimateFeeBasis(
+            val feeBasisResponse = estimateFeeBasis(
                 currency = order.currency,
                 orderAmount = order.amount,
                 orderAddress = order.address
             )
 
-            if (feeBasis == null) {
-                showGenericError()
+            if (feeBasisResponse is SwapInputContract.ErrorMessage) {
+                setEffect {
+                    SwapInputContract.Effect.ShowToast(
+                        feeBasisResponse.toString(getApplication()), true
+                    )
+                }
+                return@launch
+            }
+
+            if (feeBasisResponse !is TransferFeeBasis) {
+                setEffect {
+                    SwapInputContract.Effect.ShowToast(
+                        getString(R.string.FabriikApi_DefaultError)
+                    )
+                }
                 return@launch
             }
 
             val newTransfer =
-                wallet.createTransfer(address, amount, feeBasis, attributes, order.exchangeId).orNull()
+                wallet.createTransfer(address, amount, feeBasisResponse, attributes, order.exchangeId).orNull()
 
             if (newTransfer == null) {
                 showGenericError()
@@ -791,7 +881,7 @@ class SwapInputViewModel(
 
     private suspend fun estimateFee(
         cryptoAmount: BigDecimal, currencyCode: String, fiatCode: String
-    ): AmountData? {
+    ): FeeAmountData? {
         val wallet = breadBox.wallet(currencyCode).first()
         val amount = Amount.create(cryptoAmount.toDouble(), wallet.unit)
         val address = loadAddress(wallet.currency.code) ?: return null
@@ -806,11 +896,12 @@ class SwapInputViewModel(
                 fiatCode = fiatCode
             ) ?: return null
 
-            return AmountData(
+            return FeeAmountData(
                 fiatAmount = fiatFee,
                 fiatCurrency = fiatCode,
                 cryptoAmount = cryptoFee,
-                cryptoCurrency = cryptoCurrency
+                cryptoCurrency = cryptoCurrency,
+                included = currencyCode.equals(cryptoCurrency, true)
             )
         } catch (e: Exception) {
             Log.d("SwapInputViewModel", "Fee estimation failed: ${e.message}")
@@ -818,27 +909,27 @@ class SwapInputViewModel(
         }
     }
 
-    private suspend fun estimateFeeBasis(orderAddress: String, currency: String, orderAmount: BigDecimal) : TransferFeeBasis? {
+    private suspend fun estimateFeeBasis(orderAddress: String, currency: String, orderAmount: BigDecimal) : Any {
         val wallet = breadBox.wallet(currency).first()
 
         // Skip if address is not valid
-        val address = wallet.addressFor(orderAddress) ?: return null
-        if (wallet.containsAddress(address))
-            return null
+        val address = wallet.addressFor(orderAddress) ?: return SwapInputContract.ErrorMessage.NetworkIssues
+        if (wallet.containsAddress(address)) return SwapInputContract.ErrorMessage.NetworkIssues
+
         val amount = Amount.create(orderAmount.toDouble(), wallet.unit)
         val networkFee = wallet.feeForSpeed(TransferSpeed.Regular(currency))
 
         return try {
             val data = wallet.estimateFee(address, amount, networkFee)
             val fee = data.fee.toBigDecimal()
-            check(!fee.isZero()) { "Estimated fee was zero" }
+
+            if (fee.isZero()) return SwapInputContract.ErrorMessage.NetworkIssues
+
             data
         } catch (e: FeeEstimationError) {
-            logError("Failed get fee estimate", e)
-            null
+            SwapInputContract.ErrorMessage.InsufficientFundsForFee
         } catch (e: IllegalStateException) {
-            logError("Failed get fee estimate", e)
-            null
+            SwapInputContract.ErrorMessage.NetworkIssues
         }
     }
 
@@ -858,22 +949,30 @@ class SwapInputViewModel(
         ) ?: BigDecimal.ZERO
     }
 
-    private suspend fun BigDecimal.convertSource(fromCryptoCurrency: String, toCryptoCurrency: String, rate: BigDecimal): Triple<AmountData?, AmountData?, BigDecimal> {
+    private suspend fun BigDecimal.convertSource(sourceCurrency: String, destinationCurrency: String, rate: BigDecimal): Triple<FeeAmountData?, FeeAmountData?, BigDecimal> {
         val state = currentLoadedState ?: return Triple(null, null, BigDecimal.ZERO)
 
-        val destAmount = this.multiply(rate)
-        val destFee = estimateFee(destAmount, toCryptoCurrency, state.fiatCurrency)
-        val sourceFee = estimateFee(this, fromCryptoCurrency, state.fiatCurrency)
+        val sourceFee = estimateFee(this, sourceCurrency, state.fiatCurrency)
+        val sourceAmount = if (sourceFee?.included == true) this - sourceFee.cryptoAmount else this
+
+        val convertedAmount = sourceAmount.multiply(rate)
+
+        val destFee = estimateFee(convertedAmount, destinationCurrency, state.fiatCurrency)
+        val destAmount = if (destFee?.included == true) convertedAmount - destFee.cryptoAmount else convertedAmount
 
         return Triple(sourceFee, destFee, destAmount)
     }
 
-    private suspend fun BigDecimal.convertDestination(fromCryptoCurrency: String, toCryptoCurrency: String, rate: BigDecimal): Triple<AmountData?, AmountData?, BigDecimal> {
+    private suspend fun BigDecimal.convertDestination(sourceCurrency: String, destinationCurrency: String, rate: BigDecimal): Triple<FeeAmountData?, FeeAmountData?, BigDecimal> {
         val state = currentLoadedState ?: return Triple(null, null, BigDecimal.ZERO)
 
-        val sourceAmount = this.divide(rate, 5, RoundingMode.HALF_UP)
-        val sourceFee = estimateFee(sourceAmount, toCryptoCurrency, state.fiatCurrency)
-        val destFee = estimateFee(this, fromCryptoCurrency, state.fiatCurrency)
+        val destFee = estimateFee(this, destinationCurrency, state.fiatCurrency)
+        val destAmount = if (destFee?.included == true) this + destFee.cryptoAmount else this
+
+        val convertedAmount = destAmount.divide(rate, 5, RoundingMode.HALF_UP)
+
+        val sourceFee = estimateFee(convertedAmount, sourceCurrency, state.fiatCurrency)
+        val sourceAmount = if (sourceFee?.included == true) convertedAmount + sourceFee.cryptoAmount else convertedAmount
 
         return Triple(sourceFee, destFee, sourceAmount)
     }
@@ -888,9 +987,11 @@ class SwapInputViewModel(
         state.sourceFiatAmount < state.minFiatAmount ->
             SwapInputContract.ErrorMessage.MinSwapAmount(state.minFiatAmount, state.fiatCurrency)
         state.dailyFiatLimit < state.sourceFiatAmount ->
-            SwapInputContract.ErrorMessage.DailyLimitReached
+            SwapInputContract.ErrorMessage.Kyc1DailyLimitReached
         state.lifetimeFiatLimit < state.sourceFiatAmount ->
-            SwapInputContract.ErrorMessage.LifetimeLimitReached
+            SwapInputContract.ErrorMessage.Kyc1LifetimeLimitReached
+        state.kyc2ExchangeFiatLimit != null && state.kyc2ExchangeFiatLimit < state.sourceFiatAmount ->
+            SwapInputContract.ErrorMessage.Kyc2ExchangeLimitReached
         else -> null
     }
 
@@ -923,5 +1024,30 @@ class SwapInputViewModel(
 
     companion object {
         const val QUOTE_TIMER = 15
+        const val DIALOG_RESULT_GOT_IT = "result_got_it"
+        const val DIALOG_REQUEST_CHECK_ASSETS = "request_check_assets"
+        const val DIALOG_REQUEST_TEMP_UNAVAILABLE = "request_temp_unvailable"
+
+        val DIALOG_CHECK_ASSETS_ARGS = FabriikGenericDialogArgs(
+            titleRes = R.string.Swap_Input_Dialog_CheckAssets_Title,
+            descriptionRes = R.string.Swap_Input_Dialog_CheckAssets_Message,
+            showDismissButton = true,
+            positive = FabriikGenericDialogArgs.ButtonData(
+                titleRes = R.string.Swap_Input_Dialog_Button_GotIt,
+                resultKey = DIALOG_RESULT_GOT_IT
+            ),
+            requestKey = DIALOG_REQUEST_CHECK_ASSETS
+        )
+
+        val DIALOG_TEMP_UNAVAILABLE_ARGS = FabriikGenericDialogArgs(
+            titleRes = R.string.Swap_Input_Dialog_TemporarlyUnavailable_Title,
+            descriptionRes = R.string.Swap_Input_Dialog_TemporarlyUnavailable_Message,
+            showDismissButton = true,
+            positive = FabriikGenericDialogArgs.ButtonData(
+                titleRes = R.string.Swap_Input_Dialog_Button_GotIt,
+                resultKey = DIALOG_RESULT_GOT_IT
+            ),
+            requestKey = DIALOG_REQUEST_TEMP_UNAVAILABLE
+        )
     }
 }
