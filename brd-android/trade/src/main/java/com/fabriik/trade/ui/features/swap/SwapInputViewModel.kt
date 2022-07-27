@@ -233,9 +233,9 @@ class SwapInputViewModel(
     private fun onMaxAmountClicked() {
         val state = currentLoadedState ?: return
 
-        val maxAmountLimitCrypto = state.maxFiatAmount.toCrypto(
-            cryptoCurrency = state.sourceCryptoCurrency,
-            fiatCurrency = state.fiatCurrency
+        val maxAmountLimitCrypto = amountConverter.fiatToCrypto(
+            amount = state.maxFiatAmount,
+            cryptoCurrency = state.sourceCryptoCurrency
         )
 
         onSourceCurrencyCryptoAmountChanged(
@@ -383,7 +383,7 @@ class SwapInputViewModel(
                 SwapInputContract.State.Loaded(
                     tradingPairs = tradingPairs,
                     selectedPair = selectedPair,
-                    fiatCurrency = "USD",
+                    fiatCurrency = currentFiatCurrency,
                     quoteResponse = selectedPairQuote,
                     sourceCryptoCurrency = selectedPair.baseCurrency,
                     destinationCryptoCurrency = selectedPair.termCurrency,
@@ -469,9 +469,9 @@ class SwapInputViewModel(
         val state = currentLoadedState ?: return
 
         viewModelScope.launch(Dispatchers.IO) {
-            val sourceCryptoAmount = sourceFiatAmount.toCrypto(
-                cryptoCurrency = state.sourceCryptoCurrency,
-                fiatCurrency = state.fiatCurrency
+            val sourceCryptoAmount = amountConverter.fiatToCrypto(
+                amount = sourceFiatAmount,
+                cryptoCurrency = state.sourceCryptoCurrency
             )
 
             val destCryptoAmountData = sourceCryptoAmount.convertSource(
@@ -563,9 +563,9 @@ class SwapInputViewModel(
         val state = currentLoadedState ?: return
 
         viewModelScope.launch(Dispatchers.IO) {
-            val destCryptoAmount = destFiatAmount.toCrypto(
-                cryptoCurrency = state.destinationCryptoCurrency,
-                fiatCurrency = state.fiatCurrency
+            val destCryptoAmount = amountConverter.fiatToCrypto(
+                amount = destFiatAmount,
+                cryptoCurrency = state.destinationCryptoCurrency
             )
 
             val sourceCryptoAmountData = destCryptoAmount.convertDestination(
@@ -935,14 +935,6 @@ class SwapInputViewModel(
         } catch (e: IllegalStateException) {
             SwapInputContract.ErrorMessage.NetworkIssues
         }
-    }
-
-    private fun BigDecimal.toCrypto(cryptoCurrency: String, fiatCurrency: String): BigDecimal {
-        return ratesRepository.getCryptoForFiat(
-            fiatAmount = this,
-            cryptoCode = cryptoCurrency,
-            fiatCode = fiatCurrency
-        ) ?: BigDecimal.ZERO
     }
 
     private suspend fun BigDecimal.convertSource(sourceCurrency: String, destinationCurrency: String, rate: BigDecimal): Triple<FeeAmountData?, FeeAmountData?, BigDecimal> {
