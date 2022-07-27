@@ -77,6 +77,7 @@ interface SwapInputContract {
             val maxFiatAmount: BigDecimal,
             val dailyFiatLimit: BigDecimal,
             val lifetimeFiatLimit: BigDecimal,
+            val kyc2ExchangeFiatLimit: BigDecimal? = null,
             val tradingPairs: List<TradingPair>,
             val selectedPair: TradingPair,
             val quoteResponse: QuoteResponse?,
@@ -141,15 +142,21 @@ interface SwapInputContract {
             )
         }
 
-        object DailyLimitReached : ErrorMessage() {
+        object Kyc1DailyLimitReached : ErrorMessage() {
             override fun toString(context: Context) = context.getString(
                 R.string.Swap_Input_Error_Kyc1DailyLimit
             )
         }
 
-        object LifetimeLimitReached : ErrorMessage() {
+        object Kyc1LifetimeLimitReached : ErrorMessage() {
             override fun toString(context: Context) = context.getString(
                 R.string.Swap_Input_Error_Kyc1LifetimeLimit
+            )
+        }
+
+        object Kyc2ExchangeLimitReached : ErrorMessage() {
+            override fun toString(context: Context) = context.getString(
+                R.string.Swap_Input_Error_Kyc2ExchangeLimit
             )
         }
     }

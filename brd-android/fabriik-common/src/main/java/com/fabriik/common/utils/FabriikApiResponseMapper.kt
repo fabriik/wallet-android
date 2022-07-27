@@ -60,9 +60,8 @@ class FabriikApiResponseMapper {
             val responseAdapter = moshi.adapter<FabriikApiResponse<Any>>(responseType)
 
             try {
-                val response = responseAdapter.fromJson(
-                    it.source()
-                )
+                val errorJson = it.string()
+                val response = responseAdapter.fromJson(errorJson)
                 response?.error?.message
             } catch (ex: Exception) {
                 Log.d("FabriikApiResponseMapper", "Parsing exception ${ex.message ?: "unknown"}")
