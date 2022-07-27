@@ -9,4 +9,16 @@
     <string name="Buy.BillingAddress.PostalCode">ZIP/Postal Code</string>
     <string name="Buy.BillingAddress.Address">Address</string>
     <string name="Buy.BillingAddress.City">City</string>
+
+    <!-- Processing screen -->
+    <string name="Buy.Processing.ProcessingPayment">Processing payment</string>
+    <string name="Buy.Processing.BackToHome">Back to Home</string>
+    <string name="Buy.Processing.ContactSupport">Contact support</string>
+    <string name="Buy.Processing.PurchaseDetails">Purchase details</string>
+
+    <string name="Buy.ProcessingSucceed.Title">Your funds are on the way!</string>
+    <string name="Buy.ProcessingSucceed.Description">You can continue to use your wallet. We\'ll let you know when your funds have arrived.</string>
+
+    <string name="Buy.ProcessingFailed.Title">There was an error while processing your payment</string>
+    <string name="Buy.ProcessingFailed.Description">Please contact your card issuer/bank or try again with a different payment method.</string>
 </resources>
