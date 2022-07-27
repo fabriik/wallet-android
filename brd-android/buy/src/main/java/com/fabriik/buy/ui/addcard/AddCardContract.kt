@@ -8,13 +8,28 @@ class AddCardContract : FabriikContract {
         object OnBackClicked : Event()
         object OnDismissClicked : Event()
         object OnConfirmClicked : Event()
+
+        data class OnCardNumberChanged(
+            val number: String
+        ) : Event()
+
+        data class OnDateChanged(
+            val date: String
+        ) : Event()
     }
 
     sealed class Effect : FabriikContract.Effect {
         object Back : Effect()
         object Dismiss : Effect()
         object Confirm : Effect()
+
+        data class ShowToast(
+            val message: String
+        ) : Effect()
     }
 
-    object State : FabriikContract.State
+    data class State(
+        val cardNumber: String? = "",
+        val date: String? = ""
+    ) : FabriikContract.State
 }

@@ -1,7 +1,11 @@
 package com.fabriik.buy.ui.addcard
 
 import android.app.Application
+import com.fabriik.buy.R
+import com.fabriik.buy.ui.formatCardNumber
+import com.fabriik.buy.ui.formatDate
 import com.fabriik.common.ui.base.FabriikViewModel
+import com.fabriik.common.utils.getString
 
 class AddCardViewModel(
     application: Application
@@ -9,7 +13,7 @@ class AddCardViewModel(
     application
 ) {
 
-    override fun createInitialState() = AddCardContract.State
+    override fun createInitialState() = AddCardContract.State()
 
     override fun handleEvent(event: AddCardContract.Event) {
         when (event) {
@@ -21,6 +25,35 @@ class AddCardViewModel(
 
             AddCardContract.Event.OnConfirmClicked ->
                 setEffect { AddCardContract.Effect.Confirm }
+
+            is AddCardContract.Event.OnCardNumberChanged ->
+                setState {
+                    copy(cardNumber = formatCardNumber(event.number))
+                }
+
+            is AddCardContract.Event.OnDateChanged -> {
+                val formatDate = formatDate(event.date)
+
+                setState { copy(date = formatDate) }
+
+                if (formatDate?.length == 5) {
+                    validateDate(formatDate)
+                }
+            }
+        }
+    }
+
+    private fun validateDate(input: String?) {
+        if (input == null) {
+            return
+        }
+
+        val splitDate = if (input.length > 3) {
+            input.split("/")
+        } else return
+
+        if (splitDate[0].toInt() > 12) {
+            setEffect { AddCardContract.Effect.ShowToast(getString(R.string.Buy_AddCard_Error_WrongDate)) }
         }
     }
 }
