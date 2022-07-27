@@ -8,7 +8,24 @@
     <fragment
         android:id="@+id/fragmentBillingAddress"
         android:name="com.fabriik.buy.ui.billingaddress.BillingAddressFragment"
-        tools:layout="@layout/fragment_billing_address" />
+        tools:layout="@layout/fragment_billing_address" >
+
+        <action
+            android:id="@+id/actionCountrySelection"
+            app:destination="@id/fragmentCountrySelection"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragmentCountrySelection"
+        android:name="com.fabriik.kyc.ui.features.countryselection.CountrySelectionFragment"
+        tools:layout="@layout/fragment_country_selection">
+
+        <argument
+            android:name="requestKey"
+            app:argType="string" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/fragmentAddCard"
