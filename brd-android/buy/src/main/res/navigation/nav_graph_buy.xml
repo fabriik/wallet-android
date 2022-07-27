@@ -10,4 +10,12 @@
         android:name="com.fabriik.buy.ui.billingaddress.BillingAddressFragment"
         tools:layout="@layout/fragment_billing_address" />
 
+    <fragment android:id="@+id/fragmentBuyAuthentication"
+        android:name="com.fabriik.trade.ui.features.authentication.SwapAuthenticationFragment"
+        tools:layout="@layout/fragment_swap_authentication"/>
+
+    <fragment android:id="@+id/fragmentPaymentProcessing"
+        android:name="com.fabriik.buy.ui.processing.PaymentProcessingFragment"
+        tools:layout="@layout/fragment_swap_authentication"/>
+
 </navigation>
