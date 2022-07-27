@@ -24,11 +24,13 @@ import com.fabriik.common.data.model.availableDailyLimit
 import com.fabriik.common.data.model.availableLifetimeLimit
 import com.fabriik.common.data.model.nextExchangeLimit
 import com.fabriik.common.ui.base.FabriikViewModel
+import com.fabriik.common.ui.dialog.FabriikGenericDialogArgs
 import com.fabriik.common.utils.getString
 import com.fabriik.common.utils.min
 import com.fabriik.trade.R
 import com.fabriik.trade.data.SwapApi
 import com.fabriik.trade.data.model.AmountData
+import com.fabriik.trade.data.model.FeeAmountData
 import com.fabriik.trade.data.request.CreateOrderRequest
 import com.fabriik.trade.data.response.CreateOrderResponse
 import kotlinx.coroutines.Dispatchers
@@ -97,6 +99,10 @@ class SwapInputViewModel(
 
             SwapInputContract.Event.ReplaceCurrenciesClicked ->
                 onReplaceCurrenciesClicked()
+
+            is SwapInputContract.Event.OnCheckAssetsDialogResult,
+            is SwapInputContract.Event.OnTempUnavailableDialogResult ->
+                setEffect { SwapInputContract.Effect.Dismiss }
 
             is SwapInputContract.Event.OnCurrenciesReplaceAnimationCompleted ->
                 onReplaceCurrenciesAnimationCompleted(event.stateChange)
@@ -315,7 +321,7 @@ class SwapInputViewModel(
 
                     setEffect {
                         SwapInputContract.Effect.ShowToast(
-                            getString(R.string.Swap_Input_Error_NoSelectedPairData)
+                            getString(R.string.Swap_Input_Error_NoSelectedPairData), true
                         )
                     }
                 }
@@ -338,7 +344,7 @@ class SwapInputViewModel(
             val tradingPairs = pairsResponse.data ?: emptyList()
 
             if (pairsResponse.status == Status.ERROR || tradingPairs.isEmpty()) {
-                showErrorState()
+                setEffect { SwapInputContract.Effect.ShowDialog(DIALOG_TEMP_UNAVAILABLE_ARGS) }
                 return@launch
             }
 
@@ -347,7 +353,7 @@ class SwapInputViewModel(
             }
 
             if (selectedPair == null) {
-                showErrorState()
+                setEffect { SwapInputContract.Effect.ShowDialog(DIALOG_CHECK_ASSETS_ARGS) }
                 return@launch
             }
 
@@ -379,7 +385,7 @@ class SwapInputViewModel(
             if (selectedPairQuote == null) {
                 setEffect {
                     SwapInputContract.Effect.ShowToast(
-                        getString(R.string.Swap_Input_Error_NoSelectedPairData)
+                        getString(R.string.Swap_Input_Error_NoSelectedPairData), true
                     )
                 }
             } else {
@@ -455,8 +461,8 @@ class SwapInputViewModel(
             )
 
             val destCryptoAmountData = sourceCryptoAmount.convertSource(
-                fromCryptoCurrency = state.sourceCryptoCurrency,
-                toCryptoCurrency = state.destinationCryptoCurrency,
+                sourceCurrency = state.sourceCryptoCurrency,
+                destinationCurrency = state.destinationCryptoCurrency,
                 rate = state.cryptoExchangeRate
             )
 
@@ -497,8 +503,8 @@ class SwapInputViewModel(
             )
 
             val destCryptoAmountData = sourceCryptoAmount.convertSource(
-                fromCryptoCurrency = state.sourceCryptoCurrency,
-                toCryptoCurrency = state.destinationCryptoCurrency,
+                sourceCurrency = state.sourceCryptoCurrency,
+                destinationCurrency = state.destinationCryptoCurrency,
                 rate = state.cryptoExchangeRate
             )
 
@@ -539,8 +545,8 @@ class SwapInputViewModel(
             )
 
             val sourceCryptoAmountData = destCryptoAmount.convertDestination(
-                fromCryptoCurrency = state.destinationCryptoCurrency,
-                toCryptoCurrency = state.sourceCryptoCurrency,
+                destinationCurrency = state.destinationCryptoCurrency,
+                sourceCurrency = state.sourceCryptoCurrency,
                 rate = state.cryptoExchangeRate
             )
 
@@ -581,8 +587,8 @@ class SwapInputViewModel(
             )
 
             val sourceCryptoAmountData = destCryptoAmount.convertDestination(
-                fromCryptoCurrency = state.destinationCryptoCurrency,
-                toCryptoCurrency = state.sourceCryptoCurrency,
+                destinationCurrency = state.destinationCryptoCurrency,
+                sourceCurrency = state.sourceCryptoCurrency,
                 rate = state.cryptoExchangeRate
             )
 
@@ -791,7 +797,7 @@ class SwapInputViewModel(
 
     private suspend fun estimateFee(
         cryptoAmount: BigDecimal, currencyCode: String, fiatCode: String
-    ): AmountData? {
+    ): FeeAmountData? {
         val wallet = breadBox.wallet(currencyCode).first()
         val amount = Amount.create(cryptoAmount.toDouble(), wallet.unit)
         val address = loadAddress(wallet.currency.code) ?: return null
@@ -806,11 +812,12 @@ class SwapInputViewModel(
                 fiatCode = fiatCode
             ) ?: return null
 
-            return AmountData(
+            return FeeAmountData(
                 fiatAmount = fiatFee,
                 fiatCurrency = fiatCode,
                 cryptoAmount = cryptoFee,
-                cryptoCurrency = cryptoCurrency
+                cryptoCurrency = cryptoCurrency,
+                included = currencyCode.equals(cryptoCurrency, true)
             )
         } catch (e: Exception) {
             Log.d("SwapInputViewModel", "Fee estimation failed: ${e.message}")
@@ -858,22 +865,30 @@ class SwapInputViewModel(
         ) ?: BigDecimal.ZERO
     }
 
-    private suspend fun BigDecimal.convertSource(fromCryptoCurrency: String, toCryptoCurrency: String, rate: BigDecimal): Triple<AmountData?, AmountData?, BigDecimal> {
+    private suspend fun BigDecimal.convertSource(sourceCurrency: String, destinationCurrency: String, rate: BigDecimal): Triple<FeeAmountData?, FeeAmountData?, BigDecimal> {
         val state = currentLoadedState ?: return Triple(null, null, BigDecimal.ZERO)
 
-        val destAmount = this.multiply(rate)
-        val destFee = estimateFee(destAmount, toCryptoCurrency, state.fiatCurrency)
-        val sourceFee = estimateFee(this, fromCryptoCurrency, state.fiatCurrency)
+        val sourceFee = estimateFee(this, sourceCurrency, state.fiatCurrency)
+        val sourceAmount = if (sourceFee?.included == true) this - sourceFee.cryptoAmount else this
+
+        val convertedAmount = sourceAmount.multiply(rate)
+
+        val destFee = estimateFee(convertedAmount, destinationCurrency, state.fiatCurrency)
+        val destAmount = if (destFee?.included == true) convertedAmount - destFee.cryptoAmount else convertedAmount
 
         return Triple(sourceFee, destFee, destAmount)
     }
 
-    private suspend fun BigDecimal.convertDestination(fromCryptoCurrency: String, toCryptoCurrency: String, rate: BigDecimal): Triple<AmountData?, AmountData?, BigDecimal> {
+    private suspend fun BigDecimal.convertDestination(sourceCurrency: String, destinationCurrency: String, rate: BigDecimal): Triple<FeeAmountData?, FeeAmountData?, BigDecimal> {
         val state = currentLoadedState ?: return Triple(null, null, BigDecimal.ZERO)
 
-        val sourceAmount = this.divide(rate, 5, RoundingMode.HALF_UP)
-        val sourceFee = estimateFee(sourceAmount, toCryptoCurrency, state.fiatCurrency)
-        val destFee = estimateFee(this, fromCryptoCurrency, state.fiatCurrency)
+        val destFee = estimateFee(this, destinationCurrency, state.fiatCurrency)
+        val destAmount = if (destFee?.included == true) this + destFee.cryptoAmount else this
+
+        val convertedAmount = destAmount.divide(rate, 5, RoundingMode.HALF_UP)
+
+        val sourceFee = estimateFee(convertedAmount, sourceCurrency, state.fiatCurrency)
+        val sourceAmount = if (sourceFee?.included == true) convertedAmount + sourceFee.cryptoAmount else convertedAmount
 
         return Triple(sourceFee, destFee, sourceAmount)
     }
@@ -923,5 +938,30 @@ class SwapInputViewModel(
 
     companion object {
         const val QUOTE_TIMER = 15
+        const val DIALOG_RESULT_GOT_IT = "result_got_it"
+        const val DIALOG_REQUEST_CHECK_ASSETS = "request_check_assets"
+        const val DIALOG_REQUEST_TEMP_UNAVAILABLE = "request_temp_unvailable"
+
+        val DIALOG_CHECK_ASSETS_ARGS = FabriikGenericDialogArgs(
+            titleRes = R.string.Swap_Input_Dialog_CheckAssets_Title,
+            descriptionRes = R.string.Swap_Input_Dialog_CheckAssets_Message,
+            showDismissButton = true,
+            positive = FabriikGenericDialogArgs.ButtonData(
+                titleRes = R.string.Swap_Input_Dialog_Button_GotIt,
+                resultKey = DIALOG_RESULT_GOT_IT
+            ),
+            requestKey = DIALOG_REQUEST_CHECK_ASSETS
+        )
+
+        val DIALOG_TEMP_UNAVAILABLE_ARGS = FabriikGenericDialogArgs(
+            titleRes = R.string.Swap_Input_Dialog_TemporarlyUnavailable_Title,
+            descriptionRes = R.string.Swap_Input_Dialog_TemporarlyUnavailable_Message,
+            showDismissButton = true,
+            positive = FabriikGenericDialogArgs.ButtonData(
+                titleRes = R.string.Swap_Input_Dialog_Button_GotIt,
+                resultKey = DIALOG_RESULT_GOT_IT
+            ),
+            requestKey = DIALOG_REQUEST_TEMP_UNAVAILABLE
+        )
     }
 }

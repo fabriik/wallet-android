@@ -111,10 +111,10 @@
 
         <argument
             android:name="sendingFeeAmount"
-            app:argType="com.fabriik.trade.data.model.AmountData" />
+            app:argType="com.fabriik.trade.data.model.FeeAmountData" />
 
         <argument
             android:name="receivingFeeAmount"
-            app:argType="com.fabriik.trade.data.model.AmountData" />
+            app:argType="com.fabriik.trade.data.model.FeeAmountData" />
     </dialog>
 </navigation>

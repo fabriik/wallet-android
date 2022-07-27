@@ -22,6 +22,15 @@ object FabriikToastUtil {
         )
     }
 
+    fun showRedInfo(parentView: View, message: String) {
+        showCustomSnackBar(
+            parentView = parentView,
+            message = message,
+            gravity = Gravity.BOTTOM,
+            background = R.drawable.bg_error_bubble
+        )
+    }
+
     fun showError(parentView: View, message: String) {
         showCustomSnackBar(
             parentView = parentView,

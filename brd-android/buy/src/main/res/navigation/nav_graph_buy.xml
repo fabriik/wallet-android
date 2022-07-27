@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph_buy"
-    app:startDestination="@id/fragmentAddCard">
+    app:startDestination="@id/fragmentBillingAddress">
 
     <fragment
         android:id="@+id/fragmentBillingAddress"
@@ -14,5 +14,13 @@
         android:id="@+id/fragmentAddCard"
         android:name="com.fabriik.buy.ui.addcard.AddCardFragment"
         tools:layout="@layout/fragment_add_card" />
+
+    <fragment android:id="@+id/fragmentBuyAuthentication"
+        android:name="com.fabriik.trade.ui.features.authentication.SwapAuthenticationFragment"
+        tools:layout="@layout/fragment_swap_authentication"/>
+
+    <fragment android:id="@+id/fragmentPaymentProcessing"
+        android:name="com.fabriik.buy.ui.processing.PaymentProcessingFragment"
+        tools:layout="@layout/fragment_swap_authentication"/>
 
 </navigation>
