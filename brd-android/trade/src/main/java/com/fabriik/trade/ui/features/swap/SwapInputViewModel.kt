@@ -473,7 +473,8 @@ class SwapInputViewModel(
             val destCryptoAmountData = sourceCryptoAmount.convertSource(
                 sourceCurrency = state.sourceCryptoCurrency,
                 destinationCurrency = state.destinationCryptoCurrency,
-                rate = state.cryptoExchangeRate
+                rate = state.cryptoExchangeRate,
+                markup = state.markupFactor
             )
 
             val destCryptoAmount = destCryptoAmountData.third
@@ -520,7 +521,8 @@ class SwapInputViewModel(
             val destCryptoAmountData = sourceCryptoAmount.convertSource(
                 sourceCurrency = state.sourceCryptoCurrency,
                 destinationCurrency = state.destinationCryptoCurrency,
-                rate = state.cryptoExchangeRate
+                rate = state.cryptoExchangeRate,
+                markup = state.markupFactor
             )
 
             val destCryptoAmount = destCryptoAmountData.third
@@ -567,7 +569,8 @@ class SwapInputViewModel(
             val sourceCryptoAmountData = destCryptoAmount.convertDestination(
                 destinationCurrency = state.destinationCryptoCurrency,
                 sourceCurrency = state.sourceCryptoCurrency,
-                rate = state.cryptoExchangeRate
+                rate = state.cryptoExchangeRate,
+                markup = state.markupFactor
             )
 
             val sourceCryptoAmount = sourceCryptoAmountData.third
@@ -614,7 +617,8 @@ class SwapInputViewModel(
             val sourceCryptoAmountData = destCryptoAmount.convertDestination(
                 destinationCurrency = state.destinationCryptoCurrency,
                 sourceCurrency = state.sourceCryptoCurrency,
-                rate = state.cryptoExchangeRate
+                rate = state.cryptoExchangeRate,
+                markup = state.markupFactor
             )
 
             val sourceCryptoAmount = sourceCryptoAmountData.third
@@ -949,7 +953,7 @@ class SwapInputViewModel(
         ) ?: BigDecimal.ZERO
     }
 
-    private suspend fun BigDecimal.convertSource(sourceCurrency: String, destinationCurrency: String, rate: BigDecimal): Triple<FeeAmountData?, FeeAmountData?, BigDecimal> {
+    private suspend fun BigDecimal.convertSource(sourceCurrency: String, destinationCurrency: String, rate: BigDecimal, markup: BigDecimal): Triple<FeeAmountData?, FeeAmountData?, BigDecimal> {
         val state = currentLoadedState ?: return Triple(null, null, BigDecimal.ZERO)
 
         val sourceFee = estimateFee(this, sourceCurrency, state.fiatCurrency)
@@ -958,12 +962,13 @@ class SwapInputViewModel(
         val convertedAmount = sourceAmount.multiply(rate)
 
         val destFee = estimateFee(convertedAmount, destinationCurrency, state.fiatCurrency)
-        val destAmount = if (destFee?.included == true) convertedAmount - destFee.cryptoAmount else convertedAmount
+        val convertedDestAmount = if (destFee?.included == true) convertedAmount - destFee.cryptoAmount else convertedAmount
+        val destAmount = convertedDestAmount.multiply(markup)
 
         return Triple(sourceFee, destFee, destAmount)
     }
 
-    private suspend fun BigDecimal.convertDestination(sourceCurrency: String, destinationCurrency: String, rate: BigDecimal): Triple<FeeAmountData?, FeeAmountData?, BigDecimal> {
+    private suspend fun BigDecimal.convertDestination(sourceCurrency: String, destinationCurrency: String, rate: BigDecimal, markup: BigDecimal): Triple<FeeAmountData?, FeeAmountData?, BigDecimal> {
         val state = currentLoadedState ?: return Triple(null, null, BigDecimal.ZERO)
 
         val destFee = estimateFee(this, destinationCurrency, state.fiatCurrency)
@@ -972,7 +977,8 @@ class SwapInputViewModel(
         val convertedAmount = destAmount.divide(rate, 5, RoundingMode.HALF_UP)
 
         val sourceFee = estimateFee(convertedAmount, sourceCurrency, state.fiatCurrency)
-        val sourceAmount = if (sourceFee?.included == true) convertedAmount + sourceFee.cryptoAmount else convertedAmount
+        val convertedSourceAmount = if (sourceFee?.included == true) convertedAmount + sourceFee.cryptoAmount else convertedAmount
+        val sourceAmount = convertedSourceAmount.divide(markup, 5, RoundingMode.HALF_UP)
 
         return Triple(sourceFee, destFee, sourceAmount)
     }
