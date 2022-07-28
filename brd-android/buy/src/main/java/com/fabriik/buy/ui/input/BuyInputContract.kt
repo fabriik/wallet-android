@@ -32,6 +32,10 @@ interface BuyInputContract {
     }
 
     data class State(
-        val continueButtonEnabled: Boolean = false
+        val fiatCurrency: String = "USD",
+        val continueButtonEnabled: Boolean = false,
+        val rateLoadingVisible: Boolean = false,
+        val initialLoadingVisible: Boolean = false,
+        val fullScreenLoadingVisible: Boolean = false
     ) : FabriikContract.State
 }

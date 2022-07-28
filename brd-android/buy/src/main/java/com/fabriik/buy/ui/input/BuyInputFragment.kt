@@ -17,7 +17,9 @@ import androidx.navigation.fragment.findNavController
 import com.breadwallet.tools.util.Utils.hideKeyboard
 import com.fabriik.common.ui.customview.FabriikSwitch
 import com.fabriik.common.utils.FabriikToastUtil
+import com.fabriik.trade.ui.customview.CurrencyInputView
 import com.fabriik.trade.ui.features.assetselection.AssetSelectionFragment
+import java.math.BigDecimal
 
 class BuyInputFragment : Fragment(),
     FabriikView<BuyInputContract.State, BuyInputContract.Effect> {
@@ -40,6 +42,20 @@ class BuyInputFragment : Fragment(),
                 viewModel.setEvent(BuyInputContract.Event.DismissClicked)
             }
 
+            viewCryptoInput.setCallback(object : CurrencyInputView.Callback {
+                override fun onCurrencySelectorClicked() {
+                    viewModel.setEvent(BuyInputContract.Event.CryptoCurrencyClicked)
+                }
+
+                override fun onFiatAmountChanged(amount: BigDecimal) {
+                    viewModel.setEvent(BuyInputContract.Event.FiatAmountChange(amount))
+                }
+
+                override fun onCryptoAmountChanged(amount: BigDecimal) {
+                    viewModel.setEvent(BuyInputContract.Event.CryptoAmountChange(amount))
+                }
+            })
+
             switchMinMax.setCallback {
                 when (it) {
                     FabriikSwitch.OPTION_LEFT ->
@@ -52,6 +68,10 @@ class BuyInputFragment : Fragment(),
             btnContinue.setOnClickListener {
                 hideKeyboard(binding.root.context)
                 viewModel.setEvent(BuyInputContract.Event.ContinueClicked)
+            }
+
+            cvPaymentMethod.setOnClickListener {
+                viewModel.setEvent(BuyInputContract.Event.PaymentMethodClicked)
             }
         }
 
@@ -70,7 +90,10 @@ class BuyInputFragment : Fragment(),
         }
 
         // listen for origin currency changes
-        parentFragmentManager.setFragmentResultListener(REQUEST_KEY_CRYPTO_SELECTION, this) { _, bundle ->
+        parentFragmentManager.setFragmentResultListener(
+            REQUEST_KEY_CRYPTO_SELECTION,
+            this
+        ) { _, bundle ->
             val currency = bundle.getString(AssetSelectionFragment.EXTRA_SELECTED_CURRENCY)
             if (currency != null) {
                 viewModel.setEvent(BuyInputContract.Event.CryptoCurrencyChanged(currency))
@@ -78,7 +101,10 @@ class BuyInputFragment : Fragment(),
         }
 
         // listen for destination currency changes
-        parentFragmentManager.setFragmentResultListener(REQUEST_KEY_PAYMENT_METHOD_SELECTION, this) { _, bundle ->
+        parentFragmentManager.setFragmentResultListener(
+            REQUEST_KEY_PAYMENT_METHOD_SELECTION,
+            this
+        ) { _, bundle ->
             //todo:
         }
 
@@ -88,8 +114,14 @@ class BuyInputFragment : Fragment(),
     }
 
     override fun render(state: BuyInputContract.State) {
-        with (binding) {
+        with(binding) {
             btnContinue.isEnabled = state.continueButtonEnabled
+            viewCryptoInput.setFiatCurrency(state.fiatCurrency)
+
+            content.isVisible = !state.initialLoadingVisible
+            quoteLoadingIndicator.isVisible = state.rateLoadingVisible
+            initialLoadingIndicator.isVisible = state.initialLoadingVisible
+            fullScreenLoadingView.root.isVisible = state.fullScreenLoadingVisible
         }
     }
 
