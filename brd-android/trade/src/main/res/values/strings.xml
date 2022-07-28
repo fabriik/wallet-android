@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Swap input screen -->
+    <string name="Swap.Input.Title">Swap</string>
     <string name="Swap.Input.IHave">I have %s</string>
     <string name="Swap.Input.IWant">I want</string>
     <string name="Swap.Input.LeftSwitchOption">Min</string>
@@ -68,4 +69,8 @@
     <string name="Swap.Confirmation.Disclaimer">Due to market volatility the final rate may slightly differ from current one.</string>
     <string name="Swap.Confirmation.Confirm">Confirm</string>
     <string name="Swap.Confirmation.Cancel">Cancel</string>
+
+    <!-- Swap processing screen -->
+    <string name="Swap.Processing.BackToHome">Back to Home</string>
+    <string name="Swap.Processing.SwapDetails">Swap details</string>
 </resources>
