@@ -88,11 +88,9 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_country"
+                            style="@style/FabriikEditTextStyle.Clickable"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:cursorVisible="true"
-                            android:focusable="true"
-                            android:imeOptions="actionDone"
                             android:inputType="textCapWords" />
 
                     </com.google.android.material.textfield.TextInputLayout>

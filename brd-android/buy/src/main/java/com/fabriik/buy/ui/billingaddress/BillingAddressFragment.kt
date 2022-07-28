@@ -7,11 +7,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import com.breadwallet.tools.util.Utils
 import com.fabriik.buy.R
 import com.fabriik.buy.databinding.FragmentBillingAddressBinding
 import com.fabriik.common.ui.base.FabriikView
+import com.fabriik.kyc.data.model.Country
+import com.fabriik.kyc.ui.features.countryselection.CountrySelectionFragment
 import kotlinx.coroutines.flow.collect
 
 class BillingAddressFragment : Fragment(),
@@ -42,7 +44,7 @@ class BillingAddressFragment : Fragment(),
                 viewModel.setEvent(BillingAddressContract.Event.OnDismissClicked)
             }
 
-            tilCountry.setOnClickListener {
+            etCountry.setOnClickListener {
                 viewModel.setEvent(BillingAddressContract.Event.OnCountryClicked)
             }
         }
@@ -60,9 +62,22 @@ class BillingAddressFragment : Fragment(),
                 handleEffect(it)
             }
         }
+
+        parentFragmentManager.setFragmentResultListener(REQUEST_KEY_COUNTRY_SELECTION, this@BillingAddressFragment) { _, bundle ->
+            val country = bundle.getParcelable(CountrySelectionFragment.EXTRA_SELECTED_COUNTRY) as Country?
+            if (country != null) {
+                viewModel.setEvent(
+                    BillingAddressContract.Event.OnCountryChanged(country)
+                )
+            }
+        }
     }
 
     override fun render(state: BillingAddressContract.State) {
+        with(binding) {
+            btnConfirm.isEnabled = state.confirmEnabled
+            etCountry.setText(state.country?.name)
+        }
     }
 
     override fun handleEffect(effect: BillingAddressContract.Effect) {
@@ -73,7 +88,18 @@ class BillingAddressFragment : Fragment(),
             BillingAddressContract.Effect.Dismiss ->
                 activity?.finish()
 
-            BillingAddressContract.Effect.CountryList -> TODO()
+            BillingAddressContract.Effect.CountrySelection -> {
+                Utils.hideKeyboard(binding.root.context)
+                findNavController().navigate(
+                    BillingAddressFragmentDirections.actionCountrySelection(
+                        REQUEST_KEY_COUNTRY_SELECTION
+                    )
+                )
+            }
         }
+    }
+
+    companion object {
+        const val REQUEST_KEY_COUNTRY_SELECTION = "request_key_country"
     }
 }
