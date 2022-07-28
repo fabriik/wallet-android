@@ -144,4 +144,11 @@
 
     </application>
 
+    <queries>
+        <!-- Sending Emails   -->
+        <intent>
+            <action android:name="android.intent.action.SENDTO" />
+            <data android:scheme="mailto" />
+        </intent>
+    </queries>
 </manifest>
