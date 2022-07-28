@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.fabriik.common.ui.customview.FabriikToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="@string/Buy.OrderPreview.Title" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="16dp">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="24dp"
+                android:paddingVertical="16dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <com.fabriik.trade.ui.customview.CryptoIconView
+                        android:id="@+id/ic_crypto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_amount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        app:layout_constraintStart_toEndOf="@id/ic_crypto"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="1.55714730 BSV" />
+
+                    <TextView
+                        android:id="@+id/tv_rate_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/Buy.OrderPreview.Rate"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_amount"
+                        tools:text="Rate:" />
+
+                    <TextView
+                        android:id="@+id/tv_rate_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintStart_toEndOf="@+id/tv_rate_title"
+                        app:layout_constraintTop_toBottomOf="@id/tv_amount"
+                        tools:text="1 BSV = $64.22 USD" />
+
+                    <View
+                        android:id="@+id/view_line_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"
+                        android:layout_marginTop="16dp"
+                        android:background="@color/light_gray"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_rate_title" />
+
+                    <TextView
+                        android:id="@+id/tv_price_title"
+                        style="@style/TextStyle.Body2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:textColor="@color/light_text_03"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/view_line_1"
+                        tools:text="BSV price" />
+
+                    <TextView
+                        android:id="@+id/tv_price_amount"
+                        style="@style/TextStyle.Body2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/light_text_03"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/tv_price_title"
+                        tools:text="$64.22 USD" />
+
+                    <TextView
+                        android:id="@+id/tv_amount_title"
+                        style="@style/TextStyle.Body2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/Buy.OrderPreview.Amount"
+                        android:textColor="@color/light_text_03"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_price_title"
+                        tools:text="Amount" />
+
+                    <TextView
+                        android:id="@+id/tv_amount_value"
+                        style="@style/TextStyle.Body2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/light_text_03"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/tv_amount_title"
+                        tools:text="$100 USD" />
+
+                    <TextView
+                        android:id="@+id/tv_credit_fee_title"
+                        style="@style/TextStyle.Body2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/Buy.OrderPreview.CreditCardFee"
+                        android:textColor="@color/light_text_03"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_amount_title" />
+
+                    <ImageView
+                        android:id="@+id/ic_info_credit"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_marginStart="4dp"
+                        android:src="@drawable/ic_info_black"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_credit_fee_title"
+                        app:layout_constraintStart_toEndOf="@id/tv_credit_fee_title"
+                        app:layout_constraintTop_toTopOf="@id/tv_credit_fee_title"
+                        app:tint="@color/light_text_03" />
+
+                    <TextView
+                        android:id="@+id/tv_credit_fee_value"
+                        style="@style/TextStyle.Body2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/light_text_03"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/tv_credit_fee_title"
+                        tools:text="$4.00 USD" />
+
+                    <TextView
+                        android:id="@+id/tv_network_fee_title"
+                        style="@style/TextStyle.Body2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/Buy.OrderPreview.MiningNetworkFee"
+                        android:textColor="@color/light_text_03"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_credit_fee_title" />
+
+                    <ImageView
+                        android:id="@+id/ic_info_network"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_marginStart="4dp"
+                        android:src="@drawable/ic_info_black"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_network_fee_title"
+                        app:layout_constraintStart_toEndOf="@id/tv_network_fee_title"
+                        app:layout_constraintTop_toTopOf="@id/tv_network_fee_title"
+                        app:tint="@color/light_text_03" />
+
+                    <TextView
+                        android:id="@+id/tv_network_fee_value"
+                        style="@style/TextStyle.Body2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/light_text_03"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/tv_network_fee_title"
+                        tools:text="$1.00 USD" />
+
+                    <View
+                        android:id="@+id/view_line_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"
+                        android:layout_marginTop="16dp"
+                        android:background="@color/light_gray"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_network_fee_title" />
+
+                    <TextView
+                        android:id="@+id/tv_total_title"
+                        style="@style/TextStyle.Subtitle1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/Buy.OrderPreview.Total"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/view_line_2" />
+
+                    <TextView
+                        style="@style/TextStyle.Subtitle2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/tv_total_title"
+                        tools:text="$105.00 USD" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:padding="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/BUy.OrderPreview.PaymentMethod" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/Buy.OrderPreview.CVVConfirmation" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_cvv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:hint="@string/Buy.OrderPreview.CVV">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_cvv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:imeOptions="actionNext"
+                            android:inputType="number"
+                            android:maxLength="3" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:id="@+id/tv_terms_conditions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginTop="18dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:linksClickable="true"
+                tools:text="By placing this order you agree to our Terms and Conditions" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_confirm"
+                style="@style/FabriikButtonStyle.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="19dp"
+                android:text="@string/FabriikButton.Confirm" />
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

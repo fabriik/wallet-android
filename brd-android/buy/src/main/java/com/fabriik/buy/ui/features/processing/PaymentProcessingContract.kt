@@ -1,4 +1,4 @@
-package com.fabriik.buy.ui.processing
+package com.fabriik.buy.ui.features.processing
 
 import com.fabriik.buy.R
 import com.fabriik.common.ui.base.FabriikContract

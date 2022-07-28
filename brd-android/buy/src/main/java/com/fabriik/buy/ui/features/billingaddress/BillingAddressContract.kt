@@ -1,4 +1,4 @@
-package com.fabriik.buy.ui.billingaddress
+package com.fabriik.buy.ui.features.billingaddress
 
 import com.fabriik.common.ui.base.FabriikContract
 import com.fabriik.kyc.data.model.Country
