@@ -18,4 +18,8 @@
         android:name="com.fabriik.buy.ui.processing.PaymentProcessingFragment"
         tools:layout="@layout/fragment_swap_authentication"/>
 
+    <fragment android:id="@+id/fragmentOrderPreview"
+        android:name="com.fabriik.buy.ui.orderPreview.OrderPreviewFragment"
+        tools:layout="@layout/fragment_order_preview" />
+
 </navigation>
