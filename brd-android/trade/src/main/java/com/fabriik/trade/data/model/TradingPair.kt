@@ -16,12 +16,6 @@ data class TradingPair(
     @Json(name = "term_currency")
     val termCurrency: String,
 
-    @Json(name = "minimum_quantity")
-    val minAmount: BigDecimal,
-
-    @Json(name = "maximum_quantity")
-    val maxAmount: BigDecimal,
-
     @Json(name = "name")
     val name: String
 ): Parcelable
