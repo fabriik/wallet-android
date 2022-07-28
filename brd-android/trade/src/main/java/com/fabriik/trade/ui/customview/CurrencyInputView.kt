@@ -9,6 +9,7 @@ import com.breadwallet.ext.isZero
 import com.fabriik.common.utils.DecimalDigitsInputFilter
 import com.fabriik.common.utils.disableCopyPaste
 import com.fabriik.common.utils.afterTextChangedDebounceFocused
+import com.fabriik.common.utils.showKeyboard
 import com.fabriik.trade.R
 import com.fabriik.trade.databinding.ViewCurrencyInputBinding
 import java.math.BigDecimal
@@ -32,10 +33,12 @@ class CurrencyInputView @JvmOverloads constructor(
 
         binding.etFiatAmount.setOnFocusChangeListener { _, focus ->
             binding.etFiatAmount.hint = if (focus) ""  else "0.00"
+            if (focus) binding.etFiatAmount.showKeyboard()
         }
 
         binding.etCryptoAmount.setOnFocusChangeListener { _, focus ->
             binding.etCryptoAmount.hint = if (focus) ""  else "0.00"
+            if (focus) binding.etCryptoAmount.showKeyboard()
         }
 
         binding.etFiatAmount.disableCopyPaste()
@@ -76,7 +79,7 @@ class CurrencyInputView @JvmOverloads constructor(
         val formatted = "%.2f".format(amount)
         val text = binding.etFiatAmount.text?.toString() ?: ""
 
-        if (amount.isZero()) {
+        if (!changeByUser && amount.isZero()) {
             binding.etFiatAmount.setText("")
         } else if (text != formatted && !changeByUser) {
             binding.etFiatAmount.setText(formatted)
@@ -87,7 +90,7 @@ class CurrencyInputView @JvmOverloads constructor(
         val formatted = "%.5f".format(amount)
         val text = binding.etCryptoAmount.text?.toString() ?: ""
 
-        if (amount.isZero()) {
+        if (!changeByUser && amount.isZero()) {
             binding.etCryptoAmount.setText("")
         } else if (text != formatted && !changeByUser) {
             binding.etCryptoAmount.setText(formatted)
