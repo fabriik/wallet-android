@@ -8,6 +8,7 @@ import com.breadwallet.breadbox.toBigDecimal
 import com.breadwallet.crypto.Address
 import com.breadwallet.crypto.AddressScheme
 import com.breadwallet.crypto.Amount
+import com.breadwallet.ext.isZero
 import com.breadwallet.repository.RatesRepository
 import com.breadwallet.tools.manager.BRSharedPrefs
 import com.fabriik.trade.data.model.FeeAmountData
@@ -33,23 +34,25 @@ class AmountConverter(
         cryptoAmount = amount
     )?: BigDecimal.ZERO
 
-    suspend fun convertSourceCryptoToDestinationCrypto(amount: BigDecimal, sourceCurrency: String, destinationCurrency: String, rate: BigDecimal): Triple<FeeAmountData?, FeeAmountData?, BigDecimal> {
+    suspend fun convertSourceCryptoToDestinationCrypto(amount: BigDecimal, sourceCurrency: String, destinationCurrency: String, rate: BigDecimal, markup: BigDecimal): Triple<FeeAmountData?, FeeAmountData?, BigDecimal> {
         val sourceFee = estimateFee(amount, sourceCurrency, fiatCurrency)
         val sourceAmount = if (sourceFee?.included == true) amount - sourceFee.cryptoAmount else amount
 
         val convertedAmount = sourceAmount.multiply(rate)
 
         val destFee = estimateFee(convertedAmount, destinationCurrency, fiatCurrency)
-        val destAmount = if (destFee?.included == true) convertedAmount - destFee.cryptoAmount else convertedAmount
+        val convertedDestAmount = if (destFee?.included == true) convertedAmount - destFee.cryptoAmount else convertedAmount
+        val destAmount = convertedDestAmount.divide(markup, 20, RoundingMode.HALF_UP)
 
         return Triple(sourceFee, destFee, destAmount)
     }
 
-    suspend fun convertDestinationCryptoToSourceCrypto(amount: BigDecimal, sourceCurrency: String, destinationCurrency: String, rate: BigDecimal): Triple<FeeAmountData?, FeeAmountData?, BigDecimal> {
+    suspend fun convertDestinationCryptoToSourceCrypto(amount: BigDecimal, sourceCurrency: String, destinationCurrency: String, rate: BigDecimal, markup: BigDecimal): Triple<FeeAmountData?, FeeAmountData?, BigDecimal> {
         val destFee = estimateFee(amount, destinationCurrency, fiatCurrency)
-        val destAmount = if (destFee?.included == true) amount + destFee.cryptoAmount else amount
+        val convertedDestAmount = if (destFee?.included == true) amount + destFee.cryptoAmount else amount
+        val destAmount = convertedDestAmount.multiply(markup)
 
-        val convertedAmount = destAmount.divide(rate, 5, RoundingMode.HALF_UP)
+        val convertedAmount = destAmount.divide(rate, 20, RoundingMode.HALF_UP)
 
         val sourceFee = estimateFee(convertedAmount, sourceCurrency, fiatCurrency)
         val sourceAmount = if (sourceFee?.included == true) convertedAmount + sourceFee.cryptoAmount else convertedAmount
@@ -60,6 +63,10 @@ class AmountConverter(
     private suspend fun estimateFee(
         cryptoAmount: BigDecimal, currencyCode: String, fiatCode: String
     ): FeeAmountData? {
+        if (cryptoAmount.isZero()) {
+            return null
+        }
+
         val wallet = breadBox.wallet(currencyCode).first()
         val amount = Amount.create(cryptoAmount.toDouble(), wallet.unit)
         val address = loadAddress(wallet.currency.code) ?: return null
