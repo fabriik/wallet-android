@@ -24,7 +24,7 @@
         tools:layout="@layout/fragment_swap_authentication"/>
 
     <fragment android:id="@+id/fragmentOrderPreview"
-        android:name="com.fabriik.buy.ui.features.orderPreview.OrderPreviewFragment"
+        android:name="com.fabriik.buy.ui.features.orderpreview.OrderPreviewFragment"
         tools:layout="@layout/fragment_order_preview" />
 
 </navigation>

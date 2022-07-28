@@ -1,4 +1,4 @@
-package com.fabriik.buy.ui.features.orderPreview
+package com.fabriik.buy.ui.features.orderpreview
 
 import android.app.Application
 import com.fabriik.common.ui.base.FabriikViewModel
