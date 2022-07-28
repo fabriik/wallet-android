@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:showBack="false"
-            app:title="@string/Swap.Input.Title" />
+            app:title="@string/Buy.Input.Continue" />
 
         <ScrollView
             android:id="@+id/content"
@@ -34,7 +34,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:text="@string/Swap.Input.Rate"
+                    android:text="@string/Buy.Input.Rate"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -73,15 +73,71 @@
                     app:layout_constraintStart_toEndOf="@id/tv_rate_title"
                     app:layout_constraintTop_toTopOf="@id/tv_rate_title" />
 
-                <com.fabriik.trade.ui.customview.SwapCardView
-                    android:id="@+id/cv_swap"
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cv_crypto_input"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="16dp"
-                    android:layout_marginTop="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_rate_title" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_rate_title">
+
+                    <com.fabriik.trade.ui.customview.CurrencyInputView
+                        android:id="@+id/view_crypto_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        app:title="@string/Buy.Input.IWant" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cv_payment_method"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:contentPadding="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/cv_crypto_input">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/tv_pay_with"
+                            style="@style/TextStyle.Caption"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/Buy.Input.PayWith"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tv_select_payment_method"
+                            style="@style/TextStyle.Subtitle2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/Buy.Input.SelectPaymentMethod"
+                            app:layout_constrainedWidth="true"
+                            app:layout_constraintEnd_toStartOf="@+id/iv_chevron"
+                            app:layout_constraintHorizontal_bias="0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tv_pay_with" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/iv_chevron"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_fabriik_chevron_right"
+                            android:tint="@color/light_primary"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </com.google.android.material.card.MaterialCardView>
 
                 <com.fabriik.common.ui.customview.FabriikSwitch
                     android:id="@+id/switch_min_max"
@@ -91,9 +147,9 @@
                     android:layout_marginTop="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/cv_swap"
-                    app:leftOptionText="@string/Swap.Input.LeftSwitchOption"
-                    app:rightOptionText="@string/Swap.Input.RightSwitchOption" />
+                    app:layout_constraintTop_toBottomOf="@+id/cv_payment_method"
+                    app:leftOptionText="@string/Buy.Input.LeftSwitchOption"
+                    app:rightOptionText="@string/Buy.Input.RightSwitchOption" />
 
                 <TextView
                     android:id="@+id/tv_error"
@@ -102,22 +158,22 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="16dp"
-                    android:padding="20dp"
                     android:background="@drawable/bg_swap_error"
+                    android:padding="20dp"
                     android:textColor="@color/light_error"
                     android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/switch_min_max"
-                    tools:visibility="visible"
-                    tools:text="This is a error message"/>
+                    tools:text="This is a error message"
+                    tools:visibility="visible" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_confirm"
+                    android:id="@+id/btn_continue"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
-                    android:text="@string/Swap.Input.Confirm"
+                    android:text="@string/Buy.Input.Continue"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
