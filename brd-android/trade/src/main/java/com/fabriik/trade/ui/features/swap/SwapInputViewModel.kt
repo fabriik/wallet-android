@@ -2,7 +2,6 @@ package com.fabriik.trade.ui.features.swap
 
 import android.app.Application
 import android.security.keystore.UserNotAuthenticatedException
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.breadwallet.breadbox.*
 import com.breadwallet.crypto.Address
@@ -12,7 +11,6 @@ import com.breadwallet.crypto.TransferFeeBasis
 import com.breadwallet.crypto.errors.FeeEstimationError
 import com.breadwallet.ext.isZero
 import com.breadwallet.platform.interfaces.AccountMetaDataProvider
-import com.breadwallet.repository.RatesRepository
 import com.breadwallet.tools.manager.BRSharedPrefs
 import com.breadwallet.tools.security.BrdUserManager
 import com.breadwallet.tools.security.ProfileManager
@@ -46,9 +44,7 @@ import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
-import java.lang.Exception
-import java.math.RoundingMode
-import java.util.concurrent.atomic.AtomicBoolean
+import org.kodein.di.direct
 
 class SwapInputViewModel(
     application: Application
@@ -58,17 +54,19 @@ class SwapInputViewModel(
 
     override val kodein by closestKodein { application }
 
+    private val currentFiatCurrency = "USD"
+
     private val swapApi by kodein.instance<SwapApi>()
     private val breadBox by kodein.instance<BreadBox>()
     private val userManager by kodein.instance<BrdUserManager>()
     private val profileManager by kodein.instance<ProfileManager>()
     private val acctMetaDataProvider by kodein.instance<AccountMetaDataProvider>()
+    private val amountConverter = AmountConverter(direct.instance(), direct.instance(), currentFiatCurrency)
 
     private val currentLoadedState: SwapInputContract.State.Loaded?
         get() = state.value as SwapInputContract.State.Loaded?
 
     private val profile = profileManager.getProfile()
-    private val ratesRepository by kodein.instance<RatesRepository>()
 
     private var currentTimerJob: Job? = null
     private var ethErrorSeen = false
@@ -229,9 +227,9 @@ class SwapInputViewModel(
     private fun onMaxAmountClicked() {
         val state = currentLoadedState ?: return
 
-        val maxAmountLimitCrypto = state.maxFiatAmount.toCrypto(
-            cryptoCurrency = state.sourceCryptoCurrency,
-            fiatCurrency = state.fiatCurrency
+        val maxAmountLimitCrypto = amountConverter.fiatToCrypto(
+            amount = state.maxFiatAmount,
+            cryptoCurrency = state.sourceCryptoCurrency
         )
 
         onSourceCurrencyCryptoAmountChanged(
@@ -379,7 +377,7 @@ class SwapInputViewModel(
                 SwapInputContract.State.Loaded(
                     tradingPairs = tradingPairs,
                     selectedPair = selectedPair,
-                    fiatCurrency = "USD",
+                    fiatCurrency = currentFiatCurrency,
                     quoteResponse = selectedPairQuote,
                     sourceCryptoCurrency = selectedPair.baseCurrency,
                     destinationCryptoCurrency = selectedPair.termCurrency,
@@ -465,12 +463,13 @@ class SwapInputViewModel(
         val state = currentLoadedState ?: return
 
         viewModelScope.launch(Dispatchers.IO) {
-            val sourceCryptoAmount = sourceFiatAmount.toCrypto(
-                cryptoCurrency = state.sourceCryptoCurrency,
-                fiatCurrency = state.fiatCurrency
+            val sourceCryptoAmount = amountConverter.fiatToCrypto(
+                amount = sourceFiatAmount,
+                cryptoCurrency = state.sourceCryptoCurrency
             )
 
-            val destCryptoAmountData = sourceCryptoAmount.convertSource(
+            val destCryptoAmountData = amountConverter.convertSourceCryptoToDestinationCrypto(
+                amount = sourceCryptoAmount,
                 sourceCurrency = state.sourceCryptoCurrency,
                 destinationCurrency = state.destinationCryptoCurrency,
                 rate = state.cryptoExchangeRate
@@ -478,9 +477,9 @@ class SwapInputViewModel(
 
             val destCryptoAmount = destCryptoAmountData.third
 
-            val destFiatAmount = destCryptoAmount.toFiat(
-                cryptoCurrency = state.destinationCryptoCurrency,
-                fiatCurrency = state.fiatCurrency
+            val destFiatAmount = amountConverter.cryptoToFiat(
+                amount = destCryptoAmount,
+                cryptoCurrency = state.destinationCryptoCurrency
             )
 
             setState {
@@ -512,12 +511,13 @@ class SwapInputViewModel(
         val state = currentLoadedState ?: return
 
         viewModelScope.launch(Dispatchers.IO) {
-            val sourceFiatAmount = sourceCryptoAmount.toFiat(
-                cryptoCurrency = state.sourceCryptoCurrency,
-                fiatCurrency = state.fiatCurrency
+            val sourceFiatAmount = amountConverter.cryptoToFiat(
+                amount = sourceCryptoAmount,
+                cryptoCurrency = state.sourceCryptoCurrency
             )
 
-            val destCryptoAmountData = sourceCryptoAmount.convertSource(
+            val destCryptoAmountData = amountConverter.convertSourceCryptoToDestinationCrypto(
+                amount = sourceCryptoAmount,
                 sourceCurrency = state.sourceCryptoCurrency,
                 destinationCurrency = state.destinationCryptoCurrency,
                 rate = state.cryptoExchangeRate
@@ -525,9 +525,9 @@ class SwapInputViewModel(
 
             val destCryptoAmount = destCryptoAmountData.third
 
-            val destFiatAmount = destCryptoAmount.toFiat(
-                cryptoCurrency = state.destinationCryptoCurrency,
-                fiatCurrency = state.fiatCurrency
+            val destFiatAmount = amountConverter.cryptoToFiat(
+                amount = destCryptoAmount,
+                cryptoCurrency = state.destinationCryptoCurrency
             )
 
             setState {
@@ -559,12 +559,13 @@ class SwapInputViewModel(
         val state = currentLoadedState ?: return
 
         viewModelScope.launch(Dispatchers.IO) {
-            val destCryptoAmount = destFiatAmount.toCrypto(
-                cryptoCurrency = state.destinationCryptoCurrency,
-                fiatCurrency = state.fiatCurrency
+            val destCryptoAmount = amountConverter.fiatToCrypto(
+                amount = destFiatAmount,
+                cryptoCurrency = state.destinationCryptoCurrency
             )
 
-            val sourceCryptoAmountData = destCryptoAmount.convertDestination(
+            val sourceCryptoAmountData = amountConverter.convertDestinationCryptoToSourceCrypto(
+                amount = destCryptoAmount,
                 destinationCurrency = state.destinationCryptoCurrency,
                 sourceCurrency = state.sourceCryptoCurrency,
                 rate = state.cryptoExchangeRate
@@ -572,9 +573,9 @@ class SwapInputViewModel(
 
             val sourceCryptoAmount = sourceCryptoAmountData.third
 
-            val sourceFiatAmount = sourceCryptoAmount.toFiat(
-                cryptoCurrency = state.sourceCryptoCurrency,
-                fiatCurrency = state.fiatCurrency
+            val sourceFiatAmount = amountConverter.cryptoToFiat(
+                amount = sourceCryptoAmount,
+                cryptoCurrency = state.sourceCryptoCurrency
             )
 
             setState {
@@ -606,12 +607,13 @@ class SwapInputViewModel(
         val state = currentLoadedState ?: return
 
         viewModelScope.launch(Dispatchers.IO) {
-            val destFiatAmount = destCryptoAmount.toFiat(
-                cryptoCurrency = state.destinationCryptoCurrency,
-                fiatCurrency = state.fiatCurrency
+            val destFiatAmount = amountConverter.cryptoToFiat(
+                amount = destCryptoAmount,
+                cryptoCurrency = state.destinationCryptoCurrency
             )
 
-            val sourceCryptoAmountData = destCryptoAmount.convertDestination(
+            val sourceCryptoAmountData = amountConverter.convertDestinationCryptoToSourceCrypto(
+                amount = destCryptoAmount,
                 destinationCurrency = state.destinationCryptoCurrency,
                 sourceCurrency = state.sourceCryptoCurrency,
                 rate = state.cryptoExchangeRate
@@ -619,9 +621,9 @@ class SwapInputViewModel(
 
             val sourceCryptoAmount = sourceCryptoAmountData.third
 
-            val sourceFiatAmount = sourceCryptoAmount.toFiat(
-                cryptoCurrency = state.sourceCryptoCurrency,
-                fiatCurrency = state.fiatCurrency
+            val sourceFiatAmount = amountConverter.cryptoToFiat(
+                amount = sourceCryptoAmount,
+                cryptoCurrency = state.sourceCryptoCurrency
             )
 
             setState {
@@ -879,41 +881,6 @@ class SwapInputViewModel(
         }
     }
 
-    private suspend fun estimateFee(
-        cryptoAmount: BigDecimal, currencyCode: String, fiatCode: String
-    ): FeeAmountData? {
-
-        if (cryptoAmount.isZero()) {
-            return null
-        }
-
-        val wallet = breadBox.wallet(currencyCode).first()
-        val amount = Amount.create(cryptoAmount.toDouble(), wallet.unit)
-        val address = loadAddress(wallet.currency.code) ?: return null
-
-        return try {
-            val data = wallet.estimateFee(address, amount)
-            val cryptoFee = data.fee.toBigDecimal()
-            val cryptoCurrency = data.currency.code
-            val fiatFee = ratesRepository.getFiatForCrypto(
-                cryptoAmount = cryptoFee,
-                cryptoCode = cryptoCurrency,
-                fiatCode = fiatCode
-            ) ?: return null
-
-            return FeeAmountData(
-                fiatAmount = fiatFee,
-                fiatCurrency = fiatCode,
-                cryptoAmount = cryptoFee,
-                cryptoCurrency = cryptoCurrency,
-                included = currencyCode.equals(cryptoCurrency, true)
-            )
-        } catch (e: Exception) {
-            Log.d("SwapInputViewModel", "Fee estimation failed: ${e.message}")
-            null
-        }
-    }
-
     private suspend fun estimateFeeBasis(orderAddress: String, currency: String, orderAmount: BigDecimal) : Any {
         val wallet = breadBox.wallet(currency).first()
 
@@ -936,50 +903,6 @@ class SwapInputViewModel(
         } catch (e: IllegalStateException) {
             SwapInputContract.ErrorMessage.NetworkIssues
         }
-    }
-
-    private fun BigDecimal.toCrypto(cryptoCurrency: String, fiatCurrency: String): BigDecimal {
-        return ratesRepository.getCryptoForFiat(
-            fiatAmount = this,
-            cryptoCode = cryptoCurrency,
-            fiatCode = fiatCurrency
-        ) ?: BigDecimal.ZERO
-    }
-
-    private fun BigDecimal.toFiat(cryptoCurrency: String, fiatCurrency: String): BigDecimal {
-        return ratesRepository.getFiatForCrypto(
-            cryptoAmount = this,
-            cryptoCode = cryptoCurrency,
-            fiatCode = fiatCurrency
-        ) ?: BigDecimal.ZERO
-    }
-
-    private suspend fun BigDecimal.convertSource(sourceCurrency: String, destinationCurrency: String, rate: BigDecimal): Triple<FeeAmountData?, FeeAmountData?, BigDecimal> {
-        val state = currentLoadedState ?: return Triple(null, null, BigDecimal.ZERO)
-
-        val sourceFee = estimateFee(this, sourceCurrency, state.fiatCurrency)
-        val sourceAmount = if (sourceFee?.included == true) this - sourceFee.cryptoAmount else this
-
-        val convertedAmount = sourceAmount.multiply(rate)
-
-        val destFee = estimateFee(convertedAmount, destinationCurrency, state.fiatCurrency)
-        val destAmount = if (destFee?.included == true) convertedAmount - destFee.cryptoAmount else convertedAmount
-
-        return Triple(sourceFee, destFee, destAmount)
-    }
-
-    private suspend fun BigDecimal.convertDestination(sourceCurrency: String, destinationCurrency: String, rate: BigDecimal): Triple<FeeAmountData?, FeeAmountData?, BigDecimal> {
-        val state = currentLoadedState ?: return Triple(null, null, BigDecimal.ZERO)
-
-        val destFee = estimateFee(this, destinationCurrency, state.fiatCurrency)
-        val destAmount = if (destFee?.included == true) this + destFee.cryptoAmount else this
-
-        val convertedAmount = destAmount.divide(rate, 5, RoundingMode.HALF_UP)
-
-        val sourceFee = estimateFee(convertedAmount, sourceCurrency, state.fiatCurrency)
-        val sourceAmount = if (sourceFee?.included == true) convertedAmount + sourceFee.cryptoAmount else convertedAmount
-
-        return Triple(sourceFee, destFee, sourceAmount)
     }
 
     private fun validate(state: SwapInputContract.State.Loaded) = when {
@@ -1029,9 +952,9 @@ class SwapInputViewModel(
 
     companion object {
         const val QUOTE_TIMER = 15
-        const val DIALOG_RESULT_GOT_IT = "result_got_it"
-        const val DIALOG_REQUEST_CHECK_ASSETS = "request_check_assets"
-        const val DIALOG_REQUEST_TEMP_UNAVAILABLE = "request_temp_unvailable"
+        private const val DIALOG_RESULT_GOT_IT = "result_got_it"
+        private const val DIALOG_REQUEST_CHECK_ASSETS = "request_check_assets"
+        private const val DIALOG_REQUEST_TEMP_UNAVAILABLE = "request_temp_unvailable"
 
         val DIALOG_CHECK_ASSETS_ARGS = FabriikGenericDialogArgs(
             titleRes = R.string.Swap_Input_Dialog_CheckAssets_Title,
