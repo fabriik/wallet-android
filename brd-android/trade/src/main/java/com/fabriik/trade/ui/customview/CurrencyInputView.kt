@@ -79,7 +79,7 @@ class CurrencyInputView @JvmOverloads constructor(
         val formatted = "%.2f".format(amount)
         val text = binding.etFiatAmount.text?.toString() ?: ""
 
-        if (amount.isZero()) {
+        if (!changeByUser && amount.isZero()) {
             binding.etFiatAmount.setText("")
         } else if (text != formatted && !changeByUser) {
             binding.etFiatAmount.setText(formatted)
@@ -90,7 +90,7 @@ class CurrencyInputView @JvmOverloads constructor(
         val formatted = "%.5f".format(amount)
         val text = binding.etCryptoAmount.text?.toString() ?: ""
 
-        if (amount.isZero()) {
+        if (!changeByUser && amount.isZero()) {
             binding.etCryptoAmount.setText("")
         } else if (text != formatted && !changeByUser) {
             binding.etCryptoAmount.setText(formatted)
