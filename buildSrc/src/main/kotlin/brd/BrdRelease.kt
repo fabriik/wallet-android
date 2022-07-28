@@ -41,7 +41,7 @@ object BrdRelease {
     private val engineering = ciTag?.get(2) ?: 1
 
     /** Build version. Increase for each new build. Maximum value: 999 */
-    private val build = ciTag?.lastOrNull() ?: 66
+    private val build = ciTag?.lastOrNull() ?: 67
 
     init {
         check(marketing in 0..99)
