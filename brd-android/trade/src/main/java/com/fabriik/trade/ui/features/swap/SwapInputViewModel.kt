@@ -882,6 +882,11 @@ class SwapInputViewModel(
     private suspend fun estimateFee(
         cryptoAmount: BigDecimal, currencyCode: String, fiatCode: String
     ): FeeAmountData? {
+
+        if (cryptoAmount.isZero()) {
+            return null
+        }
+
         val wallet = breadBox.wallet(currencyCode).first()
         val amount = Amount.create(cryptoAmount.toDouble(), wallet.unit)
         val address = loadAddress(wallet.currency.code) ?: return null
