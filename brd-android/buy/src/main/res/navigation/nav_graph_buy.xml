@@ -44,20 +44,17 @@
 
         <action
             android:id="@+id/actionCountrySelection"
-            app:destination="@id/fragmentCountrySelection"/>
+            app:destination="@id/navGraphCountrySelection">
+
+            <argument
+                android:name="requestKey"
+                app:argType="string" />
+
+        </action>
 
     </fragment>
 
-    <fragment
-        android:id="@+id/fragmentCountrySelection"
-        android:name="com.fabriik.kyc.ui.features.countryselection.CountrySelectionFragment"
-        tools:layout="@layout/fragment_country_selection">
-
-        <argument
-            android:name="requestKey"
-            app:argType="string" />
-
-    </fragment>
+    <include app:graph="@navigation/nav_graph_country_selection"/>
 
     <fragment
         android:id="@+id/fragmentAddCard"
