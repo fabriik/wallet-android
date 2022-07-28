@@ -472,7 +472,8 @@ class SwapInputViewModel(
                 amount = sourceCryptoAmount,
                 sourceCurrency = state.sourceCryptoCurrency,
                 destinationCurrency = state.destinationCryptoCurrency,
-                rate = state.cryptoExchangeRate
+                rate = state.cryptoExchangeRate,
+                markup = state.markupFactor
             )
 
             val destCryptoAmount = destCryptoAmountData.third
@@ -520,7 +521,8 @@ class SwapInputViewModel(
                 amount = sourceCryptoAmount,
                 sourceCurrency = state.sourceCryptoCurrency,
                 destinationCurrency = state.destinationCryptoCurrency,
-                rate = state.cryptoExchangeRate
+                rate = state.cryptoExchangeRate,
+                markup = state.markupFactor
             )
 
             val destCryptoAmount = destCryptoAmountData.third
@@ -568,7 +570,8 @@ class SwapInputViewModel(
                 amount = destCryptoAmount,
                 destinationCurrency = state.destinationCryptoCurrency,
                 sourceCurrency = state.sourceCryptoCurrency,
-                rate = state.cryptoExchangeRate
+                rate = state.cryptoExchangeRate,
+                markup = state.markupFactor
             )
 
             val sourceCryptoAmount = sourceCryptoAmountData.third
@@ -616,7 +619,8 @@ class SwapInputViewModel(
                 amount = destCryptoAmount,
                 destinationCurrency = state.destinationCryptoCurrency,
                 sourceCurrency = state.sourceCryptoCurrency,
-                rate = state.cryptoExchangeRate
+                rate = state.cryptoExchangeRate,
+                markup = state.markupFactor
             )
 
             val sourceCryptoAmount = sourceCryptoAmountData.third

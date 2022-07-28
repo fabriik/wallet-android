@@ -99,12 +99,23 @@ interface SwapInputContract {
 
             val cryptoExchangeRate: BigDecimal
                 get() = when {
-                    quoteResponse == null -> BigDecimal.ZERO
-                    quoteResponse.securityId.startsWith(sourceCryptoCurrency) ->
-                        quoteResponse.closeBid
-                    else ->
-                        BigDecimal.ONE.divide(quoteResponse.closeAsk, 20, RoundingMode.HALF_UP)
+                    sellingBaseCurrency -> quoteResponse!!.exchangeRate
+                    buyingBaseCurrency -> BigDecimal.ONE.divide(quoteResponse!!.exchangeRate, 20, RoundingMode.HALF_UP)
+                    else -> BigDecimal.ZERO
                 }
+
+            val markupFactor: BigDecimal
+                get() = when {
+                    sellingBaseCurrency -> quoteResponse!!.sellMarkupFactor
+                    buyingBaseCurrency -> quoteResponse!!.buyMarkupFactor
+                    else -> BigDecimal.ZERO
+                }
+
+            private val sellingBaseCurrency: Boolean
+                get() = quoteResponse?.securityId?.startsWith(sourceCryptoCurrency, true) ?: false
+
+            private val buyingBaseCurrency: Boolean
+                get() = quoteResponse?.securityId?.startsWith(destinationCryptoCurrency, true) ?: false
         }
     }
 
