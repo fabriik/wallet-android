@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navGraphAssetSelection"
+    app:startDestination="@id/fragmentAssetSelection">
+
+    <fragment
+        android:id="@+id/fragmentAssetSelection"
+        android:name="com.fabriik.trade.ui.features.assetselection.AssetSelectionFragment"
+        tools:layout="@layout/fragment_asset_selection">
+
+        <argument
+            android:name="requestKey"
+            app:argType="string" />
+
+        <argument
+            android:name="sourceCurrency"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+
+        <argument
+            android:name="currencies"
+            app:argType="string[]" />
+
+    </fragment>
+</navigation>
