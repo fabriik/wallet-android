@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.breadwallet.ext.isZero
 import com.fabriik.common.utils.DecimalDigitsInputFilter
 import com.fabriik.common.utils.disableCopyPaste
 import com.fabriik.common.utils.afterTextChangedDebounceFocused
@@ -27,6 +28,14 @@ class CurrencyInputView @JvmOverloads constructor(
         context.obtainStyledAttributes(attrs, R.styleable.CurrencyInputView).let {
             setTitle(it.getString(R.styleable.CurrencyInputView_title))
             it.recycle()
+        }
+
+        binding.etFiatAmount.setOnFocusChangeListener { _, focus ->
+            binding.etFiatAmount.hint = if (focus) ""  else "0.00"
+        }
+
+        binding.etCryptoAmount.setOnFocusChangeListener { _, focus ->
+            binding.etCryptoAmount.hint = if (focus) ""  else "0.00"
         }
 
         binding.etFiatAmount.disableCopyPaste()
@@ -67,7 +76,9 @@ class CurrencyInputView @JvmOverloads constructor(
         val formatted = "%.2f".format(amount)
         val text = binding.etFiatAmount.text?.toString() ?: ""
 
-        if (text != formatted && !changeByUser) {
+        if (amount.isZero()) {
+            binding.etFiatAmount.setText("")
+        } else if (text != formatted && !changeByUser) {
             binding.etFiatAmount.setText(formatted)
         }
     }
@@ -76,7 +87,9 @@ class CurrencyInputView @JvmOverloads constructor(
         val formatted = "%.5f".format(amount)
         val text = binding.etCryptoAmount.text?.toString() ?: ""
 
-        if (text != formatted && !changeByUser) {
+        if (amount.isZero()) {
+            binding.etCryptoAmount.setText("")
+        } else if (text != formatted && !changeByUser) {
             binding.etCryptoAmount.setText(formatted)
         }
     }

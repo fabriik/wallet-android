@@ -24,13 +24,15 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="4dp"
-        android:text="0.00"
+        android:hint="0.00"
         android:textColor="@color/light_text_01"
+        android:textColorHint="@color/light_text_01"
         app:layout_constrainedWidth="true"
         app:layout_constraintEnd_toStartOf="@id/tv_fiat_currency"
         app:layout_constraintHorizontal_bias="1"
         app:layout_constraintStart_toEndOf="@+id/view_currency_selector"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="HardcodedText" />
 
     <TextView
         android:id="@+id/tv_fiat_currency"
@@ -58,12 +60,14 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:text="0.00"
+        android:hint="0.00"
         android:textColor="@color/light_text_01"
+        android:textColorHint="@color/light_text_01"
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="@id/view_currency_selector"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1"
-        app:layout_constraintStart_toEndOf="@+id/view_currency_selector" />
+        app:layout_constraintStart_toEndOf="@+id/view_currency_selector"
+        tools:ignore="HardcodedText" />
 
 </merge>
