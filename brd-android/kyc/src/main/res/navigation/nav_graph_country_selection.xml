@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/fragmentCountrySelection"
+    android:id="@+id/navGraphCountrySelection">
+
+    <fragment
+        android:id="@+id/fragmentCountrySelection"
+        android:name="com.fabriik.kyc.ui.features.countryselection.CountrySelectionFragment"
+        tools:layout="@layout/fragment_country_selection">
+
+        <argument
+            android:name="requestKey"
+            app:argType="string" />
+
+    </fragment>
+</navigation>
