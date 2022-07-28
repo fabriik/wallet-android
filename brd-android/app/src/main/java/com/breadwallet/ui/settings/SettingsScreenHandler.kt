@@ -528,12 +528,12 @@ class SettingsScreenHandler(
             }
 
         }
-        val authority = buildString {
-            append(AUTHORITY_BASE)
-            if (!breadBox.isMainnet) append(".testnet")
-            if (BuildConfig.DEBUG) append(".debug")
-        }
-        output.accept(E.OnTransactionsExportFileGenerated(FileProvider.getUriForFile(context, authority, file)))
+
+        output.accept(
+            E.OnTransactionsExportFileGenerated(
+                FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID, file)
+            )
+        )
     }
 
     private fun Transfer.export(memo: String, feeWallet: Wallet, currencyId: String): String {
