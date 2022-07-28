@@ -12,23 +12,20 @@ data class QuoteResponse(
     @Json(name = "security_id")
     val securityId: String,
 
-    @Json(name = "close_ask")
-    val closeAsk: BigDecimal,
+    @Json(name = "exchange_rate")
+    val exchangeRate: BigDecimal,
 
-    @Json(name = "close_bid")
-    val closeBid: BigDecimal,
+    @Json(name = "buy_markup")
+    val buyMarkupFactor: BigDecimal,
+
+    @Json(name = "sell_markup")
+    val sellMarkupFactor: BigDecimal,
 
     @Json(name = "minimum_usd_value")
     val minUsdValue: BigDecimal,
 
     @Json(name = "timestamp")
-    val timestamp: Long,
-
-    @Json(name = "out_fee_estimates")
-    val outFeeEstimates: List<FeeEstimate>,
-
-    @Json(name = "in_fee_estimates")
-    val inFeeEstimates: List<FeeEstimate>
+    val timestamp: Long
 )
 
 @JsonClass(generateAdapter = true)

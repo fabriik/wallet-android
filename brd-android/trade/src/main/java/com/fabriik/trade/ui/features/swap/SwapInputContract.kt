@@ -101,9 +101,9 @@ interface SwapInputContract {
                 get() = when {
                     quoteResponse == null -> BigDecimal.ZERO
                     quoteResponse.securityId.startsWith(sourceCryptoCurrency) ->
-                        quoteResponse.closeBid
+                        quoteResponse.exchangeRate
                     else ->
-                        BigDecimal.ONE.divide(quoteResponse.closeAsk, 20, RoundingMode.HALF_UP)
+                        BigDecimal.ONE.divide(quoteResponse.exchangeRate, 20, RoundingMode.HALF_UP)
                 }
         }
     }
