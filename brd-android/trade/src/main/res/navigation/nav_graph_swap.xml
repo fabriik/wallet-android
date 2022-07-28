@@ -12,7 +12,23 @@
 
         <action
             android:id="@+id/actionAssetSelection"
-            app:destination="@+id/fragmentAssetSelection" />
+            app:destination="@+id/navGraphAssetSelection">
+
+            <argument
+                android:name="requestKey"
+                app:argType="string" />
+
+            <argument
+                android:name="sourceCurrency"
+                android:defaultValue="@null"
+                app:argType="string"
+                app:nullable="true" />
+
+            <argument
+                android:name="currencies"
+                app:argType="string[]" />
+
+        </action>
 
         <action
             android:id="@+id/actionSwapProcessing"
@@ -32,26 +48,7 @@
         android:name="com.fabriik.trade.ui.features.authentication.SwapAuthenticationFragment"
         tools:layout="@layout/fragment_swap_authentication"/>
 
-    <fragment
-        android:id="@+id/fragmentAssetSelection"
-        android:name="com.fabriik.trade.ui.features.assetselection.AssetSelectionFragment"
-        tools:layout="@layout/fragment_asset_selection">
-
-        <argument
-            android:name="requestKey"
-            app:argType="string" />
-
-        <argument
-            android:name="sourceCurrency"
-            app:argType="string"
-            app:nullable="true"
-            android:defaultValue="@null"/>
-
-        <argument
-            android:name="currencies"
-            app:argType="string[]" />
-
-    </fragment>
+    <include app:graph="@navigation/nav_graph_asset_selection"/>
 
     <fragment
         android:id="@+id/fragmentSwapProcessing"
