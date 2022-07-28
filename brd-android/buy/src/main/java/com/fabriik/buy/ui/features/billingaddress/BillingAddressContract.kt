@@ -1,6 +1,7 @@
 package com.fabriik.buy.ui.features.billingaddress
 
 import com.fabriik.common.ui.base.FabriikContract
+import com.fabriik.kyc.data.model.Country
 
 class BillingAddressContract : FabriikContract {
 
@@ -8,13 +9,17 @@ class BillingAddressContract : FabriikContract {
         object OnBackPressed : Event()
         object OnDismissClicked: Event()
         object OnCountryClicked: Event()
+        data class OnCountryChanged(val country: Country): Event()
     }
 
     sealed class Effect : FabriikContract.Effect {
         object Back : Effect()
         object Dismiss : Effect()
-        object CountryList : Effect()
+        object CountrySelection : Effect()
     }
 
-    object State : FabriikContract.State
+    data class State(
+        val country: Country? = null,
+        val confirmEnabled: Boolean = false
+    ) : FabriikContract.State
 }

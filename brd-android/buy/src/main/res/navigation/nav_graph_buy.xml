@@ -3,12 +3,61 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph_buy"
-    app:startDestination="@id/fragmentBillingAddress">
+    app:startDestination="@id/fragmentBuyInput">
+
+    <fragment
+        android:id="@+id/fragmentBuyInput"
+        android:name="com.fabriik.buy.ui.input.BuyInputFragment"
+        tools:layout="@layout/fragment_buy_input">
+
+        <action
+            android:id="@+id/actionAssetSelection"
+            app:destination="@+id/fragmentAssetSelection" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragmentAssetSelection"
+        android:name="com.fabriik.trade.ui.features.assetselection.AssetSelectionFragment"
+        tools:layout="@layout/fragment_asset_selection">
+
+        <argument
+            android:name="requestKey"
+            app:argType="string" />
+
+        <argument
+            android:name="sourceCurrency"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null"/>
+
+        <argument
+            android:name="currencies"
+            app:argType="string[]" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/fragmentBillingAddress"
         android:name="com.fabriik.buy.ui.features.billingaddress.BillingAddressFragment"
-        tools:layout="@layout/fragment_billing_address" />
+        tools:layout="@layout/fragment_billing_address" >
+
+        <action
+            android:id="@+id/actionCountrySelection"
+            app:destination="@id/fragmentCountrySelection"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragmentCountrySelection"
+        android:name="com.fabriik.kyc.ui.features.countryselection.CountrySelectionFragment"
+        tools:layout="@layout/fragment_country_selection">
+
+        <argument
+            android:name="requestKey"
+            app:argType="string" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/fragmentAddCard"
