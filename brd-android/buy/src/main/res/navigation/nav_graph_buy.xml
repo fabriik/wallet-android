@@ -3,7 +3,39 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph_buy"
-    app:startDestination="@id/fragmentBillingAddress">
+    app:startDestination="@id/fragmentBuyInput">
+
+    <fragment
+        android:id="@+id/fragmentBuyInput"
+        android:name="com.fabriik.buy.ui.input.BuyInputFragment"
+        tools:layout="@layout/fragment_buy_input">
+
+        <action
+            android:id="@+id/actionAssetSelection"
+            app:destination="@+id/fragmentAssetSelection" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragmentAssetSelection"
+        android:name="com.fabriik.trade.ui.features.assetselection.AssetSelectionFragment"
+        tools:layout="@layout/fragment_asset_selection">
+
+        <argument
+            android:name="requestKey"
+            app:argType="string" />
+
+        <argument
+            android:name="sourceCurrency"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null"/>
+
+        <argument
+            android:name="currencies"
+            app:argType="string[]" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/fragmentBillingAddress"
