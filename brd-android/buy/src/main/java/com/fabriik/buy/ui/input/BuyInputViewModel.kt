@@ -88,7 +88,7 @@ class BuyInputViewModel(
     }
 
     private fun onFiatAmountChanged(fiatAmount: BigDecimal, changeByUser: Boolean) {
-        val cryptoAmount = fiatAmount * currentState.exchangeRate
+        val cryptoAmount = fiatAmount.divide(currentState.exchangeRate, 5, RoundingMode.HALF_UP)
         setState {
             copy(
                 fiatAmount = fiatAmount,
@@ -103,7 +103,7 @@ class BuyInputViewModel(
     }
 
     private fun onCryptoAmountChanged(cryptoAmount: BigDecimal, changeByUser: Boolean) {
-        val fiatAmount = cryptoAmount.divide(currentState.exchangeRate, 5, RoundingMode.HALF_UP)
+        val fiatAmount = cryptoAmount * currentState.exchangeRate
         setState {
             copy(
                 fiatAmount = fiatAmount,
