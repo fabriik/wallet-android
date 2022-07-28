@@ -106,8 +106,8 @@ interface SwapInputContract {
 
             val markupFactor: BigDecimal
                 get() = when {
-                    sellingBaseCurrency -> quoteResponse!!.sellMarkupFactor
-                    buyingBaseCurrency -> BigDecimal.ONE.divide(quoteResponse!!.buyMarkupFactor, 20, RoundingMode.HALF_UP)
+                    sellingBaseCurrency -> BigDecimal.ONE.divide(quoteResponse!!.sellMarkupFactor, 20, RoundingMode.HALF_UP)
+                    buyingBaseCurrency -> quoteResponse!!.buyMarkupFactor
                     else -> BigDecimal.ZERO
                 }
 
