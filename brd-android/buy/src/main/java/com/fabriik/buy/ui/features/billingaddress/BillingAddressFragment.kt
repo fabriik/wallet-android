@@ -1,4 +1,4 @@
-package com.fabriik.buy.ui.billingaddress
+package com.fabriik.buy.ui.features.billingaddress
 
 import android.os.Bundle
 import android.view.LayoutInflater
