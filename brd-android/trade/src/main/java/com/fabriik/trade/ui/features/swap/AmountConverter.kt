@@ -8,6 +8,7 @@ import com.breadwallet.breadbox.toBigDecimal
 import com.breadwallet.crypto.Address
 import com.breadwallet.crypto.AddressScheme
 import com.breadwallet.crypto.Amount
+import com.breadwallet.ext.isZero
 import com.breadwallet.repository.RatesRepository
 import com.breadwallet.tools.manager.BRSharedPrefs
 import com.fabriik.trade.data.model.FeeAmountData
@@ -60,6 +61,10 @@ class AmountConverter(
     private suspend fun estimateFee(
         cryptoAmount: BigDecimal, currencyCode: String, fiatCode: String
     ): FeeAmountData? {
+        if (cryptoAmount.isZero()) {
+            return null
+        }
+
         val wallet = breadBox.wallet(currencyCode).first()
         val amount = Amount.create(cryptoAmount.toDouble(), wallet.unit)
         val address = loadAddress(wallet.currency.code) ?: return null
