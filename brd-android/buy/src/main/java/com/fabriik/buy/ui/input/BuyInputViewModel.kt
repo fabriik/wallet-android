@@ -2,12 +2,10 @@ package com.fabriik.buy.ui.input
 
 import android.app.Application
 import com.fabriik.common.ui.base.FabriikViewModel
-import com.fabriik.trade.ui.features.swap.AmountConverter
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
-import org.kodein.di.direct
-import org.kodein.di.erased.instance
 import java.math.BigDecimal
+import java.math.RoundingMode
 
 class BuyInputViewModel(
     application: Application
@@ -17,11 +15,10 @@ class BuyInputViewModel(
 
     override val kodein by closestKodein { application }
 
-    private val amountConverter = AmountConverter(
-        direct.instance(), direct.instance(), currentState.fiatCurrency
+    override fun createInitialState() = BuyInputContract.State(
+        cryptoCurrency = "BTC", //todo: set first enabled wallet
+        exchangeRate = BigDecimal("0.121") //todo: get from API
     )
-
-    override fun createInitialState() = BuyInputContract.State()
 
     override fun handleEvent(event: BuyInputContract.Event) {
         when (event) {
@@ -58,7 +55,12 @@ class BuyInputViewModel(
     }
 
     private fun onCryptoCurrencyChanged(currencyCode: String) {
-        //todo
+        setState {
+            copy(
+                cryptoCurrency = currencyCode,
+                // todo: update exchange rate
+            )
+        }
     }
 
     private fun onPaymentMethodChanged(cardNumber: String) {
@@ -74,7 +76,11 @@ class BuyInputViewModel(
     }
 
     private fun onCryptoCurrencyClicked() {
-        // todo
+        setEffect {
+            BuyInputContract.Effect.CryptoSelection(
+                listOf("BTC", "BSV", "ETH") //todo: get list of enabled wallets
+            )
+        }
     }
 
     private fun onPaymentMethodClicked() {
@@ -82,14 +88,45 @@ class BuyInputViewModel(
     }
 
     private fun onFiatAmountChanged(fiatAmount: BigDecimal, changeByUser: Boolean) {
-        // todo
+        val cryptoAmount = fiatAmount * currentState.exchangeRate
+        setState {
+            copy(
+                fiatAmount = fiatAmount,
+                cryptoAmount = cryptoAmount,
+            )
+        }
+
+        updateAmounts(
+            fiatAmountChangedByUser = changeByUser,
+            cryptoAmountChangedByUser = false,
+        )
     }
 
     private fun onCryptoAmountChanged(cryptoAmount: BigDecimal, changeByUser: Boolean) {
-        // todo
+        val fiatAmount = cryptoAmount.divide(currentState.exchangeRate, 5, RoundingMode.HALF_UP)
+        setState {
+            copy(
+                fiatAmount = fiatAmount,
+                cryptoAmount = cryptoAmount,
+            )
+        }
+
+        updateAmounts(
+            fiatAmountChangedByUser = false,
+            cryptoAmountChangedByUser = changeByUser,
+        )
     }
 
     private fun onContinueClicked() {
         //todo
+    }
+
+    private fun updateAmounts(fiatAmountChangedByUser: Boolean, cryptoAmountChangedByUser: Boolean) {
+        setEffect { BuyInputContract.Effect.UpdateFiatAmount(currentState.fiatAmount, fiatAmountChangedByUser) }
+        setEffect { BuyInputContract.Effect.UpdateCryptoAmount(currentState.cryptoAmount, cryptoAmountChangedByUser) }
+
+        if (fiatAmountChangedByUser || cryptoAmountChangedByUser) {
+            setEffect { BuyInputContract.Effect.DeselectMinMaxSwitchItems }
+        }
     }
 }

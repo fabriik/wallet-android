@@ -27,12 +27,16 @@ interface BuyInputContract {
         data class ShowToast(val message: String, val redInfo: Boolean = false) : Effect()
         data class CryptoSelection(val currencies: List<String>) : Effect()
         data class OpenOrderPreview(val cryptoCurrency: String) : Effect()
-        data class UpdateFiatAmount(val bigDecimal: BigDecimal, val changeByUser: Boolean) : Effect()
-        data class UpdateCryptoAmount(val bigDecimal: BigDecimal, val changeByUser: Boolean) : Effect()
+        data class UpdateFiatAmount(val amount: BigDecimal, val changeByUser: Boolean) : Effect()
+        data class UpdateCryptoAmount(val amount: BigDecimal, val changeByUser: Boolean) : Effect()
     }
 
     data class State(
+        val fiatAmount: BigDecimal = BigDecimal.ZERO,
+        val cryptoAmount: BigDecimal = BigDecimal.ZERO,
+        val exchangeRate: BigDecimal,
         val fiatCurrency: String = "USD",
+        val cryptoCurrency: String,
         val continueButtonEnabled: Boolean = false,
         val rateLoadingVisible: Boolean = false,
         val initialLoadingVisible: Boolean = false,

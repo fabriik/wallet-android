@@ -14,7 +14,9 @@ import com.fabriik.buy.databinding.FragmentBuyInputBinding
 import kotlinx.coroutines.flow.collect
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
+import com.breadwallet.breadbox.formatCryptoForUi
 import com.breadwallet.tools.util.Utils.hideKeyboard
+import com.breadwallet.util.formatFiatForUi
 import com.fabriik.common.ui.customview.FabriikSwitch
 import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.trade.ui.customview.CurrencyInputView
@@ -116,7 +118,16 @@ class BuyInputFragment : Fragment(),
     override fun render(state: BuyInputContract.State) {
         with(binding) {
             btnContinue.isEnabled = state.continueButtonEnabled
+
             viewCryptoInput.setFiatCurrency(state.fiatCurrency)
+            viewCryptoInput.setCryptoCurrency(state.cryptoCurrency)
+
+            tvRateValue.text = RATE_FORMAT.format(
+                state.cryptoCurrency,
+                state.exchangeRate.formatFiatForUi(
+                    state.fiatCurrency
+                )
+            )
 
             content.isVisible = !state.initialLoadingVisible
             quoteLoadingIndicator.isVisible = state.rateLoadingVisible
@@ -149,9 +160,11 @@ class BuyInputFragment : Fragment(),
                     )
                 )
 
-            is BuyInputContract.Effect.UpdateFiatAmount -> {} // todo
+            is BuyInputContract.Effect.UpdateFiatAmount ->
+                binding.viewCryptoInput.setFiatAmount(effect.amount, effect.changeByUser)
 
-            is BuyInputContract.Effect.UpdateCryptoAmount -> {} // todo
+            is BuyInputContract.Effect.UpdateCryptoAmount ->
+                binding.viewCryptoInput.setCryptoAmount(effect.amount, effect.changeByUser)
 
             is BuyInputContract.Effect.OpenOrderPreview -> {} // todo
         }
