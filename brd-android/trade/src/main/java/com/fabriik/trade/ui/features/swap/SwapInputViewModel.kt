@@ -11,7 +11,6 @@ import com.breadwallet.crypto.Amount
 import com.breadwallet.crypto.TransferFeeBasis
 import com.breadwallet.crypto.errors.FeeEstimationError
 import com.breadwallet.ext.isZero
-import com.breadwallet.logger.logError
 import com.breadwallet.platform.interfaces.AccountMetaDataProvider
 import com.breadwallet.repository.RatesRepository
 import com.breadwallet.tools.manager.BRSharedPrefs
@@ -23,6 +22,7 @@ import com.fabriik.common.data.Status
 import com.fabriik.common.data.model.availableDailyLimit
 import com.fabriik.common.data.model.availableLifetimeLimit
 import com.fabriik.common.data.model.nextExchangeLimit
+import com.fabriik.common.data.model.kyc2ExchangeLimit
 import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.common.ui.dialog.FabriikGenericDialogArgs
 import com.fabriik.common.utils.getString
@@ -48,6 +48,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import java.lang.Exception
 import java.math.RoundingMode
+import java.util.concurrent.atomic.AtomicBoolean
 
 class SwapInputViewModel(
     application: Application
@@ -70,6 +71,8 @@ class SwapInputViewModel(
     private val ratesRepository by kodein.instance<RatesRepository>()
 
     private var currentTimerJob: Job? = null
+    private var ethErrorSeen = false
+    private var ethWarningSeen = false
 
     init {
         loadInitialData()
@@ -171,6 +174,9 @@ class SwapInputViewModel(
                 destinationCryptoAmountChangedByUser = false
             )
 
+            ethErrorSeen = false
+            ethWarningSeen = false
+
             requestNewQuote()
         }
     }
@@ -205,6 +211,9 @@ class SwapInputViewModel(
             destinationFiatAmountChangedByUser = false,
             destinationCryptoAmountChangedByUser = false
         )
+
+        ethErrorSeen = false
+        ethWarningSeen = false
 
         requestNewQuote()
     }
@@ -378,7 +387,8 @@ class SwapInputViewModel(
                     minFiatAmount = quoteResponse.data?.minUsdValue ?: BigDecimal.ZERO,
                     maxFiatAmount = profile.nextExchangeLimit(),
                     dailyFiatLimit = profile.availableDailyLimit(),
-                    lifetimeFiatLimit = profile.availableLifetimeLimit()
+                    lifetimeFiatLimit = profile.availableLifetimeLimit(),
+                    kyc2ExchangeFiatLimit = profile.kyc2ExchangeLimit()
                 )
             }
 
@@ -490,6 +500,11 @@ class SwapInputViewModel(
                 destinationFiatAmountChangedByUser = false,
                 destinationCryptoAmountChangedByUser = false,
             )
+
+            checkEthFeeBalance(
+                sourceFeeData = destCryptoAmountData.first,
+                destinationFeeData = destCryptoAmountData.second,
+            )
         }
     }
 
@@ -531,6 +546,11 @@ class SwapInputViewModel(
                 sourceCryptoAmountChangedByUser = changeByUser,
                 destinationFiatAmountChangedByUser = false,
                 destinationCryptoAmountChangedByUser = false,
+            )
+
+            checkEthFeeBalance(
+                sourceFeeData = destCryptoAmountData.first,
+                destinationFeeData = destCryptoAmountData.second,
             )
         }
     }
@@ -574,6 +594,11 @@ class SwapInputViewModel(
                 destinationFiatAmountChangedByUser = changeByUser,
                 destinationCryptoAmountChangedByUser = false,
             )
+
+            checkEthFeeBalance(
+                sourceFeeData = sourceCryptoAmountData.first,
+                destinationFeeData = sourceCryptoAmountData.second,
+            )
         }
     }
 
@@ -616,6 +641,52 @@ class SwapInputViewModel(
                 destinationFiatAmountChangedByUser = false,
                 destinationCryptoAmountChangedByUser = changeByUser,
             )
+
+            checkEthFeeBalance(
+                sourceFeeData = sourceCryptoAmountData.first,
+                destinationFeeData = sourceCryptoAmountData.second,
+            )
+        }
+    }
+
+    private suspend fun checkEthFeeBalance(sourceFeeData: FeeAmountData?, destinationFeeData: FeeAmountData?) {
+        val sourceFeeEthAmount = when {
+            sourceFeeData != null && !sourceFeeData.included -> sourceFeeData.cryptoAmount
+            else -> BigDecimal.ZERO
+        }
+
+        val destinationFeeEthAmount = when {
+            destinationFeeData != null && !destinationFeeData.included -> destinationFeeData.cryptoAmount
+            else -> BigDecimal.ZERO
+        }
+
+        val ethSumFee = sourceFeeEthAmount + destinationFeeEthAmount
+        if (ethSumFee.isZero()) {
+            ethErrorSeen = false
+            ethWarningSeen = false
+            return
+        }
+
+        val ethBalance = loadCryptoBalance("ETH") ?: BigDecimal.ZERO
+        if (ethBalance < ethSumFee && !ethErrorSeen) {
+            ethErrorSeen = true
+            ethWarningSeen = false
+
+            setEffect {
+                SwapInputContract.Effect.ShowToast(
+                    message = getString(R.string.Swap_Input_Error_EthFeeBalance),
+                    redInfo = true
+                )
+            }
+        } else if (ethBalance > BigDecimal.ZERO && !ethWarningSeen) {
+            ethErrorSeen = false
+            ethWarningSeen = true
+
+            setEffect {
+                SwapInputContract.Effect.ShowToast(
+                    message = getString(R.string.Swap_Input_Warning_EthFeeBalance)
+                )
+            }
         }
     }
 
@@ -725,7 +796,7 @@ class SwapInputViewModel(
                             SwapInputContract.Effect.ShowToast(
                                 it.message ?: getString(
                                     R.string.FabriikApi_DefaultError
-                                )
+                                ), true
                             )
                         }
                 }
@@ -761,19 +832,32 @@ class SwapInputViewModel(
                 return@launch
             }
 
-            val feeBasis = estimateFeeBasis(
+            val feeBasisResponse = estimateFeeBasis(
                 currency = order.currency,
                 orderAmount = order.amount,
                 orderAddress = order.address
             )
 
-            if (feeBasis == null) {
-                showGenericError()
+            if (feeBasisResponse is SwapInputContract.ErrorMessage) {
+                setEffect {
+                    SwapInputContract.Effect.ShowToast(
+                        feeBasisResponse.toString(getApplication()), true
+                    )
+                }
+                return@launch
+            }
+
+            if (feeBasisResponse !is TransferFeeBasis) {
+                setEffect {
+                    SwapInputContract.Effect.ShowToast(
+                        getString(R.string.FabriikApi_DefaultError)
+                    )
+                }
                 return@launch
             }
 
             val newTransfer =
-                wallet.createTransfer(address, amount, feeBasis, attributes, order.exchangeId).orNull()
+                wallet.createTransfer(address, amount, feeBasisResponse, attributes, order.exchangeId).orNull()
 
             if (newTransfer == null) {
                 showGenericError()
@@ -825,27 +909,27 @@ class SwapInputViewModel(
         }
     }
 
-    private suspend fun estimateFeeBasis(orderAddress: String, currency: String, orderAmount: BigDecimal) : TransferFeeBasis? {
+    private suspend fun estimateFeeBasis(orderAddress: String, currency: String, orderAmount: BigDecimal) : Any {
         val wallet = breadBox.wallet(currency).first()
 
         // Skip if address is not valid
-        val address = wallet.addressFor(orderAddress) ?: return null
-        if (wallet.containsAddress(address))
-            return null
+        val address = wallet.addressFor(orderAddress) ?: return SwapInputContract.ErrorMessage.NetworkIssues
+        if (wallet.containsAddress(address)) return SwapInputContract.ErrorMessage.NetworkIssues
+
         val amount = Amount.create(orderAmount.toDouble(), wallet.unit)
         val networkFee = wallet.feeForSpeed(TransferSpeed.Regular(currency))
 
         return try {
             val data = wallet.estimateFee(address, amount, networkFee)
             val fee = data.fee.toBigDecimal()
-            check(!fee.isZero()) { "Estimated fee was zero" }
+
+            if (fee.isZero()) return SwapInputContract.ErrorMessage.NetworkIssues
+
             data
         } catch (e: FeeEstimationError) {
-            logError("Failed get fee estimate", e)
-            null
+            SwapInputContract.ErrorMessage.InsufficientFundsForFee
         } catch (e: IllegalStateException) {
-            logError("Failed get fee estimate", e)
-            null
+            SwapInputContract.ErrorMessage.NetworkIssues
         }
     }
 
@@ -903,9 +987,11 @@ class SwapInputViewModel(
         state.sourceFiatAmount < state.minFiatAmount ->
             SwapInputContract.ErrorMessage.MinSwapAmount(state.minFiatAmount, state.fiatCurrency)
         state.dailyFiatLimit < state.sourceFiatAmount ->
-            SwapInputContract.ErrorMessage.DailyLimitReached
+            SwapInputContract.ErrorMessage.Kyc1DailyLimitReached
         state.lifetimeFiatLimit < state.sourceFiatAmount ->
-            SwapInputContract.ErrorMessage.LifetimeLimitReached
+            SwapInputContract.ErrorMessage.Kyc1LifetimeLimitReached
+        state.kyc2ExchangeFiatLimit != null && state.kyc2ExchangeFiatLimit < state.sourceFiatAmount ->
+            SwapInputContract.ErrorMessage.Kyc2ExchangeLimitReached
         else -> null
     }
 
