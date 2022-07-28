@@ -9,7 +9,7 @@ class BillingAddressViewModel(
     application
 ) {
 
-    override fun createInitialState() = BillingAddressContract.State
+    override fun createInitialState() = BillingAddressContract.State()
 
     override fun handleEvent(event: BillingAddressContract.Event) {
         when (event) {
@@ -20,7 +20,15 @@ class BillingAddressViewModel(
                 setEffect { BillingAddressContract.Effect.Dismiss }
 
             BillingAddressContract.Event.OnCountryClicked ->
-                setEffect { BillingAddressContract.Effect.CountryList }
+                setEffect { BillingAddressContract.Effect.CountrySelection }
+
+            is BillingAddressContract.Event.OnCountryChanged ->
+                setState { copy(country = event.country).validate() }
         }
     }
+
+    private fun BillingAddressContract.State.validate() = copy(
+        confirmEnabled = country != null
+        //todo: add validation for other input data
+    )
 }
