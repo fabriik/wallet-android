@@ -1,13 +1,10 @@
-package com.fabriik.buy.ui.processing
+package com.fabriik.buy.ui.features.processing
 
 import android.app.Application
-import androidx.lifecycle.viewModelScope
 import com.fabriik.common.data.Resource
 import com.fabriik.common.data.Status
 import com.fabriik.common.ui.base.FabriikViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 class PaymentProcessingViewModel(
     application: Application

@@ -1,4 +1,4 @@
-package com.fabriik.kyc.ui.dialogs
+package com.fabriik.common.ui.dialog
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.annotation.StringRes
 import androidx.fragment.app.DialogFragment
-import com.fabriik.kyc.databinding.FragmentInfoDialogBinding
+import com.fabriik.common.databinding.FragmentInfoDialogBinding
 
 class InfoDialog(
     val args: InfoDialogArgs

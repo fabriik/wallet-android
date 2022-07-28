@@ -1,4 +1,4 @@
-package com.fabriik.buy.ui.billingaddress
+package com.fabriik.buy.ui.features.billingaddress
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.fabriik.buy.R
 import com.fabriik.buy.databinding.FragmentBillingAddressBinding

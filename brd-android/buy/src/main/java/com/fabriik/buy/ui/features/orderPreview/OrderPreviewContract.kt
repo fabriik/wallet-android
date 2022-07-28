@@ -1,4 +1,4 @@
-package com.fabriik.buy.ui.orderPreview
+package com.fabriik.buy.ui.features.orderPreview
 
 import com.fabriik.common.ui.base.FabriikContract
 

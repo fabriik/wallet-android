@@ -18,8 +18,8 @@ import com.fabriik.kyc.R
 import com.fabriik.kyc.databinding.FragmentAccountVerificationBinding
 import com.fabriik.kyc.ui.customview.AccountVerificationStatusView
 import com.fabriik.kyc.ui.customview.CheckedTextView
-import com.fabriik.kyc.ui.dialogs.InfoDialog
-import com.fabriik.kyc.ui.dialogs.InfoDialogArgs
+import com.fabriik.common.ui.dialog.InfoDialog
+import com.fabriik.common.ui.dialog.InfoDialogArgs
 import kotlinx.coroutines.flow.collect
 
 class AccountVerificationFragment : Fragment(),

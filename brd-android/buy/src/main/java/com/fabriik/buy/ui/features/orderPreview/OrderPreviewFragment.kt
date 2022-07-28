@@ -1,4 +1,4 @@
-package com.fabriik.buy.ui.orderPreview
+package com.fabriik.buy.ui.features.orderPreview
 
 import android.os.Bundle
 import android.text.SpannableString

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/fragmentBillingAddress"
-        android:name="com.fabriik.buy.ui.billingaddress.BillingAddressFragment"
+        android:name="com.fabriik.buy.ui.features.billingaddress.BillingAddressFragment"
         tools:layout="@layout/fragment_billing_address" />
 
     <fragment android:id="@+id/fragmentBuyAuthentication"
@@ -15,11 +15,11 @@
         tools:layout="@layout/fragment_swap_authentication"/>
 
     <fragment android:id="@+id/fragmentPaymentProcessing"
-        android:name="com.fabriik.buy.ui.processing.PaymentProcessingFragment"
+        android:name="com.fabriik.buy.ui.features.processing.PaymentProcessingFragment"
         tools:layout="@layout/fragment_swap_authentication"/>
 
     <fragment android:id="@+id/fragmentOrderPreview"
-        android:name="com.fabriik.buy.ui.orderPreview.OrderPreviewFragment"
+        android:name="com.fabriik.buy.ui.features.orderPreview.OrderPreviewFragment"
         tools:layout="@layout/fragment_order_preview" />
 
 </navigation>

@@ -92,8 +92,8 @@ import com.fabriik.common.ui.dialog.FabriikGenericDialog
 import com.fabriik.common.ui.features.nointernet.NoInternetActivity
 import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.kyc.ui.KycActivity
-import com.fabriik.kyc.ui.dialogs.InfoDialog
-import com.fabriik.kyc.ui.dialogs.InfoDialogArgs
+import com.fabriik.common.ui.dialog.InfoDialog
+import com.fabriik.common.ui.dialog.InfoDialogArgs
 import com.fabriik.registration.ui.RegistrationActivity
 import com.fabriik.support.CashSupport
 import com.fabriik.trade.ui.SwapActivity

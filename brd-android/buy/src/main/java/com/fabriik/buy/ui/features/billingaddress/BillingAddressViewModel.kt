@@ -1,4 +1,4 @@
-package com.fabriik.buy.ui.billingaddress
+package com.fabriik.buy.ui.features.billingaddress
 
 import android.app.Application
 import com.fabriik.common.ui.base.FabriikViewModel

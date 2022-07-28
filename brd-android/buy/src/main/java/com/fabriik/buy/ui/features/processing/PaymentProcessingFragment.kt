@@ -1,4 +1,4 @@
-package com.fabriik.buy.ui.processing
+package com.fabriik.buy.ui.features.processing
 
 import android.os.Bundle
 import android.view.LayoutInflater
