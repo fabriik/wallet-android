@@ -7,6 +7,7 @@ plugins {
     id("kotlin-parcelize")
     id("dev.zacsweers.redacted")
     id("kotlin-kapt")
+    id("androidx.navigation.safeargs.kotlin")
 }
 
 apply(from = rootProject.file("gradle/flavors.gradle"))
@@ -43,6 +44,7 @@ dependencies {
     implementation(project(":brd-android:app-core"))
     implementation(project(":brd-android:fabriik-common"))
     implementation(project(":brd-android:trade"))
+    implementation(project(":brd-android:kyc"))
 
     implementation(Libs.Androidx.AppCompat)
     implementation(Libs.Androidx.CoreKtx)
