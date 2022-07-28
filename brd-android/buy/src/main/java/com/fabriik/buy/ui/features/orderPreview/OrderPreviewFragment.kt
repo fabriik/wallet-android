@@ -15,6 +15,8 @@ import androidx.navigation.fragment.findNavController
 import com.fabriik.buy.R
 import com.fabriik.buy.databinding.FragmentOrderPreviewBinding
 import com.fabriik.common.ui.base.FabriikView
+import com.fabriik.common.ui.dialog.InfoDialog
+import com.fabriik.common.ui.dialog.InfoDialogArgs
 import kotlinx.coroutines.flow.collect
 
 class OrderPreviewFragment : Fragment(),
@@ -89,7 +91,8 @@ class OrderPreviewFragment : Fragment(),
             OrderPreviewContract.Effect.Dismiss ->
                 activity?.finish()
 
-            is OrderPreviewContract.Effect.InfoDialog -> TODO()
+            is OrderPreviewContract.Effect.ShowInfoDialog ->
+                showInfoDialog(effect.type)
         }
     }
 
@@ -111,5 +114,15 @@ class OrderPreviewFragment : Fragment(),
         )
 
         return spannableString
+    }
+
+    private fun showInfoDialog(type: DialogType) {
+        val fm = parentFragmentManager
+        val args = InfoDialogArgs(
+            title = if (type == DialogType.CREDIT_CARD_FEE) R.string.Buy_OrderPreview_CardFeesDialog_Title else R.string.Buy_OrderPreview_NetworkFeesDialog_Title,
+            description = if (type == DialogType.CREDIT_CARD_FEE) R.string.Buy_OrderPreview_CardFeesDialog_Content else R.string.Buy_OrderPreview_NetworkFeesDialog_Content
+        )
+
+        InfoDialog(args).show(fm, InfoDialog.TAG)
     }
 }

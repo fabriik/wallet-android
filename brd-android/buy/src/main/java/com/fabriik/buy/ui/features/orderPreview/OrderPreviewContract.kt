@@ -17,7 +17,7 @@ class OrderPreviewContract : FabriikContract {
         object Back : Effect()
         object Dismiss : Effect()
 
-        data class InfoDialog(val type: DialogType) : Effect()
+        data class ShowInfoDialog(val type: DialogType) : Effect()
     }
 
     object State : FabriikContract.State

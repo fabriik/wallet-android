@@ -36,6 +36,10 @@ class InfoDialog(
             dialog?.dismiss()
         }
     }
+
+    companion object {
+        const val TAG = "Info_dialog"
+    }
 }
 
 data class InfoDialogArgs(

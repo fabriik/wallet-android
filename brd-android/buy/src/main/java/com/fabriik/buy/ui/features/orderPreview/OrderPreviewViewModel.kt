@@ -20,10 +20,10 @@ class OrderPreviewViewModel(
                 setEffect { OrderPreviewContract.Effect.Dismiss }
 
             OrderPreviewContract.Event.OnCreditInfoClicked ->
-                setEffect { OrderPreviewContract.Effect.InfoDialog(DialogType.CREDIT_CARD_FEE) }
+                setEffect { OrderPreviewContract.Effect.ShowInfoDialog(DialogType.CREDIT_CARD_FEE) }
 
             OrderPreviewContract.Event.OnNetworkInfoClicked ->
-                setEffect { OrderPreviewContract.Effect.InfoDialog(DialogType.NETWORK_FEE) }
+                setEffect { OrderPreviewContract.Effect.ShowInfoDialog(DialogType.NETWORK_FEE) }
 
             OrderPreviewContract.Event.OnTermsAndConditionsCLicked -> TODO()
 
