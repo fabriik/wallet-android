@@ -54,9 +54,11 @@ class AssetSelectionAdapter(private val callback: (AssetSelectionItem) -> Unit) 
                 tvCryptoAmount.text = item.cryptoBalance
 
                 if (item.enabled) {
+                    setAlpha(binding, 1f)
                     binding.root.setOnClickListener { callback(item) }
                 } else {
-                    setAlpha(binding)
+                    setAlpha(binding, 0.5f)
+                    binding.root.setOnClickListener(null)
                 }
             }
         }
@@ -88,7 +90,7 @@ class AssetSelectionAdapter(private val callback: (AssetSelectionItem) -> Unit) 
         val enabled: Boolean
     ) : Parcelable
 
-    private fun setAlpha(binding: ListItemAssetBinding, alpha: Float = 0.5f) {
+    private fun setAlpha(binding: ListItemAssetBinding, alpha: Float) {
         with(binding) {
             ivLogo.alpha = alpha
             tvCryptoAmount.alpha = alpha
