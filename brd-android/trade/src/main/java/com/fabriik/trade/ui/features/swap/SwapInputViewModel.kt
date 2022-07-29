@@ -68,11 +68,6 @@ class SwapInputViewModel(
     private val convertDestinationFiatAmount = ConvertDestinationFiatAmount(amountConverter)
     private val convertDestinationCryptoAmount = ConvertDestinationCryptoAmount(amountConverter)
 
-    private val convertSourceFiatAmount = ConvertSourceFiatAmount(amountConverter)
-    private val convertSourceCryptoAmount = ConvertSourceCryptoAmount(amountConverter)
-    private val convertDestinationFiatAmount = ConvertDestinationFiatAmount(amountConverter)
-    private val convertDestinationCryptoAmount = ConvertDestinationCryptoAmount(amountConverter)
-
     private val currentLoadedState: SwapInputContract.State.Loaded?
         get() = state.value as SwapInputContract.State.Loaded?
 
