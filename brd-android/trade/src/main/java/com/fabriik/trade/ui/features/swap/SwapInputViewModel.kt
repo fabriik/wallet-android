@@ -755,8 +755,7 @@ class SwapInputViewModel(
 
     private fun SwapInputContract.State.Loaded.validateAmounts() = copy(
         swapErrorMessage = null,
-        confirmButtonEnabled = sourceCryptoAmount != BigDecimal.ZERO &&
-                destinationCryptoAmount != BigDecimal.ZERO
+        confirmButtonEnabled = !sourceCryptoAmount.isZero() && !destinationCryptoAmount.isZero()
     )
 
     private fun showSwapError(error: SwapInputContract.ErrorMessage) {
