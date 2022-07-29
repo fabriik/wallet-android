@@ -8,7 +8,6 @@ class OrderPreviewViewModel(
 ) : FabriikViewModel<OrderPreviewContract.State, OrderPreviewContract.Event, OrderPreviewContract.Effect>(
     application
 ) {
-
     override fun createInitialState() = OrderPreviewContract.State
 
     override fun handleEvent(event: OrderPreviewContract.Event) {

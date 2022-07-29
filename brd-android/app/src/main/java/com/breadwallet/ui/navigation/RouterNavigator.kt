@@ -86,8 +86,8 @@ import com.breadwallet.ui.verifyaccount.VerifyController
 import com.breadwallet.util.CryptoUriParser
 import com.breadwallet.util.isBrd
 import com.breadwallet.util.showFabriikGenericDialog
-//import com.fabriik.buy.ui.BuyActivity
-//import com.fabriik.buy.ui.BuyWebViewActivity
+import com.fabriik.buy.ui.BuyActivity
+import com.fabriik.buy.ui.BuyWebViewActivity
 import com.fabriik.common.ui.features.nointernet.NoInternetActivity
 import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.kyc.ui.KycActivity
@@ -203,13 +203,13 @@ class RouterNavigator(
         }
 
         router.activity?.let {
-//            it.startActivity(
-//                if (BuildConfig.DEBUG) {
-//                    BuyActivity.getStartIntent(it)
-//                } else {
-//                    BuyWebViewActivity.getStartIntent(it)
-//                }
-//            )
+            it.startActivity(
+                if (BuildConfig.DEBUG) {
+                    BuyActivity.getStartIntent(it)
+                } else {
+                    BuyWebViewActivity.getStartIntent(it)
+                }
+            )
         }
     }
 
