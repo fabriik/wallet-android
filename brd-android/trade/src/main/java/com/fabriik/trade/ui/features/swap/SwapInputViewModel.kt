@@ -733,8 +733,10 @@ class SwapInputViewModel(
     private fun validate(state: SwapInputContract.State.Loaded) = when {
         state.sendingNetworkFee == null || state.receivingNetworkFee == null ->
             SwapInputContract.ErrorMessage.NetworkIssues
-        state.sourceCryptoBalance < state.sourceCryptoAmount  ->
+        state.sourceCryptoBalance < state.sourceCryptoAmount ->
             SwapInputContract.ErrorMessage.InsufficientFunds(state.sourceCryptoBalance, state.sourceCryptoCurrency)
+        state.sourceCryptoBalance < state.sourceCryptoAmount + state.sendingNetworkFee.cryptoAmountIfIncludedOrZero() ->
+            SwapInputContract.ErrorMessage.InsufficientFundsForFee
         state.sourceFiatAmount > state.maxFiatAmount ->
             SwapInputContract.ErrorMessage.MaxSwapAmount(state.maxFiatAmount, state.fiatCurrency)
         state.sourceFiatAmount < state.minFiatAmount ->
