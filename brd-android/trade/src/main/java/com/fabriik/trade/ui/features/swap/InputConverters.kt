@@ -36,11 +36,13 @@ class ConvertSourceFiatAmount(private val amountConverter: AmountConverter) : In
         sourceCurrency: String,
         destinationCurrency: String
     ): InputConverter.Result {
+        // convert sending fiat to sending crypto
         val sourceCryptoAmount = amountConverter.fiatToCrypto(
             amount = amount,
             cryptoCurrency = sourceCurrency
         )
 
+        // convert sending crypto to receiving crypto
         val destCryptoAmountData = amountConverter.convertSourceCryptoToDestinationCrypto(
             rate = exchangeRate,
             markup = markupFactor,
@@ -51,6 +53,7 @@ class ConvertSourceFiatAmount(private val amountConverter: AmountConverter) : In
 
         val destCryptoAmount = destCryptoAmountData.third
 
+        // convert receiving crypto to receiving fiat
         val destFiatAmount = amountConverter.cryptoToFiat(
             amount = destCryptoAmount,
             cryptoCurrency = destinationCurrency
@@ -77,11 +80,13 @@ class ConvertSourceCryptoAmount(private val amountConverter: AmountConverter) : 
         sourceCurrency: String,
         destinationCurrency: String
     ): InputConverter.Result {
+        // convert sending crypto to sending fiat
         val sourceFiatAmount = amountConverter.cryptoToFiat(
             amount = amount,
             cryptoCurrency = sourceCurrency
         )
 
+        // convert sending crypto to receiving crypto
         val destCryptoAmountData = amountConverter.convertSourceCryptoToDestinationCrypto(
             rate = exchangeRate,
             markup = markupFactor,
@@ -92,6 +97,7 @@ class ConvertSourceCryptoAmount(private val amountConverter: AmountConverter) : 
 
         val destCryptoAmount = destCryptoAmountData.third
 
+        // convert receiving crypto to receiving fiat
         val destFiatAmount = amountConverter.cryptoToFiat(
             amount = destCryptoAmount,
             cryptoCurrency = destinationCurrency
@@ -118,11 +124,13 @@ class ConvertDestinationFiatAmount(private val amountConverter: AmountConverter)
         sourceCurrency: String,
         destinationCurrency: String
     ): InputConverter.Result {
+        // convert receiving fiat to receiving crypto
         val destCryptoAmount = amountConverter.fiatToCrypto(
             amount = amount,
             cryptoCurrency = destinationCurrency
         )
 
+        // convert receiving crypto to sending crypto
         val sourceCryptoAmountData = amountConverter.convertDestinationCryptoToSourceCrypto(
             amount = destCryptoAmount,
             destinationCurrency = destinationCurrency,
@@ -133,6 +141,7 @@ class ConvertDestinationFiatAmount(private val amountConverter: AmountConverter)
 
         val sourceCryptoAmount = sourceCryptoAmountData.third
 
+        // convert sending crypto to sending fiat
         val sourceFiatAmount = amountConverter.cryptoToFiat(
             amount = sourceCryptoAmount,
             cryptoCurrency = sourceCurrency
@@ -160,11 +169,13 @@ class ConvertDestinationCryptoAmount(private val amountConverter: AmountConverte
         sourceCurrency: String,
         destinationCurrency: String
     ): InputConverter.Result {
+        // convert receiving crypto to receiving fiat
         val destFiatAmount = amountConverter.cryptoToFiat(
             amount = amount,
             cryptoCurrency = destinationCurrency
         )
 
+        // convert receiving crypto to sending crypto
         val sourceCryptoAmountData = amountConverter.convertDestinationCryptoToSourceCrypto(
             rate = exchangeRate,
             amount = amount,
@@ -175,9 +186,10 @@ class ConvertDestinationCryptoAmount(private val amountConverter: AmountConverte
 
         val sourceCryptoAmount = sourceCryptoAmountData.third
 
+        // convert sending crypto to sending fiat
         val sourceFiatAmount = amountConverter.cryptoToFiat(
             amount = sourceCryptoAmount,
-            cryptoCurrency = destinationCurrency
+            cryptoCurrency = sourceCurrency
         )
 
         return InputConverter.Result(
