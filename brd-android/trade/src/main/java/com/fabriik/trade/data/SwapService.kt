@@ -29,7 +29,7 @@ interface SwapService {
     @GET("exchanges")
     suspend fun getExchanges(): ExchangesResponse
 
-    @POST("exchange/estimate-fee")
+    @POST("estimate-fee")
     suspend fun estimateEthFee(
         @Body body: EstimateEthFeeRequest
     ): EstimateEthFeeResponse
