@@ -194,6 +194,11 @@ class SwapCardView @JvmOverloads constructor(
         binding.viewInputSellingCurrency.setInputFieldsEnabled(enabled)
     }
 
+    fun clearCurrentInputFieldFocus() {
+        binding.viewInputBuyingCurrency.clearCurrentInputFieldFocus()
+        binding.viewInputSellingCurrency.clearCurrentInputFieldFocus()
+    }
+
     interface Callback {
         fun onReplaceCurrenciesClicked()
         fun onDestinationCurrencyClicked()

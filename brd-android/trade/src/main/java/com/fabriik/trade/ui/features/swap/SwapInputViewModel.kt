@@ -224,6 +224,8 @@ class SwapInputViewModel(
     private fun onMinAmountClicked() {
         val state = currentLoadedState ?: return
 
+        setEffect { SwapInputContract.Effect.ClearInputFocus }
+
         onSourceCurrencyFiatAmountChanged(
             state.minFiatAmount, false
         )
@@ -231,6 +233,8 @@ class SwapInputViewModel(
 
     private fun onMaxAmountClicked() {
         val state = currentLoadedState ?: return
+
+        setEffect { SwapInputContract.Effect.ClearInputFocus }
 
         val maxAmountLimitCrypto = amountConverter.fiatToCrypto(
             amount = state.maxFiatAmount,

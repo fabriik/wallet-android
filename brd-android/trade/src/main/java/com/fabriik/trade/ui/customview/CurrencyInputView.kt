@@ -109,6 +109,11 @@ class CurrencyInputView @JvmOverloads constructor(
         binding.tvFiatCurrency.isEnabled = enabled
     }
 
+    fun clearCurrentInputFieldFocus() {
+        binding.etFiatAmount.clearFocus()
+        binding.etCryptoAmount.clearFocus()
+    }
+
     interface Callback {
         fun onCurrencySelectorClicked()
         fun onFiatAmountChanged(amount: BigDecimal)
