@@ -11,4 +11,7 @@ data class FeeAmountData(
     val cryptoAmount: BigDecimal,
     val cryptoCurrency: String,
     val included: Boolean
-): Parcelable
+) : Parcelable {
+
+    fun cryptoAmountIfIncludedOrZero(): BigDecimal = if (included) cryptoAmount else BigDecimal.ZERO
+}
