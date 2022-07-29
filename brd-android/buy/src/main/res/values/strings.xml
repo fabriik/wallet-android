@@ -40,6 +40,9 @@
     <string name="Buy.ProcessingFailed.Title">There was an error while processing your payment</string>
     <string name="Buy.ProcessingFailed.Description">Please contact your card issuer/bank or try again with a different payment method.</string>
 
+    <!-- Credit card view -->
+    <string name="Buy.CreditCard.HiddenNumbers">**** **** **** ****</string>
+
     <!-- Order preview screen -->
     <string name="Buy.OrderPreview.Title">Order preview</string>
     <string name="BUy.OrderPreview.PaymentMethod">Payment method</string>

@@ -196,6 +196,7 @@
     <color name="fabriik_red">#D72431</color>
     <color name="fabriik_gold_100">#F7F5F1</color>
     <color name="fabriik_yellow">#F8BA37</color>
+    <color name="fabriik_dark_blue_buy">#1434CB</color>
 
     <!-- Swap transaction item -->
     <color name="swap_green">#0EBF15</color>
