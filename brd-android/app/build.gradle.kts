@@ -142,7 +142,7 @@ dependencies {
     implementation(project(":cosmos-bundled"))
     implementation(project(":brd-android:app-core"))
     implementation(project(":brd-android:kyc"))
-    implementation(project(":brd-android:buy"))
+//    implementation(project(":brd-android:buy"))
     implementation(project(":brd-android:trade"))
     implementation(project(":brd-android:support"))
     implementation(project(":brd-android:registration"))
