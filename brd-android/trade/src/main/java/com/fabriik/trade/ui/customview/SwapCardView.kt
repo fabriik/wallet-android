@@ -10,6 +10,7 @@ import android.view.animation.Animation
 import android.view.animation.TranslateAnimation
 import androidx.core.view.isVisible
 import com.breadwallet.breadbox.formatCryptoForUi
+import com.breadwallet.tools.util.Utils
 import com.breadwallet.util.formatFiatForUi
 import com.fabriik.common.utils.dp
 import com.fabriik.trade.R
@@ -195,6 +196,7 @@ class SwapCardView @JvmOverloads constructor(
     }
 
     fun clearCurrentInputFieldFocus() {
+        Utils.hideKeyboard(binding.root.context)
         binding.viewInputBuyingCurrency.clearCurrentInputFieldFocus()
         binding.viewInputSellingCurrency.clearCurrentInputFieldFocus()
     }
