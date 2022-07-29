@@ -79,6 +79,7 @@ import com.fabriik.trade.data.SwapApi
 import com.fabriik.trade.data.SwapApiInterceptor
 import com.fabriik.trade.data.SwapTransactionsFetcher
 import com.fabriik.trade.data.SwapTransactionsRepository
+import com.fabriik.trade.utils.EstimateSwapFee
 import com.platform.APIClient
 import com.platform.HTTPServer
 import com.platform.interfaces.KVStoreProvider
@@ -484,6 +485,10 @@ class BreadApp : Application(), KodeinAware, CameraXConfig.Provider {
 
         bind<BakersApiClient>() with singleton {
             BakersApiClient.create(instance())
+        }
+
+        bind<EstimateSwapFee>() with singleton {
+            EstimateSwapFee(instance(), instance(), instance())
         }
     }
 
