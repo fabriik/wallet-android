@@ -42,8 +42,6 @@ class CreditCardView @JvmOverloads constructor(
     private fun setExpirationDate(date: String) {
         binding.tvDate.text = date
     }
-
-    //TODO - add different card types when we get designs
 }
 
 enum class CardType(@DrawableRes val icon: Int) {
