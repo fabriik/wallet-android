@@ -7,10 +7,8 @@ import com.breadwallet.breadbox.*
 import com.breadwallet.crypto.Amount
 import com.breadwallet.crypto.TransferFeeBasis
 import com.breadwallet.ext.isZero
-import com.breadwallet.platform.interfaces.AccountMetaDataProvider
 import com.breadwallet.tools.security.BrdUserManager
 import com.breadwallet.tools.security.ProfileManager
-import com.breadwallet.tools.util.TokenUtil
 import com.fabriik.common.data.Resource
 import com.fabriik.common.data.Status
 import com.fabriik.common.data.model.availableDailyLimit
@@ -56,7 +54,11 @@ class SwapInputViewModel(
     private val breadBox by kodein.instance<BreadBox>()
     private val userManager by kodein.instance<BrdUserManager>()
     private val profileManager by kodein.instance<ProfileManager>()
-    private val acctMetaDataProvider by kodein.instance<AccountMetaDataProvider>()
+
+    private val helper = SwapInputHelper(
+        direct.instance(), direct.instance()
+    )
+
     private val amountConverter = AmountConverter(
         direct.instance(), direct.instance(), currentFiatCurrency
     )
@@ -65,10 +67,6 @@ class SwapInputViewModel(
     private val convertSourceCryptoAmount = ConvertSourceCryptoAmount(amountConverter)
     private val convertDestinationFiatAmount = ConvertDestinationFiatAmount(amountConverter)
     private val convertDestinationCryptoAmount = ConvertDestinationCryptoAmount(amountConverter)
-
-    private val helper = SwapInputHelper(
-        direct.instance(), direct.instance()
-    )
 
     private val currentLoadedState: SwapInputContract.State.Loaded?
         get() = state.value as SwapInputContract.State.Loaded?
@@ -411,23 +409,22 @@ class SwapInputViewModel(
 
     private fun onSourceCurrencyClicked() {
         val state = currentLoadedState ?: return
-        val currencies = state.tradingPairs
-            .map { it.baseCurrency }
-            .distinct()
 
-        setEffect { SwapInputContract.Effect.SourceSelection(currencies) }
+        setEffect {
+            SwapInputContract.Effect.SourceSelection(
+                helper.getAvailableSourceCurrencies(state.tradingPairs)
+            )
+        }
     }
 
     private fun onDestinationCurrencyClicked() {
         val state = currentLoadedState ?: return
-        val currencies = state.tradingPairs
-            .filter { it.baseCurrency == state.sourceCryptoCurrency }
-            .map { it.termCurrency }
-            .distinct()
 
         setEffect {
             SwapInputContract.Effect.DestinationSelection(
-                currencies = currencies,
+                currencies = helper.getAvailableDestinationCurrencies(
+                    state.tradingPairs, state.sourceCryptoCurrency
+                ),
                 sourceCurrency = state.sourceCryptoCurrency
             )
         }
