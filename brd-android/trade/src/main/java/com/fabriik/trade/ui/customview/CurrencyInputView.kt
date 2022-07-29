@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.breadwallet.ext.isZero
+import com.breadwallet.tools.util.Utils
 import com.fabriik.common.utils.DecimalDigitsInputFilter
 import com.fabriik.common.utils.disableCopyPaste
 import com.fabriik.common.utils.afterTextChangedDebounceFocused
@@ -107,6 +108,11 @@ class CurrencyInputView @JvmOverloads constructor(
         binding.etFiatAmount.isEnabled = enabled
         binding.etCryptoAmount.isEnabled = enabled
         binding.tvFiatCurrency.isEnabled = enabled
+    }
+
+    fun clearCurrentInputFieldFocus() {
+        binding.etFiatAmount.clearFocus()
+        binding.etCryptoAmount.clearFocus()
     }
 
     interface Callback {
