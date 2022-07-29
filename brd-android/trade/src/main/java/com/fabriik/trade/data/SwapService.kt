@@ -1,6 +1,7 @@
 package com.fabriik.trade.data
 
 import com.fabriik.trade.data.request.CreateOrderRequest
+import com.fabriik.trade.data.request.EstimateEthFeeRequest
 import com.fabriik.trade.data.response.*
 import okhttp3.ResponseBody
 import retrofit2.http.*
@@ -28,4 +29,8 @@ interface SwapService {
     @GET("exchanges")
     suspend fun getExchanges(): ExchangesResponse
 
+    @POST("exchange/estimate-fee")
+    suspend fun estimateEthFee(
+        @Body body: EstimateEthFeeRequest
+    ): EstimateEthFeeResponse
 }

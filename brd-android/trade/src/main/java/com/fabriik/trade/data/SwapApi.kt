@@ -8,6 +8,7 @@ import com.fabriik.trade.R
 import com.fabriik.trade.data.model.SwapTransactionData
 import com.fabriik.trade.data.model.TradingPair
 import com.fabriik.trade.data.request.CreateOrderRequest
+import com.fabriik.trade.data.request.EstimateEthFeeRequest
 import com.fabriik.trade.data.response.CreateOrderResponse
 import com.fabriik.trade.data.response.ExchangeOrder
 import com.fabriik.trade.data.response.ExchangeOrderStatus
@@ -101,6 +102,22 @@ class SwapApi(
         return try {
             val response = service.getExchanges()
             Resource.success(data = response.exchanges)
+        } catch (ex: Exception) {
+            responseMapper.mapError(
+                context = context,
+                exception = ex
+            )
+        }
+    }
+
+    suspend fun estimateEthFee(amount: BigDecimal, currency: String, destination: String): Resource<BigDecimal?> {
+        return try {
+            val response = service.estimateEthFee(
+                EstimateEthFeeRequest(
+                    amount, currency, destination
+                )
+            )
+            Resource.success(data = response.fee)
         } catch (ex: Exception) {
             responseMapper.mapError(
                 context = context,
