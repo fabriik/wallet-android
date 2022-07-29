@@ -20,7 +20,7 @@ class CreditCardView @JvmOverloads constructor(
     init {
         binding = ViewCreditCardBinding.inflate(LayoutInflater.from(context), this, true)
         radius = 8.dp.toFloat()
-        setContentPadding(12,7,8,7)
+        setContentPadding(12.dp,7.dp,8.dp,7.dp)
         backgroundTintList = ContextCompat.getColorStateList(context, R.color.fabriik_dark_blue_buy)
         elevation = 0.dp.toFloat()
     }
