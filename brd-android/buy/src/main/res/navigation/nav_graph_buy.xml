@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph_buy"
-    app:startDestination="@id/fragmentBuyInput">
+    app:startDestination="@id/fragmentPaymentMethod">
 
     <fragment
         android:id="@+id/fragmentBuyInput"
@@ -29,6 +29,10 @@
                 app:argType="string[]" />
 
         </action>
+
+        <action
+            android:id="@+id/actionAddCard"
+            app:destination="@id/fragmentAddCard" />
 
     </fragment>
 
@@ -56,7 +60,12 @@
     <fragment
         android:id="@+id/fragmentAddCard"
         android:name="com.fabriik.buy.ui.addcard.AddCardFragment"
-        tools:layout="@layout/fragment_add_card" />
+        tools:layout="@layout/fragment_add_card" >
+
+        <action
+            android:id="@+id/actionBillingAddress"
+            app:destination="@id/fragmentBillingAddress" />
+    </fragment>
 
     <fragment android:id="@+id/fragmentBuyAuthentication"
         android:name="com.fabriik.trade.ui.features.authentication.SwapAuthenticationFragment"
@@ -69,5 +78,9 @@
     <fragment android:id="@+id/fragmentOrderPreview"
         android:name="com.fabriik.buy.ui.features.orderpreview.OrderPreviewFragment"
         tools:layout="@layout/fragment_order_preview" />
+
+    <fragment android:id="@+id/fragmentPaymentMethod"
+        android:name="com.fabriik.buy.ui.features.paymentmethod.PaymentMethodFragment"
+        tools:layout="@layout/fragment_payment_method" />
 
 </navigation>
