@@ -119,12 +119,6 @@ class SwapInputViewModel(
             is SwapInputContract.Event.DestinationCurrencyChanged ->
                 onDestinationCurrencyChanged(event.currencyCode)
 
-            is SwapInputContract.Event.OnMinAmountClicked ->
-                onMinAmountClicked()
-
-            is SwapInputContract.Event.OnMaxAmountClicked ->
-                onMaxAmountClicked()
-
             is SwapInputContract.Event.SourceCurrencyFiatAmountChange ->
                 onSourceCurrencyFiatAmountChanged(event.amount, true)
 
@@ -219,31 +213,6 @@ class SwapInputViewModel(
         ethWarningSeen = false
 
         requestNewQuote()
-    }
-
-    private fun onMinAmountClicked() {
-        val state = currentLoadedState ?: return
-
-        setEffect { SwapInputContract.Effect.ClearInputFocus }
-
-        onSourceCurrencyFiatAmountChanged(
-            state.minFiatAmount, false
-        )
-    }
-
-    private fun onMaxAmountClicked() {
-        val state = currentLoadedState ?: return
-
-        setEffect { SwapInputContract.Effect.ClearInputFocus }
-
-        val maxAmountLimitCrypto = amountConverter.fiatToCrypto(
-            amount = state.maxFiatAmount,
-            cryptoCurrency = state.sourceCryptoCurrency
-        )
-
-        onSourceCurrencyCryptoAmountChanged(
-            min(state.sourceCryptoBalance, maxAmountLimitCrypto), false
-        )
     }
 
     private fun onReplaceCurrenciesClicked() {
@@ -599,10 +568,6 @@ class SwapInputViewModel(
         setEffect { SwapInputContract.Effect.UpdateSourceCryptoAmount(state.sourceCryptoAmount, sourceCryptoAmountChangedByUser) }
         setEffect { SwapInputContract.Effect.UpdateDestinationFiatAmount(state.destinationFiatAmount, destinationFiatAmountChangedByUser) }
         setEffect { SwapInputContract.Effect.UpdateDestinationCryptoAmount(state.destinationCryptoAmount, destinationCryptoAmountChangedByUser) }
-
-        if (sourceFiatAmountChangedByUser || sourceCryptoAmountChangedByUser || destinationFiatAmountChangedByUser || destinationCryptoAmountChangedByUser) {
-            setEffect { SwapInputContract.Effect.DeselectMinMaxSwitchItems }
-        }
     }
 
     private fun createSwapOrder() {

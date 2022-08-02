@@ -82,15 +82,6 @@ class SwapInputFragment : Fragment(),
 
             cvSwap.setCallback(cardSwapCallback)
 
-            switchMinMax.setCallback {
-                when (it) {
-                    FabriikSwitch.OPTION_LEFT ->
-                        viewModel.setEvent(SwapInputContract.Event.OnMinAmountClicked)
-                    FabriikSwitch.OPTION_RIGHT ->
-                        viewModel.setEvent(SwapInputContract.Event.OnMaxAmountClicked)
-                }
-            }
-
             btnConfirm.setOnClickListener {
                 hideKeyboard(binding.root.context)
                 viewModel.setEvent(SwapInputContract.Event.ConfirmClicked)
@@ -188,9 +179,6 @@ class SwapInputFragment : Fragment(),
 
             SwapInputContract.Effect.ClearInputFocus ->
                 binding.cvSwap.clearCurrentInputFieldFocus()
-
-            SwapInputContract.Effect.DeselectMinMaxSwitchItems ->
-                binding.switchMinMax.setSelectedItem(FabriikSwitch.OPTION_NONE)
 
             SwapInputContract.Effect.RequestUserAuthentication ->
                 findNavController().navigate(
@@ -316,7 +304,6 @@ class SwapInputFragment : Fragment(),
             cvSwap.setReceivingNetworkFee(state.receivingNetworkFee)
 
             btnConfirm.isEnabled = state.confirmButtonEnabled
-            switchMinMax.isEnabled = state.quoteResponse != null
 
             viewTimer.isVisible = !state.cryptoExchangeRateLoading && state.quoteResponse != null
             tvRateValue.isVisible = !state.cryptoExchangeRateLoading && state.quoteResponse != null
