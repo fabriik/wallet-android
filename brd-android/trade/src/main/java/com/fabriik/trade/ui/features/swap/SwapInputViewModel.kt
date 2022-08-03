@@ -356,24 +356,30 @@ class SwapInputViewModel(
 
     private fun loadInitialData() {
         viewModelScope.launch(Dispatchers.IO) {
-            val pairsResponse = swapApi.getTradingPairs()
-            val tradingPairs = pairsResponse.data ?: emptyList()
+            val currenciesResponse = swapApi.getSupportedCurrencies()
+            val supportedCurrencies = listOf("BTC", "BSV", "ETH")
 
-            if (pairsResponse.status == Status.ERROR || tradingPairs.isEmpty()) {
+
+
+            if (currenciesResponse.status == Status.ERROR || supportedCurrencies.isEmpty()) {
                 setEffect { SwapInputContract.Effect.ShowDialog(DIALOG_TEMP_UNAVAILABLE_ARGS) }
                 return@launch
             }
 
-            val selectedPair = tradingPairs.firstOrNull {
-                helper.isWalletEnabled(it.baseCurrency) && helper.isWalletEnabled(it.termCurrency)
+            val depositCurrency = supportedCurrencies.firstOrNull {
+                helper.isWalletEnabled(it)
             }
 
-            if (selectedPair == null) {
+            val withdrawCurrency = supportedCurrencies.lastOrNull {
+                helper.isWalletEnabled(it)
+            }
+
+            if (depositCurrency == null && withdrawCurrency == null) {
                 setEffect { SwapInputContract.Effect.ShowDialog(DIALOG_CHECK_ASSETS_ARGS) }
                 return@launch
             }
 
-            val quoteResponse = swapApi.getQuote(selectedPair)
+            val quoteResponse = swapApi.getQuote()
             val selectedPairQuote = quoteResponse.data
 
             val sourceCryptoBalance = helper.loadCryptoBalance(selectedPair.baseCurrency)
@@ -384,8 +390,7 @@ class SwapInputViewModel(
 
             setState {
                 SwapInputContract.State.Loaded(
-                    tradingPairs = tradingPairs,
-                    selectedPair = selectedPair,
+                    supportedCurrencies = supportedCurrencies
                     fiatCurrency = currentFiatCurrency,
                     quoteResponse = selectedPairQuote,
                     sourceCryptoCurrency = selectedPair.baseCurrency,

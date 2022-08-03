@@ -3,13 +3,12 @@ package com.fabriik.trade.data
 import com.fabriik.trade.data.request.CreateOrderRequest
 import com.fabriik.trade.data.request.EstimateEthFeeRequest
 import com.fabriik.trade.data.response.*
-import okhttp3.ResponseBody
 import retrofit2.http.*
 
 interface SwapService {
 
     @GET("supported-currencies")
-    suspend fun getTradingPairs(): TradingPairsResponse
+    suspend fun getSupportedCurrencies(): SupportedCurrenciesResponse
 
     @GET("quote")
     suspend fun getQuote(
