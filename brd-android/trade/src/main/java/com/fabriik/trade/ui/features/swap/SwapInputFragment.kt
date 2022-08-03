@@ -258,6 +258,11 @@ class SwapInputFragment : Fragment(),
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.setEvent(SwapInputContract.Event.OnResume)
+    }
+
     private fun startCurrenciesReplaceAnimation(stateChange: SwapInputContract.State.Loaded) {
         binding.cvSwap.startReplaceAnimation {
             viewModel.setEvent(

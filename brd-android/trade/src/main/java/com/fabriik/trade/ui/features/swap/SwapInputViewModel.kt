@@ -99,6 +99,10 @@ class SwapInputViewModel(
             SwapInputContract.Event.ReplaceCurrenciesClicked ->
                 onReplaceCurrenciesClicked()
 
+            SwapInputContract.Event.OnResume -> {
+                updateAmounts(false, false, false, false)
+            }
+
             is SwapInputContract.Event.OnCheckAssetsDialogResult,
             is SwapInputContract.Event.OnTempUnavailableDialogResult ->
                 setEffect { SwapInputContract.Effect.Dismiss }
