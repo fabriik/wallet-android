@@ -6,7 +6,6 @@ import com.fabriik.common.data.Resource
 import com.fabriik.common.utils.FabriikApiResponseMapper
 import com.fabriik.trade.R
 import com.fabriik.trade.data.model.SwapTransactionData
-import com.fabriik.trade.data.model.TradingPair
 import com.fabriik.trade.data.request.CreateOrderRequest
 import com.fabriik.trade.data.request.EstimateEthFeeRequest
 import com.fabriik.trade.data.response.CreateOrderResponse
@@ -24,18 +23,10 @@ class SwapApi(
 ) {
     private val responseMapper = FabriikApiResponseMapper()
 
-    suspend fun getTradingPairs(): Resource<List<TradingPair>?> {
+    suspend fun getSupportedCurrencies(): Resource<List<String>?> {
        return try {
-            val response = service.getTradingPairs()
-            val tradingPairs = response.pairs.flatMap {
-                listOf(
-                    it, it.copy(
-                        baseCurrency = it.termCurrency,
-                        termCurrency = it.baseCurrency
-                    )
-                )
-            }
-            Resource.success(data = tradingPairs)
+            val response = service.getSupportedCurrencies()
+            Resource.success(data = response.currencies)
         } catch (ex: Exception) {
             responseMapper.mapError(
                 context = context,

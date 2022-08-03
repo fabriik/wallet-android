@@ -7,7 +7,6 @@ import com.fabriik.common.ui.dialog.FabriikGenericDialogArgs
 import com.fabriik.trade.R
 import com.fabriik.trade.data.model.AmountData
 import com.fabriik.trade.data.model.FeeAmountData
-import com.fabriik.trade.data.model.TradingPair
 import com.fabriik.trade.data.response.QuoteResponse
 import java.math.BigDecimal
 
@@ -58,7 +57,7 @@ interface SwapInputContract {
 
         data class UpdateTimer(val timeLeft: Int) : Effect()
         data class SourceSelection(val currencies: List<String>) : Effect()
-        data class DestinationSelection(val currencies: List<String>, val sourceCurrency: String) :
+        data class DestinationSelection(val currencies: List<String>) :
             Effect()
 
         data class UpdateSourceFiatAmount(val bigDecimal: BigDecimal, val changeByUser: Boolean) : Effect()
@@ -73,8 +72,7 @@ interface SwapInputContract {
         data class Loaded(
             val minCryptoAmount: BigDecimal,
             val maxCryptoAmount: BigDecimal,
-            val tradingPairs: List<TradingPair>,
-            val selectedPair: TradingPair,
+            val supportedCurrencies : List<String>,
             val quoteResponse: QuoteResponse?,
             val fiatCurrency: String,
             val sourceCryptoBalance: BigDecimal,

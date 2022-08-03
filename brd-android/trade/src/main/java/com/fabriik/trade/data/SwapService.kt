@@ -8,7 +8,7 @@ import retrofit2.http.*
 interface SwapService {
 
     @GET("supported-currencies")
-    suspend fun getTradingPairs(): TradingPairsResponse
+    suspend fun getSupportedCurrencies(): SupportedCurrenciesResponse
 
     @GET("quote")
     suspend fun getQuote(

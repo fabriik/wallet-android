@@ -18,7 +18,6 @@ import com.fabriik.trade.R
 import com.fabriik.trade.data.SwapApi
 import com.fabriik.trade.data.model.AmountData
 import com.fabriik.trade.data.model.FeeAmountData
-import com.fabriik.trade.data.model.TradingPair
 import com.fabriik.trade.data.response.CreateOrderResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -137,21 +136,16 @@ class SwapInputViewModel(
                 return@launch
             }
 
-            val newSelectedPair = state.tradingPairs.firstOrNull {
-                currencyCode.equals(it.baseCurrency, true) && helper.isWalletEnabled(it.termCurrency)
-            } ?: state.selectedPair
+            val newSourceCryptoCurrency =
+                if (currencyCode != state.sourceCryptoCurrency && helper.isWalletEnabled(currencyCode)) currencyCode else state.sourceCryptoCurrency
 
-            val sourceBalance = helper.loadCryptoBalance(
-                newSelectedPair.baseCurrency
-            ) ?: BigDecimal.ZERO
+            val sourceBalance = helper.loadCryptoBalance(newSourceCryptoCurrency) ?: BigDecimal.ZERO
 
             val latestState = currentLoadedState ?: return@launch
             setState {
                 latestState.copy(
-                    selectedPair = newSelectedPair,
                     sourceCryptoBalance = sourceBalance,
-                    sourceCryptoCurrency = newSelectedPair.baseCurrency,
-                    destinationCryptoCurrency = newSelectedPair.termCurrency,
+                    sourceCryptoCurrency = newSourceCryptoCurrency,
                     sourceFiatAmount = BigDecimal.ZERO,
                     sourceCryptoAmount = BigDecimal.ZERO,
                     destinationFiatAmount = BigDecimal.ZERO,
@@ -181,15 +175,12 @@ class SwapInputViewModel(
             return
         }
 
-        val newSelectedPair = state.tradingPairs.firstOrNull {
-            currencyCode.equals(it.termCurrency, true) &&
-                    state.sourceCryptoCurrency.equals(it.baseCurrency, true)
-        } ?: state.selectedPair
+        val newDestinationCryptoCurrency =
+            if (currencyCode != state.destinationCryptoCurrency && currencyCode != state.sourceCryptoCurrency) currencyCode else state.destinationCryptoCurrency
 
         setState {
             state.copy(
-                selectedPair = newSelectedPair,
-                destinationCryptoCurrency = newSelectedPair.termCurrency,
+                destinationCryptoCurrency = newDestinationCryptoCurrency,
                 sourceFiatAmount = BigDecimal.ZERO,
                 sourceCryptoAmount = BigDecimal.ZERO,
                 destinationFiatAmount = BigDecimal.ZERO,
@@ -216,11 +207,11 @@ class SwapInputViewModel(
         val currentData = currentLoadedState ?: return
 
         viewModelScope.launch(Dispatchers.IO) {
-            val balance = helper.loadCryptoBalance(currentData.destinationCryptoCurrency) ?: return@launch
+            val balance =
+                helper.loadCryptoBalance(currentData.destinationCryptoCurrency) ?: return@launch
 
             currentLoadedState?.let {
                 val stateChange = it.copy(
-                    selectedPair = it.selectedPair.flip(),
                     sourceFiatAmount = it.destinationFiatAmount,
                     sourceCryptoAmount = it.destinationCryptoAmount,
                     destinationFiatAmount = it.sourceFiatAmount,
@@ -279,7 +270,8 @@ class SwapInputViewModel(
             val state = currentLoadedState ?: return@launch
             setState { state.copy(cryptoExchangeRateLoading = true) }
 
-            val response = swapApi.getQuote(state.selectedPair.baseCurrency, state.selectedPair.termCurrency)
+            val response =
+                swapApi.getQuote(state.sourceCryptoCurrency, state.destinationCryptoCurrency)
             when (response.status) {
                 Status.SUCCESS -> {
                     val latestState = currentLoadedState ?: return@launch
@@ -324,27 +316,33 @@ class SwapInputViewModel(
 
     private fun loadInitialData() {
         viewModelScope.launch(Dispatchers.IO) {
-            val pairsResponse = swapApi.getTradingPairs()
-            val tradingPairs = pairsResponse.data ?: emptyList()
+            val currenciesResponse = swapApi.getSupportedCurrencies()
+            val supportedCurrencies = currenciesResponse.data
+                ?: emptyList()
 
-            if (pairsResponse.status == Status.ERROR || tradingPairs.isEmpty()) {
+            if (currenciesResponse.status == Status.ERROR || supportedCurrencies.isEmpty()) {
                 setEffect { SwapInputContract.Effect.ShowDialog(DIALOG_TEMP_UNAVAILABLE_ARGS) }
                 return@launch
             }
 
-            val selectedPair = tradingPairs.firstOrNull {
-                helper.isWalletEnabled(it.baseCurrency) && helper.isWalletEnabled(it.termCurrency)
+            val sourceCryptoCurrency = supportedCurrencies.firstOrNull {
+                helper.isWalletEnabled(it)
             }
 
-            if (selectedPair == null) {
+            val destinationCryptoCurrency = supportedCurrencies.lastOrNull {
+                helper.isWalletEnabled(it)
+            }
+
+            if (sourceCryptoCurrency == null && destinationCryptoCurrency == null) {
                 setEffect { SwapInputContract.Effect.ShowDialog(DIALOG_CHECK_ASSETS_ARGS) }
                 return@launch
             }
 
-            val quoteResponse = swapApi.getQuote(selectedPair.baseCurrency, selectedPair.termCurrency)
+            val quoteResponse =
+                swapApi.getQuote(sourceCryptoCurrency!!, destinationCryptoCurrency!!)
             val selectedPairQuote = quoteResponse.data
 
-            val sourceCryptoBalance = helper.loadCryptoBalance(selectedPair.baseCurrency)
+            val sourceCryptoBalance = helper.loadCryptoBalance(sourceCryptoCurrency)
             if (sourceCryptoBalance == null) {
                 showErrorState()
                 return@launch
@@ -352,12 +350,11 @@ class SwapInputViewModel(
 
             setState {
                 SwapInputContract.State.Loaded(
-                    tradingPairs = tradingPairs,
-                    selectedPair = selectedPair,
+                    supportedCurrencies = supportedCurrencies,
                     fiatCurrency = currentFiatCurrency,
                     quoteResponse = selectedPairQuote,
-                    sourceCryptoCurrency = selectedPair.baseCurrency,
-                    destinationCryptoCurrency = selectedPair.termCurrency,
+                    sourceCryptoCurrency = sourceCryptoCurrency,
+                    destinationCryptoCurrency = destinationCryptoCurrency,
                     sourceCryptoBalance = sourceCryptoBalance,
                     minCryptoAmount = quoteResponse.data?.minimumValue ?: BigDecimal.ZERO,
                     maxCryptoAmount = quoteResponse.data?.maximumValue ?: BigDecimal.ZERO,
@@ -381,7 +378,9 @@ class SwapInputViewModel(
 
         setEffect {
             SwapInputContract.Effect.SourceSelection(
-                helper.getAvailableSourceCurrencies(state.tradingPairs)
+                state.supportedCurrencies.filter {
+                    it != state.destinationCryptoCurrency
+                }
             )
         }
     }
@@ -391,10 +390,9 @@ class SwapInputViewModel(
 
         setEffect {
             SwapInputContract.Effect.DestinationSelection(
-                currencies = helper.getAvailableDestinationCurrencies(
-                    state.tradingPairs, state.sourceCryptoCurrency
-                ),
-                sourceCurrency = state.sourceCryptoCurrency
+                state.supportedCurrencies.filter {
+                    it != state.sourceCryptoCurrency
+                }
             )
         }
     }
@@ -457,9 +455,9 @@ class SwapInputViewModel(
 
             updateAmounts(
                 sourceFiatAmountChangedByUser = result.sourceFiatAmountChangedByUser,
-                sourceCryptoAmountChangedByUser =  result.sourceCryptoAmountChangedByUser,
-                destinationFiatAmountChangedByUser =  result.destinationFiatAmountChangedByUser,
-                destinationCryptoAmountChangedByUser =  result.destinationCryptoAmountChangedByUser,
+                sourceCryptoAmountChangedByUser = result.sourceCryptoAmountChangedByUser,
+                destinationFiatAmountChangedByUser = result.destinationFiatAmountChangedByUser,
+                destinationCryptoAmountChangedByUser = result.destinationCryptoAmountChangedByUser,
             )
 
             checkEthFeeBalance(
@@ -572,7 +570,7 @@ class SwapInputViewModel(
 
     private fun createSwapOrder() {
         val state = currentLoadedState ?: return
-        val quoteResponse =  state.quoteResponse ?: return
+        val quoteResponse = state.quoteResponse ?: return
 
         callApi(
             endState = { state.copy(fullScreenLoadingVisible = false) },
