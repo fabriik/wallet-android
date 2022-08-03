@@ -12,7 +12,8 @@ interface SwapService {
 
     @GET("quote")
     suspend fun getQuote(
-        @Query("security") security: String
+        @Query("from") from: String,
+        @Query("to") to: String,
     ): QuoteResponse
 
     @POST("create")

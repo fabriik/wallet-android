@@ -11,15 +11,12 @@ import com.fabriik.trade.data.model.FeeAmountData
 import com.fabriik.trade.data.model.TradingPair
 import com.fabriik.trade.data.response.QuoteResponse
 import java.math.BigDecimal
-import java.math.RoundingMode
 
 interface SwapInputContract {
 
     sealed class Event : FabriikContract.Event {
         object DismissClicked : Event()
         object ConfirmClicked : Event()
-        object OnMinAmountClicked : Event()
-        object OnMaxAmountClicked : Event()
         object SourceCurrencyClicked : Event()
         object ReplaceCurrenciesClicked : Event()
         object DestinationCurrencyClicked : Event()
@@ -74,11 +71,10 @@ interface SwapInputContract {
         object Error : State()
         object Loading : State()
         data class Loaded(
-            val minFiatAmount: BigDecimal,
-            val maxFiatAmount: BigDecimal,
-            val dailyFiatLimit: BigDecimal,
-            val lifetimeFiatLimit: BigDecimal,
-            val kyc2ExchangeFiatLimit: BigDecimal? = null,
+            val minCryptoAmount: BigDecimal,
+            val maxCryptoAmount: BigDecimal,
+            val tradingPairs: List<TradingPair>,
+            val selectedPair: TradingPair,
             val supportedCurrencies : List<String>,
             val quoteResponse: QuoteResponse?,
             val fiatCurrency: String,
@@ -96,26 +92,10 @@ interface SwapInputContract {
             val swapErrorMessage: ErrorMessage? = null,
             val fullScreenLoadingVisible: Boolean = false
         ) : State() {
-
-            val cryptoExchangeRate: BigDecimal
-                get() = when {
-                    sellingBaseCurrency -> quoteResponse!!.exchangeRate
-                    buyingBaseCurrency -> BigDecimal.ONE.divide(quoteResponse!!.exchangeRate, 20, RoundingMode.HALF_UP)
-                    else -> BigDecimal.ZERO
-                }
-
-            val markupFactor: BigDecimal
-                get() = when {
-                    sellingBaseCurrency -> quoteResponse!!.sellMarkupFactor
-                    buyingBaseCurrency -> quoteResponse!!.buyMarkupFactor
-                    else -> BigDecimal.ZERO
-                }
-
-            private val sellingBaseCurrency: Boolean
-                get() = quoteResponse?.securityId?.startsWith(sourceCryptoCurrency, true) ?: false
-
-            private val buyingBaseCurrency: Boolean
-                get() = quoteResponse?.securityId?.startsWith(destinationCryptoCurrency, true) ?: false
+            val rate: BigDecimal
+                get() = quoteResponse?.exchangeRate ?: BigDecimal.ZERO
+            val markup: BigDecimal
+                get() = quoteResponse?.markup ?: BigDecimal.ZERO
         }
     }
 
@@ -150,24 +130,6 @@ interface SwapInputContract {
         class MaxSwapAmount(private val maxAmount: BigDecimal, private val fiatCurrency: String) : ErrorMessage() {
             override fun toString(context: Context) = context.getString(
                 R.string.Swap_Input_Error_MaxAmount, maxAmount.formatFiatForUi(fiatCurrency)
-            )
-        }
-
-        object Kyc1DailyLimitReached : ErrorMessage() {
-            override fun toString(context: Context) = context.getString(
-                R.string.Swap_Input_Error_Kyc1DailyLimit
-            )
-        }
-
-        object Kyc1LifetimeLimitReached : ErrorMessage() {
-            override fun toString(context: Context) = context.getString(
-                R.string.Swap_Input_Error_Kyc1LifetimeLimit
-            )
-        }
-
-        object Kyc2ExchangeLimitReached : ErrorMessage() {
-            override fun toString(context: Context) = context.getString(
-                R.string.Swap_Input_Error_Kyc2ExchangeLimit
             )
         }
     }
