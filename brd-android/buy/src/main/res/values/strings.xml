@@ -64,4 +64,9 @@
     <string name="Buy.OrderPreview.NetworkFeesDialog.Title">Network fees</string>
     <string name="Buy.OrderPreview.NetworkFeesDialog.Content">Network fee prices vary depending on the blockchain in which you are receiving your assets. This is an external fee to cover mining and transaction costs.</string>
 
+    <!-- Select payment method screen -->
+    <string name="Buy.SelectPaymentMethod.Title">Select payment method</string>
+    <string name="Buy.SelectPaymentMethod.Subtitle">Card</string>
+    <string name="Buy.SelectPaymentMethod.Subtext">Add a debit or credit card</string>
+
 </resources>
