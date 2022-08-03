@@ -9,23 +9,20 @@ data class QuoteResponse(
     @Json(name = "quote_id")
     val quoteId: String,
 
-    @Json(name = "security_id")
-    val securityId: String,
-
     @Json(name = "exchange_rate")
     val exchangeRate: BigDecimal,
 
-    @Json(name = "buy_markup")
-    val buyMarkupFactor: BigDecimal,
-
-    @Json(name = "sell_markup")
-    val sellMarkupFactor: BigDecimal,
-
-    @Json(name = "minimum_usd_value")
-    val minUsdValue: BigDecimal,
+    @Json(name = "markup")
+    val markup: BigDecimal,
 
     @Json(name = "timestamp")
-    val timestamp: Long
+    val timestamp: Long,
+
+    @Json(name="minimum_value")
+    val minimumValue: BigDecimal,
+
+    @Json(name = "maximum_value")
+    val maximumValue: BigDecimal,
 )
 
 @JsonClass(generateAdapter = true)

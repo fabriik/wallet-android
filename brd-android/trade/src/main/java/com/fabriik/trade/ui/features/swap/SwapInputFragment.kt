@@ -82,15 +82,6 @@ class SwapInputFragment : Fragment(),
 
             cvSwap.setCallback(cardSwapCallback)
 
-            switchMinMax.setCallback {
-                when (it) {
-                    FabriikSwitch.OPTION_LEFT ->
-                        viewModel.setEvent(SwapInputContract.Event.OnMinAmountClicked)
-                    FabriikSwitch.OPTION_RIGHT ->
-                        viewModel.setEvent(SwapInputContract.Event.OnMaxAmountClicked)
-                }
-            }
-
             btnConfirm.setOnClickListener {
                 hideKeyboard(binding.root.context)
                 viewModel.setEvent(SwapInputContract.Event.ConfirmClicked)
@@ -306,7 +297,7 @@ class SwapInputFragment : Fragment(),
 
             tvRateValue.text = RATE_FORMAT.format(
                 state.sourceCryptoCurrency,
-                state.cryptoExchangeRate.formatCryptoForUi(
+                state.rate.formatCryptoForUi(
                     state.destinationCryptoCurrency
                 )
             )

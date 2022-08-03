@@ -3,42 +3,38 @@ package com.fabriik.trade.ui.features.swap
 import android.app.Application
 import android.security.keystore.UserNotAuthenticatedException
 import androidx.lifecycle.viewModelScope
-import com.breadwallet.breadbox.*
+import com.breadwallet.breadbox.BreadBox
+import com.breadwallet.breadbox.addressFor
 import com.breadwallet.crypto.Amount
 import com.breadwallet.crypto.TransferFeeBasis
 import com.breadwallet.ext.isZero
 import com.breadwallet.tools.security.BrdUserManager
-import com.breadwallet.tools.security.ProfileManager
 import com.fabriik.common.data.Resource
 import com.fabriik.common.data.Status
-import com.fabriik.common.data.model.availableDailyLimit
-import com.fabriik.common.data.model.availableLifetimeLimit
-import com.fabriik.common.data.model.nextExchangeLimit
-import com.fabriik.common.data.model.kyc2ExchangeLimit
 import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.common.ui.dialog.FabriikGenericDialogArgs
 import com.fabriik.common.utils.getString
-import com.fabriik.common.utils.min
 import com.fabriik.trade.R
 import com.fabriik.trade.data.SwapApi
 import com.fabriik.trade.data.model.AmountData
 import com.fabriik.trade.data.model.FeeAmountData
-import com.fabriik.trade.data.request.CreateOrderRequest
+import com.fabriik.trade.data.model.TradingPair
 import com.fabriik.trade.data.response.CreateOrderResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
+import org.kodein.di.direct
 import org.kodein.di.erased.instance
 import java.math.BigDecimal
 import java.util.concurrent.TimeUnit
-import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.onEach
-import org.kodein.di.direct
 
 class SwapInputViewModel(
     application: Application
@@ -53,7 +49,6 @@ class SwapInputViewModel(
     private val swapApi by kodein.instance<SwapApi>()
     private val breadBox by kodein.instance<BreadBox>()
     private val userManager by kodein.instance<BrdUserManager>()
-    private val profileManager by kodein.instance<ProfileManager>()
 
     private val helper = SwapInputHelper(
         direct.instance(), direct.instance()
@@ -70,8 +65,6 @@ class SwapInputViewModel(
 
     private val currentLoadedState: SwapInputContract.State.Loaded?
         get() = state.value as SwapInputContract.State.Loaded?
-
-    private val profile = profileManager.getProfile()
 
     private var currentTimerJob: Job? = null
     private var ethErrorSeen = false
@@ -118,12 +111,6 @@ class SwapInputViewModel(
 
             is SwapInputContract.Event.DestinationCurrencyChanged ->
                 onDestinationCurrencyChanged(event.currencyCode)
-
-            is SwapInputContract.Event.OnMinAmountClicked ->
-                onMinAmountClicked()
-
-            is SwapInputContract.Event.OnMaxAmountClicked ->
-                onMaxAmountClicked()
 
             is SwapInputContract.Event.SourceCurrencyFiatAmountChange ->
                 onSourceCurrencyFiatAmountChanged(event.amount, true)
@@ -221,31 +208,6 @@ class SwapInputViewModel(
         requestNewQuote()
     }
 
-    private fun onMinAmountClicked() {
-        val state = currentLoadedState ?: return
-
-        setEffect { SwapInputContract.Effect.ClearInputFocus }
-
-        onSourceCurrencyFiatAmountChanged(
-            state.minFiatAmount, false
-        )
-    }
-
-    private fun onMaxAmountClicked() {
-        val state = currentLoadedState ?: return
-
-        setEffect { SwapInputContract.Effect.ClearInputFocus }
-
-        val maxAmountLimitCrypto = amountConverter.fiatToCrypto(
-            amount = state.maxFiatAmount,
-            cryptoCurrency = state.sourceCryptoCurrency
-        )
-
-        onSourceCurrencyCryptoAmountChanged(
-            min(state.sourceCryptoBalance, maxAmountLimitCrypto), false
-        )
-    }
-
     private fun onReplaceCurrenciesClicked() {
         val currentData = currentLoadedState ?: return
 
@@ -254,6 +216,7 @@ class SwapInputViewModel(
 
             currentLoadedState?.let {
                 val stateChange = it.copy(
+                    selectedPair = it.selectedPair.flip(),
                     sourceFiatAmount = it.destinationFiatAmount,
                     sourceCryptoAmount = it.destinationCryptoAmount,
                     destinationFiatAmount = it.sourceFiatAmount,
@@ -272,6 +235,7 @@ class SwapInputViewModel(
 
     private fun onReplaceCurrenciesAnimationCompleted(state: SwapInputContract.State.Loaded) {
         setState { state }
+        requestNewQuote()
 
         updateAmounts(
             sourceFiatAmountChangedByUser = false,
@@ -311,7 +275,7 @@ class SwapInputViewModel(
             val state = currentLoadedState ?: return@launch
             setState { state.copy(cryptoExchangeRateLoading = true) }
 
-            val response = swapApi.getQuote(state.selectedPair)
+            val response = swapApi.getQuote(state.selectedPair.baseCurrency, state.selectedPair.termCurrency)
             when (response.status) {
                 Status.SUCCESS -> {
                     val latestState = currentLoadedState ?: return@launch
@@ -373,7 +337,7 @@ class SwapInputViewModel(
                 return@launch
             }
 
-            val quoteResponse = swapApi.getQuote(selectedPair)
+            val quoteResponse = swapApi.getQuote(selectedPair.baseCurrency, selectedPair.termCurrency)
             val selectedPairQuote = quoteResponse.data
 
             val sourceCryptoBalance = helper.loadCryptoBalance(selectedPair.baseCurrency)
@@ -391,11 +355,8 @@ class SwapInputViewModel(
                     sourceCryptoCurrency = selectedPair.baseCurrency,
                     destinationCryptoCurrency = selectedPair.termCurrency,
                     sourceCryptoBalance = sourceCryptoBalance,
-                    minFiatAmount = quoteResponse.data?.minUsdValue ?: BigDecimal.ZERO,
-                    maxFiatAmount = profile.nextExchangeLimit(),
-                    dailyFiatLimit = profile.availableDailyLimit(),
-                    lifetimeFiatLimit = profile.availableLifetimeLimit(),
-                    kyc2ExchangeFiatLimit = profile.kyc2ExchangeLimit()
+                    minCryptoAmount = quoteResponse.data?.minimumValue ?: BigDecimal.ZERO,
+                    maxCryptoAmount = quoteResponse.data?.maximumValue ?: BigDecimal.ZERO,
                 )
             }
 
@@ -473,8 +434,8 @@ class SwapInputViewModel(
             val result = converter(
                 amount = amount,
                 changeByUser = changeByUser,
-                markupFactor = state.markupFactor,
-                exchangeRate = state.cryptoExchangeRate,
+                markupFactor = state.markup,
+                exchangeRate = state.rate,
                 sourceCurrency = state.sourceCryptoCurrency,
                 destinationCurrency = state.destinationCryptoCurrency
             )
@@ -580,7 +541,7 @@ class SwapInputViewModel(
             SwapInputContract.Effect.ConfirmDialog(
                 to = toAmount,
                 from = fromAmount,
-                rate = state.cryptoExchangeRate,
+                rate = state.rate,
                 sendingFee = state.sendingNetworkFee!!,
                 receivingFee = state.receivingNetworkFee!!,
             )
@@ -618,26 +579,10 @@ class SwapInputViewModel(
                         message = getString(R.string.FabriikApi_DefaultError)
                     )
 
-                val (baseQuantity, termQuantity, tradeSide) = when {
-                    quoteResponse.securityId.startsWith(state.sourceCryptoCurrency, true) ->
-                        Triple(
-                            state.sourceCryptoAmount, // baseQuantity
-                            state.destinationCryptoAmount, // termQuantity
-                            CreateOrderRequest.TradeSide.SELL // tradeSide
-                        )
-                    else ->
-                        Triple(
-                            state.destinationCryptoAmount, // baseQuantity
-                            state.sourceCryptoAmount, // termQuantity
-                            CreateOrderRequest.TradeSide.BUY // tradeSide
-                        )
-                }
-
                 swapApi.createOrder(
                     quoteId = quoteResponse.quoteId,
-                    tradeSide = tradeSide,
-                    baseQuantity = baseQuantity,
-                    termQuantity = termQuantity,
+                    baseQuantity = state.sourceCryptoAmount,
+                    termQuantity = state.destinationCryptoAmount,
                     destination = destinationAddress.toString(),
                 )
             },
@@ -741,16 +686,10 @@ class SwapInputViewModel(
             SwapInputContract.ErrorMessage.InsufficientFunds(state.sourceCryptoBalance, state.sourceCryptoCurrency)
         state.sourceCryptoBalance < state.sourceCryptoAmount + state.sendingNetworkFee.cryptoAmountIfIncludedOrZero() ->
             SwapInputContract.ErrorMessage.InsufficientFundsForFee
-        state.sourceFiatAmount > state.maxFiatAmount ->
-            SwapInputContract.ErrorMessage.MaxSwapAmount(state.maxFiatAmount, state.fiatCurrency)
-        state.sourceFiatAmount < state.minFiatAmount ->
-            SwapInputContract.ErrorMessage.MinSwapAmount(state.minFiatAmount, state.fiatCurrency)
-        state.dailyFiatLimit < state.sourceFiatAmount ->
-            SwapInputContract.ErrorMessage.Kyc1DailyLimitReached
-        state.lifetimeFiatLimit < state.sourceFiatAmount ->
-            SwapInputContract.ErrorMessage.Kyc1LifetimeLimitReached
-        state.kyc2ExchangeFiatLimit != null && state.kyc2ExchangeFiatLimit < state.sourceFiatAmount ->
-            SwapInputContract.ErrorMessage.Kyc2ExchangeLimitReached
+        state.sourceCryptoAmount < state.minCryptoAmount ->
+            SwapInputContract.ErrorMessage.MinSwapAmount(state.minCryptoAmount, state.sourceCryptoCurrency)
+        state.sourceCryptoAmount > state.maxCryptoAmount ->
+            SwapInputContract.ErrorMessage.MaxSwapAmount(state.maxCryptoAmount, state.sourceCryptoCurrency)
         else -> null
     }
 
