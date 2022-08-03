@@ -2,7 +2,7 @@ package com.fabriik.buy.ui.features.paymentmethod
 
 import com.fabriik.common.ui.base.FabriikContract
 
-class PaymentMethodContract : FabriikContract {
+interface PaymentMethodContract : FabriikContract {
 
     sealed class Event : FabriikContract.Event {
         object OnBackClicked : Event()
