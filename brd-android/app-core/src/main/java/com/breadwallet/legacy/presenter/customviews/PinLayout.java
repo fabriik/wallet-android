@@ -62,6 +62,7 @@ public class PinLayout extends LinearLayout implements BRKeyboard.OnInsertListen
     private PinLayoutListener mOnPinInsertedListener;
     private boolean mIsPinUpdating;
     private int mPinDotBackground;
+    private boolean mWalletLockable;
     private BrdUserManager mUserManager = KodeinProvider.get().Instance(TT(BrdUserManager.class), null);
 
     public PinLayout(Context context) {
@@ -148,7 +149,7 @@ public class PinLayout extends LinearLayout implements BRKeyboard.OnInsertListen
                 @Override
                 public void run() {
                     String pin = mPinStringBuilder.toString();
-                    if (mUserManager.hasPinCode() && mUserManager.verifyPinCode(pin)) {
+                    if (mUserManager.hasPinCode() && mUserManager.verifyPinCode(pin, mWalletLockable)) {
                         mOnPinInsertedListener.onPinInserted(pin, true);
                         useNewDigitLimit(true);
                     } else {
@@ -188,11 +189,12 @@ public class PinLayout extends LinearLayout implements BRKeyboard.OnInsertListen
         handleKeyInsert();
     }
 
-    public void setup(BRKeyboard keyboard, PinLayoutListener onPinInsertedListener) {
+    public void setup(BRKeyboard keyboard, Boolean walletLockable, PinLayoutListener onPinInsertedListener) {
         this.mKeyboard = keyboard;
         mKeyboard.setOnInsertListener(this);
         mKeyboard.setShowDecimal(false);
         mOnPinInsertedListener = onPinInsertedListener;
+        mWalletLockable = walletLockable;
     }
 
     public void cleanUp() {

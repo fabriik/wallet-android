@@ -47,7 +47,7 @@ class SwapAuthenticationFragment : Fragment(),
                 viewModel.setEvent(SwapAuthenticationContract.Event.DismissClicked)
             }
 
-            pinLayout.setup(keyboard, object: PinLayout.PinLayoutListener {
+            pinLayout.setup(keyboard, false,  object: PinLayout.PinLayoutListener {
                 override fun onPinInserted(pin: String?, isPinCorrect: Boolean) {
                     viewModel.setEvent(SwapAuthenticationContract.Event.PinValidated(isPinCorrect))
                 }

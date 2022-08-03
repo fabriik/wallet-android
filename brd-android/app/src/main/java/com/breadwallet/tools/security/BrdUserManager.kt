@@ -29,7 +29,6 @@ import android.app.KeyguardManager
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
-import android.os.Parcelable
 import android.security.keystore.KeyPermanentlyInvalidatedException
 import android.security.keystore.UserNotAuthenticatedException
 import android.text.format.DateUtils
@@ -48,8 +47,6 @@ import com.breadwallet.tools.manager.BRReportsManager
 import com.breadwallet.tools.manager.BRSharedPrefs
 import com.breadwallet.platform.interfaces.AccountMetaDataProvider
 import com.fabriik.common.data.model.Profile
-import com.fabriik.common.utils.adapter.BigDecimalAdapter
-import com.fabriik.common.utils.adapter.CalendarJsonAdapter
 import com.platform.tools.Session
 import com.platform.tools.SessionState
 import com.squareup.moshi.JsonAdapter
@@ -77,7 +74,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
-import retrofit2.converter.moshi.MoshiConverterFactory
 import java.security.KeyStore
 import java.security.UnrecoverableKeyException
 import java.util.*
@@ -342,21 +338,15 @@ class CryptoUserManager(
         stateChangeChannel.offer(Unit)
     }
 
-    override fun verifyPinCode(pinCode: String) =
+    override fun verifyPinCode(pinCode: String, walletLockable: Boolean) =
         if (pinCode == getPinCode()) {
-            putFailCount(0)
-            putFailTimestamp(0)
-            locked.set(false)
-            stateChangeChannel.offer(Unit)
+            resetFailedInputs()
             true
         } else {
-            val failCount = getFailCount() + 1
-            putFailCount(failCount)
-            if (failCount >= MAX_UNLOCK_ATTEMPTS) {
-                BRSharedPrefs.getSecureTime()
-                    .also(::putFailTimestamp)
-                    .also(::startDisabledTimer)
-                stateChangeChannel.offer(Unit)
+            if (!walletLockable) {
+                resetFailedInputs()
+            } else {
+                countFailedInputs()
             }
             false
         }
@@ -732,6 +722,24 @@ class CryptoUserManager(
         editor.putString(
             KEY_PROFILE, if (profile == null) null else adapter.toJson(profile)
         ).apply()
+    }
+
+    private fun resetFailedInputs() {
+        putFailCount(0)
+        putFailTimestamp(0)
+        locked.set(false)
+        stateChangeChannel.offer(Unit)
+    }
+
+    private fun countFailedInputs() {
+        val failCount = getFailCount() + 1
+        putFailCount(failCount)
+        if (failCount >= MAX_UNLOCK_ATTEMPTS) {
+            BRSharedPrefs.getSecureTime()
+                .also(::putFailTimestamp)
+                .also(::startDisabledTimer)
+            stateChangeChannel.offer(Unit)
+        }
     }
 }
 
