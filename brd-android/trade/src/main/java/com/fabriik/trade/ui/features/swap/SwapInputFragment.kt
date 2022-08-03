@@ -240,7 +240,6 @@ class SwapInputFragment : Fragment(),
                     SwapInputFragmentDirections.actionAssetSelection(
                         requestKey = REQUEST_KEY_DESTINATION_SELECTION,
                         currencies = effect.currencies.toTypedArray(),
-                        sourceCurrency = effect.sourceCurrency
                     )
                 )
 
