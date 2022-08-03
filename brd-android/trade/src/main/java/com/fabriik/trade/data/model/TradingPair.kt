@@ -18,4 +18,6 @@ data class TradingPair(
 
     @Json(name = "name")
     val name: String
-): Parcelable
+): Parcelable {
+    fun flip() =TradingPair(termCurrency, baseCurrency, name)
+}

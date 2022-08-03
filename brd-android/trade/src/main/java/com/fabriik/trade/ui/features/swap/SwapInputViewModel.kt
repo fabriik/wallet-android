@@ -18,6 +18,7 @@ import com.fabriik.trade.R
 import com.fabriik.trade.data.SwapApi
 import com.fabriik.trade.data.model.AmountData
 import com.fabriik.trade.data.model.FeeAmountData
+import com.fabriik.trade.data.model.TradingPair
 import com.fabriik.trade.data.response.CreateOrderResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -215,6 +216,7 @@ class SwapInputViewModel(
 
             currentLoadedState?.let {
                 val stateChange = it.copy(
+                    selectedPair = it.selectedPair.flip(),
                     sourceFiatAmount = it.destinationFiatAmount,
                     sourceCryptoAmount = it.destinationCryptoAmount,
                     destinationFiatAmount = it.sourceFiatAmount,
@@ -233,6 +235,7 @@ class SwapInputViewModel(
 
     private fun onReplaceCurrenciesAnimationCompleted(state: SwapInputContract.State.Loaded) {
         setState { state }
+        requestNewQuote()
 
         updateAmounts(
             sourceFiatAmountChangedByUser = false,
@@ -684,9 +687,9 @@ class SwapInputViewModel(
         state.sourceCryptoBalance < state.sourceCryptoAmount + state.sendingNetworkFee.cryptoAmountIfIncludedOrZero() ->
             SwapInputContract.ErrorMessage.InsufficientFundsForFee
         state.sourceCryptoAmount < state.minCryptoAmount ->
-            SwapInputContract.ErrorMessage.MinSwapAmount(state.minCryptoAmount, state.fiatCurrency)
+            SwapInputContract.ErrorMessage.MinSwapAmount(state.minCryptoAmount, state.sourceCryptoCurrency)
         state.sourceCryptoAmount > state.maxCryptoAmount ->
-            SwapInputContract.ErrorMessage.MaxSwapAmount(state.maxCryptoAmount, state.fiatCurrency)
+            SwapInputContract.ErrorMessage.MaxSwapAmount(state.maxCryptoAmount, state.sourceCryptoCurrency)
         else -> null
     }
 
