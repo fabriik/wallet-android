@@ -143,6 +143,7 @@ class AuthenticationController(
             AuthMode.PIN_REQUIRED -> {
                 bindingPin.pinDigits.setup(
                     bindingPin.brkeyboard,
+                    true,
                     object : PinLayout.PinLayoutListener {
                         override fun onPinInserted(pin: String?, isPinCorrect: Boolean) {
                             if (isPinCorrect) {
