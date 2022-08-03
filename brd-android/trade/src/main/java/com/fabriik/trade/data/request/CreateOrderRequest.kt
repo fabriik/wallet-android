@@ -9,23 +9,12 @@ data class CreateOrderRequest(
     @Json(name = "quote_id")
     val quoteId: String,
 
-    @Json(name = "base_quantity")
-    val baseQuantity: BigDecimal,
+    @Json(name = "deposit_quantity")
+    val depositQuantity: BigDecimal,
 
-    @Json(name = "term_quantity")
-    val termQuantity: BigDecimal,
-
-    @Json(name = "trade_side")
-    val tradeSide: TradeSide,
+    @Json(name = "withdrawal_quantity")
+    val withdrawQuantity: BigDecimal,
 
     @Json(name = "destination")
     val destination: String,
-) {
-    enum class TradeSide {
-        @Json(name = "buy")
-        BUY,
-
-        @Json(name = "sell")
-        SELL
-    }
-}
+)

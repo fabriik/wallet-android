@@ -3,7 +3,6 @@ package com.fabriik.trade.data
 import com.fabriik.trade.data.request.CreateOrderRequest
 import com.fabriik.trade.data.request.EstimateEthFeeRequest
 import com.fabriik.trade.data.response.*
-import okhttp3.ResponseBody
 import retrofit2.http.*
 
 interface SwapService {
@@ -13,7 +12,8 @@ interface SwapService {
 
     @GET("quote")
     suspend fun getQuote(
-        @Query("security") security: String
+        @Query("from") from: String,
+        @Query("to") to: String,
     ): QuoteResponse
 
     @POST("create")
