@@ -25,6 +25,7 @@ interface SwapInputContract {
         object DestinationCurrencyClicked : Event()
         object OnUserAuthenticationSucceed : Event()
         object OnConfirmationDialogConfirmed : Event()
+        object OnResume : Event()
         data class OnCheckAssetsDialogResult(val result: String?) : Event()
         data class OnTempUnavailableDialogResult(val result: String?) : Event()
 
