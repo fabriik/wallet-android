@@ -7,7 +7,6 @@ import com.fabriik.common.ui.dialog.FabriikGenericDialogArgs
 import com.fabriik.trade.R
 import com.fabriik.trade.data.model.AmountData
 import com.fabriik.trade.data.model.FeeAmountData
-import com.fabriik.trade.data.model.TradingPair
 import com.fabriik.trade.data.response.QuoteResponse
 import java.math.BigDecimal
 
