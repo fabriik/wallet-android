@@ -9,7 +9,6 @@ import com.breadwallet.ext.isZero
 import com.breadwallet.platform.interfaces.AccountMetaDataProvider
 import com.breadwallet.tools.manager.BRSharedPrefs
 import com.breadwallet.tools.util.TokenUtil
-import com.fabriik.trade.data.model.TradingPair
 import kotlinx.coroutines.flow.first
 import java.math.BigDecimal
 
@@ -17,23 +16,6 @@ class SwapInputHelper(
     private val breadBox: BreadBox,
     private val acctMetaDataProvider: AccountMetaDataProvider
 ) {
-
-    fun getAvailableSourceCurrencies(tradingPairs: List<TradingPair>): List<String> {
-        return tradingPairs
-            .map { it.baseCurrency }
-            .distinct()
-    }
-
-    fun getAvailableDestinationCurrencies(
-        tradingPairs: List<TradingPair>, sourceCryptoCurrency: String
-    ): List<String> {
-
-        return tradingPairs
-            .filter { it.baseCurrency == sourceCryptoCurrency }
-            .map { it.termCurrency }
-            .distinct()
-    }
-
     suspend fun isWalletEnabled(currencyCode: String): Boolean {
         val enabledWallets = acctMetaDataProvider.enabledWallets().first()
         val token = TokenUtil.tokenForCode(currencyCode) ?: return false

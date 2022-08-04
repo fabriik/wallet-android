@@ -58,12 +58,14 @@
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/btn_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:layout_marginStart="2dp"
-            android:padding="8dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_info_black"
+            android:paddingHorizontal="4dp"
+            android:paddingTop="4dp"
+            android:src="@drawable/ic_question_mark"
+            android:tint="@color/light_icons_01"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@id/tv_title"
             app:layout_constraintStart_toEndOf="@id/tv_title"

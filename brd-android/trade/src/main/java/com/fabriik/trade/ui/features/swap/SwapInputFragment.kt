@@ -24,6 +24,7 @@ import com.fabriik.trade.ui.dialog.SwapConfirmationDialog
 import com.fabriik.trade.ui.features.assetselection.AssetSelectionFragment
 import com.fabriik.trade.ui.features.authentication.SwapAuthenticationViewModel
 import java.math.BigDecimal
+import java.util.*
 
 class SwapInputFragment : Fragment(),
     FabriikView<SwapInputContract.State, SwapInputContract.Effect> {
@@ -237,7 +238,6 @@ class SwapInputFragment : Fragment(),
                     SwapInputFragmentDirections.actionAssetSelection(
                         requestKey = REQUEST_KEY_DESTINATION_SELECTION,
                         currencies = effect.currencies.toTypedArray(),
-                        sourceCurrency = effect.sourceCurrency
                     )
                 )
 
@@ -252,6 +252,15 @@ class SwapInputFragment : Fragment(),
 
             is SwapInputContract.Effect.UpdateDestinationCryptoAmount ->
                 binding.cvSwap.setDestinationCryptoAmount(effect.bigDecimal, effect.changeByUser)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        when (viewModel.state.value) {
+            is SwapInputContract.State.Loaded ->
+                viewModel.setEvent(SwapInputContract.Event.OnResume)
+            else -> Unit
         }
     }
 
@@ -282,8 +291,8 @@ class SwapInputFragment : Fragment(),
     private fun handleLoadedState(state: SwapInputContract.State.Loaded) {
         with(binding) {
             cvSwap.setFiatCurrency(state.fiatCurrency)
-            cvSwap.setSourceCurrency(state.sourceCryptoCurrency)
-            cvSwap.setDestinationCurrency(state.destinationCryptoCurrency)
+            cvSwap.setSourceCurrency(state.sourceCryptoCurrency.toUpperCase(Locale.ROOT))
+            cvSwap.setDestinationCurrency(state.destinationCryptoCurrency.toUpperCase(Locale.ROOT))
             cvSwap.setSourceCurrencyTitle(
                 getString(
                     R.string.Swap_Input_IHave, state.sourceCryptoBalance.formatCryptoForUi(
@@ -294,7 +303,7 @@ class SwapInputFragment : Fragment(),
 
             tvRateValue.text = RATE_FORMAT.format(
                 state.sourceCryptoCurrency,
-                state.cryptoExchangeRate.formatCryptoForUi(
+                state.rate.formatCryptoForUi(
                     state.destinationCryptoCurrency
                 )
             )

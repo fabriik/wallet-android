@@ -144,7 +144,7 @@ class LoginController(args: Bundle? = null) :
                 )
             }
         }
-        setup(binding.brkeyboard, pinListener)
+        setup(binding.brkeyboard, true, pinListener)
         awaitClose { cleanUp() }
     }
 

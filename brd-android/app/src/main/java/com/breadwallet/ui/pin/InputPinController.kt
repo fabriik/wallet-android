@@ -117,7 +117,7 @@ class InputPinController(args: Bundle) : BaseMobiusController<M, E, F>(args) {
 
     private fun PinLayout.bindInput() = callbackFlow<E> {
         val channel = channel
-        setup(binding.brkeyboard, object : PinLayoutListener {
+        setup(binding.brkeyboard, true, object : PinLayoutListener {
             override fun onPinInserted(pin: String, isPinCorrect: Boolean) {
                 channel.offer(E.OnPinEntered(pin, isPinCorrect))
             }
