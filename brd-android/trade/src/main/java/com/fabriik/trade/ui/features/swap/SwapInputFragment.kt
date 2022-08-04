@@ -260,7 +260,11 @@ class SwapInputFragment : Fragment(),
 
     override fun onResume() {
         super.onResume()
-        viewModel.setEvent(SwapInputContract.Event.OnResume)
+        when (viewModel.state.value) {
+            is SwapInputContract.State.Loaded ->
+                viewModel.setEvent(SwapInputContract.Event.OnResume)
+            else -> Unit
+        }
     }
 
     private fun startCurrenciesReplaceAnimation(stateChange: SwapInputContract.State.Loaded) {
