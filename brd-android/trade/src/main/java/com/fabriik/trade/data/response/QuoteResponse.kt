@@ -23,25 +23,19 @@ data class QuoteResponse(
 
     @Json(name = "maximum_value")
     val maximumValue: BigDecimal,
+
+    @Json(name="from_fee_currency")
+    val fromFeeCurrency: FeeCurrency,
+
+    @Json(name="to_fee_currency")
+    val toFeeCurrency: FeeCurrency
 )
 
 @JsonClass(generateAdapter = true)
-data class FeeEstimate(
-    @Json(name = "estimated_confirmation_in")
-    val estimatedConfirmationIn: Long,
+data class FeeCurrency(
+    @Json(name = "fee_currency")
+    val currency: String,
 
-    @Json(name = "tier")
-    val tier: String,
-
-    @Json(name = "fee")
-    val fee: Amount
-)
-
-@JsonClass(generateAdapter = true)
-data class Amount(
-    @Json(name = "currency_id")
-    val currencyId: String,
-
-    @Json(name = "amount")
-    val amount: String
+    @Json(name = "rate")
+    val rate: BigDecimal
 )

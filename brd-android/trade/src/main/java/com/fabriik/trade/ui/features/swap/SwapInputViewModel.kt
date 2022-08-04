@@ -340,7 +340,7 @@ class SwapInputViewModel(
 
             val quoteResponse =
                 swapApi.getQuote(sourceCryptoCurrency!!, destinationCryptoCurrency!!)
-            val selectedPairQuote = quoteResponse.data
+            val quoteData = quoteResponse.data
 
             val sourceCryptoBalance = helper.loadCryptoBalance(sourceCryptoCurrency)
             if (sourceCryptoBalance == null) {
@@ -352,7 +352,7 @@ class SwapInputViewModel(
                 SwapInputContract.State.Loaded(
                     supportedCurrencies = supportedCurrencies,
                     fiatCurrency = currentFiatCurrency,
-                    quoteResponse = selectedPairQuote,
+                    quoteResponse = quoteData,
                     sourceCryptoCurrency = sourceCryptoCurrency,
                     destinationCryptoCurrency = destinationCryptoCurrency,
                     sourceCryptoBalance = sourceCryptoBalance,
@@ -361,7 +361,7 @@ class SwapInputViewModel(
                 )
             }
 
-            if (selectedPairQuote == null) {
+            if (quoteData == null) {
                 setEffect {
                     SwapInputContract.Effect.ShowToast(
                         getString(R.string.Swap_Input_Error_NoSelectedPairData), true
@@ -439,7 +439,9 @@ class SwapInputViewModel(
                 markupFactor = state.markup,
                 exchangeRate = state.rate,
                 sourceCurrency = state.sourceCryptoCurrency,
-                destinationCurrency = state.destinationCryptoCurrency
+                destinationCurrency = state.destinationCryptoCurrency,
+                sendingFeeRate = state.sendingNetworkFeeRate,
+                receivingFeeRate = state.receivingNetworkFeeRate
             )
 
             setState {
