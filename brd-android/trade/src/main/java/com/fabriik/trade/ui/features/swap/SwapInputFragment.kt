@@ -74,6 +74,7 @@ class SwapInputFragment : Fragment(),
 
         with(binding) {
             toolbar.setDismissButtonClickListener {
+                cvSwap.hideKeyboard()
                 viewModel.setEvent(SwapInputContract.Event.DismissClicked)
             }
 
@@ -228,21 +229,25 @@ class SwapInputFragment : Fragment(),
                     SwapInputViewModel.QUOTE_TIMER, effect.timeLeft
                 )
 
-            is SwapInputContract.Effect.SourceSelection ->
+            is SwapInputContract.Effect.SourceSelection -> {
+                binding.cvSwap.hideKeyboard()
                 findNavController().navigate(
                     SwapInputFragmentDirections.actionAssetSelection(
                         requestKey = REQUEST_KEY_SOURCE_SELECTION,
                         currencies = effect.currencies.toTypedArray(),
                     )
                 )
+            }
 
-            is SwapInputContract.Effect.DestinationSelection ->
+            is SwapInputContract.Effect.DestinationSelection -> {
+                binding.cvSwap.hideKeyboard()
                 findNavController().navigate(
                     SwapInputFragmentDirections.actionAssetSelection(
                         requestKey = REQUEST_KEY_DESTINATION_SELECTION,
                         currencies = effect.currencies.toTypedArray(),
                     )
                 )
+            }
 
             is SwapInputContract.Effect.UpdateSourceFiatAmount ->
                 binding.cvSwap.setSourceFiatAmount(effect.bigDecimal, effect.changeByUser)
