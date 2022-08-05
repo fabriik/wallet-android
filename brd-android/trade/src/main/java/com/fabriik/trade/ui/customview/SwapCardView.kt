@@ -26,7 +26,7 @@ class SwapCardView @JvmOverloads constructor(
     private val binding: ViewSwapCardBinding
     private var callback: Callback? = null
 
-    private val alphaAnimationForAnimatedViews : List<ObjectAnimator>
+    private val alphaAnimationForAnimatedViews: List<ObjectAnimator>
 
     init {
         radius = 16.dp.toFloat()
@@ -199,6 +199,13 @@ class SwapCardView @JvmOverloads constructor(
         Utils.hideKeyboard(binding.root.context)
         binding.viewInputBuyingCurrency.clearCurrentInputFieldFocus()
         binding.viewInputSellingCurrency.clearCurrentInputFieldFocus()
+    }
+
+    fun hideKeyboard() {
+        with(binding) {
+            viewInputBuyingCurrency.hideKeyboard()
+            viewInputSellingCurrency.hideKeyboard()
+        }
     }
 
     interface Callback {

@@ -6,11 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.breadwallet.ext.isZero
-import com.breadwallet.tools.util.Utils
-import com.fabriik.common.utils.DecimalDigitsInputFilter
-import com.fabriik.common.utils.disableCopyPaste
-import com.fabriik.common.utils.afterTextChangedDebounceFocused
-import com.fabriik.common.utils.showKeyboard
+import com.fabriik.common.utils.*
 import com.fabriik.trade.R
 import com.fabriik.trade.databinding.ViewCurrencyInputBinding
 import java.math.BigDecimal
@@ -113,6 +109,13 @@ class CurrencyInputView @JvmOverloads constructor(
     fun clearCurrentInputFieldFocus() {
         binding.etFiatAmount.clearFocus()
         binding.etCryptoAmount.clearFocus()
+    }
+
+    fun hideKeyboard() {
+        with(binding) {
+            etCryptoAmount.hideKeyboard()
+            etFiatAmount.hideKeyboard()
+        }
     }
 
     interface Callback {
