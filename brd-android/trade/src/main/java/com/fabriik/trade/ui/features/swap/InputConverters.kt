@@ -11,6 +11,8 @@ interface InputConverter {
         markupFactor: BigDecimal,
         sourceCurrency: String,
         destinationCurrency: String,
+        sendingFeeRate: BigDecimal,
+        receivingFeeRate: BigDecimal
     ): Result
 
     data class Result(
@@ -34,7 +36,9 @@ class ConvertSourceFiatAmount(private val amountConverter: AmountConverter) : In
         exchangeRate: BigDecimal,
         markupFactor: BigDecimal,
         sourceCurrency: String,
-        destinationCurrency: String
+        destinationCurrency: String,
+        sendingFeeRate: BigDecimal,
+        receivingFeeRate: BigDecimal
     ): InputConverter.Result {
         // convert sending fiat to sending crypto
         val sourceCryptoAmount = amountConverter.fiatToCrypto(
@@ -48,7 +52,9 @@ class ConvertSourceFiatAmount(private val amountConverter: AmountConverter) : In
             markup = markupFactor,
             amount = sourceCryptoAmount,
             sourceCurrency = sourceCurrency,
-            destinationCurrency = destinationCurrency
+            destinationCurrency = destinationCurrency,
+            sendingFeeRate = sendingFeeRate,
+            receivingFeeRate = receivingFeeRate
         )
 
         val destCryptoAmount = destCryptoAmountData.third
@@ -78,7 +84,9 @@ class ConvertSourceCryptoAmount(private val amountConverter: AmountConverter) : 
         exchangeRate: BigDecimal,
         markupFactor: BigDecimal,
         sourceCurrency: String,
-        destinationCurrency: String
+        destinationCurrency: String,
+        sendingFeeRate: BigDecimal,
+        receivingFeeRate: BigDecimal
     ): InputConverter.Result {
         // convert sending crypto to sending fiat
         val sourceFiatAmount = amountConverter.cryptoToFiat(
@@ -92,7 +100,9 @@ class ConvertSourceCryptoAmount(private val amountConverter: AmountConverter) : 
             markup = markupFactor,
             amount = amount,
             sourceCurrency = sourceCurrency,
-            destinationCurrency = destinationCurrency
+            destinationCurrency = destinationCurrency,
+            sendingFeeRate = sendingFeeRate,
+            receivingFeeRate = receivingFeeRate
         )
 
         val destCryptoAmount = destCryptoAmountData.third
@@ -122,7 +132,9 @@ class ConvertDestinationFiatAmount(private val amountConverter: AmountConverter)
         exchangeRate: BigDecimal,
         markupFactor: BigDecimal,
         sourceCurrency: String,
-        destinationCurrency: String
+        destinationCurrency: String,
+        sendingFeeRate: BigDecimal,
+        receivingFeeRate: BigDecimal
     ): InputConverter.Result {
         // convert receiving fiat to receiving crypto
         val destCryptoAmount = amountConverter.fiatToCrypto(
@@ -136,7 +148,9 @@ class ConvertDestinationFiatAmount(private val amountConverter: AmountConverter)
             destinationCurrency = destinationCurrency,
             sourceCurrency = sourceCurrency,
             rate = exchangeRate,
-            markup = markupFactor
+            markup = markupFactor,
+            sendingFeeRate = sendingFeeRate,
+            receivingFeeRate = receivingFeeRate
         )
 
         val sourceCryptoAmount = sourceCryptoAmountData.third
@@ -167,7 +181,9 @@ class ConvertDestinationCryptoAmount(private val amountConverter: AmountConverte
         exchangeRate: BigDecimal,
         markupFactor: BigDecimal,
         sourceCurrency: String,
-        destinationCurrency: String
+        destinationCurrency: String,
+        sendingFeeRate: BigDecimal,
+        receivingFeeRate: BigDecimal
     ): InputConverter.Result {
         // convert receiving crypto to receiving fiat
         val destFiatAmount = amountConverter.cryptoToFiat(
@@ -181,7 +197,9 @@ class ConvertDestinationCryptoAmount(private val amountConverter: AmountConverte
             amount = amount,
             markup = markupFactor,
             sourceCurrency = sourceCurrency,
-            destinationCurrency = destinationCurrency
+            destinationCurrency = destinationCurrency,
+            sendingFeeRate = sendingFeeRate,
+            receivingFeeRate = receivingFeeRate
         )
 
         val sourceCryptoAmount = sourceCryptoAmountData.third
