@@ -36,7 +36,6 @@ interface SwapInputContract {
     sealed class Effect : FabriikContract.Effect {
         object Dismiss : Effect()
         object ClearInputFocus : Effect()
-        object DeselectMinMaxSwitchItems : Effect()
         object RequestUserAuthentication : Effect()
         data class ConfirmDialog(
             val to: AmountData,
