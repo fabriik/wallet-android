@@ -65,10 +65,6 @@ class SwapConfirmationDialog : DialogFragment() {
                 args.fromAmount.cryptoCurrency
             )
 
-            btnDismiss.setOnClickListener {
-                notifyListener(RESULT_CANCEL)
-            }
-
             btnCancel.setOnClickListener {
                 notifyListener(RESULT_CANCEL)
             }
