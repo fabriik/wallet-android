@@ -69,9 +69,7 @@ interface SwapInputContract {
         object Error : State()
         object Loading : State()
         data class Loaded(
-            val minCryptoAmount: BigDecimal,
-            val maxCryptoAmount: BigDecimal,
-            val supportedCurrencies : List<String>,
+            val supportedCurrencies: List<String>,
             val quoteResponse: QuoteResponse?,
             val fiatCurrency: String,
             val sourceCryptoBalance: BigDecimal,
@@ -92,11 +90,14 @@ interface SwapInputContract {
                 get() = quoteResponse?.exchangeRate ?: BigDecimal.ZERO
             val markup: BigDecimal
                 get() = quoteResponse?.markup ?: BigDecimal.ZERO
-
             val sendingNetworkFeeRate: BigDecimal
                 get() = quoteResponse?.fromFeeCurrency?.rate ?: BigDecimal.ONE
             val receivingNetworkFeeRate: BigDecimal
                 get() = quoteResponse?.toFeeCurrency?.rate ?: BigDecimal.ONE
+            val minCryptoAmount: BigDecimal
+                get() = quoteResponse?.minimumValue ?: BigDecimal.ZERO
+            val maxCryptoAmount: BigDecimal
+                get() = quoteResponse?.maximumValue ?: BigDecimal.ZERO
         }
     }
 

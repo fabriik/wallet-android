@@ -356,8 +356,6 @@ class SwapInputViewModel(
                     sourceCryptoCurrency = sourceCryptoCurrency,
                     destinationCryptoCurrency = destinationCryptoCurrency,
                     sourceCryptoBalance = sourceCryptoBalance,
-                    minCryptoAmount = quoteResponse.data?.minimumValue ?: BigDecimal.ZERO,
-                    maxCryptoAmount = quoteResponse.data?.maximumValue ?: BigDecimal.ZERO,
                 )
             }
 
