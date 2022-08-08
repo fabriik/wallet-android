@@ -1,6 +1,7 @@
 package com.breadwallet.breadbox
 
 import android.content.Context
+import com.breadwallet.ext.addUniqueHeader
 import com.breadwallet.tools.manager.BRSharedPrefs
 import com.fabriik.common.data.FabriikApiConstants
 import com.fabriik.registration.utils.UserSessionManager
@@ -15,10 +16,11 @@ class FabriikAuthInterceptor(
 ) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
-        val requestBuilderWithDeviceId = chain.request()
+        val request = chain.request()
+        val requestBuilderWithDeviceId = request
             .newBuilder()
-            .addHeader(FabriikApiConstants.HEADER_DEVICE_ID, BRSharedPrefs.getDeviceId())
-            .addHeader(FabriikApiConstants.HEADER_USER_AGENT, FabriikApiConstants.USER_AGENT_VALUE)
+            .addUniqueHeader(request, FabriikApiConstants.HEADER_DEVICE_ID, BRSharedPrefs.getDeviceId())
+            .addUniqueHeader(request, FabriikApiConstants.HEADER_USER_AGENT, FabriikApiConstants.USER_AGENT_VALUE)
 
         val requestUrl = chain.request().url.toString()
         if (!requestUrl.startsWith(FabriikApiConstants.HOST_BLOCKSATOSHI_API)) {
@@ -28,7 +30,7 @@ class FabriikAuthInterceptor(
         }
 
         val response = requestBuilderWithDeviceId
-            .addHeader(FabriikApiConstants.HEADER_AUTHORIZATION, SessionHolder.getSessionKey())
+            .addUniqueHeader(request, FabriikApiConstants.HEADER_AUTHORIZATION, SessionHolder.getSessionKey())
             .build()
             .run(chain::proceed)
 

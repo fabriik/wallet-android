@@ -1,6 +1,7 @@
 package com.fabriik.registration.data
 
 import android.content.Context
+import com.breadwallet.ext.addUniqueHeader
 import com.breadwallet.tools.manager.BRSharedPrefs
 import com.fabriik.common.data.FabriikApiConstants
 import com.fabriik.registration.utils.UserSessionManager
@@ -15,10 +16,11 @@ class RegistrationApiInterceptor(
 ) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
-        val requestBuilderWithDeviceId = chain.request()
+        val request = chain.request()
+        val requestBuilderWithDeviceId = request
             .newBuilder()
-            .addHeader(FabriikApiConstants.HEADER_DEVICE_ID, BRSharedPrefs.getDeviceId())
-            .addHeader(FabriikApiConstants.HEADER_USER_AGENT, FabriikApiConstants.USER_AGENT_VALUE)
+            .addUniqueHeader(request, FabriikApiConstants.HEADER_DEVICE_ID, BRSharedPrefs.getDeviceId())
+            .addUniqueHeader(request ,FabriikApiConstants.HEADER_USER_AGENT, FabriikApiConstants.USER_AGENT_VALUE)
 
         val requestUrl = chain.request().url.toString()
         if (requestUrl.endsWith("/associate")) {

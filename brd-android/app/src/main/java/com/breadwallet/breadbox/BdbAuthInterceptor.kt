@@ -28,6 +28,7 @@ import android.util.Base64
 import com.breadwallet.BuildConfig
 import com.breadwallet.app.BreadApp
 import com.breadwallet.crypto.Key
+import com.breadwallet.ext.addUniqueHeader
 import com.breadwallet.logger.logDebug
 import com.breadwallet.logger.logError
 import com.breadwallet.tools.crypto.CryptoHelper
@@ -116,8 +117,9 @@ class BdbAuthInterceptor(
     }
 
     override fun intercept(chain: Interceptor.Chain): Response {
-        if (!chain.request().url.host.endsWith("blockset.com")) {
-            return chain.proceed(chain.request())
+        val request = chain.request()
+        if (!request.url.host.endsWith("blockset.com")) {
+            return chain.proceed(request)
         }
 
         val tokenString = runBlocking {
@@ -136,7 +138,7 @@ class BdbAuthInterceptor(
 
         return chain.request()
             .newBuilder()
-            .addHeader("Authorization", "Bearer $tokenString")
+            .addUniqueHeader(request,"Authorization", "Bearer $tokenString")
             .build()
             .run(chain::proceed)
     }
