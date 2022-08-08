@@ -30,7 +30,6 @@ commands:
           name: Pull submodules
           command: |
             git submodule update --init --recursive
-
   # Refresh gradle command
   refresh-gradle:
     steps:
@@ -67,13 +66,11 @@ jobs:
           name: Run unit tests
           command: |
             ./gradlew  --console=plain  testDevelopmentTestnetDebugUnitTest
-
       # Generate Jacoco report
       - run:
           name: Generate Jacoco report
           command: |
             ./gradlew  --console=plain :brd-android:app:jacocoTestReport
-
   # Release job (build apk and aab)
   release:
     <<: *defaults
@@ -128,7 +125,7 @@ jobs:
       - run:
           name: Upload to firebase bucket
           command: |
-            curl -s 'https://firebasestorage.googleapis.com/v0/b/fabriik-internal-distribution/o/upload-to-storage.js?alt=media&token=f53c3a3f-fd3f-4268-a6dc-8e3c886d4c9f' -o ./firebase-upload.js
+            curl -s 'https://firebasestorage.googleapis.com/v0/b/fabriik-internal-distribution/o/upload-to-storage.js?alt=media&token=3990982e-3101-44cf-8ca0-27687f46112f' -o ./firebase-upload.js
             node ./firebase-upload.js
       - store_artifacts:
           path: ~/artifacts
