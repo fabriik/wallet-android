@@ -678,7 +678,7 @@ class BreadApp : Application(), KodeinAware, CameraXConfig.Provider {
         }
     }
 
-    fun createHttpHeaders(): Map<String, String> {
+    private fun createHttpHeaders(): Map<String, String> {
         return mapOf(
             APIClient.HEADER_IS_INTERNAL to if (BuildConfig.IS_INTERNAL_BUILD) BRConstants.TRUE else BRConstants.FALSE,
             APIClient.HEADER_TESTFLIGHT to if (BuildConfig.DEBUG) BRConstants.TRUE else BRConstants.FALSE,

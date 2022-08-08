@@ -1032,7 +1032,7 @@
     <string name="Staking.feePct" translatable="false">Fee: %1$s</string>
     <string name="Staking.loadingBakerError" translatable="false">An error occurred while loading baker information. Please try again later.</string>
     <!-- Status label: current staking transaction is pending -->
-    <string name="Staking.pendingTransaction">Transaction pending...</string>
+    <string name="Staking.pendingTransaction">Transaction pending…</string>
     <!-- Button label: remove selected baker -->
     <string name="Staking.remove">Remove</string>
     <!-- Baker cell: ROI field header -->
@@ -1469,7 +1469,7 @@
     <!-- Wipe wallet button title -->
     <string name="WipeWallet.wipe">Wipe</string>
     <!-- Wiping activity message -->
-    <string name="WipeWallet.wiping">Wiping...</string>
+    <string name="WipeWallet.wiping">Wiping…</string>
     <!-- Paper key instructions. -->
     <string name="WritePaperPhrase.instruction">Write down each word in order and store it in a safe place.</string>
     <!-- button label -->
