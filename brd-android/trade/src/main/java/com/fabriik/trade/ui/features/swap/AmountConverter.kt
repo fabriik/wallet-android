@@ -1,5 +1,6 @@
 package com.fabriik.trade.ui.features.swap
 
+import android.util.Log
 import com.breadwallet.repository.RatesRepository
 import com.fabriik.trade.data.model.FeeAmountData
 import com.fabriik.trade.utils.EstimateSwapFee
@@ -40,10 +41,13 @@ class AmountConverter(
         val convertedAmount = sourceAmount.multiply(rate)
 
         val destFee = estimateFee(convertedAmount, destinationCurrency, fiatCurrency)
-        val convertedDestAmount =
-            if (destFee?.included == true) convertedAmount - destFee.cryptoAmount.divide(receivingFeeRate) else convertedAmount
-        val destAmount = convertedDestAmount.divide(markup, 20, RoundingMode.HALF_UP)
 
+        val convertedDestAmount =
+            if (destFee?.included == false) {
+                Log.d("DAVID","included:" + true)
+                convertedAmount - destFee.cryptoAmount.divide(receivingFeeRate, 5, RoundingMode.HALF_UP)
+            } else convertedAmount
+        val destAmount = convertedDestAmount.divide(markup, 20, RoundingMode.HALF_UP)
         return Triple(sourceFee, destFee, destAmount)
     }
 
