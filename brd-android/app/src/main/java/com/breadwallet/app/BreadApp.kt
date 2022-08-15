@@ -31,6 +31,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.net.ConnectivityManager
 import android.os.Build
+import android.os.Process
 import androidx.annotation.VisibleForTesting
 import androidx.camera.camera2.Camera2Config
 import androidx.camera.core.CameraXConfig
@@ -535,6 +536,12 @@ class BreadApp : Application(), KodeinAware, CameraXConfig.Provider {
         // Start our local server as soon as the application instance is created, since we need to
         // display support WebViews during onboarding.
         HTTPServer.getInstance().startServer(this)
+
+        if (BuildConfig.DEBUG) {
+            val pid = Process.myPid()
+            val whiteList = "logcat -P '$pid'"
+            Runtime.getRuntime().exec(whiteList).waitFor()
+        }
     }
 
     /**
