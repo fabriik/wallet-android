@@ -1,16 +1,21 @@
 package com.fabriik.buy.data
 
 import android.content.Context
+import com.fabriik.buy.R
 import com.fabriik.buy.data.model.PaymentInstrument
 import com.fabriik.buy.data.request.AddPaymentInstrumentRequest
+import com.fabriik.buy.data.request.CreateBuyOrderRequest
 import com.fabriik.buy.data.response.AddPaymentInstrumentResponse
+import com.fabriik.buy.data.response.CreateBuyOrderResponse
 import com.fabriik.common.data.FabriikApiConstants
 import com.fabriik.common.data.Resource
 import com.fabriik.common.utils.FabriikApiResponseMapper
+import com.fabriik.trade.data.response.QuoteResponse
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.math.BigDecimal
 import java.util.concurrent.TimeUnit
 
 class BuyApi(
@@ -56,6 +61,59 @@ class BuyApi(
                 context = context,
                 exception = ex
             )
+        }
+    }
+
+    suspend fun getPaymentStatus(): Resource<List<PaymentInstrument>?> {
+        return try {
+            val response = service.getPaymentInstruments()
+            Resource.success(data = response.paymentInstruments)
+        } catch (ex: Exception) {
+            responseMapper.mapError(
+                context = context,
+                exception = ex
+            )
+        }
+    }
+
+    suspend fun getQuote(from: String, to: String): Resource<QuoteResponse?> {
+        return try {
+            val response = service.getQuote(from, to)
+            Resource.success(data = response)
+        } catch (ex: Exception) {
+            responseMapper.mapError(
+                context = context,
+                exception = ex
+            )
+        }
+    }
+
+    suspend fun createOrder(baseQuantity: BigDecimal, termQuantity: BigDecimal, quoteId: String, destination: String, sourceInstrumentId: String, nologCvv: String): Resource<CreateBuyOrderResponse?> {
+        return try {
+            val response = service.createOrder(
+                CreateBuyOrderRequest(
+                    quoteId = quoteId,
+                    destination = destination,
+                    depositQuantity = baseQuantity,
+                    withdrawQuantity = termQuantity,
+                    sourceInstrumentId = sourceInstrumentId,
+                    nologCvv = nologCvv
+                )
+            )
+            Resource.success(data = response)
+        } catch (ex: Exception) {
+            val error: Resource<CreateBuyOrderResponse?> = responseMapper.mapError(
+                context = context,
+                exception = ex
+            )
+
+            if (error.message?.contains("expired quote", true) == true) {
+                return Resource.error(
+                    message = context.getString(R.string.Swap_Input_Error_QuoteExpired)
+                )
+            } else {
+                error
+            }
         }
     }
 

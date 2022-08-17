@@ -5,12 +5,9 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class AddPaymentInstrumentResponse(
+data class PaymentStatusResponse(
     @Json(name = "payment_reference")
     val paymentReference: String,
-
-    @Json(name = "redirect_url")
-    val redirectUrl: String,
 
     @Json(name = "status")
     val status: PaymentStatus

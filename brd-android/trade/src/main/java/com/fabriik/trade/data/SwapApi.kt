@@ -6,9 +6,9 @@ import com.fabriik.common.data.Resource
 import com.fabriik.common.utils.FabriikApiResponseMapper
 import com.fabriik.trade.R
 import com.fabriik.trade.data.model.SwapTransactionData
-import com.fabriik.trade.data.request.CreateOrderRequest
+import com.fabriik.trade.data.request.CreateSwapOrderRequest
 import com.fabriik.trade.data.request.EstimateEthFeeRequest
-import com.fabriik.trade.data.response.CreateOrderResponse
+import com.fabriik.trade.data.response.CreateSwapOrderResponse
 import com.fabriik.trade.data.response.ExchangeOrder
 import com.fabriik.trade.data.response.QuoteResponse
 import okhttp3.*
@@ -47,10 +47,10 @@ class SwapApi(
         }
     }
 
-    suspend fun createOrder(baseQuantity: BigDecimal, termQuantity: BigDecimal, quoteId: String, destination: String): Resource<CreateOrderResponse?> {
+    suspend fun createOrder(baseQuantity: BigDecimal, termQuantity: BigDecimal, quoteId: String, destination: String): Resource<CreateSwapOrderResponse?> {
         return try {
             val response = service.createOrder(
-                CreateOrderRequest(
+                CreateSwapOrderRequest(
                     quoteId = quoteId,
                     destination = destination,
                     depositQuantity = baseQuantity,
@@ -59,7 +59,7 @@ class SwapApi(
             )
             Resource.success(data = response)
         } catch (ex: Exception) {
-            val error: Resource<CreateOrderResponse?> = responseMapper.mapError(
+            val error: Resource<CreateSwapOrderResponse?> = responseMapper.mapError(
                 context = context,
                 exception = ex
             )

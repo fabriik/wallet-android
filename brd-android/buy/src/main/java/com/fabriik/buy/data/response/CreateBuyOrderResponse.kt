@@ -5,7 +5,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class AddPaymentInstrumentResponse(
+data class CreateBuyOrderResponse(
     @Json(name = "payment_reference")
     val paymentReference: String,
 
