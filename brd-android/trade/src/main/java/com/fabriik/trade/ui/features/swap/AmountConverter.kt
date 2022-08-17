@@ -36,7 +36,7 @@ class AmountConverter(
     ): Triple<FeeAmountData?, FeeAmountData?, BigDecimal> {
         val sourceFee = estimateFee(amount, sourceCurrency, fiatCurrency)
         val sourceAmount =
-            if (sourceFee?.included == true) amount - sourceFee.cryptoAmount.divide(sendingFeeRate) else amount
+            if (sourceFee?.included == false) amount - sourceFee.cryptoAmount.divide(sendingFeeRate,20, RoundingMode.HALF_UP) else amount
 
         val convertedAmount = sourceAmount.multiply(rate)
 
@@ -44,8 +44,7 @@ class AmountConverter(
 
         val convertedDestAmount =
             if (destFee?.included == false) {
-                Log.d("DAVID","included:" + true)
-                convertedAmount - destFee.cryptoAmount.divide(receivingFeeRate, 5, RoundingMode.HALF_UP)
+                convertedAmount - destFee.cryptoAmount.divide(receivingFeeRate, 20, RoundingMode.HALF_UP)
             } else convertedAmount
         val destAmount = convertedDestAmount.divide(markup, 20, RoundingMode.HALF_UP)
         return Triple(sourceFee, destFee, destAmount)
@@ -62,14 +61,14 @@ class AmountConverter(
     ): Triple<FeeAmountData?, FeeAmountData?, BigDecimal> {
         val destFee = estimateFee(amount, destinationCurrency, fiatCurrency)
         val convertedDestAmount =
-            if (destFee?.included == true) amount + destFee.cryptoAmount.divide(receivingFeeRate) else amount
+            if (destFee?.included == false) amount + destFee.cryptoAmount.divide(receivingFeeRate, 20, RoundingMode.HALF_UP) else amount
         val destAmount = convertedDestAmount.multiply(markup)
 
         val convertedAmount = destAmount.divide(rate, 20, RoundingMode.HALF_UP)
 
         val sourceFee = estimateFee(convertedAmount, sourceCurrency, fiatCurrency)
         val sourceAmount =
-            if (sourceFee?.included == true) convertedAmount + sourceFee.cryptoAmount.divide(sendingFeeRate) else convertedAmount
+            if (sourceFee?.included == false) convertedAmount + sourceFee.cryptoAmount.divide(sendingFeeRate) else convertedAmount
 
         return Triple(sourceFee, destFee, sourceAmount)
     }
