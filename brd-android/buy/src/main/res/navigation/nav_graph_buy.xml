@@ -34,6 +34,14 @@
             android:id="@+id/actionAddCard"
             app:destination="@id/fragmentAddCard" />
 
+        <action
+            android:id="@+id/actionPaymentMethod"
+            app:destination="@id/fragmentPaymentMethod" />
+
+        <action
+            android:id="@+id/actionOrderPreview"
+            app:destination="@id/fragmentOrderPreview" />
+
     </fragment>
 
     <include app:graph="@navigation/nav_graph_asset_selection"/>
