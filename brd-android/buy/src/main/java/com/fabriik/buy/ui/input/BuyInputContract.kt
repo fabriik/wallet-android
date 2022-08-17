@@ -21,8 +21,8 @@ interface BuyInputContract {
     sealed class Effect : FabriikContract.Effect {
         object Dismiss : Effect()
         object AddCard : Effect()
-        object PaymentMethodSelection : Effect()
 
+        data class PaymentMethodSelection(val paymentInstruments: Array<PaymentInstrument>) : Effect()
         data class ShowToast(val message: String, val redInfo: Boolean = false) : Effect()
         data class CryptoSelection(val currencies: List<String>) : Effect()
         data class OpenOrderPreview(val cryptoCurrency: String) : Effect()

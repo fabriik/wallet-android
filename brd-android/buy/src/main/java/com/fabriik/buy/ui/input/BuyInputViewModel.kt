@@ -97,7 +97,9 @@ class BuyInputViewModel(
             if (paymentMethods.isEmpty()) {
                 BuyInputContract.Effect.AddCard
             } else {
-                BuyInputContract.Effect.PaymentMethodSelection
+                BuyInputContract.Effect.PaymentMethodSelection(
+                    paymentMethods.toTypedArray()
+                )
             }
         }
     }

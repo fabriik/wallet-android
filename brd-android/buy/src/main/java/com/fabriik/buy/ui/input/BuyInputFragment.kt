@@ -126,8 +126,12 @@ class BuyInputFragment : Fragment(),
             BuyInputContract.Effect.AddCard ->
                 findNavController().navigate(BuyInputFragmentDirections.actionAddCard())
 
-            BuyInputContract.Effect.PaymentMethodSelection ->
-                findNavController().navigate(BuyInputFragmentDirections.actionPaymentMethod())
+            is BuyInputContract.Effect.PaymentMethodSelection ->
+                findNavController().navigate(
+                    BuyInputFragmentDirections.actionPaymentMethod(
+                        effect.paymentInstruments
+                    )
+                )
 
             is BuyInputContract.Effect.OpenOrderPreview ->
                 findNavController().navigate(BuyInputFragmentDirections.actionOrderPreview())

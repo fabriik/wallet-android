@@ -1,5 +1,6 @@
 package com.fabriik.buy.ui.features.paymentmethod
 
+import com.fabriik.buy.data.model.PaymentInstrument
 import com.fabriik.common.ui.base.FabriikContract
 
 interface PaymentMethodContract : FabriikContract {
@@ -14,5 +15,7 @@ interface PaymentMethodContract : FabriikContract {
         object Dismiss : Effect()
     }
 
-    object State : FabriikContract.State
+    data class State(
+        val paymentInstruments: List<PaymentInstrument>
+    ) : FabriikContract.State
 }
