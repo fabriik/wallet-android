@@ -69,6 +69,8 @@ import com.breadwallet.ui.uigift.GiftBackup
 import com.breadwallet.ui.uigift.SharedPrefsGiftBackup
 import com.breadwallet.util.*
 import com.breadwallet.util.usermetrics.UserMetricsUtil
+import com.fabriik.buy.data.BuyApi
+import com.fabriik.buy.data.BuyApiInterceptor
 import com.fabriik.common.data.FabriikApiConstants
 import com.fabriik.common.utils.adapter.BigDecimalAdapter
 import com.fabriik.common.utils.adapter.CalendarJsonAdapter
@@ -447,6 +449,21 @@ class BreadApp : Application(), KodeinAware, CameraXConfig.Provider {
 
         bind<SwapApiInterceptor>() with singleton {
             SwapApiInterceptor(
+                this@BreadApp,
+                applicationScope
+            )
+        }
+
+        bind<BuyApi>() with singleton {
+            BuyApi.create(
+                this@BreadApp,
+                instance(),
+                instance()
+            )
+        }
+
+        bind<BuyApiInterceptor>() with singleton {
+            BuyApiInterceptor(
                 this@BreadApp,
                 applicationScope
             )

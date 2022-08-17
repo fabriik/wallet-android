@@ -1,6 +1,6 @@
 package com.fabriik.buy.data
 
-import com.fabriik.buy.data.responses.ReservationUrlResponse
+import com.fabriik.buy.data.response.ReservationUrlResponse
 import retrofit2.http.*
 
 interface WyreService {

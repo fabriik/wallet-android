@@ -41,6 +41,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":brd-android:registration"))
     implementation(project(":brd-android:app-core"))
     implementation(project(":brd-android:fabriik-common"))
     implementation(project(":brd-android:trade"))
@@ -57,5 +58,6 @@ dependencies {
     implementation(Libs.Networking.RetrofitMoshiConverter)
 
     implementation(Libs.Networking.Moshi)
+    implementation(project(mapOf("path" to ":brd-android:registration")))
     kapt(Libs.Networking.MoshiCodegen)
 }
