@@ -129,7 +129,7 @@ class BuyInputFragment : Fragment(),
             is BuyInputContract.Effect.PaymentMethodSelection ->
                 findNavController().navigate(
                     BuyInputFragmentDirections.actionPaymentMethod(
-                        effect.paymentInstruments
+                        effect.paymentInstruments.toTypedArray()
                     )
                 )
 
