@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -27,7 +26,8 @@
                 android:id="@+id/cv_add_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginHorizontal="16dp"
                 app:cardUseCompatPadding="false">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -78,11 +78,13 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_list_cards"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingHorizontal="16dp"
+                android:layout_height="match_parent"
+                android:clipChildren="false"
+                android:clipToPadding="false"
                 android:nestedScrollingEnabled="false"
+                android:padding="16dp"
                 tools:itemCount="3"
-                tools:listitem="@layout/list_item_payment_method"/>
+                tools:listitem="@layout/list_item_payment_method" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

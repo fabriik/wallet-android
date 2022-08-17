@@ -57,11 +57,6 @@ class PaymentMethodFragment : Fragment(),
             rvListCards.adapter = adapter
             rvListCards.layoutManager = layoutManager
             rvListCards.setHasFixedSize(true)
-            rvListCards.addItemDecoration(
-                DividerItemDecoration(
-                    context, layoutManager.orientation
-                )
-            )
         }
 
         // collect UI state

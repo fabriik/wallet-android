@@ -33,6 +33,7 @@ class PaymentMethodSelectionAdapter(private val callback: (PaymentInstrument) ->
         fun bind(item: PaymentInstrument, callback: (PaymentInstrument) -> Unit) {
             with(binding) {
                 /*ivLogo.setImageResource(item.icon)*/
+                tvDate.text = "${item.expiryMonth}/${item.expiryYear}"
                 tvCardNumber.text = "**** **** **** ${item.last4Numbers}"
                 root.setOnClickListener { callback(item) }
             }
