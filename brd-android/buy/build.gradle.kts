@@ -58,6 +58,5 @@ dependencies {
     implementation(Libs.Networking.RetrofitMoshiConverter)
 
     implementation(Libs.Networking.Moshi)
-    implementation(project(mapOf("path" to ":brd-android:registration")))
     kapt(Libs.Networking.MoshiCodegen)
 }
