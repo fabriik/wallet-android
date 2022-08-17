@@ -1,6 +1,11 @@
 package com.fabriik.buy.ui.input
 
 import android.app.Application
+import androidx.lifecycle.viewModelScope
+import com.breadwallet.breadbox.BreadBox
+import com.breadwallet.crypto.Wallet
+import com.breadwallet.crypto.WalletManagerState
+import com.breadwallet.platform.interfaces.AccountMetaDataProvider
 import com.fabriik.buy.R
 import com.fabriik.buy.data.BuyApi
 import com.fabriik.common.data.Status
@@ -10,6 +15,10 @@ import org.kodein.di.android.closestKodein
 import org.kodein.di.erased.instance
 import java.math.BigDecimal
 import com.fabriik.common.utils.getString
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import java.math.RoundingMode
 
 class BuyInputViewModel(
@@ -18,16 +27,18 @@ class BuyInputViewModel(
     application
 ), KodeinAware {
 
-    init {
-        loadInitialData()
-    }
-
     override val kodein by closestKodein { application }
 
     private val buyApi by kodein.instance<BuyApi>()
+    private val breadBox by kodein.instance<BreadBox>()
+    private val metaDataManager by kodein.instance<AccountMetaDataProvider>()
 
     private val currentLoadedState: BuyInputContract.State.Loaded?
         get() = state.value as BuyInputContract.State.Loaded?
+
+    init {
+        loadInitialData()
+    }
 
     override fun createInitialState() = BuyInputContract.State.Loading
 
@@ -75,11 +86,8 @@ class BuyInputViewModel(
     }
 
     private fun onCryptoCurrencyClicked() {
-        setEffect {
-            BuyInputContract.Effect.CryptoSelection(
-                listOf("BTC", "BSV", "ETH") //todo: get list of enabled wallets
-            )
-        }
+        val state = currentLoadedState ?: return
+        setEffect { BuyInputContract.Effect.CryptoSelection(state.enabledWallets) }
     }
 
     private fun onPaymentMethodClicked() {
@@ -142,26 +150,33 @@ class BuyInputViewModel(
     }
 
     private fun loadInitialData() {
-        callApi(
-            endState = { currentState },
-            startState = { currentState },
-            action = { buyApi.getPaymentInstruments() },
-            callback = {
-                when (it.status) {
-                    Status.SUCCESS ->
-                        setState {
-                            BuyInputContract.State.Loaded(
-                                exchangeRate = BigDecimal("21002.12"),
-                                cryptoCurrency = "BTC",
-                                paymentInstruments = it.data ?: emptyList()
-                            )
-                        }
-                    Status.ERROR ->
-                        showErrorState()
-                }
+        viewModelScope.launch(Dispatchers.IO) {
+            val enabledWallets = getEnabledWallets()
+            val instrumentsResponse = buyApi.getPaymentInstruments()
+            val exchangeRate = BigDecimal("21002.12") //todo: get exchange rate
+
+            if (instrumentsResponse.status == Status.ERROR || enabledWallets.isEmpty()) {
+                showErrorState()
+                return@launch
             }
-        )
+
+            setState {
+                BuyInputContract.State.Loaded(
+                    exchangeRate = exchangeRate,
+                    enabledWallets = enabledWallets,
+                    cryptoCurrency = enabledWallets.first(),
+                    paymentInstruments = instrumentsResponse.data ?: emptyList()
+                )
+            }
+        }
     }
+
+    private suspend fun getEnabledWallets() =
+        metaDataManager.enabledWallets().first()
+            .map { currencyId -> breadBox.wallet(currencyId).first() }
+            .map { wallet -> wallet.currency.code }
+            .sorted()
+
     private fun showErrorState() {
         setState { BuyInputContract.State.Error }
         setEffect {

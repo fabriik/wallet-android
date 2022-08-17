@@ -34,6 +34,7 @@ interface BuyInputContract {
         object Error : State()
         object Loading : State()
         data class Loaded(
+            val enabledWallets: List<String>,
             val paymentInstruments: List<PaymentInstrument>,
             val fiatCurrency: String = "USD",
             val cryptoCurrency: String,
