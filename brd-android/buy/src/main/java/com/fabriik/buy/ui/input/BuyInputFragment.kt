@@ -16,6 +16,8 @@ import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.breadwallet.tools.util.Utils.hideKeyboard
 import com.breadwallet.util.formatFiatForUi
+import com.fabriik.buy.data.model.PaymentInstrument
+import com.fabriik.buy.ui.features.paymentmethod.PaymentMethodFragment
 import com.fabriik.common.ui.customview.FabriikSwitch
 import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.trade.ui.customview.CurrencyInputView
@@ -93,11 +95,11 @@ class BuyInputFragment : Fragment(),
         }
 
         // listen for destination currency changes
-        parentFragmentManager.setFragmentResultListener(
-            REQUEST_KEY_PAYMENT_METHOD_SELECTION,
-            this
-        ) { _, bundle ->
-            //todo:
+        parentFragmentManager.setFragmentResultListener(PaymentMethodFragment.REQUEST_KEY, this) { _, bundle ->
+            val selectedPaymentInstrument = bundle.getParcelable(PaymentMethodFragment.RESULT_KEY) as PaymentInstrument?
+            if (selectedPaymentInstrument != null) {
+                viewModel.setEvent(BuyInputContract.Event.PaymentMethodChanged(selectedPaymentInstrument))
+            }
         }
 
         requireActivity().onBackPressedDispatcher.addCallback {
@@ -183,6 +185,9 @@ class BuyInputFragment : Fragment(),
                 )
             )
 
+            //todo: change to custom view
+            tvSelectPaymentMethod.text = state.selectedPaymentMethod?.last4Numbers?.let { "**** **** **** $it" }
+
             viewCryptoInput.setFiatCurrency(state.fiatCurrency)
             viewCryptoInput.setCryptoCurrency(state.cryptoCurrency)
 
@@ -196,6 +201,5 @@ class BuyInputFragment : Fragment(),
     companion object {
         const val RATE_FORMAT = "1 %s = %s"
         const val REQUEST_KEY_CRYPTO_SELECTION = "req_code_crypto_select"
-        const val REQUEST_KEY_PAYMENT_METHOD_SELECTION = "req_code_pay_method_select"
     }
 }

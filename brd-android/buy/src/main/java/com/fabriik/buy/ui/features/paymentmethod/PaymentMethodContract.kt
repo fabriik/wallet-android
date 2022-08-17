@@ -13,9 +13,9 @@ interface PaymentMethodContract : FabriikContract {
     }
 
     sealed class Effect : FabriikContract.Effect {
-        object Back : Effect()
         object Dismiss : Effect()
         object AddCard : Effect()
+        data class Back(val selectedInstrument: PaymentInstrument? = null) : Effect()
     }
 
     data class State(

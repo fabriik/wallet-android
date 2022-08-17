@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -80,8 +81,10 @@ class PaymentMethodFragment : Fragment(),
 
     override fun handleEffect(effect: PaymentMethodContract.Effect) {
         when (effect) {
-            PaymentMethodContract.Effect.Back ->
+            is PaymentMethodContract.Effect.Back -> {
+                parentFragmentManager.setFragmentResult(REQUEST_KEY, bundleOf(RESULT_KEY to effect.selectedInstrument))
                 findNavController().popBackStack()
+            }
 
             PaymentMethodContract.Effect.Dismiss ->
                 activity?.finish()
@@ -89,5 +92,10 @@ class PaymentMethodFragment : Fragment(),
             PaymentMethodContract.Effect.AddCard ->
                 findNavController().navigate(PaymentMethodFragmentDirections.actionAddCard())
         }
+    }
+
+    companion object {
+        const val REQUEST_KEY = "request_payment_method"
+        const val RESULT_KEY = "result_payment_method"
     }
 }
