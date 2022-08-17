@@ -8,12 +8,14 @@ interface PaymentMethodContract : FabriikContract {
     sealed class Event : FabriikContract.Event {
         object BackClicked : Event()
         object DismissClicked : Event()
+        object AddCardClicked : Event()
         data class PaymentInstrumentSelected(val paymentInstrument: PaymentInstrument): Event()
     }
 
     sealed class Effect : FabriikContract.Effect {
         object Back : Effect()
         object Dismiss : Effect()
+        object AddCard : Effect()
     }
 
     data class State(

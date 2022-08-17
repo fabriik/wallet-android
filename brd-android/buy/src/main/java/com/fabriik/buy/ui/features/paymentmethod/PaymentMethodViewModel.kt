@@ -31,6 +31,9 @@ class PaymentMethodViewModel(
             PaymentMethodContract.Event.DismissClicked ->
                 setEffect { PaymentMethodContract.Effect.Dismiss }
 
+            PaymentMethodContract.Event.AddCardClicked ->
+                setEffect { PaymentMethodContract.Effect.AddCard }
+
             is PaymentMethodContract.Event.PaymentInstrumentSelected -> TODO()
         }
     }

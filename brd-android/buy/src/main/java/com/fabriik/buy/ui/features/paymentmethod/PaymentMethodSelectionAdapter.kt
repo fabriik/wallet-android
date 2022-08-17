@@ -32,8 +32,8 @@ class PaymentMethodSelectionAdapter(private val callback: (PaymentInstrument) ->
 
         fun bind(item: PaymentInstrument, callback: (PaymentInstrument) -> Unit) {
             with(binding) {
-                /*ivLogo.setImageResource(item.icon)
-                tvTitle.text = item.country.name*/
+                /*ivLogo.setImageResource(item.icon)*/
+                tvCardNumber.text = "**** **** **** ${item.last4Numbers}"
                 root.setOnClickListener { callback(item) }
             }
         }

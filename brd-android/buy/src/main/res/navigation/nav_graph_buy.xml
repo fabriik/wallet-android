@@ -96,5 +96,9 @@
             android:name="paymentInstruments"
             app:argType="com.fabriik.buy.data.model.PaymentInstrument[]"/>
 
+        <action
+            android:id="@+id/actionAddCard"
+            app:destination="@id/fragmentAddCard" />
+
     </fragment>
 </navigation>

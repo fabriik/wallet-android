@@ -6,17 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fabriik.buy.R
 import com.fabriik.buy.databinding.FragmentPaymentMethodBinding
 import com.fabriik.common.ui.base.FabriikView
+import kotlinx.coroutines.flow.collect
 
 class PaymentMethodFragment : Fragment(),
     FabriikView<PaymentMethodContract.State, PaymentMethodContract.Effect> {
 
-    lateinit var binding: FragmentPaymentMethodBinding
+    private lateinit var binding: FragmentPaymentMethodBinding
     private val viewModel: PaymentMethodViewModel by viewModels()
 
     private val adapter = PaymentMethodSelectionAdapter {
@@ -47,6 +49,10 @@ class PaymentMethodFragment : Fragment(),
                 viewModel.setEvent(PaymentMethodContract.Event.DismissClicked)
             }
 
+            cvAddCard.setOnClickListener {
+                viewModel.setEvent(PaymentMethodContract.Event.AddCardClicked)
+            }
+
             val layoutManager = LinearLayoutManager(context)
             rvListCards.adapter = adapter
             rvListCards.layoutManager = layoutManager
@@ -56,6 +62,20 @@ class PaymentMethodFragment : Fragment(),
                     context, layoutManager.orientation
                 )
             )
+        }
+
+        // collect UI state
+        lifecycleScope.launchWhenStarted {
+            viewModel.state.collect {
+                render(it)
+            }
+        }
+
+        // collect UI effect
+        lifecycleScope.launchWhenStarted {
+            viewModel.effect.collect {
+                handleEffect(it)
+            }
         }
     }
 
@@ -70,6 +90,9 @@ class PaymentMethodFragment : Fragment(),
 
             PaymentMethodContract.Effect.Dismiss ->
                 activity?.finish()
+
+            PaymentMethodContract.Effect.AddCard ->
+                findNavController().navigate(PaymentMethodFragmentDirections.actionAddCard())
         }
     }
 }

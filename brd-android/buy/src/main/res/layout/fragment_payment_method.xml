@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         app:title="@string/Buy.SelectPaymentMethod.Title" />
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
@@ -78,10 +78,12 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_list_cards"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:scrollbars="vertical" />
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="16dp"
+                android:nestedScrollingEnabled="false"
+                tools:itemCount="3"
+                tools:listitem="@layout/list_item_payment_method"/>
 
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
