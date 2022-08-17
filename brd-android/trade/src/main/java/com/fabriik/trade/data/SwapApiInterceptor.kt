@@ -10,7 +10,7 @@ import kotlinx.coroutines.CoroutineScope
 import okhttp3.Interceptor
 import okhttp3.Response
 
-class SwapApiInterceptor(
+open class SwapApiInterceptor(
     private val context: Context,
     private val scope: CoroutineScope
 ) : Interceptor {
