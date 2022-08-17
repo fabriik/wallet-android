@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.fabriik.buy.R
 import com.fabriik.buy.databinding.FragmentPaymentMethodBinding
 import com.fabriik.common.ui.base.FabriikView
@@ -15,8 +17,13 @@ class PaymentMethodFragment : Fragment(),
     FabriikView<PaymentMethodContract.State, PaymentMethodContract.Effect> {
 
     lateinit var binding: FragmentPaymentMethodBinding
-
     private val viewModel: PaymentMethodViewModel by viewModels()
+
+    private val adapter = PaymentMethodSelectionAdapter {
+        viewModel.setEvent(
+            PaymentMethodContract.Event.PaymentInstrumentSelected(it)
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,19 +40,27 @@ class PaymentMethodFragment : Fragment(),
 
         with(binding) {
             toolbar.setBackButtonClickListener {
-                viewModel.setEvent(PaymentMethodContract.Event.OnBackClicked)
+                viewModel.setEvent(PaymentMethodContract.Event.BackClicked)
             }
 
             toolbar.setDismissButtonClickListener {
-                viewModel.setEvent(PaymentMethodContract.Event.OnDismissClicked)
+                viewModel.setEvent(PaymentMethodContract.Event.DismissClicked)
             }
+
+            val layoutManager = LinearLayoutManager(context)
+            rvListCards.adapter = adapter
+            rvListCards.layoutManager = layoutManager
+            rvListCards.setHasFixedSize(true)
+            rvListCards.addItemDecoration(
+                DividerItemDecoration(
+                    context, layoutManager.orientation
+                )
+            )
         }
     }
 
     override fun render(state: PaymentMethodContract.State) {
-        with(binding) {
-
-        }
+        adapter.submitList(state.paymentInstruments)
     }
 
     override fun handleEffect(effect: PaymentMethodContract.Effect) {

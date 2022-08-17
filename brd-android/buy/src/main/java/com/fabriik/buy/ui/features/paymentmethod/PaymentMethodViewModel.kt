@@ -25,11 +25,13 @@ class PaymentMethodViewModel(
 
     override fun handleEvent(event: PaymentMethodContract.Event) {
         when (event) {
-            PaymentMethodContract.Event.OnBackClicked ->
+            PaymentMethodContract.Event.BackClicked ->
                 setEffect { PaymentMethodContract.Effect.Back }
 
-            PaymentMethodContract.Event.OnDismissClicked ->
+            PaymentMethodContract.Event.DismissClicked ->
                 setEffect { PaymentMethodContract.Effect.Dismiss }
+
+            is PaymentMethodContract.Event.PaymentInstrumentSelected -> TODO()
         }
     }
 }

@@ -6,8 +6,9 @@ import com.fabriik.common.ui.base.FabriikContract
 interface PaymentMethodContract : FabriikContract {
 
     sealed class Event : FabriikContract.Event {
-        object OnBackClicked : Event()
-        object OnDismissClicked : Event()
+        object BackClicked : Event()
+        object DismissClicked : Event()
+        data class PaymentInstrumentSelected(val paymentInstrument: PaymentInstrument): Event()
     }
 
     sealed class Effect : FabriikContract.Effect {
