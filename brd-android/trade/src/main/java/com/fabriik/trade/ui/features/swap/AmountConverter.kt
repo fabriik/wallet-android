@@ -1,6 +1,5 @@
 package com.fabriik.trade.ui.features.swap
 
-import android.util.Log
 import com.breadwallet.repository.RatesRepository
 import com.fabriik.trade.data.model.FeeAmountData
 import com.fabriik.trade.utils.EstimateSwapFee
