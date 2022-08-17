@@ -2,6 +2,7 @@ package com.fabriik.buy.data
 
 import android.content.Context
 import com.fabriik.buy.R
+import com.fabriik.buy.data.enums.PaymentStatus
 import com.fabriik.buy.data.model.PaymentInstrument
 import com.fabriik.buy.data.request.AddPaymentInstrumentRequest
 import com.fabriik.buy.data.request.CreateBuyOrderRequest
@@ -64,10 +65,10 @@ class BuyApi(
         }
     }
 
-    suspend fun getPaymentStatus(): Resource<List<PaymentInstrument>?> {
+    suspend fun getPaymentStatus(reference: String): Resource<PaymentStatus?> {
         return try {
-            val response = service.getPaymentInstruments()
-            Resource.success(data = response.paymentInstruments)
+            val response = service.getPaymentStatus(reference)
+            Resource.success(data = response.status)
         } catch (ex: Exception) {
             responseMapper.mapError(
                 context = context,
