@@ -1,8 +1,8 @@
-package com.fabriik.buy.ui
+package com.fabriik.buy.utils
 
-fun formatCardNumber(input: String?): String? {
+fun formatCardNumber(input: String?): String {
     if (input.isNullOrEmpty()) {
-        return input
+        return ""
     }
 
     val delimiter = " "
@@ -13,9 +13,9 @@ fun formatCardNumber(input: String?): String? {
     )
 }
 
-fun formatDate(date: String?): String? {
+fun formatDate(date: String?): String {
     if (date.isNullOrEmpty()) {
-        return date
+        return ""
     }
 
     val numbers = date.replace("[^0-9]".toRegex(), "")

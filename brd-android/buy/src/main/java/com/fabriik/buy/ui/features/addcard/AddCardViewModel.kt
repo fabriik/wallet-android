@@ -1,4 +1,4 @@
-package com.fabriik.buy.ui.addcard
+package com.fabriik.buy.ui.features.addcard
 
 import android.app.Application
 import androidx.lifecycle.viewModelScope
@@ -9,8 +9,8 @@ import com.checkout.android_sdk.Response.CardTokenisationResponse
 import com.checkout.android_sdk.Utils.Environment
 import com.checkout.android_sdk.network.NetworkError
 import com.fabriik.buy.R
-import com.fabriik.buy.ui.formatCardNumber
-import com.fabriik.buy.ui.formatDate
+import com.fabriik.buy.utils.formatCardNumber
+import com.fabriik.buy.utils.formatDate
 import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.common.utils.getString
 import kotlinx.coroutines.Dispatchers
@@ -21,6 +21,10 @@ class AddCardViewModel(
 ) : FabriikViewModel<AddCardContract.State, AddCardContract.Event, AddCardContract.Effect>(
     application
 ) {
+
+    private val checkoutClient = CheckoutAPIClient(
+        getApplication(), "pk_sbox_ees63clhrko6kta6j3cwloebg4#", Environment.SANDBOX //todo: change to prod env
+    )
 
     override fun createInitialState() = AddCardContract.State()
 
@@ -38,16 +42,17 @@ class AddCardViewModel(
             AddCardContract.Event.SecurityCodeInfoClicked -> {} //todo: show info dialog
 
             is AddCardContract.Event.OnCardNumberChanged ->
-                setState {
-                    copy(cardNumber = formatCardNumber(event.number))
-                }
+                setState { copy(cardNumber = formatCardNumber(event.number)) }
+
+            is AddCardContract.Event.OnSecurityCodeChanged ->
+                setState { copy(securityCode = event.code) }
 
             is AddCardContract.Event.OnDateChanged -> {
                 val formatDate = formatDate(event.date)
 
-                setState { copy(date = formatDate) }
+                setState { copy(expiryDate = formatDate) }
 
-                if (formatDate?.length == 5) {
+                if (formatDate.length == 5) {
                     validateDate(formatDate)
                 }
             }
@@ -56,36 +61,34 @@ class AddCardViewModel(
 
     private fun onConfirmClicked() {
         viewModelScope.launch(Dispatchers.IO) {
-            setState { copy() } //todo: show loading
-
-            val checkoutClient = CheckoutAPIClient(
-                getApplication(), "pk_sbox_ees63clhrko6kta6j3cwloebg4#", Environment.SANDBOX
-            )
+            setState { copy(loadingIndicatorVisible = true) }
 
             checkoutClient.setTokenListener(object : CheckoutAPIClient.OnTokenGenerated {
                 override fun onTokenGenerated(response: CardTokenisationResponse) {
-                    setState { copy() } //todo: dismiss loading
+                    setState { copy(loadingIndicatorVisible = false) }
                     setEffect { AddCardContract.Effect.BillingAddress(response.token) }
                 }
 
-                override fun onError(error: CardTokenisationFail?) {
-                    setState { copy() } //todo: dismiss loading
-                    TODO("Not yet implemented")
+                override fun onError(error: CardTokenisationFail) {
+                    setState { copy(loadingIndicatorVisible = false) }
+                    setEffect { AddCardContract.Effect.ShowToast(getString(R.string.FabriikApi_DefaultError)) }
                 }
 
-                override fun onNetworkError(error: NetworkError?) {
-                    setState { copy() } //todo: dismiss loading
-                    TODO("Not yet implemented")
+                override fun onNetworkError(error: NetworkError) {
+                    setState { copy(loadingIndicatorVisible = false) }
+                    setEffect { AddCardContract.Effect.ShowToast(getString(R.string.FabriikApi_DefaultError)) }
                 }
             })
 
+            val expiryDate = currentState.expiryDate.split("/")
+
             checkoutClient.generateToken(
                 CardTokenisationRequest(
-                    "4242424242424242",
-                    "name",
-                    "06",
-                    "25",
-                    "100"
+                    currentState.cardNumber.replace("\\s+".toRegex(), ""),
+                    null,
+                    expiryDate[0],
+                    expiryDate[1],
+                    currentState.securityCode
                 )
             )
         }

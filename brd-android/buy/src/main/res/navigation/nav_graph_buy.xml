@@ -76,7 +76,7 @@
 
     <fragment
         android:id="@+id/fragmentAddCard"
-        android:name="com.fabriik.buy.ui.addcard.AddCardFragment"
+        android:name="com.fabriik.buy.ui.features.addcard.AddCardFragment"
         tools:layout="@layout/fragment_add_card" >
 
         <action
