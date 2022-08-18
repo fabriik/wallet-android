@@ -14,7 +14,6 @@ import com.fabriik.buy.databinding.FragmentBuyInputBinding
 import kotlinx.coroutines.flow.collect
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
-import com.breadwallet.breadbox.formatCryptoForUi
 import com.breadwallet.tools.util.Utils.hideKeyboard
 import com.breadwallet.util.formatFiatForUi
 import com.fabriik.common.ui.customview.FabriikSwitch
@@ -57,15 +56,6 @@ class BuyInputFragment : Fragment(),
                     viewModel.setEvent(BuyInputContract.Event.CryptoAmountChange(amount))
                 }
             })
-
-            switchMinMax.setCallback {
-                when (it) {
-                    FabriikSwitch.OPTION_LEFT ->
-                        viewModel.setEvent(BuyInputContract.Event.MinAmountClicked)
-                    FabriikSwitch.OPTION_RIGHT ->
-                        viewModel.setEvent(BuyInputContract.Event.MaxAmountClicked)
-                }
-            }
 
             btnContinue.setOnClickListener {
                 hideKeyboard(binding.root.context)
@@ -116,23 +106,15 @@ class BuyInputFragment : Fragment(),
     }
 
     override fun render(state: BuyInputContract.State) {
-        with(binding) {
-            btnContinue.isEnabled = state.continueButtonEnabled
+        when (state) {
+            is BuyInputContract.State.Error ->
+                handleErrorState(state)
 
-            viewCryptoInput.setFiatCurrency(state.fiatCurrency)
-            viewCryptoInput.setCryptoCurrency(state.cryptoCurrency)
+            is BuyInputContract.State.Loading ->
+                handleLoadingState(state)
 
-            tvRateValue.text = RATE_FORMAT.format(
-                state.cryptoCurrency,
-                state.exchangeRate.formatFiatForUi(
-                    state.fiatCurrency
-                )
-            )
-
-            content.isVisible = !state.initialLoadingVisible
-            quoteLoadingIndicator.isVisible = state.rateLoadingVisible
-            initialLoadingIndicator.isVisible = state.initialLoadingVisible
-            fullScreenLoadingView.root.isVisible = state.fullScreenLoadingVisible
+            is BuyInputContract.State.Loaded ->
+                handleLoadedState(state)
         }
     }
 
@@ -141,16 +123,18 @@ class BuyInputFragment : Fragment(),
             BuyInputContract.Effect.Dismiss ->
                 requireActivity().finish()
 
-            BuyInputContract.Effect.DeselectMinMaxSwitchItems ->
-                binding.switchMinMax.setSelectedItem(FabriikSwitch.OPTION_NONE)
+            BuyInputContract.Effect.AddCard ->
+                findNavController().navigate(BuyInputFragmentDirections.actionAddCard())
 
-            BuyInputContract.Effect.PaymentMethodSelection -> {} // todo
+            is BuyInputContract.Effect.PaymentMethodSelection ->
+                findNavController().navigate(
+                    BuyInputFragmentDirections.actionPaymentMethod(
+                        effect.paymentInstruments.toTypedArray()
+                    )
+                )
 
-            is BuyInputContract.Effect.ShowToast -> if (effect.redInfo) {
-                FabriikToastUtil.showRedInfo(binding.root, effect.message)
-            } else {
-                FabriikToastUtil.showInfo(binding.root, effect.message)
-            }
+            is BuyInputContract.Effect.OpenOrderPreview ->
+                findNavController().navigate(BuyInputFragmentDirections.actionOrderPreview())
 
             is BuyInputContract.Effect.CryptoSelection ->
                 findNavController().navigate(
@@ -160,13 +144,52 @@ class BuyInputFragment : Fragment(),
                     )
                 )
 
+            is BuyInputContract.Effect.ShowToast -> if (effect.redInfo) {
+                FabriikToastUtil.showRedInfo(binding.root, effect.message)
+            } else {
+                FabriikToastUtil.showInfo(binding.root, effect.message)
+            }
+
             is BuyInputContract.Effect.UpdateFiatAmount ->
                 binding.viewCryptoInput.setFiatAmount(effect.amount, effect.changeByUser)
 
             is BuyInputContract.Effect.UpdateCryptoAmount ->
                 binding.viewCryptoInput.setCryptoAmount(effect.amount, effect.changeByUser)
+        }
+    }
 
-            is BuyInputContract.Effect.OpenOrderPreview -> {} // todo
+    private fun handleErrorState(state: BuyInputContract.State.Error) {
+        with(binding) {
+            content.isVisible = false
+            initialLoadingIndicator.isVisible = false
+        }
+    }
+
+    private fun handleLoadingState(state: BuyInputContract.State.Loading) {
+        with(binding) {
+            content.isVisible = false
+            initialLoadingIndicator.isVisible = true
+        }
+    }
+
+    private fun handleLoadedState(state: BuyInputContract.State.Loaded) {
+        with(binding) {
+            btnContinue.isEnabled = state.continueButtonEnabled
+
+            tvRateValue.text = RATE_FORMAT.format(
+                state.cryptoCurrency,
+                state.exchangeRate.formatFiatForUi(
+                    state.fiatCurrency
+                )
+            )
+
+            viewCryptoInput.setFiatCurrency(state.fiatCurrency)
+            viewCryptoInput.setCryptoCurrency(state.cryptoCurrency)
+
+            content.isVisible = true
+            initialLoadingIndicator.isVisible = false
+            quoteLoadingIndicator.isVisible = state.rateLoadingVisible
+            fullScreenLoadingView.root.isVisible = state.fullScreenLoadingVisible
         }
     }
 
