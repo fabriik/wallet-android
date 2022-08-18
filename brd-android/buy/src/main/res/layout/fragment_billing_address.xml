@@ -10,7 +10,8 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:title="@string/Buy.BillingAdress.Title" />
+        app:title="@string/Buy.BillingAdress.Title"
+        app:titleType="small" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -108,8 +109,9 @@
                             android:id="@+id/et_state"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:imeOptions="actionDone"
-                            android:inputType="textCapWords" />
+                            android:imeOptions="actionNext"
+                            android:inputType="textCapWords"
+                            android:nextFocusForward="@id/et_city"/>
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -129,7 +131,9 @@
                             android:id="@+id/et_city"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="textCapWords" />
+                            android:inputType="textCapWords"
+                            android:imeOptions="actionNext"
+                            android:nextFocusForward="@id/et_postal_code" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -148,7 +152,9 @@
                             android:id="@+id/et_postal_code"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="number" />
+                            android:inputType="number"
+                            android:imeOptions="actionNext"
+                            android:nextFocusForward="@id/et_address"  />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -166,7 +172,8 @@
                             android:id="@+id/et_address"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="textCapWords" />
+                            android:inputType="textCapWords"
+                            android:imeOptions="actionDone" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -184,5 +191,14 @@
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
     </ScrollView>
+
+    <include
+        android:id="@+id/view_loading"
+        layout="@layout/view_fabriik_loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="10dp"
+        android:visibility="gone"
+        tools:visibility="visible"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

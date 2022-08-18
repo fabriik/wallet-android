@@ -43,7 +43,7 @@ class AssetSelectionFragment : Fragment(),
         binding = FragmentAssetSelectionBinding.bind(view)
 
         with(binding) {
-            btnBack.setOnClickListener {
+            toolbar.setBackButtonClickListener {
                 viewModel.setEvent(AssetSelectionContract.Event.BackClicked)
             }
 

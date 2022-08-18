@@ -8,7 +8,7 @@ import retrofit2.http.*
 
 interface BuyService {
 
-    @POST("payment-instruments")
+    @POST("payment-instrument")
     suspend fun addPaymentInstrument(
         @Body request: AddPaymentInstrumentRequest
     ): AddPaymentInstrumentResponse

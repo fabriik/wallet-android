@@ -42,7 +42,7 @@ class CountrySelectionFragment : Fragment(),
         binding = FragmentCountrySelectionBinding.bind(view)
 
         with(binding) {
-            btnBack.setOnClickListener {
+            toolbar.setBackButtonClickListener {
                 viewModel.setEvent(CountrySelectionContract.Event.BackClicked)
             }
 
