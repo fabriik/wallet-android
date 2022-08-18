@@ -18,7 +18,7 @@ import com.fabriik.trade.R
 import com.fabriik.trade.data.SwapApi
 import com.fabriik.trade.data.model.AmountData
 import com.fabriik.trade.data.model.FeeAmountData
-import com.fabriik.trade.data.response.CreateOrderResponse
+import com.fabriik.trade.data.response.CreateSwapOrderResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -602,7 +602,7 @@ class SwapInputViewModel(
         )
     }
 
-    private fun createTransaction(order: CreateOrderResponse) {
+    private fun createTransaction(order: CreateSwapOrderResponse) {
         val state = currentLoadedState ?: return
 
         setState { state.copy(fullScreenLoadingVisible = true) }

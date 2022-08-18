@@ -1,11 +1,11 @@
-package com.fabriik.trade.data.request
+package com.fabriik.buy.data.request
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import java.math.BigDecimal
 
 @JsonClass(generateAdapter = true)
-data class CreateOrderRequest(
+data class CreateBuyOrderRequest(
     @Json(name = "quote_id")
     val quoteId: String,
 
@@ -17,4 +17,10 @@ data class CreateOrderRequest(
 
     @Json(name = "destination")
     val destination: String,
+
+    @Json(name = "source_instrument_id")
+    val sourceInstrumentId: String,
+
+    @Json(name = "nolog_cvv")
+    val nologCvv: String,
 )

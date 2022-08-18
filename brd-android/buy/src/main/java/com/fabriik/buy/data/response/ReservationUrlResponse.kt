@@ -1,4 +1,4 @@
-package com.fabriik.buy.data.responses
+package com.fabriik.buy.data.response
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
