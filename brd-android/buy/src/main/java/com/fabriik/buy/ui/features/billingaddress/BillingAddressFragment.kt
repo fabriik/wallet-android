@@ -37,15 +37,19 @@ class BillingAddressFragment : Fragment(),
 
         with(binding) {
             toolbar.setBackButtonClickListener {
-                viewModel.setEvent(BillingAddressContract.Event.OnBackPressed)
+                viewModel.setEvent(BillingAddressContract.Event.BackPressed)
             }
 
             toolbar.setDismissButtonClickListener {
-                viewModel.setEvent(BillingAddressContract.Event.OnDismissClicked)
+                viewModel.setEvent(BillingAddressContract.Event.DismissClicked)
             }
 
             etCountry.setOnClickListener {
-                viewModel.setEvent(BillingAddressContract.Event.OnCountryClicked)
+                viewModel.setEvent(BillingAddressContract.Event.CountryClicked)
+            }
+
+            btnConfirm.setOnClickListener {
+                viewModel.setEvent(BillingAddressContract.Event.ConfirmClicked)
             }
         }
 
@@ -67,7 +71,7 @@ class BillingAddressFragment : Fragment(),
             val country = bundle.getParcelable(CountrySelectionFragment.EXTRA_SELECTED_COUNTRY) as Country?
             if (country != null) {
                 viewModel.setEvent(
-                    BillingAddressContract.Event.OnCountryChanged(country)
+                    BillingAddressContract.Event.CountryChanged(country)
                 )
             }
         }
@@ -96,6 +100,13 @@ class BillingAddressFragment : Fragment(),
                     )
                 )
             }
+
+            BillingAddressContract.Effect.PaymentMethod ->
+                findNavController().navigate(
+                    BillingAddressFragmentDirections.actionPaymentMethod(
+                        emptyArray() //todo: load payment methods on PaymentMethod screen
+                    )
+                )
         }
     }
 

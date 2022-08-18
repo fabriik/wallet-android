@@ -65,6 +65,11 @@
 
         </action>
 
+        <action
+            android:id="@+id/actionPaymentMethod"
+            app:destination="@id/fragmentPaymentMethod"
+            app:popUpTo="@id/fragmentBuyInput"/>
+
     </fragment>
 
     <include app:graph="@navigation/nav_graph_country_selection"/>
