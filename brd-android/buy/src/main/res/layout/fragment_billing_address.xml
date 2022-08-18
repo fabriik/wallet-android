@@ -108,8 +108,9 @@
                             android:id="@+id/et_state"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:imeOptions="actionDone"
-                            android:inputType="textCapWords" />
+                            android:imeOptions="actionNext"
+                            android:inputType="textCapWords"
+                            android:nextFocusForward="@id/et_city"/>
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -129,7 +130,9 @@
                             android:id="@+id/et_city"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="textCapWords" />
+                            android:inputType="textCapWords"
+                            android:imeOptions="actionNext"
+                            android:nextFocusForward="@id/et_postal_code" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -148,7 +151,9 @@
                             android:id="@+id/et_postal_code"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="number" />
+                            android:inputType="number"
+                            android:imeOptions="actionNext"
+                            android:nextFocusForward="@id/et_address"  />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -166,7 +171,8 @@
                             android:id="@+id/et_address"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="textCapWords" />
+                            android:inputType="textCapWords"
+                            android:imeOptions="actionDone" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 

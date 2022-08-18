@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -12,6 +13,7 @@ import com.breadwallet.tools.util.Utils
 import com.fabriik.buy.R
 import com.fabriik.buy.databinding.FragmentBillingAddressBinding
 import com.fabriik.common.ui.base.FabriikView
+import com.fabriik.common.utils.textOrEmpty
 import com.fabriik.kyc.data.model.Country
 import com.fabriik.kyc.ui.features.countryselection.CountrySelectionFragment
 import kotlinx.coroutines.flow.collect
@@ -50,6 +52,54 @@ class BillingAddressFragment : Fragment(),
 
             btnConfirm.setOnClickListener {
                 viewModel.setEvent(BillingAddressContract.Event.ConfirmClicked)
+            }
+
+            etName.doAfterTextChanged {
+                viewModel.setEvent(
+                    BillingAddressContract.Event.FirstNameChanged(
+                        it.textOrEmpty()
+                    )
+                )
+            }
+
+            etLastName.doAfterTextChanged {
+                viewModel.setEvent(
+                    BillingAddressContract.Event.LastNameChanged(
+                        it.textOrEmpty()
+                    )
+                )
+            }
+
+            etCity.doAfterTextChanged {
+                viewModel.setEvent(
+                    BillingAddressContract.Event.CityChanged(
+                        it.textOrEmpty()
+                    )
+                )
+            }
+
+            etState.doAfterTextChanged {
+                viewModel.setEvent(
+                    BillingAddressContract.Event.StateChanged(
+                        it.textOrEmpty()
+                    )
+                )
+            }
+
+            etPostalCode.doAfterTextChanged {
+                viewModel.setEvent(
+                    BillingAddressContract.Event.ZipChanged(
+                        it.textOrEmpty()
+                    )
+                )
+            }
+
+            etAddress.doAfterTextChanged {
+                viewModel.setEvent(
+                    BillingAddressContract.Event.AddressChanged(
+                        it.textOrEmpty()
+                    )
+                )
             }
         }
 

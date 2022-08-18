@@ -10,6 +10,12 @@ class BillingAddressContract : FabriikContract {
         object DismissClicked: Event()
         object CountryClicked: Event()
         object ConfirmClicked: Event()
+        data class ZipChanged(val zip: String): Event()
+        data class CityChanged(val city: String): Event()
+        data class StateChanged(val state: String): Event()
+        data class AddressChanged(val address: String): Event()
+        data class LastNameChanged(val lastName: String): Event()
+        data class FirstNameChanged(val firstName: String): Event()
         data class CountryChanged(val country: Country): Event()
     }
 
@@ -21,7 +27,14 @@ class BillingAddressContract : FabriikContract {
     }
 
     data class State(
+        val firstName: String = "",
+        val lastName: String = "",
+        val zip: String = "",
+        val city: String = "",
+        val state: String? = null,
+        val address: String = "",
         val country: Country? = null,
-        val confirmEnabled: Boolean = false
+        val confirmEnabled: Boolean = false,
+        val loadingIndicatorVisible: Boolean = false,
     ) : FabriikContract.State
 }
