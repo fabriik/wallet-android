@@ -51,6 +51,10 @@
         android:name="com.fabriik.buy.ui.features.billingaddress.BillingAddressFragment"
         tools:layout="@layout/fragment_billing_address" >
 
+        <argument
+            android:name="cardToken"
+            app:argType="string" />
+
         <action
             android:id="@+id/actionCountrySelection"
             app:destination="@id/navGraphCountrySelection">

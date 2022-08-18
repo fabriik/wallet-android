@@ -36,11 +36,19 @@ class AddCardFragment : Fragment(), FabriikView<AddCardContract.State, AddCardCo
 
         with(binding) {
             toolbar.setBackButtonClickListener {
-                viewModel.setEvent(AddCardContract.Event.OnBackClicked)
+                viewModel.setEvent(AddCardContract.Event.BackClicked)
             }
 
             toolbar.setDismissButtonClickListener {
-                viewModel.setEvent(AddCardContract.Event.OnDismissClicked)
+                viewModel.setEvent(AddCardContract.Event.DismissClicked)
+            }
+
+            btnConfirm.setOnClickListener {
+                viewModel.setEvent(AddCardContract.Event.ConfirmClicked)
+            }
+
+            tilSecurityCode.setEndIconOnClickListener {
+                viewModel.setEvent(AddCardContract.Event.SecurityCodeInfoClicked)
             }
 
             etCardNumber.doAfterTextChanged {
@@ -85,7 +93,10 @@ class AddCardFragment : Fragment(), FabriikView<AddCardContract.State, AddCardCo
             AddCardContract.Effect.Dismiss ->
                 activity?.finish()
 
-            AddCardContract.Effect.Confirm -> {}
+            is AddCardContract.Effect.BillingAddress ->
+                findNavController().navigate(
+                    AddCardFragmentDirections.actionBillingAddress(effect.token)
+                )
 
             is AddCardContract.Effect.ShowToast ->
                 FabriikToastUtil.showInfo(
