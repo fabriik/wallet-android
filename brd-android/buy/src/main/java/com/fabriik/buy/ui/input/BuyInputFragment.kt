@@ -186,7 +186,7 @@ class BuyInputFragment : Fragment(),
             )
 
             //todo: change to custom view
-            tvSelectPaymentMethod.text = state.selectedPaymentMethod?.last4Numbers?.let { "**** **** **** $it" }
+            tvSelectPaymentMethod.text = state.selectedPaymentMethod?.last4Numbers?.let { "**** **** **** $it" } ?: getString(R.string.Buy_Input_SelectPaymentMethod)
 
             viewCryptoInput.setFiatCurrency(state.fiatCurrency)
             viewCryptoInput.setCryptoCurrency(state.cryptoCurrency)
