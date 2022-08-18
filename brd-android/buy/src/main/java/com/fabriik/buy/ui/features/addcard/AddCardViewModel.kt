@@ -1,11 +1,20 @@
 package com.fabriik.buy.ui.addcard
 
 import android.app.Application
+import androidx.lifecycle.viewModelScope
+import com.checkout.android_sdk.CheckoutAPIClient
+import com.checkout.android_sdk.Request.CardTokenisationRequest
+import com.checkout.android_sdk.Response.CardTokenisationFail
+import com.checkout.android_sdk.Response.CardTokenisationResponse
+import com.checkout.android_sdk.Utils.Environment
+import com.checkout.android_sdk.network.NetworkError
 import com.fabriik.buy.R
 import com.fabriik.buy.ui.formatCardNumber
 import com.fabriik.buy.ui.formatDate
 import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.common.utils.getString
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class AddCardViewModel(
     application: Application
@@ -24,7 +33,7 @@ class AddCardViewModel(
                 setEffect { AddCardContract.Effect.Dismiss }
 
             AddCardContract.Event.ConfirmClicked ->
-                setEffect { AddCardContract.Effect.BillingAddress("test_token") } //todo: call checkout SDK
+                onConfirmClicked()
 
             AddCardContract.Event.SecurityCodeInfoClicked -> {} //todo: show info dialog
 
@@ -42,6 +51,43 @@ class AddCardViewModel(
                     validateDate(formatDate)
                 }
             }
+        }
+    }
+
+    private fun onConfirmClicked() {
+        viewModelScope.launch(Dispatchers.IO) {
+            setState { copy() } //todo: show loading
+
+            val checkoutClient = CheckoutAPIClient(
+                getApplication(), "pk_sbox_ees63clhrko6kta6j3cwloebg4#", Environment.SANDBOX
+            )
+
+            checkoutClient.setTokenListener(object : CheckoutAPIClient.OnTokenGenerated {
+                override fun onTokenGenerated(response: CardTokenisationResponse) {
+                    setState { copy() } //todo: dismiss loading
+                    setEffect { AddCardContract.Effect.BillingAddress(response.token) }
+                }
+
+                override fun onError(error: CardTokenisationFail?) {
+                    setState { copy() } //todo: dismiss loading
+                    TODO("Not yet implemented")
+                }
+
+                override fun onNetworkError(error: NetworkError?) {
+                    setState { copy() } //todo: dismiss loading
+                    TODO("Not yet implemented")
+                }
+            })
+
+            checkoutClient.generateToken(
+                CardTokenisationRequest(
+                    "4242424242424242",
+                    "name",
+                    "06",
+                    "25",
+                    "100"
+                )
+            )
         }
     }
 

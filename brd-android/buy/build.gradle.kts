@@ -52,6 +52,8 @@ dependencies {
     implementation(Libs.Androidx.LifecycleLiveDataKtx)
     implementation(Libs.Androidx.LifecycleViewModelKtx)
 
+    implementation(Libs.Checkout.Frames)
+
     implementation(Libs.Material.Core)
 
     implementation(Libs.Networking.Retrofit)
