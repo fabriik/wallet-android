@@ -13,7 +13,6 @@ import com.fabriik.common.data.Resource
 import com.fabriik.common.utils.FabriikApiResponseMapper
 import com.fabriik.trade.data.response.QuoteResponse
 import okhttp3.OkHttpClient
-import okhttp3.ResponseBody
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.math.BigDecimal
@@ -54,7 +53,7 @@ class BuyApi(
     }
 
     suspend fun getPaymentInstruments(): Resource<List<PaymentInstrument>?> {
-        /*return try {
+        return try {
             val response = service.getPaymentInstruments()
             Resource.success(data = response.paymentInstruments)
         } catch (ex: Exception) {
@@ -62,26 +61,7 @@ class BuyApi(
                 context = context,
                 exception = ex
             )
-        }*/
-        return Resource.success(
-            listOf(
-                PaymentInstrument(
-                    id = "test",
-                    expiryMonth = 8,
-                    expiryYear = 25,
-                    last4Numbers = "1231",
-                    fingerprint = "dosapdsap",
-                    scheme = "sdaasda"
-                ), PaymentInstrument(
-                    id = "test",
-                    expiryMonth = 1,
-                    expiryYear = 26,
-                    last4Numbers = "5218",
-                    fingerprint = "dosapdsap",
-                    scheme = "sdaasda"
-                )
-            )
-        )
+        }
     }
 
     suspend fun getPaymentStatus(reference: String): Resource<PaymentStatus?> {
