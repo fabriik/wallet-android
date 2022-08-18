@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -26,9 +27,7 @@ class BillingAddressFragment : Fragment(),
     private val viewModel: BillingAddressViewModel by viewModels()
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         return inflater.inflate(R.layout.fragment_billing_address, container, false)
     }
@@ -132,6 +131,7 @@ class BillingAddressFragment : Fragment(),
         with(binding) {
             btnConfirm.isEnabled = state.confirmEnabled
             etCountry.setText(state.country?.name)
+            viewLoading.root.isVisible = state.loadingIndicatorVisible
         }
     }
 
