@@ -29,7 +29,7 @@ class FabriikSwitch @JvmOverloads constructor(
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.FabriikSwitch)
         val leftOptionText = typedArray.getString(R.styleable.FabriikSwitch_leftOptionText) ?: ""
         val rightOptionText = typedArray.getString(R.styleable.FabriikSwitch_rightOptionText) ?: ""
-        val selectedOption = typedArray.getInt(R.styleable.FabriikSwitch_selectedOption, 0)
+        val selectedOption = typedArray.getInt(R.styleable.FabriikSwitch_selectedOption, OPTION_NONE)
         typedArray.recycle()
 
         tvLeftOption = addOptionView(leftOptionText, OPTION_LEFT)
