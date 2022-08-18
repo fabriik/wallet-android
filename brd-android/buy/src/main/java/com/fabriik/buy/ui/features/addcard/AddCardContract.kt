@@ -1,4 +1,4 @@
-package com.fabriik.buy.ui.addcard
+package com.fabriik.buy.ui.features.addcard
 
 import com.fabriik.common.ui.base.FabriikContract
 
@@ -17,6 +17,10 @@ class AddCardContract : FabriikContract {
         data class OnDateChanged(
             val date: String
         ) : Event()
+
+        data class OnSecurityCodeChanged(
+            val code: String
+        ) : Event()
     }
 
     sealed class Effect : FabriikContract.Effect {
@@ -32,7 +36,9 @@ class AddCardContract : FabriikContract {
     }
 
     data class State(
-        val cardNumber: String? = "",
-        val date: String? = ""
+        val expiryDate: String = "",
+        val cardNumber: String = "",
+        val securityCode: String = "",
+        val loadingIndicatorVisible: Boolean = false
     ) : FabriikContract.State
 }

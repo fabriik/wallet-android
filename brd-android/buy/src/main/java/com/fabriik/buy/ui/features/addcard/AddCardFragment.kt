@@ -1,9 +1,10 @@
-package com.fabriik.buy.ui.addcard
+package com.fabriik.buy.ui.features.addcard
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -58,6 +59,10 @@ class AddCardFragment : Fragment(), FabriikView<AddCardContract.State, AddCardCo
             etDate.doAfterTextChanged {
                 viewModel.setEvent(AddCardContract.Event.OnDateChanged(it.toString()))
             }
+
+            etSecurityCode.doAfterTextChanged {
+                viewModel.setEvent(AddCardContract.Event.OnSecurityCodeChanged(it.toString()))
+            }
         }
 
         // collect UI state
@@ -78,10 +83,12 @@ class AddCardFragment : Fragment(), FabriikView<AddCardContract.State, AddCardCo
     override fun render(state: AddCardContract.State) {
         with(binding) {
             etCardNumber.setText(state.cardNumber)
-            etCardNumber.setSelection(state.cardNumber?.length ?: 0)
+            etCardNumber.setSelection(state.cardNumber.length)
 
-            etDate.setText(state.date)
-            etDate.setSelection(state.date?.length ?: 0)
+            etDate.setText(state.expiryDate)
+            etDate.setSelection(state.expiryDate.length)
+
+            viewLoading.root.isVisible = state.loadingIndicatorVisible
         }
     }
 

@@ -43,8 +43,9 @@
         android:launchMode="singleTask"
         android:networkSecurityConfig="@xml/network_security_config"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.Dark"
-        android:windowSoftInputMode="stateVisible|adjustResize">
+        android:theme="@style/FabriikAppTheme.Dark"
+        android:windowSoftInputMode="stateVisible|adjustResize"
+        tools:replace="android:theme">
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}"

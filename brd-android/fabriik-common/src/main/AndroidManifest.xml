@@ -9,7 +9,7 @@
         <activity
             android:name=".ui.features.nointernet.NoInternetActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Fabriik"/>
+            android:theme="@style/FabriikAppTheme.Fabriik"/>
 
     </application>
 </manifest>

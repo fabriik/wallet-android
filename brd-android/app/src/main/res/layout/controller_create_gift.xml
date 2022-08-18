@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
     android:filterTouchesWhenObscured="true"
-    android:theme="@style/AltAppTheme">
+    android:theme="@style/AltFabriikAppTheme">
 
     <ScrollView
         android:layout_width="match_parent"
