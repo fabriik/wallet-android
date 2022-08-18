@@ -2,9 +2,11 @@ package com.fabriik.buy.ui.features.billingaddress
 
 import android.app.Application
 import androidx.lifecycle.SavedStateHandle
+import com.fabriik.buy.R
 import com.fabriik.buy.data.BuyApi
 import com.fabriik.common.data.Status
 import com.fabriik.common.ui.base.FabriikViewModel
+import com.fabriik.common.utils.getString
 import com.fabriik.common.utils.toBundle
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
@@ -89,7 +91,12 @@ class BillingAddressViewModel(
                     Status.SUCCESS ->
                         setEffect { BillingAddressContract.Effect.PaymentMethod }
 
-                    Status.ERROR -> {}
+                    Status.ERROR ->
+                        setEffect {
+                            BillingAddressContract.Effect.ShowToast(
+                                it.message ?: getString(R.string.FabriikApi_DefaultError)
+                            )
+                        }
                 }
             }
         )

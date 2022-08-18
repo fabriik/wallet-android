@@ -24,6 +24,7 @@ class BillingAddressContract : FabriikContract {
         object Dismiss : Effect()
         object PaymentMethod : Effect()
         object CountrySelection : Effect()
+        data class ShowToast(val message: String): Effect()
     }
 
     data class State(

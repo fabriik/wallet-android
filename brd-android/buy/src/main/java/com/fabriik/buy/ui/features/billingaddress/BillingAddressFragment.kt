@@ -13,6 +13,7 @@ import com.breadwallet.tools.util.Utils
 import com.fabriik.buy.R
 import com.fabriik.buy.databinding.FragmentBillingAddressBinding
 import com.fabriik.common.ui.base.FabriikView
+import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.common.utils.textOrEmpty
 import com.fabriik.kyc.data.model.Country
 import com.fabriik.kyc.ui.features.countryselection.CountrySelectionFragment
@@ -156,6 +157,12 @@ class BillingAddressFragment : Fragment(),
                     BillingAddressFragmentDirections.actionPaymentMethod(
                         emptyArray() //todo: load payment methods on PaymentMethod screen
                     )
+                )
+
+            is BillingAddressContract.Effect.ShowToast ->
+                FabriikToastUtil.showInfo(
+                    parentView = binding.root,
+                    message = effect.message
                 )
         }
     }
