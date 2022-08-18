@@ -6,15 +6,17 @@ import com.fabriik.kyc.data.model.Country
 class BillingAddressContract : FabriikContract {
 
     sealed class Event : FabriikContract.Event {
-        object OnBackPressed : Event()
-        object OnDismissClicked: Event()
-        object OnCountryClicked: Event()
-        data class OnCountryChanged(val country: Country): Event()
+        object BackPressed : Event()
+        object DismissClicked: Event()
+        object CountryClicked: Event()
+        object ConfirmClicked: Event()
+        data class CountryChanged(val country: Country): Event()
     }
 
     sealed class Effect : FabriikContract.Effect {
         object Back : Effect()
         object Dismiss : Effect()
+        object PaymentMethod : Effect()
         object CountrySelection : Effect()
     }
 

@@ -13,16 +13,19 @@ class BillingAddressViewModel(
 
     override fun handleEvent(event: BillingAddressContract.Event) {
         when (event) {
-            BillingAddressContract.Event.OnBackPressed ->
+            BillingAddressContract.Event.BackPressed ->
                 setEffect { BillingAddressContract.Effect.Back }
 
-            BillingAddressContract.Event.OnDismissClicked ->
+            BillingAddressContract.Event.DismissClicked ->
                 setEffect { BillingAddressContract.Effect.Dismiss }
 
-            BillingAddressContract.Event.OnCountryClicked ->
+            BillingAddressContract.Event.ConfirmClicked ->
+                setEffect { BillingAddressContract.Effect.PaymentMethod } //todo: api call
+
+            BillingAddressContract.Event.CountryClicked ->
                 setEffect { BillingAddressContract.Effect.CountrySelection }
 
-            is BillingAddressContract.Event.OnCountryChanged ->
+            is BillingAddressContract.Event.CountryChanged ->
                 setState { copy(country = event.country).validate() }
         }
     }
