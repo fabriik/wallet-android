@@ -556,7 +556,7 @@ open class WalletController(args: Bundle) : BaseMobiusController<M, E, F>(args),
         val currentTheme = UiUtils.getThemeId(activity)
 
         with(binding) {
-            if (currentTheme == R.style.AppTheme_Dark) {
+            if (currentTheme == R.style.FabriikAppTheme_Dark) {
                 val buttonColor = resources.getColor(R.color.wallet_footer_button_color_dark)
                 sendButton.setColor(buttonColor)
                 receiveButton.setColor(buttonColor)
