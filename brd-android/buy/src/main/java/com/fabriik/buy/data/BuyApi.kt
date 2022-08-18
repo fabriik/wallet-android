@@ -13,7 +13,6 @@ import com.fabriik.common.data.Resource
 import com.fabriik.common.utils.FabriikApiResponseMapper
 import com.fabriik.trade.data.response.QuoteResponse
 import okhttp3.OkHttpClient
-import okhttp3.ResponseBody
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.math.BigDecimal

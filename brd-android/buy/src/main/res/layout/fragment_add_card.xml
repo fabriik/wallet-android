@@ -36,81 +36,46 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <TextView
-                        android:id="@+id/tv_section_1"
-                        style="@style/TextStyle.Body2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/Buy.AddCard.Subtitle1"
-                        android:textColor="@color/light_text_02"
-                        app:layout_constrainedWidth="true"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/til_card_number"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
+                        android:hint="@string/Buy.AddCard.Subtitle1"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_section_1"
-                        app:startIconDrawable="@drawable/ic_card">
+                        app:layout_constraintTop_toTopOf="parent">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_card_number"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="phone"
-                            android:maxLength="19" />
+                            android:maxLength="19"
+                            android:imeOptions="actionNext"
+                            android:nextFocusForward="@id/et_date"/>
 
                     </com.google.android.material.textfield.TextInputLayout>
-
-                    <TextView
-                        android:id="@+id/tv_section_2"
-                        style="@style/TextStyle.Body2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:text="@string/Buy.AddCard.Subtitle2"
-                        android:textColor="@color/light_text_02"
-                        app:layout_constrainedWidth="true"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/til_card_number" />
-
-                    <TextView
-                        android:id="@+id/tv_section_3"
-                        style="@style/TextStyle.Body2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:text="@string/Buy.AddCard.Subtitle3"
-                        android:textColor="@color/light_text_02"
-                        app:layout_constraintStart_toStartOf="@id/til_security_code"
-                        app:layout_constraintTop_toBottomOf="@id/til_card_number" />
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/til_date"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="16dp"
                         android:layout_marginEnd="4dp"
                         android:hint="@string/Buy.AddCard.Hint2"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintEnd_toStartOf="@id/til_security_code"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_section_2">
+                        app:layout_constraintTop_toBottomOf="@id/til_card_number">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_date"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="phone"
-                            android:maxLength="5" />
+                            android:maxLength="5"
+                            android:imeOptions="actionNext"
+                            android:nextFocusForward="@id/et_security_code" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -119,18 +84,20 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
-                        android:layout_marginEnd="4dp"
-                        app:hintEnabled="false"
+                        android:hint="@string/Buy.AddCard.Hint3"
+                        app:endIconMode="custom"
+                        app:endIconDrawable="@drawable/ic_question_mark"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/til_date"
                         app:layout_constraintTop_toTopOf="@id/til_date">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/et_postal_code"
+                            android:id="@+id/et_security_code"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="numberPassword"
                             android:maxLength="3"
+                            android:imeOptions="actionDone"
                             tools:text="253" />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -144,6 +111,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/til_date" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>

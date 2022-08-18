@@ -14,7 +14,7 @@ interface BuyInputContract {
 
         data class FiatAmountChange(val amount: BigDecimal) : Event()
         data class CryptoAmountChange(val amount: BigDecimal) : Event()
-        data class PaymentMethodChanged(val cardNumber: String) : Event() //todo: replace cardNumber with some object
+        data class PaymentMethodChanged(val paymentInstrument: PaymentInstrument) : Event()
         data class CryptoCurrencyChanged(val currencyCode: String) : Event()
     }
 
@@ -36,6 +36,7 @@ interface BuyInputContract {
         data class Loaded(
             val enabledWallets: List<String>,
             val paymentInstruments: List<PaymentInstrument>,
+            val selectedPaymentMethod: PaymentInstrument? = null,
             val fiatCurrency: String = "USD",
             val cryptoCurrency: String,
             val exchangeRate: BigDecimal,

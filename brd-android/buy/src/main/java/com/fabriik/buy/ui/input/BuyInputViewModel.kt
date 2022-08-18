@@ -3,11 +3,10 @@ package com.fabriik.buy.ui.input
 import android.app.Application
 import androidx.lifecycle.viewModelScope
 import com.breadwallet.breadbox.BreadBox
-import com.breadwallet.crypto.Wallet
-import com.breadwallet.crypto.WalletManagerState
 import com.breadwallet.platform.interfaces.AccountMetaDataProvider
 import com.fabriik.buy.R
 import com.fabriik.buy.data.BuyApi
+import com.fabriik.buy.data.model.PaymentInstrument
 import com.fabriik.common.data.Status
 import com.fabriik.common.ui.base.FabriikViewModel
 import org.kodein.di.KodeinAware
@@ -16,7 +15,6 @@ import org.kodein.di.erased.instance
 import java.math.BigDecimal
 import com.fabriik.common.utils.getString
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.math.RoundingMode
@@ -60,7 +58,7 @@ class BuyInputViewModel(
                 onCryptoCurrencyChanged(event.currencyCode)
 
             is BuyInputContract.Event.PaymentMethodChanged ->
-                onPaymentMethodChanged(event.cardNumber)
+                onPaymentMethodChanged(event.paymentInstrument)
 
             is BuyInputContract.Event.FiatAmountChange ->
                 onFiatAmountChanged(event.amount, true)
@@ -81,8 +79,14 @@ class BuyInputViewModel(
         }
     }
 
-    private fun onPaymentMethodChanged(cardNumber: String) {
-        //todo
+    private fun onPaymentMethodChanged(paymentInstrument: PaymentInstrument) {
+        val state = currentLoadedState ?: return
+
+        setState {
+            state.copy(
+                selectedPaymentMethod = paymentInstrument
+            )
+        }
     }
 
     private fun onCryptoCurrencyClicked() {

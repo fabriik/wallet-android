@@ -5,9 +5,10 @@ import com.fabriik.common.ui.base.FabriikContract
 class AddCardContract : FabriikContract {
 
     sealed class Event : FabriikContract.Event {
-        object OnBackClicked : Event()
-        object OnDismissClicked : Event()
-        object OnConfirmClicked : Event()
+        object BackClicked : Event()
+        object DismissClicked : Event()
+        object ConfirmClicked : Event()
+        object SecurityCodeInfoClicked : Event()
 
         data class OnCardNumberChanged(
             val number: String
@@ -21,7 +22,9 @@ class AddCardContract : FabriikContract {
     sealed class Effect : FabriikContract.Effect {
         object Back : Effect()
         object Dismiss : Effect()
-        object Confirm : Effect()
+        data class BillingAddress(
+            val token: String
+        ) : Effect()
 
         data class ShowToast(
             val message: String

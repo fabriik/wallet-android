@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -12,6 +14,8 @@ import com.breadwallet.tools.util.Utils
 import com.fabriik.buy.R
 import com.fabriik.buy.databinding.FragmentBillingAddressBinding
 import com.fabriik.common.ui.base.FabriikView
+import com.fabriik.common.utils.FabriikToastUtil
+import com.fabriik.common.utils.textOrEmpty
 import com.fabriik.kyc.data.model.Country
 import com.fabriik.kyc.ui.features.countryselection.CountrySelectionFragment
 import kotlinx.coroutines.flow.collect
@@ -23,9 +27,7 @@ class BillingAddressFragment : Fragment(),
     private val viewModel: BillingAddressViewModel by viewModels()
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         return inflater.inflate(R.layout.fragment_billing_address, container, false)
     }
@@ -37,15 +39,67 @@ class BillingAddressFragment : Fragment(),
 
         with(binding) {
             toolbar.setBackButtonClickListener {
-                viewModel.setEvent(BillingAddressContract.Event.OnBackPressed)
+                viewModel.setEvent(BillingAddressContract.Event.BackPressed)
             }
 
             toolbar.setDismissButtonClickListener {
-                viewModel.setEvent(BillingAddressContract.Event.OnDismissClicked)
+                viewModel.setEvent(BillingAddressContract.Event.DismissClicked)
             }
 
             etCountry.setOnClickListener {
-                viewModel.setEvent(BillingAddressContract.Event.OnCountryClicked)
+                viewModel.setEvent(BillingAddressContract.Event.CountryClicked)
+            }
+
+            btnConfirm.setOnClickListener {
+                viewModel.setEvent(BillingAddressContract.Event.ConfirmClicked)
+            }
+
+            etName.doAfterTextChanged {
+                viewModel.setEvent(
+                    BillingAddressContract.Event.FirstNameChanged(
+                        it.textOrEmpty()
+                    )
+                )
+            }
+
+            etLastName.doAfterTextChanged {
+                viewModel.setEvent(
+                    BillingAddressContract.Event.LastNameChanged(
+                        it.textOrEmpty()
+                    )
+                )
+            }
+
+            etCity.doAfterTextChanged {
+                viewModel.setEvent(
+                    BillingAddressContract.Event.CityChanged(
+                        it.textOrEmpty()
+                    )
+                )
+            }
+
+            etState.doAfterTextChanged {
+                viewModel.setEvent(
+                    BillingAddressContract.Event.StateChanged(
+                        it.textOrEmpty()
+                    )
+                )
+            }
+
+            etPostalCode.doAfterTextChanged {
+                viewModel.setEvent(
+                    BillingAddressContract.Event.ZipChanged(
+                        it.textOrEmpty()
+                    )
+                )
+            }
+
+            etAddress.doAfterTextChanged {
+                viewModel.setEvent(
+                    BillingAddressContract.Event.AddressChanged(
+                        it.textOrEmpty()
+                    )
+                )
             }
         }
 
@@ -67,7 +121,7 @@ class BillingAddressFragment : Fragment(),
             val country = bundle.getParcelable(CountrySelectionFragment.EXTRA_SELECTED_COUNTRY) as Country?
             if (country != null) {
                 viewModel.setEvent(
-                    BillingAddressContract.Event.OnCountryChanged(country)
+                    BillingAddressContract.Event.CountryChanged(country)
                 )
             }
         }
@@ -77,6 +131,7 @@ class BillingAddressFragment : Fragment(),
         with(binding) {
             btnConfirm.isEnabled = state.confirmEnabled
             etCountry.setText(state.country?.name)
+            viewLoading.root.isVisible = state.loadingIndicatorVisible
         }
     }
 
@@ -96,6 +151,19 @@ class BillingAddressFragment : Fragment(),
                     )
                 )
             }
+
+            BillingAddressContract.Effect.PaymentMethod ->
+                findNavController().navigate(
+                    BillingAddressFragmentDirections.actionPaymentMethod(
+                        emptyArray() //todo: load payment methods on PaymentMethod screen
+                    )
+                )
+
+            is BillingAddressContract.Effect.ShowToast ->
+                FabriikToastUtil.showInfo(
+                    parentView = binding.root,
+                    message = effect.message
+                )
         }
     }
 

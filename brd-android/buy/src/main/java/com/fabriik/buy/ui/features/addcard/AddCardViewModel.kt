@@ -17,14 +17,16 @@ class AddCardViewModel(
 
     override fun handleEvent(event: AddCardContract.Event) {
         when (event) {
-            AddCardContract.Event.OnBackClicked ->
+            AddCardContract.Event.BackClicked ->
                 setEffect { AddCardContract.Effect.Back }
 
-            AddCardContract.Event.OnDismissClicked ->
+            AddCardContract.Event.DismissClicked ->
                 setEffect { AddCardContract.Effect.Dismiss }
 
-            AddCardContract.Event.OnConfirmClicked ->
-                setEffect { AddCardContract.Effect.Confirm }
+            AddCardContract.Event.ConfirmClicked ->
+                setEffect { AddCardContract.Effect.BillingAddress("test_token") } //todo: call checkout SDK
+
+            AddCardContract.Event.SecurityCodeInfoClicked -> {} //todo: show info dialog
 
             is AddCardContract.Event.OnCardNumberChanged ->
                 setState {
