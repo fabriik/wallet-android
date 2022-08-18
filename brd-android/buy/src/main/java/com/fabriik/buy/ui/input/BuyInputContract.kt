@@ -25,6 +25,7 @@ interface BuyInputContract {
         data class PaymentMethodSelection(val paymentInstruments: List<PaymentInstrument>) :
             Effect()
 
+        data class PaymentMethodSelection(val paymentInstruments: List<PaymentInstrument>) : Effect()
         data class ShowToast(val message: String, val redInfo: Boolean = false) : Effect()
         data class CryptoSelection(val currencies: List<String>) : Effect()
         data class OpenOrderPreview(val cryptoCurrency: String) : Effect()

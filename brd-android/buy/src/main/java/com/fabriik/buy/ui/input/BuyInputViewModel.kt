@@ -3,8 +3,6 @@ package com.fabriik.buy.ui.input
 import android.app.Application
 import androidx.lifecycle.viewModelScope
 import com.breadwallet.breadbox.BreadBox
-import com.breadwallet.crypto.Wallet
-import com.breadwallet.crypto.WalletManagerState
 import com.breadwallet.platform.interfaces.AccountMetaDataProvider
 import com.fabriik.buy.R
 import com.fabriik.buy.data.BuyApi
@@ -17,7 +15,6 @@ import org.kodein.di.erased.instance
 import java.math.BigDecimal
 import com.fabriik.common.utils.getString
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.math.RoundingMode

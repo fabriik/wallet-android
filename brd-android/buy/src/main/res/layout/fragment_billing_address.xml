@@ -10,7 +10,8 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:title="@string/Buy.BillingAdress.Title" />
+        app:title="@string/Buy.BillingAdress.Title"
+        app:titleType="small" />
 
     <ScrollView
         android:layout_width="match_parent"
