@@ -41,6 +41,7 @@ class AddCardContract : FabriikContract {
         val expiryDate: String = "",
         val cardNumber: String = "",
         val securityCode: String = "",
+        val confirmButtonEnabled: Boolean = false,
         val loadingIndicatorVisible: Boolean = false
     ) : FabriikContract.State
 }

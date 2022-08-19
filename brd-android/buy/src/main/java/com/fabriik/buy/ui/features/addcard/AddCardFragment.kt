@@ -90,6 +90,8 @@ class AddCardFragment : Fragment(), FabriikView<AddCardContract.State, AddCardCo
             etDate.setText(state.expiryDate)
             etDate.setSelection(state.expiryDate.length)
 
+            btnConfirm.isEnabled = state.confirmButtonEnabled
+
             viewLoading.root.isVisible = state.loadingIndicatorVisible
         }
     }
