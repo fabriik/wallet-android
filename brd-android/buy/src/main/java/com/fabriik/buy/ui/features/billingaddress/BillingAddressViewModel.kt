@@ -67,6 +67,9 @@ class BillingAddressViewModel(
 
             is BillingAddressContract.Event.CountryChanged ->
                 setState { copy(country = event.country).validate() }
+
+            is BillingAddressContract.Event.BrowserResult -> // todo: check result
+                setEffect { BillingAddressContract.Effect.PaymentMethod }
         }
     }
 
@@ -88,8 +91,16 @@ class BillingAddressViewModel(
             },
             callback = {
                 when (it.status) {
-                    Status.SUCCESS ->
-                        setEffect { BillingAddressContract.Effect.PaymentMethod }
+                    Status.SUCCESS -> {
+                        val redirectUrl = requireNotNull(it.data).redirectUrl
+                        setEffect {
+                            if (redirectUrl.isNullOrBlank()) {
+                                BillingAddressContract.Effect.PaymentMethod
+                            } else {
+                                BillingAddressContract.Effect.OpenWebsite(redirectUrl)
+                            }
+                        }
+                    }
 
                     Status.ERROR ->
                         setEffect {
