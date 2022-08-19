@@ -26,6 +26,8 @@ class AddCardContract : FabriikContract {
     sealed class Effect : FabriikContract.Effect {
         object Back : Effect()
         object Dismiss : Effect()
+        object ShowCvvInfoDialog : Effect()
+
         data class BillingAddress(
             val token: String
         ) : Effect()
