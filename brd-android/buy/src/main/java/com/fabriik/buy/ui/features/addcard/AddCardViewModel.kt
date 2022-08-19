@@ -98,7 +98,7 @@ class AddCardViewModel(
     }
 
     private fun validateDate(input: String?) {
-        if (isExpiryDateValid(input)) {
+        if (!isExpiryDateValid(input)) {
             setEffect { AddCardContract.Effect.ShowToast(getString(R.string.Buy_AddCard_Error_WrongDate)) }
         }
     }
