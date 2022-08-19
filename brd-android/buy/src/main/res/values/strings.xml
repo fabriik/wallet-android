@@ -29,6 +29,10 @@
     <string name="Buy.AddCard.Hint3">CVV</string>
     <string name="Buy.AddCard.Error.WrongDate">Entered expiration date is not valid!</string>
 
+    <string name="Buy.AddCard.CvvDialog.Title">Security code (CVV)</string>
+    <string name="Buy.AddCard.CvvDialog.Content">Please enter the 3 digit CVV number as it appears on the back of your card</string>
+
+
     <!-- Processing screen -->
     <string name="Buy.Processing.ProcessingPayment">Processing payment</string>
     <string name="Buy.Processing.BackToHome">Back to Home</string>

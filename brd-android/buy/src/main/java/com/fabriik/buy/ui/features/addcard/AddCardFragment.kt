@@ -13,6 +13,8 @@ import androidx.navigation.fragment.findNavController
 import com.fabriik.buy.R
 import com.fabriik.buy.databinding.FragmentAddCardBinding
 import com.fabriik.common.ui.base.FabriikView
+import com.fabriik.common.ui.dialog.InfoDialog
+import com.fabriik.common.ui.dialog.InfoDialogArgs
 import com.fabriik.common.utils.FabriikToastUtil
 import kotlinx.coroutines.flow.collect
 
@@ -100,6 +102,9 @@ class AddCardFragment : Fragment(), FabriikView<AddCardContract.State, AddCardCo
             AddCardContract.Effect.Dismiss ->
                 activity?.finish()
 
+            AddCardContract.Effect.ShowCvvInfoDialog ->
+                showCvvInfoDialog()
+
             is AddCardContract.Effect.BillingAddress ->
                 findNavController().navigate(
                     AddCardFragmentDirections.actionBillingAddress(effect.token)
@@ -111,5 +116,16 @@ class AddCardFragment : Fragment(), FabriikView<AddCardContract.State, AddCardCo
                     message = effect.message
                 )
         }
+    }
+
+    private fun showCvvInfoDialog() {
+        val fm = parentFragmentManager
+        val args = InfoDialogArgs(
+            image = R.drawable.ic_info_cvv,
+            title = R.string.Buy_AddCard_CvvDialog_Title,
+            description = R.string.Buy_AddCard_CvvDialog_Content
+        )
+
+        InfoDialog(args).show(fm, InfoDialog.TAG)
     }
 }

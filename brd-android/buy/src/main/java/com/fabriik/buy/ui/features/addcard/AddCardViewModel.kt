@@ -39,7 +39,8 @@ class AddCardViewModel(
             AddCardContract.Event.ConfirmClicked ->
                 onConfirmClicked()
 
-            AddCardContract.Event.SecurityCodeInfoClicked -> {} //todo: show info dialog
+            AddCardContract.Event.SecurityCodeInfoClicked ->
+                setEffect { AddCardContract.Effect.ShowCvvInfoDialog }
 
             is AddCardContract.Event.OnCardNumberChanged ->
                 setState { copy(cardNumber = formatCardNumber(event.number)) }

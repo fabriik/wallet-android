@@ -4,7 +4,9 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.*
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import com.fabriik.common.databinding.FragmentInfoDialogBinding
 
@@ -20,6 +22,9 @@ class InfoDialog(
     ): View {
         binding = FragmentInfoDialogBinding.inflate(inflater, container, false)
 
+        args.image?.let { binding.ivImage.setImageResource(it) }
+
+        binding.ivImage.isVisible = args.image != null
         binding.tvTitle.text = context?.getString(args.title)
         binding.tvDescription.text = context?.getString(args.description)
 
@@ -43,6 +48,7 @@ class InfoDialog(
 }
 
 data class InfoDialogArgs(
+    @DrawableRes val image: Int? = null,
     @StringRes val title: Int,
     @StringRes val description: Int,
 )

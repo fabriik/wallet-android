@@ -334,7 +334,11 @@ class RouterNavigator(
 
     override fun showInfoDialog(effect: NavigationTarget.ShowInfoDialog) {
         val fm = router.fragmentManager()
-        val infoArgs = InfoDialogArgs(effect.title, effect.description)
+        val infoArgs = InfoDialogArgs(
+            image = effect.image,
+            title = effect.title,
+            description = effect.description
+        )
 
         InfoDialog(infoArgs).show(fm ?: error("Can't find fragment Manager"), "info_dialog")
     }

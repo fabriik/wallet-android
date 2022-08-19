@@ -24,6 +24,7 @@
  */
 package com.breadwallet.ui.navigation
 
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.brd.bakerapi.models.Baker
 import com.breadwallet.model.InAppMessage
@@ -206,6 +207,7 @@ sealed class NavigationTarget : INavigationTarget {
     ) : NavigationTarget()
 
     data class ShowInfoDialog(
+        @DrawableRes val image: Int? = null,
         @StringRes val title: Int,
         @StringRes val description: Int,
     ) : NavigationTarget()
