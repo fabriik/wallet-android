@@ -48,19 +48,6 @@ fun Profile?.canUseBuyTrade() = hasRole(ProfileRole.CUSTOMER) &&
         anyRole(ProfileRole.KYC_LEVEL_1, ProfileRole.KYC_LEVEL_2) &&
         noRole(ProfileRole.UNVERIFIED)
 
-fun Profile?.nextExchangeLimit(): BigDecimal = this?.exchangeLimits?.nextExchangeLimit ?: BigDecimal.ZERO
-
-fun Profile?.availableDailyLimit(): BigDecimal = this?.exchangeLimits?.availableDaily() ?: BigDecimal.ZERO
-
-fun Profile?.availableLifetimeLimit(): BigDecimal = this?.exchangeLimits?.availableLifetime() ?: BigDecimal.ZERO
-
-fun Profile?.kyc2ExchangeLimit(): BigDecimal? {
-    if (this?.roles?.contains(ProfileRole.KYC_LEVEL_2) == true) {
-        return this?.exchangeLimits?.allowancePerExchange
-    }
-    return null
-}
-
 private fun Profile?.noRole(role: ProfileRole) = !hasRole(role)
 
 private fun Profile?.hasRole(role: ProfileRole) = this?.roles?.contains(role) ?: false
