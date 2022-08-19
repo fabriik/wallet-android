@@ -9,6 +9,7 @@ import com.breadwallet.crypto.Amount
 import com.breadwallet.crypto.TransferFeeBasis
 import com.breadwallet.ext.isZero
 import com.breadwallet.tools.security.BrdUserManager
+import com.breadwallet.tools.security.ProfileManager
 import com.fabriik.common.data.Resource
 import com.fabriik.common.data.Status
 import com.fabriik.common.ui.base.FabriikViewModel
@@ -42,7 +43,7 @@ class SwapInputViewModel(
 ), KodeinAware {
 
     override val kodein by closestKodein { application }
-
+    private val profileManager by kodein.instance<ProfileManager>()
     private val currentFiatCurrency = "USD"
 
     private val swapApi by kodein.instance<SwapApi>()
@@ -348,6 +349,7 @@ class SwapInputViewModel(
                 return@launch
             }
 
+            val profile = profileManager.getProfile()
             setState {
                 SwapInputContract.State.Loaded(
                     supportedCurrencies = supportedCurrencies,
@@ -356,6 +358,7 @@ class SwapInputViewModel(
                     sourceCryptoCurrency = sourceCryptoCurrency,
                     destinationCryptoCurrency = destinationCryptoCurrency,
                     sourceCryptoBalance = sourceCryptoBalance,
+                    profile = profile
                 )
             }
 
