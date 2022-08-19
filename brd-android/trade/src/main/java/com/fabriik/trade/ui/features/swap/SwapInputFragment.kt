@@ -331,9 +331,9 @@ class SwapInputFragment : Fragment(),
             initialLoadingIndicator.isVisible = false
 
             if (state.isKyc2) {
-                tvKycMessage.text = "Currently, minimum limit for swap is $50.00 and maximum limit is $1,0000.00 USD/day."
+                tvKycMessage.text = getString(R.string.Swap_KycLimits_Kyc1)
             } else if(state.isKyc1) {
-                tvKycMessage.text = "Currently, minimum limit for swap is $50.00 and maximum limit is $10,0000.00 USD/day."
+                tvKycMessage.text = getString(R.string.Swap_KycLimits_Kyc2)
             }
         }
     }
