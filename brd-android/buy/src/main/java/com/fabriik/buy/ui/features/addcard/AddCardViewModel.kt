@@ -23,7 +23,9 @@ class AddCardViewModel(
 ) {
 
     private val checkoutClient = CheckoutAPIClient(
-        getApplication(), "pk_sbox_ees63clhrko6kta6j3cwloebg4#", Environment.SANDBOX //todo: change to prod env
+        getApplication(),
+        "pk_sbox_ees63clhrko6kta6j3cwloebg4#",
+        Environment.SANDBOX //todo: change to prod env
     )
 
     override fun createInitialState() = AddCardContract.State()
@@ -43,15 +45,15 @@ class AddCardViewModel(
                 setEffect { AddCardContract.Effect.ShowCvvInfoDialog }
 
             is AddCardContract.Event.OnCardNumberChanged ->
-                setState { copy(cardNumber = formatCardNumber(event.number)) }
+                setState { copy(cardNumber = formatCardNumber(event.number)).validate() }
 
             is AddCardContract.Event.OnSecurityCodeChanged ->
-                setState { copy(securityCode = event.code) }
+                setState { copy(securityCode = event.code).validate() }
 
             is AddCardContract.Event.OnDateChanged -> {
                 val formatDate = formatDate(event.date)
 
-                setState { copy(expiryDate = formatDate) }
+                setState { copy(expiryDate = formatDate).validate() }
 
                 if (formatDate.length == 5) {
                     validateDate(formatDate)
@@ -96,16 +98,26 @@ class AddCardViewModel(
     }
 
     private fun validateDate(input: String?) {
-        if (input == null) {
-            return
-        }
-
-        val splitDate = if (input.length > 3) {
-            input.split("/")
-        } else return
-
-        if (splitDate[0].toInt() > 12) {
+        if (!isExpiryDateValid(input)) {
             setEffect { AddCardContract.Effect.ShowToast(getString(R.string.Buy_AddCard_Error_WrongDate)) }
         }
     }
+
+    private fun isExpiryDateValid(input: String?): Boolean {
+        if (input == null) {
+            return false
+        }
+
+        val splitDate = if (input.length == 5) {
+            input.split("/")
+        } else return false
+
+        return splitDate[0].toInt() in 1..12
+    }
+
+    private fun AddCardContract.State.validate() = copy(
+        confirmButtonEnabled = cardNumber.length == 19
+                && isExpiryDateValid(expiryDate)
+                && securityCode.length == 3
+    )
 }
