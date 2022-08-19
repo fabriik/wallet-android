@@ -25,6 +25,18 @@ class BuyApi(
 
     private val responseMapper = FabriikApiResponseMapper()
 
+    suspend fun getSupportedCurrencies(): Resource<List<String>?> {
+        return try {
+            val response = service.getSupportedCurrencies()
+            Resource.success(data = response.currencies)
+        } catch (ex: Exception) {
+            responseMapper.mapError(
+                context = context,
+                exception = ex
+            )
+        }
+    }
+
     suspend fun addPaymentInstrument(
         token: String, firstName: String, lastName: String, city: String, state: String?,
         zip: String, countryCode: String, address: String

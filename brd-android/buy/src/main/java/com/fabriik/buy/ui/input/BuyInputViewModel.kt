@@ -92,7 +92,7 @@ class BuyInputViewModel(
 
     private fun onCryptoCurrencyClicked() {
         val state = currentLoadedState ?: return
-        setEffect { BuyInputContract.Effect.CryptoSelection(state.enabledWallets) }
+        setEffect { BuyInputContract.Effect.CryptoSelection(state.supportedCurrencies) }
     }
 
     private fun onPaymentMethodClicked() {
@@ -156,11 +156,11 @@ class BuyInputViewModel(
 
     private fun loadInitialData() {
         viewModelScope.launch(Dispatchers.IO) {
-            val enabledWallets = getEnabledWallets()
             val instrumentsResponse = buyApi.getPaymentInstruments()
+            val supportedCurrencies = buyApi.getSupportedCurrencies().data ?: emptyList()
             val exchangeRate = BigDecimal("21002.12") //todo: get exchange rate
 
-            if (instrumentsResponse.status == Status.ERROR || enabledWallets.isEmpty()) {
+            if (instrumentsResponse.status == Status.ERROR || supportedCurrencies.isEmpty()) {
                 showErrorState()
                 return@launch
             }
@@ -168,8 +168,8 @@ class BuyInputViewModel(
             setState {
                 BuyInputContract.State.Loaded(
                     exchangeRate = exchangeRate,
-                    enabledWallets = enabledWallets,
-                    cryptoCurrency = enabledWallets.first(),
+                    cryptoCurrency = supportedCurrencies[0],
+                    supportedCurrencies = supportedCurrencies,
                     paymentInstruments = instrumentsResponse.data ?: emptyList()
                 )
             }

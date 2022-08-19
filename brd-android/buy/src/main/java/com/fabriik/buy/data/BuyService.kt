@@ -4,9 +4,13 @@ import com.fabriik.buy.data.request.AddPaymentInstrumentRequest
 import com.fabriik.buy.data.request.CreateBuyOrderRequest
 import com.fabriik.buy.data.response.*
 import com.fabriik.trade.data.response.QuoteResponse
+import com.fabriik.trade.data.response.SupportedCurrenciesResponse
 import retrofit2.http.*
 
 interface BuyService {
+
+    @GET("supported-currencies")
+    suspend fun getSupportedCurrencies(): SupportedCurrenciesResponse
 
     @POST("payment-instrument")
     suspend fun addPaymentInstrument(
