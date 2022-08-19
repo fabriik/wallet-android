@@ -80,6 +80,7 @@ class PersonalInformationViewModel(
 
             is PersonalInformationContract.Event.DateChanged -> {
                 val calendar = Calendar.getInstance(SimpleTimeZone(0, "UTC"))
+                calendar.timeInMillis = event.date
                 setState { copy(dateOfBirth = calendar).validate() }
             }
         }
