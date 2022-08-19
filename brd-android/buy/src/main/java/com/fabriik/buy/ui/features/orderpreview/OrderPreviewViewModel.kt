@@ -26,7 +26,17 @@ class OrderPreviewViewModel(
 
             OrderPreviewContract.Event.OnTermsAndConditionsCLicked -> TODO()
 
-            OrderPreviewContract.Event.OnConfirmClicked -> TODO()
+            OrderPreviewContract.Event.OnConfirmClicked ->
+                //todo: API call?
+                setEffect { OrderPreviewContract.Effect.RequestUserAuthentication }
+
+            OrderPreviewContract.Event.OnUserAuthenticationSucceed ->
+                createBuyOrder()
         }
+    }
+
+    private fun createBuyOrder() {
+        //todo: API call
+        setEffect { OrderPreviewContract.Effect.PaymentProcessing }
     }
 }

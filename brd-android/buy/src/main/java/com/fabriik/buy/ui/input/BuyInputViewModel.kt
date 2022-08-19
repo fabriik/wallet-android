@@ -3,6 +3,7 @@ package com.fabriik.buy.ui.input
 import android.app.Application
 import androidx.lifecycle.viewModelScope
 import com.breadwallet.breadbox.BreadBox
+import com.breadwallet.ext.isZero
 import com.breadwallet.platform.interfaces.AccountMetaDataProvider
 import com.fabriik.buy.R
 import com.fabriik.buy.data.BuyApi
@@ -85,7 +86,7 @@ class BuyInputViewModel(
         setState {
             state.copy(
                 selectedPaymentMethod = paymentInstrument
-            )
+            ).validate()
         }
     }
 
@@ -114,7 +115,7 @@ class BuyInputViewModel(
             state.copy(
                 fiatAmount = fiatAmount,
                 cryptoAmount = cryptoAmount,
-            )
+            ).validate()
         }
 
         updateAmounts(
@@ -131,7 +132,7 @@ class BuyInputViewModel(
             state.copy(
                 fiatAmount = fiatAmount,
                 cryptoAmount = cryptoAmount,
-            )
+            ).validate()
         }
 
         updateAmounts(
@@ -189,4 +190,10 @@ class BuyInputViewModel(
             )
         }
     }
+
+    private fun BuyInputContract.State.Loaded.validate() = copy(
+        continueButtonEnabled = !cryptoAmount.isZero()
+                && !fiatAmount.isZero()
+               /* && selectedPaymentMethod != null*/ //todo: enable payment method check
+    )
 }

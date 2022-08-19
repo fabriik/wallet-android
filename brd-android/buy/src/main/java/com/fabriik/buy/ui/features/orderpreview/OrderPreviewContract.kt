@@ -11,11 +11,14 @@ class OrderPreviewContract : FabriikContract {
         object OnCreditInfoClicked : Event()
         object OnNetworkInfoClicked : Event()
         object OnTermsAndConditionsCLicked : Event()
+        object OnUserAuthenticationSucceed : Event()
     }
 
     sealed class Effect : FabriikContract.Effect {
         object Back : Effect()
         object Dismiss : Effect()
+        object PaymentProcessing : Effect()
+        object RequestUserAuthentication : Effect()
 
         data class ShowInfoDialog(val type: DialogType) : Effect()
     }
