@@ -6,7 +6,7 @@ defaults: &defaults
   docker:
     - image: circleci/android:api-30-ndk
   working_directory: ~/brd-mobile
-  resource_class: medium+
+  resource_class: large
 
   environment:
     SDK_FILENAME: sdk-tools-linux-4333796.zip
