@@ -3,6 +3,7 @@ package com.fabriik.buy.ui.input
 import android.app.Application
 import androidx.lifecycle.viewModelScope
 import com.breadwallet.breadbox.BreadBox
+import com.breadwallet.ext.isZero
 import com.breadwallet.platform.interfaces.AccountMetaDataProvider
 import com.fabriik.buy.R
 import com.fabriik.buy.data.BuyApi
@@ -85,13 +86,13 @@ class BuyInputViewModel(
         setState {
             state.copy(
                 selectedPaymentMethod = paymentInstrument
-            )
+            ).validate()
         }
     }
 
     private fun onCryptoCurrencyClicked() {
         val state = currentLoadedState ?: return
-        setEffect { BuyInputContract.Effect.CryptoSelection(state.enabledWallets) }
+        setEffect { BuyInputContract.Effect.CryptoSelection(state.supportedCurrencies) }
     }
 
     private fun onPaymentMethodClicked() {
@@ -114,7 +115,7 @@ class BuyInputViewModel(
             state.copy(
                 fiatAmount = fiatAmount,
                 cryptoAmount = cryptoAmount,
-            )
+            ).validate()
         }
 
         updateAmounts(
@@ -131,7 +132,7 @@ class BuyInputViewModel(
             state.copy(
                 fiatAmount = fiatAmount,
                 cryptoAmount = cryptoAmount,
-            )
+            ).validate()
         }
 
         updateAmounts(
@@ -155,11 +156,11 @@ class BuyInputViewModel(
 
     private fun loadInitialData() {
         viewModelScope.launch(Dispatchers.IO) {
-            val enabledWallets = getEnabledWallets()
             val instrumentsResponse = buyApi.getPaymentInstruments()
+            val supportedCurrencies = buyApi.getSupportedCurrencies().data ?: emptyList()
             val exchangeRate = BigDecimal("21002.12") //todo: get exchange rate
 
-            if (instrumentsResponse.status == Status.ERROR || enabledWallets.isEmpty()) {
+            if (instrumentsResponse.status == Status.ERROR || supportedCurrencies.isEmpty()) {
                 showErrorState()
                 return@launch
             }
@@ -167,8 +168,8 @@ class BuyInputViewModel(
             setState {
                 BuyInputContract.State.Loaded(
                     exchangeRate = exchangeRate,
-                    enabledWallets = enabledWallets,
-                    cryptoCurrency = enabledWallets.first(),
+                    cryptoCurrency = supportedCurrencies[0],
+                    supportedCurrencies = supportedCurrencies,
                     paymentInstruments = instrumentsResponse.data ?: emptyList()
                 )
             }
@@ -189,4 +190,10 @@ class BuyInputViewModel(
             )
         }
     }
+
+    private fun BuyInputContract.State.Loaded.validate() = copy(
+        continueButtonEnabled = !cryptoAmount.isZero()
+                && !fiatAmount.isZero()
+               /* && selectedPaymentMethod != null*/ //todo: enable payment method check
+    )
 }

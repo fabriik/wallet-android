@@ -18,6 +18,7 @@ import com.fabriik.buy.ui.customview.CardType
 import com.fabriik.common.ui.base.FabriikView
 import com.fabriik.common.ui.dialog.InfoDialog
 import com.fabriik.common.ui.dialog.InfoDialogArgs
+import com.fabriik.trade.ui.features.authentication.SwapAuthenticationViewModel
 import kotlinx.coroutines.flow.collect
 
 class OrderPreviewFragment : Fragment(),
@@ -86,6 +87,16 @@ class OrderPreviewFragment : Fragment(),
                 handleEffect(it)
             }
         }
+
+        // listen for user authentication result
+        parentFragmentManager.setFragmentResultListener(SwapAuthenticationViewModel.REQUEST_KEY, this) { _, bundle ->
+            val resultKey = bundle.getString(SwapAuthenticationViewModel.EXTRA_RESULT)
+            if (resultKey == SwapAuthenticationViewModel.RESULT_KEY_SUCCESS) {
+                binding.root.post {
+                    viewModel.setEvent(OrderPreviewContract.Event.OnUserAuthenticationSucceed)
+                }
+            }
+        }
     }
 
     override fun render(state: OrderPreviewContract.State) {
@@ -98,6 +109,16 @@ class OrderPreviewFragment : Fragment(),
 
             OrderPreviewContract.Effect.Dismiss ->
                 activity?.finish()
+
+            OrderPreviewContract.Effect.PaymentProcessing ->
+                findNavController().navigate(
+                    OrderPreviewFragmentDirections.actionPaymentProcessing()
+                )
+
+            OrderPreviewContract.Effect.RequestUserAuthentication ->
+                findNavController().navigate(
+                    OrderPreviewFragmentDirections.actionUserAuthentication()
+                )
 
             is OrderPreviewContract.Effect.ShowInfoDialog ->
                 showInfoDialog(effect.type)
