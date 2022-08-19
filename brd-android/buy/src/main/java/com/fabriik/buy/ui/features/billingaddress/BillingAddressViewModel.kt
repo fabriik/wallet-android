@@ -67,6 +67,9 @@ class BillingAddressViewModel(
 
             is BillingAddressContract.Event.CountryChanged ->
                 setState { copy(country = event.country).validate() }
+
+            is BillingAddressContract.Event.BrowserResult -> // todo: check result
+                setEffect { BillingAddressContract.Effect.PaymentMethod }
         }
     }
 

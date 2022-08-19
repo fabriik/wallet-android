@@ -1,9 +1,12 @@
 package com.fabriik.buy.ui.features.billingaddress
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
@@ -14,7 +17,6 @@ import com.breadwallet.tools.util.Utils
 import com.fabriik.buy.R
 import com.fabriik.buy.databinding.FragmentBillingAddressBinding
 import com.fabriik.common.ui.base.FabriikView
-import com.fabriik.common.utils.ChromeTabsUtils
 import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.common.utils.textOrEmpty
 import com.fabriik.kyc.data.model.Country
@@ -26,6 +28,10 @@ class BillingAddressFragment : Fragment(),
 
     private lateinit var binding: FragmentBillingAddressBinding
     private val viewModel: BillingAddressViewModel by viewModels()
+
+    private val browserResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        viewModel.setEvent(BillingAddressContract.Event.BrowserResult(it.resultCode))
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -166,11 +172,11 @@ class BillingAddressFragment : Fragment(),
                     message = effect.message
                 )
 
-            is BillingAddressContract.Effect.OpenWebsite ->
-                ChromeTabsUtils.showUrl(
-                    context = requireContext(),
-                    url = effect.url
-                )
+            is BillingAddressContract.Effect.OpenWebsite -> {
+                val uri = Uri.parse(effect.url)
+                val intent = Intent(Intent.ACTION_VIEW, uri)
+                browserResultLauncher.launch(intent)
+            }
         }
     }
 
