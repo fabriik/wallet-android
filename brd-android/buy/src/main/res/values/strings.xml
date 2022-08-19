@@ -59,8 +59,8 @@
     <string name="Buy.OrderPreview.Rate">Rate:</string>
     <string name="Buy.OrderPreview.CVV">CVV</string>
 
-    <string name="Buy.OrderPreview.CardFeesDialog.Title">Credit card fees</string>
-    <string name="Buy.OrderPreview.CardFeesDialog.Content">An extra fee of 0.04% is required to cover processing of credit card purchases.</string>
+    <string name="Buy.OrderPreview.CardFeesDialog.Title">Card fee</string>
+    <string name="Buy.OrderPreview.CardFeesDialog.Content">An extra fee of 4% is required to cover processing of credit card purchases.</string>
 
     <string name="Buy.OrderPreview.NetworkFeesDialog.Title">Network fees</string>
     <string name="Buy.OrderPreview.NetworkFeesDialog.Content">Network fee prices vary depending on the blockchain in which you are receiving your assets. This is an external fee to cover mining and transaction costs.</string>
