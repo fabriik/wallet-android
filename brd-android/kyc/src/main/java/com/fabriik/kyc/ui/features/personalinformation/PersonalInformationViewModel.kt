@@ -17,6 +17,7 @@ import kotlinx.coroutines.launch
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
 import org.kodein.di.erased.instance
+import java.time.ZoneOffset.UTC
 import java.util.*
 
 class PersonalInformationViewModel(
@@ -78,7 +79,7 @@ class PersonalInformationViewModel(
                 setState { copy(country = event.country).validate() }
 
             is PersonalInformationContract.Event.DateChanged -> {
-                val calendar = Calendar.getInstance()
+                val calendar = Calendar.getInstance(SimpleTimeZone(0, "UTC"))
                 calendar.timeInMillis = event.date
                 setState { copy(dateOfBirth = calendar).validate() }
             }
