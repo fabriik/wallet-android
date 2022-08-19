@@ -43,6 +43,7 @@ dependencies {
     implementation(project(":brd-android:theme"))
 
     api(brd.Libs.Androidx.AppCompat)
+    api(brd.Libs.Androidx.Browser)
     api(brd.Libs.Androidx.CoreKtx)
     api(brd.Libs.Androidx.LifecycleLiveDataKtx)
     api(brd.Libs.Androidx.LifecycleViewModelKtx)

@@ -88,8 +88,16 @@ class BillingAddressViewModel(
             },
             callback = {
                 when (it.status) {
-                    Status.SUCCESS ->
-                        setEffect { BillingAddressContract.Effect.PaymentMethod }
+                    Status.SUCCESS -> {
+                        val redirectUrl = requireNotNull(it.data).redirectUrl
+                        setEffect {
+                            if (redirectUrl.isNullOrBlank()) {
+                                BillingAddressContract.Effect.PaymentMethod
+                            } else {
+                                BillingAddressContract.Effect.OpenWebsite(redirectUrl)
+                            }
+                        }
+                    }
 
                     Status.ERROR ->
                         setEffect {

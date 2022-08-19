@@ -14,6 +14,7 @@ import com.breadwallet.tools.util.Utils
 import com.fabriik.buy.R
 import com.fabriik.buy.databinding.FragmentBillingAddressBinding
 import com.fabriik.common.ui.base.FabriikView
+import com.fabriik.common.utils.ChromeTabsUtils
 import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.common.utils.textOrEmpty
 import com.fabriik.kyc.data.model.Country
@@ -163,6 +164,12 @@ class BillingAddressFragment : Fragment(),
                 FabriikToastUtil.showInfo(
                     parentView = binding.root,
                     message = effect.message
+                )
+
+            is BillingAddressContract.Effect.OpenWebsite ->
+                ChromeTabsUtils.showUrl(
+                    context = requireContext(),
+                    url = effect.url
                 )
         }
     }

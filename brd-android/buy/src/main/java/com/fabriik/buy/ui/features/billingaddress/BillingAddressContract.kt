@@ -25,6 +25,7 @@ class BillingAddressContract : FabriikContract {
         object PaymentMethod : Effect()
         object CountrySelection : Effect()
         data class ShowToast(val message: String): Effect()
+        data class OpenWebsite(val url: String): Effect()
     }
 
     data class State(
