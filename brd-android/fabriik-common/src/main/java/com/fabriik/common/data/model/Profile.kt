@@ -50,7 +50,7 @@ fun Profile?.canUseBuyTrade() = hasRole(ProfileRole.CUSTOMER) &&
 
 private fun Profile?.noRole(role: ProfileRole) = !hasRole(role)
 
-private fun Profile?.hasRole(role: ProfileRole) = this?.roles?.contains(role) ?: false
+fun Profile?.hasRole(role: ProfileRole) = this?.roles?.contains(role) ?: false
 
 private fun Profile?.anyRole(vararg roles: ProfileRole) = roles.any { hasRole(it) }
 

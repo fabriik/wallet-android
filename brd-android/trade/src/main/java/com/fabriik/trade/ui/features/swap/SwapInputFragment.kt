@@ -329,6 +329,12 @@ class SwapInputFragment : Fragment(),
             content.isVisible = true
             fullScreenLoadingView.root.isVisible = false
             initialLoadingIndicator.isVisible = false
+
+            if (state.isKyc2) {
+                tvKycMessage.text = getString(R.string.Swap_KycLimits_Kyc1)
+            } else if(state.isKyc1) {
+                tvKycMessage.text = getString(R.string.Swap_KycLimits_Kyc2)
+            }
         }
     }
 
