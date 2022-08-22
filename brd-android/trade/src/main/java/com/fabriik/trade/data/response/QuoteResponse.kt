@@ -12,9 +12,6 @@ data class QuoteResponse(
     @Json(name = "exchange_rate")
     val exchangeRate: BigDecimal,
 
-    @Json(name = "markup")
-    val markup: BigDecimal,
-
     @Json(name = "timestamp")
     val timestamp: Long,
 
