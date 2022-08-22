@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.breadwallet.breadbox.BreadBox
 import com.breadwallet.ext.isZero
 import com.breadwallet.platform.interfaces.AccountMetaDataProvider
+import com.breadwallet.tools.util.TokenUtil
 import com.fabriik.buy.R
 import com.fabriik.buy.data.BuyApi
 import com.fabriik.buy.data.model.PaymentInstrument
@@ -20,7 +21,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import java.math.RoundingMode
 import java.util.concurrent.TimeUnit
 
 class BuyInputViewModel(
@@ -172,14 +172,16 @@ class BuyInputViewModel(
                 return@launch
             }
 
-            val firstWallet = supportedCurrencies[0] //todo: first enabled wallet
+            val firstWallet = supportedCurrencies.firstOrNull { isWalletEnabled(it) }
 
-            val quoteResponse = buyApi.getQuote(
-                from = currentFiatCurrency,
-                to = firstWallet
-            )
+            val quoteResponse = firstWallet?.let {
+                buyApi.getQuote(
+                    from = currentFiatCurrency,
+                    to = it
+                )
+            }
 
-            if (quoteResponse.status == Status.ERROR) {
+            if (quoteResponse == null || quoteResponse.status == Status.ERROR) {
                 showErrorState()
                 return@launch
             }
@@ -255,6 +257,12 @@ class BuyInputViewModel(
                 }
             }
         }
+    }
+
+    private suspend fun isWalletEnabled(currencyCode: String): Boolean {
+        val enabledWallets = metaDataManager.enabledWallets().first()
+        val token = TokenUtil.tokenForCode(currencyCode) ?: return false
+        return token.isSupported && enabledWallets.contains(token.currencyId)
     }
 
     private fun showErrorState() {
