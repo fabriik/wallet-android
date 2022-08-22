@@ -8,6 +8,7 @@ import com.fabriik.buy.data.request.AddPaymentInstrumentRequest
 import com.fabriik.buy.data.request.CreateBuyOrderRequest
 import com.fabriik.buy.data.response.AddPaymentInstrumentResponse
 import com.fabriik.buy.data.response.CreateBuyOrderResponse
+import com.fabriik.buy.data.response.PaymentInstrumentsResponse
 import com.fabriik.common.data.FabriikApiConstants
 import com.fabriik.common.data.Resource
 import com.fabriik.common.utils.FabriikApiResponseMapper
@@ -66,7 +67,18 @@ class BuyApi(
 
     suspend fun getPaymentInstruments(): Resource<List<PaymentInstrument>?> {
         return try {
-            val response = service.getPaymentInstruments()
+            val response = /*service.getPaymentInstruments()*/PaymentInstrumentsResponse(
+                paymentInstruments = listOf(
+                    PaymentInstrument(
+                        id = "321",
+                        fingerprint = "dsasa",
+                        expiryYear = 22,
+                        expiryMonth = 10,
+                        last4Numbers = "3142",
+                        scheme = "visa"
+                    )
+                )
+            )
             Resource.success(data = response.paymentInstruments)
         } catch (ex: Exception) {
             responseMapper.mapError(

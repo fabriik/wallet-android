@@ -119,14 +119,24 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/tv_pay_with"/>
 
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/iv_selected_card"
+                            android:layout_width="32dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tv_pay_with"
+                            tools:src="@drawable/ic_visa"/>
+
                         <TextView
                             android:id="@+id/tv_selected_card"
                             style="@style/TextStyle.Body2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="14dp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/tv_pay_with"
+                            android:layout_marginStart="10dp"
+                            app:layout_constraintStart_toEndOf="@id/iv_selected_card"
+                            app:layout_constraintTop_toTopOf="@id/iv_selected_card"
+                            app:layout_constraintBottom_toBottomOf="@id/iv_selected_card"
                             tools:text="**** **** **** 1234"/>
 
                         <TextView

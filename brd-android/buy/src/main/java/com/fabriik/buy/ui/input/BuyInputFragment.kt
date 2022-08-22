@@ -185,14 +185,15 @@ class BuyInputFragment : Fragment(),
                 )
             )
 
+            binding.ivSelectedCard.isVisible = state.selectedPaymentMethod != null
             binding.tvSelectedCard.isVisible = state.selectedPaymentMethod != null
             binding.tvSelectedCardDate.isVisible = state.selectedPaymentMethod != null
             binding.tvSelectPaymentMethod.isVisible = state.selectedPaymentMethod == null
 
             state.selectedPaymentMethod?.let {
-                // todo: icon
-                binding.tvSelectedCard.text = "**** **** **** $it"
-                binding.tvSelectedCardDate.text = "${it.expiryMonth}/${it.expiryYear}"
+                binding.ivSelectedCard.setImageResource(it.cardTypeIcon)
+                binding.tvSelectedCard.text = it.hiddenCardNumber
+                binding.tvSelectedCardDate.text = it.expiryDate
             }
 
             viewCryptoInput.setFiatCurrency(state.fiatCurrency)
