@@ -73,4 +73,9 @@
     <!-- Swap processing screen -->
     <string name="Swap.Processing.BackToHome">Back to Home</string>
     <string name="Swap.Processing.SwapDetails">Swap details</string>
+
+    <string name="Swap.Process.Header">Swapping  %1$s/%2$s</string>
+    <string name="Swap.Process.Body">In approximately 30 minutes or less your %1$s will arrive. You can continue to use you wallet safely, we will notify you when it’s done.</string>
+    <string name="Swap.KycLimits.Kyc1">Currently, the required minimum for purchasing assets is $30.00 USD per transaction, and the maximum per day is $500.00 USD.").</string>
+    <string name="Swap.KycLimits.Kyc2">Currently, the required minimum for purchasing assets is $30.00 USD per transaction, and the maximum per day is $500.00 USD.").</string>
 </resources>

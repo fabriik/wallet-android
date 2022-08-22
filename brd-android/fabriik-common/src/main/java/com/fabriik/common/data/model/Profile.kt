@@ -55,3 +55,7 @@ fun Profile?.hasRole(role: ProfileRole) = this?.roles?.contains(role) ?: false
 private fun Profile?.anyRole(vararg roles: ProfileRole) = roles.any { hasRole(it) }
 
 private fun Profile?.allRoles(vararg roles: ProfileRole) = roles.all { hasRole(it) }
+
+fun Profile.isKyc1(): Boolean = hasRole(ProfileRole.KYC_LEVEL_1)
+
+fun Profile.isKyc2(): Boolean  = hasRole(ProfileRole.KYC_LEVEL_2)

@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.breadwallet.breadbox.BreadBox
 import com.breadwallet.ext.isZero
 import com.breadwallet.platform.interfaces.AccountMetaDataProvider
+import com.breadwallet.tools.security.ProfileManager
 import com.fabriik.buy.R
 import com.fabriik.buy.data.BuyApi
 import com.fabriik.buy.data.model.PaymentInstrument
@@ -31,6 +32,7 @@ class BuyInputViewModel(
     private val buyApi by kodein.instance<BuyApi>()
     private val breadBox by kodein.instance<BreadBox>()
     private val metaDataManager by kodein.instance<AccountMetaDataProvider>()
+    private val profileManager by kodein.instance<ProfileManager>()
 
     private val currentLoadedState: BuyInputContract.State.Loaded?
         get() = state.value as BuyInputContract.State.Loaded?
@@ -170,7 +172,8 @@ class BuyInputViewModel(
                     exchangeRate = exchangeRate,
                     cryptoCurrency = supportedCurrencies[0],
                     supportedCurrencies = supportedCurrencies,
-                    paymentInstruments = instrumentsResponse.data ?: emptyList()
+                    paymentInstruments = instrumentsResponse.data ?: emptyList(),
+                    profile = profileManager.getProfile()
                 )
             }
         }

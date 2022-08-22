@@ -22,6 +22,7 @@ import com.fabriik.common.ui.customview.FabriikSwitch
 import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.trade.ui.customview.CurrencyInputView
 import com.fabriik.trade.ui.features.assetselection.AssetSelectionFragment
+import com.fabriik.trade.ui.features.swap.SwapInputViewModel
 import java.math.BigDecimal
 
 class BuyInputFragment : Fragment(),
@@ -195,6 +196,12 @@ class BuyInputFragment : Fragment(),
             initialLoadingIndicator.isVisible = false
             quoteLoadingIndicator.isVisible = state.rateLoadingVisible
             fullScreenLoadingView.root.isVisible = state.fullScreenLoadingVisible
+
+            if (state.isKyc2) {
+                tvKycMessage.text = getString(com.fabriik.trade.R.string.Swap_KycLimits_Kyc1)
+            } else if(state.isKyc1) {
+                tvKycMessage.text = getString(com.fabriik.trade.R.string.Swap_KycLimits_Kyc2)
+            }
         }
     }
 

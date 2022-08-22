@@ -2,9 +2,9 @@ package com.fabriik.trade.ui.features.swap
 
 import android.content.Context
 import com.breadwallet.breadbox.formatCryptoForUi
-import com.fabriik.common.data.enums.ProfileRole
 import com.fabriik.common.data.model.Profile
-import com.fabriik.common.data.model.hasRole
+import com.fabriik.common.data.model.isKyc1
+import com.fabriik.common.data.model.isKyc2
 import com.fabriik.common.ui.base.FabriikContract
 import com.fabriik.common.ui.dialog.FabriikGenericDialogArgs
 import com.fabriik.trade.R
@@ -103,9 +103,9 @@ interface SwapInputContract {
             val maxCryptoAmount: BigDecimal
                 get() = quoteResponse?.maximumValue ?: BigDecimal.ZERO
             val isKyc1: Boolean
-                get() = profile?.hasRole(ProfileRole.KYC_LEVEL_1) == true
+                get() = profile?.isKyc1() == true
             val isKyc2: Boolean
-                get() = profile?.hasRole(ProfileRole.KYC_LEVEL_2) == true
+                get() = profile?.isKyc2() == true
         }
     }
 

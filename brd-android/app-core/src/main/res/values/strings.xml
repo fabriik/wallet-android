@@ -1500,11 +1500,6 @@
     <!-- Home screen verify dialog -->
     <string name="HomeScreen.VerifyDialog.Title">Get full access to your Fabriik wallet!</string>
 
-    <string name="Swap.Process.Header">Swapping  %1$s/%2$s</string>
-    <string name="Swap.Process.Body">In approximately 30 minutes or less your %1$s will arrive. You can continue to use you wallet safely, we will notify you when it’s done.</string>
-    <string name="Swap.KycLimits.Kyc1">Currently, minimum limit for swap is $50.00 and maximum limit is $1,0000.00 USD/day.</string>
-    <string name="Swap.KycLimits.Kyc2">Currently, minimum limit for swap is $50.00 and maximum limit is $10,0000.00 USD/day.</string>
-
     <!-- Transaction item custom view -->
     <string name="Swap.TransactionItem.SwappedFrom">Swapped from %s</string>
     <string name="Swap.TransactionItem.SwappedTo">Swapped to %s</string>
