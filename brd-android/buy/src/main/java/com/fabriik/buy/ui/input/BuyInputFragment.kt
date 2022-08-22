@@ -185,8 +185,15 @@ class BuyInputFragment : Fragment(),
                 )
             )
 
-            //todo: change to custom view
-            tvSelectPaymentMethod.text = state.selectedPaymentMethod?.last4Numbers?.let { "**** **** **** $it" } ?: getString(R.string.Buy_Input_SelectPaymentMethod)
+            binding.tvSelectedCard.isVisible = state.selectedPaymentMethod != null
+            binding.tvSelectedCardDate.isVisible = state.selectedPaymentMethod != null
+            binding.tvSelectPaymentMethod.isVisible = state.selectedPaymentMethod == null
+
+            state.selectedPaymentMethod?.let {
+                // todo: icon
+                binding.tvSelectedCard.text = "**** **** **** $it"
+                binding.tvSelectedCardDate.text = "${it.expiryMonth}/${it.expiryYear}"
+            }
 
             viewCryptoInput.setFiatCurrency(state.fiatCurrency)
             viewCryptoInput.setCryptoCurrency(state.cryptoCurrency)

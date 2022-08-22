@@ -117,7 +117,30 @@
                             app:layout_constraintEnd_toStartOf="@+id/iv_chevron"
                             app:layout_constraintHorizontal_bias="0"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/tv_pay_with" />
+                            app:layout_constraintTop_toBottomOf="@id/tv_pay_with"/>
+
+                        <TextView
+                            android:id="@+id/tv_selected_card"
+                            style="@style/TextStyle.Body2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="14dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tv_pay_with"
+                            tools:text="**** **** **** 1234"/>
+
+                        <TextView
+                            android:id="@+id/tv_selected_card_date"
+                            style="@style/TextStyle.Body2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="24dp"
+                            app:layout_constrainedWidth="true"
+                            app:layout_constraintHorizontal_bias="0"
+                            app:layout_constraintEnd_toStartOf="@+id/iv_chevron"
+                            app:layout_constraintStart_toEndOf="@id/tv_selected_card"
+                            app:layout_constraintBaseline_toBaselineOf="@id/tv_selected_card"
+                            tools:text="10/23"/>
 
                         <androidx.appcompat.widget.AppCompatImageView
                             android:id="@+id/iv_chevron"
