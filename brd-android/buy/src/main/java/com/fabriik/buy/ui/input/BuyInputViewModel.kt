@@ -269,6 +269,6 @@ class BuyInputViewModel(
     private fun BuyInputContract.State.Loaded.validate() = copy(
         continueButtonEnabled = !cryptoAmount.isZero()
                 && !fiatAmount.isZero()
-               /* && selectedPaymentMethod != null*/ //todo: enable payment method check
+                && selectedPaymentMethod != null
     )
 }
