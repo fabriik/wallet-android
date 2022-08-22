@@ -180,7 +180,7 @@ class BuyInputFragment : Fragment(),
 
             tvRateValue.text = RATE_FORMAT.format(
                 state.cryptoCurrency,
-                state.exchangeRate.formatFiatForUi(
+                state.oneCryptoUnitToFiatRate.formatFiatForUi(
                     state.fiatCurrency
                 )
             )
@@ -203,6 +203,7 @@ class BuyInputFragment : Fragment(),
             initialLoadingIndicator.isVisible = false
             quoteLoadingIndicator.isVisible = state.rateLoadingVisible
             fullScreenLoadingView.root.isVisible = state.fullScreenLoadingVisible
+            tvRateValue.isVisible = !state.rateLoadingVisible && state.quoteResponse != null
         }
     }
 
