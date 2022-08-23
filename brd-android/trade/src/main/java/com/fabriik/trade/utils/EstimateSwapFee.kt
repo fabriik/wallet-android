@@ -115,7 +115,7 @@ class EstimateSwapFee(
             fiatCurrency = fiatCurrency,
             cryptoAmount = fee,
             cryptoCurrency = feeCurrency,
-            included = walletCurrency.equals(feeCurrency, true)
+            isFeeInWalletCurrency = walletCurrency.equals(feeCurrency, true)
         )
     }
 

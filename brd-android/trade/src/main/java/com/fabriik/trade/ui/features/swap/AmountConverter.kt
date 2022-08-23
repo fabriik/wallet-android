@@ -1,6 +1,7 @@
 package com.fabriik.trade.ui.features.swap
 
 import com.breadwallet.repository.RatesRepository
+import com.breadwallet.util.isErc20
 import com.fabriik.trade.data.model.FeeAmountData
 import com.fabriik.trade.utils.EstimateSwapFee
 import java.math.BigDecimal
@@ -34,15 +35,27 @@ class AmountConverter(
     ): Triple<FeeAmountData?, FeeAmountData?, BigDecimal> {
         val sourceFee = estimateFee(amount, sourceCurrency, fiatCurrency)
         val sourceAmount =
-            if (sourceFee?.included == true) amount - sourceFee.cryptoAmount.divide(sendingFeeRate, 20, RoundingMode.HALF_UP) else amount
+            if (sourceFee?.isFeeInWalletCurrency == true) amount - sourceFee.cryptoAmount else amount
 
         val convertedAmount = sourceAmount.multiply(rate)
 
         val destFee = estimateFee(convertedAmount, destinationCurrency, fiatCurrency)
-        val destAmount =
-            if (destFee?.included == true) convertedAmount - destFee.cryptoAmount.divide(receivingFeeRate,20, RoundingMode.HALF_UP) else convertedAmount
 
-        return Triple(sourceFee, destFee, destAmount)
+        return when {
+            // subtract receiving fee from amount if it should be included into calculations (bsv, btc, eth, ...)
+            destFee?.isFeeInWalletCurrency == true ->
+                Triple(sourceFee, destFee, convertedAmount - destFee.cryptoAmount)
+
+            // convert ETH fee to erc20 fee and subtract from amount
+            destFee != null && destinationCurrency.isErc20() -> {
+                val erc20CurrencyFee = destFee.cryptoAmount.divide(receivingFeeRate, 20, RoundingMode.HALF_UP)
+                Triple(sourceFee, destFee.copy(isFeeInWalletCurrency = true), convertedAmount - erc20CurrencyFee)
+            }
+
+            // otherwise return values
+            else ->
+                Triple(sourceFee, destFee, convertedAmount)
+        }
     }
 
     suspend fun convertDestinationCryptoToSourceCrypto(
@@ -54,14 +67,26 @@ class AmountConverter(
         receivingFeeRate: BigDecimal
     ): Triple<FeeAmountData?, FeeAmountData?, BigDecimal> {
         val destFee = estimateFee(amount, destinationCurrency, fiatCurrency)
-        val destAmount =
-            if (destFee?.included == true) amount + destFee.cryptoAmount.divide(receivingFeeRate,20, RoundingMode.HALF_UP) else amount
+        val destAmount = when {
+            // add receiving fee to amount if it should be included into calculations (bsv, btc, eth, ...)
+            destFee?.isFeeInWalletCurrency == true ->
+                amount + destFee.cryptoAmount
+
+            // convert ETH fee to erc20 fee and add to amount
+            destFee != null && destinationCurrency.isErc20() -> {
+                val erc20CurrencyFee = destFee.cryptoAmount.divide(receivingFeeRate, 20, RoundingMode.HALF_UP)
+                amount + erc20CurrencyFee
+            }
+
+            // otherwise set entered amount
+            else -> amount
+        }
 
         val convertedAmount = destAmount.divide(rate, 20, RoundingMode.HALF_UP)
 
         val sourceFee = estimateFee(convertedAmount, sourceCurrency, fiatCurrency)
         val sourceAmount =
-            if (sourceFee?.included == true) convertedAmount + sourceFee.cryptoAmount.divide(sendingFeeRate,20, RoundingMode.HALF_UP) else convertedAmount
+            if (sourceFee?.isFeeInWalletCurrency == true) convertedAmount + sourceFee.cryptoAmount else convertedAmount
 
         return Triple(sourceFee, destFee, sourceAmount)
     }

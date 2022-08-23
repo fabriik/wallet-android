@@ -479,12 +479,12 @@ class SwapInputViewModel(
 
     private suspend fun checkEthFeeBalance(sourceFeeData: FeeAmountData?, destinationFeeData: FeeAmountData?) {
         val sourceFeeEthAmount = when {
-            sourceFeeData != null && !sourceFeeData.included -> sourceFeeData.cryptoAmount
+            sourceFeeData != null && !sourceFeeData.isFeeInWalletCurrency -> sourceFeeData.cryptoAmount
             else -> BigDecimal.ZERO
         }
 
         val destinationFeeEthAmount = when {
-            destinationFeeData != null && !destinationFeeData.included -> destinationFeeData.cryptoAmount
+            destinationFeeData != null && !destinationFeeData.isFeeInWalletCurrency -> destinationFeeData.cryptoAmount
             else -> BigDecimal.ZERO
         }
 

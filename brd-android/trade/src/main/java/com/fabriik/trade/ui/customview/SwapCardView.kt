@@ -105,7 +105,7 @@ class SwapCardView @JvmOverloads constructor(
             val cryptoText = it.cryptoAmount.formatCryptoForUi(it.cryptoCurrency, SCALE_CRYPTO)
             binding.tvSellingCurrencyNetworkFee.text = "$cryptoText\n$fiatText"
             binding.tvSellingCurrencyNetworkFeeTitle.setText(
-                if (it.included) {
+                if (it.isFeeInWalletCurrency) {
                     R.string.Swap_Input_SendingFeeIncludedTitle
                 } else {
                     R.string.Swap_Input_SendingFeeTitle
@@ -123,7 +123,7 @@ class SwapCardView @JvmOverloads constructor(
             val cryptoText = it.cryptoAmount.formatCryptoForUi(it.cryptoCurrency, SCALE_CRYPTO)
             binding.tvBuyingCurrencyNetworkFee.text = "$cryptoText\n$fiatText"
             binding.tvBuyingCurrencyNetworkFeeTitle.setText(
-                if (it.included) {
+                if (it.isFeeInWalletCurrency) {
                     R.string.Swap_Input_ReceivingFeeIncludedTitle
                 } else {
                     R.string.Swap_Input_ReceivingFeeTitle
