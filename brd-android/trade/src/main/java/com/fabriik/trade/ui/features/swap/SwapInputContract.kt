@@ -40,6 +40,8 @@ interface SwapInputContract {
         object Dismiss : Effect()
         object ClearInputFocus : Effect()
         object RequestUserAuthentication : Effect()
+        object TransactionFailedScreen : Effect()
+
         data class ConfirmDialog(
             val to: AmountData,
             val from: AmountData,

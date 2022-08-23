@@ -36,7 +36,13 @@
     <string name="Swap.Input.Error.EthFeeBalance">Please make sure you have enough ETH to cover for the network fees while swapping within Ethereum-based assets.</string>
     <string name="Swap.Input.Warning.EthFeeBalance">It seems that your transaction takes place in the Ethereum network, please keep in mind that network fees will be charged in ETH</string>
 
-    <!-- Asset selection screen -->
+    <!-- Swap failed screen -->
+    <string name="Swap.Failed.Title">There was an error while processing your transaction</string>
+    <string name="Swap.Failed.Description">Please try swapping again or come back later.</string>
+    <string name="Swap.Failed.BackToHome">Back to Home</string>
+    <string name="Swap.Failed.SwapAgain">Swap again</string>
+
+  <!-- Asset selection screen -->
     <string name="Swap.AssetsSelection.Title">Select assets</string>
     <string name="Swap.AssetsSelection.SearchHint">Search</string>
 

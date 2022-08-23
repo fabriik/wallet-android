@@ -187,6 +187,11 @@ class SwapInputFragment : Fragment(),
                     SwapInputFragmentDirections.actionSwapAuthentication()
                 )
 
+            SwapInputContract.Effect.TransactionFailedScreen ->
+                findNavController().navigate(
+                    SwapInputFragmentDirections.actionSwapFailed()
+                )
+
             is SwapInputContract.Effect.ConfirmDialog ->
                 findNavController().navigate(
                     SwapInputFragmentDirections.actionConfirmationDialog(

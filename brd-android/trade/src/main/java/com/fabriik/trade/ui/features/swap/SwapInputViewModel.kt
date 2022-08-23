@@ -683,7 +683,7 @@ class SwapInputViewModel(
                 }
 
                 TransferResult.FAILED ->
-                    showGenericError()
+                    setEffect { SwapInputContract.Effect.TransactionFailedScreen }
             }
         }
     }
