@@ -180,13 +180,21 @@ class BuyInputFragment : Fragment(),
 
             tvRateValue.text = RATE_FORMAT.format(
                 state.cryptoCurrency,
-                state.exchangeRate.formatFiatForUi(
+                state.oneCryptoUnitToFiatRate.formatFiatForUi(
                     state.fiatCurrency
                 )
             )
 
-            //todo: change to custom view
-            tvSelectPaymentMethod.text = state.selectedPaymentMethod?.last4Numbers?.let { "**** **** **** $it" } ?: getString(R.string.Buy_Input_SelectPaymentMethod)
+            binding.ivSelectedCard.isVisible = state.selectedPaymentMethod != null
+            binding.tvSelectedCard.isVisible = state.selectedPaymentMethod != null
+            binding.tvSelectedCardDate.isVisible = state.selectedPaymentMethod != null
+            binding.tvSelectPaymentMethod.isVisible = state.selectedPaymentMethod == null
+
+            state.selectedPaymentMethod?.let {
+                binding.ivSelectedCard.setImageResource(it.cardTypeIcon)
+                binding.tvSelectedCard.text = it.hiddenCardNumber
+                binding.tvSelectedCardDate.text = it.expiryDate
+            }
 
             viewCryptoInput.setFiatCurrency(state.fiatCurrency)
             viewCryptoInput.setCryptoCurrency(state.cryptoCurrency)
@@ -195,6 +203,7 @@ class BuyInputFragment : Fragment(),
             initialLoadingIndicator.isVisible = false
             quoteLoadingIndicator.isVisible = state.rateLoadingVisible
             fullScreenLoadingView.root.isVisible = state.fullScreenLoadingVisible
+            tvRateValue.isVisible = !state.rateLoadingVisible && state.quoteResponse != null
         }
     }
 
