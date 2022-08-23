@@ -327,7 +327,7 @@ class SwapInputFragment : Fragment(),
             tvError.text = state.swapErrorMessage?.toString(binding.root.context)
 
             content.isVisible = true
-            fullScreenLoadingView.root.isVisible = false
+            fullScreenLoadingView.root.isVisible = state.fullScreenLoadingVisible
             initialLoadingIndicator.isVisible = false
 
             if (state.isKyc2) {
