@@ -6,7 +6,9 @@ import androidx.lifecycle.viewModelScope
 import com.breadwallet.breadbox.BreadBox
 import com.breadwallet.breadbox.addressFor
 import com.breadwallet.crypto.Amount
+import com.breadwallet.crypto.Transfer
 import com.breadwallet.crypto.TransferFeeBasis
+import com.breadwallet.crypto.TransferState
 import com.breadwallet.ext.isZero
 import com.breadwallet.tools.security.BrdUserManager
 import com.breadwallet.tools.security.ProfileManager
@@ -23,11 +25,7 @@ import com.fabriik.trade.data.response.CreateSwapOrderResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
@@ -662,20 +660,30 @@ class SwapInputViewModel(
 
             if (newTransfer == null) {
                 showGenericError()
-            } else {
-                wallet.walletManager.submit(newTransfer, phrase)
-                breadBox.walletTransfer(order.currency, newTransfer)
-                    .first()
+                return@launch
+            }
 
-                setState { state.copy(fullScreenLoadingVisible = false) }
+            wallet.walletManager.submit(newTransfer, phrase)
 
-                setEffect {
-                    SwapInputContract.Effect.ContinueToSwapProcessing(
-                        exchangeId = order.exchangeId,
-                        sourceCurrency = state.sourceCryptoCurrency,
-                        destinationCurrency = state.destinationCryptoCurrency
-                    )
+            val result = breadBox.walletTransfer(order.currency, newTransfer)
+                .mapToResult()
+                .first()
+
+            when (result) {
+                TransferResult.COMPLETE -> {
+                    setState { state.copy(fullScreenLoadingVisible = false) }
+
+                    setEffect {
+                        SwapInputContract.Effect.ContinueToSwapProcessing(
+                            exchangeId = order.exchangeId,
+                            sourceCurrency = state.sourceCryptoCurrency,
+                            destinationCurrency = state.destinationCryptoCurrency
+                        )
+                    }
                 }
+
+                TransferResult.FAILED ->
+                    showGenericError()
             }
         }
     }
@@ -720,6 +728,20 @@ class SwapInputViewModel(
         }
     }
 
+    private fun Flow<Transfer>.mapToResult(): Flow<TransferResult> =
+        mapNotNull { transfer ->
+            when (checkNotNull(transfer.state.type)) {
+                TransferState.Type.INCLUDED,
+                TransferState.Type.PENDING,
+                TransferState.Type.SUBMITTED -> TransferResult.COMPLETE
+                TransferState.Type.DELETED,
+                TransferState.Type.FAILED -> TransferResult.FAILED
+                // Ignore pre-submit states
+                TransferState.Type.CREATED,
+                TransferState.Type.SIGNED -> null
+            }
+        }
+
     companion object {
         const val QUOTE_TIMER = 60
         private const val DIALOG_RESULT_GOT_IT = "result_got_it"
@@ -747,5 +769,10 @@ class SwapInputViewModel(
             ),
             requestKey = DIALOG_REQUEST_TEMP_UNAVAILABLE
         )
+    }
+
+    private enum class TransferResult {
+        COMPLETE,
+        FAILED
     }
 }
