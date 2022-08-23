@@ -51,6 +51,7 @@ interface SwapInputContract {
         ) : Effect()
 
         data class CurrenciesReplaceAnimation(val stateChange: State.Loaded) : Effect()
+        data class ShowError(val message: String) : Effect()
         data class ShowToast(val message: String, val redInfo: Boolean = false) : Effect()
         data class ShowDialog(val args: FabriikGenericDialogArgs) : Effect()
         data class ContinueToSwapProcessing(
