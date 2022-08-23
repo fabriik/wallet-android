@@ -100,7 +100,7 @@ jobs:
           command: |
             ./gradlew --console=plain brd-android:app:assembleStagingMainnetRelease
       - run:
-          name: Build release apk - StagingMainnet
+          name: Build debug apk - StagingMainnet
           command: |
             ./gradlew --console=plain brd-android:app:assembleStagingMainnetDebug
       - run:
@@ -108,7 +108,7 @@ jobs:
           command: |
             ./gradlew --console=plain brd-android:app:assembleDevelopmentMainnetRelease
       - run:
-          name: Build release apk - DevelopmentMainnet Debug
+          name: Build debug apk - DevelopmentMainnet Debug
           command: |
             ./gradlew --console=plain brd-android:app:assembleDevelopmentMainnetDebug
       # Prepare artifacts
