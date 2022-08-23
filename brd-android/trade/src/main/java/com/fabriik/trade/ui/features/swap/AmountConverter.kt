@@ -34,13 +34,13 @@ class AmountConverter(
     ): Triple<FeeAmountData?, FeeAmountData?, BigDecimal> {
         val sourceFee = estimateFee(amount, sourceCurrency, fiatCurrency)
         val sourceAmount =
-            if (sourceFee?.included == true) amount - sourceFee.cryptoAmount.divide(sendingFeeRate, 20, RoundingMode.HALF_UP) else amount
+            if (sourceFee?.included == true) amount - sourceFee.cryptoAmount else amount
 
         val convertedAmount = sourceAmount.multiply(rate)
 
         val destFee = estimateFee(convertedAmount, destinationCurrency, fiatCurrency)
         val destAmount =
-            if (destFee?.included == true) convertedAmount - destFee.cryptoAmount.divide(receivingFeeRate,20, RoundingMode.HALF_UP) else convertedAmount
+            if (destFee?.included == true) convertedAmount - destFee.cryptoAmount else convertedAmount
 
         return Triple(sourceFee, destFee, destAmount)
     }
@@ -55,13 +55,13 @@ class AmountConverter(
     ): Triple<FeeAmountData?, FeeAmountData?, BigDecimal> {
         val destFee = estimateFee(amount, destinationCurrency, fiatCurrency)
         val destAmount =
-            if (destFee?.included == true) amount + destFee.cryptoAmount.divide(receivingFeeRate,20, RoundingMode.HALF_UP) else amount
+            if (destFee?.included == true) amount + destFee.cryptoAmount else amount
 
         val convertedAmount = destAmount.divide(rate, 20, RoundingMode.HALF_UP)
 
         val sourceFee = estimateFee(convertedAmount, sourceCurrency, fiatCurrency)
         val sourceAmount =
-            if (sourceFee?.included == true) convertedAmount + sourceFee.cryptoAmount.divide(sendingFeeRate,20, RoundingMode.HALF_UP) else convertedAmount
+            if (sourceFee?.included == true) convertedAmount + sourceFee.cryptoAmount else convertedAmount
 
         return Triple(sourceFee, destFee, sourceAmount)
     }
