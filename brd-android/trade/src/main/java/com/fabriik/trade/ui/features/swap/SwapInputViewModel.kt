@@ -435,7 +435,6 @@ class SwapInputViewModel(
             val result = converter(
                 amount = amount,
                 changeByUser = changeByUser,
-                markupFactor = state.markup,
                 exchangeRate = state.rate,
                 sourceCurrency = state.sourceCryptoCurrency,
                 destinationCurrency = state.destinationCryptoCurrency,

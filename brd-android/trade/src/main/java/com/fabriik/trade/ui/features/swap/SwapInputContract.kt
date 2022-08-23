@@ -94,8 +94,6 @@ interface SwapInputContract {
         ) : State() {
             val rate: BigDecimal
                 get() = quoteResponse?.exchangeRate ?: BigDecimal.ZERO
-            val markup: BigDecimal
-                get() = quoteResponse?.markup ?: BigDecimal.ZERO
             val sendingNetworkFeeRate: BigDecimal
                 get() = quoteResponse?.fromFeeCurrency?.rate ?: BigDecimal.ONE
             val receivingNetworkFeeRate: BigDecimal

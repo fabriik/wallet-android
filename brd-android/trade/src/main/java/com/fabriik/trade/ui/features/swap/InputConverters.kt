@@ -8,7 +8,6 @@ interface InputConverter {
         amount: BigDecimal,
         changeByUser: Boolean,
         exchangeRate: BigDecimal,
-        markupFactor: BigDecimal,
         sourceCurrency: String,
         destinationCurrency: String,
         sendingFeeRate: BigDecimal,
@@ -34,7 +33,6 @@ class ConvertSourceFiatAmount(private val amountConverter: AmountConverter) : In
         amount: BigDecimal,
         changeByUser: Boolean,
         exchangeRate: BigDecimal,
-        markupFactor: BigDecimal,
         sourceCurrency: String,
         destinationCurrency: String,
         sendingFeeRate: BigDecimal,
@@ -49,7 +47,6 @@ class ConvertSourceFiatAmount(private val amountConverter: AmountConverter) : In
         // convert sending crypto to receiving crypto
         val destCryptoAmountData = amountConverter.convertSourceCryptoToDestinationCrypto(
             rate = exchangeRate,
-            markup = markupFactor,
             amount = sourceCryptoAmount,
             sourceCurrency = sourceCurrency,
             destinationCurrency = destinationCurrency,
@@ -82,7 +79,6 @@ class ConvertSourceCryptoAmount(private val amountConverter: AmountConverter) : 
         amount: BigDecimal,
         changeByUser: Boolean,
         exchangeRate: BigDecimal,
-        markupFactor: BigDecimal,
         sourceCurrency: String,
         destinationCurrency: String,
         sendingFeeRate: BigDecimal,
@@ -97,7 +93,6 @@ class ConvertSourceCryptoAmount(private val amountConverter: AmountConverter) : 
         // convert sending crypto to receiving crypto
         val destCryptoAmountData = amountConverter.convertSourceCryptoToDestinationCrypto(
             rate = exchangeRate,
-            markup = markupFactor,
             amount = amount,
             sourceCurrency = sourceCurrency,
             destinationCurrency = destinationCurrency,
@@ -130,7 +125,6 @@ class ConvertDestinationFiatAmount(private val amountConverter: AmountConverter)
         amount: BigDecimal,
         changeByUser: Boolean,
         exchangeRate: BigDecimal,
-        markupFactor: BigDecimal,
         sourceCurrency: String,
         destinationCurrency: String,
         sendingFeeRate: BigDecimal,
@@ -148,7 +142,6 @@ class ConvertDestinationFiatAmount(private val amountConverter: AmountConverter)
             destinationCurrency = destinationCurrency,
             sourceCurrency = sourceCurrency,
             rate = exchangeRate,
-            markup = markupFactor,
             sendingFeeRate = sendingFeeRate,
             receivingFeeRate = receivingFeeRate
         )
@@ -179,7 +172,6 @@ class ConvertDestinationCryptoAmount(private val amountConverter: AmountConverte
         amount: BigDecimal,
         changeByUser: Boolean,
         exchangeRate: BigDecimal,
-        markupFactor: BigDecimal,
         sourceCurrency: String,
         destinationCurrency: String,
         sendingFeeRate: BigDecimal,
@@ -195,7 +187,6 @@ class ConvertDestinationCryptoAmount(private val amountConverter: AmountConverte
         val sourceCryptoAmountData = amountConverter.convertDestinationCryptoToSourceCrypto(
             rate = exchangeRate,
             amount = amount,
-            markup = markupFactor,
             sourceCurrency = sourceCurrency,
             destinationCurrency = destinationCurrency,
             sendingFeeRate = sendingFeeRate,
