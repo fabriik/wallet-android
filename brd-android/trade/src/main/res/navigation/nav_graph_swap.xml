@@ -31,6 +31,10 @@
         </action>
 
         <action
+            android:id="@+id/actionSwapFailed"
+            app:destination="@id/fragmentSwapFailed" />
+
+        <action
             android:id="@+id/actionSwapProcessing"
             app:destination="@id/fragmentSwapProcessing" />
 
@@ -47,6 +51,10 @@
     <fragment android:id="@+id/fragmentSwapAuthentication"
         android:name="com.fabriik.trade.ui.features.authentication.SwapAuthenticationFragment"
         tools:layout="@layout/fragment_swap_authentication"/>
+
+    <fragment android:id="@+id/fragmentSwapFailed"
+        android:name="com.fabriik.trade.ui.features.failed.SwapFailedFragment"
+        tools:layout="@layout/fragment_swap_failed"/>
 
     <include app:graph="@navigation/nav_graph_asset_selection"/>
 
