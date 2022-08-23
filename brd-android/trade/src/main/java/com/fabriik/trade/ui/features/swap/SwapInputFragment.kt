@@ -213,6 +213,9 @@ class SwapInputFragment : Fragment(),
                 FabriikToastUtil.showInfo(binding.root, effect.message)
             }
 
+            is SwapInputContract.Effect.ShowError ->
+                FabriikToastUtil.showError(binding.root, effect.message)
+
             is SwapInputContract.Effect.ShowDialog ->
                 FabriikGenericDialog.newInstance(effect.args)
                     .show(parentFragmentManager)

@@ -1,6 +1,7 @@
 package com.fabriik.trade.data
 
 import com.fabriik.trade.data.model.SwapTransactionData
+import com.fabriik.trade.data.response.ExchangeOrderStatus
 import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.channels.Channel.Factory.CONFLATED
 import kotlinx.coroutines.flow.Flow
@@ -19,7 +20,7 @@ class SwapTransactionsRepository {
 
     fun changes(): Flow<Unit> = changeEventChannel.asFlow()
 
-    fun getSwapByHash(hash: String) : SwapTransactionData? = swapTransactions.find {
+    fun getSwapByHash(hash: String): SwapTransactionData? = swapTransactions.find {
         it.source.transactionId == hash || it.destination.transactionId == hash
     }
 
@@ -27,5 +28,11 @@ class SwapTransactionsRepository {
         return swapTransactions.filter {
             it.destination.currency.equals(currency, true) && it.destination.transactionId == null
         }
+    }
+
+    fun isAnySwapPendingForSourceCurrency(sourceCurrency: String): Boolean {
+        return swapTransactions
+            .filter { it.source.currency.equals(sourceCurrency, true) }
+            .any { it.exchangeStatus == ExchangeOrderStatus.PENDING }
     }
 }

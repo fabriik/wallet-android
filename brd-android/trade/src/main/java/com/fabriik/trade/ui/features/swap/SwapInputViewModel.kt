@@ -49,7 +49,7 @@ class SwapInputViewModel(
     private val userManager by kodein.instance<BrdUserManager>()
 
     private val helper = SwapInputHelper(
-        direct.instance(), direct.instance()
+        direct.instance(), direct.instance(), direct.instance()
     )
 
     private val amountConverter = AmountConverter(
@@ -164,7 +164,17 @@ class SwapInputViewModel(
             ethErrorSeen = false
             ethWarningSeen = false
 
-            requestNewQuote()
+            if (helper.isAnySwapPendingForSource(newSourceCryptoCurrency)) {
+                val latestState = currentLoadedState ?: return@launch
+                setState { latestState.copy(quoteResponse = null) }
+                setEffect {
+                    SwapInputContract.Effect.ShowError(
+                        message = getString(R.string.Swap_Input_Error_OneSwapLimit)
+                    )
+                }
+            } else {
+                requestNewQuote()
+            }
         }
     }
 
@@ -325,7 +335,7 @@ class SwapInputViewModel(
             }
 
             val sourceCryptoCurrency = supportedCurrencies.firstOrNull {
-                helper.isWalletEnabled(it)
+                helper.isWalletEnabled(it) && !helper.isAnySwapPendingForSource(it)
             }
 
             val destinationCryptoCurrency = supportedCurrencies.lastOrNull {
@@ -671,6 +681,7 @@ class SwapInputViewModel(
             when (result) {
                 TransferResult.COMPLETE -> {
                     setState { state.copy(fullScreenLoadingVisible = false) }
+                    helper.updateSwapTransactions()
 
                     setEffect {
                         SwapInputContract.Effect.ContinueToSwapProcessing(
