@@ -29,7 +29,6 @@ class AmountConverter(
         sourceCurrency: String,
         destinationCurrency: String,
         rate: BigDecimal,
-        markup: BigDecimal,
         sendingFeeRate: BigDecimal,
         receivingFeeRate: BigDecimal
     ): Triple<FeeAmountData?, FeeAmountData?, BigDecimal> {
@@ -40,9 +39,8 @@ class AmountConverter(
         val convertedAmount = sourceAmount.multiply(rate)
 
         val destFee = estimateFee(convertedAmount, destinationCurrency, fiatCurrency)
-        val convertedDestAmount =
+        val destAmount =
             if (destFee?.included == true) convertedAmount - destFee.cryptoAmount.divide(receivingFeeRate,20, RoundingMode.HALF_UP) else convertedAmount
-        val destAmount = convertedDestAmount.divide(markup, 20, RoundingMode.HALF_UP)
 
         return Triple(sourceFee, destFee, destAmount)
     }
@@ -52,14 +50,12 @@ class AmountConverter(
         sourceCurrency: String,
         destinationCurrency: String,
         rate: BigDecimal,
-        markup: BigDecimal,
         sendingFeeRate: BigDecimal,
         receivingFeeRate: BigDecimal
     ): Triple<FeeAmountData?, FeeAmountData?, BigDecimal> {
         val destFee = estimateFee(amount, destinationCurrency, fiatCurrency)
-        val convertedDestAmount =
+        val destAmount =
             if (destFee?.included == true) amount + destFee.cryptoAmount.divide(receivingFeeRate,20, RoundingMode.HALF_UP) else amount
-        val destAmount = convertedDestAmount.multiply(markup)
 
         val convertedAmount = destAmount.divide(rate, 20, RoundingMode.HALF_UP)
 
