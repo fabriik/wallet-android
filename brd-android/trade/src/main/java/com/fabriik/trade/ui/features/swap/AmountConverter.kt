@@ -42,7 +42,7 @@ class AmountConverter(
         val destFee = estimateFee(convertedAmount, destinationCurrency, fiatCurrency)
 
         return when {
-            // subtract fee from amount if fee should be included (bsv, btc, eth, ...)
+            // subtract fee from amount if it should be included into calculations (bsv, btc, eth, ...)
             destFee?.included == true ->
                 Triple(sourceFee, destFee, convertedAmount - destFee.cryptoAmount)
 
@@ -67,8 +67,20 @@ class AmountConverter(
         receivingFeeRate: BigDecimal
     ): Triple<FeeAmountData?, FeeAmountData?, BigDecimal> {
         val destFee = estimateFee(amount, destinationCurrency, fiatCurrency)
-        val destAmount =
-            if (destFee?.included == true) amount + destFee.cryptoAmount else amount
+        val destAmount = when {
+            // add fee to amount if it should be included into calculations (bsv, btc, eth, ...)
+            destFee?.included == true ->
+                amount + destFee.cryptoAmount
+
+            // convert ETH fee to erc20 fee and add to amount
+            destFee != null && destinationCurrency.isErc20() -> {
+                val erc20CurrencyFee = destFee.cryptoAmount.divide(receivingFeeRate, 20, RoundingMode.HALF_UP)
+                amount + erc20CurrencyFee
+            }
+
+            // otherwise set entered amount
+            else -> amount
+        }
 
         val convertedAmount = destAmount.divide(rate, 20, RoundingMode.HALF_UP)
 
