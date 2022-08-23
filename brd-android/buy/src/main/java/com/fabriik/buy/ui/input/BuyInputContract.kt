@@ -1,6 +1,9 @@
 package com.fabriik.buy.ui.input
 
 import com.fabriik.buy.data.model.PaymentInstrument
+import com.fabriik.common.data.model.Profile
+import com.fabriik.common.data.model.isKyc1
+import com.fabriik.common.data.model.isKyc2
 import com.fabriik.common.ui.base.FabriikContract
 import com.fabriik.trade.data.response.QuoteResponse
 import java.math.BigDecimal
@@ -46,12 +49,17 @@ interface BuyInputContract {
             val cryptoAmount: BigDecimal = BigDecimal.ZERO,
             val rateLoadingVisible: Boolean = false,
             val continueButtonEnabled: Boolean = false,
-            val fullScreenLoadingVisible: Boolean = false
+            val fullScreenLoadingVisible: Boolean = false,
+            val profile: Profile?
         ) : State() {
             val oneFiatUnitToCryptoRate: BigDecimal
                 get() = quoteResponse?.exchangeRate ?: BigDecimal.ZERO
             val oneCryptoUnitToFiatRate: BigDecimal
                 get() = BigDecimal.ONE.divide(quoteResponse?.exchangeRate, 20, RoundingMode.HALF_UP) ?: BigDecimal.ZERO
+            val isKyc1: Boolean
+                get() = profile?.isKyc1() == true
+            val isKyc2: Boolean
+                get() = profile?.isKyc2() == true
         }
     }
 }

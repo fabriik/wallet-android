@@ -2,25 +2,28 @@ package com.fabriik.buy.ui.input
 
 import android.app.Application
 import androidx.lifecycle.viewModelScope
-import com.breadwallet.breadbox.BreadBox
 import com.breadwallet.ext.isZero
 import com.breadwallet.platform.interfaces.AccountMetaDataProvider
+import com.breadwallet.tools.security.ProfileManager
 import com.breadwallet.tools.util.TokenUtil
 import com.fabriik.buy.R
 import com.fabriik.buy.data.BuyApi
 import com.fabriik.buy.data.model.PaymentInstrument
 import com.fabriik.common.data.Status
 import com.fabriik.common.ui.base.FabriikViewModel
-import org.kodein.di.KodeinAware
-import org.kodein.di.android.closestKodein
-import org.kodein.di.erased.instance
-import java.math.BigDecimal
 import com.fabriik.common.utils.getString
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.closestKodein
+import org.kodein.di.erased.instance
+import java.math.BigDecimal
 import java.util.concurrent.TimeUnit
 
 class BuyInputViewModel(
@@ -32,8 +35,8 @@ class BuyInputViewModel(
     override val kodein by closestKodein { application }
 
     private val buyApi by kodein.instance<BuyApi>()
-    private val breadBox by kodein.instance<BreadBox>()
     private val metaDataManager by kodein.instance<AccountMetaDataProvider>()
+    private val profileManager by kodein.instance<ProfileManager>()
 
     private val currentFiatCurrency = "USD"
 
@@ -192,7 +195,8 @@ class BuyInputViewModel(
                     fiatCurrency = currentFiatCurrency,
                     cryptoCurrency = firstWallet,
                     supportedCurrencies = supportedCurrencies,
-                    paymentInstruments = instrumentsResponse.data ?: emptyList()
+                    paymentInstruments = instrumentsResponse.data ?: emptyList(),
+                    profile = profileManager.getProfile()
                 )
             }
         }

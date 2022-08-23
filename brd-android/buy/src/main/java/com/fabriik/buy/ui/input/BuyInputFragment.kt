@@ -5,23 +5,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.fabriik.common.ui.base.FabriikView
-import com.fabriik.buy.R
-import com.fabriik.buy.databinding.FragmentBuyInputBinding
-import kotlinx.coroutines.flow.collect
-import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.breadwallet.tools.util.Utils.hideKeyboard
 import com.breadwallet.util.formatFiatForUi
+import com.fabriik.buy.R
 import com.fabriik.buy.data.model.PaymentInstrument
+import com.fabriik.buy.databinding.FragmentBuyInputBinding
 import com.fabriik.buy.ui.features.paymentmethod.PaymentMethodFragment
-import com.fabriik.common.ui.customview.FabriikSwitch
+import com.fabriik.common.ui.base.FabriikView
 import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.trade.ui.customview.CurrencyInputView
 import com.fabriik.trade.ui.features.assetselection.AssetSelectionFragment
+import kotlinx.coroutines.flow.collect
 import java.math.BigDecimal
 
 class BuyInputFragment : Fragment(),
@@ -203,6 +202,13 @@ class BuyInputFragment : Fragment(),
             initialLoadingIndicator.isVisible = false
             quoteLoadingIndicator.isVisible = state.rateLoadingVisible
             fullScreenLoadingView.root.isVisible = state.fullScreenLoadingVisible
+
+            if (state.isKyc2) {
+                tvKycMessage.text = getString(com.fabriik.trade.R.string.Swap_KycLimits_Kyc2)
+            } else if(state.isKyc1) {
+                tvKycMessage.text = getString(com.fabriik.trade.R.string.Swap_KycLimits_Kyc1)
+            }
+
             tvRateValue.isVisible = !state.rateLoadingVisible && state.quoteResponse != null
         }
     }
