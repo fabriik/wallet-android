@@ -1,22 +1,32 @@
 package com.fabriik.trade.data
 
-import android.util.Log
 import com.fabriik.common.data.Status
-import com.fabriik.trade.data.model.SwapTransactionData
 import kotlinx.coroutines.*
 
 private const val REFRESH_DELAY_MS = 60_000L
 
 class SwapTransactionsFetcher(
     private val swapApi: SwapApi,
-    private val transactionsRepository: SwapTransactionsRepository
+    val transactionsRepository: SwapTransactionsRepository
 ) {
 
+    private lateinit var scope: CoroutineScope
+
     fun start(scope: CoroutineScope) {
+        this.scope = scope
+
         scope.launch {
             while (isActive) {
                 updateData()
                 delay(REFRESH_DELAY_MS)
+            }
+        }
+    }
+
+    fun refreshData() {
+        if (scope.isActive) {
+            scope.launch {
+                updateData()
             }
         }
     }

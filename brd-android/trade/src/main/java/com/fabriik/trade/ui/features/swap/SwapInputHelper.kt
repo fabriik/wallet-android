@@ -9,11 +9,14 @@ import com.breadwallet.ext.isZero
 import com.breadwallet.platform.interfaces.AccountMetaDataProvider
 import com.breadwallet.tools.manager.BRSharedPrefs
 import com.breadwallet.tools.util.TokenUtil
+import com.fabriik.trade.data.SwapTransactionsFetcher
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.first
 import java.math.BigDecimal
 
 class SwapInputHelper(
     private val breadBox: BreadBox,
+    private val transactionsFetcher: SwapTransactionsFetcher,
     private val acctMetaDataProvider: AccountMetaDataProvider
 ) {
     suspend fun isWalletEnabled(currencyCode: String): Boolean {
@@ -21,6 +24,9 @@ class SwapInputHelper(
         val token = TokenUtil.tokenForCode(currencyCode) ?: return false
         return token.isSupported && enabledWallets.contains(token.currencyId)
     }
+
+    fun isAnySwapPendingForSource(currency: String) =
+        transactionsFetcher.transactionsRepository.isAnySwapPendingForSourceCurrency(currency)
 
     suspend fun loadCryptoBalance(currencyCode: String): BigDecimal? {
         val wallet = breadBox.wallets()
@@ -71,5 +77,9 @@ class SwapInputHelper(
         } catch (e: IllegalStateException) {
             SwapInputContract.ErrorMessage.NetworkIssues
         }
+    }
+
+    fun updateSwapTransactions() {
+        transactionsFetcher.refreshData()
     }
 }
