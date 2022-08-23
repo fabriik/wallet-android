@@ -5,24 +5,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.fabriik.common.ui.base.FabriikView
-import com.fabriik.buy.R
-import com.fabriik.buy.databinding.FragmentBuyInputBinding
-import kotlinx.coroutines.flow.collect
-import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.breadwallet.tools.util.Utils.hideKeyboard
 import com.breadwallet.util.formatFiatForUi
+import com.fabriik.buy.R
 import com.fabriik.buy.data.model.PaymentInstrument
+import com.fabriik.buy.databinding.FragmentBuyInputBinding
 import com.fabriik.buy.ui.features.paymentmethod.PaymentMethodFragment
-import com.fabriik.common.ui.customview.FabriikSwitch
+import com.fabriik.common.ui.base.FabriikView
 import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.trade.ui.customview.CurrencyInputView
 import com.fabriik.trade.ui.features.assetselection.AssetSelectionFragment
-import com.fabriik.trade.ui.features.swap.SwapInputViewModel
+import kotlinx.coroutines.flow.collect
 import java.math.BigDecimal
 
 class BuyInputFragment : Fragment(),
@@ -181,13 +179,21 @@ class BuyInputFragment : Fragment(),
 
             tvRateValue.text = RATE_FORMAT.format(
                 state.cryptoCurrency,
-                state.exchangeRate.formatFiatForUi(
+                state.oneCryptoUnitToFiatRate.formatFiatForUi(
                     state.fiatCurrency
                 )
             )
 
-            //todo: change to custom view
-            tvSelectPaymentMethod.text = state.selectedPaymentMethod?.last4Numbers?.let { "**** **** **** $it" } ?: getString(R.string.Buy_Input_SelectPaymentMethod)
+            binding.ivSelectedCard.isVisible = state.selectedPaymentMethod != null
+            binding.tvSelectedCard.isVisible = state.selectedPaymentMethod != null
+            binding.tvSelectedCardDate.isVisible = state.selectedPaymentMethod != null
+            binding.tvSelectPaymentMethod.isVisible = state.selectedPaymentMethod == null
+
+            state.selectedPaymentMethod?.let {
+                binding.ivSelectedCard.setImageResource(it.cardTypeIcon)
+                binding.tvSelectedCard.text = it.hiddenCardNumber
+                binding.tvSelectedCardDate.text = it.expiryDate
+            }
 
             viewCryptoInput.setFiatCurrency(state.fiatCurrency)
             viewCryptoInput.setCryptoCurrency(state.cryptoCurrency)
@@ -202,6 +208,8 @@ class BuyInputFragment : Fragment(),
             } else if(state.isKyc1) {
                 tvKycMessage.text = getString(com.fabriik.trade.R.string.Swap_KycLimits_Kyc1)
             }
+
+            tvRateValue.isVisible = !state.rateLoadingVisible && state.quoteResponse != null
         }
     }
 
