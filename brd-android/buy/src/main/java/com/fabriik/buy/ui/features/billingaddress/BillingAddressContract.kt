@@ -39,5 +39,6 @@ class BillingAddressContract : FabriikContract {
         val country: Country? = null,
         val confirmEnabled: Boolean = false,
         val loadingIndicatorVisible: Boolean = false,
+        val paymentReference: String? = null,
     ) : FabriikContract.State
 }

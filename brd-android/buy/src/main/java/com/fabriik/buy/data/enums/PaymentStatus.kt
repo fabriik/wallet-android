@@ -3,45 +3,45 @@ package com.fabriik.buy.data.enums
 import com.squareup.moshi.Json
 
 enum class PaymentStatus {
-    @Json(name = "Active")
+    @Json(name = "ACTIVE")
     ACTIVE,
 
-    @Json(name = "Requested")
+    @Json(name = "REQUESTED")
     REQUESTED,
 
-    @Json(name = "Pending")
+    @Json(name = "PENDING")
     PENDING,
 
-    @Json(name = "Authorized")
+    @Json(name = "AUTHORIZED")
     AUTHORIZED,
 
-    @Json(name = "Card Verified")
+    @Json(name = "CARD_VERIFIED")
     CARD_VERIFIED,
 
-    @Json(name = "Canceled")
+    @Json(name = "CANCELED")
     CANCELED,
 
-    @Json(name = "Expired")
+    @Json(name = "EXPIRED")
     EXPIRED,
 
-    @Json(name = "Paid")
+    @Json(name = "PAID")
     PAID,
 
-    @Json(name = "Declined")
+    @Json(name = "DECLINED")
     DECLINED,
 
-    @Json(name = "Voided")
+    @Json(name = "VOIDED")
     VOIDED,
 
-    @Json(name = "Partially Captured")
+    @Json(name = "PARTIALLY_CAPTURED")
     PARTIALLY_CAPTURED,
 
-    @Json(name = "Captured")
+    @Json(name = "CAPTURED")
     CAPTURED,
 
-    @Json(name = "Partially Refunded")
+    @Json(name = "PARTIALLY_REFUNDED")
     PARTIALLY_REFUNDED,
 
-    @Json(name = "Refunded")
+    @Json(name = "REFUNDED")
     REFUNDED
 }

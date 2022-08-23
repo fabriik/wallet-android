@@ -68,9 +68,22 @@ class BillingAddressViewModel(
             is BillingAddressContract.Event.CountryChanged ->
                 setState { copy(country = event.country).validate() }
 
-            is BillingAddressContract.Event.BrowserResult -> // todo: check result
-                setEffect { BillingAddressContract.Effect.PaymentMethod }
+            is BillingAddressContract.Event.BrowserResult ->
+                checkPaymentStatus()
         }
+    }
+
+    private fun checkPaymentStatus() {
+        val reference = currentState.paymentReference ?: return
+
+        callApi(
+            endState = { copy(loadingIndicatorVisible = false) },
+            startState = { copy(loadingIndicatorVisible = true) },
+            action = { buyApi.getPaymentStatus(reference) },
+            callback = {
+                setEffect { BillingAddressContract.Effect.PaymentMethod }
+            }
+        )
     }
 
     private fun onConfirmClicked() {
@@ -92,7 +105,11 @@ class BillingAddressViewModel(
             callback = {
                 when (it.status) {
                     Status.SUCCESS -> {
+                        val reference = requireNotNull(it.data).paymentReference
                         val redirectUrl = requireNotNull(it.data).redirectUrl
+
+                        setState { copy(paymentReference = reference) }
+
                         setEffect {
                             if (redirectUrl.isNullOrBlank()) {
                                 BillingAddressContract.Effect.PaymentMethod

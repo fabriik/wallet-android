@@ -17,10 +17,10 @@ data class PaymentInstrument(
     @Json(name = "fingerprint")
     val fingerprint: String,
 
-    @Json(name = "expiryMonth")
+    @Json(name = "expiry_month")
     val expiryMonth: Int,
 
-    @Json(name = "expiryYear")
+    @Json(name = "expiry_year")
     val expiryYear: Int,
 
     @Json(name = "scheme")
