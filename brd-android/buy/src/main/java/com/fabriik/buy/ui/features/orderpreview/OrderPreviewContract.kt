@@ -10,7 +10,8 @@ class OrderPreviewContract : FabriikContract {
         object OnConfirmClicked : Event()
         object OnCreditInfoClicked : Event()
         object OnNetworkInfoClicked : Event()
-        object OnTermsAndConditionsCLicked : Event()
+        object OnSecurityCodeInfoClicked : Event()
+        object OnTermsAndConditionsClicked : Event()
         object OnUserAuthenticationSucceed : Event()
     }
 
@@ -20,13 +21,16 @@ class OrderPreviewContract : FabriikContract {
         object PaymentProcessing : Effect()
         object RequestUserAuthentication : Effect()
 
-        data class ShowInfoDialog(val type: DialogType) : Effect()
+        data class ShowInfoDialog(
+            val image: Int? = null,
+            val title: Int,
+            val description: Int
+        ) : Effect()
+
+        data class OpenWebsite(val url: String): Effect()
     }
 
-    object State : FabriikContract.State
-}
-
-enum class DialogType {
-    CREDIT_CARD_FEE,
-    NETWORK_FEE
+    data class State(
+        val securityCode: String = ""
+    ) : FabriikContract.State
 }

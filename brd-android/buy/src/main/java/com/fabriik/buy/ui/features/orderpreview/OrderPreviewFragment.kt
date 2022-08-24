@@ -13,8 +13,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.fabriik.buy.R
+import com.fabriik.buy.data.enums.CardType
 import com.fabriik.buy.databinding.FragmentOrderPreviewBinding
-import com.fabriik.buy.ui.customview.CardType
 import com.fabriik.common.ui.base.FabriikView
 import com.fabriik.common.ui.dialog.InfoDialog
 import com.fabriik.common.ui.dialog.InfoDialogArgs
@@ -28,9 +28,7 @@ class OrderPreviewFragment : Fragment(),
     private val viewModel: OrderPreviewViewModel by viewModels()
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_order_preview, container, false)
     }
@@ -49,12 +47,16 @@ class OrderPreviewFragment : Fragment(),
                 viewModel.setEvent(OrderPreviewContract.Event.OnDismissClicked)
             }
 
-            icInfoCredit.setOnClickListener {
+            ivInfoCredit.setOnClickListener {
                 viewModel.setEvent(OrderPreviewContract.Event.OnCreditInfoClicked)
             }
 
-            icInfoNetwork.setOnClickListener {
+            ivInfoNetwork.setOnClickListener {
                 viewModel.setEvent(OrderPreviewContract.Event.OnNetworkInfoClicked)
+            }
+
+            ivInfoSecurityCode.setOnClickListener {
+                viewModel.setEvent(OrderPreviewContract.Event.OnSecurityCodeInfoClicked)
             }
 
             btnConfirm.setOnClickListener {
@@ -67,7 +69,7 @@ class OrderPreviewFragment : Fragment(),
             tvTermsConditions.movementMethod = LinkMovementMethod.getInstance()
 
             //TODO - connect to BE
-            cvCreditCard.setContent(
+            viewCreditCard.setData(
                 type = CardType.VISA,
                 lastDigits = "4255",
                 expirationDate = "25/59"
@@ -121,7 +123,7 @@ class OrderPreviewFragment : Fragment(),
                 )
 
             is OrderPreviewContract.Effect.ShowInfoDialog ->
-                showInfoDialog(effect.type)
+                showInfoDialog(effect)
         }
     }
 
@@ -130,7 +132,7 @@ class OrderPreviewFragment : Fragment(),
 
         val clickableSpan = object : ClickableSpan() {
             override fun onClick(widget: View) {
-                viewModel.setEvent(OrderPreviewContract.Event.OnTermsAndConditionsCLicked)
+                viewModel.setEvent(OrderPreviewContract.Event.OnTermsAndConditionsClicked)
             }
         }
 
@@ -145,13 +147,13 @@ class OrderPreviewFragment : Fragment(),
         return spannableString
     }
 
-    private fun showInfoDialog(type: DialogType) {
-        val fm = parentFragmentManager
+    private fun showInfoDialog(effect: OrderPreviewContract.Effect.ShowInfoDialog) {
         val args = InfoDialogArgs(
-            title = if (type == DialogType.CREDIT_CARD_FEE) R.string.Buy_OrderPreview_CardFeesDialog_Title else R.string.Buy_OrderPreview_NetworkFeesDialog_Title,
-            description = if (type == DialogType.CREDIT_CARD_FEE) R.string.Buy_OrderPreview_CardFeesDialog_Content else R.string.Buy_OrderPreview_NetworkFeesDialog_Content
+            image = effect.image,
+            title = effect.title,
+            description = effect.description
         )
 
-        InfoDialog(args).show(fm, InfoDialog.TAG)
+        InfoDialog(args).show(parentFragmentManager, InfoDialog.TAG)
     }
 }
