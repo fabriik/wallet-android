@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.fabriik.buy.R
 import com.fabriik.buy.databinding.FragmentPaymentMethodBinding
 import com.fabriik.common.ui.base.FabriikView
+import com.fabriik.common.utils.FabriikToastUtil
 import kotlinx.coroutines.flow.collect
 
 class PaymentMethodFragment : Fragment(),
@@ -29,10 +31,8 @@ class PaymentMethodFragment : Fragment(),
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
         return inflater.inflate(R.layout.fragment_payment_method, container, false)
     }
 
@@ -77,6 +77,8 @@ class PaymentMethodFragment : Fragment(),
 
     override fun render(state: PaymentMethodContract.State) {
         adapter.submitList(state.paymentInstruments)
+        binding.content.isVisible = !state.initialLoadingIndicator
+        binding.loadingIndicator.isVisible = state.initialLoadingIndicator
     }
 
     override fun handleEffect(effect: PaymentMethodContract.Effect) {
@@ -91,6 +93,9 @@ class PaymentMethodFragment : Fragment(),
 
             PaymentMethodContract.Effect.AddCard ->
                 findNavController().navigate(PaymentMethodFragmentDirections.actionAddCard())
+
+            is PaymentMethodContract.Effect.ShowError ->
+                FabriikToastUtil.showError(binding.root, effect.message)
         }
     }
 
