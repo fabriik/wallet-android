@@ -50,11 +50,12 @@
     <string name="Buy.CreditCard.HiddenNumbers">**** **** **** ****</string>
 
     <!-- Order preview screen -->
+    <string name="Buy.OrderPreview.YourOrder">Your order:</string>
     <string name="Buy.OrderPreview.Title">Order preview</string>
     <string name="BUy.OrderPreview.PaymentMethod">Payment method</string>
     <string name="Buy.OrderPreview.Price">%s price</string>
-    <string name="Buy.OrderPreview.Amount">Amount</string>
-    <string name="Buy.OrderPreview.CreditCardFee">Credit card fee</string>
+    <string name="Buy.OrderPreview.Amount">Amount purchased:</string>
+    <string name="Buy.OrderPreview.CreditCardFee">Card fee (4%)</string>
     <string name="Buy.OrderPreview.MiningNetworkFee">Mining network fee</string>
     <string name="Buy.OrderPreview.Total">Total:</string>
     <string name="Buy.OrderPreview.CVVConfirmation">Please confirm your CVV</string>
