@@ -41,5 +41,5 @@ data class PaymentInstrument(
         get() = "**** **** **** $last4Numbers"
 
     val expiryDate: String
-        get() = "$expiryMonth/$expiryYear"
+        get() = "$expiryMonth/${expiryYear % 100}"
 }

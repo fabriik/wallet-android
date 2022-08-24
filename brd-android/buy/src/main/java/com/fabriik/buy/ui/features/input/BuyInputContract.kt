@@ -1,4 +1,4 @@
-package com.fabriik.buy.ui.input
+package com.fabriik.buy.ui.features.input
 
 import com.fabriik.buy.data.model.PaymentInstrument
 import com.fabriik.common.data.model.Profile
