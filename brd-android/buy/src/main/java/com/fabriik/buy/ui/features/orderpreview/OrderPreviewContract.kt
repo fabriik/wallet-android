@@ -13,6 +13,8 @@ class OrderPreviewContract : FabriikContract {
         object OnSecurityCodeInfoClicked : Event()
         object OnTermsAndConditionsClicked : Event()
         object OnUserAuthenticationSucceed : Event()
+
+        data class OnSecurityCodeChanged(val securityCode: String) : Event()
     }
 
     sealed class Effect : FabriikContract.Effect {
@@ -31,6 +33,7 @@ class OrderPreviewContract : FabriikContract {
     }
 
     data class State(
-        val securityCode: String = ""
+        val securityCode: String = "",
+        val confirmButtonEnabled: Boolean = false
     ) : FabriikContract.State
 }

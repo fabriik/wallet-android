@@ -1,5 +1,7 @@
 package com.fabriik.buy.ui.features.orderpreview
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.Spanned
@@ -8,6 +10,7 @@ import android.text.style.ClickableSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -18,6 +21,7 @@ import com.fabriik.buy.databinding.FragmentOrderPreviewBinding
 import com.fabriik.common.ui.base.FabriikView
 import com.fabriik.common.ui.dialog.InfoDialog
 import com.fabriik.common.ui.dialog.InfoDialogArgs
+import com.fabriik.common.utils.textOrEmpty
 import com.fabriik.trade.ui.features.authentication.SwapAuthenticationViewModel
 import kotlinx.coroutines.flow.collect
 
@@ -57,6 +61,14 @@ class OrderPreviewFragment : Fragment(),
 
             ivInfoSecurityCode.setOnClickListener {
                 viewModel.setEvent(OrderPreviewContract.Event.OnSecurityCodeInfoClicked)
+            }
+
+            etCvv.addTextChangedListener {
+                viewModel.setEvent(
+                    OrderPreviewContract.Event.OnSecurityCodeChanged(
+                        it.textOrEmpty()
+                    )
+                )
             }
 
             btnConfirm.setOnClickListener {
@@ -102,6 +114,7 @@ class OrderPreviewFragment : Fragment(),
     }
 
     override fun render(state: OrderPreviewContract.State) {
+        binding.btnConfirm.isEnabled = state.confirmButtonEnabled
     }
 
     override fun handleEffect(effect: OrderPreviewContract.Effect) {
@@ -124,6 +137,12 @@ class OrderPreviewFragment : Fragment(),
 
             is OrderPreviewContract.Effect.ShowInfoDialog ->
                 showInfoDialog(effect)
+
+            is OrderPreviewContract.Effect.OpenWebsite -> {
+                val uri = Uri.parse(effect.url)
+                val intent = Intent(Intent.ACTION_VIEW, uri)
+                startActivity(intent)
+            }
         }
     }
 

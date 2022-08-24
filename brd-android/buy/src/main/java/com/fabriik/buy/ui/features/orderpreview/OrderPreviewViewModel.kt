@@ -59,6 +59,9 @@ class OrderPreviewViewModel(
 
             OrderPreviewContract.Event.OnUserAuthenticationSucceed ->
                 createBuyOrder()
+
+            is OrderPreviewContract.Event.OnSecurityCodeChanged ->
+                setState { copy(securityCode = event.securityCode).validate() }
         }
     }
 
@@ -66,4 +69,8 @@ class OrderPreviewViewModel(
         //todo: API call
         setEffect { OrderPreviewContract.Effect.PaymentProcessing }
     }
+
+    private fun OrderPreviewContract.State.validate() = copy(
+        confirmButtonEnabled = securityCode.length == 3
+    )
 }
