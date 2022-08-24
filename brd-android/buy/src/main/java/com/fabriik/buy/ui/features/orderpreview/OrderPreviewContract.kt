@@ -47,7 +47,6 @@ class OrderPreviewContract : FabriikContract {
         val fiatAmount: BigDecimal,
         val cardFee: BigDecimal,
         val networkFee: BigDecimal,
-        val amountPurchased: BigDecimal,
         val quoteResponse: QuoteResponse?,
         val paymentReference: String? = null,
         val paymentInstrument: PaymentInstrument,
@@ -61,9 +60,9 @@ class OrderPreviewContract : FabriikContract {
             get() = BigDecimal.ONE.divide(quoteResponse?.exchangeRate, 20, RoundingMode.HALF_UP) ?: BigDecimal.ZERO
 
         val totalFiatAmount: BigDecimal
-            get() = amountPurchased + cardFee + networkFee
+            get() = fiatAmount + cardFee + networkFee
 
         val cryptoAmount: BigDecimal
-            get() = fiatAmount * oneCryptoUnitToFiatRate
+            get() = fiatAmount * oneFiatUnitToCryptoRate
     }
 }

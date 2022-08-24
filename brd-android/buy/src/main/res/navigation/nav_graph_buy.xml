@@ -98,6 +98,10 @@
         tools:layout="@layout/fragment_order_preview">
 
         <argument
+            android:name="fiatAmount"
+            app:argType="java.math.BigDecimal"/>
+
+        <argument
             android:name="fiatCurrency"
             app:argType="string"/>
 

@@ -32,16 +32,15 @@ class OrderPreviewViewModel(
     }
 
     override fun createInitialState(): OrderPreviewContract.State {
-        val cardFee = BigDecimal.ZERO
-        val fiatAmount = BigDecimal.ZERO
+        val fiatAmount = arguments.fiatAmount
+
+        val cardFee = fiatAmount * CARD_FEE_PERCENT
         val networkFee = BigDecimal.ZERO
-        val amountPurchased = BigDecimal.ZERO
 
         return OrderPreviewContract.State(
             cardFee = cardFee,
             fiatAmount = fiatAmount,
             networkFee = networkFee,
-            amountPurchased = amountPurchased,
             fiatCurrency = arguments.fiatCurrency,
             quoteResponse = arguments.quoteResponse,
             cryptoCurrency = arguments.cryptoCurrency,
@@ -153,4 +152,8 @@ class OrderPreviewViewModel(
     private fun OrderPreviewContract.State.validate() = copy(
         confirmButtonEnabled = securityCode.length == 3
     )
+
+    companion object {
+        val CARD_FEE_PERCENT = 0.04.toBigDecimal()
+    }
 }

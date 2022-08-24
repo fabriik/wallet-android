@@ -161,6 +161,7 @@ class BuyInputViewModel(
 
         setEffect {
             BuyInputContract.Effect.OpenOrderPreview(
+                fiatAmount = state.fiatAmount,
                 fiatCurrency = state.fiatCurrency,
                 quoteResponse = quoteResponse,
                 cryptoCurrency = state.cryptoCurrency,

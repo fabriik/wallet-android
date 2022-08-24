@@ -41,7 +41,7 @@ class OrderPreviewFragment : Fragment(),
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         return inflater.inflate(R.layout.fragment_order_preview, container, false)
     }
 
@@ -121,9 +121,9 @@ class OrderPreviewFragment : Fragment(),
             viewCreditCard.setPaymentInstrument(state.paymentInstrument)
 
             tvTotalAmount.text = state.totalFiatAmount.formatFiatForUi(state.fiatCurrency)
-            tvAmountValue.text = state.amountPurchased.formatFiatForUi(state.fiatCurrency)
+            tvAmountValue.text = state.fiatAmount.formatFiatForUi(state.fiatCurrency)
             tvCryptoAmount.text = state.cryptoAmount.formatCryptoForUi(state.cryptoCurrency, 8)
-            tvCreditFeeValue.text = state.networkFee.formatFiatForUi(state.fiatCurrency)
+            tvCreditFeeValue.text = state.cardFee.formatFiatForUi(state.fiatCurrency)
             tvNetworkFeeValue.text = state.networkFee.formatFiatForUi(state.fiatCurrency)
 
             tvRateValue.text = RATE_FORMAT.format(

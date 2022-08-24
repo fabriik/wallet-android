@@ -34,6 +34,7 @@ interface BuyInputContract {
         data class UpdateCryptoAmount(val amount: BigDecimal, val changeByUser: Boolean) : Effect()
 
         data class OpenOrderPreview(
+            val fiatAmount: BigDecimal,
             val fiatCurrency: String,
             val cryptoCurrency: String,
             val quoteResponse: QuoteResponse,
