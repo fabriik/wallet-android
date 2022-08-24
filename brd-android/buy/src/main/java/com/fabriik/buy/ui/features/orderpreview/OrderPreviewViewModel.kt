@@ -2,15 +2,26 @@ package com.fabriik.buy.ui.features.orderpreview
 
 import android.app.Application
 import com.fabriik.buy.R
-import com.fabriik.buy.ui.features.billingaddress.BillingAddressContract
+import com.fabriik.buy.data.BuyApi
 import com.fabriik.common.data.FabriikApiConstants
+import com.fabriik.common.data.Status
 import com.fabriik.common.ui.base.FabriikViewModel
+import com.fabriik.common.utils.getString
+import com.fabriik.trade.ui.features.swap.SwapInputContract
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.closestKodein
+import org.kodein.di.erased.instance
 
 class OrderPreviewViewModel(
     application: Application
 ) : FabriikViewModel<OrderPreviewContract.State, OrderPreviewContract.Event, OrderPreviewContract.Effect>(
     application
-) {
+), KodeinAware {
+
+    override val kodein by closestKodein { application }
+
+    private val buyApi by kodein.instance<BuyApi>()
+
     override fun createInitialState() = OrderPreviewContract.State()
 
     override fun handleEvent(event: OrderPreviewContract.Event) {
@@ -54,11 +65,13 @@ class OrderPreviewViewModel(
                 }
 
             OrderPreviewContract.Event.OnConfirmClicked ->
-                //todo: API call?
                 setEffect { OrderPreviewContract.Effect.RequestUserAuthentication }
 
             OrderPreviewContract.Event.OnUserAuthenticationSucceed ->
                 createBuyOrder()
+
+            OrderPreviewContract.Event.OnPaymentRedirectResult ->
+                checkPaymentStatus()
 
             is OrderPreviewContract.Event.OnSecurityCodeChanged ->
                 setState { copy(securityCode = event.securityCode).validate() }
@@ -66,8 +79,50 @@ class OrderPreviewViewModel(
     }
 
     private fun createBuyOrder() {
-        //todo: API call
-        setEffect { OrderPreviewContract.Effect.PaymentProcessing }
+        /*callApi(
+            endState = { currentState },
+            startState = { copy() },  //todo: payment processing screen
+            action = { buyApi.createOrder() },
+            callback = {
+                when (it.status) {
+                    Status.SUCCESS -> {
+                        val response = requireNotNull(it.data)
+                        val reference = response.paymentReference
+                        val redirectUrl = response.redirectUrl
+
+                        setState { copy(paymentReference = reference) }
+
+                        if (redirectUrl.isNullOrBlank()) {
+                            checkPaymentStatus()
+                        } else {
+                            setEffect { OrderPreviewContract.Effect.OpenPaymentRedirect(redirectUrl) }
+                        }
+                    }
+
+                    Status.ERROR ->
+                        setEffect {
+                            OrderPreviewContract.Effect.ShowError(
+                                it.message ?: getString(R.string.FabriikApi_DefaultError)
+                            )
+                        }
+                }
+            }
+        )*/
+    }
+
+    private fun checkPaymentStatus() {
+        val reference = currentState.paymentReference ?: return
+
+        // todo: show payment processing screen
+        /*callApi(
+            endState = { copy(loadingIndicatorVisible = false) },
+            startState = { copy(loadingIndicatorVisible = true) },
+            action = { buyApi.getPaymentStatus(reference) },
+            callback = {
+                // todo:
+                //setEffect { OrderPreviewContract.Effect.PaymentMethod }
+            }
+        )*/
     }
 
     private fun OrderPreviewContract.State.validate() = copy(

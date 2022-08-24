@@ -10,6 +10,7 @@ import android.text.style.ClickableSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -21,6 +22,7 @@ import com.fabriik.buy.databinding.FragmentOrderPreviewBinding
 import com.fabriik.common.ui.base.FabriikView
 import com.fabriik.common.ui.dialog.InfoDialog
 import com.fabriik.common.ui.dialog.InfoDialogArgs
+import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.common.utils.textOrEmpty
 import com.fabriik.trade.ui.features.authentication.SwapAuthenticationViewModel
 import kotlinx.coroutines.flow.collect
@@ -30,6 +32,10 @@ class OrderPreviewFragment : Fragment(),
 
     private lateinit var binding: FragmentOrderPreviewBinding
     private val viewModel: OrderPreviewViewModel by viewModels()
+
+    private val paymentRedirectResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        viewModel.setEvent(OrderPreviewContract.Event.OnPaymentRedirectResult)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -135,6 +141,9 @@ class OrderPreviewFragment : Fragment(),
                     OrderPreviewFragmentDirections.actionUserAuthentication()
                 )
 
+            is OrderPreviewContract.Effect.ShowError ->
+                FabriikToastUtil.showError(binding.root, effect.message)
+
             is OrderPreviewContract.Effect.ShowInfoDialog ->
                 showInfoDialog(effect)
 
@@ -142,6 +151,12 @@ class OrderPreviewFragment : Fragment(),
                 val uri = Uri.parse(effect.url)
                 val intent = Intent(Intent.ACTION_VIEW, uri)
                 startActivity(intent)
+            }
+
+            is OrderPreviewContract.Effect.OpenPaymentRedirect -> {
+                val uri = Uri.parse(effect.url)
+                val intent = Intent(Intent.ACTION_VIEW, uri)
+                paymentRedirectResultLauncher.launch(intent)
             }
         }
     }

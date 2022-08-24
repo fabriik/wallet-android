@@ -13,6 +13,7 @@ class OrderPreviewContract : FabriikContract {
         object OnSecurityCodeInfoClicked : Event()
         object OnTermsAndConditionsClicked : Event()
         object OnUserAuthenticationSucceed : Event()
+        object OnPaymentRedirectResult : Event()
 
         data class OnSecurityCodeChanged(val securityCode: String) : Event()
     }
@@ -23,6 +24,8 @@ class OrderPreviewContract : FabriikContract {
         object PaymentProcessing : Effect()
         object RequestUserAuthentication : Effect()
 
+        data class ShowError(val message: String) : Effect()
+
         data class ShowInfoDialog(
             val image: Int? = null,
             val title: Int,
@@ -30,10 +33,12 @@ class OrderPreviewContract : FabriikContract {
         ) : Effect()
 
         data class OpenWebsite(val url: String): Effect()
+        data class OpenPaymentRedirect(val url: String): Effect()
     }
 
     data class State(
         val securityCode: String = "",
+        val paymentReference: String? = null,
         val confirmButtonEnabled: Boolean = false
     ) : FabriikContract.State
 }
