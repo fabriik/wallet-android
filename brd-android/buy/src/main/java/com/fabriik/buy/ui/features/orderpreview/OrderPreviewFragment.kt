@@ -17,7 +17,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.fabriik.buy.R
-import com.fabriik.buy.data.enums.CardType
 import com.fabriik.buy.databinding.FragmentOrderPreviewBinding
 import com.fabriik.common.ui.base.FabriikView
 import com.fabriik.common.ui.dialog.InfoDialog
@@ -85,13 +84,6 @@ class OrderPreviewFragment : Fragment(),
             val fullText = getString(R.string.Buy_OrderPreview_Subtext, clickableText)
             tvTermsConditions.text = getSpannableText(fullText, clickableText)
             tvTermsConditions.movementMethod = LinkMovementMethod.getInstance()
-
-            //TODO - connect to BE
-            viewCreditCard.setData(
-                type = CardType.VISA,
-                lastDigits = "4255",
-                expirationDate = "25/59"
-            )
         }
 
         // collect UI state
@@ -120,7 +112,10 @@ class OrderPreviewFragment : Fragment(),
     }
 
     override fun render(state: OrderPreviewContract.State) {
-        binding.btnConfirm.isEnabled = state.confirmButtonEnabled
+        with(binding) {
+            btnConfirm.isEnabled = state.confirmButtonEnabled
+            viewCreditCard.setPaymentInstrument(state.paymentInstrument)
+        }
     }
 
     override fun handleEffect(effect: OrderPreviewContract.Effect) {

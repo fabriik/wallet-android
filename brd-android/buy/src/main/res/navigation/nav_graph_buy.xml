@@ -97,6 +97,10 @@
         android:name="com.fabriik.buy.ui.features.orderpreview.OrderPreviewFragment"
         tools:layout="@layout/fragment_order_preview">
 
+        <argument
+            android:name="paymentInstrument"
+            app:argType="com.fabriik.buy.data.model.PaymentInstrument"/>
+
         <action
             android:id="@+id/actionUserAuthentication"
             app:destination="@id/fragmentBuyAuthentication" />

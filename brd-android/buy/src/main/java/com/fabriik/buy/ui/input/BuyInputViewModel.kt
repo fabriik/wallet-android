@@ -154,8 +154,15 @@ class BuyInputViewModel(
 
     private fun onContinueClicked() {
         val state = currentLoadedState ?: return
-        //todo
-        setEffect { BuyInputContract.Effect.OpenOrderPreview(state.cryptoCurrency) }
+        val paymentInstrument = state.selectedPaymentMethod ?: return
+
+        //todo: validation
+
+        setEffect {
+            BuyInputContract.Effect.OpenOrderPreview(
+                paymentInstrument = paymentInstrument
+            )
+        }
     }
 
     private fun updateAmounts(fiatAmountChangedByUser: Boolean, cryptoAmountChangedByUser: Boolean) {

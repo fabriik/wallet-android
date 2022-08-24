@@ -1,28 +1,38 @@
 package com.fabriik.buy.ui.features.orderpreview
 
 import android.app.Application
+import androidx.lifecycle.SavedStateHandle
 import com.fabriik.buy.R
 import com.fabriik.buy.data.BuyApi
 import com.fabriik.common.data.FabriikApiConstants
-import com.fabriik.common.data.Status
 import com.fabriik.common.ui.base.FabriikViewModel
-import com.fabriik.common.utils.getString
-import com.fabriik.trade.ui.features.swap.SwapInputContract
+import com.fabriik.common.utils.toBundle
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
 import org.kodein.di.erased.instance
 
 class OrderPreviewViewModel(
-    application: Application
+    application: Application,
+    savedStateHandle: SavedStateHandle
 ) : FabriikViewModel<OrderPreviewContract.State, OrderPreviewContract.Event, OrderPreviewContract.Effect>(
-    application
+    application, savedStateHandle
 ), KodeinAware {
 
     override val kodein by closestKodein { application }
 
     private val buyApi by kodein.instance<BuyApi>()
 
-    override fun createInitialState() = OrderPreviewContract.State()
+    private lateinit var arguments: OrderPreviewFragmentArgs
+
+    override fun parseArguments(savedStateHandle: SavedStateHandle) {
+        arguments = OrderPreviewFragmentArgs.fromBundle(
+            savedStateHandle.toBundle()
+        )
+    }
+
+    override fun createInitialState() = OrderPreviewContract.State(
+        paymentInstrument = arguments.paymentInstrument
+    )
 
     override fun handleEvent(event: OrderPreviewContract.Event) {
         when (event) {

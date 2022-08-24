@@ -1,5 +1,6 @@
 package com.fabriik.buy.ui.features.orderpreview
 
+import com.fabriik.buy.data.model.PaymentInstrument
 import com.fabriik.common.ui.base.FabriikContract
 
 class OrderPreviewContract : FabriikContract {
@@ -39,6 +40,7 @@ class OrderPreviewContract : FabriikContract {
     data class State(
         val securityCode: String = "",
         val paymentReference: String? = null,
+        val paymentInstrument: PaymentInstrument,
         val confirmButtonEnabled: Boolean = false
     ) : FabriikContract.State
 }

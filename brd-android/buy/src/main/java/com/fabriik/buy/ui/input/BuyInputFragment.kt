@@ -135,7 +135,11 @@ class BuyInputFragment : Fragment(),
                 )
 
             is BuyInputContract.Effect.OpenOrderPreview ->
-                findNavController().navigate(BuyInputFragmentDirections.actionOrderPreview())
+                findNavController().navigate(
+                    BuyInputFragmentDirections.actionOrderPreview(
+                        paymentInstrument = effect.paymentInstrument
+                    )
+                )
 
             is BuyInputContract.Effect.CryptoSelection ->
                 findNavController().navigate(
