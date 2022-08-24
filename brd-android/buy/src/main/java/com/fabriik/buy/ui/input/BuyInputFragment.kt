@@ -137,6 +137,9 @@ class BuyInputFragment : Fragment(),
             is BuyInputContract.Effect.OpenOrderPreview ->
                 findNavController().navigate(
                     BuyInputFragmentDirections.actionOrderPreview(
+                        fiatCurrency = effect.fiatCurrency,
+                        quoteResponse = effect.quoteResponse,
+                        cryptoCurrency = effect.cryptoCurrency,
                         paymentInstrument = effect.paymentInstrument
                     )
                 )

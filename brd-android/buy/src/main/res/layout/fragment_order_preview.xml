@@ -19,6 +19,7 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
+            android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clipToPadding="false"
@@ -47,7 +48,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <com.fabriik.trade.ui.customview.CryptoIconView
-                        android:id="@+id/ic_crypto"
+                        android:id="@+id/iv_crypto"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_marginTop="8dp"
@@ -56,14 +57,14 @@
                         tools:background="@drawable/ic_btc_icon" />
 
                     <TextView
-                        android:id="@+id/tv_amount"
+                        android:id="@+id/tv_crypto_amount"
                         style="@style/TextStyle.Title6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        app:layout_constraintBottom_toBottomOf="@id/ic_crypto"
-                        app:layout_constraintStart_toEndOf="@id/ic_crypto"
-                        app:layout_constraintTop_toTopOf="@id/ic_crypto"
+                        app:layout_constraintBottom_toBottomOf="@id/iv_crypto"
+                        app:layout_constraintStart_toEndOf="@id/iv_crypto"
+                        app:layout_constraintTop_toTopOf="@id/iv_crypto"
                         tools:text="1.55714730 BSV" />
 
                     <TextView
@@ -74,7 +75,7 @@
                         android:layout_marginTop="12dp"
                         android:text="@string/Buy.OrderPreview.Rate"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_amount"
+                        app:layout_constraintTop_toBottomOf="@id/tv_crypto_amount"
                         tools:text="Rate:" />
 
                     <TextView
@@ -84,6 +85,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
                         android:layout_marginTop="8dp"
+                        android:textAllCaps="true"
                         app:layout_constraintBaseline_toBaselineOf="@id/tv_rate_title"
                         app:layout_constraintStart_toEndOf="@+id/tv_rate_title"
                         tools:text="1 BSV = $64.22 USD" />

@@ -2,6 +2,9 @@ package com.fabriik.buy.ui.features.orderpreview
 
 import com.fabriik.buy.data.model.PaymentInstrument
 import com.fabriik.common.ui.base.FabriikContract
+import com.fabriik.trade.data.response.QuoteResponse
+import java.math.BigDecimal
+import java.math.RoundingMode
 
 class OrderPreviewContract : FabriikContract {
 
@@ -39,8 +42,28 @@ class OrderPreviewContract : FabriikContract {
 
     data class State(
         val securityCode: String = "",
+        val fiatCurrency: String,
+        val cryptoCurrency: String,
+        val fiatAmount: BigDecimal,
+        val cardFee: BigDecimal,
+        val networkFee: BigDecimal,
+        val amountPurchased: BigDecimal,
+        val quoteResponse: QuoteResponse?,
         val paymentReference: String? = null,
         val paymentInstrument: PaymentInstrument,
         val confirmButtonEnabled: Boolean = false
-    ) : FabriikContract.State
+    ) : FabriikContract.State {
+
+        val oneFiatUnitToCryptoRate: BigDecimal
+            get() = quoteResponse?.exchangeRate ?: BigDecimal.ZERO
+
+        val oneCryptoUnitToFiatRate: BigDecimal
+            get() = BigDecimal.ONE.divide(quoteResponse?.exchangeRate, 20, RoundingMode.HALF_UP) ?: BigDecimal.ZERO
+
+        val totalFiatAmount: BigDecimal
+            get() = amountPurchased + cardFee + networkFee
+
+        val cryptoAmount: BigDecimal
+            get() = fiatAmount * oneCryptoUnitToFiatRate
+    }
 }

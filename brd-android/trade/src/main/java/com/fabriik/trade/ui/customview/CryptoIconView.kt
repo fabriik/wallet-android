@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.breadwallet.tools.util.TokenUtil
 import com.bumptech.glide.Glide
+import com.fabriik.common.utils.viewScope
 import com.fabriik.trade.R
 import com.fabriik.trade.databinding.ViewCryptoIconBinding
 import kotlinx.coroutines.*
@@ -27,6 +28,10 @@ class CryptoIconView @JvmOverloads constructor(
 
     init {
         setBackgroundResource(R.drawable.token_icon_background_transparent)
+    }
+
+    fun postLoadIcon(currencyCode: String) {
+        post { loadIcon(viewScope, currencyCode) }
     }
 
     fun loadIcon(scope: CoroutineScope, currencyCode: String) {

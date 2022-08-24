@@ -10,6 +10,7 @@ import com.fabriik.common.utils.toBundle
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
 import org.kodein.di.erased.instance
+import java.math.BigDecimal
 
 class OrderPreviewViewModel(
     application: Application,
@@ -30,9 +31,23 @@ class OrderPreviewViewModel(
         )
     }
 
-    override fun createInitialState() = OrderPreviewContract.State(
-        paymentInstrument = arguments.paymentInstrument
-    )
+    override fun createInitialState(): OrderPreviewContract.State {
+        val cardFee = BigDecimal.ZERO
+        val fiatAmount = BigDecimal.ZERO
+        val networkFee = BigDecimal.ZERO
+        val amountPurchased = BigDecimal.ZERO
+
+        return OrderPreviewContract.State(
+            cardFee = cardFee,
+            fiatAmount = fiatAmount,
+            networkFee = networkFee,
+            amountPurchased = amountPurchased,
+            fiatCurrency = arguments.fiatCurrency,
+            quoteResponse = arguments.quoteResponse,
+            cryptoCurrency = arguments.cryptoCurrency,
+            paymentInstrument = arguments.paymentInstrument
+        )
+    }
 
     override fun handleEvent(event: OrderPreviewContract.Event) {
         when (event) {

@@ -16,6 +16,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.breadwallet.breadbox.formatCryptoForUi
+import com.breadwallet.util.formatFiatForUi
 import com.fabriik.buy.R
 import com.fabriik.buy.databinding.FragmentOrderPreviewBinding
 import com.fabriik.common.ui.base.FabriikView
@@ -23,6 +25,7 @@ import com.fabriik.common.ui.dialog.InfoDialog
 import com.fabriik.common.ui.dialog.InfoDialogArgs
 import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.common.utils.textOrEmpty
+import com.fabriik.common.utils.viewScope
 import com.fabriik.trade.ui.features.authentication.SwapAuthenticationViewModel
 import kotlinx.coroutines.flow.collect
 
@@ -113,8 +116,23 @@ class OrderPreviewFragment : Fragment(),
 
     override fun render(state: OrderPreviewContract.State) {
         with(binding) {
+            ivCrypto.postLoadIcon(state.cryptoCurrency)
             btnConfirm.isEnabled = state.confirmButtonEnabled
             viewCreditCard.setPaymentInstrument(state.paymentInstrument)
+
+            tvTotalAmount.text = state.totalFiatAmount.formatFiatForUi(state.fiatCurrency)
+            tvAmountValue.text = state.amountPurchased.formatFiatForUi(state.fiatCurrency)
+            tvCryptoAmount.text = state.cryptoAmount.formatCryptoForUi(state.cryptoCurrency, 8)
+            tvCreditFeeValue.text = state.networkFee.formatFiatForUi(state.fiatCurrency)
+            tvNetworkFeeValue.text = state.networkFee.formatFiatForUi(state.fiatCurrency)
+
+            tvRateValue.text = RATE_FORMAT.format(
+                state.cryptoCurrency,
+                state.oneCryptoUnitToFiatRate.formatFiatForUi(
+                    state.fiatCurrency
+                ),
+                state.fiatCurrency
+            )
         }
     }
 
@@ -184,5 +202,9 @@ class OrderPreviewFragment : Fragment(),
         )
 
         InfoDialog(args).show(parentFragmentManager, InfoDialog.TAG)
+    }
+    
+    companion object {
+        private const val RATE_FORMAT = "1 %s = %s %s"
     }
 }

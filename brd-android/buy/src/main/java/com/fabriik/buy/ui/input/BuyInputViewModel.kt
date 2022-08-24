@@ -154,12 +154,16 @@ class BuyInputViewModel(
 
     private fun onContinueClicked() {
         val state = currentLoadedState ?: return
+        val quoteResponse = state.quoteResponse ?: return
         val paymentInstrument = state.selectedPaymentMethod ?: return
 
         //todo: validation
 
         setEffect {
             BuyInputContract.Effect.OpenOrderPreview(
+                fiatCurrency = state.fiatCurrency,
+                quoteResponse = quoteResponse,
+                cryptoCurrency = state.cryptoCurrency,
                 paymentInstrument = paymentInstrument
             )
         }

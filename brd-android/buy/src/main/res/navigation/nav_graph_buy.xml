@@ -98,6 +98,18 @@
         tools:layout="@layout/fragment_order_preview">
 
         <argument
+            android:name="fiatCurrency"
+            app:argType="string"/>
+
+        <argument
+            android:name="cryptoCurrency"
+            app:argType="string"/>
+
+        <argument
+            android:name="quoteResponse"
+            app:argType="com.fabriik.trade.data.response.QuoteResponse"/>
+
+        <argument
             android:name="paymentInstrument"
             app:argType="com.fabriik.buy.data.model.PaymentInstrument"/>
 
