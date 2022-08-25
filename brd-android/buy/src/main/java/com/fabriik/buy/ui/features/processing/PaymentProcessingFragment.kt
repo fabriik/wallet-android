@@ -8,6 +8,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.fabriik.buy.R
 import com.fabriik.buy.databinding.FragmentPaymentProcessingBinding
 import com.fabriik.common.ui.base.FabriikView
@@ -78,7 +79,9 @@ class PaymentProcessingFragment : Fragment(),
                 TODO()
 
             is PaymentProcessingContract.Effect.GoToPurchaseDetails ->
-                TODO()
+                findNavController().navigate(
+                    PaymentProcessingFragmentDirections.actionBuyDetails(effect.purchaseId)
+                )
         }
     }
 
