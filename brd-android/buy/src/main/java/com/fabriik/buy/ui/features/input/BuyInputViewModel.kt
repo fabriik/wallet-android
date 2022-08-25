@@ -209,6 +209,7 @@ class BuyInputViewModel(
                     cryptoCurrency = firstWallet,
                     supportedCurrencies = supportedCurrencies,
                     paymentInstruments = instrumentsResponse.data ?: emptyList(),
+                    selectedPaymentMethod = instrumentsResponse.data?.lastOrNull(),
                     profile = profileManager.getProfile()
                 )
             }
