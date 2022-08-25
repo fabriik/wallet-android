@@ -1,5 +1,7 @@
 package com.fabriik.buy.ui.features.processing
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.fabriik.buy.R
 import com.fabriik.buy.databinding.FragmentPaymentProcessingBinding
+import com.fabriik.common.data.FabriikApiConstants
 import com.fabriik.common.ui.base.FabriikView
 import kotlinx.coroutines.flow.collect
 
@@ -77,8 +80,10 @@ class PaymentProcessingFragment : Fragment(),
             PaymentProcessingContract.Effect.Dismiss ->
                 activity?.finish()
 
-            PaymentProcessingContract.Effect.ContactSupport ->
-                TODO()
+            PaymentProcessingContract.Effect.ContactSupport -> {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(FabriikApiConstants.URL_SUPPORT_PAGE))
+                startActivity(intent)
+            }
 
             is PaymentProcessingContract.Effect.GoToPurchaseDetails ->
                 TODO()
