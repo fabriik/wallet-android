@@ -48,7 +48,7 @@ class TransactionListItem(
         override fun bindView(item: TransactionListItem, payloads: List<Any>) {
             if (item.model.exchangeData != null) {
                 binding = ItemSwapDetailsBinding.bind(itemView)
-                setSwapContent(binding as ItemSwapDetailsBinding, item.model, item.model.exchangeData!!)
+                setSwapBuyContent(binding as ItemSwapDetailsBinding, item.model, item.model.exchangeData!!)
             } else {
                 binding = TxItemBinding.bind(itemView)
                 setTransferContent(binding as TxItemBinding, item.model, item.isCryptoPreferred)
@@ -77,12 +77,13 @@ class TransactionListItem(
             this.binding = null
         }
 
-        private fun setSwapContent(
+        private fun setSwapBuyContent(
             binding: ItemSwapDetailsBinding, transaction: WalletTransaction, exchangeData: ExchangeData
         ) {
             val context = itemView.context
 
             with(binding) {
+                icItem.setImageResource(exchangeData.getIcon())
                 tvTransactionDate.text = BRDateUtil.getShortDate(transaction.timeStamp)
                 tvTransactionTitle.text = exchangeData.getTransactionTitle(context)
                 tvTransactionValue.text = transaction.amount.formatCryptoForUi(transaction.currencyCode)
@@ -90,7 +91,7 @@ class TransactionListItem(
                     transaction.amountInFiat.formatFiatForUi(BRSharedPrefs.getPreferredFiatIso())
             }
 
-            when (exchangeData.swapTransactionData.exchangeStatus) {
+            when (exchangeData.transactionData.exchangeStatus) {
                 COMPLETE -> {
                     binding.icItemBg.imageTintList =
                         ColorStateList.valueOf(

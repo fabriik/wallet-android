@@ -10,7 +10,7 @@ import java.util.*
 
 @Parcelize
 @JsonClass(generateAdapter = true)
-data class SwapTransactionData(
+data class SwapBuyTransactionData(
 
     @Json(name = "order_id")
     val exchangeId: String,
@@ -30,6 +30,11 @@ data class SwapTransactionData(
     @Json(name = "timestamp")
     val timestamp: Long
 ): Parcelable {
+
+    fun isBuyTransaction() = "usd".equals(source.currency, true)
+
+    fun isSwapTransaction() = !isBuyTransaction()
+
     fun getDepositCurrencyUpperCase() = source.currency.toUpperCase(Locale.ROOT)
 
     fun getWithdrawalCurrencyUpperCase() = destination.currency.toUpperCase(Locale.ROOT)

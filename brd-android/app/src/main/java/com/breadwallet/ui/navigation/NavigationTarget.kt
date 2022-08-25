@@ -34,6 +34,7 @@ import com.breadwallet.ui.settings.SettingsSection
 import com.fabriik.common.ui.dialog.FabriikGenericDialogArgs
 import com.fabriik.registration.ui.RegistrationFlow
 import com.fabriik.support.pages.Topic
+import com.fabriik.trade.data.model.SwapBuyTransactionData
 import dev.zacsweers.redacted.annotations.Redacted
 import java.math.BigDecimal
 
@@ -50,7 +51,7 @@ sealed class NavigationTarget : INavigationTarget {
     ) : NavigationTarget()
 
     data class ViewExchangeTransaction(
-        val exchangeId: String
+        val transactionData: SwapBuyTransactionData
     ) : NavigationTarget()
 
     object Back : NavigationTarget()
