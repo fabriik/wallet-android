@@ -16,7 +16,6 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
 import org.kodein.di.direct
 import org.kodein.di.erased.instance
-import java.math.BigDecimal
 
 class OrderPreviewViewModel(
     application: Application,
@@ -161,7 +160,11 @@ class OrderPreviewViewModel(
             callback = {
                 setEffect {
                     OrderPreviewContract.Effect.PaymentProcessing(
-                        currentState.paymentReference
+                        if (it.data == PaymentStatus.CAPTURED || it.data == PaymentStatus.CARD_VERIFIED) {
+                            reference
+                        } else {
+                            null
+                        }
                     )
                 }
             }
