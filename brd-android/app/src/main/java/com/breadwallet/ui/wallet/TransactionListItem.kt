@@ -90,7 +90,7 @@ class TransactionListItem(
                     transaction.amountInFiat.formatFiatForUi(BRSharedPrefs.getPreferredFiatIso())
             }
 
-            when (exchangeData.swapTransactionData.exchangeStatus) {
+            when (exchangeData.transactionData.exchangeStatus) {
                 COMPLETE -> {
                     binding.icItemBg.imageTintList =
                         ColorStateList.valueOf(

@@ -5,7 +5,7 @@ import com.fabriik.common.data.FabriikApiConstants
 import com.fabriik.common.data.Resource
 import com.fabriik.common.utils.FabriikApiResponseMapper
 import com.fabriik.trade.R
-import com.fabriik.trade.data.model.SwapTransactionData
+import com.fabriik.trade.data.model.SwapBuyTransactionData
 import com.fabriik.trade.data.request.CreateSwapOrderRequest
 import com.fabriik.trade.data.request.EstimateEthFeeRequest
 import com.fabriik.trade.data.response.CreateSwapOrderResponse
@@ -86,7 +86,7 @@ class SwapApi(
         }
     }
 
-    suspend fun getSwapTransactions(): Resource<List<SwapTransactionData>?> {
+    suspend fun getSwapTransactions(): Resource<List<SwapBuyTransactionData>?> {
         return try {
             val response = service.getExchanges()
             Resource.success(data = response.exchanges)

@@ -43,7 +43,7 @@ import com.breadwallet.ui.wallet.WalletScreen.E
 import com.breadwallet.ui.wallet.WalletScreen.F
 import com.breadwallet.util.formatFiatForUi
 import com.fabriik.trade.data.SwapTransactionsRepository
-import com.fabriik.trade.data.model.SwapTransactionData
+import com.fabriik.trade.data.model.SwapBuyTransactionData
 import com.fabriik.trade.data.response.ExchangeOrderStatus
 import com.spotify.mobius.Connectable
 import drewcarlson.mobius.flow.flowTransformer
@@ -174,12 +174,12 @@ object WalletScreenHandler {
                         mapToWalletTransaction(it, currencyId, swapRepository)
                     }
 
-                val unlinkedWithdrawalTransactions = swapRepository.getUnlinkedSwapWithdrawals(currencyCode)
+                val unlinkedTransactions = swapRepository.getUnlinkedTransactionData(currencyCode)
                         .mapNotNullOrExceptional { it.withdrawalAsWalletTransaction() }
 
                 val transactions = mutableListOf<WalletTransaction>().apply {
                     addAll(walletTransactions)
-                    addAll(unlinkedWithdrawalTransactions)
+                    addAll(unlinkedTransactions)
                 }
 
                 E.OnTransactionsUpdated(
@@ -191,14 +191,19 @@ object WalletScreenHandler {
     private fun mapToWalletTransaction(
         transfer: Transfer, currencyId: String, swapRepository: SwapTransactionsRepository
     ): WalletTransaction {
-        val swapTransaction = swapRepository.getSwapByHash(transfer.hashString())
+        val transactionData = swapRepository.getDataByHash(transfer.hashString())
         val walletTransaction = transfer.asWalletTransaction(currencyId)
 
-        return swapTransaction?.let {
+        return transactionData?.let {
             walletTransaction.copy(
                 exchangeData = when(transfer.hashString()) {
-                    swapTransaction.source.transactionId -> ExchangeData.Deposit(swapTransaction)
-                    swapTransaction.destination.transactionId -> ExchangeData.Withdrawal(swapTransaction)
+                    transactionData.source.transactionId -> ExchangeData.Deposit(transactionData)
+                    transactionData.destination.transactionId ->
+                        if (transactionData.isBuyTransaction()) {
+                            ExchangeData.BuyWithdrawal(transactionData)
+                        } else {
+                            ExchangeData.SwapWithdrawal(transactionData)
+                        }
                     else -> null
                 }
             )
@@ -365,7 +370,7 @@ fun Transfer.asWalletTransaction(currencyId: String): WalletTransaction {
     )
 }
 
-private fun SwapTransactionData.withdrawalAsWalletTransaction(): WalletTransaction {
+private fun SwapBuyTransactionData.withdrawalAsWalletTransaction(): WalletTransaction {
     return WalletTransaction(
         txHash = destination.transactionId ?: "",
         timeStamp = timestamp,
@@ -380,7 +385,11 @@ private fun SwapTransactionData.withdrawalAsWalletTransaction(): WalletTransacti
         isPending = exchangeStatus == ExchangeOrderStatus.PENDING,
         isErrored = exchangeStatus == ExchangeOrderStatus.FAILED,
         isComplete = exchangeStatus == ExchangeOrderStatus.COMPLETE,
-        exchangeData = ExchangeData.Withdrawal(this),
+        exchangeData = if (isBuyTransaction()) {
+                ExchangeData.BuyWithdrawal(this)
+            } else {
+                ExchangeData.SwapWithdrawal(this)
+            },
         fromAddress = "",
         toAddress = "",
         fee = BigDecimal.ZERO,

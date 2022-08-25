@@ -56,8 +56,6 @@ import com.breadwallet.ui.BaseMobiusController
 import com.breadwallet.ui.controllers.AlertDialogController
 import com.breadwallet.ui.flowbind.clicks
 import com.breadwallet.ui.home.MAX_CRYPTO_DIGITS
-import com.breadwallet.ui.navigation.NavigationTarget
-import com.breadwallet.ui.navigation.asSupportUrl
 import com.breadwallet.ui.navigation.fragmentManager
 import com.breadwallet.ui.wallet.WalletScreen.DIALOG_CREATE_ACCOUNT
 import com.breadwallet.ui.wallet.WalletScreen.E
@@ -67,7 +65,6 @@ import com.breadwallet.ui.wallet.spark.SparkAdapter
 import com.breadwallet.ui.wallet.spark.SparkView
 import com.breadwallet.ui.wallet.spark.animation.LineSparkAnimator
 import com.breadwallet.util.formatFiatForUi
-import com.breadwallet.util.isBitcoin
 import com.breadwallet.util.isTezos
 import com.fabriik.support.CashSupport
 import com.fabriik.support.pages.Topic
@@ -164,7 +161,7 @@ open class WalletController(args: Bundle) : BaseMobiusController<M, E, F>(args),
                         eventConsumer.accept(
                             E.OnTransactionClicked(
                                 txHash = item.model.txHash,
-                                exchangeId = item.model.exchangeData?.swapTransactionData?.exchangeId
+                                exchangeId = item.model.exchangeData?.transactionData?.exchangeId
                             )
                         )
                     is StakingItem -> eventConsumer.accept(E.OnStakingCellClicked)
