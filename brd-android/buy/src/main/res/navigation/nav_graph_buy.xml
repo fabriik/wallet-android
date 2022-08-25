@@ -91,7 +91,14 @@
 
     <fragment android:id="@+id/fragmentPaymentProcessing"
         android:name="com.fabriik.buy.ui.features.processing.PaymentProcessingFragment"
-        tools:layout="@layout/fragment_swap_authentication"/>
+        tools:layout="@layout/fragment_swap_authentication">
+
+        <argument
+            android:name="paymentReference"
+            app:argType="string"
+            app:nullable="true"/>
+
+    </fragment>
 
     <fragment android:id="@+id/fragmentOrderPreview"
         android:name="com.fabriik.buy.ui.features.orderpreview.OrderPreviewFragment"

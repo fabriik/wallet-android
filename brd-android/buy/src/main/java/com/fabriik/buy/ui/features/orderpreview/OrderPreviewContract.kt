@@ -26,10 +26,10 @@ class OrderPreviewContract : FabriikContract {
     sealed class Effect : FabriikContract.Effect {
         object Back : Effect()
         object Dismiss : Effect()
-        object PaymentProcessing : Effect()
         object RequestUserAuthentication : Effect()
 
         data class ShowError(val message: String) : Effect()
+        data class PaymentProcessing(val paymentReference: String?) : Effect()
 
         data class ShowInfoDialog(
             val image: Int? = null,

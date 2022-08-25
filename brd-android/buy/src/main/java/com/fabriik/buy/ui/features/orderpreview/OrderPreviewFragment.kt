@@ -145,9 +145,9 @@ class OrderPreviewFragment : Fragment(),
             OrderPreviewContract.Effect.Dismiss ->
                 activity?.finish()
 
-            OrderPreviewContract.Effect.PaymentProcessing ->
+            is OrderPreviewContract.Effect.PaymentProcessing ->
                 findNavController().navigate(
-                    OrderPreviewFragmentDirections.actionPaymentProcessing()
+                    OrderPreviewFragmentDirections.actionPaymentProcessing(effect.paymentReference)
                 )
 
             OrderPreviewContract.Effect.RequestUserAuthentication ->

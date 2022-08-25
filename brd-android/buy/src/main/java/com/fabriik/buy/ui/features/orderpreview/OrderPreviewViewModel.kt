@@ -4,11 +4,17 @@ import android.app.Application
 import androidx.lifecycle.SavedStateHandle
 import com.fabriik.buy.R
 import com.fabriik.buy.data.BuyApi
+import com.fabriik.buy.data.enums.PaymentStatus
 import com.fabriik.common.data.FabriikApiConstants
+import com.fabriik.common.data.Resource
+import com.fabriik.common.data.Status
 import com.fabriik.common.ui.base.FabriikViewModel
+import com.fabriik.common.utils.getString
 import com.fabriik.common.utils.toBundle
+import com.fabriik.trade.ui.features.swap.SwapInputHelper
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
+import org.kodein.di.direct
 import org.kodein.di.erased.instance
 import java.math.BigDecimal
 
@@ -22,6 +28,10 @@ class OrderPreviewViewModel(
     override val kodein by closestKodein { application }
 
     private val buyApi by kodein.instance<BuyApi>()
+
+    private val helper = SwapInputHelper(
+        direct.instance(), direct.instance(), direct.instance()
+    )
 
     private lateinit var arguments: OrderPreviewFragmentArgs
 
@@ -95,10 +105,24 @@ class OrderPreviewViewModel(
     }
 
     private fun createBuyOrder() {
-        /*callApi(
+        callApi(
             endState = { currentState },
-            startState = { copy() },  //todo: payment processing screen
-            action = { buyApi.createOrder() },
+            startState = { currentState },  //todo: payment processing screen
+            action = {
+                val destinationAddress =
+                    helper.loadAddress(currentState.cryptoCurrency)?.toString() ?: return@callApi Resource.error(
+                        message = getString(R.string.FabriikApi_DefaultError)
+                    )
+
+                buyApi.createOrder(
+                    quoteId = requireNotNull(currentState.quoteResponse).quoteId,
+                    baseQuantity = currentState.fiatAmount,
+                    termQuantity = currentState.cryptoAmount,
+                    destination = destinationAddress,
+                    nologCvv = currentState.securityCode,
+                    sourceInstrumentId = currentState.paymentInstrument.id
+                )
+            },
             callback = {
                 when (it.status) {
                     Status.SUCCESS -> {
@@ -123,22 +147,25 @@ class OrderPreviewViewModel(
                         }
                 }
             }
-        )*/
+        )
     }
 
     private fun checkPaymentStatus() {
         val reference = currentState.paymentReference ?: return
 
         // todo: show payment processing screen
-        /*callApi(
-            endState = { copy(loadingIndicatorVisible = false) },
-            startState = { copy(loadingIndicatorVisible = true) },
+        callApi(
+            endState = { currentState },
+            startState = { currentState },
             action = { buyApi.getPaymentStatus(reference) },
             callback = {
-                // todo:
-                //setEffect { OrderPreviewContract.Effect.PaymentMethod }
+                setEffect {
+                    OrderPreviewContract.Effect.PaymentProcessing(
+                        currentState.paymentReference
+                    )
+                }
             }
-        )*/
+        )
     }
 
     private fun OrderPreviewContract.State.validate() = copy(

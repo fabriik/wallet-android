@@ -43,10 +43,6 @@ class BuyInputViewModel(
     private val profileManager by kodein.instance<ProfileManager>()
     private val metaDataManager by kodein.instance<AccountMetaDataProvider>()
 
-    private val helper = SwapInputHelper(
-        direct.instance(), direct.instance(), direct.instance()
-    )
-
     private val currentFiatCurrency = "USD"
 
     private val currentLoadedState: BuyInputContract.State.Loaded?
