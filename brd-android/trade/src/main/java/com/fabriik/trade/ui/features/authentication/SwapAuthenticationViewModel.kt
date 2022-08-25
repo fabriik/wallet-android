@@ -14,7 +14,7 @@ class SwapAuthenticationViewModel(
 ) {
 
     override fun createInitialState(): SwapAuthenticationContract.State {
-        val isFingerprintEnabled = isFingerprintEnabled()
+        /*val isFingerprintEnabled = isFingerprintEnabled()
         val authMode by lazy {
             val biometricManager = BiometricManager.from(getApplication())
             val hasBiometrics =
@@ -24,11 +24,11 @@ class SwapAuthenticationViewModel(
             } else {
                 SwapAuthenticationContract.AuthMode.PIN_REQUIRED
             }
-        }
+        }*/
 
         return SwapAuthenticationContract.State(
-            isFingerprintEnabled = isFingerprintEnabled,
-            authMode = authMode
+            isFingerprintEnabled = false/*isFingerprintEnabled*/,
+            authMode = SwapAuthenticationContract.AuthMode.PIN_REQUIRED /*authMode*/
         )
     }
 
