@@ -1,4 +1,4 @@
-package com.fabriik.buy.ui.input
+package com.fabriik.buy.ui.features.input
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,6 +15,7 @@ import com.breadwallet.util.formatFiatForUi
 import com.fabriik.buy.R
 import com.fabriik.buy.data.model.PaymentInstrument
 import com.fabriik.buy.databinding.FragmentBuyInputBinding
+import com.fabriik.buy.ui.features.input.BuyInputContract
 import com.fabriik.buy.ui.features.paymentmethod.PaymentMethodFragment
 import com.fabriik.common.ui.base.FabriikView
 import com.fabriik.common.utils.FabriikToastUtil
@@ -128,11 +129,7 @@ class BuyInputFragment : Fragment(),
                 findNavController().navigate(BuyInputFragmentDirections.actionAddCard())
 
             is BuyInputContract.Effect.PaymentMethodSelection ->
-                findNavController().navigate(
-                    BuyInputFragmentDirections.actionPaymentMethod(
-                        effect.paymentInstruments.toTypedArray()
-                    )
-                )
+                findNavController().navigate(BuyInputFragmentDirections.actionPaymentMethod())
 
             is BuyInputContract.Effect.OpenOrderPreview ->
                 findNavController().navigate(

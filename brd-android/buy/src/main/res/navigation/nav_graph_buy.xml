@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/fragmentBuyInput"
-        android:name="com.fabriik.buy.ui.input.BuyInputFragment"
+        android:name="com.fabriik.buy.ui.features.input.BuyInputFragment"
         tools:layout="@layout/fragment_buy_input">
 
         <action
@@ -130,10 +130,6 @@
     <fragment android:id="@+id/fragmentPaymentMethod"
         android:name="com.fabriik.buy.ui.features.paymentmethod.PaymentMethodFragment"
         tools:layout="@layout/fragment_payment_method">
-
-        <argument
-            android:name="paymentInstruments"
-            app:argType="com.fabriik.buy.data.model.PaymentInstrument[]"/>
 
         <action
             android:id="@+id/actionAddCard"

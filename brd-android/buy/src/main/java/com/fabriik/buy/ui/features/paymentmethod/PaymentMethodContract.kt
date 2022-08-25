@@ -16,9 +16,11 @@ interface PaymentMethodContract : FabriikContract {
         object Dismiss : Effect()
         object AddCard : Effect()
         data class Back(val selectedInstrument: PaymentInstrument? = null) : Effect()
+        data class ShowError(val message: String) : Effect()
     }
 
     data class State(
-        val paymentInstruments: List<PaymentInstrument>
+        val paymentInstruments: List<PaymentInstrument>,
+        val initialLoadingIndicator: Boolean = false
     ) : FabriikContract.State
 }

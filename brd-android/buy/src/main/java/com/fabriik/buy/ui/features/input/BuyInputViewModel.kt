@@ -1,4 +1,4 @@
-package com.fabriik.buy.ui.input
+package com.fabriik.buy.ui.features.input
 
 import android.app.Application
 import androidx.lifecycle.viewModelScope
@@ -9,6 +9,7 @@ import com.breadwallet.tools.util.TokenUtil
 import com.fabriik.buy.R
 import com.fabriik.buy.data.BuyApi
 import com.fabriik.buy.data.model.PaymentInstrument
+import com.fabriik.buy.ui.features.input.BuyInputContract
 import com.fabriik.common.data.Status
 import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.common.utils.getString
