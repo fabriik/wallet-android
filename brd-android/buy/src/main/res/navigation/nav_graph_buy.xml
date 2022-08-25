@@ -110,6 +110,10 @@
             app:argType="string"/>
 
         <argument
+            android:name="networkFee"
+            app:argType="com.fabriik.trade.data.model.FeeAmountData"/>
+
+        <argument
             android:name="quoteResponse"
             app:argType="com.fabriik.trade.data.response.QuoteResponse"/>
 

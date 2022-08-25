@@ -13,6 +13,7 @@ import com.fabriik.buy.ui.features.input.BuyInputContract
 import com.fabriik.common.data.Status
 import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.common.utils.getString
+import com.fabriik.trade.utils.EstimateSwapFee
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -36,8 +37,9 @@ class BuyInputViewModel(
     override val kodein by closestKodein { application }
 
     private val buyApi by kodein.instance<BuyApi>()
-    private val metaDataManager by kodein.instance<AccountMetaDataProvider>()
+    private val estimateFee by kodein.instance<EstimateSwapFee>()
     private val profileManager by kodein.instance<ProfileManager>()
+    private val metaDataManager by kodein.instance<AccountMetaDataProvider>()
 
     private val currentFiatCurrency = "USD"
 
@@ -85,9 +87,18 @@ class BuyInputViewModel(
 
         setState {
             state.copy(
-                cryptoCurrency = currencyCode
-            )
+                cryptoCurrency = currencyCode,
+                cryptoAmount = BigDecimal.ZERO,
+                fiatAmount = BigDecimal.ZERO,
+                quoteResponse = null,
+                networkFee = null
+            ).validate()
         }
+
+        updateAmounts(
+            fiatAmountChangedByUser = false,
+            cryptoAmountChangedByUser = false,
+        )
 
         requestNewQuote()
     }
@@ -122,39 +133,62 @@ class BuyInputViewModel(
     private fun onFiatAmountChanged(fiatAmount: BigDecimal, changeByUser: Boolean) {
         val state = currentLoadedState ?: return
 
-        val cryptoAmount = fiatAmount * state.oneFiatUnitToCryptoRate
-        setState {
-            state.copy(
-                fiatAmount = fiatAmount,
-                cryptoAmount = cryptoAmount,
-            ).validate()
-        }
+        viewModelScope.launch(Dispatchers.IO) {
+            val cryptoAmount = fiatAmount * state.oneFiatUnitToCryptoRate
 
-        updateAmounts(
-            fiatAmountChangedByUser = changeByUser,
-            cryptoAmountChangedByUser = false,
-        )
+            val networkFee = estimateFee(
+                amount = cryptoAmount,
+                fiatCode = state.fiatCurrency,
+                walletCurrency = state.cryptoCurrency
+            )
+
+            val latestState = currentLoadedState ?: return@launch
+            setState {
+                latestState.copy(
+                    networkFee = networkFee,
+                    fiatAmount = fiatAmount,
+                    cryptoAmount = cryptoAmount,
+                ).validate()
+            }
+
+            updateAmounts(
+                fiatAmountChangedByUser = changeByUser,
+                cryptoAmountChangedByUser = false,
+            )
+        }
     }
 
     private fun onCryptoAmountChanged(cryptoAmount: BigDecimal, changeByUser: Boolean) {
         val state = currentLoadedState ?: return
 
-        val fiatAmount = cryptoAmount * state.oneCryptoUnitToFiatRate
-        setState {
-            state.copy(
-                fiatAmount = fiatAmount,
-                cryptoAmount = cryptoAmount,
-            ).validate()
-        }
+        viewModelScope.launch(Dispatchers.IO) {
+            val fiatAmount = cryptoAmount * state.oneCryptoUnitToFiatRate
 
-        updateAmounts(
-            fiatAmountChangedByUser = false,
-            cryptoAmountChangedByUser = changeByUser,
-        )
+            val networkFee = estimateFee(
+                amount = cryptoAmount,
+                fiatCode = state.fiatCurrency,
+                walletCurrency = state.cryptoCurrency
+            )
+
+            val latestState = currentLoadedState ?: return@launch
+            setState {
+                latestState.copy(
+                    networkFee = networkFee,
+                    fiatAmount = fiatAmount,
+                    cryptoAmount = cryptoAmount,
+                ).validate()
+            }
+
+            updateAmounts(
+                fiatAmountChangedByUser = false,
+                cryptoAmountChangedByUser = changeByUser,
+            )
+        }
     }
 
     private fun onContinueClicked() {
         val state = currentLoadedState ?: return
+        val networkFee = state.networkFee ?: return
         val quoteResponse = state.quoteResponse ?: return
         val paymentInstrument = state.selectedPaymentMethod ?: return
 
@@ -162,6 +196,7 @@ class BuyInputViewModel(
 
         setEffect {
             BuyInputContract.Effect.OpenOrderPreview(
+                networkFee = networkFee,
                 fiatAmount = state.fiatAmount,
                 fiatCurrency = state.fiatCurrency,
                 quoteResponse = quoteResponse,

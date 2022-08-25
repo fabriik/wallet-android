@@ -21,6 +21,9 @@ data class QuoteResponse(
     @Json(name="minimum_value")
     val minimumValue: BigDecimal,
 
+    @Json(name="buy_fees")
+    val buyCardFeesPercent: Float?,
+
     @Json(name = "maximum_value")
     val maximumValue: BigDecimal,
 

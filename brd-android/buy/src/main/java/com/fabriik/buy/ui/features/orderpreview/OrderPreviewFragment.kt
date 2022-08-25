@@ -24,8 +24,8 @@ import com.fabriik.common.ui.base.FabriikView
 import com.fabriik.common.ui.dialog.InfoDialog
 import com.fabriik.common.ui.dialog.InfoDialogArgs
 import com.fabriik.common.utils.FabriikToastUtil
+import com.fabriik.common.utils.formatPercent
 import com.fabriik.common.utils.textOrEmpty
-import com.fabriik.common.utils.viewScope
 import com.fabriik.trade.ui.features.authentication.SwapAuthenticationViewModel
 import kotlinx.coroutines.flow.collect
 
@@ -124,7 +124,8 @@ class OrderPreviewFragment : Fragment(),
             tvAmountValue.text = state.fiatAmount.formatFiatForUi(state.fiatCurrency)
             tvCryptoAmount.text = state.cryptoAmount.formatCryptoForUi(state.cryptoCurrency, 8)
             tvCreditFeeValue.text = state.cardFee.formatFiatForUi(state.fiatCurrency)
-            tvNetworkFeeValue.text = state.networkFee.formatFiatForUi(state.fiatCurrency)
+            tvCreditFeeTitle.text = getString(R.string.Buy_OrderPreview_CreditCardFee, state.cardFeePercent.formatPercent())
+            tvNetworkFeeValue.text = state.networkFee.formatFiatForUi()
 
             tvRateValue.text = RATE_FORMAT.format(
                 state.cryptoCurrency,

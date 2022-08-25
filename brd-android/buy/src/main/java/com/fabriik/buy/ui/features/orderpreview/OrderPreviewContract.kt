@@ -2,6 +2,7 @@ package com.fabriik.buy.ui.features.orderpreview
 
 import com.fabriik.buy.data.model.PaymentInstrument
 import com.fabriik.common.ui.base.FabriikContract
+import com.fabriik.trade.data.model.FeeAmountData
 import com.fabriik.trade.data.response.QuoteResponse
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -45,8 +46,7 @@ class OrderPreviewContract : FabriikContract {
         val fiatCurrency: String,
         val cryptoCurrency: String,
         val fiatAmount: BigDecimal,
-        val cardFee: BigDecimal,
-        val networkFee: BigDecimal,
+        val networkFee: FeeAmountData,
         val quoteResponse: QuoteResponse?,
         val paymentReference: String? = null,
         val paymentInstrument: PaymentInstrument,
@@ -60,9 +60,15 @@ class OrderPreviewContract : FabriikContract {
             get() = BigDecimal.ONE.divide(quoteResponse?.exchangeRate, 20, RoundingMode.HALF_UP) ?: BigDecimal.ZERO
 
         val totalFiatAmount: BigDecimal
-            get() = fiatAmount + cardFee + networkFee
+            get() = fiatAmount + cardFee + networkFee.fiatAmount
 
         val cryptoAmount: BigDecimal
             get() = fiatAmount * oneFiatUnitToCryptoRate
+
+        val cardFee: BigDecimal
+            get() = fiatAmount * (cardFeePercent / 100).toBigDecimal()
+
+        val cardFeePercent: Float
+            get() = quoteResponse?.buyCardFeesPercent ?: 0f
     }
 }

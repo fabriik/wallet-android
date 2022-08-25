@@ -5,6 +5,7 @@ import com.fabriik.common.data.model.Profile
 import com.fabriik.common.data.model.isKyc1
 import com.fabriik.common.data.model.isKyc2
 import com.fabriik.common.ui.base.FabriikContract
+import com.fabriik.trade.data.model.FeeAmountData
 import com.fabriik.trade.data.response.QuoteResponse
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -34,6 +35,7 @@ interface BuyInputContract {
         data class UpdateCryptoAmount(val amount: BigDecimal, val changeByUser: Boolean) : Effect()
 
         data class OpenOrderPreview(
+            val networkFee: FeeAmountData,
             val fiatAmount: BigDecimal,
             val fiatCurrency: String,
             val cryptoCurrency: String,
@@ -50,6 +52,7 @@ interface BuyInputContract {
             val quoteResponse: QuoteResponse?,
             val paymentInstruments: List<PaymentInstrument>,
             val selectedPaymentMethod: PaymentInstrument? = null,
+            val networkFee: FeeAmountData? = null,
             val fiatCurrency: String,
             val cryptoCurrency: String,
             val fiatAmount: BigDecimal = BigDecimal.ZERO,
@@ -62,7 +65,7 @@ interface BuyInputContract {
             val oneFiatUnitToCryptoRate: BigDecimal
                 get() = quoteResponse?.exchangeRate ?: BigDecimal.ZERO
             val oneCryptoUnitToFiatRate: BigDecimal
-                get() = BigDecimal.ONE.divide(quoteResponse?.exchangeRate, 20, RoundingMode.HALF_UP) ?: BigDecimal.ZERO
+                get() = BigDecimal.ONE.divide((quoteResponse?.exchangeRate ?: BigDecimal.ONE), 20, RoundingMode.HALF_UP) ?: BigDecimal.ZERO
             val isKyc1: Boolean
                 get() = profile?.isKyc1() == true
             val isKyc2: Boolean
