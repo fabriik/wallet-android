@@ -1,9 +1,12 @@
 package com.fabriik.trade.data.response
 
+import android.os.Parcelable
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import kotlinx.parcelize.Parcelize
 import java.math.BigDecimal
 
+@Parcelize
 @JsonClass(generateAdapter = true)
 data class QuoteResponse(
     @Json(name = "quote_id")
@@ -18,6 +21,9 @@ data class QuoteResponse(
     @Json(name="minimum_value")
     val minimumValue: BigDecimal,
 
+    @Json(name="buy_fees")
+    val buyCardFeesPercent: Float?,
+
     @Json(name = "maximum_value")
     val maximumValue: BigDecimal,
 
@@ -26,8 +32,9 @@ data class QuoteResponse(
 
     @Json(name="to_fee_currency")
     val toFeeCurrency: FeeCurrency?
-)
+): Parcelable
 
+@Parcelize
 @JsonClass(generateAdapter = true)
 data class FeeCurrency(
     @Json(name = "fee_currency")
@@ -35,4 +42,4 @@ data class FeeCurrency(
 
     @Json(name = "rate")
     val rate: BigDecimal
-)
+): Parcelable

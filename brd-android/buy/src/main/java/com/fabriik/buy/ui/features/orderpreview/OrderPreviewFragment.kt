@@ -1,5 +1,7 @@
 package com.fabriik.buy.ui.features.orderpreview
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.Spanned
@@ -8,16 +10,22 @@ import android.text.style.ClickableSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.breadwallet.breadbox.formatCryptoForUi
+import com.breadwallet.util.formatFiatForUi
 import com.fabriik.buy.R
 import com.fabriik.buy.databinding.FragmentOrderPreviewBinding
-import com.fabriik.buy.ui.customview.CardType
 import com.fabriik.common.ui.base.FabriikView
 import com.fabriik.common.ui.dialog.InfoDialog
 import com.fabriik.common.ui.dialog.InfoDialogArgs
+import com.fabriik.common.utils.FabriikToastUtil
+import com.fabriik.common.utils.formatPercent
+import com.fabriik.common.utils.textOrEmpty
 import com.fabriik.trade.ui.features.authentication.SwapAuthenticationViewModel
 import kotlinx.coroutines.flow.collect
 
@@ -27,11 +35,13 @@ class OrderPreviewFragment : Fragment(),
     private lateinit var binding: FragmentOrderPreviewBinding
     private val viewModel: OrderPreviewViewModel by viewModels()
 
+    private val paymentRedirectResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        viewModel.setEvent(OrderPreviewContract.Event.OnPaymentRedirectResult)
+    }
+
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
         return inflater.inflate(R.layout.fragment_order_preview, container, false)
     }
 
@@ -49,12 +59,24 @@ class OrderPreviewFragment : Fragment(),
                 viewModel.setEvent(OrderPreviewContract.Event.OnDismissClicked)
             }
 
-            icInfoCredit.setOnClickListener {
+            ivInfoCredit.setOnClickListener {
                 viewModel.setEvent(OrderPreviewContract.Event.OnCreditInfoClicked)
             }
 
-            icInfoNetwork.setOnClickListener {
+            ivInfoNetwork.setOnClickListener {
                 viewModel.setEvent(OrderPreviewContract.Event.OnNetworkInfoClicked)
+            }
+
+            ivInfoSecurityCode.setOnClickListener {
+                viewModel.setEvent(OrderPreviewContract.Event.OnSecurityCodeInfoClicked)
+            }
+
+            etCvv.addTextChangedListener {
+                viewModel.setEvent(
+                    OrderPreviewContract.Event.OnSecurityCodeChanged(
+                        it.textOrEmpty()
+                    )
+                )
             }
 
             btnConfirm.setOnClickListener {
@@ -65,13 +87,6 @@ class OrderPreviewFragment : Fragment(),
             val fullText = getString(R.string.Buy_OrderPreview_Subtext, clickableText)
             tvTermsConditions.text = getSpannableText(fullText, clickableText)
             tvTermsConditions.movementMethod = LinkMovementMethod.getInstance()
-
-            //TODO - connect to BE
-            cvCreditCard.setContent(
-                type = CardType.VISA,
-                lastDigits = "4255",
-                expirationDate = "25/59"
-            )
         }
 
         // collect UI state
@@ -100,6 +115,26 @@ class OrderPreviewFragment : Fragment(),
     }
 
     override fun render(state: OrderPreviewContract.State) {
+        with(binding) {
+            ivCrypto.postLoadIcon(state.cryptoCurrency)
+            btnConfirm.isEnabled = state.confirmButtonEnabled
+            viewCreditCard.setPaymentInstrument(state.paymentInstrument)
+
+            tvTotalAmount.text = state.totalFiatAmount.formatFiatForUi(state.fiatCurrency)
+            tvAmountValue.text = state.fiatAmount.formatFiatForUi(state.fiatCurrency)
+            tvCryptoAmount.text = state.cryptoAmount.formatCryptoForUi(state.cryptoCurrency, 8)
+            tvCreditFeeValue.text = state.cardFee.formatFiatForUi(state.fiatCurrency)
+            tvCreditFeeTitle.text = getString(R.string.Buy_OrderPreview_CreditCardFee, state.cardFeePercent.formatPercent())
+            tvNetworkFeeValue.text = state.networkFee.formatFiatForUi()
+
+            tvRateValue.text = RATE_FORMAT.format(
+                state.cryptoCurrency,
+                state.oneCryptoUnitToFiatRate.formatFiatForUi(
+                    state.fiatCurrency
+                ),
+                state.fiatCurrency
+            )
+        }
     }
 
     override fun handleEffect(effect: OrderPreviewContract.Effect) {
@@ -110,9 +145,9 @@ class OrderPreviewFragment : Fragment(),
             OrderPreviewContract.Effect.Dismiss ->
                 activity?.finish()
 
-            OrderPreviewContract.Effect.PaymentProcessing ->
+            is OrderPreviewContract.Effect.PaymentProcessing ->
                 findNavController().navigate(
-                    OrderPreviewFragmentDirections.actionPaymentProcessing()
+                    OrderPreviewFragmentDirections.actionPaymentProcessing(effect.paymentReference)
                 )
 
             OrderPreviewContract.Effect.RequestUserAuthentication ->
@@ -120,8 +155,23 @@ class OrderPreviewFragment : Fragment(),
                     OrderPreviewFragmentDirections.actionUserAuthentication()
                 )
 
+            is OrderPreviewContract.Effect.ShowError ->
+                FabriikToastUtil.showError(binding.root, effect.message)
+
             is OrderPreviewContract.Effect.ShowInfoDialog ->
-                showInfoDialog(effect.type)
+                showInfoDialog(effect)
+
+            is OrderPreviewContract.Effect.OpenWebsite -> {
+                val uri = Uri.parse(effect.url)
+                val intent = Intent(Intent.ACTION_VIEW, uri)
+                startActivity(intent)
+            }
+
+            is OrderPreviewContract.Effect.OpenPaymentRedirect -> {
+                val uri = Uri.parse(effect.url)
+                val intent = Intent(Intent.ACTION_VIEW, uri)
+                paymentRedirectResultLauncher.launch(intent)
+            }
         }
     }
 
@@ -130,7 +180,7 @@ class OrderPreviewFragment : Fragment(),
 
         val clickableSpan = object : ClickableSpan() {
             override fun onClick(widget: View) {
-                viewModel.setEvent(OrderPreviewContract.Event.OnTermsAndConditionsCLicked)
+                viewModel.setEvent(OrderPreviewContract.Event.OnTermsAndConditionsClicked)
             }
         }
 
@@ -145,13 +195,17 @@ class OrderPreviewFragment : Fragment(),
         return spannableString
     }
 
-    private fun showInfoDialog(type: DialogType) {
-        val fm = parentFragmentManager
+    private fun showInfoDialog(effect: OrderPreviewContract.Effect.ShowInfoDialog) {
         val args = InfoDialogArgs(
-            title = if (type == DialogType.CREDIT_CARD_FEE) R.string.Buy_OrderPreview_CardFeesDialog_Title else R.string.Buy_OrderPreview_NetworkFeesDialog_Title,
-            description = if (type == DialogType.CREDIT_CARD_FEE) R.string.Buy_OrderPreview_CardFeesDialog_Content else R.string.Buy_OrderPreview_NetworkFeesDialog_Content
+            image = effect.image,
+            title = effect.title,
+            description = effect.description
         )
 
-        InfoDialog(args).show(fm, InfoDialog.TAG)
+        InfoDialog(args).show(parentFragmentManager, InfoDialog.TAG)
+    }
+    
+    companion object {
+        private const val RATE_FORMAT = "1 %s = %s %s"
     }
 }

@@ -1,6 +1,11 @@
 package com.fabriik.buy.ui.features.orderpreview
 
+import com.fabriik.buy.data.model.PaymentInstrument
 import com.fabriik.common.ui.base.FabriikContract
+import com.fabriik.trade.data.model.FeeAmountData
+import com.fabriik.trade.data.response.QuoteResponse
+import java.math.BigDecimal
+import java.math.RoundingMode
 
 class OrderPreviewContract : FabriikContract {
 
@@ -10,23 +15,60 @@ class OrderPreviewContract : FabriikContract {
         object OnConfirmClicked : Event()
         object OnCreditInfoClicked : Event()
         object OnNetworkInfoClicked : Event()
-        object OnTermsAndConditionsCLicked : Event()
+        object OnSecurityCodeInfoClicked : Event()
+        object OnTermsAndConditionsClicked : Event()
         object OnUserAuthenticationSucceed : Event()
+        object OnPaymentRedirectResult : Event()
+
+        data class OnSecurityCodeChanged(val securityCode: String) : Event()
     }
 
     sealed class Effect : FabriikContract.Effect {
         object Back : Effect()
         object Dismiss : Effect()
-        object PaymentProcessing : Effect()
         object RequestUserAuthentication : Effect()
 
-        data class ShowInfoDialog(val type: DialogType) : Effect()
+        data class ShowError(val message: String) : Effect()
+        data class PaymentProcessing(val paymentReference: String?) : Effect()
+
+        data class ShowInfoDialog(
+            val image: Int? = null,
+            val title: Int,
+            val description: Int
+        ) : Effect()
+
+        data class OpenWebsite(val url: String): Effect()
+        data class OpenPaymentRedirect(val url: String): Effect()
     }
 
-    object State : FabriikContract.State
-}
+    data class State(
+        val securityCode: String = "",
+        val fiatCurrency: String,
+        val cryptoCurrency: String,
+        val fiatAmount: BigDecimal,
+        val networkFee: FeeAmountData,
+        val quoteResponse: QuoteResponse?,
+        val paymentReference: String? = null,
+        val paymentInstrument: PaymentInstrument,
+        val confirmButtonEnabled: Boolean = false
+    ) : FabriikContract.State {
 
-enum class DialogType {
-    CREDIT_CARD_FEE,
-    NETWORK_FEE
+        val oneFiatUnitToCryptoRate: BigDecimal
+            get() = quoteResponse?.exchangeRate ?: BigDecimal.ZERO
+
+        val oneCryptoUnitToFiatRate: BigDecimal
+            get() = BigDecimal.ONE.divide(quoteResponse?.exchangeRate, 20, RoundingMode.HALF_UP) ?: BigDecimal.ZERO
+
+        val totalFiatAmount: BigDecimal
+            get() = fiatAmount + cardFee + networkFee.fiatAmount
+
+        val cryptoAmount: BigDecimal
+            get() = fiatAmount * oneFiatUnitToCryptoRate
+
+        val cardFee: BigDecimal
+            get() = fiatAmount * (cardFeePercent / 100).toBigDecimal()
+
+        val cardFeePercent: Float
+            get() = quoteResponse?.buyCardFeesPercent ?: 0f
+    }
 }
