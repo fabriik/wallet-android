@@ -64,7 +64,7 @@ class BuyActivity : AppCompatActivity() {
             val intent = Intent(context, BuyActivity::class.java)
             intent.putExtra(
                 EXTRA_ARGS, Args(
-                    startDestination = R.id.fragmentBuyInput, /* R.id.fragmentBuyDetails todo: change to buy details when implemented*/
+                    startDestination =  R.id.fragmentBuyDetails,
                     bundle = bundleOf(EXTRA_EXCHANGE_ID to exchangeId)
                 )
             )

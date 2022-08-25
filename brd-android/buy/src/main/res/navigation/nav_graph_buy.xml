@@ -116,4 +116,14 @@
             app:destination="@id/fragmentAddCard" />
 
     </fragment>
+
+    <fragment android:id="@+id/fragmentBuyDetails"
+        android:name="com.fabriik.buy.ui.features.buydetails.BuyDetailsFragment"
+        tools:layout="@layout/fragment_buy_details">
+
+        <argument
+            android:name="exchangeId"
+            app:argType="string" />
+
+    </fragment>
 </navigation>
