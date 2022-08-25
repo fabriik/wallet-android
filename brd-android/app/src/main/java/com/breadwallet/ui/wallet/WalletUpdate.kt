@@ -417,10 +417,10 @@ object WalletUpdate : Update<M, E, F>, WalletScreenUpdateSpec {
     ): Next<M, F> =
         dispatch(
             effects(
-                if (event.exchangeId.isNullOrEmpty()) {
+                if (event.transactionData == null) {
                     F.Nav.GoToTransaction(model.currencyCode, event.txHash)
                 } else {
-                    F.Nav.GoToExchangeTransaction(event.exchangeId)
+                    F.Nav.GoToExchangeTransaction(event.transactionData)
                 }
             )
         )

@@ -274,9 +274,15 @@ class RouterNavigator(
     override fun viewExchangeTransaction(effect: NavigationTarget.ViewExchangeTransaction) {
         router.activity?.let {
             it.startActivity(
-                SwapActivity.getStartIntentForSwapDetails(
-                    it, effect.exchangeId
-                )
+                if (effect.transactionData.isBuyTransaction()) {
+                    BuyActivity.getStartIntentForSwapDetails(
+                        it, effect.transactionData.exchangeId
+                    )
+                } else {
+                    SwapActivity.getStartIntentForSwapDetails(
+                        it, effect.transactionData.exchangeId
+                    )
+                }
             )
         }
     }

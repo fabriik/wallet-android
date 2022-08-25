@@ -35,6 +35,7 @@ import com.breadwallet.tools.util.asCryptoRequestUrl
 import com.breadwallet.ui.navigation.NavigationEffect
 import com.breadwallet.ui.navigation.NavigationTarget
 import com.breadwallet.platform.entities.TxMetaData
+import com.fabriik.trade.data.model.SwapBuyTransactionData
 import dev.zacsweers.redacted.annotations.Redacted
 import java.math.BigDecimal
 
@@ -143,7 +144,7 @@ object WalletScreen {
         data class OnSendRequestGiven(val cryptoRequest: CryptoRequest) : E()
         object OnReceiveClicked : E()
 
-        data class OnTransactionClicked(@Redacted val txHash: String, @Redacted val exchangeId: String?) : E()
+        data class OnTransactionClicked(@Redacted val txHash: String, @Redacted val transactionData: SwapBuyTransactionData?) : E()
 
         data class OnIsCryptoPreferredLoaded(val isCryptoPreferred: Boolean) : E()
 
@@ -194,10 +195,10 @@ object WalletScreen {
             }
 
             data class GoToExchangeTransaction(
-                val exchangeId: String
+                val transactionData: SwapBuyTransactionData
             ) : Nav() {
                 override val navigationTarget =
-                    NavigationTarget.ViewExchangeTransaction(exchangeId)
+                    NavigationTarget.ViewExchangeTransaction(transactionData)
             }
 
             object GoBack : Nav() {
