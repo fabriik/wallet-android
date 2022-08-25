@@ -60,9 +60,14 @@ data class WalletTransaction(
 sealed class ExchangeData(
     val transactionData: SwapBuyTransactionData
 ) {
+
+    abstract fun getIcon(): Int
     abstract fun getTransactionTitle(context: Context): String?
 
     class Deposit(transactionData: SwapBuyTransactionData) : ExchangeData(transactionData) {
+
+        override fun getIcon() = R.drawable.ic_transaction_swap
+
         override fun getTransactionTitle(context: Context): String? {
             return when (transactionData.exchangeStatus) {
                 ExchangeOrderStatus.PENDING -> context.getString(
@@ -80,6 +85,9 @@ sealed class ExchangeData(
     }
 
     class BuyWithdrawal(transactionData: SwapBuyTransactionData) : ExchangeData(transactionData) {
+
+        override fun getIcon() = R.drawable.ic_transaction_buy
+
         override fun getTransactionTitle(context: Context): String? {
             return when (transactionData.exchangeStatus) {
                 ExchangeOrderStatus.PENDING -> context.getString(
@@ -97,6 +105,9 @@ sealed class ExchangeData(
     }
 
     class SwapWithdrawal(transactionData: SwapBuyTransactionData) : ExchangeData(transactionData) {
+
+        override fun getIcon() = R.drawable.ic_transaction_swap
+
         override fun getTransactionTitle(context: Context): String? {
             return when (transactionData.exchangeStatus) {
                 ExchangeOrderStatus.PENDING -> context.getString(

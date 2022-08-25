@@ -26,7 +26,9 @@ class SwapTransactionsRepository {
 
     fun getUnlinkedTransactionData(currency: String): List<SwapBuyTransactionData> {
         return swapBuyTransactions.filter {
-            it.destination.currency.equals(currency, true) && it.destination.transactionId == null
+            it.destination.currency.equals(currency, true)
+                && it.destination.transactionId == null
+                && it.exchangeStatus != ExchangeOrderStatus.FAILED
         }
     }
 

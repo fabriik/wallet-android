@@ -23,11 +23,11 @@
         android:id="@+id/ic_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_swap"
         app:layout_constraintBottom_toBottomOf="@id/ic_item_bg"
         app:layout_constraintEnd_toEndOf="@id/ic_item_bg"
         app:layout_constraintStart_toStartOf="@id/ic_item_bg"
-        app:layout_constraintTop_toTopOf="@id/ic_item_bg" />
+        app:layout_constraintTop_toTopOf="@id/ic_item_bg"
+        tools:src="@drawable/ic_transaction_swap" />
 
     <TextView
         android:id="@+id/tv_transaction_title"
