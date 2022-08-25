@@ -200,12 +200,6 @@ class BuyInputFragment : Fragment(),
             quoteLoadingIndicator.isVisible = state.rateLoadingVisible
             fullScreenLoadingView.root.isVisible = state.fullScreenLoadingVisible
 
-            if (state.isKyc2) {
-                tvKycMessage.text = getString(com.fabriik.trade.R.string.Swap_KycLimits_Kyc2)
-            } else if(state.isKyc1) {
-                tvKycMessage.text = getString(com.fabriik.trade.R.string.Swap_KycLimits_Kyc1)
-            }
-
             tvRateValue.isVisible = !state.rateLoadingVisible && state.quoteResponse != null
         }
     }
