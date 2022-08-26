@@ -5,10 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.breadwallet.breadbox.formatCryptoForUi
 import com.breadwallet.tools.manager.BRClipboardManager
 import com.fabriik.common.ui.base.FabriikView
 import com.fabriik.common.utils.FabriikToastUtil
@@ -116,19 +118,38 @@ class BuyDetailsFragment : Fragment(),
         val data = state.data
 
         with(binding) {
-            tvOrderId.text = data.orderId
-
-            ivCrypto.loadIcon(
-                scope = binding.root.viewScope,
-                currencyCode = data.source.currency
-            )
-
-            val date = Date(data.timestamp)
-            tvTimestamp.text = dateFormatter.format(date)
-
+            // status item
             icStatus.setImageResource(setStatusIcon(data.status))
             tvStatus.text = getString(setStatusTitle(data.status))
 
+            // crypto amount item
+            ivCrypto.postLoadIcon(data.destination.currency)
+            tvCryptoAmount.text = data.destination.currencyAmount.formatCryptoForUi(
+                data.destination.currency, 8
+            )
+
+            // Fabriik transaction ID item
+            tvOrderId.text = data.orderId
+
+            // {cryptoCurrency} Transaction ID item
+            tvCryptoTransactionIdTitle.text = getString(
+                R.string.Buy_Details_CryptoTransactionId, data.destination.currency.uppercase(Locale.getDefault())
+            )
+
+            if (data.destination.transactionId.isNullOrEmpty()) {
+                tvCryptoTransactionId.text = getString(R.string.Buy_Details_Status_Pending)
+                tvCryptoTransactionId.setCompoundDrawablesRelative(null, null, null, null)
+                tvCryptoTransactionId.setTextColor(ContextCompat.getColor(requireContext(), R.color.light_text_02))
+            } else {
+                tvCryptoTransactionId.text = data.destination.transactionId
+                tvCryptoTransactionId.setTextColor(ContextCompat.getColor(requireContext(), R.color.light_link_02))
+            }
+
+            // timestamp item
+            val date = Date(data.timestamp)
+            tvTimestamp.text = dateFormatter.format(date)
+
+            // others
             content.isVisible = true
             initialLoadingIndicator.isVisible = false
         }
@@ -138,37 +159,9 @@ class BuyDetailsFragment : Fragment(),
                     R.string.Swap_Details_TransactionIdTo_Title, data.destination.currency.toUpperCase(Locale.getDefault())
                 )
 
-                if (data.destination.transactionId.isNullOrEmpty()) {
-                    tvSwapToId.text = getString(R.string.Swap_Details_Status_Pending)
-                    tvSwapToId.setCompoundDrawablesRelative(null, null, null, null)
-                    tvSwapToId.setTextColor(ContextCompat.getColor(requireContext(), R.color.light_text_02))
-                } else {
-                    tvSwapToId.text = data.destination.transactionId
-                    tvSwapToId.setTextColor(ContextCompat.getColor(requireContext(), R.color.light_link_02))
-                }
-
-                icSwapTo.loadIcon(
-                    scope = tvSwapFrom.viewScope,
-                    currencyCode = data.destination.currency
-                )
-
                 val formatFiatTo = data.destination.usdAmount?.formatFiatForUi("USD") ?: "? USD"
                 val formatCryptoTo = data.destination.currencyAmount.formatCryptoForUi(null)
                 tvToCurrencyValue.text = "$formatCryptoTo / $formatFiatTo"
-
-                tvSwapFrom.text = getString(R.string.Swap_Details_From, data.source.currency.toUpperCase(Locale.getDefault()))
-                tvSwapFromIdTitle.text = getString(
-                    R.string.Swap_Details_TransactionIdFrom_Title, data.source.currency.toUpperCase(Locale.getDefault())
-                )
-
-                if (data.source.transactionId.isNullOrEmpty()) {
-                    tvSwapFromId.text = getString(R.string.Swap_Details_Status_Pending)
-                    tvSwapFromId.setCompoundDrawablesRelative(null, null, null, null)
-                    tvSwapFromId.setTextColor(ContextCompat.getColor(requireContext(), R.color.light_text_02))
-                } else {
-                    tvSwapFromId.text = data.source.transactionId
-                    tvSwapFromId.setTextColor(ContextCompat.getColor(requireContext(), R.color.light_link_02))
-                }
 
                 val formatFiatFrom = data.source.usdAmount?.formatFiatForUi("USD") ?: "? USD"
                 val formatCryptoFrom = data.source.currencyAmount.formatCryptoForUi(null)
