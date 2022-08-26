@@ -128,6 +128,13 @@ class BuyDetailsFragment : Fragment(),
                 data.destination.currency, 8
             )
 
+            // purchase details items
+            tvRateValue.text = "rate"
+            tvPurchasedAmount.text = "amount"
+            tvCreditFeeAmount.text = "card fee"
+            tvNetworkFeeAmount.text = "network fee"
+            tvTotalAmount.text = "total"
+
             // Fabriik transaction ID item
             tvOrderId.text = data.orderId
 
@@ -153,21 +160,6 @@ class BuyDetailsFragment : Fragment(),
             content.isVisible = true
             initialLoadingIndicator.isVisible = false
         }
-            /*binding.root.post {
-                tvSwapTo.text = getString(R.string.Swap_Details_To, data.destination.currency.toUpperCase(Locale.getDefault()))
-                tvSwapToIdTitle.text = getString(
-                    R.string.Swap_Details_TransactionIdTo_Title, data.destination.currency.toUpperCase(Locale.getDefault())
-                )
-
-                val formatFiatTo = data.destination.usdAmount?.formatFiatForUi("USD") ?: "? USD"
-                val formatCryptoTo = data.destination.currencyAmount.formatCryptoForUi(null)
-                tvToCurrencyValue.text = "$formatCryptoTo / $formatFiatTo"
-
-                val formatFiatFrom = data.source.usdAmount?.formatFiatForUi("USD") ?: "? USD"
-                val formatCryptoFrom = data.source.currencyAmount.formatCryptoForUi(null)
-                tvFromCurrencyValue.text = "$formatCryptoFrom / $formatFiatFrom"
-            }
-        }*/
     }
 
     private fun setStatusIcon(status: ExchangeOrderStatus): Int {

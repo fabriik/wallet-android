@@ -135,7 +135,7 @@
                         tools:text="$100 USD" />
 
                     <TextView
-                        android:id="@+id/tv_amount_title"
+                        android:id="@+id/tv_purchased_amount_title"
                         style="@style/TextStyle.Body2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -145,12 +145,12 @@
                         app:layout_constraintTop_toBottomOf="@id/tv_rate_title" />
 
                     <TextView
-                        android:id="@+id/tv_amount_value"
+                        android:id="@+id/tv_purchased_amount"
                         style="@style/TextStyle.Body2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintBaseline_toBaselineOf="@id/tv_amount_title"
+                        app:layout_constraintBaseline_toBaselineOf="@id/tv_purchased_amount_title"
                         tools:text="$100 USD" />
 
                     <TextView
@@ -161,10 +161,10 @@
                         android:layout_marginTop="16dp"
                         android:text="@string/Buy.Details.CardFee"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_amount_title" />
+                        app:layout_constraintTop_toBottomOf="@id/tv_purchased_amount_title" />
 
                     <TextView
-                        android:id="@+id/tv_credit_fee_value"
+                        android:id="@+id/tv_credit_fee_amount"
                         style="@style/TextStyle.Body2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -183,7 +183,7 @@
                         app:layout_constraintTop_toBottomOf="@id/tv_credit_fee_title" />
 
                     <TextView
-                        android:id="@+id/tv_network_fee_value"
+                        android:id="@+id/tv_network_fee_amount"
                         style="@style/TextStyle.Body2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -333,10 +333,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginBottom="24dp"
                 android:backgroundTint="@color/white"
                 app:cardCornerRadius="15dp"
+                app:layout_constraintVertical_bias="0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/cv_timestamp">
+                app:layout_constraintTop_toBottomOf="@id/cv_timestamp"
+                app:layout_constraintBottom_toBottomOf="parent">
 
                 <LinearLayout
                     android:layout_width="match_parent"
