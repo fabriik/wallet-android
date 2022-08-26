@@ -9,10 +9,12 @@ class PaymentProcessingContract : FabriikContract {
         object BackToHomeClicked : Event()
         object ContactSupportClicked: Event()
         object PurchaseDetailsClicked: Event()
+        object TryDifferentMethodClicked: Event()
     }
 
     sealed class Effect : FabriikContract.Effect {
         object Dismiss : Effect()
+        object BackToBuy : Effect()
         object ContactSupport : Effect()
         data class GoToPurchaseDetails(val purchaseId: String) : Effect()
     }
@@ -29,23 +31,29 @@ class PaymentProcessingContract : FabriikContract {
         val icon: Int,
         val title: Int,
         val description: Int,
+        val goHomeVisible: Boolean,
         val contactSupportVisible: Boolean,
-        val purchaseDetailsVisible: Boolean
+        val purchaseDetailsVisible: Boolean,
+        val tryDifferentMethodVisible: Boolean
     ) {
         SUCCESS(
             icon = R.drawable.ic_payment_succeed,
             title = R.string.Buy_ProcessingSucceed_Title,
             description = R.string.Buy_ProcessingSucceed_Description,
+            goHomeVisible = true,
             contactSupportVisible = false,
-            purchaseDetailsVisible = true
+            purchaseDetailsVisible = true,
+            tryDifferentMethodVisible = false,
         ),
 
         FAILED(
             icon = R.drawable.ic_payment_failed,
             title = R.string.Buy_ProcessingFailed_Title,
             description = R.string.Buy_ProcessingFailed_Description,
+            goHomeVisible = false,
             contactSupportVisible = true,
-            purchaseDetailsVisible = false
+            purchaseDetailsVisible = false,
+            tryDifferentMethodVisible = true
         )
     }
 }
