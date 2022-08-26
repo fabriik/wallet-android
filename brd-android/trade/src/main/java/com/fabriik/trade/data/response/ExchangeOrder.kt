@@ -1,5 +1,6 @@
 package com.fabriik.trade.data.response
 
+import com.fabriik.common.data.model.PaymentInstrument
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import java.math.BigDecimal
@@ -34,7 +35,10 @@ data class ExchangeSource(
     val currencyAmount: BigDecimal,
 
     @Json(name = "transaction_id")
-    val transactionId: String?
+    val transactionId: String?,
+
+    @Json(name = "payment_instrument")
+    val paymentInstrument: PaymentInstrument?
 )
 
 enum class ExchangeOrderStatus {

@@ -1,6 +1,6 @@
 package com.fabriik.buy.ui.features.orderpreview
 
-import com.fabriik.buy.data.model.PaymentInstrument
+import com.fabriik.common.data.model.PaymentInstrument
 import com.fabriik.common.ui.base.FabriikContract
 import com.fabriik.trade.data.model.FeeAmountData
 import com.fabriik.trade.data.response.QuoteResponse

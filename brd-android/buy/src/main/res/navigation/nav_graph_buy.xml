@@ -129,7 +129,7 @@
 
         <argument
             android:name="paymentInstrument"
-            app:argType="com.fabriik.buy.data.model.PaymentInstrument"/>
+            app:argType="com.fabriik.common.data.model.PaymentInstrument"/>
 
         <action
             android:id="@+id/actionUserAuthentication"

@@ -1,6 +1,6 @@
 package com.fabriik.buy.data.response
 
-import com.fabriik.buy.data.model.PaymentInstrument
+import com.fabriik.common.data.model.PaymentInstrument
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 

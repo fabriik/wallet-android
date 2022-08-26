@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.breadwallet.breadbox.formatCryptoForUi
 import com.breadwallet.tools.manager.BRClipboardManager
+import com.breadwallet.util.formatFiatForUi
 import com.fabriik.common.ui.base.FabriikView
 import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.buy.R
@@ -130,10 +131,20 @@ class BuyDetailsFragment : Fragment(),
 
             // purchase details items
             tvRateValue.text = "rate"
-            tvPurchasedAmount.text = "amount"
             tvCreditFeeAmount.text = "card fee"
             tvNetworkFeeAmount.text = "network fee"
-            tvTotalAmount.text = "total"
+
+            tvPurchasedAmount.text = state.data.destination.usdAmount.formatFiatForUi(
+                currencyCode = "USD",
+                showCurrencyName = true
+            )
+
+            tvTotalAmount.text = state.data.source.currencyAmount.formatFiatForUi(
+                currencyCode = state.data.source.currency,
+                showCurrencyName = true
+            )
+
+            state.data.source.paymentInstrument?.let { viewCreditCard.setPaymentInstrument(it) }
 
             // Fabriik transaction ID item
             tvOrderId.text = data.orderId
