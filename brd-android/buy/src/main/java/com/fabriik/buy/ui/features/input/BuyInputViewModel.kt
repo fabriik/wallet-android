@@ -256,6 +256,11 @@ class BuyInputViewModel(
                             quoteResponse = responseData
                         )
                     }
+
+                    onFiatAmountChanged(
+                        fiatAmount = latestState.fiatAmount,
+                        changeByUser = false
+                    )
                 }
                 Status.ERROR -> {
                     val latestState = currentLoadedState ?: return@launch
