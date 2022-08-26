@@ -104,6 +104,12 @@ class OrderPreviewViewModel(
     }
 
     private fun createBuyOrder() {
+        val quoteResponse = requireNotNull(currentState.quoteResponse)
+        if (quoteResponse.isExpired()) {
+            setEffect { OrderPreviewContract.Effect.TimeoutScreen }
+            return
+        }
+
         callApi(
             endState = { currentState },
             startState = { currentState },  //todo: payment processing screen
@@ -114,7 +120,7 @@ class OrderPreviewViewModel(
                     )
 
                 buyApi.createOrder(
-                    quoteId = requireNotNull(currentState.quoteResponse).quoteId,
+                    quoteId = quoteResponse.quoteId,
                     baseQuantity = currentState.fiatAmount,
                     termQuantity = currentState.cryptoAmount,
                     destination = destinationAddress,

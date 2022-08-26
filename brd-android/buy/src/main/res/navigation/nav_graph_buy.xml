@@ -133,6 +133,10 @@
             app:destination="@id/fragmentBuyAuthentication" />
 
         <action
+            android:id="@+id/actionPaymentTimeout"
+            app:destination="@id/fragmentPaymentTimeout" />
+
+        <action
             android:id="@+id/actionPaymentProcessing"
             app:destination="@id/fragmentPaymentProcessing" />
 
@@ -147,4 +151,15 @@
             app:destination="@id/fragmentAddCard" />
 
     </fragment>
+
+    <fragment android:id="@+id/fragmentPaymentTimeout"
+        android:name="com.fabriik.buy.ui.features.timeout.PaymentTimeoutFragment"
+        tools:layout="@layout/fragment_payment_timeout">
+
+        <action android:id="@+id/actionBuy"
+            app:destination="@+id/fragmentBuyInput"
+            app:popUpTo="@id/fragmentBuyInput"/>
+
+    </fragment>
+
 </navigation>

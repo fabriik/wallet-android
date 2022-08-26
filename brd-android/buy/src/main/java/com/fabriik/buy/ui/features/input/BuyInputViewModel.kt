@@ -9,26 +9,17 @@ import com.breadwallet.tools.util.TokenUtil
 import com.fabriik.buy.R
 import com.fabriik.buy.data.BuyApi
 import com.fabriik.buy.data.model.PaymentInstrument
-import com.fabriik.buy.ui.features.input.BuyInputContract
 import com.fabriik.common.data.Status
 import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.common.utils.getString
-import com.fabriik.trade.ui.features.swap.SwapInputHelper
 import com.fabriik.trade.utils.EstimateSwapFee
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
-import org.kodein.di.direct
 import org.kodein.di.erased.instance
 import java.math.BigDecimal
-import java.util.concurrent.TimeUnit
 
 class BuyInputViewModel(
     application: Application
@@ -47,8 +38,6 @@ class BuyInputViewModel(
 
     private val currentLoadedState: BuyInputContract.State.Loaded?
         get() = state.value as BuyInputContract.State.Loaded?
-
-    private var currentTimerJob: Job? = null
 
     init {
         loadInitialData()
@@ -69,6 +58,9 @@ class BuyInputViewModel(
 
             BuyInputContract.Event.PaymentMethodClicked ->
                 onPaymentMethodClicked()
+
+            BuyInputContract.Event.QuoteTimeoutRetry ->
+                requestNewQuote()
 
             is BuyInputContract.Event.CryptoCurrencyChanged ->
                 onCryptoCurrencyChanged(event.currencyCode)
@@ -247,28 +239,6 @@ class BuyInputViewModel(
         }
     }
 
-    private fun startQuoteTimer() {
-        currentTimerJob?.cancel()
-
-        val state = currentLoadedState ?: return
-        val quoteResponse = state.quoteResponse ?: return
-        val targetTimestamp = quoteResponse.timestamp
-        val currentTimestamp = System.currentTimeMillis()
-        val diffSec = TimeUnit.MILLISECONDS.toSeconds(targetTimestamp - currentTimestamp)
-
-        currentTimerJob = viewModelScope.launch {
-            (diffSec downTo 0)
-                .asSequence()
-                .asFlow()
-                .onEach { delay(1000) }
-                .collect {
-                    if (it == 0L) {
-                        requestNewQuote()
-                    }
-                }
-        }
-    }
-
     private fun requestNewQuote() {
         viewModelScope.launch {
             val state = currentLoadedState ?: return@launch
@@ -286,7 +256,6 @@ class BuyInputViewModel(
                             quoteResponse = responseData
                         )
                     }
-                    startQuoteTimer()
                 }
                 Status.ERROR -> {
                     val latestState = currentLoadedState ?: return@launch

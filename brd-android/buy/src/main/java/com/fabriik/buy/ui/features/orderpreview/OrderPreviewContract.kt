@@ -26,6 +26,7 @@ class OrderPreviewContract : FabriikContract {
     sealed class Effect : FabriikContract.Effect {
         object Back : Effect()
         object Dismiss : Effect()
+        object TimeoutScreen : Effect()
         object RequestUserAuthentication : Effect()
 
         data class ShowError(val message: String) : Effect()
