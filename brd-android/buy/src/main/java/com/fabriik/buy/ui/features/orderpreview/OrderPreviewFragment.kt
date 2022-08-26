@@ -145,6 +145,11 @@ class OrderPreviewFragment : Fragment(),
             OrderPreviewContract.Effect.Dismiss ->
                 activity?.finish()
 
+            OrderPreviewContract.Effect.TimeoutScreen ->
+                findNavController().navigate(
+                    OrderPreviewFragmentDirections.actionPaymentTimeout()
+                )
+
             is OrderPreviewContract.Effect.PaymentProcessing ->
                 findNavController().navigate(
                     OrderPreviewFragmentDirections.actionPaymentProcessing(effect.paymentReference)
