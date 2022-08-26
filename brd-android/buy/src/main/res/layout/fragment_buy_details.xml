@@ -109,8 +109,137 @@
                 android:backgroundTint="@color/white"
                 app:cardCornerRadius="15dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/cv_buy_crypto">
+                app:layout_constraintTop_toBottomOf="@id/cv_buy_crypto"
+                app:contentPadding="24dp">
 
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tv_rate_title"
+                        style="@style/TextStyle.Body2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/Buy.Details.Rate"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_rate_value"
+                        style="@style/TextStyle.Body2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBaseline_toBaselineOf="@id/tv_rate_title"
+                        tools:text="$100 USD" />
+
+                    <TextView
+                        android:id="@+id/tv_amount_title"
+                        style="@style/TextStyle.Body2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/Buy.Details.AmountPurchased"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_rate_title" />
+
+                    <TextView
+                        android:id="@+id/tv_amount_value"
+                        style="@style/TextStyle.Body2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBaseline_toBaselineOf="@id/tv_amount_title"
+                        tools:text="$100 USD" />
+
+                    <TextView
+                        android:id="@+id/tv_credit_fee_title"
+                        style="@style/TextStyle.Body2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/Buy.Details.CardFee"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_amount_title" />
+
+                    <TextView
+                        android:id="@+id/tv_credit_fee_value"
+                        style="@style/TextStyle.Body2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBaseline_toBaselineOf="@id/tv_credit_fee_title"
+                        tools:text="$4.00 USD" />
+
+                    <TextView
+                        android:id="@+id/tv_network_fee_title"
+                        style="@style/TextStyle.Body2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/Buy.Details.NetworkFee"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_credit_fee_title" />
+
+                    <TextView
+                        android:id="@+id/tv_network_fee_value"
+                        style="@style/TextStyle.Body2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/tv_network_fee_title"
+                        tools:text="$1.00 USD" />
+
+                    <View
+                        android:id="@+id/view_line"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="16dp"
+                        android:background="@color/light_outline_03"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_network_fee_title" />
+
+                    <TextView
+                        android:id="@+id/tv_total_title"
+                        style="@style/TextStyle.Subtitle2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="@string/Buy.Details.Total"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/view_line" />
+
+                    <TextView
+                        android:id="@+id/tv_total_amount"
+                        style="@style/TextStyle.Subtitle2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBaseline_toBaselineOf="@id/tv_total_title"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        tools:text="$105.00 USD" />
+
+                    <TextView
+                        android:id="@+id/tv_paid_with"
+                        style="@style/TextStyle.Caption"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/Buy.Details.PaidWith"
+                        android:layout_marginTop="16dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_total_title" />
+
+                    <com.fabriik.buy.ui.customview.CreditCardView
+                        android:id="@+id/view_credit_card"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_paid_with" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView

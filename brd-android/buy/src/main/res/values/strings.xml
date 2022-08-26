@@ -89,4 +89,10 @@
     <string name="Buy.Details.Status.Refunded">Refunded</string>
     <string name="Buy.Details.Status.Failed">Failed</string>
     <string name="Buy.Details.Copied">Copied to clipboard.</string>
+    <string name="Buy.Details.Rate">Rate:</string>
+    <string name="Buy.Details.CardFee">Card fee:</string>
+    <string name="Buy.Details.NetworkFee">Mining network fee:</string>
+    <string name="Buy.Details.AmountPurchased">Amount purchased:</string>
+    <string name="Buy.Details.Total">Total:</string>
+    <string name="Buy.Details.PaidWith">Paid with</string>
 </resources>
