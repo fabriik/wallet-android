@@ -18,6 +18,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.SavedStateHandle
 import kotlinx.coroutines.*
 import java.math.BigDecimal
+import java.text.DecimalFormat
 
 fun AndroidViewModel.getString(@StringRes string: Int, vararg formatArgs: Any?): String {
     return getApplication<Application>().applicationContext.getString(string, *formatArgs)
@@ -110,6 +111,11 @@ fun EditText.afterTextChangedDebounce(delayMillis: Long, callback: (Editable) ->
 
 fun Array<String>.contains(other: String, ignoreCase: Boolean = false): Boolean {
     return any { it.equals(other, ignoreCase) }
+}
+
+fun Float.formatPercent(): String {
+    val decimalFormat = DecimalFormat("#.##");
+    return "${decimalFormat.format(this)}%"
 }
 
 val Int.dp: Int

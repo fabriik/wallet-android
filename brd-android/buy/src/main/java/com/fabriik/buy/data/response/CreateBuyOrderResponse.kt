@@ -10,7 +10,7 @@ data class CreateBuyOrderResponse(
     val paymentReference: String,
 
     @Json(name = "redirect_url")
-    val redirectUrl: String,
+    val redirectUrl: String?,
 
     @Json(name = "status")
     val status: PaymentStatus

@@ -17,9 +17,12 @@ class PaymentProcessingContract : FabriikContract {
         data class GoToPurchaseDetails(val purchaseId: String) : Effect()
     }
 
-    sealed class State : FabriikContract.State {
-        object Processing : State()
-        data class Loaded(val status: Status, val purchaseId: String?) : State()
+    data class State(
+        val paymentReference: String?
+    ) : FabriikContract.State {
+
+        val status: Status
+            get() = if (paymentReference != null) Status.SUCCESS else Status.FAILED
     }
 
     enum class Status(

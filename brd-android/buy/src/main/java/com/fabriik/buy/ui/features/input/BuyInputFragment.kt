@@ -132,7 +132,16 @@ class BuyInputFragment : Fragment(),
                 findNavController().navigate(BuyInputFragmentDirections.actionPaymentMethod())
 
             is BuyInputContract.Effect.OpenOrderPreview ->
-                findNavController().navigate(BuyInputFragmentDirections.actionOrderPreview())
+                findNavController().navigate(
+                    BuyInputFragmentDirections.actionOrderPreview(
+                        networkFee = effect.networkFee,
+                        fiatAmount = effect.fiatAmount,
+                        fiatCurrency = effect.fiatCurrency,
+                        quoteResponse = effect.quoteResponse,
+                        cryptoCurrency = effect.cryptoCurrency,
+                        paymentInstrument = effect.paymentInstrument
+                    )
+                )
 
             is BuyInputContract.Effect.CryptoSelection ->
                 findNavController().navigate(

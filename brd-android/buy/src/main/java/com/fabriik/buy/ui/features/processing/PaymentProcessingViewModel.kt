@@ -1,22 +1,26 @@
 package com.fabriik.buy.ui.features.processing
 
 import android.app.Application
-import com.fabriik.common.data.Resource
-import com.fabriik.common.data.Status
+import androidx.lifecycle.SavedStateHandle
 import com.fabriik.common.ui.base.FabriikViewModel
-import kotlinx.coroutines.delay
+import com.fabriik.common.utils.toBundle
 
 class PaymentProcessingViewModel(
-    application: Application
+    application: Application,
+    savedStateHandle: SavedStateHandle
 ) : FabriikViewModel<PaymentProcessingContract.State, PaymentProcessingContract.Event, PaymentProcessingContract.Effect>(
-    application
+    application, savedStateHandle
 ) {
 
-    init {
-        loadData()
+    private lateinit var arguments: PaymentProcessingFragmentArgs
+
+    override fun parseArguments(savedStateHandle: SavedStateHandle) {
+        arguments = PaymentProcessingFragmentArgs.fromBundle(
+            savedStateHandle.toBundle()
+        )
     }
 
-    override fun createInitialState() = PaymentProcessingContract.State.Processing
+    override fun createInitialState() = PaymentProcessingContract.State(arguments.paymentReference)
 
     override fun handleEvent(event: PaymentProcessingContract.Event) {
         when (event) {
@@ -27,45 +31,11 @@ class PaymentProcessingViewModel(
                 setEffect { PaymentProcessingContract.Effect.ContactSupport }
 
             PaymentProcessingContract.Event.PurchaseDetailsClicked -> {
-                val purchaseId = (currentState as PaymentProcessingContract.State.Loaded?)?.purchaseId
+                val purchaseId = currentState.paymentReference
                 if (!purchaseId.isNullOrBlank()) {
                     setEffect { PaymentProcessingContract.Effect.GoToPurchaseDetails(purchaseId) }
                 }
             }
         }
-    }
-
-    private fun loadData() {
-        callApi(
-            endState = {currentState},
-            startState = {currentState},
-            action = { dummyApiCall() },
-            callback = {
-                when (it.status) {
-                    Status.SUCCESS ->
-                        setState {
-                            PaymentProcessingContract.State.Loaded(
-                                PaymentProcessingContract.Status.SUCCESS, requireNotNull(it.data)
-                            )
-                        }
-
-                    Status.ERROR ->
-                        setState {
-                            PaymentProcessingContract.State.Loaded(
-                                PaymentProcessingContract.Status.FAILED, null
-                            )
-                        }
-                }
-            }
-        )
-    }
-
-    private suspend fun dummyApiCall(): Resource<String?> {
-        delay(3000)
-        //todo: replace with actual API call
-
-        return Resource.success(
-            data = "mocked_purchase_id" //todo: pass id from API
-        )
     }
 }

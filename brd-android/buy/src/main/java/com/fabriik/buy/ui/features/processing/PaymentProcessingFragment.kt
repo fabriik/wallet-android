@@ -61,12 +61,15 @@ class PaymentProcessingFragment : Fragment(),
     }
 
     override fun render(state: PaymentProcessingContract.State) {
-        when (state) {
-            is PaymentProcessingContract.State.Processing ->
-                renderProcessingState()
+        with(binding) {
+            contentLoaded.isVisible = true
+            contentProcessing.isVisible = false
 
-            is PaymentProcessingContract.State.Loaded ->
-                renderLoadedState(state)
+            ivIcon.setImageResource(state.status.icon)
+            tvTitle.setText(state.status.title)
+            tvDescription.setText(state.status.description)
+            btnContactSupport.isVisible = state.status.contactSupportVisible
+            btnPurchaseDetails.isVisible = state.status.purchaseDetailsVisible
         }
     }
 
@@ -82,26 +85,6 @@ class PaymentProcessingFragment : Fragment(),
                 findNavController().navigate(
                     PaymentProcessingFragmentDirections.actionBuyDetails(effect.purchaseId)
                 )
-        }
-    }
-
-    private fun renderProcessingState() {
-        with(binding) {
-            contentLoaded.isVisible = false
-            contentProcessing.isVisible = true
-        }
-    }
-
-    private fun renderLoadedState(state: PaymentProcessingContract.State.Loaded) {
-        with(binding) {
-            contentLoaded.isVisible = true
-            contentProcessing.isVisible = false
-
-            ivIcon.setImageResource(state.status.icon)
-            tvTitle.setText(state.status.title)
-            tvDescription.setText(state.status.description)
-            btnContactSupport.isVisible = state.status.contactSupportVisible
-            btnPurchaseDetails.isVisible = state.status.purchaseDetailsVisible
         }
     }
 }

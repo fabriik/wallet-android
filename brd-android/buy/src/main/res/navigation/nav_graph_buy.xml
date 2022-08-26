@@ -91,16 +91,45 @@
 
     <fragment android:id="@+id/fragmentPaymentProcessing"
         android:name="com.fabriik.buy.ui.features.processing.PaymentProcessingFragment"
-        tools:layout="@layout/fragment_swap_authentication">
+        tools:layout="@layout/fragment_payment_processing">
 
         <action android:id="@+id/actionBuyDetails"
             app:destination="@id/fragmentBuyDetails"/>
+
+        <argument
+            android:name="paymentReference"
+            app:argType="string"
+            app:nullable="true"/>
 
     </fragment>
 
     <fragment android:id="@+id/fragmentOrderPreview"
         android:name="com.fabriik.buy.ui.features.orderpreview.OrderPreviewFragment"
         tools:layout="@layout/fragment_order_preview">
+
+        <argument
+            android:name="fiatAmount"
+            app:argType="java.math.BigDecimal"/>
+
+        <argument
+            android:name="fiatCurrency"
+            app:argType="string"/>
+
+        <argument
+            android:name="cryptoCurrency"
+            app:argType="string"/>
+
+        <argument
+            android:name="networkFee"
+            app:argType="com.fabriik.trade.data.model.FeeAmountData"/>
+
+        <argument
+            android:name="quoteResponse"
+            app:argType="com.fabriik.trade.data.response.QuoteResponse"/>
+
+        <argument
+            android:name="paymentInstrument"
+            app:argType="com.fabriik.buy.data.model.PaymentInstrument"/>
 
         <action
             android:id="@+id/actionUserAuthentication"
