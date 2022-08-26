@@ -17,6 +17,7 @@ interface BuyInputContract {
         object ContinueClicked : Event()
         object PaymentMethodClicked : Event()
         object CryptoCurrencyClicked : Event()
+        object QuoteTimeoutRetry : Event()
 
         data class FiatAmountChange(val amount: BigDecimal) : Event()
         data class CryptoAmountChange(val amount: BigDecimal) : Event()

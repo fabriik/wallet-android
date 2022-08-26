@@ -17,6 +17,7 @@ import com.fabriik.buy.data.model.PaymentInstrument
 import com.fabriik.buy.databinding.FragmentBuyInputBinding
 import com.fabriik.buy.ui.features.input.BuyInputContract
 import com.fabriik.buy.ui.features.paymentmethod.PaymentMethodFragment
+import com.fabriik.buy.ui.features.timeout.PaymentTimeoutFragment
 import com.fabriik.common.ui.base.FabriikView
 import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.trade.ui.customview.CurrencyInputView
@@ -99,6 +100,14 @@ class BuyInputFragment : Fragment(),
             val selectedPaymentInstrument = bundle.getParcelable(PaymentMethodFragment.RESULT_KEY) as PaymentInstrument?
             if (selectedPaymentInstrument != null) {
                 viewModel.setEvent(BuyInputContract.Event.PaymentMethodChanged(selectedPaymentInstrument))
+            }
+        }
+
+        // listen for payment timeout callback
+        parentFragmentManager.setFragmentResultListener(PaymentTimeoutFragment.REQUEST_KEY, this) { _, bundle ->
+            val result = bundle.getString(PaymentTimeoutFragment.RESULT_KEY)
+            if (result == PaymentTimeoutFragment.RESULT_TRY_AGAIN) {
+                viewModel.setEvent(BuyInputContract.Event.QuoteTimeoutRetry)
             }
         }
 

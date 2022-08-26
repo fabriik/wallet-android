@@ -19,6 +19,7 @@ object FabriikApiConstants {
 
     const val ENDPOINT_CURRENCIES = "$HOST_WALLET_API/currencies"
 
+    const val URL_SUPPORT_PAGE = "https://app-support.fabriik.com/"
     const val URL_PRIVACY_POLICY = "https://fabriik.com/privacy-policy/"
     const val URL_TERMS_AND_CONDITIONS = "https://fabriik.com/terms-and-conditions/"
 

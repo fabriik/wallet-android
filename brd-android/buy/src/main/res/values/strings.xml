@@ -39,6 +39,7 @@
     <string name="Buy.Processing.BackToHome">Back to Home</string>
     <string name="Buy.Processing.ContactSupport">Contact support</string>
     <string name="Buy.Processing.PurchaseDetails">Purchase details</string>
+    <string name="Buy.Processing.TryDifferentMethod">Try a different payment method</string>
 
     <string name="Buy.ProcessingSucceed.Title">Your funds are on the way!</string>
     <string name="Buy.ProcessingSucceed.Description">You can continue to use your wallet. We\'ll let you know when your funds have arrived.</string>
@@ -79,5 +80,25 @@
     <string name="Buy.KycLimits.Kyc1">Currently, the required minimum for purchasing assets is $30.00 USD per transaction, and the maximum per day is $500.00 USD.</string>
     <string name="Buy.KycLimits.Kyc2">Currently, the required minimum for purchasing assets is $30.00 USD per transaction, and the maximum per day is $500.00 USD.</string>
 
+    <!-- Payment timeout screen -->
+    <string name="Buy.Timeout.Title">Payment verification timeout</string>
+    <string name="Buy.Timeout.Description">The payment has expired due to inactivity. Please try again with the same card, or use a different card.</string>
+    <string name="Buy.Timeout.TryAgain">Try again</string>
 
+    <!-- Order details screen -->
+    <string name="Buy.Details.Title">Purchase details</string>
+    <string name="Buy.Details.OrderId">Fabriik Transaction ID</string>
+    <string name="Buy.Details.Timestamp">Timestamp</string>
+    <string name="Buy.Details.CryptoTransactionId">%s Transaction ID</string>
+    <string name="Buy.Details.Status.Pending">Pending</string>
+    <string name="Buy.Details.Status.Complete">Complete</string>
+    <string name="Buy.Details.Status.Refunded">Refunded</string>
+    <string name="Buy.Details.Status.Failed">Failed</string>
+    <string name="Buy.Details.Copied">Copied to clipboard.</string>
+    <string name="Buy.Details.Rate">Rate:</string>
+    <string name="Buy.Details.CardFee">Card fee:</string>
+    <string name="Buy.Details.NetworkFee">Mining network fee:</string>
+    <string name="Buy.Details.AmountPurchased">Amount purchased:</string>
+    <string name="Buy.Details.Total">Total:</string>
+    <string name="Buy.Details.PaidWith">Paid with</string>
 </resources>

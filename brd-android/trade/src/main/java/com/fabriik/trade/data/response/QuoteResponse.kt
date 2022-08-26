@@ -32,7 +32,10 @@ data class QuoteResponse(
 
     @Json(name="to_fee_currency")
     val toFeeCurrency: FeeCurrency?
-): Parcelable
+): Parcelable {
+
+    fun isExpired() = timestamp < System.currentTimeMillis()
+}
 
 @Parcelize
 @JsonClass(generateAdapter = true)
