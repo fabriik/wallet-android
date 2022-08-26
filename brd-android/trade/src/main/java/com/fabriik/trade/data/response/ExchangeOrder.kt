@@ -25,13 +25,13 @@ data class ExchangeOrder(
 @JsonClass(generateAdapter = true)
 data class ExchangeSource(
     @Json(name = "currency")
-    val currency: String = "USD", //todo: revert
+    val currency: String,
 
     @Json(name = "usd_amount")
     val usdAmount: BigDecimal?,
 
     @Json(name = "currency_amount")
-    val currencyAmount: BigDecimal = BigDecimal("55.2197670852787500000000"),  //todo: revert
+    val currencyAmount: BigDecimal,
 
     @Json(name = "transaction_id")
     val transactionId: String?
