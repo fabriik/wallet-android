@@ -15,6 +15,7 @@ import com.fabriik.buy.R
 import com.fabriik.buy.databinding.FragmentPaymentProcessingBinding
 import com.fabriik.common.data.FabriikApiConstants
 import com.fabriik.common.ui.base.FabriikView
+import com.fabriik.trade.ui.features.processing.SwapProcessingContract
 import kotlinx.coroutines.flow.collect
 
 class PaymentProcessingFragment : Fragment(),
@@ -46,6 +47,10 @@ class PaymentProcessingFragment : Fragment(),
             btnPurchaseDetails.setOnClickListener {
                 viewModel.setEvent(PaymentProcessingContract.Event.PurchaseDetailsClicked)
             }
+
+            btnDifferentMethod.setOnClickListener {
+                viewModel.setEvent(PaymentProcessingContract.Event.TryDifferentMethodClicked)
+            }
         }
 
         // collect UI state
@@ -71,8 +76,10 @@ class PaymentProcessingFragment : Fragment(),
             ivIcon.setImageResource(state.status.icon)
             tvTitle.setText(state.status.title)
             tvDescription.setText(state.status.description)
+            btnHome.isVisible = state.status.goHomeVisible
             btnContactSupport.isVisible = state.status.contactSupportVisible
             btnPurchaseDetails.isVisible = state.status.purchaseDetailsVisible
+            btnDifferentMethod.isVisible = state.status.tryDifferentMethodVisible
         }
     }
 
@@ -80,6 +87,11 @@ class PaymentProcessingFragment : Fragment(),
         when (effect) {
             PaymentProcessingContract.Effect.Dismiss ->
                 activity?.finish()
+
+            PaymentProcessingContract.Effect.BackToBuy ->
+                findNavController().popBackStack(
+                    R.id.fragmentBuyInput, false
+                )
 
             PaymentProcessingContract.Effect.ContactSupport -> {
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(FabriikApiConstants.URL_SUPPORT_PAGE))

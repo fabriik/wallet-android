@@ -39,6 +39,7 @@
     <string name="Buy.Processing.BackToHome">Back to Home</string>
     <string name="Buy.Processing.ContactSupport">Contact support</string>
     <string name="Buy.Processing.PurchaseDetails">Purchase details</string>
+    <string name="Buy.Processing.TryDifferentMethod">Try a different payment method</string>
 
     <string name="Buy.ProcessingSucceed.Title">Your funds are on the way!</string>
     <string name="Buy.ProcessingSucceed.Description">You can continue to use your wallet. We\'ll let you know when your funds have arrived.</string>

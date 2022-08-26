@@ -30,6 +30,9 @@ class PaymentProcessingViewModel(
             PaymentProcessingContract.Event.ContactSupportClicked ->
                 setEffect { PaymentProcessingContract.Effect.ContactSupport }
 
+            PaymentProcessingContract.Event.TryDifferentMethodClicked ->
+                setEffect { PaymentProcessingContract.Effect.BackToBuy }
+
             PaymentProcessingContract.Event.PurchaseDetailsClicked -> {
                 val purchaseId = currentState.paymentReference
                 if (!purchaseId.isNullOrBlank()) {
