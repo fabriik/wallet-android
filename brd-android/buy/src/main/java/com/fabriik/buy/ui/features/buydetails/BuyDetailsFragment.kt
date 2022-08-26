@@ -100,17 +100,17 @@ class BuyDetailsFragment : Fragment(),
         }
     }
 
-    private fun showErrorState() {
-        with(binding) {
-            content.isVisible = false
-            initialLoadingIndicator.isVisible = false
-        }
-    }
-
     private fun showLoadingState() {
         with(binding) {
             content.isVisible = false
             initialLoadingIndicator.isVisible = true
+        }
+    }
+
+    private fun showErrorState() {
+        with(binding) {
+            content.isVisible = false
+            initialLoadingIndicator.isVisible = false
         }
     }
 
@@ -162,21 +162,21 @@ class BuyDetailsFragment : Fragment(),
         }
     }
 
-    private fun setStatusIcon(status: ExchangeOrderStatus): Int {
-        return when (status) {
-            ExchangeOrderStatus.PENDING -> R.drawable.ic_status_pending
-            ExchangeOrderStatus.FAILED -> R.drawable.ic_status_failed
-            ExchangeOrderStatus.COMPLETE -> R.drawable.ic_status_complete
-            ExchangeOrderStatus.REFUNDED -> R.drawable.ic_status_complete
-        }
-    }
-
     private fun setStatusTitle(status: ExchangeOrderStatus): Int {
         return when (status) {
             ExchangeOrderStatus.PENDING -> R.string.Swap_Details_Status_Pending
             ExchangeOrderStatus.COMPLETE -> R.string.Swap_Details_Status_Complete
             ExchangeOrderStatus.FAILED -> R.string.Swap_Details_Status_Failed
             ExchangeOrderStatus.REFUNDED -> R.string.Swap_Details_Status_Refunded
+        }
+    }
+
+    private fun setStatusIcon(status: ExchangeOrderStatus): Int {
+        return when (status) {
+            ExchangeOrderStatus.PENDING -> R.drawable.ic_status_pending
+            ExchangeOrderStatus.FAILED -> R.drawable.ic_status_failed
+            ExchangeOrderStatus.COMPLETE -> R.drawable.ic_status_complete
+            ExchangeOrderStatus.REFUNDED -> R.drawable.ic_status_complete
         }
     }
 
