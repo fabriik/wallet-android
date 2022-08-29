@@ -332,11 +332,11 @@ class SettingsScreenHandler(
             addOn = BRSharedPrefs.getPreferredFiatIso()
         ),
         SettingsItem(
-            "Bitcoin ${context.getString(R.string.Settings_title)}", // TODO move Bitcoin to a constant
+            "BTC ${context.getString(R.string.Settings_title)}", // TODO move Bitcoin to a constant
             SettingsOption.BTC_MENU
         ),
         SettingsItem(
-            "Bitcoin Cash ${context.getString(R.string.Settings_title)}", // TODO move Bitcoin Cash to a constant
+            "BCH ${context.getString(R.string.Settings_title)}", // TODO move Bitcoin Cash to a constant
             SettingsOption.BCH_MENU
         ),
         SettingsItem(

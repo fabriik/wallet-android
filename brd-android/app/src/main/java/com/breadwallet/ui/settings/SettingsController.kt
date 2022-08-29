@@ -152,8 +152,8 @@ class SettingsController(
                     SettingsSection.HIDDEN,
                     SettingsSection.DEVELOPER_OPTION -> "Developer Options"
                     SettingsSection.SECURITY -> act.getString(R.string.MenuButton_security)
-                    SettingsSection.BTC_SETTINGS -> "Bitcoin ${act.getString(R.string.Settings_title)}"
-                    SettingsSection.BCH_SETTINGS -> "Bitcoin Cash ${act.getString(R.string.Settings_title)}"
+                    SettingsSection.BTC_SETTINGS -> "BTC ${act.getString(R.string.Settings_title)}"
+                    SettingsSection.BCH_SETTINGS -> "BCH ${act.getString(R.string.Settings_title)}"
                 }
                 val isHome = section == SettingsSection.HOME
                 closeButton.isVisible = isHome

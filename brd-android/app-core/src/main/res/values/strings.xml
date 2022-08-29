@@ -840,7 +840,7 @@
     <!-- Segwit enableButton -->
     <string name="Segwit.Enable">Enable</string>
     <!-- Segwit button label that takes the user back to the home screen once SegWit is enabled. -->
-    <string name="Segwit.HomeButton">To the Moon</string>
+    <string name="Segwit.HomeButton">Proceed</string>
     <string name="Send_fio_toLabel">FIO</string>
     <!-- Send money amount label -->
     <string name="Send.amountLabel">Amount</string>
