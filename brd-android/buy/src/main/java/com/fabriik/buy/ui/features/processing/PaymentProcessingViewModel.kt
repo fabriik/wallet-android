@@ -59,7 +59,7 @@ class PaymentProcessingViewModel(
                 setEffect { PaymentProcessingContract.Effect.BackToBuy }
 
             PaymentProcessingContract.Event.OnPaymentRedirectResult ->
-                checkPaymentStatus()
+                handlePaymentRedirectResult()
 
             PaymentProcessingContract.Event.PurchaseDetailsClicked -> {
                 val purchaseId = currentCompletedState?.paymentReference
@@ -80,6 +80,13 @@ class PaymentProcessingViewModel(
             } else {
                 setEffect { PaymentProcessingContract.Effect.OpenPaymentRedirect(redirectUrl) }
             }
+        }
+    }
+
+    private fun handlePaymentRedirectResult() {
+        viewModelScope.launch(Dispatchers.IO) {
+            delay(INITIAL_DELAY)
+            checkPaymentStatus()
         }
     }
 
