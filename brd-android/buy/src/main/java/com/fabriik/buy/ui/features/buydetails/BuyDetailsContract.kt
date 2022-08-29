@@ -29,17 +29,17 @@ interface BuyDetailsContract {
             val data: ExchangeOrder,
             val flow: BuyDetailsFlow
         ) : State() {
-            val cardFeePercent: Float
-                get() = data.buyCardFeesPercent ?: 0f
+            val cardFee: BigDecimal
+                get() = data.source.usdFee ?: BigDecimal.ZERO
 
-            val cardFee: BigDecimal //todo: read from API
-                get() = (data.destination.usdAmount ?: BigDecimal.ZERO) * (cardFeePercent / 100).toBigDecimal()
+            val networkFee: BigDecimal
+                get() = data.destination.usdFee ?: BigDecimal.ZERO
 
-            val networkFee: BigDecimal //todo: read from API
-                get() = (data.source.usdAmount ?: BigDecimal.ZERO) - cardFee - (data.destination.usdAmount ?: BigDecimal.ZERO)
+            val purchasedAmount: BigDecimal
+                get() = data.source.currencyAmount - (data.source.usdFee ?: BigDecimal.ZERO) - (data.destination.usdFee ?: BigDecimal.ZERO)
 
-            val fiatPriceForOneCryptoUnit: BigDecimal //todo: read from API
-                get() = (BigDecimal.ONE.divide(data.destination.currencyAmount, 20, RoundingMode.HALF_UP)) * (data.destination.usdAmount ?: BigDecimal.ZERO)
+            val fiatPriceForOneCryptoUnit: BigDecimal
+                get() = BigDecimal.ONE.divide(data.rate ?: BigDecimal.ONE, 20, RoundingMode.HALF_UP)
         }
     }
 }

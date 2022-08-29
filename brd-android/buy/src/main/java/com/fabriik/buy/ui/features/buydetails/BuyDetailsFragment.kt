@@ -155,7 +155,7 @@ class BuyDetailsFragment : Fragment(),
                 showCurrencyName = true
             )
 
-            tvPurchasedAmount.text = state.data.destination.usdAmount?.formatFiatForUi(
+            tvPurchasedAmount.text = state.purchasedAmount.formatFiatForUi(
                 currencyCode = "USD",
                 showCurrencyName = true
             )

@@ -22,8 +22,11 @@ data class ExchangeOrder(
     @Json(name = "timestamp")
     val timestamp: Long,
 
-    @Json(name="buy_fees")
-    val buyCardFeesPercent: Float?
+    @Json(name="rate")
+    val rate: BigDecimal?,
+
+    @Json(name="type")
+    val type: Type?
 )
 
 @JsonClass(generateAdapter = true)
@@ -41,7 +44,10 @@ data class ExchangeSource(
     val transactionId: String?,
 
     @Json(name = "payment_instrument")
-    val paymentInstrument: PaymentInstrument?
+    val paymentInstrument: PaymentInstrument?,
+
+    @Json(name = "usd_fee")
+    val usdFee: BigDecimal?,
 )
 
 enum class ExchangeOrderStatus {
@@ -56,4 +62,12 @@ enum class ExchangeOrderStatus {
 
     @Json(name = "REFUNDED")
     REFUNDED,
+}
+
+enum class Type {
+    @Json(name = "BUY")
+    BUY,
+
+    @Json(name = "SWAP")
+    SWAP
 }
