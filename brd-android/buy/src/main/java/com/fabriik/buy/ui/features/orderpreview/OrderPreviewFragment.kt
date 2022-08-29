@@ -10,6 +10,7 @@ import android.text.style.ClickableSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -129,6 +130,8 @@ class OrderPreviewFragment : Fragment(),
                 ),
                 state.fiatCurrency
             )
+
+            fullScreenLoadingView.root.isVisible = state.fullScreenLoadingIndicator
         }
     }
 
