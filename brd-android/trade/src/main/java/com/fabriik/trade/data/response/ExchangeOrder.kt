@@ -23,7 +23,7 @@ data class ExchangeOrder(
     val timestamp: Long,
 
     @Json(name="buy_fees")
-    val buyCardFeesPercent: Float? = 4f
+    val buyCardFeesPercent: Float?
 )
 
 @JsonClass(generateAdapter = true)
