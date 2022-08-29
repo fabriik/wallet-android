@@ -102,54 +102,105 @@ class ProfileTest {
     }
 
     @Test
-    fun canUseBuyTrade_profileIsNull_returnFalse() {
-        val actual = profileNull.canUseBuyTrade()
+    fun canUseBuy_profileIsNull_returnFalse() {
+        val actual = profileNull.canUseBuy()
         Assert.assertFalse(actual)
     }
 
     @Test
-    fun canUseBuyTrade_rolesPropertyIsNull_returnFalse() {
-        canUseBuyTrade_checkResult(null, false)
+    fun canUseTrade_profileIsNull_returnFalse() {
+        val actual = profileNull.canUseTrade()
+        Assert.assertFalse(actual)
     }
 
     @Test
-    fun canUseBuyTrade_rolesPropertyIsEmpty_returnFalse() {
-        canUseBuyTrade_checkResult(emptyList(), false)
+    fun canUseTrade_rolesPropertyIsNull_returnFalse() {
+        canUseTrade_checkResult(null, false)
     }
 
     @Test
-    fun canUseBuyTrade_rolesPropertyContainsOnlyUnverifiedRole_returnFalse() {
-        canUseBuyTrade_checkResult(listOf(ProfileRole.UNVERIFIED), false)
+    fun canUseTrade_rolesPropertyIsEmpty_returnFalse() {
+        canUseTrade_checkResult(emptyList(), false)
     }
 
     @Test
-    fun canUseBuyTrade_rolesPropertyContainsOnlyCustomerRole_returnFalse() {
-        canUseBuyTrade_checkResult(listOf(ProfileRole.CUSTOMER), false)
+    fun canUseTrade_rolesPropertyContainsOnlyUnverifiedRole_returnFalse() {
+        canUseTrade_checkResult(listOf(ProfileRole.UNVERIFIED), false)
     }
 
     @Test
-    fun canUseBuyTrade_rolesPropertyContainsCustomerAndUnverifiedRoles_returnFalse() {
-        canUseBuyTrade_checkResult(listOf(ProfileRole.CUSTOMER, ProfileRole.UNVERIFIED), false)
+    fun canUseTrade_rolesPropertyContainsOnlyCustomerRole_returnFalse() {
+        canUseTrade_checkResult(listOf(ProfileRole.CUSTOMER), false)
     }
 
     @Test
-    fun canUseBuyTrade_rolesPropertyContainsCustomerKyc1AndUnverifiedRoles_returnFalse() {
-        canUseBuyTrade_checkResult(listOf(ProfileRole.CUSTOMER, ProfileRole.KYC_LEVEL_1, ProfileRole.UNVERIFIED), false)
+    fun canUseTrade_rolesPropertyContainsCustomerAndUnverifiedRoles_returnFalse() {
+        canUseTrade_checkResult(listOf(ProfileRole.CUSTOMER, ProfileRole.UNVERIFIED), false)
     }
 
     @Test
-    fun canUseBuyTrade_rolesPropertyContainsCustomerKyc2AndUnverifiedRoles_returnFalse() {
-        canUseBuyTrade_checkResult(listOf(ProfileRole.CUSTOMER, ProfileRole.KYC_LEVEL_2, ProfileRole.UNVERIFIED), false)
+    fun canUseTrade_rolesPropertyContainsCustomerKyc1AndUnverifiedRoles_returnFalse() {
+        canUseTrade_checkResult(listOf(ProfileRole.CUSTOMER, ProfileRole.KYC_LEVEL_1, ProfileRole.UNVERIFIED), false)
     }
 
     @Test
-    fun canUseBuyTrade_rolesPropertyContainsCustomerAndKyc1Roles_returnTrue() {
-        canUseBuyTrade_checkResult(listOf(ProfileRole.CUSTOMER, ProfileRole.KYC_LEVEL_1), true)
+    fun canUseTrade_rolesPropertyContainsCustomerKyc2AndUnverifiedRoles_returnFalse() {
+        canUseTrade_checkResult(listOf(ProfileRole.CUSTOMER, ProfileRole.KYC_LEVEL_2, ProfileRole.UNVERIFIED), false)
     }
 
     @Test
-    fun canUseBuyTrade_rolesPropertyContainsCustomerAndKyc2Roles_returnTrue() {
-        canUseBuyTrade_checkResult(listOf(ProfileRole.CUSTOMER, ProfileRole.KYC_LEVEL_1), true)
+    fun canUseTrade_rolesPropertyContainsCustomerAndKyc1Roles_returnTrue() {
+        canUseTrade_checkResult(listOf(ProfileRole.CUSTOMER, ProfileRole.KYC_LEVEL_1), true)
+    }
+
+    @Test
+    fun canUseTrade_rolesPropertyContainsCustomerAndKyc2Roles_returnTrue() {
+        canUseTrade_checkResult(listOf(ProfileRole.CUSTOMER, ProfileRole.KYC_LEVEL_2), true)
+    }
+
+    @Test
+    fun canUseBuy_rolesPropertyIsNull_returnFalse() {
+        canUseBuy_checkResult(null, false)
+    }
+
+    @Test
+    fun canUseBuy_rolesPropertyIsEmpty_returnFalse() {
+        canUseBuy_checkResult(emptyList(), false)
+    }
+
+    @Test
+    fun canUseBuy_rolesPropertyContainsOnlyUnverifiedRole_returnFalse() {
+        canUseBuy_checkResult(listOf(ProfileRole.UNVERIFIED), false)
+    }
+
+    @Test
+    fun canUseBuy_rolesPropertyContainsOnlyCustomerRole_returnFalse() {
+        canUseBuy_checkResult(listOf(ProfileRole.CUSTOMER), false)
+    }
+
+    @Test
+    fun canUseBuy_rolesPropertyContainsCustomerAndUnverifiedRoles_returnFalse() {
+        canUseBuy_checkResult(listOf(ProfileRole.CUSTOMER, ProfileRole.UNVERIFIED), false)
+    }
+
+    @Test
+    fun canUseBuy_rolesPropertyContainsCustomerKyc1AndUnverifiedRoles_returnFalse() {
+        canUseBuy_checkResult(listOf(ProfileRole.CUSTOMER, ProfileRole.KYC_LEVEL_1, ProfileRole.UNVERIFIED), false)
+    }
+
+    @Test
+    fun canUseBuy_rolesPropertyContainsCustomerKyc2AndUnverifiedRoles_returnFalse() {
+        canUseBuy_checkResult(listOf(ProfileRole.CUSTOMER, ProfileRole.KYC_LEVEL_2, ProfileRole.UNVERIFIED), false)
+    }
+
+    @Test
+    fun canUseBuy_rolesPropertyContainsCustomerAndKyc1Roles_returnFalse() {
+        canUseBuy_checkResult(listOf(ProfileRole.CUSTOMER, ProfileRole.KYC_LEVEL_1), false)
+    }
+
+    @Test
+    fun canUseBuy_rolesPropertyContainsCustomerAndKyc2Roles_returnTrue() {
+        canUseBuy_checkResult(listOf(ProfileRole.CUSTOMER, ProfileRole.KYC_LEVEL_2), true)
     }
 
     private fun isRegistrationNeeded_checkResult(roles: List<ProfileRole>?, expectedResult: Boolean) {
@@ -164,9 +215,15 @@ class ProfileTest {
         Assert.assertEquals(expectedResult, actual)
     }
 
-    private fun canUseBuyTrade_checkResult(roles: List<ProfileRole>?, expectedResult: Boolean) {
+    private fun canUseTrade_checkResult(roles: List<ProfileRole>?, expectedResult: Boolean) {
         Mockito.`when`(profile.roles).thenReturn(roles)
-        val actual = profile.canUseBuyTrade()
+        val actual = profile.canUseTrade()
+        Assert.assertEquals(expectedResult, actual)
+    }
+
+    private fun canUseBuy_checkResult(roles: List<ProfileRole>?, expectedResult: Boolean) {
+        Mockito.`when`(profile.roles).thenReturn(roles)
+        val actual = profile.canUseBuy()
         Assert.assertEquals(expectedResult, actual)
     }
 }
