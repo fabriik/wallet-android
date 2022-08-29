@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.fabriik.buy.data.model.PaymentInstrument
+import com.fabriik.common.data.model.PaymentInstrument
 import com.fabriik.buy.databinding.ListItemPaymentMethodBinding
 
 class PaymentMethodSelectionAdapter(private val callback: (PaymentInstrument) -> Unit) :

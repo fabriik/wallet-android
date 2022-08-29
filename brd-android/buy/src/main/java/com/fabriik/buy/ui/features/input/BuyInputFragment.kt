@@ -13,9 +13,8 @@ import androidx.navigation.fragment.findNavController
 import com.breadwallet.tools.util.Utils.hideKeyboard
 import com.breadwallet.util.formatFiatForUi
 import com.fabriik.buy.R
-import com.fabriik.buy.data.model.PaymentInstrument
+import com.fabriik.common.data.model.PaymentInstrument
 import com.fabriik.buy.databinding.FragmentBuyInputBinding
-import com.fabriik.buy.ui.features.input.BuyInputContract
 import com.fabriik.buy.ui.features.paymentmethod.PaymentMethodFragment
 import com.fabriik.buy.ui.features.timeout.PaymentTimeoutFragment
 import com.fabriik.common.ui.base.FabriikView

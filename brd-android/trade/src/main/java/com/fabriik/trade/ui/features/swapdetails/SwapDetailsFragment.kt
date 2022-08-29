@@ -32,7 +32,7 @@ class SwapDetailsFragment : Fragment(),
     private val viewModel: SwapDetailsViewModel by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         return inflater.inflate(R.layout.fragment_swap_details, container, false)
     }
 

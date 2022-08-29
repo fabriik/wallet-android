@@ -1,6 +1,6 @@
 package com.fabriik.buy.ui.features.paymentmethod
 
-import com.fabriik.buy.data.model.PaymentInstrument
+import com.fabriik.common.data.model.PaymentInstrument
 import com.fabriik.common.ui.base.FabriikContract
 
 interface PaymentMethodContract : FabriikContract {

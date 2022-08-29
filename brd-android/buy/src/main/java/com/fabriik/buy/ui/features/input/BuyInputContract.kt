@@ -1,6 +1,6 @@
 package com.fabriik.buy.ui.features.input
 
-import com.fabriik.buy.data.model.PaymentInstrument
+import com.fabriik.common.data.model.PaymentInstrument
 import com.fabriik.common.data.model.Profile
 import com.fabriik.common.data.model.isKyc1
 import com.fabriik.common.data.model.isKyc2

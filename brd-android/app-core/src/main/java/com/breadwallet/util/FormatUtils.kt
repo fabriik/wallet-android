@@ -31,7 +31,7 @@ import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.util.Locale
 
-fun BigDecimal.formatFiatForUi(currencyCode: String, scale: Int? = null, showCurrencySymbol: Boolean = true): String {
+fun BigDecimal.formatFiatForUi(currencyCode: String, scale: Int? = null, showCurrencySymbol: Boolean = true, showCurrencyName: Boolean = false): String {
     val currencyFormat = NumberFormat.getCurrencyInstance(Locale.getDefault()) as DecimalFormat
     val decimalFormatSymbols = currencyFormat.decimalFormatSymbols
     currencyFormat.isGroupingUsed = true
@@ -48,5 +48,8 @@ fun BigDecimal.formatFiatForUi(currencyCode: String, scale: Int? = null, showCur
         logError("Illegal Currency code: $currencyCode")
     }
 
+    if (showCurrencyName) {
+        return "${currencyFormat.format(this)} ${currencyCode.uppercase()}"
+    }
     return currencyFormat.format(this)
 }

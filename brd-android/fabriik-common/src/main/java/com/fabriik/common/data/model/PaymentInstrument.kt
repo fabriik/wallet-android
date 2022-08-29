@@ -1,8 +1,7 @@
-package com.fabriik.buy.data.model
+package com.fabriik.common.data.model
 
 import android.os.Parcelable
-import androidx.annotation.DrawableRes
-import com.fabriik.buy.R
+import com.fabriik.common.R
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import kotlinx.parcelize.Parcelize

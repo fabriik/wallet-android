@@ -42,6 +42,7 @@ class BuyDetailsViewModel(
             BuyDetailsContract.Event.LoadData ->
                 loadData()
 
+            BuyDetailsContract.Event.BackClicked,
             BuyDetailsContract.Event.DismissClicked ->
                 setEffect { BuyDetailsContract.Effect.Dismiss }
 
@@ -65,7 +66,12 @@ class BuyDetailsViewModel(
             callback = {
                 when (it.status) {
                     Status.SUCCESS ->
-                        setState { BuyDetailsContract.State.Loaded(requireNotNull(it.data)) }
+                        setState {
+                            BuyDetailsContract.State.Loaded(
+                                data = requireNotNull(it.data),
+                                flow = arguments.flow
+                            )
+                        }
 
                     Status.ERROR -> {
                         setState { BuyDetailsContract.State.Error }

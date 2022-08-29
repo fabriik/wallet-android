@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.NavHostFragment
 import com.fabriik.buy.R
+import com.fabriik.buy.data.enums.BuyDetailsFlow
 import com.fabriik.buy.databinding.ActivityBuyBinding
 import kotlinx.parcelize.Parcelize
 
@@ -47,6 +48,7 @@ class BuyActivity : AppCompatActivity() {
 
     companion object {
         private const val EXTRA_ARGS = "extra"
+        private const val EXTRA_FLOW = "flow"
         private const val EXTRA_EXCHANGE_ID = "exchangeId"
 
         fun getStartIntent(context: Context): Intent {
@@ -65,7 +67,10 @@ class BuyActivity : AppCompatActivity() {
             intent.putExtra(
                 EXTRA_ARGS, Args(
                     startDestination =  R.id.fragmentBuyDetails,
-                    bundle = bundleOf(EXTRA_EXCHANGE_ID to exchangeId)
+                    bundle = bundleOf(
+                        EXTRA_EXCHANGE_ID to exchangeId,
+                        EXTRA_FLOW to BuyDetailsFlow.TRANSACTIONS
+                    )
                 )
             )
             return intent

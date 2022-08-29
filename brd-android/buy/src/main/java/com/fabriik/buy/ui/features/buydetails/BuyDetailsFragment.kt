@@ -12,9 +12,11 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.breadwallet.breadbox.formatCryptoForUi
 import com.breadwallet.tools.manager.BRClipboardManager
+import com.breadwallet.util.formatFiatForUi
 import com.fabriik.common.ui.base.FabriikView
 import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.buy.R
+import com.fabriik.buy.data.enums.BuyDetailsFlow
 import com.fabriik.trade.data.response.ExchangeOrderStatus
 import com.fabriik.buy.databinding.FragmentBuyDetailsBinding
 import com.fabriik.common.utils.viewScope
@@ -31,7 +33,7 @@ class BuyDetailsFragment : Fragment(),
     private val viewModel: BuyDetailsViewModel by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         return inflater.inflate(R.layout.fragment_buy_details, container, false)
     }
 
@@ -40,6 +42,9 @@ class BuyDetailsFragment : Fragment(),
         binding = FragmentBuyDetailsBinding.bind(view)
 
         with(binding) {
+            toolbar.setBackButtonClickListener {
+                viewModel.setEvent(BuyDetailsContract.Event.BackClicked)
+            }
             toolbar.setDismissButtonClickListener {
                 viewModel.setEvent(BuyDetailsContract.Event.DismissClicked)
             }
@@ -118,6 +123,9 @@ class BuyDetailsFragment : Fragment(),
         val data = state.data
 
         with(binding) {
+            toolbar.setShowBackButton(state.flow == BuyDetailsFlow.TRANSACTIONS)
+            toolbar.setShowDismissButton(state.flow == BuyDetailsFlow.PURCHASE)
+
             // status item
             icStatus.setImageResource(setStatusIcon(data.status))
             tvStatus.text = getString(setStatusTitle(data.status))
@@ -129,11 +137,35 @@ class BuyDetailsFragment : Fragment(),
             )
 
             // purchase details items
-            tvRateValue.text = "rate"
-            tvPurchasedAmount.text = "amount"
-            tvCreditFeeAmount.text = "card fee"
-            tvNetworkFeeAmount.text = "network fee"
-            tvTotalAmount.text = "total"
+            tvRateValue.text = RATE_FORMAT.format(
+                data.destination.currency,
+                state.fiatPriceForOneCryptoUnit.formatFiatForUi(
+                    showCurrencyName = true,
+                    currencyCode = "USD"
+                )
+            )
+
+            tvNetworkFeeAmount.text = state.networkFee.formatFiatForUi(
+                currencyCode = "USD",
+                showCurrencyName = true
+            )
+
+            tvCreditFeeAmount.text = state.cardFee.formatFiatForUi(
+                currencyCode = "USD",
+                showCurrencyName = true
+            )
+
+            tvPurchasedAmount.text = state.purchasedAmount.formatFiatForUi(
+                currencyCode = "USD",
+                showCurrencyName = true
+            )
+
+            tvTotalAmount.text = state.data.source.currencyAmount.formatFiatForUi(
+                currencyCode = state.data.source.currency,
+                showCurrencyName = true
+            )
+
+            state.data.source.paymentInstrument?.let { viewCreditCard.setPaymentInstrument(it) }
 
             // Fabriik transaction ID item
             tvOrderId.text = data.orderId
@@ -186,5 +218,9 @@ class BuyDetailsFragment : Fragment(),
         FabriikToastUtil.showInfo(
             binding.root, getString(R.string.Swap_Details_Copied)
         )
+    }
+
+    companion object {
+        const val RATE_FORMAT = "1 %s = %s"
     }
 }

@@ -8,7 +8,7 @@ import com.breadwallet.tools.security.ProfileManager
 import com.breadwallet.tools.util.TokenUtil
 import com.fabriik.buy.R
 import com.fabriik.buy.data.BuyApi
-import com.fabriik.buy.data.model.PaymentInstrument
+import com.fabriik.common.data.model.PaymentInstrument
 import com.fabriik.common.data.Status
 import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.common.utils.getString

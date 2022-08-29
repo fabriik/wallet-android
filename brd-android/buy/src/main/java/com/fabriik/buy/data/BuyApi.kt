@@ -3,7 +3,7 @@ package com.fabriik.buy.data
 import android.content.Context
 import com.fabriik.buy.R
 import com.fabriik.buy.data.enums.PaymentStatus
-import com.fabriik.buy.data.model.PaymentInstrument
+import com.fabriik.common.data.model.PaymentInstrument
 import com.fabriik.buy.data.request.AddPaymentInstrumentRequest
 import com.fabriik.buy.data.request.CreateBuyOrderRequest
 import com.fabriik.buy.data.response.AddPaymentInstrumentResponse
