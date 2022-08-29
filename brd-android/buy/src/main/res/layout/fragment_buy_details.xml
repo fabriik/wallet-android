@@ -130,6 +130,7 @@
                         style="@style/TextStyle.Body2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textAllCaps="true"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintBaseline_toBaselineOf="@id/tv_rate_title"
                         tools:text="$100 USD" />

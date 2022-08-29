@@ -21,6 +21,9 @@ data class ExchangeOrder(
 
     @Json(name = "timestamp")
     val timestamp: Long,
+
+    @Json(name="buy_fees")
+    val buyCardFeesPercent: Float? = 4f
 )
 
 @JsonClass(generateAdapter = true)

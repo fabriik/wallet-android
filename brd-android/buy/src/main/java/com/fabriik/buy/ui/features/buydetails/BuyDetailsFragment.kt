@@ -130,9 +130,23 @@ class BuyDetailsFragment : Fragment(),
             )
 
             // purchase details items
-            tvRateValue.text = "rate" //todo: set from API
-            tvCreditFeeAmount.text = "card fee" //todo: set from API
-            tvNetworkFeeAmount.text = "network fee" //todo: set from API
+            tvRateValue.text = RATE_FORMAT.format(
+                data.destination.currency,
+                state.fiatPriceForOneCryptoUnit.formatFiatForUi(
+                    showCurrencyName = true,
+                    currencyCode = "USD"
+                )
+            )
+
+            tvNetworkFeeAmount.text = state.networkFee.formatFiatForUi(
+                currencyCode = "USD",
+                showCurrencyName = true
+            )
+
+            tvCreditFeeAmount.text = state.cardFee.formatFiatForUi(
+                currencyCode = "USD",
+                showCurrencyName = true
+            )
 
             tvPurchasedAmount.text = state.data.destination.usdAmount?.formatFiatForUi(
                 currencyCode = "USD",
@@ -197,5 +211,9 @@ class BuyDetailsFragment : Fragment(),
         FabriikToastUtil.showInfo(
             binding.root, getString(R.string.Swap_Details_Copied)
         )
+    }
+
+    companion object {
+        const val RATE_FORMAT = "1 %s = %s"
     }
 }
