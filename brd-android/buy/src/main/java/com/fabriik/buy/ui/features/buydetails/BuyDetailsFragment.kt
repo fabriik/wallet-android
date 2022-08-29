@@ -130,9 +130,9 @@ class BuyDetailsFragment : Fragment(),
             )
 
             // purchase details items
-            tvRateValue.text = "rate"
-            tvCreditFeeAmount.text = "card fee"
-            tvNetworkFeeAmount.text = "network fee"
+            tvRateValue.text = "rate" //todo: set from API
+            tvCreditFeeAmount.text = "card fee" //todo: set from API
+            tvNetworkFeeAmount.text = "network fee" //todo: set from API
 
             tvPurchasedAmount.text = state.data.destination.usdAmount?.formatFiatForUi(
                 currencyCode = "USD",
