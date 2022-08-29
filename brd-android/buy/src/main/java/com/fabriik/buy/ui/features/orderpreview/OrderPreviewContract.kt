@@ -18,7 +18,6 @@ class OrderPreviewContract : FabriikContract {
         object OnSecurityCodeInfoClicked : Event()
         object OnTermsAndConditionsClicked : Event()
         object OnUserAuthenticationSucceed : Event()
-        object OnPaymentRedirectResult : Event()
 
         data class OnSecurityCodeChanged(val securityCode: String) : Event()
     }
@@ -30,7 +29,10 @@ class OrderPreviewContract : FabriikContract {
         object RequestUserAuthentication : Effect()
 
         data class ShowError(val message: String) : Effect()
-        data class PaymentProcessing(val paymentReference: String?) : Effect()
+        data class PaymentProcessing(
+            val paymentReference: String?,
+            val redirectUrl: String?,
+        ) : Effect()
 
         data class ShowInfoDialog(
             val image: Int? = null,
@@ -39,7 +41,6 @@ class OrderPreviewContract : FabriikContract {
         ) : Effect()
 
         data class OpenWebsite(val url: String): Effect()
-        data class OpenPaymentRedirect(val url: String): Effect()
     }
 
     data class State(
@@ -49,9 +50,9 @@ class OrderPreviewContract : FabriikContract {
         val fiatAmount: BigDecimal,
         val networkFee: FeeAmountData,
         val quoteResponse: QuoteResponse?,
-        val paymentReference: String? = null,
         val paymentInstrument: PaymentInstrument,
-        val confirmButtonEnabled: Boolean = false
+        val confirmButtonEnabled: Boolean = false,
+        val fullScreenLoadingIndicator: Boolean = false
     ) : FabriikContract.State {
 
         val oneFiatUnitToCryptoRate: BigDecimal
