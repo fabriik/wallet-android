@@ -1,5 +1,6 @@
 package com.fabriik.buy.ui.features.buydetails
 
+import com.fabriik.buy.data.enums.BuyDetailsFlow
 import com.fabriik.common.ui.base.FabriikContract
 import com.fabriik.trade.data.response.ExchangeOrder
 import java.math.BigDecimal
@@ -9,6 +10,7 @@ interface BuyDetailsContract {
 
     sealed class Event : FabriikContract.Event {
         object LoadData : Event()
+        object BackClicked : Event()
         object DismissClicked : Event()
         object OrderIdClicked : Event()
         object TransactionIdClicked : Event()
@@ -24,7 +26,8 @@ interface BuyDetailsContract {
         object Loading : State()
         object Error : State()
         data class Loaded(
-            val data: ExchangeOrder
+            val data: ExchangeOrder,
+            val flow: BuyDetailsFlow
         ) : State() {
             val cardFeePercent: Float
                 get() = data.buyCardFeesPercent ?: 0f

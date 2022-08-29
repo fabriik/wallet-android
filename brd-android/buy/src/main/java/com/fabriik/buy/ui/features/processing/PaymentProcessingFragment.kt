@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.fabriik.buy.R
+import com.fabriik.buy.data.enums.BuyDetailsFlow
 import com.fabriik.buy.databinding.FragmentPaymentProcessingBinding
 import com.fabriik.common.data.FabriikApiConstants
 import com.fabriik.common.ui.base.FabriikView
@@ -100,7 +101,10 @@ class PaymentProcessingFragment : Fragment(),
 
             is PaymentProcessingContract.Effect.GoToPurchaseDetails ->
                 findNavController().navigate(
-                    PaymentProcessingFragmentDirections.actionBuyDetails(effect.purchaseId)
+                    PaymentProcessingFragmentDirections.actionBuyDetails(
+                        exchangeId = effect.purchaseId,
+                        flow = BuyDetailsFlow.PURCHASE
+                    )
                 )
         }
     }

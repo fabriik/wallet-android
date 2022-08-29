@@ -173,6 +173,10 @@
             android:name="exchangeId"
             app:argType="string" />
 
+        <argument
+            android:name="flow"
+            app:argType="com.fabriik.buy.data.enums.BuyDetailsFlow" />
+
     </fragment>
  
 </navigation>
