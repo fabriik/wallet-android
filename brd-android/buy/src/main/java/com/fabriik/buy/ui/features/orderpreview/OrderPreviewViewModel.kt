@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.lifecycle.SavedStateHandle
 import com.fabriik.buy.R
 import com.fabriik.buy.data.BuyApi
-import com.fabriik.buy.data.enums.PaymentStatus
 import com.fabriik.common.data.FabriikApiConstants
 import com.fabriik.common.data.Resource
 import com.fabriik.common.data.Status
@@ -95,9 +94,6 @@ class OrderPreviewViewModel(
             OrderPreviewContract.Event.OnUserAuthenticationSucceed ->
                 createBuyOrder()
 
-            OrderPreviewContract.Event.OnPaymentRedirectResult ->
-                checkPaymentStatus()
-
             is OrderPreviewContract.Event.OnSecurityCodeChanged ->
                 setState { copy(securityCode = event.securityCode).validate() }
         }
@@ -111,8 +107,8 @@ class OrderPreviewViewModel(
         }
 
         callApi(
-            endState = { currentState },
-            startState = { currentState },  //todo: payment processing screen
+            endState = { copy(fullScreenLoadingIndicator = false) },
+            startState = { copy(fullScreenLoadingIndicator = true) },
             action = {
                 val destinationAddress =
                     helper.loadAddress(currentState.cryptoCurrency)?.toString() ?: return@callApi Resource.error(
@@ -135,43 +131,24 @@ class OrderPreviewViewModel(
                         val reference = response.paymentReference
                         val redirectUrl = response.redirectUrl
 
-                        setState { copy(paymentReference = reference) }
-
-                        if (redirectUrl.isNullOrBlank()) {
-                            checkPaymentStatus()
-                        } else {
-                            setEffect { OrderPreviewContract.Effect.OpenPaymentRedirect(redirectUrl) }
+                        setEffect {
+                            OrderPreviewContract.Effect.PaymentProcessing(
+                                paymentReference = reference,
+                                redirectUrl = redirectUrl
+                            )
                         }
                     }
 
                     Status.ERROR ->
                         setEffect {
-                            OrderPreviewContract.Effect.ShowError(
-                                it.message ?: getString(R.string.FabriikApi_DefaultError)
-                            )
+                            if (getString(R.string.Swap_Input_Error_QuoteExpired) == it.message) {
+                                OrderPreviewContract.Effect.TimeoutScreen
+                            } else {
+                                OrderPreviewContract.Effect.ShowError(
+                                    it.message ?: getString(R.string.FabriikApi_DefaultError)
+                                )
+                            }
                         }
-                }
-            }
-        )
-    }
-
-    private fun checkPaymentStatus() {
-        val reference = currentState.paymentReference ?: return
-
-        // todo: show payment processing screen
-        callApi(
-            endState = { currentState },
-            startState = { currentState },
-            action = { buyApi.getPaymentStatus(reference) },
-            callback = {
-                setEffect {
-                    OrderPreviewContract.Effect.PaymentProcessing(
-                        if (it.data == PaymentStatus.CAPTURED || it.data == PaymentStatus.CARD_VERIFIED) {
-                            reference
-                        } else {
-                            null
-                        }
-                    )
                 }
             }
         )

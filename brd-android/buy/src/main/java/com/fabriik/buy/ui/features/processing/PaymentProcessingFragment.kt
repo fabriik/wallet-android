@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -15,7 +16,7 @@ import com.fabriik.buy.R
 import com.fabriik.buy.databinding.FragmentPaymentProcessingBinding
 import com.fabriik.common.data.FabriikApiConstants
 import com.fabriik.common.ui.base.FabriikView
-import com.fabriik.trade.ui.features.processing.SwapProcessingContract
+import com.fabriik.common.utils.FabriikToastUtil
 import kotlinx.coroutines.flow.collect
 
 class PaymentProcessingFragment : Fragment(),
@@ -23,6 +24,10 @@ class PaymentProcessingFragment : Fragment(),
 
     private lateinit var binding: FragmentPaymentProcessingBinding
     private val viewModel: PaymentProcessingViewModel by viewModels()
+
+    private val paymentRedirectResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        viewModel.setEvent(PaymentProcessingContract.Event.OnPaymentRedirectResult)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -69,17 +74,54 @@ class PaymentProcessingFragment : Fragment(),
     }
 
     override fun render(state: PaymentProcessingContract.State) {
+        when (state) {
+            is PaymentProcessingContract.State.Processing ->
+                showProcessingScreen(state)
+
+            is PaymentProcessingContract.State.PaymentFailed ->
+                showPaymentFailedScreen(state)
+
+            is PaymentProcessingContract.State.PaymentCompleted ->
+                showPaymentCompletedScreen(state)
+        }
+    }
+
+    private fun showProcessingScreen(state: PaymentProcessingContract.State.Processing) {
+        with(binding) {
+            contentLoaded.isVisible = false
+            contentProcessing.isVisible = true
+        }
+    }
+
+    private fun showPaymentFailedScreen(state: PaymentProcessingContract.State.PaymentFailed) {
         with(binding) {
             contentLoaded.isVisible = true
             contentProcessing.isVisible = false
 
-            ivIcon.setImageResource(state.status.icon)
-            tvTitle.setText(state.status.title)
-            tvDescription.setText(state.status.description)
-            btnHome.isVisible = state.status.goHomeVisible
-            btnContactSupport.isVisible = state.status.contactSupportVisible
-            btnPurchaseDetails.isVisible = state.status.purchaseDetailsVisible
-            btnDifferentMethod.isVisible = state.status.tryDifferentMethodVisible
+            ivIcon.setImageResource(R.drawable.ic_payment_failed)
+            tvTitle.setText(R.string.Buy_ProcessingFailed_Title)
+            tvDescription.setText(R.string.Buy_ProcessingFailed_Description)
+
+            btnHome.isVisible = false
+            btnContactSupport.isVisible = true
+            btnPurchaseDetails.isVisible = false
+            btnDifferentMethod.isVisible = true
+        }
+    }
+
+    private fun showPaymentCompletedScreen(state: PaymentProcessingContract.State.PaymentCompleted) {
+        with(binding) {
+            contentLoaded.isVisible = true
+            contentProcessing.isVisible = false
+
+            ivIcon.setImageResource(R.drawable.ic_payment_succeed)
+            tvTitle.setText(R.string.Buy_ProcessingSucceed_Title)
+            tvDescription.setText(R.string.Buy_ProcessingSucceed_Description)
+
+            btnHome.isVisible = true
+            btnContactSupport.isVisible = false
+            btnPurchaseDetails.isVisible = true
+            btnDifferentMethod.isVisible = false
         }
     }
 
@@ -102,6 +144,15 @@ class PaymentProcessingFragment : Fragment(),
                 findNavController().navigate(
                     PaymentProcessingFragmentDirections.actionBuyDetails(effect.purchaseId)
                 )
+
+            is PaymentProcessingContract.Effect.OpenPaymentRedirect -> {
+                val uri = Uri.parse(effect.url)
+                val intent = Intent(Intent.ACTION_VIEW, uri)
+                paymentRedirectResultLauncher.launch(intent)
+            }
+
+            is PaymentProcessingContract.Effect.ShowError ->
+                FabriikToastUtil.showError(binding.root, effect.message)
         }
     }
 }

@@ -101,6 +101,11 @@
             app:argType="string"
             app:nullable="true"/>
 
+        <argument
+            android:name="redirectUrl"
+            app:argType="string"
+            app:nullable="true"/>
+
     </fragment>
 
     <fragment android:id="@+id/fragmentOrderPreview"

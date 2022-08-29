@@ -1,7 +1,8 @@
 package com.fabriik.buy.ui.features.processing
 
-import com.fabriik.buy.R
 import com.fabriik.common.ui.base.FabriikContract
+import com.fabriik.trade.data.response.QuoteResponse
+import java.math.BigDecimal
 
 class PaymentProcessingContract : FabriikContract {
 
@@ -10,50 +11,30 @@ class PaymentProcessingContract : FabriikContract {
         object ContactSupportClicked: Event()
         object PurchaseDetailsClicked: Event()
         object TryDifferentMethodClicked: Event()
+        object OnPaymentRedirectResult: Event()
     }
 
     sealed class Effect : FabriikContract.Effect {
         object Dismiss : Effect()
         object BackToBuy : Effect()
         object ContactSupport : Effect()
+
+        data class ShowError(val message: String) : Effect()
+        data class OpenPaymentRedirect(val url: String) : Effect()
         data class GoToPurchaseDetails(val purchaseId: String) : Effect()
     }
 
-    data class State(
-        val paymentReference: String?
-    ) : FabriikContract.State {
+    sealed class State: FabriikContract.State {
+        data class Processing(
+            val paymentReference: String?
+        ): State()
 
-        val status: Status
-            get() = if (paymentReference != null) Status.SUCCESS else Status.FAILED
-    }
+        data class PaymentFailed(
+            val paymentReference: String?
+        ): State()
 
-    enum class Status(
-        val icon: Int,
-        val title: Int,
-        val description: Int,
-        val goHomeVisible: Boolean,
-        val contactSupportVisible: Boolean,
-        val purchaseDetailsVisible: Boolean,
-        val tryDifferentMethodVisible: Boolean
-    ) {
-        SUCCESS(
-            icon = R.drawable.ic_payment_succeed,
-            title = R.string.Buy_ProcessingSucceed_Title,
-            description = R.string.Buy_ProcessingSucceed_Description,
-            goHomeVisible = true,
-            contactSupportVisible = false,
-            purchaseDetailsVisible = true,
-            tryDifferentMethodVisible = false,
-        ),
-
-        FAILED(
-            icon = R.drawable.ic_payment_failed,
-            title = R.string.Buy_ProcessingFailed_Title,
-            description = R.string.Buy_ProcessingFailed_Description,
-            goHomeVisible = false,
-            contactSupportVisible = true,
-            purchaseDetailsVisible = false,
-            tryDifferentMethodVisible = true
-        )
+        data class PaymentCompleted(
+            val paymentReference: String
+        ): State()
     }
 }
