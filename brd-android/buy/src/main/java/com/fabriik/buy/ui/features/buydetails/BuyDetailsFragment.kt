@@ -134,7 +134,7 @@ class BuyDetailsFragment : Fragment(),
             tvCreditFeeAmount.text = "card fee"
             tvNetworkFeeAmount.text = "network fee"
 
-            tvPurchasedAmount.text = state.data.destination.usdAmount.formatFiatForUi(
+            tvPurchasedAmount.text = state.data.destination.usdAmount?.formatFiatForUi(
                 currencyCode = "USD",
                 showCurrencyName = true
             )
