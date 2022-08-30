@@ -25,12 +25,11 @@
     <string name="Swap.Input.Error.OneSwapLimit">A maximum of one swap can be active for a currency at a time</string>
     <string name="Swap.Input.Error.QuoteExpired">Your swap request timed out. Please try again.</string>
     <string name="Swap.Input.Error.InsuficientFunds">You don\'t have enough %s to complete this swap. Your current %s balance is %s</string>
-    <string name="Swap.Input.Error.MinAmount">The amount is lower than the swap minimum of %s</string>
-    <string name="Swap.Input.Error.MaxAmount">The amount is higher than the swap maximum of %s</string>
-    <string name="Swap.Input.Error.Network">Our trading network is experiencing connection issues. Swapping assets is temporarily unavailable.</string>
-    <string name="Swap.Input.Error.Kyc1DailyLimit">You have reached your swap limit of 1,000 USD a day. Please upgrade your limits or change the amount for this swap.</string>
-    <string name="Swap.Input.Error.Kyc1LifetimeLimit">You have reached your lifetime swap limit of 10,000 USD. Please upgrade your limits or change the amount for this swap.</string>
-    <string name="Swap.Input.Error.Kyc2ExchangeLimit">This swap exceeds the 10,000 USD limit per transaction. Please change the amount for this swap.</string>
+    <string name="Swap.Input.Error.MinAmount">The amount is lower than the minimum of %s. Pleae enter a higher amount.</string>
+    <string name="Swap.Input.Error.Network">We are having temporary network issues. Please try again later.</string>
+    <string name="Swap.Input.Error.Kyc1DailyLimit">The amount is higher than your daily limit of $1,000 USD. Please upgrade your account or enter a lower amount.</string>
+    <string name="Swap.Input.Error.Kyc1LifetimeLimit">The amount is higher than your lifetime limit of $10,000 USD. Please upgrade your account or enter a lower amount.</string>
+    <string name="Swap.Input.Error.Kyc2DailyLimit">The amount is higher than your daily limit of $10,000 USD. Please enter a lower amount.</string>
     <string name="Swap.Input.Error.FeeFunds">This swap doesn\'t cover the included network fee. Please add more funds to your wallet or change the amount you\'re swapping</string>
     <string name="Swap.Input.Error.NoSelectedPairData">We are currently having issues making a swap between this pair of coins. Please try again later.</string>
 
