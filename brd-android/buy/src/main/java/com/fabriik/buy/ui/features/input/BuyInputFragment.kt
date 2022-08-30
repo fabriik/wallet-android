@@ -191,20 +191,14 @@ class BuyInputFragment : Fragment(),
             tvRateValue.text = RATE_FORMAT.format(
                 state.cryptoCurrency,
                 state.oneCryptoUnitToFiatRate.formatFiatForUi(
-                    state.fiatCurrency
+                    currencyCode = state.fiatCurrency,
+                    showCurrencyName = true
                 )
             )
 
-            binding.ivSelectedCard.isVisible = state.selectedPaymentMethod != null
-            binding.tvSelectedCard.isVisible = state.selectedPaymentMethod != null
-            binding.tvSelectedCardDate.isVisible = state.selectedPaymentMethod != null
+            binding.viewCreditCard.isVisible = state.selectedPaymentMethod != null
             binding.tvSelectPaymentMethod.isVisible = state.selectedPaymentMethod == null
-
-            state.selectedPaymentMethod?.let {
-                binding.ivSelectedCard.setImageResource(it.cardTypeIcon)
-                binding.tvSelectedCard.text = it.hiddenCardNumber
-                binding.tvSelectedCardDate.text = it.expiryDate
-            }
+            state.selectedPaymentMethod?.let { viewCreditCard.setPaymentInstrument(it) }
 
             viewCryptoInput.setFiatCurrency(state.fiatCurrency)
             viewCryptoInput.setCryptoCurrency(state.cryptoCurrency)
