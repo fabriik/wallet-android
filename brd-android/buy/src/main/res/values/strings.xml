@@ -41,8 +41,8 @@
     <string name="Buy.Processing.PurchaseDetails">Purchase details</string>
     <string name="Buy.Processing.TryDifferentMethod">Try a different payment method</string>
 
-    <string name="Buy.ProcessingSucceed.Title">Your funds are on the way!</string>
-    <string name="Buy.ProcessingSucceed.Description">You can continue to use your wallet. We\'ll let you know when your funds have arrived.</string>
+    <string name="Buy.ProcessingSucceed.Title">Your assets are on the way!</string>
+    <string name="Buy.ProcessingSucceed.Description">This purchase will appear as ‘Fabriik Wallet’ on your bank statement.</string>
 
     <string name="Buy.ProcessingFailed.Title">There was an error while processing your payment</string>
     <string name="Buy.ProcessingFailed.Description">Please contact your card issuer/bank or try again with a different payment method.</string>
