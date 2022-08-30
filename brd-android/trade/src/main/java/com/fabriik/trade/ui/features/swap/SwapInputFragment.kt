@@ -207,14 +207,14 @@ class SwapInputFragment : Fragment(),
             is SwapInputContract.Effect.CurrenciesReplaceAnimation ->
                 startCurrenciesReplaceAnimation(effect.stateChange)
 
-            is SwapInputContract.Effect.ShowToast -> if (effect.redInfo) {
-                FabriikToastUtil.showRedInfo(binding.root, effect.message)
-            } else {
+            is SwapInputContract.Effect.ShowToast ->
                 FabriikToastUtil.showInfo(binding.root, effect.message)
-            }
 
             is SwapInputContract.Effect.ShowError ->
                 FabriikToastUtil.showError(binding.root, effect.message)
+
+            is SwapInputContract.Effect.ShowErrorMessage ->
+                FabriikToastUtil.showError(binding.root, effect.error.toString(binding.root.context))
 
             is SwapInputContract.Effect.ShowDialog ->
                 FabriikGenericDialog.newInstance(effect.args)
@@ -330,9 +330,6 @@ class SwapInputFragment : Fragment(),
             viewTimer.isVisible = !state.cryptoExchangeRateLoading && state.quoteResponse != null
             tvRateValue.isVisible = !state.cryptoExchangeRateLoading && state.quoteResponse != null
             quoteLoadingIndicator.isVisible = state.cryptoExchangeRateLoading
-
-            tvError.isVisible = state.swapErrorMessage != null
-            tvError.text = state.swapErrorMessage?.toString(binding.root.context)
 
             content.isVisible = true
             fullScreenLoadingView.root.isVisible = state.fullScreenLoadingVisible

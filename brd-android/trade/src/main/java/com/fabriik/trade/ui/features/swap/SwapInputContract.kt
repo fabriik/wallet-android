@@ -52,7 +52,8 @@ interface SwapInputContract {
 
         data class CurrenciesReplaceAnimation(val stateChange: State.Loaded) : Effect()
         data class ShowError(val message: String) : Effect()
-        data class ShowToast(val message: String, val redInfo: Boolean = false) : Effect()
+        data class ShowErrorMessage(val error: ErrorMessage) : Effect()
+        data class ShowToast(val message: String) : Effect()
         data class ShowDialog(val args: FabriikGenericDialogArgs) : Effect()
         data class ContinueToSwapProcessing(
             val exchangeId: String,
@@ -89,7 +90,6 @@ interface SwapInputContract {
             val sendingNetworkFee: FeeAmountData? = null,
             val receivingNetworkFee: FeeAmountData? = null,
             val confirmButtonEnabled: Boolean = false,
-            val swapErrorMessage: ErrorMessage? = null,
             val fullScreenLoadingVisible: Boolean = false,
             val profile: Profile?,
         ) : State() {
@@ -101,8 +101,16 @@ interface SwapInputContract {
                 get() = quoteResponse?.toFeeCurrency?.rate ?: BigDecimal.ONE
             val minCryptoAmount: BigDecimal
                 get() = quoteResponse?.minimumValue ?: BigDecimal.ZERO
-            val maxCryptoAmount: BigDecimal
-                get() = quoteResponse?.maximumValue ?: BigDecimal.ZERO
+            private val dailySwapAmountUsed: BigDecimal
+                get() = profile?.exchangeLimits?.swapUsedDaily ?: BigDecimal.ZERO
+            private val dailySwapLimit: BigDecimal
+                get() = profile?.exchangeLimits?.swapAllowanceDaily ?: BigDecimal.ZERO
+            val dailySwapAmountLeft = dailySwapLimit - dailySwapAmountUsed
+            private val lifetimeSwapAllowance: BigDecimal
+                get() = profile?.exchangeLimits?.swapAllowanceLifetime ?: BigDecimal.ZERO
+            private val lifetimeSwapAmountUsed: BigDecimal
+                get() = profile?.exchangeLimits?.swapUsedLifetime ?: BigDecimal.ZERO
+            val lifetimeSwapAmountLeft = lifetimeSwapAllowance - lifetimeSwapAmountUsed
             val isKyc1: Boolean
                 get() = profile?.isKyc1() == true
             val isKyc2: Boolean
@@ -138,9 +146,21 @@ interface SwapInputContract {
             )
         }
 
-        class MaxSwapAmount(private val maxAmount: BigDecimal, private val cryptoCurrency: String) : ErrorMessage() {
+        object Kyc1DailyLimit : ErrorMessage() {
             override fun toString(context: Context) = context.getString(
-                R.string.Swap_Input_Error_MaxAmount, maxAmount.formatCryptoForUi(cryptoCurrency)
+                R.string.Swap_Input_Error_Kyc1DailyLimit
+            )
+        }
+
+        object Kyc1LifetimeLimit : ErrorMessage() {
+            override fun toString(context: Context) = context.getString(
+                R.string.Swap_Input_Error_Kyc1LifetimeLimit
+            )
+        }
+
+        object Kyc2DailyLimit : ErrorMessage() {
+            override fun toString(context: Context) = context.getString(
+                R.string.Swap_Input_Error_Kyc2DailyLimit
             )
         }
     }
