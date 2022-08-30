@@ -114,6 +114,8 @@ object BRSharedPrefs {
     private const val APP_RATE_PROMPT_SHOULD_PROMPT_DEBUG = "app-rate-prompt-should-prompt-debug"
     private const val BUY_NOTE_PROMPT_SHOULD_PROMPT = "buy-note-prompt-should-prompt"
     private const val TRADE_NOTE_PROMPT_SHOULD_PROMPT = "trade-note-prompt-should-prompt"
+    private const val VERIFY_PROMPT = "verifyPrompt"
+
     const val APP_FOREGROUNDED_COUNT = "appForegroundedCount"
     const val APP_RATE_PROMPT_HAS_RATED = "appReviewPromptHasRated"
 
@@ -625,6 +627,11 @@ object BRSharedPrefs {
     var appRatePromptDontAskAgain: Boolean
         get() = brdPrefs.getBoolean(APP_RATE_PROMPT_DONT_ASK_AGAIN, false)
         set(value) = brdPrefs.edit { putBoolean(APP_RATE_PROMPT_DONT_ASK_AGAIN, value) }
+            .also { promptChangeChannel.offer(Unit) }
+
+    var verifyProfilePrompt: Boolean
+        get() = brdPrefs.getBoolean(VERIFY_PROMPT, true)
+        set(value) = brdPrefs.edit { putBoolean(VERIFY_PROMPT, value) }
             .also { promptChangeChannel.offer(Unit) }
 
     fun promptChanges(): Flow<Unit> =
