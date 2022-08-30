@@ -139,7 +139,8 @@ class OrderPreviewViewModel(
                         }
                     }
 
-                    Status.ERROR ->
+                    Status.ERROR -> {
+                        setState { copy(confirmButtonEnabled = false) }
                         setEffect {
                             if (getString(R.string.Swap_Input_Error_QuoteExpired) == it.message) {
                                 OrderPreviewContract.Effect.TimeoutScreen
@@ -149,6 +150,7 @@ class OrderPreviewViewModel(
                                 )
                             }
                         }
+                    }
                 }
             }
         )

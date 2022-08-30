@@ -63,6 +63,8 @@ interface BuyInputContract {
             val fullScreenLoadingVisible: Boolean = false,
             val profile: Profile?
         ) : State() {
+            val feeMultiplier: BigDecimal
+                get() = (1 + (quoteResponse?.buyCardFeesPercent ?: 0f) / 100f).toBigDecimal()
             val oneFiatUnitToCryptoRate: BigDecimal
                 get() = quoteResponse?.exchangeRate ?: BigDecimal.ZERO
             val oneCryptoUnitToFiatRate: BigDecimal

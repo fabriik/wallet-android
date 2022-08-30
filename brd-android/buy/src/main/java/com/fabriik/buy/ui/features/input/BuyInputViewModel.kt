@@ -20,6 +20,7 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
 import org.kodein.di.erased.instance
 import java.math.BigDecimal
+import java.math.RoundingMode
 
 class BuyInputViewModel(
     application: Application
@@ -130,7 +131,7 @@ class BuyInputViewModel(
         onAmountChanged(
             state = state,
             fiatAmount = fiatAmount,
-            cryptoAmount = fiatAmount * state.oneFiatUnitToCryptoRate,
+            cryptoAmount = (fiatAmount * state.oneFiatUnitToCryptoRate).divide(state.feeMultiplier, 20, RoundingMode.HALF_UP),
             cryptoAmountChangeByUser = false,
             fiatAmountChangeByUser = changeByUser
         )
@@ -141,7 +142,7 @@ class BuyInputViewModel(
 
         onAmountChanged(
             state = state,
-            fiatAmount = cryptoAmount * state.oneCryptoUnitToFiatRate,
+            fiatAmount = cryptoAmount * state.oneCryptoUnitToFiatRate * state.feeMultiplier,
             cryptoAmount = cryptoAmount,
             cryptoAmountChangeByUser = changeByUser,
             fiatAmountChangeByUser = false
