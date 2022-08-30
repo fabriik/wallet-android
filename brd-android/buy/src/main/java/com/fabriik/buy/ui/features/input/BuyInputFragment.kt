@@ -159,11 +159,8 @@ class BuyInputFragment : Fragment(),
                     )
                 )
 
-            is BuyInputContract.Effect.ShowToast -> if (effect.redInfo) {
-                FabriikToastUtil.showRedInfo(binding.root, effect.message)
-            } else {
-                FabriikToastUtil.showInfo(binding.root, effect.message)
-            }
+            is BuyInputContract.Effect.ShowError ->
+                FabriikToastUtil.showError(binding.root, effect.message)
 
             is BuyInputContract.Effect.UpdateFiatAmount ->
                 binding.viewCryptoInput.setFiatAmount(effect.amount, effect.changeByUser)
