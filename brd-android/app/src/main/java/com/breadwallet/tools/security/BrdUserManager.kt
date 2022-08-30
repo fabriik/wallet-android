@@ -107,7 +107,6 @@ private const val KEY_PIN_CODE = "pinCode"
 private const val KEY_FAIL_COUNT = "failCount"
 private const val KEY_FAIL_TIMESTAMP = "failTimestamp"
 private const val KEY_ETH_PUB_KEY = "ethPublicKey"
-private const val KEY_VERIFY_PROMPT = "verifyPrompt"
 
 private const val MANUFACTURER_GOOGLE = "Google"
 
@@ -435,15 +434,12 @@ class CryptoUserManager(
 
     @Synchronized
     override fun showVerifyPrompt(): Boolean {
-        val storeSafe = checkNotNull(store)
-        return storeSafe.getBoolean(KEY_VERIFY_PROMPT, true)
+        return BRSharedPrefs.verifyProfilePrompt
     }
 
     @Synchronized
     override fun updateVerifyPrompt(showVerifyPrompt: Boolean) {
-        checkNotNull(store).edit {
-            putBoolean(KEY_VERIFY_PROMPT, showVerifyPrompt)
-        }
+        BRSharedPrefs.verifyProfilePrompt = showVerifyPrompt
     }
 
     @Synchronized

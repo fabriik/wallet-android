@@ -25,10 +25,7 @@
 package com.breadwallet.ui.home
 
 import android.content.Context
-import android.util.Log
-import com.breadwallet.R
 import com.breadwallet.breadbox.*
-import com.breadwallet.crypto.WalletManagerState
 import com.breadwallet.ext.throttleLatest
 import com.breadwallet.model.Experiments
 import com.breadwallet.model.InAppMessage
@@ -51,8 +48,6 @@ import com.breadwallet.ui.home.HomeScreen.F
 import com.breadwallet.util.usermetrics.UserMetricsUtil
 import com.breadwallet.platform.interfaces.AccountMetaDataProvider
 import com.breadwallet.tools.security.ProfileManager
-import com.fabriik.common.data.Status
-import com.fabriik.registration.data.RegistrationApi
 import com.platform.interfaces.WalletProvider
 import com.platform.util.AppReviewPromptManager
 import com.squareup.picasso.Callback
