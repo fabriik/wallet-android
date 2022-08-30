@@ -273,17 +273,20 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:hint="@string/Buy.OrderPreview.CVV"
+                        app:hintEnabled="false"
+                        app:hintAnimationEnabled="false"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tv_confirm_cvv_title">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_cvv"
+                            style="@style/FabriikEditTextStyle.NoFloatingLabel"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:imeOptions="actionNext"
                             android:inputType="numberPassword"
+                            android:hint="@string/Buy.OrderPreview.CVV"
                             android:maxLength="3" />
 
                     </com.google.android.material.textfield.TextInputLayout>
