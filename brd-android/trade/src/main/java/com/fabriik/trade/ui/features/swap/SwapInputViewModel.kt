@@ -339,16 +339,16 @@ class SwapInputViewModel(
             }
 
             val destinationCryptoCurrency = supportedCurrencies.lastOrNull {
-                helper.isWalletEnabled(it)
+                it != sourceCryptoCurrency && helper.isWalletEnabled(it)
             }
 
-            if (sourceCryptoCurrency == null && destinationCryptoCurrency == null) {
+            if (sourceCryptoCurrency == null || destinationCryptoCurrency == null) {
                 setEffect { SwapInputContract.Effect.ShowDialog(DIALOG_CHECK_ASSETS_ARGS) }
                 return@launch
             }
 
             val quoteResponse =
-                swapApi.getQuote(sourceCryptoCurrency!!, destinationCryptoCurrency!!)
+                swapApi.getQuote(sourceCryptoCurrency, destinationCryptoCurrency)
             val quoteData = quoteResponse.data
 
             val sourceCryptoBalance = helper.loadCryptoBalance(sourceCryptoCurrency)
