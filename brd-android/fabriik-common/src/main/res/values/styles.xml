@@ -141,6 +141,13 @@
         <item name="android:textCursorDrawable">@null</item>
     </style>
 
+    <style name="FabriikEditTextStyle.NoFloatingLabel">
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:textColorHint">@color/light_text_01</item>
+        <item name="android:textAppearance">@style/TextStyle.Body2</item>
+    </style>
+
     <style name="FabriikEditTextStyle.Clickable">
         <item name="android:focusable">false</item>
         <item name="android:cursorVisible">false</item>

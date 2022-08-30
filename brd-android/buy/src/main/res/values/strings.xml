@@ -25,9 +25,10 @@
     <string name="Buy.AddCard.Title">Add card</string>
     <string name="Buy.AddCard.Subtitle1">Card number</string>
     <string name="Buy.AddCard.Subtitle2">Expiration date</string>
-    <string name="Buy.AddCard.Subtitle3">Security code (CVV)</string>
+    <string name="Buy.AddCard.Subtitle3">CVV</string>
+    <string name="Buy.AddCard.Hint1">XXXX XXXX XXXX XXXX</string>
     <string name="Buy.AddCard.Hint2">MM/YY</string>
-    <string name="Buy.AddCard.Hint3">CVV</string>
+    <string name="Buy.AddCard.Hint3">XXX</string>
     <string name="Buy.AddCard.Error.WrongDate">Entered expiration date is not valid!</string>
 
     <string name="Buy.AddCard.CvvDialog.Title">Security code (CVV)</string>
