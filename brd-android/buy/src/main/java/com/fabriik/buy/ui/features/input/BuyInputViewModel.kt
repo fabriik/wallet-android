@@ -181,7 +181,16 @@ class BuyInputViewModel(
         val quoteResponse = state.quoteResponse ?: return
         val paymentInstrument = state.selectedPaymentMethod ?: return
 
-        //todo: validation
+        val validationError = validate(state)
+        if (validationError != null) {
+            setState { state.copy(continueButtonEnabled = false) }
+            setEffect {
+                BuyInputContract.Effect.ShowError(
+                    validationError.toString(getApplication<Application?>().applicationContext)
+                )
+            }
+            return
+        }
 
         setEffect {
             BuyInputContract.Effect.OpenOrderPreview(
@@ -274,13 +283,23 @@ class BuyInputViewModel(
                     }
 
                     setEffect {
-                        BuyInputContract.Effect.ShowToast(
-                            getString(R.string.Swap_Input_Error_NoSelectedPairData), true
+                        BuyInputContract.Effect.ShowError(
+                            getString(R.string.Buy_Input_Error_Network)
                         )
                     }
                 }
             }
         }
+    }
+
+    private fun validate(state: BuyInputContract.State.Loaded) = when {
+        state.networkFee == null ->
+            BuyInputContract.ErrorMessage.NetworkIssues
+        state.fiatAmount < state.minFiatAmount ->
+            BuyInputContract.ErrorMessage.MinBuyAmount(state.minFiatAmount, state.fiatCurrency)
+        state.fiatAmount > state.maxFiatAmount ->
+            BuyInputContract.ErrorMessage.MaxBuyAmount(state.maxFiatAmount, state.fiatCurrency)
+        else -> null
     }
 
     private suspend fun isWalletEnabled(currencyCode: String): Boolean {
@@ -292,8 +311,8 @@ class BuyInputViewModel(
     private fun showErrorState() {
         setState { BuyInputContract.State.Error }
         setEffect {
-            BuyInputContract.Effect.ShowToast(
-                getString(R.string.Swap_Input_Error_Network)
+            BuyInputContract.Effect.ShowError(
+                getString(R.string.Buy_Input_Error_Network)
             )
         }
     }

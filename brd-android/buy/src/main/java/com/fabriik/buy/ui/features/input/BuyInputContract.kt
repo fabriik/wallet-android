@@ -1,5 +1,8 @@
 package com.fabriik.buy.ui.features.input
 
+import android.content.Context
+import com.breadwallet.util.formatFiatForUi
+import com.fabriik.buy.R
 import com.fabriik.common.data.model.PaymentInstrument
 import com.fabriik.common.data.model.Profile
 import com.fabriik.common.data.model.isKyc1
@@ -30,7 +33,7 @@ interface BuyInputContract {
         object AddCard : Effect()
 
         data class PaymentMethodSelection(val paymentInstruments: List<PaymentInstrument>) : Effect()
-        data class ShowToast(val message: String, val redInfo: Boolean = false) : Effect()
+        data class ShowError(val message: String) : Effect()
         data class CryptoSelection(val currencies: List<String>) : Effect()
         data class UpdateFiatAmount(val amount: BigDecimal, val changeByUser: Boolean) : Effect()
         data class UpdateCryptoAmount(val amount: BigDecimal, val changeByUser: Boolean) : Effect()
@@ -63,16 +66,46 @@ interface BuyInputContract {
             val fullScreenLoadingVisible: Boolean = false,
             val profile: Profile?
         ) : State() {
+            val minFiatAmount: BigDecimal
+                get() = quoteResponse?.minimumValueUsd ?: BigDecimal.ZERO
+            val maxFiatAmount: BigDecimal
+                get() = quoteResponse?.maximumValueUsd ?: BigDecimal.ZERO
             val feeMultiplier: BigDecimal
                 get() = (1 + (quoteResponse?.buyCardFeesPercent ?: 0f) / 100f).toBigDecimal()
             val oneFiatUnitToCryptoRate: BigDecimal
                 get() = quoteResponse?.exchangeRate ?: BigDecimal.ZERO
             val oneCryptoUnitToFiatRate: BigDecimal
                 get() = BigDecimal.ONE.divide((quoteResponse?.exchangeRate ?: BigDecimal.ONE), 20, RoundingMode.HALF_UP) ?: BigDecimal.ZERO
-            val isKyc1: Boolean
-                get() = profile?.isKyc1() == true
-            val isKyc2: Boolean
-                get() = profile?.isKyc2() == true
+        }
+    }
+
+
+    sealed class ErrorMessage {
+
+        abstract fun toString(context: Context): String
+
+        object NetworkIssues : ErrorMessage() {
+            override fun toString(context: Context) = context.getString(
+                R.string.Swap_Input_Error_Network
+            )
+        }
+
+        class MinBuyAmount(private val minFiatAmount: BigDecimal, val fiatCurrency: String): ErrorMessage() {
+            override fun toString(context: Context) = context.getString(
+                R.string.Buy_Input_Error_MinAmount, minFiatAmount.formatFiatForUi(
+                    currencyCode = fiatCurrency,
+                    showCurrencyName = true
+                )
+            )
+        }
+
+        class MaxBuyAmount(private val maxFiatAmount: BigDecimal, private val fiatCurrency: String) : ErrorMessage() {
+            override fun toString(context: Context) = context.getString(
+                R.string.Buy_Input_Error_MaxAmount, maxFiatAmount.formatFiatForUi(
+                    currencyCode = fiatCurrency,
+                    showCurrencyName = true
+                )
+            )
         }
     }
 }

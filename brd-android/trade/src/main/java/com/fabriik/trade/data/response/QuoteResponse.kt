@@ -27,6 +27,12 @@ data class QuoteResponse(
     @Json(name = "maximum_value")
     val maximumValue: BigDecimal,
 
+    @Json(name = "minimum_value_usd")
+    val minimumValueUsd: BigDecimal?,
+
+    @Json(name = "maximum_value_usd")
+    val maximumValueUsd: BigDecimal?,
+
     @Json(name="from_fee_currency")
     val fromFeeCurrency: FeeCurrency?,
 
