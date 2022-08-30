@@ -32,7 +32,7 @@ class AddCardContract : FabriikContract {
             val token: String
         ) : Effect()
 
-        data class ShowToast(
+        data class ShowError(
             val message: String
         ) : Effect()
     }

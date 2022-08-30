@@ -112,8 +112,8 @@ class AddCardFragment : Fragment(), FabriikView<AddCardContract.State, AddCardCo
                     AddCardFragmentDirections.actionBillingAddress(effect.token)
                 )
 
-            is AddCardContract.Effect.ShowToast ->
-                FabriikToastUtil.showInfo(
+            is AddCardContract.Effect.ShowError ->
+                FabriikToastUtil.showError(
                     parentView = binding.root,
                     message = effect.message
                 )
