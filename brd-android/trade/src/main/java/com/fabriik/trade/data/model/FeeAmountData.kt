@@ -16,5 +16,8 @@ data class FeeAmountData(
 
     fun cryptoAmountIfIncludedOrZero(): BigDecimal = if (isFeeInWalletCurrency) cryptoAmount else BigDecimal.ZERO
 
-    fun formatFiatForUi() = fiatAmount.formatFiatForUi(fiatCurrency)
+    fun formatFiatForUi() = fiatAmount.formatFiatForUi(
+        currencyCode = fiatCurrency,
+        showCurrencyName = true
+    )
 }

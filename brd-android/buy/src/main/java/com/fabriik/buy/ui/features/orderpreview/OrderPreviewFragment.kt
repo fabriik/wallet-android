@@ -116,19 +116,33 @@ class OrderPreviewFragment : Fragment(),
             btnConfirm.isEnabled = state.confirmButtonEnabled
             viewCreditCard.setPaymentInstrument(state.paymentInstrument)
 
-            tvTotalAmount.text = state.totalFiatAmount.formatFiatForUi(state.fiatCurrency)
-            tvAmountValue.text = state.fiatAmount.formatFiatForUi(state.fiatCurrency)
+            tvTotalAmount.text = state.totalFiatAmount.formatFiatForUi(
+                currencyCode = state.fiatCurrency,
+                showCurrencyName = true
+            )
+
+            tvAmountValue.text = state.fiatAmount.formatFiatForUi(
+                currencyCode = state.fiatCurrency,
+                showCurrencyName = true
+            )
+
             tvCryptoAmount.text = state.cryptoAmount.formatCryptoForUi(state.cryptoCurrency, 8)
-            tvCreditFeeValue.text = state.cardFee.formatFiatForUi(state.fiatCurrency)
+
+            tvCreditFeeValue.text = state.cardFee.formatFiatForUi(
+                currencyCode = state.fiatCurrency,
+                showCurrencyName = true
+            )
+
             tvCreditFeeTitle.text = getString(R.string.Buy_OrderPreview_CreditCardFee, state.cardFeePercent.formatPercent())
+
             tvNetworkFeeValue.text = state.networkFee.formatFiatForUi()
 
             tvRateValue.text = RATE_FORMAT.format(
                 state.cryptoCurrency,
                 state.oneCryptoUnitToFiatRate.formatFiatForUi(
-                    state.fiatCurrency
-                ),
-                state.fiatCurrency
+                    currencyCode = state.fiatCurrency,
+                    showCurrencyName = true
+                )
             )
 
             fullScreenLoadingView.root.isVisible = state.fullScreenLoadingIndicator
@@ -206,6 +220,6 @@ class OrderPreviewFragment : Fragment(),
     }
     
     companion object {
-        private const val RATE_FORMAT = "1 %s = %s %s"
+        private const val RATE_FORMAT = "1 %s = %s"
     }
 }
