@@ -34,7 +34,6 @@ import com.bluelinelabs.conductor.RouterTransaction
 import com.bluelinelabs.conductor.changehandler.FadeChangeHandler
 import com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler
 import com.bluelinelabs.conductor.changehandler.VerticalChangeHandler
-import com.breadwallet.BuildConfig
 import com.breadwallet.R
 import com.breadwallet.breadbox.BreadBox
 import com.breadwallet.legacy.presenter.settings.NotificationSettingsController
@@ -87,7 +86,6 @@ import com.breadwallet.util.CryptoUriParser
 import com.breadwallet.util.isBrd
 import com.breadwallet.util.showFabriikGenericDialog
 import com.fabriik.buy.ui.BuyActivity
-import com.fabriik.buy.ui.BuyWebViewActivity
 import com.fabriik.common.ui.features.nointernet.NoInternetActivity
 import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.kyc.ui.KycActivity
@@ -204,11 +202,7 @@ class RouterNavigator(
 
         router.activity?.let {
             it.startActivity(
-                if (BuildConfig.DEBUG) {
-                    BuyActivity.getStartIntent(it)
-                } else {
-                    BuyWebViewActivity.getStartIntent(it)
-                }
+                BuyActivity.getStartIntent(it)
             )
         }
     }
