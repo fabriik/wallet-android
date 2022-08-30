@@ -15,18 +15,19 @@ import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.common.utils.getString
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.closestKodein
+import org.kodein.di.erased.instance
 
 class AddCardViewModel(
     application: Application
 ) : FabriikViewModel<AddCardContract.State, AddCardContract.Event, AddCardContract.Effect>(
     application
-) {
+), KodeinAware {
 
-    private val checkoutClient = CheckoutAPIClient(
-        getApplication(),
-        "pk_sbox_ees63clhrko6kta6j3cwloebg4#",
-        Environment.SANDBOX //todo: change to prod env
-    )
+    override val kodein by closestKodein { application }
+
+    private val checkoutApi by kodein.instance<CheckoutAPIClient>()
 
     override fun createInitialState() = AddCardContract.State()
 
@@ -66,7 +67,7 @@ class AddCardViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             setState { copy(loadingIndicatorVisible = true) }
 
-            checkoutClient.setTokenListener(object : CheckoutAPIClient.OnTokenGenerated {
+            checkoutApi.setTokenListener(object : CheckoutAPIClient.OnTokenGenerated {
                 override fun onTokenGenerated(response: CardTokenisationResponse) {
                     setState { copy(loadingIndicatorVisible = false) }
                     setEffect { AddCardContract.Effect.BillingAddress(response.token) }
@@ -85,7 +86,7 @@ class AddCardViewModel(
 
             val expiryDate = currentState.expiryDate.split("/")
 
-            checkoutClient.generateToken(
+            checkoutApi.generateToken(
                 CardTokenisationRequest(
                     currentState.cardNumber.replace("\\s+".toRegex(), ""),
                     null,

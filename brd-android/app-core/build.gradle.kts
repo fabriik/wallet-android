@@ -56,6 +56,8 @@ dependencies {
     compileOnly(Libs.Redacted.Annotation)
 
     implementation(Libs.Firebase.Crashlytics)
+    
+    api(Libs.Checkout.Frames)
 
     // Kodein DI
     api(Libs.Kodein.CoreErasedJvm)
