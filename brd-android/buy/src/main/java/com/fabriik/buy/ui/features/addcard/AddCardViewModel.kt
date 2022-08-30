@@ -74,12 +74,12 @@ class AddCardViewModel(
 
                 override fun onError(error: CardTokenisationFail) {
                     setState { copy(loadingIndicatorVisible = false) }
-                    setEffect { AddCardContract.Effect.ShowToast(getString(R.string.FabriikApi_DefaultError)) }
+                    setEffect { AddCardContract.Effect.ShowError(getString(R.string.FabriikApi_DefaultError)) }
                 }
 
                 override fun onNetworkError(error: NetworkError) {
                     setState { copy(loadingIndicatorVisible = false) }
-                    setEffect { AddCardContract.Effect.ShowToast(getString(R.string.FabriikApi_DefaultError)) }
+                    setEffect { AddCardContract.Effect.ShowError(getString(R.string.FabriikApi_DefaultError)) }
                 }
             })
 
@@ -99,7 +99,7 @@ class AddCardViewModel(
 
     private fun validateDate(input: String?) {
         if (!isExpiryDateValid(input)) {
-            setEffect { AddCardContract.Effect.ShowToast(getString(R.string.Buy_AddCard_Error_WrongDate)) }
+            setEffect { AddCardContract.Effect.ShowError(getString(R.string.Buy_AddCard_Error_WrongDate)) }
         }
     }
 
