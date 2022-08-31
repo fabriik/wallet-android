@@ -17,7 +17,7 @@ class BillingAddressContract : FabriikContract {
         data class LastNameChanged(val lastName: String): Event()
         data class FirstNameChanged(val firstName: String): Event()
         data class CountryChanged(val country: Country): Event()
-        data class BrowserResult(val result: Int): Event()
+        data class PaymentChallengeResult(val result: Int): Event()
     }
 
     sealed class Effect : FabriikContract.Effect {

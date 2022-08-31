@@ -30,7 +30,7 @@ class BillingAddressFragment : Fragment(),
     private val viewModel: BillingAddressViewModel by viewModels()
 
     private val browserResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-        viewModel.setEvent(BillingAddressContract.Event.BrowserResult(it.resultCode))
+        viewModel.setEvent(BillingAddressContract.Event.PaymentChallengeResult(it.resultCode))
     }
 
     override fun onCreateView(
