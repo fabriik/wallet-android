@@ -20,7 +20,7 @@ class AddCardViewModel(
     application: Application
 ) : FabriikViewModel<AddCardContract.State, AddCardContract.Event, AddCardContract.Effect>(
     application
-) {
+), AddCardEventHandler {
 
     private val checkoutClient = CheckoutAPIClient(
         getApplication(),
@@ -30,39 +30,15 @@ class AddCardViewModel(
 
     override fun createInitialState() = AddCardContract.State()
 
-    override fun handleEvent(event: AddCardContract.Event) {
-        when (event) {
-            AddCardContract.Event.BackClicked ->
-                setEffect { AddCardContract.Effect.Back }
-
-            AddCardContract.Event.DismissClicked ->
-                setEffect { AddCardContract.Effect.Dismiss }
-
-            AddCardContract.Event.ConfirmClicked ->
-                onConfirmClicked()
-
-            AddCardContract.Event.SecurityCodeInfoClicked ->
-                setEffect { AddCardContract.Effect.ShowCvvInfoDialog }
-
-            is AddCardContract.Event.OnCardNumberChanged ->
-                setState { copy(cardNumber = formatCardNumber(event.number)).validate() }
-
-            is AddCardContract.Event.OnSecurityCodeChanged ->
-                setState { copy(securityCode = event.code).validate() }
-
-            is AddCardContract.Event.OnDateChanged -> {
-                val formatDate = formatDate(event.date)
-
-                setState { copy(expiryDate = formatDate).validate() }
-
-                if (formatDate.length == 5) {
-                    validateDate(formatDate)
-                }
-            }
-        }
+    override fun onBackClicked() {
+        setEffect { AddCardContract.Effect.Back }
     }
 
-    private fun onConfirmClicked() {
+    override fun onDismissClicked() {
+        setEffect { AddCardContract.Effect.Dismiss }
+    }
+
+    override fun onConfirmClicked() {
         viewModelScope.launch(Dispatchers.IO) {
             setState { copy(loadingIndicatorVisible = true) }
 
@@ -94,6 +70,40 @@ class AddCardViewModel(
                     currentState.securityCode
                 )
             )
+        }
+    }
+
+    override fun onSecurityCodeInfoClicked() {
+        setEffect { AddCardContract.Effect.ShowCvvInfoDialog }
+    }
+
+    override fun onCardNumberChanged(cardNumber: String) {
+        setState {
+            copy(
+                cardNumber = formatCardNumber(cardNumber)
+            ).validate()
+        }
+    }
+
+    override fun onSecurityCodeChanged(securityCode: String) {
+        setState {
+            copy(
+                securityCode = securityCode
+            ).validate()
+        }
+    }
+
+    override fun onExpirationDateChanged(expirationDate: String) {
+        val formatDate = formatDate(expirationDate)
+
+        setState {
+            copy(
+                expiryDate = formatDate
+            ).validate()
+        }
+
+        if (formatDate.length == 5) {
+            validateDate(formatDate)
         }
     }
 
