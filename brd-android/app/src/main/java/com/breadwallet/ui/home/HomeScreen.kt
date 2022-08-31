@@ -103,7 +103,6 @@ object HomeScreen {
         object OnEmailVerified : E()
         data class OnRateAppPromptDontShowClicked(val checked: Boolean) : E()
         object OnRateAppPromptNoThanksClicked : E()
-        data class OnEmailPromptClicked(@Redacted val email: String) : E()
         data class OnSupportFormSubmitted(val feedback: String) : E()
         data class OnProfileDataLoaded(val profile: Profile) : E()
         data class OnProfileDataLoadFailed(val message: String?) : E()
@@ -219,8 +218,6 @@ object HomeScreen {
 
         object StartRescan : F()
 
-        data class SaveEmail(@Redacted val email: String) : F()
-
         object ClearRateAppPrompt : F()
         object SaveDontShowMeRateAppPrompt : F()
 
@@ -254,7 +251,6 @@ data class Wallet(
 }
 
 enum class PromptItem {
-    EMAIL_COLLECTION,
     FINGER_PRINT,
     PAPER_KEY,
     UPGRADE_PIN,

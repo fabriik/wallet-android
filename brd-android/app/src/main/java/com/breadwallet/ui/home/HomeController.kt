@@ -250,50 +250,10 @@ class HomeController(
                     eventConsumer.accept(E.OnRescanPromptClicked)
                 }
             }
-            PromptItem.EMAIL_COLLECTION -> {
-                return getEmailPrompt()
-            }
             PromptItem.RATE_APP -> return getRateAppPrompt()
             PromptItem.VERIFY_USER -> return getVerifyUserPrompt()
         }
         return baseLayout
-    }
-
-    private fun getEmailPrompt(): View {
-        val act = checkNotNull(activity)
-        val customLayout = act.layoutInflater.inflate(R.layout.email_prompt, null)
-        val customTitle = customLayout.findViewById<BaseTextView>(R.id.prompt_title)
-        val customDescription =
-            customLayout.findViewById<BaseTextView>(R.id.prompt_description)
-        val footNote = customLayout.findViewById<BaseTextView>(R.id.prompt_footnote)
-        val submitButton = customLayout.findViewById<BRButton>(R.id.submit_button)
-        val closeButton = customLayout.findViewById<ImageView>(R.id.close_button)
-        val emailEditText = customLayout.findViewById<BREdit>(R.id.email_edit)
-        submitButton.setColor(act.getColor(R.color.create_new_wallet_button_dark))
-        customTitle.text = act.getString(R.string.Prompts_Email_title)
-        customDescription.text = act.getString(R.string.Prompts_Email_body)
-        closeButton.setOnClickListener {
-            eventConsumer.accept(E.OnPromptDismissed(PromptItem.EMAIL_COLLECTION))
-        }
-        submitButton.setOnClickListener {
-            val email = emailEditText.text.toString().trim { it <= ' ' }
-            if (email.isValidEmail()) {
-                eventConsumer.accept(E.OnEmailPromptClicked(email))
-                emailEditText.visibility = View.INVISIBLE
-                submitButton.visibility = View.INVISIBLE
-                footNote.visibility = View.VISIBLE
-                customTitle.text = act.getString(R.string.Prompts_Email_successTitle)
-                customDescription.text = act.getString(R.string.Prompts_Email_successBody)
-                viewAttachScope.launch(Main) {
-                    delay(EMAIL_SUCCESS_DELAY)
-                    binding.promptContainer.removeAllViews()
-                }
-            } else {
-                SpringAnimator.failShakeAnimation(act, emailEditText)
-            }
-
-        }
-        return customLayout
     }
 
     private fun getVerifyUserPrompt(): View {

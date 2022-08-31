@@ -555,17 +555,11 @@
     <string name="PaymentProtocol.Errors.untrustedCertificate">不受信任的憑證</string>
     <string name="Platform.transaction_cancelled">交易已取消</string>
     <!-- Body text for a prompt that asks the user to subscribe to email updates to find out product updates. -->
-    <string name="Prompts.Email.body">搶先收到重要支援與產品新消息</string>
     <!-- Placeholder text for an email address text field. -->
-    <string name="Prompts.Email.placeholder">輸入您的電子信箱</string>
     <!-- Body text that is shown when the user successfully subscribes to email updates. -->
-    <string name="Prompts.Email.successBody">您已成功訂閱接收新消息</string>
     <!-- Text that is displayed as a footnote when the user successfully subscribes to email updates. -->
-    <string name="Prompts.Email.successFootnote">感謝您一直以來的支持</string>
     <!-- Title that is shown when the user successfully subscribes to email updates. -->
-    <string name="Prompts.Email.successTitle">謝謝您！</string>
     <!-- Title for a prompt that asks the user to subscribe to email updates to find out product updates. -->
-    <string name="Prompts.Email.title">進入循環</string>
     <!-- Enable face ID prompt body -->
     <string name="Prompts.FaceId.body">點擊繼續來啟用 Face ID</string>
     <!-- Enable face ID prompt title -->

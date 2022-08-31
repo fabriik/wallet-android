@@ -82,17 +82,10 @@ fun createHomeScreenHandler(
     supportManager: SupportManager,
     profileManager: ProfileManager
 ) = subtypeEffectHandler<F, E> {
-    addConsumer<F.SaveEmail> { effect ->
-        UserMetricsUtil.makeEmailOptInRequest(context, effect.email)
-        BRSharedPrefs.putEmailOptIn(true)
-    }
     addFunction<F.DismissPrompt> { effect ->
         when (effect.promptItem) {
             PromptItem.FINGER_PRINT -> {
                 BRSharedPrefs.putPromptDismissed(PROMPT_DISMISSED_FINGERPRINT, true)
-            }
-            PromptItem.EMAIL_COLLECTION -> {
-                BRSharedPrefs.putEmailOptInDismissed(true)
             }
         }
         E.CheckForPrompt
@@ -103,10 +96,6 @@ fun createHomeScreenHandler(
             val promptId = when {
                 brdUser.showVerifyPrompt() -> PromptItem.VERIFY_USER
                 BRSharedPrefs.appRatePromptShouldPromptDebug -> PromptItem.RATE_APP
-                !BRSharedPrefs.getEmailOptIn()
-                    && !BRSharedPrefs.getEmailOptInDismissed() -> {
-                    PromptItem.EMAIL_COLLECTION
-                }
                 brdUser.pinCodeNeedsUpgrade() -> PromptItem.UPGRADE_PIN
                 !BRSharedPrefs.phraseWroteDown -> PromptItem.PAPER_KEY
                 AppReviewPromptManager.shouldPrompt() -> PromptItem.RATE_APP
@@ -260,7 +249,6 @@ private fun getPromptName(prompt: PromptItem): String = when (prompt) {
     PromptItem.PAPER_KEY -> EventUtils.PROMPT_PAPER_KEY
     PromptItem.UPGRADE_PIN -> EventUtils.PROMPT_UPGRADE_PIN
     PromptItem.RECOMMEND_RESCAN -> EventUtils.PROMPT_RECOMMEND_RESCAN
-    PromptItem.EMAIL_COLLECTION -> EventUtils.PROMPT_EMAIL
     PromptItem.RATE_APP -> EventUtils.PROMPT_RATE_APP
     PromptItem.VERIFY_USER -> EventUtils.PROMPT_VERIFY_USER
 }
