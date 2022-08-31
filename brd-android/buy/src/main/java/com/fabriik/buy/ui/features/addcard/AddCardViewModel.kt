@@ -6,7 +6,6 @@ import com.checkout.android_sdk.CheckoutAPIClient
 import com.checkout.android_sdk.Request.CardTokenisationRequest
 import com.checkout.android_sdk.Response.CardTokenisationFail
 import com.checkout.android_sdk.Response.CardTokenisationResponse
-import com.checkout.android_sdk.Utils.Environment
 import com.checkout.android_sdk.network.NetworkError
 import com.fabriik.buy.R
 import com.fabriik.buy.utils.formatCardNumber

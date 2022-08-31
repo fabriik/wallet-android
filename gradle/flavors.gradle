@@ -8,6 +8,8 @@ android {
             resValue "string", "app_name", "Fabriik"
             buildConfigField "String", "SERVER_HOST", "\"api.fabriikw.com\""
             buildConfigField "boolean", "BITCOIN_TESTNET", "false"
+            buildConfigField "String", "CHECKOUT_TOKEN", "\"pk_sbox_ees63clhrko6kta6j3cwloebg4#\""//todo: change to prod env
+            buildConfigField "boolean", "CHECKOUT_SANDBOX", "false"
 
             if (isAppModule) {
                 applicationId "com.fabriik.app"
@@ -18,6 +20,8 @@ android {
             resValue "string", "app_name", "Fabriik Stg Mainnet"
             buildConfigField "String", "SERVER_HOST", "\"api-stg.fabriikw.com\""
             buildConfigField "boolean", "BITCOIN_TESTNET", "false"
+            buildConfigField "String", "CHECKOUT_TOKEN", "\"pk_sbox_ees63clhrko6kta6j3cwloebg4#\""//todo: change to prod env
+            buildConfigField "boolean", "CHECKOUT_SANDBOX", "false"
 
             if (isAppModule) {
                 applicationId "com.fabriik.app.stg.mainnet"
@@ -28,6 +32,8 @@ android {
             resValue "string", "app_name", "Fabriik Dev Mainnet"
             buildConfigField "String", "SERVER_HOST", "\"one-dev.moneybutton.io\""
             buildConfigField "boolean", "BITCOIN_TESTNET", "false"
+            buildConfigField "String", "CHECKOUT_TOKEN", "\"pk_sbox_ees63clhrko6kta6j3cwloebg4#\""
+            buildConfigField "boolean", "CHECKOUT_SANDBOX", "true"
 
             if (isAppModule) {
                 applicationId "com.fabriik.app.dev.mainnet"
@@ -38,6 +44,8 @@ android {
             resValue "string", "app_name", "Fabriik Dev Testnet"
             buildConfigField "String", "SERVER_HOST", "\"one-dev.moneybutton.io\""
             buildConfigField "boolean", "BITCOIN_TESTNET", "true"
+            buildConfigField "String", "CHECKOUT_TOKEN", "\"pk_sbox_ees63clhrko6kta6j3cwloebg4#\""
+            buildConfigField "boolean", "CHECKOUT_SANDBOX", "true"
 
             if (isAppModule) {
                 applicationId "com.fabriik.app.dev.testnet"

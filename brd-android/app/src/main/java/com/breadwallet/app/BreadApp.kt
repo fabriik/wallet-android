@@ -298,8 +298,8 @@ class BreadApp : Application(), KodeinAware, CameraXConfig.Provider {
         bind<CheckoutAPIClient>() with singleton {
             CheckoutAPIClient(
                 this@BreadApp,
-                "pk_sbox_ees63clhrko6kta6j3cwloebg4#",
-                Environment.SANDBOX //todo: change to prod env
+                BuildConfig.CHECKOUT_TOKEN,
+                if (BuildConfig.CHECKOUT_SANDBOX) Environment.SANDBOX else Environment.LIVE
             )
         }
 
