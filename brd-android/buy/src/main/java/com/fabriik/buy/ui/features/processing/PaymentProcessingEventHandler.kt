@@ -6,11 +6,11 @@ interface PaymentProcessingEventHandler: FabriikEventHandler<PaymentProcessingCo
 
     override fun handleEvent(event: PaymentProcessingContract.Event) {
         return when (event) {
-            PaymentProcessingContract.Event.BackToHomeClicked -> onBackToHomeClicked()
-            PaymentProcessingContract.Event.ContactSupportClicked -> onContactSupportClicked()
-            PaymentProcessingContract.Event.PurchaseDetailsClicked -> onPurchaseDetailsClicked()
-            PaymentProcessingContract.Event.OnPaymentRedirectResult -> onPaymentRedirectResult()
-            PaymentProcessingContract.Event.TryDifferentMethodClicked -> onTryDifferentMethodClicked()
+            is PaymentProcessingContract.Event.BackToHomeClicked -> onBackToHomeClicked()
+            is PaymentProcessingContract.Event.ContactSupportClicked -> onContactSupportClicked()
+            is PaymentProcessingContract.Event.PurchaseDetailsClicked -> onPurchaseDetailsClicked()
+            is PaymentProcessingContract.Event.OnPaymentRedirectResult -> onPaymentRedirectResult()
+            is PaymentProcessingContract.Event.TryDifferentMethodClicked -> onTryDifferentMethodClicked()
         }
     }
 
