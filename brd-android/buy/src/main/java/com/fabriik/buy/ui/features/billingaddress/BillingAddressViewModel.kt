@@ -8,6 +8,7 @@ import com.fabriik.common.data.Status
 import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.common.utils.getString
 import com.fabriik.common.utils.toBundle
+import com.fabriik.kyc.data.model.Country
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
 import org.kodein.di.erased.instance
@@ -17,7 +18,7 @@ class BillingAddressViewModel(
     savedStateHandle: SavedStateHandle
 ) : FabriikViewModel<BillingAddressContract.State, BillingAddressContract.Event, BillingAddressContract.Effect>(
     application, savedStateHandle
-), KodeinAware {
+), BillingAddressEventHandler, KodeinAware {
 
     override val kodein by closestKodein { application }
 
@@ -33,60 +34,15 @@ class BillingAddressViewModel(
 
     override fun createInitialState() = BillingAddressContract.State()
 
-    override fun handleEvent(event: BillingAddressContract.Event) {
-        when (event) {
-            BillingAddressContract.Event.BackPressed ->
-                setEffect { BillingAddressContract.Effect.Back }
-
-            BillingAddressContract.Event.DismissClicked ->
-                setEffect { BillingAddressContract.Effect.Dismiss }
-
-            BillingAddressContract.Event.ConfirmClicked ->
-                onConfirmClicked()
-
-            BillingAddressContract.Event.CountryClicked ->
-                setEffect { BillingAddressContract.Effect.CountrySelection }
-
-            is BillingAddressContract.Event.ZipChanged ->
-                setState { copy(zip = event.zip).validate() }
-
-            is BillingAddressContract.Event.CityChanged ->
-                setState { copy(city = event.city).validate() }
-
-            is BillingAddressContract.Event.StateChanged ->
-                setState { copy(state = event.state).validate() }
-
-            is BillingAddressContract.Event.AddressChanged ->
-                setState { copy(address = event.address).validate() }
-
-            is BillingAddressContract.Event.LastNameChanged ->
-                setState { copy(lastName = event.lastName).validate() }
-
-            is BillingAddressContract.Event.FirstNameChanged ->
-                setState { copy(firstName = event.firstName).validate() }
-
-            is BillingAddressContract.Event.CountryChanged ->
-                setState { copy(country = event.country).validate() }
-
-            is BillingAddressContract.Event.BrowserResult ->
-                checkPaymentStatus()
-        }
+    override fun onBackClicked() {
+        setEffect { BillingAddressContract.Effect.Back }
     }
 
-    private fun checkPaymentStatus() {
-        val reference = currentState.paymentReference ?: return
-
-        callApi(
-            endState = { copy(loadingIndicatorVisible = false) },
-            startState = { copy(loadingIndicatorVisible = true) },
-            action = { buyApi.getPaymentStatus(reference) },
-            callback = {
-                setEffect { BillingAddressContract.Effect.PaymentMethod }
-            }
-        )
+    override fun onDismissClicked() {
+        setEffect { BillingAddressContract.Effect.Dismiss }
     }
 
-    private fun onConfirmClicked() {
+    override fun onConfirmClicked() {
         callApi(
             endState = { copy(loadingIndicatorVisible = false) },
             startState = { copy(loadingIndicatorVisible = true) },
@@ -126,6 +82,51 @@ class BillingAddressViewModel(
                             )
                         }
                 }
+            }
+        )
+    }
+
+    override fun onCountryClicked() {
+        setEffect { BillingAddressContract.Effect.CountrySelection }
+    }
+
+    override fun onZipChanged(zip: String) {
+        setState { copy(zip = zip).validate() }
+    }
+
+    override fun onCityChanged(city: String) {
+        setState { copy(city = city).validate() }
+    }
+
+    override fun onStateChanged(state: String) {
+        setState { copy(state = state).validate() }
+    }
+
+    override fun onAddressChanged(address: String) {
+        setState { copy(address = address).validate() }
+    }
+
+    override fun onCountryChanged(country: Country) {
+        setState { copy(country = country).validate() }
+    }
+
+    override fun onFirstNameChanged(firstName: String) {
+        setState { copy(firstName = firstName).validate() }
+    }
+
+    override fun onLastNameChanged(lastName: String) {
+        setState { copy(lastName = lastName).validate() }
+    }
+
+    override fun onPaymentChallengeResult(result: Int) {
+        val reference = currentState.paymentReference ?: return
+
+        callApi(
+            endState = { copy(loadingIndicatorVisible = false) },
+            startState = { copy(loadingIndicatorVisible = true) },
+            action = { buyApi.getPaymentStatus(reference) },
+            callback = {
+                setEffect { BillingAddressContract.Effect.PaymentMethod }
             }
         )
     }
