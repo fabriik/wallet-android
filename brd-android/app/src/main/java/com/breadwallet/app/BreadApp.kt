@@ -47,6 +47,7 @@ import com.brd.bakerapi.BakersApiClient
 import com.brd.prefs.AndroidPreferences
 import com.brd.prefs.Preferences
 import com.breadwallet.BuildConfig
+import com.breadwallet.R
 import com.breadwallet.breadbox.*
 import com.breadwallet.corecrypto.CryptoApiProvider
 import com.breadwallet.crypto.CryptoApi
@@ -298,8 +299,8 @@ class BreadApp : Application(), KodeinAware, CameraXConfig.Provider {
         bind<CheckoutAPIClient>() with singleton {
             CheckoutAPIClient(
                 this@BreadApp,
-                BuildConfig.CHECKOUT_TOKEN,
-                if (BuildConfig.CHECKOUT_SANDBOX) Environment.SANDBOX else Environment.LIVE
+                getString(R.string.checkout_api_token),
+                if (resources.getBoolean(R.bool.checkout_sandbox)) Environment.SANDBOX else Environment.LIVE
             )
         }
 
