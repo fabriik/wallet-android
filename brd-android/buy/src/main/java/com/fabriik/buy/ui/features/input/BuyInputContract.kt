@@ -70,8 +70,6 @@ interface BuyInputContract {
                 get() = quoteResponse?.minimumValueUsd ?: BigDecimal.ZERO
             val maxFiatAmount: BigDecimal
                 get() = quoteResponse?.maximumValueUsd ?: BigDecimal.ZERO
-            val feeMultiplier: BigDecimal
-                get() = (1 + (quoteResponse?.buyCardFeesPercent ?: 0f) / 100f).toBigDecimal()
             val oneFiatUnitToCryptoRate: BigDecimal
                 get() = quoteResponse?.exchangeRate ?: BigDecimal.ZERO
             val oneCryptoUnitToFiatRate: BigDecimal

@@ -117,7 +117,7 @@ class OrderPreviewViewModel(
 
                 buyApi.createOrder(
                     quoteId = quoteResponse.quoteId,
-                    baseQuantity = currentState.fiatAmount,
+                    baseQuantity = currentState.totalFiatAmount,
                     termQuantity = currentState.cryptoAmount,
                     destination = destinationAddress,
                     nologCvv = currentState.securityCode,

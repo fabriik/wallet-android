@@ -131,7 +131,7 @@ class BuyInputViewModel(
         onAmountChanged(
             state = state,
             fiatAmount = fiatAmount,
-            cryptoAmount = (fiatAmount * state.oneFiatUnitToCryptoRate).divide(state.feeMultiplier, 20, RoundingMode.HALF_UP),
+            cryptoAmount = fiatAmount * state.oneFiatUnitToCryptoRate,
             cryptoAmountChangeByUser = false,
             fiatAmountChangeByUser = changeByUser
         )
@@ -142,7 +142,7 @@ class BuyInputViewModel(
 
         onAmountChanged(
             state = state,
-            fiatAmount = cryptoAmount * state.oneCryptoUnitToFiatRate * state.feeMultiplier,
+            fiatAmount = cryptoAmount * state.oneCryptoUnitToFiatRate,
             cryptoAmount = cryptoAmount,
             cryptoAmountChangeByUser = changeByUser,
             fiatAmountChangeByUser = false
