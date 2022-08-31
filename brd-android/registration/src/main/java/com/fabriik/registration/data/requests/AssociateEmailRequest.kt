@@ -9,5 +9,8 @@ data class AssociateEmailRequest(
     val email: String,
 
     @Json(name = "token")
-    val token: String
+    val token: String,
+
+    @Json(name = "subscribe")
+    val subscribe: Boolean
 )
