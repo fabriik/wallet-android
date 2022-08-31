@@ -2,7 +2,6 @@ package com.fabriik.trade.ui.features.swap
 
 import android.app.Application
 import android.security.keystore.UserNotAuthenticatedException
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.breadwallet.breadbox.BreadBox
 import com.breadwallet.breadbox.addressFor
@@ -213,7 +212,16 @@ class SwapInputViewModel(
         ethErrorSeen = false
         ethWarningSeen = false
 
-        requestNewQuote()
+        if (helper.isAnySwapPendingForSource(state.sourceCryptoCurrency)) {
+            setState { state.copy(quoteResponse = null) }
+            setEffect {
+                SwapInputContract.Effect.ShowError(
+                    message = getString(R.string.Swap_Input_Error_OneSwapLimit)
+                )
+            }
+        } else {
+            requestNewQuote()
+        }
     }
 
     private fun onReplaceCurrenciesClicked() {
@@ -242,8 +250,28 @@ class SwapInputViewModel(
     }
 
     private fun onReplaceCurrenciesAnimationCompleted(state: SwapInputContract.State.Loaded) {
-        setState { state }
-        requestNewQuote()
+        if (helper.isAnySwapPendingForSource(state.sourceCryptoCurrency)) {
+            setState {
+                state.copy(
+                    quoteResponse = null,
+                    sendingNetworkFee = null,
+                    receivingNetworkFee = null,
+                    sourceFiatAmount = BigDecimal.ZERO,
+                    sourceCryptoAmount = BigDecimal.ZERO,
+                    destinationFiatAmount = BigDecimal.ZERO,
+                    destinationCryptoAmount = BigDecimal.ZERO
+                )
+            }
+
+            setEffect {
+                SwapInputContract.Effect.ShowError(
+                    message = getString(R.string.Swap_Input_Error_OneSwapLimit)
+                )
+            }
+        } else {
+            setState { state }
+            requestNewQuote()
+        }
 
         updateAmounts(
             sourceFiatAmountChangedByUser = false,
