@@ -12,6 +12,8 @@ import com.breadwallet.crypto.TransferState
 import com.breadwallet.ext.isZero
 import com.breadwallet.tools.security.BrdUserManager
 import com.breadwallet.tools.security.ProfileManager
+import com.breadwallet.tools.util.bsv
+import com.breadwallet.tools.util.eth
 import com.fabriik.common.data.Resource
 import com.fabriik.common.data.Status
 import com.fabriik.common.ui.base.FabriikViewModel
@@ -98,7 +100,12 @@ class SwapInputViewModel(
                 onReplaceCurrenciesClicked()
 
             SwapInputContract.Event.OnResume -> {
-                updateAmounts(false, false, false, false)
+                updateAmounts(
+                    sourceFiatAmountChangedByUser = false,
+                    sourceCryptoAmountChangedByUser = false,
+                    destinationFiatAmountChangedByUser = false,
+                    destinationCryptoAmountChangedByUser = false
+                )
             }
 
             is SwapInputContract.Event.OnCheckAssetsDialogResult,
@@ -370,8 +377,27 @@ class SwapInputViewModel(
                 helper.isWalletEnabled(it) && !helper.isAnySwapPendingForSource(it)
             }
 
-            val destinationCryptoCurrency = supportedCurrencies.lastOrNull {
+            val destinationCryptoCurrencies = supportedCurrencies.filter {
                 it != sourceCryptoCurrency && helper.isWalletEnabled(it)
+            }
+
+            val destinationCryptoCurrency:String? = when {
+                destinationCryptoCurrencies.size == 1 -> {
+                    destinationCryptoCurrencies[0]
+                }
+
+                destinationCryptoCurrencies.size > 1 -> {
+                    // @Victor requirement on August 31
+                    // BSV will be always the default otherwise ETH
+                    when {
+                        destinationCryptoCurrencies.contains(bsv) -> bsv
+                        destinationCryptoCurrencies.contains(eth) -> eth
+                        else -> destinationCryptoCurrencies.last()
+                    }
+                }
+                else -> {
+                    null
+                }
             }
 
             if (sourceCryptoCurrency == null || destinationCryptoCurrency == null) {
