@@ -84,7 +84,7 @@
 
     <string name="Swap.Process.Body">Your %1$s is estimated to arrive in 30 minutes. You can continue to use your wallet. We\'ll let you know when your swap has finished.</string>
 
-    <string name="Swap.KycLimits.Kyc1">Currently, minimum limit for buy is $50.00 USD and\nmaximum limit is $1,000.00 USD/day.</string>
-    <string name="Swap.KycLimits.Kyc2">Currently, minimum limit for buy is $50.00 USD and\nmaximum limit is $10,000.00 USD/day.</string>
+    <string name="Swap.KycLimits.Kyc1">Currently, minimum limit for swap is $50.00 USD and\nmaximum limit is $1,000.00 USD/day.</string>
+    <string name="Swap.KycLimits.Kyc2">Currently, minimum limit for swap is $50.00 USD and\nmaximum limit is $10,000.00 USD/day.</string>
 
 </resources>
