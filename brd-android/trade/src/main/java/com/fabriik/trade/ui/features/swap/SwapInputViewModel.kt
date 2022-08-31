@@ -745,9 +745,10 @@ class SwapInputViewModel(
                 .mapToResult()
                 .first()
 
+            setState { state.copy(fullScreenLoadingVisible = false) }
+
             when (result) {
                 TransferResult.COMPLETE -> {
-                    setState { state.copy(fullScreenLoadingVisible = false) }
                     helper.updateSwapTransactions()
 
                     setEffect {
