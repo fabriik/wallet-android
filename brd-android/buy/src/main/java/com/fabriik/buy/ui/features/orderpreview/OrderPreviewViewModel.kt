@@ -21,7 +21,7 @@ class OrderPreviewViewModel(
     savedStateHandle: SavedStateHandle
 ) : FabriikViewModel<OrderPreviewContract.State, OrderPreviewContract.Event, OrderPreviewContract.Effect>(
     application, savedStateHandle
-), KodeinAware {
+), OrderPreviewEventHandler, KodeinAware {
 
     override val kodein by closestKodein { application }
 
@@ -48,58 +48,55 @@ class OrderPreviewViewModel(
         paymentInstrument = arguments.paymentInstrument
     )
 
-    override fun handleEvent(event: OrderPreviewContract.Event) {
-        when (event) {
-            OrderPreviewContract.Event.OnBackPressed ->
-                setEffect { OrderPreviewContract.Effect.Back }
+    override fun onBackClicked() {
+        setEffect { OrderPreviewContract.Effect.Back }
+    }
 
-            OrderPreviewContract.Event.OnDismissClicked ->
-                setEffect { OrderPreviewContract.Effect.Dismiss }
+    override fun onDismissClicked() {
+        setEffect { OrderPreviewContract.Effect.Dismiss }
+    }
 
-            OrderPreviewContract.Event.OnCreditInfoClicked ->
-                setEffect {
-                    OrderPreviewContract.Effect.ShowInfoDialog(
-                        title = R.string.Buy_OrderPreview_CardFeesDialog_Title,
-                        description = R.string.Buy_OrderPreview_CardFeesDialog_Content
-                    )
-                }
+    override fun onConfirmClicked() {
+        setEffect { OrderPreviewContract.Effect.RequestUserAuthentication }
+    }
 
-            OrderPreviewContract.Event.OnNetworkInfoClicked ->
-                setEffect {
-                    OrderPreviewContract.Effect.ShowInfoDialog(
-                        title = R.string.Buy_OrderPreview_NetworkFeesDialog_Title,
-                        description = R.string.Buy_OrderPreview_NetworkFeesDialog_Content
-                    )
-                }
-
-            OrderPreviewContract.Event.OnSecurityCodeInfoClicked ->
-                setEffect {
-                    OrderPreviewContract.Effect.ShowInfoDialog(
-                        image = R.drawable.ic_info_cvv,
-                        title = R.string.Buy_AddCard_CvvDialog_Title,
-                        description = R.string.Buy_AddCard_CvvDialog_Content
-                    )
-                }
-
-            OrderPreviewContract.Event.OnTermsAndConditionsClicked ->
-                setEffect {
-                    OrderPreviewContract.Effect.OpenWebsite(
-                        FabriikApiConstants.URL_TERMS_AND_CONDITIONS
-                    )
-                }
-
-            OrderPreviewContract.Event.OnConfirmClicked ->
-                setEffect { OrderPreviewContract.Effect.RequestUserAuthentication }
-
-            OrderPreviewContract.Event.OnUserAuthenticationSucceed ->
-                createBuyOrder()
-
-            is OrderPreviewContract.Event.OnSecurityCodeChanged ->
-                setState { copy(securityCode = event.securityCode).validate() }
+    override fun onCreditInfoClicked() {
+        setEffect {
+            OrderPreviewContract.Effect.ShowInfoDialog(
+                title = R.string.Buy_OrderPreview_CardFeesDialog_Title,
+                description = R.string.Buy_OrderPreview_CardFeesDialog_Content
+            )
         }
     }
 
-    private fun createBuyOrder() {
+    override fun onNetworkInfoClicked() {
+        setEffect {
+            OrderPreviewContract.Effect.ShowInfoDialog(
+                title = R.string.Buy_OrderPreview_NetworkFeesDialog_Title,
+                description = R.string.Buy_OrderPreview_NetworkFeesDialog_Content
+            )
+        }
+    }
+
+    override fun onSecurityCodeInfoClicked() {
+        setEffect {
+            OrderPreviewContract.Effect.ShowInfoDialog(
+                image = R.drawable.ic_info_cvv,
+                title = R.string.Buy_AddCard_CvvDialog_Title,
+                description = R.string.Buy_AddCard_CvvDialog_Content
+            )
+        }
+    }
+
+    override fun onTermsAndConditionsClicked() {
+        setEffect {
+            OrderPreviewContract.Effect.OpenWebsite(
+                FabriikApiConstants.URL_TERMS_AND_CONDITIONS
+            )
+        }
+    }
+
+    override fun onUserAuthenticationSucceed() {
         val quoteResponse = requireNotNull(currentState.quoteResponse)
         if (quoteResponse.isExpired()) {
             setEffect { OrderPreviewContract.Effect.TimeoutScreen }
@@ -154,6 +151,10 @@ class OrderPreviewViewModel(
                 }
             }
         )
+    }
+
+    override fun onSecurityCodeChanged(securityCode: String) {
+        setState { copy(securityCode = securityCode).validate() }
     }
 
     private fun OrderPreviewContract.State.validate() = copy(
