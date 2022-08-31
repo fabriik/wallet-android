@@ -347,10 +347,6 @@ class SwapInputViewModel(
             val sourceCryptoCurrency = supportedCurrencies.firstOrNull {
                 helper.isWalletEnabled(it) && !helper.isAnySwapPendingForSource(it)
             }
-//
-//            val destinationCryptoCurrency = supportedCurrencies.lastOrNull {
-//                it != sourceCryptoCurrency && helper.isWalletEnabled(it)
-//            }
 
             val destinationCryptoCurrencies = supportedCurrencies.filter {
                 it != sourceCryptoCurrency && helper.isWalletEnabled(it)
