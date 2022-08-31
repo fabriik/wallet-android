@@ -36,7 +36,7 @@ class BuyDetailsViewModel(
 
     override fun createInitialState() = BuyDetailsContract.State.Loading
 
-    override fun loadData() {
+    override fun onLoadData() {
         callApi(
             endState = { currentState },
             startState = { currentState },
@@ -64,20 +64,20 @@ class BuyDetailsViewModel(
         )
     }
 
-    override fun backClicked() {
+    override fun onBackClicked() {
         setEffect { BuyDetailsContract.Effect.Dismiss }
     }
 
-    override fun dismissClicked() {
+    override fun onDismissClicked() {
         setEffect { BuyDetailsContract.Effect.Dismiss }
     }
 
-    override fun orderIdClicked() {
+    override fun onOrderIdClicked() {
         val state = currentLoadedState ?: return
         setEffect { BuyDetailsContract.Effect.CopyToClipboard(state.data.orderId) }
     }
 
-    override fun transactionIdClicked() {
+    override fun onTransactionIdClicked() {
         val transactionID = currentLoadedState?.data?.destination?.transactionId ?: return
         setEffect { BuyDetailsContract.Effect.CopyToClipboard(transactionID) }
     }

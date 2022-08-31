@@ -6,21 +6,21 @@ interface BuyDetailsEventHandler: FabriikEventHandler<BuyDetailsContract.Event> 
 
     override fun handleEvent(event: BuyDetailsContract.Event) {
         return when (event) {
-            BuyDetailsContract.Event.LoadData -> loadData()
-            BuyDetailsContract.Event.BackClicked -> backClicked()
-            BuyDetailsContract.Event.DismissClicked -> dismissClicked()
-            BuyDetailsContract.Event.OrderIdClicked -> orderIdClicked()
-            BuyDetailsContract.Event.TransactionIdClicked -> transactionIdClicked()
+            is BuyDetailsContract.Event.LoadData -> onLoadData()
+            is BuyDetailsContract.Event.BackClicked -> onBackClicked()
+            is BuyDetailsContract.Event.DismissClicked -> onDismissClicked()
+            is BuyDetailsContract.Event.OrderIdClicked -> onOrderIdClicked()
+            is BuyDetailsContract.Event.TransactionIdClicked -> onTransactionIdClicked()
         }
     }
 
-    fun loadData()
+    fun onLoadData()
 
-    fun backClicked()
+    fun onBackClicked()
 
-    fun dismissClicked()
+    fun onDismissClicked()
 
-    fun orderIdClicked()
+    fun onOrderIdClicked()
 
-    fun transactionIdClicked()
+    fun onTransactionIdClicked()
 }

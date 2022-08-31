@@ -5,8 +5,8 @@ import com.fabriik.common.ui.base.FabriikEventHandler
 interface PaymentTimeoutEventHandler: FabriikEventHandler<PaymentTimeoutContract.Event> {
 
     override fun handleEvent(event: PaymentTimeoutContract.Event) {
-        when (event) {
-            PaymentTimeoutContract.Event.TryAgainClicked -> onTryAgainClicked()
+        return when (event) {
+            is PaymentTimeoutContract.Event.TryAgainClicked -> onTryAgainClicked()
         }
     }
 

@@ -26,7 +26,7 @@ class BuyInputViewModel(
     application: Application
 ) : FabriikViewModel<BuyInputContract.State, BuyInputContract.Event, BuyInputContract.Effect>(
     application
-), KodeinAware {
+), BuyInputEventHandler, KodeinAware {
 
     override val kodein by closestKodein { application }
 
@@ -46,38 +46,15 @@ class BuyInputViewModel(
 
     override fun createInitialState() = BuyInputContract.State.Loading
 
-    override fun handleEvent(event: BuyInputContract.Event) {
-        when (event) {
-            BuyInputContract.Event.DismissClicked ->
-                setEffect { BuyInputContract.Effect.Dismiss }
-
-            BuyInputContract.Event.ContinueClicked ->
-                onContinueClicked()
-
-            BuyInputContract.Event.CryptoCurrencyClicked ->
-                onCryptoCurrencyClicked()
-
-            BuyInputContract.Event.PaymentMethodClicked ->
-                onPaymentMethodClicked()
-
-            BuyInputContract.Event.QuoteTimeoutRetry ->
-                requestNewQuote()
-
-            is BuyInputContract.Event.CryptoCurrencyChanged ->
-                onCryptoCurrencyChanged(event.currencyCode)
-
-            is BuyInputContract.Event.PaymentMethodChanged ->
-                onPaymentMethodChanged(event.paymentInstrument)
-
-            is BuyInputContract.Event.FiatAmountChange ->
-                onFiatAmountChanged(event.amount, true)
-
-            is BuyInputContract.Event.CryptoAmountChange ->
-                onCryptoAmountChanged(event.amount, true)
-        }
+    override fun onDismissClicked() {
+        setEffect { BuyInputContract.Effect.Dismiss }
     }
 
-    private fun onCryptoCurrencyChanged(currencyCode: String) {
+    override fun onQuoteTimeoutRetry() {
+        requestNewQuote()
+    }
+
+    override fun onCryptoCurrencyChanged(currencyCode: String) {
         val state = currentLoadedState ?: return
 
         setState {
@@ -98,7 +75,7 @@ class BuyInputViewModel(
         requestNewQuote()
     }
 
-    private fun onPaymentMethodChanged(paymentInstrument: PaymentInstrument) {
+    override fun onPaymentMethodChanged(paymentInstrument: PaymentInstrument) {
         val state = currentLoadedState ?: return
 
         setState {
@@ -108,12 +85,12 @@ class BuyInputViewModel(
         }
     }
 
-    private fun onCryptoCurrencyClicked() {
+    override fun onCryptoCurrencyClicked() {
         val state = currentLoadedState ?: return
         setEffect { BuyInputContract.Effect.CryptoSelection(state.supportedCurrencies) }
     }
 
-    private fun onPaymentMethodClicked() {
+    override fun onPaymentMethodClicked() {
         val paymentMethods = currentLoadedState?.paymentInstruments ?: return
 
         setEffect {
@@ -125,7 +102,7 @@ class BuyInputViewModel(
         }
     }
 
-    private fun onFiatAmountChanged(fiatAmount: BigDecimal, changeByUser: Boolean) {
+    override fun onFiatAmountChanged(fiatAmount: BigDecimal, changeByUser: Boolean) {
         val state = currentLoadedState ?: return
 
         onAmountChanged(
@@ -137,7 +114,7 @@ class BuyInputViewModel(
         )
     }
 
-    private fun onCryptoAmountChanged(cryptoAmount: BigDecimal, changeByUser: Boolean) {
+    override fun onCryptoAmountChanged(cryptoAmount: BigDecimal, changeByUser: Boolean) {
         val state = currentLoadedState ?: return
 
         onAmountChanged(
@@ -175,7 +152,7 @@ class BuyInputViewModel(
         }
     }
 
-    private fun onContinueClicked() {
+    override fun onContinueClicked() {
         val state = currentLoadedState ?: return
         val networkFee = state.networkFee ?: return
         val quoteResponse = state.quoteResponse ?: return
