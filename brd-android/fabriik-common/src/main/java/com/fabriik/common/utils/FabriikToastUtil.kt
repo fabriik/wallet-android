@@ -1,11 +1,7 @@
 package com.fabriik.common.utils
 
 import android.app.Activity
-import android.content.Context
-import android.content.res.Resources
 import android.graphics.Rect
-import android.os.Build
-import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +9,6 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.setPadding
 import com.fabriik.common.R
 import com.google.android.material.snackbar.Snackbar
