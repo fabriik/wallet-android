@@ -27,8 +27,8 @@ data class Profile(
     @Json(name = "date_of_birth")
     val dateOfBirth: Calendar?,
 
-    @Json(name = "kyc_status")
-    val kycStatus: KycStatus,
+    @Json(name = "kyc_status1")
+    val kycStatus: KycStatus = KycStatus.KYC1,
 
     @Json(name = "kyc_failure_reason")
     val kycFailureReason: String?,
