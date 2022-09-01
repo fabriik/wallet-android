@@ -47,8 +47,6 @@ object FabriikToastUtil {
         )
     }
 
-    private const val BASE_STATUS_BAR_SIZE = 78
-
     private fun showCustomSnackBar(
         parentView: View,
         message: String,
