@@ -174,15 +174,8 @@ class SwapInputViewModel(
             ethErrorSeen = false
             ethWarningSeen = false
 
-            if (helper.isAnySwapPendingForSource(newSourceCryptoCurrency)) {
-                val latestState = currentLoadedState ?: return@launch
-                setState { latestState.copy(quoteResponse = null) }
-                setEffect {
-                    SwapInputContract.Effect.ShowError(
-                        message = getString(R.string.Swap_Input_Error_OneSwapLimit)
-                    )
-                }
-            } else {
+            val currentState = currentLoadedState ?: return@launch
+            callIfSwapNotActive(newSourceCryptoCurrency, currentState) {
                 requestNewQuote()
             }
         }
@@ -219,14 +212,7 @@ class SwapInputViewModel(
         ethErrorSeen = false
         ethWarningSeen = false
 
-        if (helper.isAnySwapPendingForSource(state.sourceCryptoCurrency)) {
-            setState { state.copy(quoteResponse = null) }
-            setEffect {
-                SwapInputContract.Effect.ShowError(
-                    message = getString(R.string.Swap_Input_Error_OneSwapLimit)
-                )
-            }
-        } else {
+        callIfSwapNotActive(state.sourceCryptoCurrency, state) {
             requestNewQuote()
         }
     }
@@ -257,25 +243,7 @@ class SwapInputViewModel(
     }
 
     private fun onReplaceCurrenciesAnimationCompleted(state: SwapInputContract.State.Loaded) {
-        if (helper.isAnySwapPendingForSource(state.sourceCryptoCurrency)) {
-            setState {
-                state.copy(
-                    quoteResponse = null,
-                    sendingNetworkFee = null,
-                    receivingNetworkFee = null,
-                    sourceFiatAmount = BigDecimal.ZERO,
-                    sourceCryptoAmount = BigDecimal.ZERO,
-                    destinationFiatAmount = BigDecimal.ZERO,
-                    destinationCryptoAmount = BigDecimal.ZERO
-                )
-            }
-
-            setEffect {
-                SwapInputContract.Effect.ShowError(
-                    message = getString(R.string.Swap_Input_Error_OneSwapLimit)
-                )
-            }
-        } else {
+        callIfSwapNotActive(state.sourceCryptoCurrency, state) {
             setState { state }
             requestNewQuote()
         }
@@ -286,6 +254,36 @@ class SwapInputViewModel(
             destinationFiatAmountChangedByUser = false,
             destinationCryptoAmountChangedByUser = false,
         )
+    }
+
+    private fun callIfSwapNotActive(sourceCurrency: String, state: SwapInputContract.State.Loaded, callback: () -> Unit) {
+        if (helper.isAnySwapPendingForSource(sourceCurrency)) {
+            showActiveSwapError(state)
+        } else {
+            callback()
+        }
+    }
+
+    private fun showActiveSwapError(state: SwapInputContract.State.Loaded) {
+        currentTimerJob?.cancel()
+
+        setState {
+            state.copy(
+                quoteResponse = null,
+                sendingNetworkFee = null,
+                receivingNetworkFee = null,
+                sourceFiatAmount = BigDecimal.ZERO,
+                sourceCryptoAmount = BigDecimal.ZERO,
+                destinationFiatAmount = BigDecimal.ZERO,
+                destinationCryptoAmount = BigDecimal.ZERO
+            )
+        }
+
+        setEffect {
+            SwapInputContract.Effect.ShowError(
+                message = getString(R.string.Swap_Input_Error_OneSwapLimit)
+            )
+        }
     }
 
     private fun startQuoteTimer() {
