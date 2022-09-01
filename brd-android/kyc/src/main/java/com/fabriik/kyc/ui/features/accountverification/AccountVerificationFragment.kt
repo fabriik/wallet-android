@@ -85,7 +85,8 @@ class AccountVerificationFragment : Fragment(),
                     setStatusState(tvLevel1Status, state.level1State.statusState)
 
                     // level 2 configuration
-                    tvLevel2Tag.isEnabled = state.level2State.isEnabled
+                    tvLevel2TagSwap.isEnabled = state.level2State.isEnabled
+                    tvLevel2TagBuy.isEnabled = state.level2State.isEnabled
                     setStatusState(tvLevel2Status, state.level2State.statusState)
 
                     tvLevel2CheckedItem1.setStateIcon(state.level2State.statusState)
