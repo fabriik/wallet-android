@@ -212,7 +212,7 @@ class SwapInputViewModel(
         ethErrorSeen = false
         ethWarningSeen = false
 
-        callIfSwapNotActive(state.sourceCryptoCurrency) {
+        callIfSwapNotActive(state.sourceCryptoCurrency, state) {
             requestNewQuote()
         }
     }
