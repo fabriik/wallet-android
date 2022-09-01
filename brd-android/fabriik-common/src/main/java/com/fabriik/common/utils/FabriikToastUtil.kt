@@ -46,7 +46,7 @@ object FabriikToastUtil {
         parentView: View,
         message: String,
         gravity: Int,
-        @DrawableRes background: Int,
+        @DrawableRes background: Int
     ) {
         val view = TextView(parentView.context).apply {
             text = message
