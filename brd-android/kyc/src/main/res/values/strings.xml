@@ -13,7 +13,7 @@
     <string name="ProfileStatusView.statusSubtitleDefault">Get full access to your Fabriik wallet</string>
     <string name="ProfileStatusView.statusSubtitleLevel1Verified">Current limit: $1,000/day</string>
     <string name="ProfileStatusView.statusSubtitleLevel2Pending">We’ll let you know when your account is verified.</string>
-    <string name="ProfileStatusView.statusSubtitleLevel2Verified">Congratulations! You now have full access to your Fabriik wallet.</string>
+    <string name="ProfileStatusView.statusSubtitleLevel2Verified">Swap limit: $10,000 USD/day\nBuy limit: $500 USD/day</string>
     <string name="ProfileStatusView.statusSubtitleLevel2Failure">Oops! We had some issues processing your data</string>
     <string name="ProfileStatusView.declinedVerificationButton">Why is my verification declined?</string>
     <string name="ProfileStatusView.statusPending">Pending</string>
