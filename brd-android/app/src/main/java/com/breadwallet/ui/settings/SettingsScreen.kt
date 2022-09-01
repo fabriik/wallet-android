@@ -37,6 +37,8 @@ import dev.zacsweers.redacted.annotations.Redacted
 object SettingsScreen {
 
     const val CONFIRM_EXPORT_TRANSACTIONS_DIALOG = "confirm_export"
+    const val CONFIRM_EXPORT_TRANSACTIONS_POSITIVE = "confirm_export_positive"
+    const val CONFIRM_EXPORT_TRANSACTIONS_NEGATIVE = "confirm_export_negative"
     const val TEST_FABRIIK_DIALOG = "fabriik_test_dialog"
     const val TEST_FABRIIK_DIALOG_POSITIVE = "fabriik_test_dialog_pos"
     const val TEST_FABRIIK_DIALOG_NEGATIVE = "fabriik_test_dialog_neg"
@@ -253,13 +255,21 @@ object SettingsScreen {
         }
 
         object ShowConfirmExportTransactions : F(), NavigationEffect {
-            override val navigationTarget = NavigationTarget.AlertDialog(
-                    titleResId = R.string.ExportConfirmation_title,
-                    messageResId = R.string.ExportConfirmation_message,
-                    positiveButtonResId = R.string.ExportConfirmation_continue,
-                    negativeButtonResId = R.string.ExportConfirmation_cancel,
-                    dialogId = CONFIRM_EXPORT_TRANSACTIONS_DIALOG
+            override val navigationTarget = NavigationTarget.FabriikGenericDialog(
+                FabriikGenericDialogArgs(
+                    requestKey = CONFIRM_EXPORT_TRANSACTIONS_DIALOG,
+                    titleRes= R.string.ExportConfirmation_title,
+                    descriptionRes = R.string.ExportConfirmation_message,
+                    positive = FabriikGenericDialogArgs.ButtonData(
+                        titleRes = R.string.ExportConfirmation_continue,
+                        resultKey = CONFIRM_EXPORT_TRANSACTIONS_POSITIVE
+                    ),
+                    negative = FabriikGenericDialogArgs.ButtonData(
+                        titleRes = R.string.ExportConfirmation_cancel,
+                        resultKey = CONFIRM_EXPORT_TRANSACTIONS_NEGATIVE
+                    )
                 )
+            )
         }
 
         object GenerateTransactionsExportFile: F()
