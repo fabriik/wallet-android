@@ -30,6 +30,7 @@ import com.breadwallet.ui.ViewEffect
 import com.breadwallet.ui.navigation.NavigationEffect
 import com.breadwallet.ui.navigation.NavigationTarget
 import com.breadwallet.util.CurrencyCode
+import com.fabriik.common.ui.dialog.FabriikGenericDialogArgs
 import com.fabriik.support.pages.Topic
 import dev.zacsweers.redacted.annotations.Redacted
 import java.math.BigDecimal
@@ -37,7 +38,10 @@ import java.math.BigDecimal
 object Import {
 
     const val CONFIRM_IMPORT_DIALOG = "confirm_import"
+    const val CONFIRM_IMPORT_DIALOG_POSITIVE = "confirm_import_positive"
+    const val CONFIRM_IMPORT_DIALOG_NEGATIVE = "confirm_import_negative"
     const val IMPORT_SUCCESS_DIALOG = "import_success"
+    const val IMPORT_SUCCESS_DIALOG_POSITIVE = "import_success_positive"
 
     data class M(
         @Redacted val privateKey: String? = null,
@@ -180,11 +184,16 @@ object Import {
             )
         }
         object ShowImportSuccess : F(), NavigationEffect {
-            override val navigationTarget = NavigationTarget.AlertDialog(
-                titleResId = R.string.Import_success,
-                messageResId = R.string.Import_SuccessBody,
-                positiveButtonResId = R.string.Button_ok,
-                dialogId = IMPORT_SUCCESS_DIALOG
+            override val navigationTarget = NavigationTarget.FabriikGenericDialog(
+                FabriikGenericDialogArgs(
+                    requestKey = IMPORT_SUCCESS_DIALOG,
+                    titleRes = R.string.Import_success,
+                    descriptionRes = R.string.Import_SuccessBody,
+                    positive = FabriikGenericDialogArgs.ButtonData(
+                        resultKey = IMPORT_SUCCESS_DIALOG_POSITIVE,
+                        titleRes = R.string.Button_ok
+                    )
+                )
             )
         }
 
@@ -192,6 +201,23 @@ object Import {
             val receiveAmount: String,
             val feeAmount: String
         ) : F(), NavigationEffect {
+            override val navigationTarget = NavigationTarget.FabriikGenericDialog(
+                FabriikGenericDialogArgs(
+                    requestKey = CONFIRM_IMPORT_DIALOG,
+                    titleRes = R.string.Import_title,
+                    descriptionRes = R.string.Import_confirm,
+                    descriptionArgs = listOf(receiveAmount, feeAmount),
+                    positive = FabriikGenericDialogArgs.ButtonData(
+                        resultKey = CONFIRM_IMPORT_DIALOG_POSITIVE,
+                        titleRes = R.string.Import_importButton
+                    ),
+                    negative = FabriikGenericDialogArgs.ButtonData(
+                        resultKey = CONFIRM_IMPORT_DIALOG_NEGATIVE,
+                        titleRes = R.string.Button_cancel
+                    )
+                )
+            )
+
             override val navigationTarget = NavigationTarget.AlertDialog(
                 titleResId = R.string.Import_title,
                 messageResId = R.string.Import_confirm,
