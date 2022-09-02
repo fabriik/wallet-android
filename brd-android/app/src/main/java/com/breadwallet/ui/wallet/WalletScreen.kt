@@ -279,10 +279,9 @@ object WalletScreen {
         }
 
         object ShowCreateAccountErrorDialog : F(), NavigationEffect {
-            override val navigationTarget = NavigationTarget.AlertDialog(
-                titleResId = R.string.AccountCreation_title,
-                messageResId = R.string.AccountCreation_error,
-                positiveButtonResId = R.string.AccessibilityLabels_close
+            override val navigationTarget = NavigationTarget.FabriikToast(
+                type = NavigationTarget.FabriikToast.Type.ERROR,
+                messageRes = R.string.AccountCreation_error
             )
         }
 
