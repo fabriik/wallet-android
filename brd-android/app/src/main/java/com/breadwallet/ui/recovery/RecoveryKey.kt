@@ -159,9 +159,9 @@ object RecoveryKey {
         }
 
         object GoToPhraseError : F(), NavigationEffect {
-            override val navigationTarget = NavigationTarget.AlertDialog(
-                titleResId = R.string.RecoverWallet_invalid,
-                negativeButtonResId = R.string.AccessibilityLabels_close
+            override val navigationTarget = NavigationTarget.FabriikToast(
+                type = NavigationTarget.FabriikToast.Type.ERROR,
+                messageRes = R.string.RecoverWallet_invalid
             )
         }
 

@@ -150,36 +150,33 @@ object Import {
 
         object ShowPasswordInput : F(), ViewEffect
         object ShowKeyInvalid : F(), NavigationEffect {
-            override val navigationTarget = NavigationTarget.AlertDialog(
-                messageResId = R.string.Import_Error_notValid,
-                positiveButtonResId = R.string.Button_ok
+            override val navigationTarget = NavigationTarget.FabriikToast(
+                type = NavigationTarget.FabriikToast.Type.ERROR,
+                messageRes = R.string.Import_Error_notValid
             )
         }
         object ShowPasswordInvalid : F(), NavigationEffect {
-            override val navigationTarget = NavigationTarget.AlertDialog(
-                messageResId = R.string.Import_wrongPassword,
-                positiveButtonResId = R.string.Button_ok
+            override val navigationTarget = NavigationTarget.FabriikToast(
+                type = NavigationTarget.FabriikToast.Type.ERROR,
+                messageRes = R.string.Import_wrongPassword
             )
         }
         object ShowBalanceTooLow : F(), NavigationEffect {
-            override val navigationTarget = NavigationTarget.AlertDialog(
-                titleResId = R.string.Import_title,
-                messageResId = R.string.Import_Error_highFees,
-                positiveButtonResId = R.string.Button_ok
+            override val navigationTarget = NavigationTarget.FabriikToast(
+                type = NavigationTarget.FabriikToast.Type.ERROR,
+                messageRes = R.string.Import_Error_highFees
             )
         }
         object ShowNoBalance : F(), NavigationEffect {
-            override val navigationTarget = NavigationTarget.AlertDialog(
-                titleResId = R.string.Import_title,
-                messageResId = R.string.Import_Error_empty,
-                positiveButtonResId = R.string.Button_ok
+            override val navigationTarget = NavigationTarget.FabriikToast(
+                type = NavigationTarget.FabriikToast.Type.ERROR,
+                messageRes = R.string.Import_Error_empty
             )
         }
         object ShowImportFailed : F(), NavigationEffect {
-            override val navigationTarget = NavigationTarget.AlertDialog(
-                titleResId = R.string.Import_title,
-                messageResId = R.string.Import_Error_signing,
-                positiveButtonResId = R.string.Button_ok
+            override val navigationTarget = NavigationTarget.FabriikToast(
+                type = NavigationTarget.FabriikToast.Type.ERROR,
+                messageRes = R.string.Import_Error_signing
             )
         }
         object ShowImportSuccess : F(), NavigationEffect {
