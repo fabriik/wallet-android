@@ -30,8 +30,13 @@ import com.breadwallet.tools.util.BRConstants
 import com.breadwallet.ui.navigation.NavigationEffect
 import com.breadwallet.ui.navigation.NavigationTarget
 import com.breadwallet.util.CurrencyCode
+import com.fabriik.common.ui.dialog.FabriikGenericDialogArgs
 
 object FastSync {
+
+    const val DIALOG_DISABLE_FAST_SYNC = "confirm_disable_fast_sync_dialog"
+    const val DIALOG_DISABLE_FAST_SYNC_POSITIVE = "confirm_disable_fast_sync_dialog_positive"
+    const val DIALOG_DISABLE_FAST_SYNC_NEGATIVE = "confirm_disable_fast_sync_dialog_negative"
 
     data class M(
         val currencyCode: CurrencyCode,
@@ -59,10 +64,19 @@ object FastSync {
     sealed class F {
         object LoadCurrencyIds : F()
         object ShowDisableFastSyncDialog : F(), NavigationEffect {
-            override val navigationTarget = NavigationTarget.AlertDialog(
-                messageResId = R.string.WalletConnectionSettings_confirmation,
-                positiveButtonResId = R.string.WalletConnectionSettings_turnOff,
-                negativeButtonResId = R.string.Button_cancel
+            override val navigationTarget = NavigationTarget.FabriikGenericDialog(
+                FabriikGenericDialogArgs(
+                    descriptionRes = R.string.WalletConnectionSettings_confirmation,
+                    positive = FabriikGenericDialogArgs.ButtonData(
+                        titleRes = R.string.WalletConnectionSettings_turnOff,
+                        resultKey = DIALOG_DISABLE_FAST_SYNC_POSITIVE
+                    ),
+                    negative = FabriikGenericDialogArgs.ButtonData(
+                        titleRes = R.string.Button_cancel,
+                        resultKey = DIALOG_DISABLE_FAST_SYNC_NEGATIVE
+                    ),
+                    requestKey = DIALOG_DISABLE_FAST_SYNC
+                )
             )
         }
 

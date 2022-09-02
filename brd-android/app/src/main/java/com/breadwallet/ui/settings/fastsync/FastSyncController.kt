@@ -41,10 +41,13 @@ import com.breadwallet.ui.BaseMobiusController
 import com.breadwallet.ui.controllers.AlertDialogController
 import com.breadwallet.ui.flowbind.checked
 import com.breadwallet.ui.flowbind.clicks
+import com.breadwallet.ui.settings.fastsync.FastSync.DIALOG_DISABLE_FAST_SYNC
+import com.breadwallet.ui.settings.fastsync.FastSync.DIALOG_DISABLE_FAST_SYNC_POSITIVE
 import com.breadwallet.ui.settings.fastsync.FastSync.E
 import com.breadwallet.ui.settings.fastsync.FastSync.F
 import com.breadwallet.ui.settings.fastsync.FastSync.M
 import com.breadwallet.util.CurrencyCode
+import com.breadwallet.util.registerForGenericDialogResult
 import com.spotify.mobius.Connectable
 import drewcarlson.mobius.flow.subtypeEffectHandler
 import drewcarlson.mobius.flow.transform
@@ -128,6 +131,17 @@ class FastSyncController(
                 binding.switchFastSync.isChecked = isChecked
             }
             .launchIn(uiBindScope)
+
+        registerForGenericDialogResult(DIALOG_DISABLE_FAST_SYNC) { resultKey, _ ->
+            eventConsumer.accept(
+                if (resultKey == DIALOG_DISABLE_FAST_SYNC_POSITIVE) {
+                    E.OnDisableFastSyncConfirmed
+                } else {
+                    E.OnDisableFastSyncCanceled
+                }
+            )
+        }
+
         return with(binding) {
             merge(
                 backBtn.clicks().map { E.OnBackClicked },
@@ -135,30 +149,6 @@ class FastSyncController(
                 bindLearnMoreLink()
             )
         }
-    }
-
-    override fun onPositiveClicked(
-        dialogId: String,
-        controller: AlertDialogController,
-        result: AlertDialogController.DialogInputResult
-    ) {
-        eventConsumer.accept(E.OnDisableFastSyncConfirmed)
-    }
-
-    override fun onNegativeClicked(
-        dialogId: String,
-        controller: AlertDialogController,
-        result: AlertDialogController.DialogInputResult
-    ) {
-        eventConsumer.accept(E.OnDisableFastSyncCanceled)
-    }
-
-    override fun onDismissed(
-        dialogId: String,
-        controller: AlertDialogController,
-        result: AlertDialogController.DialogInputResult
-    ) {
-        eventConsumer.accept(E.OnDisableFastSyncCanceled)
     }
 
     private fun bindLearnMoreLink() = callbackFlow<E> {
