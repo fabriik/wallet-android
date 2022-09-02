@@ -58,6 +58,7 @@ import com.breadwallet.ui.flowbind.clicks
 import com.breadwallet.ui.home.MAX_CRYPTO_DIGITS
 import com.breadwallet.ui.navigation.fragmentManager
 import com.breadwallet.ui.wallet.WalletScreen.DIALOG_CREATE_ACCOUNT
+import com.breadwallet.ui.wallet.WalletScreen.DIALOG_CREATE_ACCOUNT_POSITIVE
 import com.breadwallet.ui.wallet.WalletScreen.E
 import com.breadwallet.ui.wallet.WalletScreen.F
 import com.breadwallet.ui.wallet.WalletScreen.M
@@ -66,6 +67,7 @@ import com.breadwallet.ui.wallet.spark.SparkView
 import com.breadwallet.ui.wallet.spark.animation.LineSparkAnimator
 import com.breadwallet.util.formatFiatForUi
 import com.breadwallet.util.isTezos
+import com.breadwallet.util.registerForGenericDialogResult
 import com.fabriik.support.CashSupport
 import com.fabriik.support.pages.Topic
 import com.google.android.material.appbar.AppBarLayout
@@ -197,6 +199,12 @@ open class WalletController(args: Bundle) : BaseMobiusController<M, E, F>(args),
             appbar.addOnOffsetChangedListener(this@WalletController)
 
             giftButton.visibility = View.GONE
+
+            registerForGenericDialogResult(DIALOG_CREATE_ACCOUNT) { resultKey, _ ->
+                if (resultKey == DIALOG_CREATE_ACCOUNT_POSITIVE) {
+                    eventConsumer.accept(E.OnCreateAccountConfirmationClicked)
+                }
+            }
         }
     }
 
@@ -524,16 +532,6 @@ open class WalletController(args: Bundle) : BaseMobiusController<M, E, F>(args),
                     twentyFourLow.text = low24h?.formatFiatForUi(preferredFiat) ?: ""
                 }
             }
-        }
-    }
-
-    override fun onPositiveClicked(
-        dialogId: String,
-        controller: AlertDialogController,
-        result: AlertDialogController.DialogInputResult
-    ) {
-        if (dialogId == DIALOG_CREATE_ACCOUNT) {
-            eventConsumer.accept(E.OnCreateAccountConfirmationClicked)
         }
     }
 

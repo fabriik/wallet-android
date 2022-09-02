@@ -35,6 +35,7 @@ import com.breadwallet.tools.util.asCryptoRequestUrl
 import com.breadwallet.ui.navigation.NavigationEffect
 import com.breadwallet.ui.navigation.NavigationTarget
 import com.breadwallet.platform.entities.TxMetaData
+import com.fabriik.common.ui.dialog.FabriikGenericDialogArgs
 import com.fabriik.trade.data.model.SwapBuyTransactionData
 import dev.zacsweers.redacted.annotations.Redacted
 import java.math.BigDecimal
@@ -42,6 +43,8 @@ import java.math.BigDecimal
 object WalletScreen {
 
     const val DIALOG_CREATE_ACCOUNT = "create_account_dialog"
+    const val DIALOG_CREATE_ACCOUNT_POSITIVE = "create_account_dialog_positive"
+    const val DIALOG_CREATE_ACCOUNT_NEGATIVE = "create_account_dialog_negative"
 
     data class M(
         val currencyCode: String,
@@ -258,12 +261,20 @@ object WalletScreen {
 
         data class LoadWalletState(val currencyCode: String) : F()
         object ShowCreateAccountDialog : F(), NavigationEffect {
-            override val navigationTarget = NavigationTarget.AlertDialog(
-                titleResId = R.string.AccountCreation_title,
-                messageResId = R.string.AccountCreation_body,
-                positiveButtonResId = R.string.AccountCreation_create,
-                negativeButtonResId = R.string.AccountCreation_notNow,
-                dialogId = DIALOG_CREATE_ACCOUNT
+            override val navigationTarget = NavigationTarget.FabriikGenericDialog(
+                FabriikGenericDialogArgs(
+                    titleRes = R.string.AccountCreation_title,
+                    descriptionRes = R.string.AccountCreation_body,
+                    positive = FabriikGenericDialogArgs.ButtonData(
+                        titleRes = R.string.AccountCreation_create,
+                        resultKey = DIALOG_CREATE_ACCOUNT_POSITIVE
+                    ),
+                    negative = FabriikGenericDialogArgs.ButtonData(
+                        titleRes = R.string.AccountCreation_notNow,
+                        resultKey = DIALOG_CREATE_ACCOUNT_NEGATIVE
+                    ),
+                    requestKey = DIALOG_CREATE_ACCOUNT
+                )
             )
         }
 
