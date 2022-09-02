@@ -28,12 +28,15 @@ import com.breadwallet.R
 import com.breadwallet.ui.ViewEffect
 import com.breadwallet.ui.navigation.NavigationEffect
 import com.breadwallet.ui.navigation.NavigationTarget
+import com.fabriik.common.ui.dialog.FabriikGenericDialogArgs
 import com.fabriik.support.pages.Topic
 import dev.zacsweers.redacted.annotations.Redacted
 
 object RecoveryKey {
 
     const val DIALOG_WIPE = "dialog_wipe_confirm"
+    const val DIALOG_WIPE_POSITIVE = "dialog_wipe_confirm_positive"
+    const val DIALOG_WIPE_NEGATIVE = "dialog_wipe_confirm_negative"
 
     enum class Mode {
         RECOVER, WIPE, RESET_PIN
@@ -166,12 +169,20 @@ object RecoveryKey {
         }
 
         object GoToWipeWallet : F(), NavigationEffect {
-            override val navigationTarget = NavigationTarget.AlertDialog(
-                dialogId = DIALOG_WIPE,
-                titleResId = R.string.WipeWallet_alertTitle,
-                messageResId = R.string.WipeWallet_alertMessage,
-                positiveButtonResId = R.string.WipeWallet_wipe,
-                negativeButtonResId = R.string.Button_cancel
+            override val navigationTarget = NavigationTarget.FabriikGenericDialog(
+                FabriikGenericDialogArgs(
+                    requestKey = DIALOG_WIPE,
+                    titleRes = R.string.WipeWallet_alertTitle,
+                    descriptionRes = R.string.WipeWallet_alertMessage,
+                    positive = FabriikGenericDialogArgs.ButtonData(
+                        titleRes = R.string.WipeWallet_wipe,
+                        resultKey = DIALOG_WIPE_POSITIVE
+                    ),
+                    negative = FabriikGenericDialogArgs.ButtonData(
+                        titleRes = R.string.Button_cancel,
+                        resultKey = DIALOG_WIPE_NEGATIVE
+                    )
+                )
             )
         }
 
