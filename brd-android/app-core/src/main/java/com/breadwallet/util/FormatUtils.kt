@@ -53,3 +53,5 @@ fun BigDecimal.formatFiatForUi(currencyCode: String, scale: Int? = null, showCur
     }
     return currencyFormat.format(this)
 }
+
+fun String.withParentheses() = "($this)"

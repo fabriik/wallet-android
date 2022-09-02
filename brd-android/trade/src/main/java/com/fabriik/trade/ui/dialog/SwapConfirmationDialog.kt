@@ -11,6 +11,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.navArgs
 import com.breadwallet.breadbox.formatCryptoForUi
 import com.breadwallet.util.formatFiatForUi
+import com.breadwallet.util.withParentheses
 import com.fabriik.trade.data.model.AmountData
 import com.fabriik.trade.databinding.FragmentSwapConfirmationDialogBinding
 
@@ -43,8 +44,9 @@ class SwapConfirmationDialog : DialogFragment() {
 
             args.sendingFeeAmount.run {
                 tvSendingFeeFiatValue.text = fiatAmount.formatFiatForUi(
-                    fiatCurrency
-                )
+                    currencyCode = fiatCurrency,
+                    showCurrencyName = true
+                ).withParentheses()
 
                 tvSendingFeeCryptoValue.text = cryptoAmount.formatCryptoForUi(
                     cryptoCurrency
@@ -53,8 +55,9 @@ class SwapConfirmationDialog : DialogFragment() {
 
             args.receivingFeeAmount.run {
                 tvReceivingFeeFiatValue.text = fiatAmount.formatFiatForUi(
-                    fiatCurrency
-                )
+                    currencyCode = fiatCurrency,
+                    showCurrencyName = true
+                ).withParentheses()
 
                 tvReceivingFeeCryptoValue.text = cryptoAmount.formatCryptoForUi(
                     cryptoCurrency
@@ -85,14 +88,15 @@ class SwapConfirmationDialog : DialogFragment() {
 
     private fun formatCurrencyAmount(data: AmountData): String {
         val fiatText = data.fiatAmount.formatFiatForUi(
-            data.fiatCurrency
+            currencyCode = data.fiatCurrency,
+            showCurrencyName = true
         )
 
         val cryptoText = data.cryptoAmount.formatCryptoForUi(
             data.cryptoCurrency
         )
 
-        return "$cryptoText ($fiatText)"
+        return "$cryptoText ${fiatText.withParentheses()}"
     }
 
     companion object {

@@ -47,6 +47,7 @@ import com.brd.bakerapi.BakersApiClient
 import com.brd.prefs.AndroidPreferences
 import com.brd.prefs.Preferences
 import com.breadwallet.BuildConfig
+import com.breadwallet.R
 import com.breadwallet.breadbox.*
 import com.breadwallet.corecrypto.CryptoApiProvider
 import com.breadwallet.crypto.CryptoApi
@@ -69,6 +70,8 @@ import com.breadwallet.ui.uigift.GiftBackup
 import com.breadwallet.ui.uigift.SharedPrefsGiftBackup
 import com.breadwallet.util.*
 import com.breadwallet.util.usermetrics.UserMetricsUtil
+import com.checkout.android_sdk.CheckoutAPIClient
+import com.checkout.android_sdk.Utils.Environment
 import com.fabriik.buy.data.BuyApi
 import com.fabriik.buy.data.BuyApiInterceptor
 import com.fabriik.common.data.FabriikApiConstants
@@ -291,6 +294,14 @@ class BreadApp : Application(), KodeinAware, CameraXConfig.Provider {
 
         bind<KVStoreProvider>() with singleton {
             KVStoreManager(this@BreadApp)
+        }
+
+        bind<CheckoutAPIClient>() with singleton {
+            CheckoutAPIClient(
+                this@BreadApp,
+                getString(R.string.checkout_api_token),
+                if (resources.getBoolean(R.bool.checkout_sandbox)) Environment.SANDBOX else Environment.LIVE
+            )
         }
 
         val localMetadataManager by lazy { MetaDataManager(direct.instance()) }

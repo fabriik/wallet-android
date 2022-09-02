@@ -6,7 +6,6 @@ import com.checkout.android_sdk.CheckoutAPIClient
 import com.checkout.android_sdk.Request.CardTokenisationRequest
 import com.checkout.android_sdk.Response.CardTokenisationFail
 import com.checkout.android_sdk.Response.CardTokenisationResponse
-import com.checkout.android_sdk.Utils.Environment
 import com.checkout.android_sdk.network.NetworkError
 import com.fabriik.buy.R
 import com.fabriik.buy.utils.formatCardNumber
@@ -15,58 +14,35 @@ import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.common.utils.getString
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.closestKodein
+import org.kodein.di.erased.instance
 
 class AddCardViewModel(
     application: Application
 ) : FabriikViewModel<AddCardContract.State, AddCardContract.Event, AddCardContract.Effect>(
     application
-) {
+), AddCardEventHandler, KodeinAware {
 
-    private val checkoutClient = CheckoutAPIClient(
-        getApplication(),
-        "pk_sbox_ees63clhrko6kta6j3cwloebg4#",
-        Environment.SANDBOX //todo: change to prod env
-    )
+    override val kodein by closestKodein { application }
+
+    private val checkoutApi by kodein.instance<CheckoutAPIClient>()
 
     override fun createInitialState() = AddCardContract.State()
 
-    override fun handleEvent(event: AddCardContract.Event) {
-        when (event) {
-            AddCardContract.Event.BackClicked ->
-                setEffect { AddCardContract.Effect.Back }
-
-            AddCardContract.Event.DismissClicked ->
-                setEffect { AddCardContract.Effect.Dismiss }
-
-            AddCardContract.Event.ConfirmClicked ->
-                onConfirmClicked()
-
-            AddCardContract.Event.SecurityCodeInfoClicked ->
-                setEffect { AddCardContract.Effect.ShowCvvInfoDialog }
-
-            is AddCardContract.Event.OnCardNumberChanged ->
-                setState { copy(cardNumber = formatCardNumber(event.number)).validate() }
-
-            is AddCardContract.Event.OnSecurityCodeChanged ->
-                setState { copy(securityCode = event.code).validate() }
-
-            is AddCardContract.Event.OnDateChanged -> {
-                val formatDate = formatDate(event.date)
-
-                setState { copy(expiryDate = formatDate).validate() }
-
-                if (formatDate.length == 5) {
-                    validateDate(formatDate)
-                }
-            }
-        }
+    override fun onBackClicked() {
+        setEffect { AddCardContract.Effect.Back }
     }
 
-    private fun onConfirmClicked() {
+    override fun onDismissClicked() {
+        setEffect { AddCardContract.Effect.Dismiss }
+    }
+
+    override fun onConfirmClicked() {
         viewModelScope.launch(Dispatchers.IO) {
             setState { copy(loadingIndicatorVisible = true) }
 
-            checkoutClient.setTokenListener(object : CheckoutAPIClient.OnTokenGenerated {
+            checkoutApi.setTokenListener(object : CheckoutAPIClient.OnTokenGenerated {
                 override fun onTokenGenerated(response: CardTokenisationResponse) {
                     setState { copy(loadingIndicatorVisible = false) }
                     setEffect { AddCardContract.Effect.BillingAddress(response.token) }
@@ -74,18 +50,18 @@ class AddCardViewModel(
 
                 override fun onError(error: CardTokenisationFail) {
                     setState { copy(loadingIndicatorVisible = false) }
-                    setEffect { AddCardContract.Effect.ShowToast(getString(R.string.FabriikApi_DefaultError)) }
+                    setEffect { AddCardContract.Effect.ShowError(getString(R.string.FabriikApi_DefaultError)) }
                 }
 
                 override fun onNetworkError(error: NetworkError) {
                     setState { copy(loadingIndicatorVisible = false) }
-                    setEffect { AddCardContract.Effect.ShowToast(getString(R.string.FabriikApi_DefaultError)) }
+                    setEffect { AddCardContract.Effect.ShowError(getString(R.string.FabriikApi_DefaultError)) }
                 }
             })
 
             val expiryDate = currentState.expiryDate.split("/")
 
-            checkoutClient.generateToken(
+            checkoutApi.generateToken(
                 CardTokenisationRequest(
                     currentState.cardNumber.replace("\\s+".toRegex(), ""),
                     null,
@@ -97,9 +73,43 @@ class AddCardViewModel(
         }
     }
 
+    override fun onSecurityCodeInfoClicked() {
+        setEffect { AddCardContract.Effect.ShowCvvInfoDialog }
+    }
+
+    override fun onCardNumberChanged(cardNumber: String) {
+        setState {
+            copy(
+                cardNumber = formatCardNumber(cardNumber)
+            ).validate()
+        }
+    }
+
+    override fun onSecurityCodeChanged(securityCode: String) {
+        setState {
+            copy(
+                securityCode = securityCode
+            ).validate()
+        }
+    }
+
+    override fun onExpirationDateChanged(expirationDate: String) {
+        val formatDate = formatDate(expirationDate)
+
+        setState {
+            copy(
+                expiryDate = formatDate
+            ).validate()
+        }
+
+        if (formatDate.length == 5) {
+            validateDate(formatDate)
+        }
+    }
+
     private fun validateDate(input: String?) {
         if (!isExpiryDateValid(input)) {
-            setEffect { AddCardContract.Effect.ShowToast(getString(R.string.Buy_AddCard_Error_WrongDate)) }
+            setEffect { AddCardContract.Effect.ShowError(getString(R.string.Buy_AddCard_Error_WrongDate)) }
         }
     }
 

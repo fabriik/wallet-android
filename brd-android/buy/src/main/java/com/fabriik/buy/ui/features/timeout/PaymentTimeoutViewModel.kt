@@ -7,14 +7,11 @@ class PaymentTimeoutViewModel(
     application: Application
 ) : FabriikViewModel<PaymentTimeoutContract.State, PaymentTimeoutContract.Event, PaymentTimeoutContract.Effect>(
     application
-) {
+), PaymentTimeoutEventHandler {
 
     override fun createInitialState() = PaymentTimeoutContract.State
 
-    override fun handleEvent(event: PaymentTimeoutContract.Event) {
-        when (event) {
-            PaymentTimeoutContract.Event.TryAgainClicked ->
-                setEffect { PaymentTimeoutContract.Effect.BackToBuy }
-        }
+    override fun onTryAgainClicked() {
+        setEffect { PaymentTimeoutContract.Effect.BackToBuy }
     }
 }

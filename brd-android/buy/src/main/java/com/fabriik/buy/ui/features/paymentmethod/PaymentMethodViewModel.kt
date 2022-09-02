@@ -4,6 +4,7 @@ import android.app.Application
 import com.fabriik.buy.R
 import com.fabriik.buy.data.BuyApi
 import com.fabriik.common.data.Status
+import com.fabriik.common.data.model.PaymentInstrument
 import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.common.utils.getString
 import org.kodein.di.KodeinAware
@@ -14,7 +15,7 @@ class PaymentMethodViewModel(
     application: Application,
 ) : FabriikViewModel<PaymentMethodContract.State, PaymentMethodContract.Event, PaymentMethodContract.Effect>(
     application
-), KodeinAware {
+), PaymentMethodEventHandler, KodeinAware {
 
     override val kodein by closestKodein { application }
 
@@ -28,20 +29,20 @@ class PaymentMethodViewModel(
         paymentInstruments = emptyList()
     )
 
-    override fun handleEvent(event: PaymentMethodContract.Event) {
-        when (event) {
-            PaymentMethodContract.Event.BackClicked ->
-                setEffect { PaymentMethodContract.Effect.Back() }
+    override fun onBackClicked() {
+        setEffect { PaymentMethodContract.Effect.Back() }
+    }
 
-            PaymentMethodContract.Event.DismissClicked ->
-                setEffect { PaymentMethodContract.Effect.Dismiss }
+    override fun onDismissClicked() {
+        setEffect { PaymentMethodContract.Effect.Dismiss }
+    }
 
-            PaymentMethodContract.Event.AddCardClicked ->
-                setEffect { PaymentMethodContract.Effect.AddCard }
+    override fun onAddCardClicked() {
+        setEffect { PaymentMethodContract.Effect.AddCard }
+    }
 
-            is PaymentMethodContract.Event.PaymentInstrumentSelected ->
-                setEffect { PaymentMethodContract.Effect.Back(event.paymentInstrument) }
-        }
+    override fun onPaymentInstrumentSelected(paymentInstrument: PaymentInstrument) {
+        setEffect { PaymentMethodContract.Effect.Back(paymentInstrument) }
     }
 
     private fun loadInitialData() {

@@ -20,12 +20,13 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
 import org.kodein.di.erased.instance
 import java.math.BigDecimal
+import java.math.RoundingMode
 
 class BuyInputViewModel(
     application: Application
 ) : FabriikViewModel<BuyInputContract.State, BuyInputContract.Event, BuyInputContract.Effect>(
     application
-), KodeinAware {
+), BuyInputEventHandler, KodeinAware {
 
     override val kodein by closestKodein { application }
 
@@ -45,38 +46,15 @@ class BuyInputViewModel(
 
     override fun createInitialState() = BuyInputContract.State.Loading
 
-    override fun handleEvent(event: BuyInputContract.Event) {
-        when (event) {
-            BuyInputContract.Event.DismissClicked ->
-                setEffect { BuyInputContract.Effect.Dismiss }
-
-            BuyInputContract.Event.ContinueClicked ->
-                onContinueClicked()
-
-            BuyInputContract.Event.CryptoCurrencyClicked ->
-                onCryptoCurrencyClicked()
-
-            BuyInputContract.Event.PaymentMethodClicked ->
-                onPaymentMethodClicked()
-
-            BuyInputContract.Event.QuoteTimeoutRetry ->
-                requestNewQuote()
-
-            is BuyInputContract.Event.CryptoCurrencyChanged ->
-                onCryptoCurrencyChanged(event.currencyCode)
-
-            is BuyInputContract.Event.PaymentMethodChanged ->
-                onPaymentMethodChanged(event.paymentInstrument)
-
-            is BuyInputContract.Event.FiatAmountChange ->
-                onFiatAmountChanged(event.amount, true)
-
-            is BuyInputContract.Event.CryptoAmountChange ->
-                onCryptoAmountChanged(event.amount, true)
-        }
+    override fun onDismissClicked() {
+        setEffect { BuyInputContract.Effect.Dismiss }
     }
 
-    private fun onCryptoCurrencyChanged(currencyCode: String) {
+    override fun onQuoteTimeoutRetry() {
+        requestNewQuote()
+    }
+
+    override fun onCryptoCurrencyChanged(currencyCode: String) {
         val state = currentLoadedState ?: return
 
         setState {
@@ -97,7 +75,7 @@ class BuyInputViewModel(
         requestNewQuote()
     }
 
-    private fun onPaymentMethodChanged(paymentInstrument: PaymentInstrument) {
+    override fun onPaymentMethodChanged(paymentInstrument: PaymentInstrument) {
         val state = currentLoadedState ?: return
 
         setState {
@@ -107,12 +85,12 @@ class BuyInputViewModel(
         }
     }
 
-    private fun onCryptoCurrencyClicked() {
+    override fun onCryptoCurrencyClicked() {
         val state = currentLoadedState ?: return
         setEffect { BuyInputContract.Effect.CryptoSelection(state.supportedCurrencies) }
     }
 
-    private fun onPaymentMethodClicked() {
+    override fun onPaymentMethodClicked() {
         val paymentMethods = currentLoadedState?.paymentInstruments ?: return
 
         setEffect {
@@ -124,7 +102,7 @@ class BuyInputViewModel(
         }
     }
 
-    private fun onFiatAmountChanged(fiatAmount: BigDecimal, changeByUser: Boolean) {
+    override fun onFiatAmountChanged(fiatAmount: BigDecimal, changeByUser: Boolean) {
         val state = currentLoadedState ?: return
 
         onAmountChanged(
@@ -136,7 +114,7 @@ class BuyInputViewModel(
         )
     }
 
-    private fun onCryptoAmountChanged(cryptoAmount: BigDecimal, changeByUser: Boolean) {
+    override fun onCryptoAmountChanged(cryptoAmount: BigDecimal, changeByUser: Boolean) {
         val state = currentLoadedState ?: return
 
         onAmountChanged(
@@ -174,13 +152,22 @@ class BuyInputViewModel(
         }
     }
 
-    private fun onContinueClicked() {
+    override fun onContinueClicked() {
         val state = currentLoadedState ?: return
         val networkFee = state.networkFee ?: return
         val quoteResponse = state.quoteResponse ?: return
         val paymentInstrument = state.selectedPaymentMethod ?: return
 
-        //todo: validation
+        val validationError = validate(state)
+        if (validationError != null) {
+            setState { state.copy(continueButtonEnabled = false) }
+            setEffect {
+                BuyInputContract.Effect.ShowError(
+                    validationError.toString(getApplication<Application?>().applicationContext)
+                )
+            }
+            return
+        }
 
         setEffect {
             BuyInputContract.Effect.OpenOrderPreview(
@@ -273,13 +260,23 @@ class BuyInputViewModel(
                     }
 
                     setEffect {
-                        BuyInputContract.Effect.ShowToast(
-                            getString(R.string.Swap_Input_Error_NoSelectedPairData), true
+                        BuyInputContract.Effect.ShowError(
+                            getString(R.string.Buy_Input_Error_Network)
                         )
                     }
                 }
             }
         }
+    }
+
+    private fun validate(state: BuyInputContract.State.Loaded) = when {
+        state.networkFee == null ->
+            BuyInputContract.ErrorMessage.NetworkIssues
+        state.fiatAmount < state.minFiatAmount ->
+            BuyInputContract.ErrorMessage.MinBuyAmount(state.minFiatAmount, state.fiatCurrency)
+        state.fiatAmount > state.maxFiatAmount ->
+            BuyInputContract.ErrorMessage.MaxBuyAmount(state.maxFiatAmount, state.fiatCurrency)
+        else -> null
     }
 
     private suspend fun isWalletEnabled(currencyCode: String): Boolean {
@@ -291,8 +288,8 @@ class BuyInputViewModel(
     private fun showErrorState() {
         setState { BuyInputContract.State.Error }
         setEffect {
-            BuyInputContract.Effect.ShowToast(
-                getString(R.string.Swap_Input_Error_Network)
+            BuyInputContract.Effect.ShowError(
+                getString(R.string.Buy_Input_Error_Network)
             )
         }
     }

@@ -36,68 +36,117 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
+                    <TextView
+                        android:id="@+id/tv_card_number"
+                        style="@style/TextStyle.Body2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/Buy.AddCard.Subtitle1"
+                        android:textColor="@color/light_text_02"
+                        app:layout_constrainedWidth="true"
+                        app:layout_constraintHorizontal_bias="0"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/til_card_number"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:hint="@string/Buy.AddCard.Subtitle1"
+                        android:layout_marginTop="4dp"
+                        app:hintEnabled="false"
+                        app:startIconDrawable="@drawable/ic_credit_card"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
+                        app:layout_constraintTop_toBottomOf="@id/tv_card_number">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_card_number"
+                            style="@style/FabriikEditTextStyle.NoFloatingLabel"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="phone"
                             android:maxLength="19"
+                            android:hint="@string/Buy.AddCard.Hint1"
                             android:imeOptions="actionNext"
                             android:nextFocusForward="@id/et_date"/>
 
                     </com.google.android.material.textfield.TextInputLayout>
 
+                    <TextView
+                        android:id="@+id/tv_date"
+                        style="@style/TextStyle.Body2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/Buy.AddCard.Subtitle2"
+                        android:textColor="@color/light_text_02"
+                        app:layout_constrainedWidth="true"
+                        app:layout_constraintHorizontal_bias="0"
+                        app:layout_constraintTop_toBottomOf="@id/til_card_number"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/til_date"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="4dp"
                         android:layout_marginEnd="4dp"
-                        android:hint="@string/Buy.AddCard.Hint2"
+                        app:hintEnabled="false"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintEnd_toStartOf="@id/til_security_code"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/til_card_number">
+                        app:layout_constraintTop_toBottomOf="@id/tv_date">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_date"
+                            style="@style/FabriikEditTextStyle.NoFloatingLabel"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="phone"
+                            android:hint="@string/Buy.AddCard.Hint2"
                             android:maxLength="5"
                             android:imeOptions="actionNext"
                             android:nextFocusForward="@id/et_security_code" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
+                    <TextView
+                        android:id="@+id/tv_security_code"
+                        style="@style/TextStyle.Body2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/Buy.AddCard.Subtitle3"
+                        android:textColor="@color/light_text_02"
+                        app:layout_constrainedWidth="true"
+                        app:layout_constraintHorizontal_bias="0"
+                        app:layout_constraintBaseline_toBaselineOf="@id/tv_date"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/til_security_code"/>
+
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/til_security_code"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
-                        android:hint="@string/Buy.AddCard.Hint3"
+                        android:layout_marginTop="4dp"
+                        app:hintEnabled="false"
                         app:endIconMode="custom"
                         app:endIconDrawable="@drawable/ic_question_mark"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/til_date"
-                        app:layout_constraintTop_toTopOf="@id/til_date">
+                        app:layout_constraintTop_toBottomOf="@id/tv_security_code">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_security_code"
+                            style="@style/FabriikEditTextStyle.NoFloatingLabel"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="numberPassword"
                             android:maxLength="3"
                             android:imeOptions="actionDone"
+                            android:hint="@string/Buy.AddCard.Hint3"
                             tools:text="253" />
 
                     </com.google.android.material.textfield.TextInputLayout>

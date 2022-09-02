@@ -15,10 +15,9 @@ import org.kodein.di.erased.instance
 class BuyDetailsViewModel(
     application: Application,
     savedStateHandle: SavedStateHandle
-) :
-    FabriikViewModel<BuyDetailsContract.State, BuyDetailsContract.Event, BuyDetailsContract.Effect>(
-        application, savedStateHandle
-    ), KodeinAware {
+) : FabriikViewModel<BuyDetailsContract.State, BuyDetailsContract.Event, BuyDetailsContract.Effect>(
+    application, savedStateHandle
+), BuyDetailsEventHandler, KodeinAware {
 
     override val kodein by closestKodein { application }
 
@@ -37,28 +36,7 @@ class BuyDetailsViewModel(
 
     override fun createInitialState() = BuyDetailsContract.State.Loading
 
-    override fun handleEvent(event: BuyDetailsContract.Event) {
-        when (event) {
-            BuyDetailsContract.Event.LoadData ->
-                loadData()
-
-            BuyDetailsContract.Event.BackClicked,
-            BuyDetailsContract.Event.DismissClicked ->
-                setEffect { BuyDetailsContract.Effect.Dismiss }
-
-            BuyDetailsContract.Event.OrderIdClicked -> {
-                val state = currentLoadedState ?: return
-                setEffect { BuyDetailsContract.Effect.CopyToClipboard(state.data.orderId) }
-            }
-
-            BuyDetailsContract.Event.TransactionIdClicked -> {
-                val transactionID = currentLoadedState?.data?.destination?.transactionId ?: return
-                setEffect { BuyDetailsContract.Effect.CopyToClipboard(transactionID) }
-            }
-        }
-    }
-
-    private fun loadData() {
+    override fun onLoadData() {
         callApi(
             endState = { currentState },
             startState = { currentState },
@@ -84,5 +62,23 @@ class BuyDetailsViewModel(
                 }
             }
         )
+    }
+
+    override fun onBackClicked() {
+        setEffect { BuyDetailsContract.Effect.Dismiss }
+    }
+
+    override fun onDismissClicked() {
+        setEffect { BuyDetailsContract.Effect.Dismiss }
+    }
+
+    override fun onOrderIdClicked() {
+        val state = currentLoadedState ?: return
+        setEffect { BuyDetailsContract.Effect.CopyToClipboard(state.data.orderId) }
+    }
+
+    override fun onTransactionIdClicked() {
+        val transactionID = currentLoadedState?.data?.destination?.transactionId ?: return
+        setEffect { BuyDetailsContract.Effect.CopyToClipboard(transactionID) }
     }
 }

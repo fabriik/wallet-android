@@ -194,6 +194,10 @@ object WalletScreenHandler {
         val transactionData = swapRepository.getDataByHash(transfer.hashString())
         val walletTransaction = transfer.asWalletTransaction(currencyId)
 
+        if (walletTransaction.isFeeForToken) {
+            return walletTransaction
+        }
+
         return transactionData?.let {
             walletTransaction.copy(
                 exchangeData = when(transfer.hashString()) {

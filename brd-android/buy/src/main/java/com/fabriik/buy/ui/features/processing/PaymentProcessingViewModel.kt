@@ -19,7 +19,7 @@ class PaymentProcessingViewModel(
     savedStateHandle: SavedStateHandle
 ) : FabriikViewModel<PaymentProcessingContract.State, PaymentProcessingContract.Event, PaymentProcessingContract.Effect>(
     application, savedStateHandle
-), KodeinAware {
+), PaymentProcessingEventHandler, KodeinAware {
 
     override val kodein by closestKodein { application }
 
@@ -47,26 +47,29 @@ class PaymentProcessingViewModel(
         arguments.paymentReference
     )
 
-    override fun handleEvent(event: PaymentProcessingContract.Event) {
-        when (event) {
-            PaymentProcessingContract.Event.BackToHomeClicked ->
-                setEffect { PaymentProcessingContract.Effect.Dismiss }
+    override fun onBackToHomeClicked() {
+        setEffect { PaymentProcessingContract.Effect.Dismiss }
+    }
 
-            PaymentProcessingContract.Event.ContactSupportClicked ->
-                setEffect { PaymentProcessingContract.Effect.ContactSupport }
+    override fun onContactSupportClicked() {
+        setEffect { PaymentProcessingContract.Effect.ContactSupport }
+    }
 
-            PaymentProcessingContract.Event.TryDifferentMethodClicked ->
-                setEffect { PaymentProcessingContract.Effect.BackToBuy }
+    override fun onPurchaseDetailsClicked() {
+        val purchaseId = currentCompletedState?.paymentReference
+        if (!purchaseId.isNullOrBlank()) {
+            setEffect { PaymentProcessingContract.Effect.GoToPurchaseDetails(purchaseId) }
+        }
+    }
 
-            PaymentProcessingContract.Event.OnPaymentRedirectResult ->
-                handlePaymentRedirectResult()
+    override fun onTryDifferentMethodClicked() {
+        setEffect { PaymentProcessingContract.Effect.BackToBuy }
+    }
 
-            PaymentProcessingContract.Event.PurchaseDetailsClicked -> {
-                val purchaseId = currentCompletedState?.paymentReference
-                if (!purchaseId.isNullOrBlank()) {
-                    setEffect { PaymentProcessingContract.Effect.GoToPurchaseDetails(purchaseId) }
-                }
-            }
+    override fun onPaymentRedirectResult() {
+        viewModelScope.launch(Dispatchers.IO) {
+            delay(INITIAL_DELAY)
+            checkPaymentStatus()
         }
     }
 
@@ -80,13 +83,6 @@ class PaymentProcessingViewModel(
             } else {
                 setEffect { PaymentProcessingContract.Effect.OpenPaymentRedirect(redirectUrl) }
             }
-        }
-    }
-
-    private fun handlePaymentRedirectResult() {
-        viewModelScope.launch(Dispatchers.IO) {
-            delay(INITIAL_DELAY)
-            checkPaymentStatus()
         }
     }
 

@@ -11,6 +11,11 @@
     <string name="Buy.Input.SelectPaymentMethod">Select a payment method</string>
     <string name="Buy.Input.LimitsDisclaimer">Currently, minimum limit for buy is $30.00 USD and maximum limit is $500.00 USD per day.</string>
 
+    <!-- Errors -->
+    <string name="Buy.Input.Error.MinAmount">The amount is lower than the minimum of %s. Please enter a higher amount.</string>
+    <string name="Buy.Input.Error.MaxAmount">The amount is higher than your daily limit of %s. Please enter a lower amount.</string>
+    <string name="Buy.Input.Error.Network">We are having temporary network issues. Please try again later.</string>
+
     <!-- Billing address screen -->
     <string name="Buy.BillingAdress.Title">Billing address</string>
     <string name="Buy.BillingAddress.FirstName">First Name</string>
@@ -25,9 +30,10 @@
     <string name="Buy.AddCard.Title">Add card</string>
     <string name="Buy.AddCard.Subtitle1">Card number</string>
     <string name="Buy.AddCard.Subtitle2">Expiration date</string>
-    <string name="Buy.AddCard.Subtitle3">Security code (CVV)</string>
+    <string name="Buy.AddCard.Subtitle3">CVV</string>
+    <string name="Buy.AddCard.Hint1">XXXX XXXX XXXX XXXX</string>
     <string name="Buy.AddCard.Hint2">MM/YY</string>
-    <string name="Buy.AddCard.Hint3">CVV</string>
+    <string name="Buy.AddCard.Hint3">XXX</string>
     <string name="Buy.AddCard.Error.WrongDate">Entered expiration date is not valid!</string>
 
     <string name="Buy.AddCard.CvvDialog.Title">Security code (CVV)</string>
@@ -41,8 +47,8 @@
     <string name="Buy.Processing.PurchaseDetails">Purchase details</string>
     <string name="Buy.Processing.TryDifferentMethod">Try a different payment method</string>
 
-    <string name="Buy.ProcessingSucceed.Title">Your funds are on the way!</string>
-    <string name="Buy.ProcessingSucceed.Description">You can continue to use your wallet. We\'ll let you know when your funds have arrived.</string>
+    <string name="Buy.ProcessingSucceed.Title">Your assets are on the way!</string>
+    <string name="Buy.ProcessingSucceed.Description">This purchase will appear as ‘Fabriik Wallet’ on your bank statement.</string>
 
     <string name="Buy.ProcessingFailed.Title">There was an error while processing your payment</string>
     <string name="Buy.ProcessingFailed.Description">Please contact your card issuer/bank or try again with a different payment method.</string>
@@ -101,4 +107,5 @@
     <string name="Buy.Details.AmountPurchased">Amount purchased:</string>
     <string name="Buy.Details.Total">Total:</string>
     <string name="Buy.Details.PaidWith">Paid with</string>
+
 </resources>
