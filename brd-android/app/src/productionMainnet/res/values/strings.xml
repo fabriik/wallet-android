@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <bool name="checkout_sandbox">false</bool>
-    <string name="checkout_api_token">pk_sbox_ees63clhrko6kta6j3cwloebg4#</string> <!-- TODO: change to production key -->
-</resources>
