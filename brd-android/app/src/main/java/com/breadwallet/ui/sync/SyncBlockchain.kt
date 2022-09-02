@@ -28,9 +28,15 @@ import com.breadwallet.R
 import com.breadwallet.ui.navigation.NavigationEffect
 import com.breadwallet.ui.navigation.NavigationTarget
 import com.breadwallet.util.CurrencyCode
+import com.fabriik.common.ui.dialog.FabriikGenericDialogArgs
 import com.fabriik.support.pages.Topic
 
 object SyncBlockchain {
+
+    const val DIALOG_CONFIRM_SYNC = "confirm_blockchain_sync_dialog"
+    const val DIALOG_CONFIRM_SYNC_POSITIVE = "confirm_blockchain_sync_dialog_positive"
+    const val DIALOG_CONFIRM_SYNC_NEGATIVE = "confirm_blockchain_sync_dialog_negative"
+
     data class M(val currencyCode: CurrencyCode)
 
     sealed class E {
@@ -52,11 +58,20 @@ object SyncBlockchain {
         ) : F(), NavigationEffect {
 
             object ShowSyncConfirmation : Nav(
-                NavigationTarget.AlertDialog(
-                    messageResId = R.string.ReScan_footer,
-                    titleResId = R.string.ReScan_alertTitle,
-                    positiveButtonResId = R.string.ReScan_alertAction,
-                    negativeButtonResId = R.string.Button_cancel
+                NavigationTarget.FabriikGenericDialog(
+                    FabriikGenericDialogArgs(
+                        requestKey = DIALOG_CONFIRM_SYNC,
+                        titleRes = R.string.ReScan_alertTitle,
+                        descriptionRes = R.string.ReScan_footer,
+                        positive = FabriikGenericDialogArgs.ButtonData(
+                            titleRes = R.string.ReScan_alertAction,
+                            resultKey = DIALOG_CONFIRM_SYNC_POSITIVE
+                        ),
+                        negative = FabriikGenericDialogArgs.ButtonData(
+                            titleRes = R.string.Button_cancel,
+                            resultKey = DIALOG_CONFIRM_SYNC_NEGATIVE
+                        )
+                    )
                 )
             )
 

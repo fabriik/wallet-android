@@ -30,10 +30,13 @@ import com.breadwallet.databinding.ControllerSyncBlockchainBinding
 import com.breadwallet.ui.BaseMobiusController
 import com.breadwallet.ui.controllers.AlertDialogController
 import com.breadwallet.ui.flowbind.clicks
+import com.breadwallet.ui.sync.SyncBlockchain.DIALOG_CONFIRM_SYNC
+import com.breadwallet.ui.sync.SyncBlockchain.DIALOG_CONFIRM_SYNC_POSITIVE
 import com.breadwallet.ui.sync.SyncBlockchain.E
 import com.breadwallet.ui.sync.SyncBlockchain.F
 import com.breadwallet.ui.sync.SyncBlockchain.M
 import com.breadwallet.util.CurrencyCode
+import com.breadwallet.util.registerForGenericDialogResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
@@ -62,19 +65,17 @@ class SyncBlockchainController(
     private val binding by viewBinding(ControllerSyncBlockchainBinding::inflate)
 
     override fun bindView(modelFlow: Flow<M>): Flow<E> {
+        registerForGenericDialogResult(DIALOG_CONFIRM_SYNC) { resultKey, _ ->
+            if (resultKey == DIALOG_CONFIRM_SYNC_POSITIVE) {
+                eventConsumer.accept(E.OnConfirmSyncClicked)
+            }
+        }
+
         return with(binding) {
             merge(
                 faqButton.clicks().map { E.OnFaqClicked },
                 buttonScan.clicks().map { E.OnSyncClicked }
             )
         }
-    }
-
-    override fun onPositiveClicked(
-        dialogId: String,
-        controller: AlertDialogController,
-        result: AlertDialogController.DialogInputResult
-    ) {
-        eventConsumer.accept(E.OnConfirmSyncClicked)
     }
 }
