@@ -29,13 +29,14 @@ class RegistrationApi(
     private val responseMapper = FabriikApiResponseMapper()
 
     suspend fun associateEmail(
-        email: String, token: String, headers: Map<String, String?>
+        email: String, token: String, subscribe: Boolean, headers: Map<String, String?>
     ): Resource<AssociateEmailResponse?> {
         return try {
             val response = service.associateEmail(
                 request = AssociateEmailRequest(
                     email = email,
-                    token = token
+                    token = token,
+                    subscribe = subscribe,
                 ),
                 headers = headers
             )

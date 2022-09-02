@@ -178,7 +178,6 @@ val HomeScreenUpdate = Update<M, E, F> { model, event ->
         }
         is E.OnPromptDismissed -> {
             val promptName = when (event.promptId) {
-                PromptItem.EMAIL_COLLECTION -> EventUtils.PROMPT_EMAIL
                 PromptItem.FINGER_PRINT -> EventUtils.PROMPT_TOUCH_ID
                 PromptItem.PAPER_KEY -> EventUtils.PROMPT_PAPER_KEY
                 PromptItem.UPGRADE_PIN -> EventUtils.PROMPT_UPGRADE_PIN
@@ -254,15 +253,6 @@ val HomeScreenUpdate = Update<M, E, F> { model, event ->
                 effects.add(F.SaveDontShowMeRateAppPrompt)
             }
             dispatch(effects)
-        }
-        is E.OnEmailPromptClicked -> {
-            val eventName = EventUtils.PROMPT_EMAIL + EventUtils.EVENT_PROMPT_SUFFIX_TRIGGER
-            dispatch(
-                effects(
-                    F.SaveEmail(event.email),
-                    F.TrackEvent(eventName)
-                )
-            )
         }
         is E.OnSupportFormSubmitted -> dispatch(
             effects(F.SubmitSupportForm(event.feedback))

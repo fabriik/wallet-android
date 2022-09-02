@@ -61,8 +61,6 @@ object BRSharedPrefs {
     private const val SCREEN_WIDTH = "screenWidth"
     private const val BUNDLE_HASH_PREFIX = "bundleHash_"
     private const val SEGWIT = "segwit"
-    private const val EMAIL_OPT_IN = "emailOptIn"
-    private const val EMAIL_OPT_IN_DISMISSED = "emailOptInDismissed"
     private const val CURRENT_CURRENCY = "currentCurrency"
     private const val PAPER_KEY_WRITTEN_DOWN = "phraseWritten"
     private const val PREFER_STANDARD_FEE = "favorStandardFee"
@@ -349,23 +347,11 @@ object BRSharedPrefs {
     fun getIsSegwitEnabled(): Boolean =
         brdPrefs.getBoolean(SEGWIT, false)
 
-    fun putEmailOptIn(hasOpted: Boolean) =
-        brdPrefs.edit { putBoolean(EMAIL_OPT_IN, hasOpted) }
-
-    fun getEmailOptIn(): Boolean =
-        brdPrefs.getBoolean(EMAIL_OPT_IN, false)
-
     fun putRewardsAnimationShown(wasShown: Boolean) =
         brdPrefs.edit { putBoolean(REWARDS_ANIMATION_SHOWN, wasShown) }
 
     fun getRewardsAnimationShown(): Boolean =
         brdPrefs.getBoolean(REWARDS_ANIMATION_SHOWN, false)
-
-    fun putEmailOptInDismissed(dismissed: Boolean) =
-        brdPrefs.edit { putBoolean(EMAIL_OPT_IN_DISMISSED, dismissed) }
-
-    fun getEmailOptInDismissed(): Boolean =
-        brdPrefs.getBoolean(EMAIL_OPT_IN_DISMISSED, false)
 
     /**
      * Get the debug bundle from shared preferences or empty if not available.

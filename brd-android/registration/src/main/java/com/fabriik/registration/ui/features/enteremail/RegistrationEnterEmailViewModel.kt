@@ -20,7 +20,7 @@ import org.kodein.di.android.closestKodein
 import org.kodein.di.erased.instance
 
 class RegistrationEnterEmailViewModel(
-    application: Application
+    application: Application,
 ) : FabriikViewModel<RegistrationEnterEmailContract.State, RegistrationEnterEmailContract.Event, RegistrationEnterEmailContract.Effect>(
     application
 ), KodeinAware {
@@ -42,7 +42,14 @@ class RegistrationEnterEmailViewModel(
 
             is RegistrationEnterEmailContract.Event.NextClicked ->
                 onNextClicked()
+
+            is RegistrationEnterEmailContract.Event.PromotionsClicked ->
+                onPromotionsClicked(event.checked)
         }
+    }
+
+    private fun onPromotionsClicked(isChecked: Boolean) {
+        setState { copy(promotionsEnabled = isChecked) }
     }
 
     private fun onNextClicked() {
@@ -64,6 +71,7 @@ class RegistrationEnterEmailViewModel(
                     registrationApi.associateEmail(
                         email = currentState.email,
                         token = token,
+                        subscribe = currentState.promotionsEnabled,
                         headers = registrationUtils.getAssociateRequestHeaders(
                             salt = currentState.email,
                             token = token

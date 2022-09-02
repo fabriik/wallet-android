@@ -194,4 +194,10 @@
         <item name="android:textAppearance">@style/TextStyle.Button</item>
         <item name="android:background">@drawable/bg_switch_item</item>
     </style>
+
+    <style name="FabriikCustomCheckboxSytle" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/light_text_02</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+    </style>
 </resources>
