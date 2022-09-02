@@ -44,7 +44,6 @@ object HomeScreen {
         val promptId: PromptItem? = null,
         val hasInternet: Boolean = true,
         val isBuyBellNeeded: Boolean = false,
-        val isBuyAlertNeeded: Boolean = false,
         val showBuyAndSell: Boolean = false,
         val rateAppPromptDontShowMeAgain: Boolean = false,
         val profile: Profile? = null
@@ -70,7 +69,6 @@ object HomeScreen {
         data class OnWalletDisplayOrderUpdated(@Redacted val displayOrder: List<String>) : E()
 
         data class OnBuyBellNeededLoaded(val isBuyBellNeeded: Boolean) : E()
-        data class OnBuyAlertNeededLoaded(val isBuyAlertNeeded: Boolean) : E()
 
         data class OnConnectionUpdated(val isConnected: Boolean) : E()
 
@@ -117,7 +115,6 @@ object HomeScreen {
         object LoadWallets : F()
         object LoadEnabledWallets : F()
         object LoadIsBuyBellNeeded : F()
-        object LoadIsBuyAlertNeeded : F()
         object LoadPrompt : F()
         object LoadConnectivityState : F()
         object CheckInAppNotification : F()
@@ -192,15 +189,6 @@ object HomeScreen {
                 positiveButtonResId = R.string.Button_submit,
                 negativeButtonResId = R.string.SupportForm_notNow,
                 textInputPlaceholderResId = R.string.SupportForm_pleaseDescribe
-            )
-        }
-
-        class ShowPartnershipNote(val dialogId: String, val messageResId: Int) : F(), NavigationEffect {
-            override val navigationTarget = NavigationTarget.AlertDialog(
-                dialogId = dialogId,
-                titleResId = R.string.HomeScreen_partnershipNoteTitle,
-                messageResId = messageResId,
-                positiveButtonResId = R.string.Button_continueAction
             )
         }
 

@@ -25,8 +25,6 @@
 package com.breadwallet.ui.home
 
 import com.breadwallet.tools.util.EventUtils
-import com.breadwallet.R
-import com.breadwallet.tools.manager.BRSharedPrefs
 import com.breadwallet.ui.home.HomeScreen.E
 import com.breadwallet.ui.home.HomeScreen.F
 import com.breadwallet.ui.home.HomeScreen.M
@@ -52,7 +50,6 @@ val HomeScreenUpdate = Update<M, E, F> { model, event ->
             setOf(F.UpdateWalletOrder(event.displayOrder))
         )
         is E.OnBuyBellNeededLoaded -> next(model.copy(isBuyBellNeeded = event.isBuyBellNeeded))
-        is E.OnBuyAlertNeededLoaded -> next(model.copy(isBuyAlertNeeded = event.isBuyAlertNeeded))
         is E.OnEnabledWalletsUpdated -> {
             next(
                 model.copy(
@@ -92,42 +89,30 @@ val HomeScreenUpdate = Update<M, E, F> { model, event ->
             }
         }
         is E.OnAddWalletsClicked -> dispatch(effects(F.GoToAddWallet))
-        E.OnBuyClicked -> when {
-            model.profile.isRegistrationNeeded() -> dispatch(effects(F.GoToRegistration))
-            model.profile.isEmailVerificationNeeded() || !SessionHolder.isUserSessionVerified() ->
-                dispatch(effects(F.RequestSessionVerification))
-            !model.profile.canUseBuy() -> dispatch(effects(F.GoToVerifyProfile))
-            else -> {
-                val isBuyAlertNeeded = model.isBuyAlertNeeded
-                BRSharedPrefs.buyNotePromptShouldPrompt = false
-
-                next<M, F>(
-                    model.copy(isBuyAlertNeeded = false),
-                    effects(
-                        if (isBuyAlertNeeded) {
-                            F.ShowPartnershipNote(
-                                dialogId = DIALOG_PARTNERSHIP_NOTE_BUY,
-                                messageResId = R.string.HomeScreen_partnershipNoteBuyDescription
-                            )
-                        } else {
-                            F.GoToBuy
-                        }
-                    )
-                )
-            }
-        }
+        E.OnBuyClicked -> dispatch(
+            effects(
+                when {
+                    model.profile.isRegistrationNeeded() -> F.GoToRegistration
+                    model.profile.isEmailVerificationNeeded() || !SessionHolder.isUserSessionVerified() ->
+                        F.RequestSessionVerification
+                    !model.hasInternet -> F.GoToNoInternetScreen
+                    !model.profile.canUseBuy() -> F.GoToVerifyProfile
+                    else -> F.GoToBuy
+                }
+            )
+        )
         E.OnTradeClicked -> dispatch(
             effects(
                 when {
                     model.profile.isRegistrationNeeded() -> F.GoToRegistration
                     model.profile.isEmailVerificationNeeded() || !SessionHolder.isUserSessionVerified() ->
                         F.RequestSessionVerification
-                    !model.profile.canUseTrade() -> F.GoToVerifyProfile
                     !model.hasInternet -> F.GoToNoInternetScreen
+                    !model.profile.canUseTrade() -> F.GoToVerifyProfile
                     else -> F.GoToTrade
                 }
             )
-	)
+	    )
         E.OnBuyNoteSeen -> dispatch(effects(F.GoToBuy))
         E.OnMenuClicked -> dispatch(effects(F.GoToMenu))
         E.OnProfileClicked -> dispatch(

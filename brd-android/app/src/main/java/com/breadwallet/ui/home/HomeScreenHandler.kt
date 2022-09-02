@@ -157,11 +157,6 @@ fun createHomeScreenHandler(
         E.OnBuyBellNeededLoaded(isBuyBellNeeded)
     }
 
-    addFunction<F.LoadIsBuyAlertNeeded> {
-        val isBuyAlertNeeded = BRSharedPrefs.buyNotePromptShouldPrompt
-        E.OnBuyAlertNeededLoaded(isBuyAlertNeeded)
-    }
-
     addTransformer<F.LoadEnabledWallets> {
         walletProvider.enabledWallets().mapLatest { wallets ->
             val fiatIso = BRSharedPrefs.getPreferredFiatIso()
