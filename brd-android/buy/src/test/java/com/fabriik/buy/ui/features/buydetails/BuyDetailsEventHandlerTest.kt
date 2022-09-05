@@ -15,4 +15,34 @@ class BuyDetailsEventHandlerTest {
         override fun onOrderIdClicked() {}
         override fun onTransactionIdClicked() {}
     }
+
+    @Test
+    fun handleEvent_loadData_callOnLoadData() {
+        handler.handleEvent(BuyDetailsContract.Event.LoadData)
+        verify(handler).onLoadData()
+    }
+
+    @Test
+    fun handleEvent_backClicked_callOnBackClicked() {
+        handler.handleEvent(BuyDetailsContract.Event.BackClicked)
+        verify(handler).onBackClicked()
+    }
+
+    @Test
+    fun handleEvent_dismissClicked_callOnDismissClicked() {
+        handler.handleEvent(BuyDetailsContract.Event.DismissClicked)
+        verify(handler).onDismissClicked()
+    }
+
+    @Test
+    fun handleEvent_orderIdClicked_callOnOrderIdClicked() {
+        handler.handleEvent(BuyDetailsContract.Event.OrderIdClicked)
+        verify(handler).onOrderIdClicked()
+    }
+
+    @Test
+    fun handleEvent_transactionIdClicked_callOnTransactionIdClicked() {
+        handler.handleEvent(BuyDetailsContract.Event.TransactionIdClicked)
+        verify(handler).onTransactionIdClicked()
+    }
 }

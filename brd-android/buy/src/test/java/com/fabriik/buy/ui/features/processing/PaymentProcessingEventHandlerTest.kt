@@ -15,4 +15,34 @@ class PaymentProcessingEventHandlerTest {
         override fun onTryDifferentMethodClicked() {}
         override fun onPaymentRedirectResult() {}
     }
+
+    @Test
+    fun handleEvent_tryAgainClicked_callOnTryAgainClicked() {
+        handler.handleEvent(PaymentProcessingContract.Event.BackToHomeClicked)
+        verify(handler).onBackToHomeClicked()
+    }
+
+    @Test
+    fun handleEvent_contactSupportClicked_callOnContactSupportClicked() {
+        handler.handleEvent(PaymentProcessingContract.Event.ContactSupportClicked)
+        verify(handler).onContactSupportClicked()
+    }
+
+    @Test
+    fun handleEvent_purchaseDetailsClicked_callOnPurchaseDetailsClicked() {
+        handler.handleEvent(PaymentProcessingContract.Event.PurchaseDetailsClicked)
+        verify(handler).onPurchaseDetailsClicked()
+    }
+
+    @Test
+    fun handleEvent_tryDifferentMethodClicked_callOnTryDifferentMethodClicked() {
+        handler.handleEvent(PaymentProcessingContract.Event.TryDifferentMethodClicked)
+        verify(handler).onTryDifferentMethodClicked()
+    }
+
+    @Test
+    fun handleEvent_onPaymentRedirectResult_callOnPaymentRedirectResult() {
+        handler.handleEvent(PaymentProcessingContract.Event.OnPaymentRedirectResult)
+        verify(handler).onPaymentRedirectResult()
+    }
 }

@@ -11,4 +11,10 @@ class PaymentTimeoutEventHandlerTest {
     @Spy val handler = object : PaymentTimeoutEventHandler {
         override fun onTryAgainClicked() {}
     }
+
+    @Test
+    fun handleEvent_tryAgainClicked_callOnTryAgainClicked() {
+        handler.handleEvent(PaymentTimeoutContract.Event.TryAgainClicked)
+        verify(handler).onTryAgainClicked()
+    }
 }
