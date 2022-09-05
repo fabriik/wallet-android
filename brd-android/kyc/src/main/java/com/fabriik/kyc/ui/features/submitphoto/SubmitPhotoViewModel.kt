@@ -41,7 +41,7 @@ class SubmitPhotoViewModel(
         setEffect { SubmitPhotoContract.Effect.Back }
     }
 
-    override fun onDismissCLicked() {
+    override fun onDismissClicked() {
         setEffect { SubmitPhotoContract.Effect.Dismiss }
     }
 

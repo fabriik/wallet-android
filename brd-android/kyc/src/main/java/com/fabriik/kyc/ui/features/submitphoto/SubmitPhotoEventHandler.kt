@@ -9,7 +9,7 @@ interface SubmitPhotoEventHandler: FabriikEventHandler<SubmitPhotoContract.Event
             is SubmitPhotoContract.Event.BackClicked -> onBackClicked()
             is SubmitPhotoContract.Event.RetakeClicked -> onRetakeClicked()
             is SubmitPhotoContract.Event.ConfirmClicked -> onConfirmClicked()
-            is SubmitPhotoContract.Event.DismissClicked -> onDismissCLicked()
+            is SubmitPhotoContract.Event.DismissClicked -> onDismissClicked()
         }
     }
 
@@ -19,5 +19,5 @@ interface SubmitPhotoEventHandler: FabriikEventHandler<SubmitPhotoContract.Event
 
     fun onConfirmClicked()
 
-    fun onDismissCLicked()
+    fun onDismissClicked()
 }
