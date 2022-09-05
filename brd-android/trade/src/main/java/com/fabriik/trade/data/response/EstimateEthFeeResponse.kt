@@ -6,6 +6,6 @@ import java.math.BigDecimal
 
 @JsonClass(generateAdapter = true)
 data class EstimateEthFeeResponse(
-    @Json(name = "estimated_fee_eth")
+    @Json(name = "native_fee")
     val fee: BigDecimal
 )
