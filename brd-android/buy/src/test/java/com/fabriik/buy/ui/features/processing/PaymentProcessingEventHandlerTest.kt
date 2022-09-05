@@ -17,7 +17,7 @@ class PaymentProcessingEventHandlerTest {
     }
 
     @Test
-    fun handleEvent_tryAgainClicked_callOnTryAgainClicked() {
+    fun handleEvent_backToHomeClicked_callOnBackToHomeClicked() {
         handler.handleEvent(PaymentProcessingContract.Event.BackToHomeClicked)
         verify(handler).onBackToHomeClicked()
     }
