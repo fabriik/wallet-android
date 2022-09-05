@@ -53,7 +53,7 @@ class TakePhotoEventHandlerTest {
     }
 
     @Test
-    fun handleEvent_goHomeClicked_callOnGoHomeClicked() {
+    fun handleEvent_cameraPermissionResult_callOnCameraPermissionResult() {
         val granted = false
         handler.handleEvent(TakePhotoContract.Event.CameraPermissionResult(granted))
         verify(handler).onCameraPermissionResult(granted)
