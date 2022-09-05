@@ -4,14 +4,13 @@ import android.app.Application
 import androidx.lifecycle.SavedStateHandle
 import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.common.utils.toBundle
-import com.fabriik.trade.ui.features.processing.SwapProcessingContract
 
 class SwapProcessingViewModel(
     application: Application,
     savedStateHandle: SavedStateHandle
 ) : FabriikViewModel<SwapProcessingContract.State, SwapProcessingContract.Event, SwapProcessingContract.Effect>(
     application, savedStateHandle
-) {
+), SwapProcessingEventHandler {
     private lateinit var arguments: SwapProcessingFragmentArgs
 
     override fun parseArguments(savedStateHandle: SavedStateHandle) {
@@ -25,16 +24,15 @@ class SwapProcessingViewModel(
         destinationCurrency = arguments.coinTo
     )
 
-    override fun handleEvent(event: SwapProcessingContract.Event) {
-        when (event) {
-            SwapProcessingContract.Event.DismissClicked ->
-                setEffect { SwapProcessingContract.Effect.Dismiss }
+    override fun onDismissClicked() {
+        setEffect { SwapProcessingContract.Effect.Dismiss }
+    }
 
-            SwapProcessingContract.Event.GoHomeClicked ->
-                setEffect { SwapProcessingContract.Effect.GoHome }
+    override fun onGoHomeClicked() {
+        setEffect { SwapProcessingContract.Effect.GoHome }
+    }
 
-            SwapProcessingContract.Event.OpenSwapDetails ->
-                setEffect { SwapProcessingContract.Effect.OpenDetails(arguments.exchangeId) }
-        }
+    override fun onOpenSwapDetailsClicked() {
+        setEffect { SwapProcessingContract.Effect.OpenDetails(arguments.exchangeId) }
     }
 }

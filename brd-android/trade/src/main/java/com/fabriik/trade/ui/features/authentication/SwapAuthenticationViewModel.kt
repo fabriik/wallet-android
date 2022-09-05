@@ -11,7 +11,7 @@ class SwapAuthenticationViewModel(
     application: Application
 ) : FabriikViewModel<SwapAuthenticationContract.State, SwapAuthenticationContract.Event, SwapAuthenticationContract.Effect>(
     application
-) {
+), SwapAuthenticationEventHandler {
 
     override fun createInitialState(): SwapAuthenticationContract.State {
         /*val isFingerprintEnabled = isFingerprintEnabled()
@@ -32,42 +32,44 @@ class SwapAuthenticationViewModel(
         )
     }
 
-    override fun handleEvent(event: SwapAuthenticationContract.Event) {
-        when (event) {
-            SwapAuthenticationContract.Event.BackClicked ->
-                setEffect { SwapAuthenticationContract.Effect.Back(RESULT_KEY_CANCELED) }
+    override fun onBackClicked() {
+        setEffect { SwapAuthenticationContract.Effect.Back(RESULT_KEY_CANCELED) }
+    }
 
-            SwapAuthenticationContract.Event.DismissClicked ->
-                setEffect { SwapAuthenticationContract.Effect.Dismiss }
+    override fun onDismissClicked() {
+        setEffect { SwapAuthenticationContract.Effect.Dismiss }
+    }
 
-            is SwapAuthenticationContract.Event.PinValidated ->
-                setEffect {
-                    when (event.valid) {
-                        true -> SwapAuthenticationContract.Effect.Back(RESULT_KEY_SUCCESS)
-                        false -> SwapAuthenticationContract.Effect.ShakeError
-                    }
-                }
-
-            is SwapAuthenticationContract.Event.AuthFailed -> when (currentState.authMode) {
-                SwapAuthenticationContract.AuthMode.USER_PREFERRED ->
-                    setState {
-                        copy(authMode = SwapAuthenticationContract.AuthMode.PIN_REQUIRED)
-                    }
-                else ->
-                    setEffect {
-                        SwapAuthenticationContract.Effect.Back(
-                            if (event.errorCode == BiometricPrompt.ERROR_CANCELED) {
-                                RESULT_KEY_CANCELED
-                            } else {
-                                RESULT_KEY_FAILURE
-                            }
-                        )
-                    }
+    override fun onPinValidated(valid: Boolean) {
+        setEffect {
+            when (valid) {
+                true -> SwapAuthenticationContract.Effect.Back(RESULT_KEY_SUCCESS)
+                false -> SwapAuthenticationContract.Effect.ShakeError
             }
-
-            SwapAuthenticationContract.Event.AuthSucceeded ->
-                setEffect { SwapAuthenticationContract.Effect.Back(RESULT_KEY_SUCCESS) }
         }
+    }
+
+    override fun onAuthFailed(errorCode: Int) {
+        when (currentState.authMode) {
+            SwapAuthenticationContract.AuthMode.USER_PREFERRED ->
+                setState {
+                    copy(authMode = SwapAuthenticationContract.AuthMode.PIN_REQUIRED)
+                }
+            else ->
+                setEffect {
+                    SwapAuthenticationContract.Effect.Back(
+                        if (errorCode == BiometricPrompt.ERROR_CANCELED) {
+                            RESULT_KEY_CANCELED
+                        } else {
+                            RESULT_KEY_FAILURE
+                        }
+                    )
+                }
+        }
+    }
+
+    override fun onAuthSucceeded() {
+        setEffect { SwapAuthenticationContract.Effect.Back(RESULT_KEY_SUCCESS) }
     }
 
     private fun isFingerprintEnabled(): Boolean {

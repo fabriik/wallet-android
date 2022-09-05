@@ -40,7 +40,7 @@ class SwapInputViewModel(
     application: Application,
 ) : FabriikViewModel<SwapInputContract.State, SwapInputContract.Event, SwapInputContract.Effect>(
     application
-), KodeinAware {
+), SwapInputEventHandler, KodeinAware {
 
     override val kodein by closestKodein { application }
     private val profileManager by kodein.instance<ProfileManager>()
@@ -76,67 +76,32 @@ class SwapInputViewModel(
 
     override fun createInitialState() = SwapInputContract.State.Loading
 
-    override fun handleEvent(event: SwapInputContract.Event) {
-        when (event) {
-            SwapInputContract.Event.DismissClicked ->
-                setEffect { SwapInputContract.Effect.Dismiss }
-
-            SwapInputContract.Event.ConfirmClicked ->
-                onConfirmClicked()
-
-            SwapInputContract.Event.OnConfirmationDialogConfirmed ->
-                setEffect { SwapInputContract.Effect.RequestUserAuthentication }
-
-            SwapInputContract.Event.OnUserAuthenticationSucceed ->
-                createSwapOrder()
-
-            SwapInputContract.Event.SourceCurrencyClicked ->
-                onSourceCurrencyClicked()
-
-            SwapInputContract.Event.DestinationCurrencyClicked ->
-                onDestinationCurrencyClicked()
-
-            SwapInputContract.Event.ReplaceCurrenciesClicked ->
-                onReplaceCurrenciesClicked()
-
-            SwapInputContract.Event.OnResume -> {
-                updateAmounts(
-                    sourceFiatAmountChangedByUser = false,
-                    sourceCryptoAmountChangedByUser = false,
-                    destinationFiatAmountChangedByUser = false,
-                    destinationCryptoAmountChangedByUser = false
-                )
-            }
-
-            is SwapInputContract.Event.OnCheckAssetsDialogResult,
-            is SwapInputContract.Event.OnTempUnavailableDialogResult,
-            ->
-                setEffect { SwapInputContract.Effect.Dismiss }
-
-            is SwapInputContract.Event.OnCurrenciesReplaceAnimationCompleted ->
-                onReplaceCurrenciesAnimationCompleted(event.stateChange)
-
-            is SwapInputContract.Event.SourceCurrencyChanged ->
-                onSourceCurrencyChanged(event.currencyCode)
-
-            is SwapInputContract.Event.DestinationCurrencyChanged ->
-                onDestinationCurrencyChanged(event.currencyCode)
-
-            is SwapInputContract.Event.SourceCurrencyFiatAmountChange ->
-                onSourceCurrencyFiatAmountChanged(event.amount, true)
-
-            is SwapInputContract.Event.SourceCurrencyCryptoAmountChange ->
-                onSourceCurrencyCryptoAmountChanged(event.amount, true)
-
-            is SwapInputContract.Event.DestinationCurrencyFiatAmountChange ->
-                onDestinationCurrencyFiatAmountChanged(event.amount, true)
-
-            is SwapInputContract.Event.DestinationCurrencyCryptoAmountChange ->
-                onDestinationCurrencyCryptoAmountChanged(event.amount, true)
-        }
+    override fun onResume() {
+        updateAmounts(
+            sourceFiatAmountChangedByUser = false,
+            sourceCryptoAmountChangedByUser = false,
+            destinationFiatAmountChangedByUser = false,
+            destinationCryptoAmountChangedByUser = false
+        )
     }
 
-    private fun onSourceCurrencyChanged(currencyCode: String) {
+    override fun onDismissClicked() {
+        setEffect { SwapInputContract.Effect.Dismiss }
+    }
+
+    override fun onConfirmationDialogConfirmed() {
+        setEffect { SwapInputContract.Effect.RequestUserAuthentication }
+    }
+
+    override fun onCheckAssetsDialogResult(result: String?) {
+        setEffect { SwapInputContract.Effect.Dismiss }
+    }
+
+    override fun onTempUnavailableDialogResult(result: String?) {
+        setEffect { SwapInputContract.Effect.Dismiss }
+    }
+
+    override fun onSourceCurrencyChanged(currencyCode: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val state = currentLoadedState ?: return@launch
             if (currencyCode.equals(state.sourceCryptoCurrency, true)) {
@@ -181,7 +146,7 @@ class SwapInputViewModel(
         }
     }
 
-    private fun onDestinationCurrencyChanged(currencyCode: String) {
+    override fun onDestinationCurrencyChanged(currencyCode: String) {
         val state = currentLoadedState ?: return
         if (currencyCode.equals(state.destinationCryptoCurrency, true)) {
             return
@@ -217,7 +182,7 @@ class SwapInputViewModel(
         }
     }
 
-    private fun onReplaceCurrenciesClicked() {
+    override fun onReplaceCurrenciesClicked() {
         val currentData = currentLoadedState ?: return
 
         viewModelScope.launch(Dispatchers.IO) {
@@ -242,7 +207,7 @@ class SwapInputViewModel(
         }
     }
 
-    private fun onReplaceCurrenciesAnimationCompleted(state: SwapInputContract.State.Loaded) {
+    override fun onCurrenciesReplaceAnimationCompleted(state: SwapInputContract.State.Loaded) {
         callIfSwapNotActive(state.sourceCryptoCurrency, state) {
             setState { state }
             requestNewQuote()
@@ -438,7 +403,7 @@ class SwapInputViewModel(
         }
     }
 
-    private fun onSourceCurrencyClicked() {
+    override fun onSourceCurrencyClicked() {
         val state = currentLoadedState ?: return
 
         setEffect {
@@ -450,7 +415,7 @@ class SwapInputViewModel(
         }
     }
 
-    private fun onDestinationCurrencyClicked() {
+    override fun onDestinationCurrencyClicked() {
         val state = currentLoadedState ?: return
 
         setEffect {
@@ -462,7 +427,7 @@ class SwapInputViewModel(
         }
     }
 
-    private fun onSourceCurrencyFiatAmountChanged(
+    override fun onSourceCurrencyFiatAmountChange(
         sourceFiatAmount: BigDecimal,
         changeByUser: Boolean,
     ) {
@@ -473,7 +438,7 @@ class SwapInputViewModel(
         )
     }
 
-    private fun onSourceCurrencyCryptoAmountChanged(
+    override fun onSourceCurrencyCryptoAmountChange(
         sourceCryptoAmount: BigDecimal,
         changeByUser: Boolean,
     ) {
@@ -484,7 +449,7 @@ class SwapInputViewModel(
         )
     }
 
-    private fun onDestinationCurrencyFiatAmountChanged(
+    override fun onDestinationCurrencyFiatAmountChange(
         destFiatAmount: BigDecimal,
         changeByUser: Boolean,
     ) {
@@ -495,7 +460,7 @@ class SwapInputViewModel(
         )
     }
 
-    private fun onDestinationCurrencyCryptoAmountChanged(
+    override fun onDestinationCurrencyCryptoAmountChange(
         destCryptoAmount: BigDecimal,
         changeByUser: Boolean,
     ) {
@@ -592,7 +557,7 @@ class SwapInputViewModel(
         }
     }
 
-    private fun onConfirmClicked() {
+    override fun onConfirmClicked() {
         val state = currentLoadedState
         if (state == null) {
             setEffect {
@@ -660,7 +625,7 @@ class SwapInputViewModel(
         }
     }
 
-    private fun createSwapOrder() {
+    override fun onUserAuthenticationSucceed() {
         val state = currentLoadedState ?: return
         val quoteResponse = state.quoteResponse ?: return
 
