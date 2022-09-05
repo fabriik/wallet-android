@@ -23,7 +23,7 @@ class RegistrationEnterEmailViewModel(
     application: Application,
 ) : FabriikViewModel<RegistrationEnterEmailContract.State, RegistrationEnterEmailContract.Event, RegistrationEnterEmailContract.Effect>(
     application
-), KodeinAware {
+), RegistrationEnterEmailEventHandler, KodeinAware {
 
     override val kodein by closestKodein { application }
     private val registrationApi by instance<RegistrationApi>()
@@ -32,27 +32,19 @@ class RegistrationEnterEmailViewModel(
 
     override fun createInitialState() = RegistrationEnterEmailContract.State()
 
-    override fun handleEvent(event: RegistrationEnterEmailContract.Event) {
-        when (event) {
-            is RegistrationEnterEmailContract.Event.EmailChanged ->
-                setState { copy(email = event.email).validate() }
-
-            is RegistrationEnterEmailContract.Event.DismissClicked ->
-                setEffect { RegistrationEnterEmailContract.Effect.Dismiss }
-
-            is RegistrationEnterEmailContract.Event.NextClicked ->
-                onNextClicked()
-
-            is RegistrationEnterEmailContract.Event.PromotionsClicked ->
-                onPromotionsClicked(event.checked)
-        }
+    override fun onDismissClicked() {
+        setEffect { RegistrationEnterEmailContract.Effect.Dismiss }
     }
 
-    private fun onPromotionsClicked(isChecked: Boolean) {
+    override fun onEmailChanged(email: String) {
+        setState { copy(email = email).validate() }
+    }
+
+    override fun onPromotionsClicked(isChecked: Boolean) {
         setState { copy(promotionsEnabled = isChecked) }
     }
 
-    private fun onNextClicked() {
+    override fun onNextClicked() {
         viewModelScope.launch(Dispatchers.IO) {
             val token = TokenHolder.retrieveToken()
             if (token.isNullOrBlank()) {

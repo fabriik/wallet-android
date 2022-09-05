@@ -31,7 +31,7 @@ class RegistrationVerifyEmailViewModel(
     savedStateHandle: SavedStateHandle
 ) : FabriikViewModel<RegistrationVerifyEmailContract.State, RegistrationVerifyEmailContract.Event, RegistrationVerifyEmailContract.Effect>(
     application, savedStateHandle
-), KodeinAware {
+), RegistrationVerifyEmailEventHandler, KodeinAware {
 
     override val kodein by closestKodein { application }
     private val registrationApi by instance<RegistrationApi>()
@@ -51,31 +51,24 @@ class RegistrationVerifyEmailViewModel(
         changeEmailButtonVisible = arguments.flow != RegistrationFlow.RE_VERIFY
     )
 
-    override fun handleEvent(event: RegistrationVerifyEmailContract.Event) {
-        when (event) {
-            is RegistrationVerifyEmailContract.Event.DismissClicked ->
-                setEffect { RegistrationVerifyEmailContract.Effect.Dismiss() }
+    override fun onDismissClicked() {
+        setEffect { RegistrationVerifyEmailContract.Effect.Dismiss() }
+    }
 
-            is RegistrationVerifyEmailContract.Event.CodeChanged ->
-                setState {
-                    copy(
-                        code = event.code,
-                        codeErrorVisible = false
-                    ).validate()
-                }
+    override fun onChangeEmailClicked() {
+        setEffect { RegistrationVerifyEmailContract.Effect.Back }
+    }
 
-            is RegistrationVerifyEmailContract.Event.ResendEmailClicked ->
-                resendEmail()
-
-            is RegistrationVerifyEmailContract.Event.ChangeEmailClicked ->
-                setEffect { RegistrationVerifyEmailContract.Effect.Back }
-
-            is RegistrationVerifyEmailContract.Event.ConfirmClicked ->
-                verifyEmail()
+    override fun onCodeChanged(code: String) {
+        setState {
+            copy(
+                code = code,
+                codeErrorVisible = false
+            ).validate()
         }
     }
 
-    private fun verifyEmail() {
+    override fun onConfirmClicked() {
         val currentSession = SessionHolder.getSession()
         if (currentSession.isDefaultSession()) {
             setEffect {
@@ -124,7 +117,7 @@ class RegistrationVerifyEmailViewModel(
         }
     }
 
-    private fun resendEmail() {
+    override fun onResendEmailClicked() {
         callApi(
             endState = { currentState },
             startState = { currentState },
