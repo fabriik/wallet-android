@@ -38,7 +38,7 @@ class PaymentMethodEventHandlerTest {
     }
 
     @Test
-    fun handleEvent_tryAgainClicked_callOnTryAgainClicked() {
+    fun handleEvent_paymentInstrumentSelected_callOnPaymentInstrumentSelected() {
         handler.handleEvent(PaymentMethodContract.Event.PaymentInstrumentSelected(paymentInstrument))
         verify(handler).onPaymentInstrumentSelected(paymentInstrument)
     }
