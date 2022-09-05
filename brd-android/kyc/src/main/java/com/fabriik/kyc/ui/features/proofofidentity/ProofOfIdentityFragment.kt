@@ -37,7 +37,7 @@ class ProofOfIdentityFragment : Fragment(),
             }
 
             toolbar.setDismissButtonClickListener {
-                viewModel.setEvent(ProofOfIdentityContract.Event.Dismiss)
+                viewModel.setEvent(ProofOfIdentityContract.Event.DismissClicked)
             }
 
             cvIdCard.setOnClickListener {

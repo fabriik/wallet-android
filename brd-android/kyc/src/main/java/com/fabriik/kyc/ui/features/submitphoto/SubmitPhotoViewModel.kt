@@ -17,7 +17,7 @@ class SubmitPhotoViewModel(
 
 ) : FabriikViewModel<SubmitPhotoContract.State, SubmitPhotoContract.Event, SubmitPhotoContract.Effect>(
     application, savedStateHandle
-) {
+), SubmitPhotoEventHandler {
 
     private val kycApi = KycApi.create(application.applicationContext)
     private lateinit var arguments: SubmitPhotoFragmentArgs
@@ -33,21 +33,19 @@ class SubmitPhotoViewModel(
         documentData = arguments.documentData
     )
 
-    override fun handleEvent(event: SubmitPhotoContract.Event) {
-        when (event) {
-            is SubmitPhotoContract.Event.BackClicked,
-            is SubmitPhotoContract.Event.RetakeClicked ->
-                setEffect { SubmitPhotoContract.Effect.Back }
-
-            is SubmitPhotoContract.Event.DismissClicked ->
-                setEffect { SubmitPhotoContract.Effect.Dismiss }
-
-            is SubmitPhotoContract.Event.ConfirmClicked ->
-                onConfirmClicked()
-        }
+    override fun onBackClicked() {
+        setEffect { SubmitPhotoContract.Effect.Back }
     }
 
-    private fun onConfirmClicked() {
+    override fun onRetakeClicked() {
+        setEffect { SubmitPhotoContract.Effect.Back }
+    }
+
+    override fun onDismissCLicked() {
+        setEffect { SubmitPhotoContract.Effect.Dismiss }
+    }
+
+    override fun onConfirmClicked() {
         val documentData = currentState.documentData.toMutableList()
         documentData.add(currentState.currentData)
 

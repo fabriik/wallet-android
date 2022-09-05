@@ -8,19 +8,18 @@ class PreValidationViewModel(
 
 ) : FabriikViewModel<PreValidationContract.State, PreValidationContract.Event, PreValidationContract.Effect>(
     application
-) {
+), PreValidationEventHandler {
     override fun createInitialState() = PreValidationContract.State
 
-    override fun handleEvent(event: PreValidationContract.Event) {
-        when (event) {
-            is PreValidationContract.Event.BackClicked ->
-                setEffect { PreValidationContract.Effect.Back }
+    override fun onBackClicked() {
+        setEffect { PreValidationContract.Effect.Back }
+    }
 
-            is PreValidationContract.Event.ConfirmClicked ->
-                setEffect { PreValidationContract.Effect.ProofOfIdentity }
+    override fun onConfirmClicked() {
+        setEffect { PreValidationContract.Effect.ProofOfIdentity }
+    }
 
-            is PreValidationContract.Event.DismissCLicked ->
-                setEffect { PreValidationContract.Effect.Dismiss }
-        }
+    override fun onDismissCLicked() {
+        setEffect { PreValidationContract.Effect.Dismiss }
     }
 }
