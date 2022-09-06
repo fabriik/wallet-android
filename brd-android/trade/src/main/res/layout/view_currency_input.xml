@@ -70,4 +70,14 @@
         app:layout_constraintStart_toEndOf="@+id/view_currency_selector"
         tools:ignore="HardcodedText" />
 
+    <View
+        android:id="@+id/view_selection_animated"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="@id/view_currency_selector"
+        app:layout_constraintEnd_toEndOf="@id/view_currency_selector"
+        app:layout_constraintStart_toStartOf="@id/view_currency_selector"
+        app:layout_constraintBottom_toBottomOf="@id/view_currency_selector"/>
+
 </merge>

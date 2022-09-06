@@ -1,10 +1,16 @@
 package com.fabriik.trade.ui.customview
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.drawable.BitmapDrawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.isGone
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import com.breadwallet.ext.isZero
 import com.fabriik.common.utils.*
 import com.fabriik.trade.R
@@ -94,7 +100,22 @@ class CurrencyInputView @JvmOverloads constructor(
         }
     }
 
-    fun getSelectionView(): View = binding.viewCurrencySelector
+    fun getSelectionAnimatedView(): View = binding.viewSelectionAnimated
+
+    fun prepareForAnimation() {
+        val bitmap = Bitmap.createBitmap(binding.viewCurrencySelector.width, binding.viewCurrencySelector.height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        binding.viewCurrencySelector.draw(canvas)
+        binding.viewSelectionAnimated.background = BitmapDrawable(resources, bitmap)
+
+        binding.viewCurrencySelector.isInvisible = true
+        binding.viewSelectionAnimated.isVisible = true
+    }
+
+    fun resetAnimation() {
+        binding.viewCurrencySelector.isVisible = true
+        binding.viewSelectionAnimated.isGone = true
+    }
 
     fun getAnimatedViews() : List<View> = listOf(
         binding.tvTitle, binding.tvFiatCurrency, binding.etFiatAmount, binding.etCryptoAmount

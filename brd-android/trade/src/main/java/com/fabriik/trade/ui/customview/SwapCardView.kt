@@ -3,12 +3,16 @@ package com.fabriik.trade.ui.customview
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.drawable.BitmapDrawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.TranslateAnimation
 import androidx.core.view.isVisible
+import androidx.core.view.postDelayed
 import com.breadwallet.breadbox.formatCryptoForUi
 import com.breadwallet.tools.util.Utils
 import com.breadwallet.util.formatFiatForUi
@@ -153,25 +157,30 @@ class SwapCardView @JvmOverloads constructor(
     }
 
     fun startReplaceAnimation(replaceAnimationCompleted: () -> Unit) {
-        val sourceSelectionView = binding.viewInputSellingCurrency.getSelectionView()
+        val sourceSelectionView = binding.viewInputSellingCurrency.getSelectionAnimatedView()
         val sourceSelectionViewPosition = IntArray(2)
         sourceSelectionView.getLocationOnScreen(sourceSelectionViewPosition)
 
-        val destinationSelectionView = binding.viewInputBuyingCurrency.getSelectionView()
+        val destinationSelectionView = binding.viewInputBuyingCurrency.getSelectionAnimatedView()
         val destinationSelectionViewPosition = IntArray(2)
         destinationSelectionView.getLocationOnScreen(destinationSelectionViewPosition)
 
         val diffY = (destinationSelectionViewPosition[1] - sourceSelectionViewPosition[1]).toFloat()
 
+        binding.viewInputBuyingCurrency.prepareForAnimation()
+        binding.viewInputSellingCurrency.prepareForAnimation()
+
         sourceSelectionView.startAnimation(
             TranslateAnimation(0f, 0f, 0f, diffY).apply {
                 duration = REPLACE_CURRENCIES_DURATION
+                fillAfter = true
             }
         )
 
         destinationSelectionView.startAnimation(
             TranslateAnimation(0f, 0f, 0f, -diffY).apply {
                 duration = REPLACE_CURRENCIES_DURATION
+                fillAfter = true
                 setAnimationListener(object : Animation.AnimationListener {
                     override fun onAnimationStart(animation: Animation?) {}
 
@@ -179,6 +188,11 @@ class SwapCardView @JvmOverloads constructor(
 
                     override fun onAnimationEnd(animation: Animation?) {
                         replaceAnimationCompleted()
+
+                        binding.root.postDelayed(100) {
+                            binding.viewInputBuyingCurrency.resetAnimation()
+                            binding.viewInputSellingCurrency.resetAnimation()
+                        }
                     }
                 })
             }
