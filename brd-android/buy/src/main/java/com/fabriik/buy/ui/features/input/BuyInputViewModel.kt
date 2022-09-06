@@ -13,7 +13,6 @@ import com.fabriik.common.data.model.PaymentInstrument
 import com.fabriik.common.data.Status
 import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.common.utils.getString
-import com.fabriik.trade.utils.EstimateSwapFee
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -21,7 +20,6 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
 import org.kodein.di.erased.instance
 import java.math.BigDecimal
-import java.math.RoundingMode
 
 class BuyInputViewModel(
     application: Application
