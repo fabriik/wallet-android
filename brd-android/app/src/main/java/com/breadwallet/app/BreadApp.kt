@@ -74,7 +74,6 @@ import com.checkout.android_sdk.CheckoutAPIClient
 import com.checkout.android_sdk.Utils.Environment
 import com.fabriik.buy.data.BuyApi
 import com.fabriik.buy.data.BuyApiInterceptor
-import com.fabriik.buy.utils.EstimateBuyFee
 import com.fabriik.common.data.FabriikApiConstants
 import com.fabriik.common.utils.adapter.BigDecimalAdapter
 import com.fabriik.common.utils.adapter.CalendarJsonAdapter
@@ -86,7 +85,9 @@ import com.fabriik.trade.data.SwapApi
 import com.fabriik.trade.data.SwapApiInterceptor
 import com.fabriik.trade.data.SwapTransactionsFetcher
 import com.fabriik.trade.data.SwapTransactionsRepository
-import com.fabriik.trade.utils.EstimateSwapFee
+import com.fabriik.trade.utils.CreateFeeAmountData
+import com.fabriik.trade.utils.EstimateReceivingFee
+import com.fabriik.trade.utils.EstimateSendingFee
 import com.platform.APIClient
 import com.platform.HTTPServer
 import com.platform.interfaces.KVStoreProvider
@@ -517,12 +518,16 @@ class BreadApp : Application(), KodeinAware, CameraXConfig.Provider {
             BakersApiClient.create(instance())
         }
 
-        bind<EstimateBuyFee>() with singleton {
-            EstimateBuyFee(instance())
+        bind<EstimateReceivingFee>() with singleton {
+            EstimateReceivingFee(instance())
         }
 
-        bind<EstimateSwapFee>() with singleton {
-            EstimateSwapFee(instance(), instance(), instance())
+        bind<EstimateSendingFee>() with singleton {
+            EstimateSendingFee(instance())
+        }
+
+        bind<CreateFeeAmountData>() with singleton {
+            CreateFeeAmountData(instance())
         }
     }
 

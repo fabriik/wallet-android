@@ -3,13 +3,16 @@ package com.fabriik.trade.ui.features.swap
 import com.breadwallet.repository.RatesRepository
 import com.breadwallet.util.isErc20
 import com.fabriik.trade.data.model.FeeAmountData
-import com.fabriik.trade.utils.EstimateSwapFee
+import com.fabriik.trade.data.response.QuoteResponse
+import com.fabriik.trade.utils.EstimateReceivingFee
+import com.fabriik.trade.utils.EstimateSendingFee
 import java.math.BigDecimal
 import java.math.RoundingMode
 
 class AmountConverter(
     private val ratesRepository: RatesRepository,
-    private val estimateFee: EstimateSwapFee,
+    private val estimateSendingFee: EstimateSendingFee,
+    private val estimateReceivingSwapFee: EstimateReceivingFee,
     private val fiatCurrency: String
 ) {
 
@@ -25,21 +28,21 @@ class AmountConverter(
         cryptoAmount = amount
     )?: BigDecimal.ZERO
 
-    suspend fun convertSourceCryptoToDestinationCrypto(
+    fun convertSourceCryptoToDestinationCrypto(
         amount: BigDecimal,
         sourceCurrency: String,
         destinationCurrency: String,
-        rate: BigDecimal,
-        sendingFeeRate: BigDecimal,
-        receivingFeeRate: BigDecimal
+        quoteResponse: QuoteResponse
     ): Triple<FeeAmountData?, FeeAmountData?, BigDecimal> {
-        val sourceFee = estimateFee(amount, sourceCurrency, fiatCurrency)
+        val receivingFeeRate = requireNotNull(quoteResponse.toFeeCurrency).rate
+
+        val sourceFee = estimateSendingFee(quoteResponse, amount, sourceCurrency, fiatCurrency)
         val sourceAmount =
             if (sourceFee?.isFeeInWalletCurrency == true) amount - sourceFee.cryptoAmount else amount
 
-        val convertedAmount = sourceAmount.multiply(rate)
+        val convertedAmount = sourceAmount.multiply(quoteResponse.exchangeRate)
 
-        val destFee = estimateFee(convertedAmount, destinationCurrency, fiatCurrency)
+        val destFee = estimateReceivingSwapFee(quoteResponse, convertedAmount, destinationCurrency, fiatCurrency)
 
         return when {
             // subtract receiving fee from amount if it should be included into calculations (bsv, btc, eth, ...)
@@ -58,15 +61,15 @@ class AmountConverter(
         }
     }
 
-    suspend fun convertDestinationCryptoToSourceCrypto(
+    fun convertDestinationCryptoToSourceCrypto(
         amount: BigDecimal,
         sourceCurrency: String,
         destinationCurrency: String,
-        rate: BigDecimal,
-        sendingFeeRate: BigDecimal,
-        receivingFeeRate: BigDecimal
+        quoteResponse: QuoteResponse
     ): Triple<FeeAmountData?, FeeAmountData?, BigDecimal> {
-        val destFee = estimateFee(amount, destinationCurrency, fiatCurrency)
+        val receivingFeeRate = requireNotNull(quoteResponse.toFeeCurrency).rate
+
+        val destFee = estimateReceivingSwapFee(quoteResponse, amount, destinationCurrency, fiatCurrency)
         val destAmount = when {
             // add receiving fee to amount if it should be included into calculations (bsv, btc, eth, ...)
             destFee?.isFeeInWalletCurrency == true ->
@@ -82,9 +85,9 @@ class AmountConverter(
             else -> amount
         }
 
-        val convertedAmount = destAmount.divide(rate, 20, RoundingMode.HALF_UP)
+        val convertedAmount = destAmount.divide(quoteResponse.exchangeRate, 20, RoundingMode.HALF_UP)
 
-        val sourceFee = estimateFee(convertedAmount, sourceCurrency, fiatCurrency)
+        val sourceFee = estimateSendingFee(quoteResponse, convertedAmount, sourceCurrency, fiatCurrency)
         val sourceAmount =
             if (sourceFee?.isFeeInWalletCurrency == true) convertedAmount + sourceFee.cryptoAmount else convertedAmount
 

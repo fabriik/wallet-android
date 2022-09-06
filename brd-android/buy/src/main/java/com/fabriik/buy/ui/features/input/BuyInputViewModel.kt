@@ -8,12 +8,11 @@ import com.breadwallet.tools.security.ProfileManager
 import com.breadwallet.tools.util.TokenUtil
 import com.fabriik.buy.R
 import com.fabriik.buy.data.BuyApi
-import com.fabriik.buy.utils.EstimateBuyFee
 import com.fabriik.common.data.model.PaymentInstrument
 import com.fabriik.common.data.Status
 import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.common.utils.getString
-import com.fabriik.trade.utils.EstimateSwapFee
+import com.fabriik.trade.utils.EstimateReceivingFee
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -21,7 +20,6 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
 import org.kodein.di.erased.instance
 import java.math.BigDecimal
-import java.math.RoundingMode
 
 class BuyInputViewModel(
     application: Application
@@ -32,7 +30,7 @@ class BuyInputViewModel(
     override val kodein by closestKodein { application }
 
     private val buyApi by kodein.instance<BuyApi>()
-    private val estimateFee by kodein.instance<EstimateBuyFee>()
+    private val estimateFee by kodein.instance<EstimateReceivingFee>()
     private val profileManager by kodein.instance<ProfileManager>()
     private val metaDataManager by kodein.instance<AccountMetaDataProvider>()
 

@@ -55,7 +55,7 @@ class SwapInputViewModel(
     )
 
     private val amountConverter = AmountConverter(
-        direct.instance(), direct.instance(), currentFiatCurrency
+        direct.instance(), direct.instance(), direct.instance(), currentFiatCurrency
     )
 
     private val convertSourceFiatAmount = ConvertSourceFiatAmount(amountConverter)
@@ -477,36 +477,35 @@ class SwapInputViewModel(
         changeByUser: Boolean,
     ) {
         val state = currentLoadedState ?: return
+        state.quoteResponse ?: return
+
+        val result = converter(
+            amount = amount,
+            changeByUser = changeByUser,
+            quoteResponse = state.quoteResponse,
+            sourceCurrency = state.sourceCryptoCurrency,
+            destinationCurrency = state.destinationCryptoCurrency
+        )
+
+        setState {
+            state.copy(
+                sourceFiatAmount = result.sourceFiatAmount,
+                sourceCryptoAmount = result.sourceCryptoAmount,
+                destinationFiatAmount = result.destinationFiatAmount,
+                destinationCryptoAmount = result.destinationCryptoAmount,
+                sendingNetworkFee = result.sourceNetworkFee,
+                receivingNetworkFee = result.destinationNetworkFee
+            ).validateAmounts()
+        }
+
+        updateAmounts(
+            sourceFiatAmountChangedByUser = result.sourceFiatAmountChangedByUser,
+            sourceCryptoAmountChangedByUser = result.sourceCryptoAmountChangedByUser,
+            destinationFiatAmountChangedByUser = result.destinationFiatAmountChangedByUser,
+            destinationCryptoAmountChangedByUser = result.destinationCryptoAmountChangedByUser,
+        )
 
         viewModelScope.launch(Dispatchers.IO) {
-            val result = converter(
-                amount = amount,
-                changeByUser = changeByUser,
-                exchangeRate = state.rate,
-                sourceCurrency = state.sourceCryptoCurrency,
-                destinationCurrency = state.destinationCryptoCurrency,
-                sendingFeeRate = state.sendingNetworkFeeRate,
-                receivingFeeRate = state.receivingNetworkFeeRate
-            )
-
-            setState {
-                state.copy(
-                    sourceFiatAmount = result.sourceFiatAmount,
-                    sourceCryptoAmount = result.sourceCryptoAmount,
-                    destinationFiatAmount = result.destinationFiatAmount,
-                    destinationCryptoAmount = result.destinationCryptoAmount,
-                    sendingNetworkFee = result.sourceNetworkFee,
-                    receivingNetworkFee = result.destinationNetworkFee
-                ).validateAmounts()
-            }
-
-            updateAmounts(
-                sourceFiatAmountChangedByUser = result.sourceFiatAmountChangedByUser,
-                sourceCryptoAmountChangedByUser = result.sourceCryptoAmountChangedByUser,
-                destinationFiatAmountChangedByUser = result.destinationFiatAmountChangedByUser,
-                destinationCryptoAmountChangedByUser = result.destinationCryptoAmountChangedByUser,
-            )
-
             checkEthFeeBalance(
                 sourceFeeData = result.sourceNetworkFee,
                 destinationFeeData = result.destinationNetworkFee,
