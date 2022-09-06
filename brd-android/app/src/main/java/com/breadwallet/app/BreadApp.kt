@@ -74,6 +74,7 @@ import com.checkout.android_sdk.CheckoutAPIClient
 import com.checkout.android_sdk.Utils.Environment
 import com.fabriik.buy.data.BuyApi
 import com.fabriik.buy.data.BuyApiInterceptor
+import com.fabriik.buy.utils.EstimateReceivingFee
 import com.fabriik.common.data.FabriikApiConstants
 import com.fabriik.common.utils.adapter.BigDecimalAdapter
 import com.fabriik.common.utils.adapter.CalendarJsonAdapter
@@ -521,13 +522,17 @@ class BreadApp : Application(), KodeinAware, CameraXConfig.Provider {
         bind<EstimateReceivingFee>() with singleton {
             EstimateReceivingFee(instance())
         }
-
+        
         bind<EstimateSendingFee>() with singleton {
             EstimateSendingFee(instance())
         }
 
         bind<CreateFeeAmountData>() with singleton {
             CreateFeeAmountData(instance())
+        }
+        
+        bind<EstimateSwapFee>() with singleton {
+            EstimateSwapFee(instance(), instance(), instance())
         }
     }
 
