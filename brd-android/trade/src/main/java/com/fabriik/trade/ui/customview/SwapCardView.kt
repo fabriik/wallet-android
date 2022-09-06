@@ -189,7 +189,7 @@ class SwapCardView @JvmOverloads constructor(
                     override fun onAnimationEnd(animation: Animation?) {
                         replaceAnimationCompleted()
 
-                        binding.root.postDelayed(100) {
+                        binding.root.postDelayed(200) {
                             binding.viewInputBuyingCurrency.resetAnimation()
                             binding.viewInputSellingCurrency.resetAnimation()
                         }
