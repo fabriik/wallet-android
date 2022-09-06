@@ -8,7 +8,7 @@ import com.breadwallet.tools.security.ProfileManager
 import com.breadwallet.tools.util.TokenUtil
 import com.fabriik.buy.R
 import com.fabriik.buy.data.BuyApi
-import com.fabriik.buy.utils.EstimateBuyFee
+import com.fabriik.buy.utils.EstimateReceivingFee
 import com.fabriik.common.data.model.PaymentInstrument
 import com.fabriik.common.data.Status
 import com.fabriik.common.ui.base.FabriikViewModel
@@ -32,7 +32,7 @@ class BuyInputViewModel(
     override val kodein by closestKodein { application }
 
     private val buyApi by kodein.instance<BuyApi>()
-    private val estimateFee by kodein.instance<EstimateBuyFee>()
+    private val estimateFee by kodein.instance<EstimateReceivingFee>()
     private val profileManager by kodein.instance<ProfileManager>()
     private val metaDataManager by kodein.instance<AccountMetaDataProvider>()
 

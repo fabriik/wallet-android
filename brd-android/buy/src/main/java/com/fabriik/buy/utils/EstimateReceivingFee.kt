@@ -6,7 +6,7 @@ import com.fabriik.trade.data.model.FeeAmountData
 import com.fabriik.trade.data.response.QuoteResponse
 import java.math.BigDecimal
 
-class EstimateBuyFee(
+class EstimateReceivingFee(
     private val ratesRepository: RatesRepository
 ) {
 
