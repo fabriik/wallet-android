@@ -506,36 +506,24 @@ class SwapInputViewModel(
                 destinationCryptoAmountChangedByUser = result.destinationCryptoAmountChangedByUser,
             )
 
-            checkEthFeeBalance(
-                sourceFeeData = result.sourceNetworkFee,
-                destinationFeeData = result.destinationNetworkFee,
-            )
+            checkEthFeeBalance(result.sourceNetworkFee)
         }
     }
 
-    private suspend fun checkEthFeeBalance(
-        sourceFeeData: FeeAmountData?,
-        destinationFeeData: FeeAmountData?,
-    ) {
+    private suspend fun checkEthFeeBalance(sourceFeeData: FeeAmountData?) {
         val sourceFeeEthAmount = when {
             sourceFeeData != null && !sourceFeeData.isFeeInWalletCurrency -> sourceFeeData.cryptoAmount
             else -> BigDecimal.ZERO
         }
 
-        val destinationFeeEthAmount = when {
-            destinationFeeData != null && !destinationFeeData.isFeeInWalletCurrency -> destinationFeeData.cryptoAmount
-            else -> BigDecimal.ZERO
-        }
-
-        val ethSumFee = sourceFeeEthAmount + destinationFeeEthAmount
-        if (ethSumFee.isZero()) {
+        if (sourceFeeEthAmount.isZero()) {
             ethErrorSeen = false
             ethWarningSeen = false
             return
         }
 
         val ethBalance = helper.loadCryptoBalance("ETH") ?: BigDecimal.ZERO
-        if (ethBalance < ethSumFee && !ethErrorSeen) {
+        if (ethBalance < sourceFeeEthAmount && !ethErrorSeen) {
             ethErrorSeen = true
             ethWarningSeen = false
 
