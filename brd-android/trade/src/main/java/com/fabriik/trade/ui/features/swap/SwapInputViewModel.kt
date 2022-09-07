@@ -512,7 +512,7 @@ class SwapInputViewModel(
 
     private suspend fun checkEthFeeBalance(sourceFeeData: FeeAmountData?) {
         val sourceFeeEthAmount = when {
-            sourceFeeData != null && !sourceFeeData.isFeeInWalletCurrency -> sourceFeeData.cryptoAmount
+            sourceFeeData != null && sourceFeeData.cryptoCurrency.equals("eth", true) -> sourceFeeData.cryptoAmount
             else -> BigDecimal.ZERO
         }
 
