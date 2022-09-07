@@ -12,7 +12,7 @@ import java.math.RoundingMode
 class AmountConverter(
     private val ratesRepository: RatesRepository,
     private val estimateSendingFee: EstimateSendingFee,
-    private val estimateReceivingSwapFee: EstimateReceivingFee,
+    private val estimateReceivingFee: EstimateReceivingFee,
     private val fiatCurrency: String
 ) {
 
@@ -42,7 +42,7 @@ class AmountConverter(
 
         val convertedAmount = sourceAmount.multiply(quoteResponse.exchangeRate)
 
-        val destFee = estimateReceivingSwapFee(quoteResponse, convertedAmount, destinationCurrency, fiatCurrency)
+        val destFee = estimateReceivingFee(quoteResponse, convertedAmount, destinationCurrency, fiatCurrency)
 
         return when {
             // subtract receiving fee from amount if it should be included into calculations (bsv, btc, eth, ...)
@@ -69,7 +69,7 @@ class AmountConverter(
     ): Triple<FeeAmountData?, FeeAmountData?, BigDecimal> {
         val receivingFeeRate = requireNotNull(quoteResponse.toFeeCurrency).rate
 
-        val destFee = estimateReceivingSwapFee(quoteResponse, amount, destinationCurrency, fiatCurrency)
+        val destFee = estimateReceivingFee(quoteResponse, amount, destinationCurrency, fiatCurrency)
         val destAmount = when {
             // add receiving fee to amount if it should be included into calculations (bsv, btc, eth, ...)
             destFee?.isFeeInWalletCurrency == true ->
