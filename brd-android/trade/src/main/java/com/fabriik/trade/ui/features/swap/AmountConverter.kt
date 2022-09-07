@@ -28,7 +28,7 @@ class AmountConverter(
         cryptoAmount = amount
     )?: BigDecimal.ZERO
 
-    fun convertSourceCryptoToDestinationCrypto(
+    suspend fun convertSourceCryptoToDestinationCrypto(
         amount: BigDecimal,
         sourceCurrency: String,
         destinationCurrency: String,
@@ -36,7 +36,7 @@ class AmountConverter(
     ): Triple<FeeAmountData?, FeeAmountData?, BigDecimal> {
         val receivingFeeRate = requireNotNull(quoteResponse.toFeeCurrency).rate
 
-        val sourceFee = estimateSendingFee(quoteResponse, amount, sourceCurrency, fiatCurrency)
+        val sourceFee = estimateSendingFee(amount, sourceCurrency, fiatCurrency)
         val sourceAmount =
             if (sourceFee?.isFeeInWalletCurrency == true) amount - sourceFee.cryptoAmount else amount
 
@@ -61,7 +61,7 @@ class AmountConverter(
         }
     }
 
-    fun convertDestinationCryptoToSourceCrypto(
+    suspend fun convertDestinationCryptoToSourceCrypto(
         amount: BigDecimal,
         sourceCurrency: String,
         destinationCurrency: String,
@@ -87,7 +87,7 @@ class AmountConverter(
 
         val convertedAmount = destAmount.divide(quoteResponse.exchangeRate, 20, RoundingMode.HALF_UP)
 
-        val sourceFee = estimateSendingFee(quoteResponse, convertedAmount, sourceCurrency, fiatCurrency)
+        val sourceFee = estimateSendingFee(convertedAmount, sourceCurrency, fiatCurrency)
         val sourceAmount =
             if (sourceFee?.isFeeInWalletCurrency == true) convertedAmount + sourceFee.cryptoAmount else convertedAmount
 

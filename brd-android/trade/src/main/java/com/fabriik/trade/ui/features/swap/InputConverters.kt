@@ -5,7 +5,7 @@ import com.fabriik.trade.data.response.QuoteResponse
 import java.math.BigDecimal
 
 interface InputConverter {
-    operator fun invoke(
+    suspend operator fun invoke(
         amount: BigDecimal,
         changeByUser: Boolean,
         sourceCurrency: String,
@@ -28,7 +28,7 @@ interface InputConverter {
 }
 
 class ConvertSourceFiatAmount(private val amountConverter: AmountConverter) : InputConverter {
-    override fun invoke(
+    override suspend fun invoke(
         amount: BigDecimal,
         changeByUser: Boolean,
         sourceCurrency: String,
@@ -70,7 +70,7 @@ class ConvertSourceFiatAmount(private val amountConverter: AmountConverter) : In
 }
 
 class ConvertSourceCryptoAmount(private val amountConverter: AmountConverter) : InputConverter {
-    override fun invoke(
+    override suspend fun invoke(
         amount: BigDecimal,
         changeByUser: Boolean,
         sourceCurrency: String,
@@ -112,7 +112,7 @@ class ConvertSourceCryptoAmount(private val amountConverter: AmountConverter) : 
 }
 
 class ConvertDestinationFiatAmount(private val amountConverter: AmountConverter) : InputConverter {
-    override fun invoke(
+    override suspend fun invoke(
         amount: BigDecimal,
         changeByUser: Boolean,
         sourceCurrency: String,
@@ -155,7 +155,7 @@ class ConvertDestinationFiatAmount(private val amountConverter: AmountConverter)
 
 class ConvertDestinationCryptoAmount(private val amountConverter: AmountConverter) :
     InputConverter {
-    override fun invoke(
+    override suspend fun invoke(
         amount: BigDecimal,
         changeByUser: Boolean,
         sourceCurrency: String,

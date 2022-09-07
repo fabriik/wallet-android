@@ -523,7 +523,7 @@ class BreadApp : Application(), KodeinAware, CameraXConfig.Provider {
         }
         
         bind<EstimateSendingFee>() with singleton {
-            EstimateSendingFee(instance())
+            EstimateSendingFee(instance(), instance())
         }
 
         bind<CreateFeeAmountData>() with singleton {
