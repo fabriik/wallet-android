@@ -74,7 +74,6 @@ import com.checkout.android_sdk.CheckoutAPIClient
 import com.checkout.android_sdk.Utils.Environment
 import com.fabriik.buy.data.BuyApi
 import com.fabriik.buy.data.BuyApiInterceptor
-import com.fabriik.buy.utils.EstimateReceivingFee
 import com.fabriik.common.data.FabriikApiConstants
 import com.fabriik.common.utils.adapter.BigDecimalAdapter
 import com.fabriik.common.utils.adapter.CalendarJsonAdapter
@@ -530,10 +529,6 @@ class BreadApp : Application(), KodeinAware, CameraXConfig.Provider {
         bind<CreateFeeAmountData>() with singleton {
             CreateFeeAmountData(instance())
         }
-        
-        bind<EstimateSwapFee>() with singleton {
-            EstimateSwapFee(instance(), instance(), instance())
-        }
     }
 
     private var accountLockJob: Job? = null
@@ -546,7 +541,7 @@ class BreadApp : Application(), KodeinAware, CameraXConfig.Provider {
     private val conversionTracker by instance<ConversionTracker>()
     private val swapTransactionsFetcher by instance<SwapTransactionsFetcher>()
     private val connectivityStateProvider by instance<ConnectivityStateProvider>()
-    private val CHANNEL = "kyc-platform-channels"
+
     override fun onCreate() {
         super.onCreate()
         installHooks()
