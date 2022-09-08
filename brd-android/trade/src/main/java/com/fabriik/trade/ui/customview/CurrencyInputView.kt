@@ -84,7 +84,7 @@ class CurrencyInputView @JvmOverloads constructor(
     }
 
     fun setCryptoAmount(amount: BigDecimal, changeByUser: Boolean) {
-        val formatted = "%.5f".format(amount)
+        val formatted = "%.8f".format(amount)
         val text = binding.etCryptoAmount.text?.toString() ?: ""
 
         if (!changeByUser && amount.isZero()) {
