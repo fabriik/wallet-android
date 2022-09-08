@@ -517,23 +517,17 @@ class SwapInputViewModel(
         when (sourceFeeData) {
             is EstimateSendingFee.Result.Unknown -> {} //do nothing
             is EstimateSendingFee.Result.NetworkIssues ->
-                setEffect {
-                    SwapInputContract.Effect.ShowToast(
-                        getString(R.string.Swap_Input_Error_Network)
-                    )
-                }
-
+                showSwapError(SwapInputContract.ErrorMessage.NetworkIssues)
             is EstimateSendingFee.Result.InsufficientFunds ->
-                setEffect {
-                    SwapInputContract.Effect.ShowError(
-                        if (sourceFeeData.currencyCode.isErc20()) {
-                            getString(R.string.Swap_Input_Error_EthFeeBalance)
-                        } else {
-                            val currencyCode = sourceFeeData.currencyCode.toUpperCase(Locale.ROOT)
-                            getString(R.string.Swap_Input_Error_InsuficientFunds, currencyCode, currencyCode, currentLoadedState?.sourceCryptoBalance?.formatCryptoForUi(null))
-                        }
-                    )
-                }
+                showSwapError(
+                    if (sourceFeeData.currencyCode.isErc20()) {
+                        SwapInputContract.ErrorMessage.InsufficientEthFundsForFee
+                    } else {
+                        SwapInputContract.ErrorMessage.InsufficientFunds(
+                            requireNotNull(currentLoadedState?.sourceCryptoBalance), sourceFeeData.currencyCode
+                        )
+                    }
+                )
 
             is EstimateSendingFee.Result.Estimated -> {
                 val sourceFeeEthAmount = when {
@@ -551,12 +545,7 @@ class SwapInputViewModel(
                 if (ethBalance < sourceFeeEthAmount && !ethErrorSeen) {
                     ethErrorSeen = true
                     ethWarningSeen = false
-
-                    setEffect {
-                        SwapInputContract.Effect.ShowError(
-                            getString(R.string.Swap_Input_Error_EthFeeBalance),
-                        )
-                    }
+                    showSwapError(SwapInputContract.ErrorMessage.InsufficientEthFundsForFee)
                 } else if (ethBalance > BigDecimal.ZERO && !ethWarningSeen) {
                     ethErrorSeen = false
                     ethWarningSeen = true
