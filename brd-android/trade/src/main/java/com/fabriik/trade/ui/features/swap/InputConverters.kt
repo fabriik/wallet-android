@@ -17,7 +17,7 @@ interface InputConverter {
     data class Result(
         val sourceFiatAmount: BigDecimal,
         val sourceCryptoAmount: BigDecimal,
-        val sourceNetworkFee: EstimateSendingFee.EstimationResult,
+        val sourceNetworkFee: EstimateSendingFee.Result,
         val destinationFiatAmount: BigDecimal,
         val destinationCryptoAmount: BigDecimal,
         val destinationNetworkFee: FeeAmountData?,

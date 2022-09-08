@@ -24,7 +24,6 @@ import com.fabriik.common.utils.getString
 import com.fabriik.trade.R
 import com.fabriik.trade.data.SwapApi
 import com.fabriik.trade.data.model.AmountData
-import com.fabriik.trade.data.model.FeeAmountData
 import com.fabriik.trade.data.response.CreateSwapOrderResponse
 import com.fabriik.trade.utils.EstimateSendingFee
 import kotlinx.coroutines.Dispatchers
@@ -128,7 +127,7 @@ class SwapInputViewModel(
                     sourceCryptoAmount = BigDecimal.ZERO,
                     destinationFiatAmount = BigDecimal.ZERO,
                     destinationCryptoAmount = BigDecimal.ZERO,
-                    sendingNetworkFee = null,
+                    sendingNetworkFee = EstimateSendingFee.Result.Unknown,
                     receivingNetworkFee = null
                 )
             }
@@ -166,7 +165,7 @@ class SwapInputViewModel(
                 sourceCryptoAmount = BigDecimal.ZERO,
                 destinationFiatAmount = BigDecimal.ZERO,
                 destinationCryptoAmount = BigDecimal.ZERO,
-                sendingNetworkFee = null,
+                sendingNetworkFee = EstimateSendingFee.Result.Unknown,
                 receivingNetworkFee = null
             )
         }
@@ -202,7 +201,7 @@ class SwapInputViewModel(
                     sourceCryptoBalance = balance,
                     sourceCryptoCurrency = currentData.destinationCryptoCurrency,
                     destinationCryptoCurrency = currentData.sourceCryptoCurrency,
-                    sendingNetworkFee = null,
+                    sendingNetworkFee = EstimateSendingFee.Result.Unknown,
                     receivingNetworkFee = null,
                 )
 
@@ -239,7 +238,7 @@ class SwapInputViewModel(
         setState {
             state.copy(
                 quoteResponse = null,
-                sendingNetworkFee = null,
+                sendingNetworkFee = EstimateSendingFee.Result.Unknown,
                 receivingNetworkFee = null,
                 sourceFiatAmount = BigDecimal.ZERO,
                 sourceCryptoAmount = BigDecimal.ZERO,
@@ -514,17 +513,17 @@ class SwapInputViewModel(
         }
     }
 
-    private suspend fun checkEthFeeBalance(sourceFeeData: EstimateSendingFee.EstimationResult) {
+    private suspend fun checkEthFeeBalance(sourceFeeData: EstimateSendingFee.Result) {
         when (sourceFeeData) {
-            is EstimateSendingFee.EstimationResult.Skipped -> {} //do nothing
-            is EstimateSendingFee.EstimationResult.NetworkIssues ->
+            is EstimateSendingFee.Result.Unknown -> {} //do nothing
+            is EstimateSendingFee.Result.NetworkIssues ->
                 setEffect {
                     SwapInputContract.Effect.ShowToast(
                         getString(R.string.Swap_Input_Error_Network)
                     )
                 }
 
-            is EstimateSendingFee.EstimationResult.InsufficientFunds ->
+            is EstimateSendingFee.Result.InsufficientFunds ->
                 setEffect {
                     SwapInputContract.Effect.ShowError(
                         if (sourceFeeData.currencyCode.isErc20()) {
@@ -536,7 +535,7 @@ class SwapInputViewModel(
                     )
                 }
 
-            is EstimateSendingFee.EstimationResult.Estimated -> {
+            is EstimateSendingFee.Result.Estimated -> {
                 val sourceFeeEthAmount = when {
                     sourceFeeData.data.cryptoCurrency.equals("eth", true) -> sourceFeeData.data.cryptoAmount
                     else -> BigDecimal.ZERO
@@ -603,7 +602,7 @@ class SwapInputViewModel(
             cryptoCurrency = state.sourceCryptoCurrency
         )
 
-        val sendingFee = state.sendingNetworkFee as EstimateSendingFee.EstimationResult.Estimated
+        val sendingFee = state.sendingNetworkFee as EstimateSendingFee.Result.Estimated
 
         setEffect {
             SwapInputContract.Effect.ConfirmDialog(
@@ -773,11 +772,9 @@ class SwapInputViewModel(
     }
 
     private fun validate(state: SwapInputContract.State.Loaded) = when {
-        state.sendingNetworkFee == null || state.receivingNetworkFee == null ->
-            SwapInputContract.ErrorMessage.NetworkIssues
-        state.sendingNetworkFee is EstimateSendingFee.EstimationResult.InsufficientFunds ->
+        state.sendingNetworkFee is EstimateSendingFee.Result.InsufficientFunds ->
             SwapInputContract.ErrorMessage.InsufficientFunds(state.sourceCryptoBalance, state.sourceCryptoCurrency)
-        state.sendingNetworkFee !is EstimateSendingFee.EstimationResult.Estimated ->
+        state.sendingNetworkFee !is EstimateSendingFee.Result.Estimated || state.receivingNetworkFee == null ->
             SwapInputContract.ErrorMessage.NetworkIssues
         state.sourceCryptoBalance < state.sourceCryptoAmount ->
             SwapInputContract.ErrorMessage.InsufficientFunds(state.sourceCryptoBalance, state.sourceCryptoCurrency)

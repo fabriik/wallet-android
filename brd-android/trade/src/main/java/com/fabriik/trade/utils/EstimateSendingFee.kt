@@ -17,9 +17,9 @@ class EstimateSendingFee(
     private val createFeeAmountData: CreateFeeAmountData
 ) {
 
-    suspend operator fun invoke(amount: BigDecimal, walletCurrency: String, fiatCode: String): EstimationResult {
+    suspend operator fun invoke(amount: BigDecimal, walletCurrency: String, fiatCode: String): Result {
         if (amount.isZero()) {
-            return EstimationResult.Skipped
+            return Result.Unknown
         }
 
         val wallet = breadBox.wallet(walletCurrency).first()
@@ -29,9 +29,9 @@ class EstimateSendingFee(
         )
     }
 
-    private suspend fun loadFeeFromWalletKit(wallet: Wallet, cryptoAmount: BigDecimal, walletCurrency: String, fiatCode: String): EstimationResult {
+    private suspend fun loadFeeFromWalletKit(wallet: Wallet, cryptoAmount: BigDecimal, walletCurrency: String, fiatCode: String): Result {
         val amount = Amount.create(cryptoAmount.toDouble(), wallet.unit)
-        val address = loadAddress(wallet.currency.code) ?: return EstimationResult.NetworkIssues
+        val address = loadAddress(wallet.currency.code) ?: return Result.NetworkIssues
         val networkFee = wallet.feeForSpeed(TransferSpeed.Priority(walletCurrency))
 
         return try {
@@ -47,14 +47,14 @@ class EstimateSendingFee(
             )
 
             if (amountData == null) {
-                EstimationResult.NetworkIssues
+                Result.NetworkIssues
             } else {
-                EstimationResult.Estimated(amountData)
+                Result.Estimated(amountData)
             }
         } catch (e: FeeEstimationError) {
-            EstimationResult.InsufficientFunds(walletCurrency)
+            Result.InsufficientFunds(walletCurrency)
         } catch (e: IllegalStateException) {
-            EstimationResult.NetworkIssues
+            Result.NetworkIssues
         }
     }
 
@@ -77,11 +77,11 @@ class EstimateSendingFee(
         }
     }
 
-    sealed class EstimationResult {
-        object Skipped: EstimationResult()
-        object NetworkIssues: EstimationResult()
-        class InsufficientFunds(val currencyCode: String): EstimationResult()
-        class Estimated(val data: FeeAmountData): EstimationResult() {
+    sealed class Result {
+        object Unknown: Result()
+        object NetworkIssues: Result()
+        class InsufficientFunds(val currencyCode: String): Result()
+        class Estimated(val data: FeeAmountData): Result() {
             fun cryptoAmountIfIncludedOrZero() = data.cryptoAmountIfIncludedOrZero()
         }
     }

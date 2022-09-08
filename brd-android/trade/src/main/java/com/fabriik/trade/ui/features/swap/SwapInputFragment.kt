@@ -16,7 +16,6 @@ import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.breadwallet.breadbox.formatCryptoForUi
 import com.breadwallet.tools.util.Utils.hideKeyboard
-import com.fabriik.common.ui.customview.FabriikSwitch
 import com.fabriik.common.ui.dialog.FabriikGenericDialog
 import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.trade.ui.customview.SwapCardView
@@ -325,7 +324,7 @@ class SwapInputFragment : Fragment(),
             cvSwap.setInputFieldsEnabled(state.quoteResponse != null)
             cvSwap.setSendingNetworkFee(
                 when (state.sendingNetworkFee) {
-                    is EstimateSendingFee.EstimationResult.Estimated -> state.sendingNetworkFee.data
+                    is EstimateSendingFee.Result.Estimated -> state.sendingNetworkFee.data
                     else -> null
                 }
             )

@@ -33,12 +33,12 @@ class AmountConverter(
         sourceCurrency: String,
         destinationCurrency: String,
         quoteResponse: QuoteResponse
-    ): Triple<EstimateSendingFee.EstimationResult, FeeAmountData?, BigDecimal> {
+    ): Triple<EstimateSendingFee.Result, FeeAmountData?, BigDecimal> {
         val receivingFeeRate = requireNotNull(quoteResponse.toFeeCurrency).rate
 
         val sourceFeeResult = estimateSendingFee(amount, sourceCurrency, fiatCurrency)
         val sourceFee = when(sourceFeeResult) {
-            is EstimateSendingFee.EstimationResult.Estimated -> sourceFeeResult.data
+            is EstimateSendingFee.Result.Estimated -> sourceFeeResult.data
             else -> null
         }
 
@@ -71,7 +71,7 @@ class AmountConverter(
         sourceCurrency: String,
         destinationCurrency: String,
         quoteResponse: QuoteResponse
-    ): Triple<EstimateSendingFee.EstimationResult, FeeAmountData?, BigDecimal> {
+    ): Triple<EstimateSendingFee.Result, FeeAmountData?, BigDecimal> {
         val receivingFeeRate = requireNotNull(quoteResponse.toFeeCurrency).rate
 
         val destFee = estimateReceivingFee(quoteResponse, amount, destinationCurrency, fiatCurrency)
@@ -94,7 +94,7 @@ class AmountConverter(
 
         val sourceFeeResult = estimateSendingFee(convertedAmount, sourceCurrency, fiatCurrency)
         val sourceFee = when(sourceFeeResult) {
-            is EstimateSendingFee.EstimationResult.Estimated -> sourceFeeResult.data
+            is EstimateSendingFee.Result.Estimated -> sourceFeeResult.data
             else -> null
         }
         val sourceAmount =
