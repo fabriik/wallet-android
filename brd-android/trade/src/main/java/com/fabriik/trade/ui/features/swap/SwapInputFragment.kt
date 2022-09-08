@@ -23,6 +23,7 @@ import com.fabriik.trade.ui.customview.SwapCardView
 import com.fabriik.trade.ui.dialog.SwapConfirmationDialog
 import com.fabriik.trade.ui.features.assetselection.AssetSelectionFragment
 import com.fabriik.trade.ui.features.authentication.SwapAuthenticationViewModel
+import com.fabriik.trade.utils.EstimateSendingFee
 import java.math.BigDecimal
 import java.util.*
 
@@ -322,7 +323,12 @@ class SwapInputFragment : Fragment(),
             )
 
             cvSwap.setInputFieldsEnabled(state.quoteResponse != null)
-            cvSwap.setSendingNetworkFee(state.sendingNetworkFee)
+            cvSwap.setSendingNetworkFee(
+                when (state.sendingNetworkFee) {
+                    is EstimateSendingFee.EstimationResult.Estimated -> state.sendingNetworkFee.data
+                    else -> null
+                }
+            )
             cvSwap.setReceivingNetworkFee(state.receivingNetworkFee)
 
             btnConfirm.isEnabled = state.confirmButtonEnabled

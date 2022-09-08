@@ -1,11 +1,11 @@
 package com.fabriik.trade.utils
 
-import android.util.Log
 import com.breadwallet.breadbox.*
 import com.breadwallet.crypto.Address
 import com.breadwallet.crypto.AddressScheme
 import com.breadwallet.crypto.Amount
 import com.breadwallet.crypto.Wallet
+import com.breadwallet.crypto.errors.FeeEstimationError
 import com.breadwallet.ext.isZero
 import com.breadwallet.tools.manager.BRSharedPrefs
 import com.fabriik.trade.data.model.FeeAmountData
@@ -17,9 +17,9 @@ class EstimateSendingFee(
     private val createFeeAmountData: CreateFeeAmountData
 ) {
 
-    suspend operator fun invoke(amount: BigDecimal, walletCurrency: String, fiatCode: String) : FeeAmountData? {
+    suspend operator fun invoke(amount: BigDecimal, walletCurrency: String, fiatCode: String): EstimationResult {
         if (amount.isZero()) {
-            return null
+            return EstimationResult.Skipped
         }
 
         val wallet = breadBox.wallet(walletCurrency).first()
@@ -29,9 +29,9 @@ class EstimateSendingFee(
         )
     }
 
-    private suspend fun loadFeeFromWalletKit(wallet: Wallet, cryptoAmount: BigDecimal, walletCurrency: String, fiatCode: String) : FeeAmountData? {
+    private suspend fun loadFeeFromWalletKit(wallet: Wallet, cryptoAmount: BigDecimal, walletCurrency: String, fiatCode: String): EstimationResult {
         val amount = Amount.create(cryptoAmount.toDouble(), wallet.unit)
-        val address = loadAddress(wallet.currency.code) ?: return null
+        val address = loadAddress(wallet.currency.code) ?: return EstimationResult.NetworkIssues
         val networkFee = wallet.feeForSpeed(TransferSpeed.Priority(walletCurrency))
 
         return try {
@@ -39,15 +39,22 @@ class EstimateSendingFee(
             val fee = data.fee.toBigDecimal()
             val feeCurrency = data.currency.code
 
-            return createFeeAmountData(
+            val amountData = createFeeAmountData(
                 fee = fee,
                 feeCurrency = feeCurrency,
                 fiatCode = fiatCode,
                 walletCurrency = walletCurrency
             )
-        } catch (e: Exception) {
-            Log.d("AmountConverter", "Fee estimation failed: ${e.message}")
-            null
+
+            if (amountData == null) {
+                EstimationResult.NetworkIssues
+            } else {
+                EstimationResult.Estimated(amountData)
+            }
+        } catch (e: FeeEstimationError) {
+            EstimationResult.InsufficientFunds(walletCurrency)
+        } catch (e: IllegalStateException) {
+            EstimationResult.NetworkIssues
         }
     }
 
@@ -67,6 +74,15 @@ class EstimateSendingFee(
             )
         } else {
             wallet.target
+        }
+    }
+
+    sealed class EstimationResult {
+        object Skipped: EstimationResult()
+        object NetworkIssues: EstimationResult()
+        class InsufficientFunds(val currencyCode: String): EstimationResult()
+        class Estimated(val data: FeeAmountData): EstimationResult() {
+            fun cryptoAmountIfIncludedOrZero() = data.cryptoAmountIfIncludedOrZero()
         }
     }
 }

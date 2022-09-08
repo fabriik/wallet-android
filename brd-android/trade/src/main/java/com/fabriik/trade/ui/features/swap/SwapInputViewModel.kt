@@ -5,6 +5,7 @@ import android.security.keystore.UserNotAuthenticatedException
 import androidx.lifecycle.viewModelScope
 import com.breadwallet.breadbox.BreadBox
 import com.breadwallet.breadbox.addressFor
+import com.breadwallet.breadbox.formatCryptoForUi
 import com.breadwallet.crypto.Amount
 import com.breadwallet.crypto.Transfer
 import com.breadwallet.crypto.TransferFeeBasis
@@ -14,6 +15,7 @@ import com.breadwallet.tools.security.BrdUserManager
 import com.breadwallet.tools.security.ProfileManager
 import com.breadwallet.tools.util.bsv
 import com.breadwallet.tools.util.eth
+import com.breadwallet.util.isErc20
 import com.fabriik.common.data.Resource
 import com.fabriik.common.data.Status
 import com.fabriik.common.ui.base.FabriikViewModel
@@ -24,6 +26,7 @@ import com.fabriik.trade.data.SwapApi
 import com.fabriik.trade.data.model.AmountData
 import com.fabriik.trade.data.model.FeeAmountData
 import com.fabriik.trade.data.response.CreateSwapOrderResponse
+import com.fabriik.trade.utils.EstimateSendingFee
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -34,6 +37,7 @@ import org.kodein.di.android.closestKodein
 import org.kodein.di.direct
 import org.kodein.di.erased.instance
 import java.math.BigDecimal
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 class SwapInputViewModel(
@@ -198,8 +202,8 @@ class SwapInputViewModel(
                     sourceCryptoBalance = balance,
                     sourceCryptoCurrency = currentData.destinationCryptoCurrency,
                     destinationCryptoCurrency = currentData.sourceCryptoCurrency,
-                    sendingNetworkFee = currentData.receivingNetworkFee,
-                    receivingNetworkFee = currentData.sendingNetworkFee,
+                    sendingNetworkFee = null,
+                    receivingNetworkFee = null,
                 )
 
                 setEffect { SwapInputContract.Effect.CurrenciesReplaceAnimation(stateChange) }
@@ -510,36 +514,60 @@ class SwapInputViewModel(
         }
     }
 
-    private suspend fun checkEthFeeBalance(sourceFeeData: FeeAmountData?) {
-        val sourceFeeEthAmount = when {
-            sourceFeeData != null && sourceFeeData.cryptoCurrency.equals("eth", true) -> sourceFeeData.cryptoAmount
-            else -> BigDecimal.ZERO
-        }
+    private suspend fun checkEthFeeBalance(sourceFeeData: EstimateSendingFee.EstimationResult) {
+        when (sourceFeeData) {
+            is EstimateSendingFee.EstimationResult.Skipped -> {} //do nothing
+            is EstimateSendingFee.EstimationResult.NetworkIssues ->
+                setEffect {
+                    SwapInputContract.Effect.ShowToast(
+                        getString(R.string.Swap_Input_Error_Network)
+                    )
+                }
 
-        if (sourceFeeEthAmount.isZero()) {
-            ethErrorSeen = false
-            ethWarningSeen = false
-            return
-        }
+            is EstimateSendingFee.EstimationResult.InsufficientFunds ->
+                setEffect {
+                    SwapInputContract.Effect.ShowError(
+                        if (sourceFeeData.currencyCode.isErc20()) {
+                            getString(R.string.Swap_Input_Error_EthFeeBalance)
+                        } else {
+                            val currencyCode = sourceFeeData.currencyCode.toUpperCase(Locale.ROOT)
+                            getString(R.string.Swap_Input_Error_InsuficientFunds, currencyCode, currencyCode, currentLoadedState?.sourceCryptoBalance?.formatCryptoForUi(null))
+                        }
+                    )
+                }
 
-        val ethBalance = helper.loadCryptoBalance("ETH") ?: BigDecimal.ZERO
-        if (ethBalance < sourceFeeEthAmount && !ethErrorSeen) {
-            ethErrorSeen = true
-            ethWarningSeen = false
+            is EstimateSendingFee.EstimationResult.Estimated -> {
+                val sourceFeeEthAmount = when {
+                    sourceFeeData.data.cryptoCurrency.equals("eth", true) -> sourceFeeData.data.cryptoAmount
+                    else -> BigDecimal.ZERO
+                }
 
-            setEffect {
-                SwapInputContract.Effect.ShowError(
-                    getString(R.string.Swap_Input_Error_EthFeeBalance),
-                )
-            }
-        } else if (ethBalance > BigDecimal.ZERO && !ethWarningSeen) {
-            ethErrorSeen = false
-            ethWarningSeen = true
+                if (sourceFeeEthAmount.isZero()) {
+                    ethErrorSeen = false
+                    ethWarningSeen = false
+                    return
+                }
 
-            setEffect {
-                SwapInputContract.Effect.ShowToast(
-                    message = getString(R.string.Swap_Input_Warning_EthFeeBalance)
-                )
+                val ethBalance = helper.loadCryptoBalance("ETH") ?: BigDecimal.ZERO
+                if (ethBalance < sourceFeeEthAmount && !ethErrorSeen) {
+                    ethErrorSeen = true
+                    ethWarningSeen = false
+
+                    setEffect {
+                        SwapInputContract.Effect.ShowError(
+                            getString(R.string.Swap_Input_Error_EthFeeBalance),
+                        )
+                    }
+                } else if (ethBalance > BigDecimal.ZERO && !ethWarningSeen) {
+                    ethErrorSeen = false
+                    ethWarningSeen = true
+
+                    setEffect {
+                        SwapInputContract.Effect.ShowToast(
+                            message = getString(R.string.Swap_Input_Warning_EthFeeBalance)
+                        )
+                    }
+                }
             }
         }
     }
@@ -575,12 +603,14 @@ class SwapInputViewModel(
             cryptoCurrency = state.sourceCryptoCurrency
         )
 
+        val sendingFee = state.sendingNetworkFee as EstimateSendingFee.EstimationResult.Estimated
+
         setEffect {
             SwapInputContract.Effect.ConfirmDialog(
                 to = toAmount,
                 from = fromAmount,
                 rate = state.rate,
-                sendingFee = state.sendingNetworkFee!!,
+                sendingFee = sendingFee.data,
                 receivingFee = state.receivingNetworkFee!!,
             )
         }
@@ -745,14 +775,16 @@ class SwapInputViewModel(
     private fun validate(state: SwapInputContract.State.Loaded) = when {
         state.sendingNetworkFee == null || state.receivingNetworkFee == null ->
             SwapInputContract.ErrorMessage.NetworkIssues
+        state.sendingNetworkFee is EstimateSendingFee.EstimationResult.InsufficientFunds ->
+            SwapInputContract.ErrorMessage.InsufficientFunds(state.sourceCryptoBalance, state.sourceCryptoCurrency)
+        state.sendingNetworkFee !is EstimateSendingFee.EstimationResult.Estimated ->
+            SwapInputContract.ErrorMessage.NetworkIssues
         state.sourceCryptoBalance < state.sourceCryptoAmount ->
-            SwapInputContract.ErrorMessage.InsufficientFunds(state.sourceCryptoBalance,
-                state.sourceCryptoCurrency)
+            SwapInputContract.ErrorMessage.InsufficientFunds(state.sourceCryptoBalance, state.sourceCryptoCurrency)
         state.sourceCryptoBalance < state.sourceCryptoAmount + state.sendingNetworkFee.cryptoAmountIfIncludedOrZero() ->
             SwapInputContract.ErrorMessage.InsufficientFundsForFee
         state.sourceCryptoAmount < state.minCryptoAmount ->
-            SwapInputContract.ErrorMessage.MinSwapAmount(state.minCryptoAmount,
-                state.sourceCryptoCurrency)
+            SwapInputContract.ErrorMessage.MinSwapAmount(state.minCryptoAmount, state.sourceCryptoCurrency)
         state.sourceFiatAmount > state.dailySwapAmountLeft ->
             if (state.isKyc1) SwapInputContract.ErrorMessage.Kyc1DailyLimit else SwapInputContract.ErrorMessage.Kyc2DailyLimit
         state.isKyc1 && state.sourceFiatAmount > state.lifetimeSwapAmountLeft ->

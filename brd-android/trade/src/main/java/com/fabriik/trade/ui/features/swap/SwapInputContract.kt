@@ -11,7 +11,9 @@ import com.fabriik.trade.R
 import com.fabriik.trade.data.model.AmountData
 import com.fabriik.trade.data.model.FeeAmountData
 import com.fabriik.trade.data.response.QuoteResponse
+import com.fabriik.trade.utils.EstimateSendingFee
 import java.math.BigDecimal
+import java.util.*
 
 interface SwapInputContract {
 
@@ -87,7 +89,7 @@ interface SwapInputContract {
             val sourceCryptoAmount: BigDecimal = BigDecimal.ZERO,
             val destinationFiatAmount: BigDecimal = BigDecimal.ZERO,
             val destinationCryptoAmount: BigDecimal = BigDecimal.ZERO,
-            val sendingNetworkFee: FeeAmountData? = null,
+            val sendingNetworkFee: EstimateSendingFee.EstimationResult? = null,
             val receivingNetworkFee: FeeAmountData? = null,
             val confirmButtonEnabled: Boolean = false,
             val fullScreenLoadingVisible: Boolean = false,
@@ -95,10 +97,6 @@ interface SwapInputContract {
         ) : State() {
             val rate: BigDecimal
                 get() = quoteResponse?.exchangeRate ?: BigDecimal.ZERO
-            val sendingNetworkFeeRate: BigDecimal
-                get() = quoteResponse?.fromFeeCurrency?.rate ?: BigDecimal.ONE
-            val receivingNetworkFeeRate: BigDecimal
-                get() = quoteResponse?.toFeeCurrency?.rate ?: BigDecimal.ONE
             val minCryptoAmount: BigDecimal
                 get() = quoteResponse?.minimumValue ?: BigDecimal.ZERO
             private val dailySwapAmountUsed: BigDecimal
@@ -129,8 +127,10 @@ interface SwapInputContract {
         }
 
         class InsufficientFunds(private val balance: BigDecimal, private val currencyCode: String) : ErrorMessage() {
+            private val currencyCodeUppercase = currencyCode.toUpperCase(Locale.ROOT)
+
             override fun toString(context: Context) = context.getString(
-                R.string.Swap_Input_Error_InsuficientFunds, currencyCode, currencyCode, balance.formatCryptoForUi(null)
+                R.string.Swap_Input_Error_InsuficientFunds, currencyCodeUppercase, currencyCodeUppercase, balance.formatCryptoForUi(null)
             )
         }
 

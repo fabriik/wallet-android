@@ -2,6 +2,7 @@ package com.fabriik.trade.ui.features.swap
 
 import com.fabriik.trade.data.model.FeeAmountData
 import com.fabriik.trade.data.response.QuoteResponse
+import com.fabriik.trade.utils.EstimateSendingFee
 import java.math.BigDecimal
 
 interface InputConverter {
@@ -16,7 +17,7 @@ interface InputConverter {
     data class Result(
         val sourceFiatAmount: BigDecimal,
         val sourceCryptoAmount: BigDecimal,
-        val sourceNetworkFee: FeeAmountData?,
+        val sourceNetworkFee: EstimateSendingFee.EstimationResult,
         val destinationFiatAmount: BigDecimal,
         val destinationCryptoAmount: BigDecimal,
         val destinationNetworkFee: FeeAmountData?,
