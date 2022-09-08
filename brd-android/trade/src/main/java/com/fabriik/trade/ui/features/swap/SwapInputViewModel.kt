@@ -531,7 +531,7 @@ class SwapInputViewModel(
 
             is EstimateSendingFee.Result.Estimated -> {
                 val sourceFeeEthAmount = when {
-                    sourceFeeData.data.cryptoCurrency.equals("eth", true) -> sourceFeeData.data.cryptoAmount
+                    sourceFeeData.data.isEthereum() -> sourceFeeData.data.cryptoAmount
                     else -> BigDecimal.ZERO
                 }
 

@@ -2,6 +2,7 @@ package com.fabriik.trade.data.model
 
 import android.os.Parcelable
 import com.breadwallet.util.formatFiatForUi
+import com.breadwallet.util.isEthereum
 import kotlinx.parcelize.Parcelize
 import java.math.BigDecimal
 
@@ -20,4 +21,6 @@ data class FeeAmountData(
         currencyCode = fiatCurrency,
         showCurrencyName = true
     )
+
+    fun isEthereum() = cryptoCurrency.isEthereum()
 }
