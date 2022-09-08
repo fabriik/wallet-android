@@ -69,9 +69,11 @@ class SwapInputHelper(
             val data = wallet.estimateFee(address, amount, networkFee)
             val fee = data.fee.toBigDecimal()
 
-            if (fee.isZero()) return SwapInputContract.ErrorMessage.NetworkIssues
-
-            data
+            if (fee.isZero()) {
+                SwapInputContract.ErrorMessage.InsufficientFundsForFee
+            } else {
+                data
+            }
         } catch (e: FeeEstimationError) {
             SwapInputContract.ErrorMessage.InsufficientFundsForFee
         } catch (e: IllegalStateException) {

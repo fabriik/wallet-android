@@ -1,23 +1,23 @@
 package com.fabriik.trade.ui.features.swap
 
 import com.fabriik.trade.data.model.FeeAmountData
+import com.fabriik.trade.data.response.QuoteResponse
+import com.fabriik.trade.utils.EstimateSendingFee
 import java.math.BigDecimal
 
 interface InputConverter {
     suspend operator fun invoke(
         amount: BigDecimal,
         changeByUser: Boolean,
-        exchangeRate: BigDecimal,
         sourceCurrency: String,
         destinationCurrency: String,
-        sendingFeeRate: BigDecimal,
-        receivingFeeRate: BigDecimal
+        quoteResponse: QuoteResponse
     ): Result
 
     data class Result(
         val sourceFiatAmount: BigDecimal,
         val sourceCryptoAmount: BigDecimal,
-        val sourceNetworkFee: FeeAmountData?,
+        val sourceNetworkFee: EstimateSendingFee.Result,
         val destinationFiatAmount: BigDecimal,
         val destinationCryptoAmount: BigDecimal,
         val destinationNetworkFee: FeeAmountData?,
@@ -32,11 +32,9 @@ class ConvertSourceFiatAmount(private val amountConverter: AmountConverter) : In
     override suspend fun invoke(
         amount: BigDecimal,
         changeByUser: Boolean,
-        exchangeRate: BigDecimal,
         sourceCurrency: String,
         destinationCurrency: String,
-        sendingFeeRate: BigDecimal,
-        receivingFeeRate: BigDecimal
+        quoteResponse: QuoteResponse
     ): InputConverter.Result {
         // convert sending fiat to sending crypto
         val sourceCryptoAmount = amountConverter.fiatToCrypto(
@@ -46,12 +44,10 @@ class ConvertSourceFiatAmount(private val amountConverter: AmountConverter) : In
 
         // convert sending crypto to receiving crypto
         val destCryptoAmountData = amountConverter.convertSourceCryptoToDestinationCrypto(
-            rate = exchangeRate,
             amount = sourceCryptoAmount,
+            quoteResponse = quoteResponse,
             sourceCurrency = sourceCurrency,
-            destinationCurrency = destinationCurrency,
-            sendingFeeRate = sendingFeeRate,
-            receivingFeeRate = receivingFeeRate
+            destinationCurrency = destinationCurrency
         )
 
         val destCryptoAmount = destCryptoAmountData.third
@@ -78,11 +74,9 @@ class ConvertSourceCryptoAmount(private val amountConverter: AmountConverter) : 
     override suspend fun invoke(
         amount: BigDecimal,
         changeByUser: Boolean,
-        exchangeRate: BigDecimal,
         sourceCurrency: String,
         destinationCurrency: String,
-        sendingFeeRate: BigDecimal,
-        receivingFeeRate: BigDecimal
+        quoteResponse: QuoteResponse
     ): InputConverter.Result {
         // convert sending crypto to sending fiat
         val sourceFiatAmount = amountConverter.cryptoToFiat(
@@ -92,12 +86,10 @@ class ConvertSourceCryptoAmount(private val amountConverter: AmountConverter) : 
 
         // convert sending crypto to receiving crypto
         val destCryptoAmountData = amountConverter.convertSourceCryptoToDestinationCrypto(
-            rate = exchangeRate,
             amount = amount,
+            quoteResponse = quoteResponse,
             sourceCurrency = sourceCurrency,
-            destinationCurrency = destinationCurrency,
-            sendingFeeRate = sendingFeeRate,
-            receivingFeeRate = receivingFeeRate
+            destinationCurrency = destinationCurrency
         )
 
         val destCryptoAmount = destCryptoAmountData.third
@@ -124,11 +116,9 @@ class ConvertDestinationFiatAmount(private val amountConverter: AmountConverter)
     override suspend fun invoke(
         amount: BigDecimal,
         changeByUser: Boolean,
-        exchangeRate: BigDecimal,
         sourceCurrency: String,
         destinationCurrency: String,
-        sendingFeeRate: BigDecimal,
-        receivingFeeRate: BigDecimal
+        quoteResponse: QuoteResponse
     ): InputConverter.Result {
         // convert receiving fiat to receiving crypto
         val destCryptoAmount = amountConverter.fiatToCrypto(
@@ -139,11 +129,9 @@ class ConvertDestinationFiatAmount(private val amountConverter: AmountConverter)
         // convert receiving crypto to sending crypto
         val sourceCryptoAmountData = amountConverter.convertDestinationCryptoToSourceCrypto(
             amount = destCryptoAmount,
-            destinationCurrency = destinationCurrency,
+            quoteResponse = quoteResponse,
             sourceCurrency = sourceCurrency,
-            rate = exchangeRate,
-            sendingFeeRate = sendingFeeRate,
-            receivingFeeRate = receivingFeeRate
+            destinationCurrency = destinationCurrency
         )
 
         val sourceCryptoAmount = sourceCryptoAmountData.third
@@ -171,11 +159,9 @@ class ConvertDestinationCryptoAmount(private val amountConverter: AmountConverte
     override suspend fun invoke(
         amount: BigDecimal,
         changeByUser: Boolean,
-        exchangeRate: BigDecimal,
         sourceCurrency: String,
         destinationCurrency: String,
-        sendingFeeRate: BigDecimal,
-        receivingFeeRate: BigDecimal
+        quoteResponse: QuoteResponse
     ): InputConverter.Result {
         // convert receiving crypto to receiving fiat
         val destFiatAmount = amountConverter.cryptoToFiat(
@@ -185,12 +171,10 @@ class ConvertDestinationCryptoAmount(private val amountConverter: AmountConverte
 
         // convert receiving crypto to sending crypto
         val sourceCryptoAmountData = amountConverter.convertDestinationCryptoToSourceCrypto(
-            rate = exchangeRate,
             amount = amount,
+            quoteResponse = quoteResponse,
             sourceCurrency = sourceCurrency,
-            destinationCurrency = destinationCurrency,
-            sendingFeeRate = sendingFeeRate,
-            receivingFeeRate = receivingFeeRate
+            destinationCurrency = destinationCurrency
         )
 
         val sourceCryptoAmount = sourceCryptoAmountData.third

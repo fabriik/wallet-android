@@ -74,7 +74,6 @@ import com.checkout.android_sdk.CheckoutAPIClient
 import com.checkout.android_sdk.Utils.Environment
 import com.fabriik.buy.data.BuyApi
 import com.fabriik.buy.data.BuyApiInterceptor
-import com.fabriik.buy.utils.EstimateReceivingFee
 import com.fabriik.common.data.FabriikApiConstants
 import com.fabriik.common.utils.adapter.BigDecimalAdapter
 import com.fabriik.common.utils.adapter.CalendarJsonAdapter
@@ -86,7 +85,9 @@ import com.fabriik.trade.data.SwapApi
 import com.fabriik.trade.data.SwapApiInterceptor
 import com.fabriik.trade.data.SwapTransactionsFetcher
 import com.fabriik.trade.data.SwapTransactionsRepository
-import com.fabriik.trade.utils.EstimateSwapFee
+import com.fabriik.trade.utils.CreateFeeAmountData
+import com.fabriik.trade.utils.EstimateReceivingFee
+import com.fabriik.trade.utils.EstimateSendingFee
 import com.platform.APIClient
 import com.platform.HTTPServer
 import com.platform.interfaces.KVStoreProvider
@@ -520,9 +521,13 @@ class BreadApp : Application(), KodeinAware, CameraXConfig.Provider {
         bind<EstimateReceivingFee>() with singleton {
             EstimateReceivingFee(instance())
         }
+        
+        bind<EstimateSendingFee>() with singleton {
+            EstimateSendingFee(instance(), instance())
+        }
 
-        bind<EstimateSwapFee>() with singleton {
-            EstimateSwapFee(instance(), instance(), instance())
+        bind<CreateFeeAmountData>() with singleton {
+            CreateFeeAmountData(instance())
         }
     }
 
@@ -536,7 +541,7 @@ class BreadApp : Application(), KodeinAware, CameraXConfig.Provider {
     private val conversionTracker by instance<ConversionTracker>()
     private val swapTransactionsFetcher by instance<SwapTransactionsFetcher>()
     private val connectivityStateProvider by instance<ConnectivityStateProvider>()
-    private val CHANNEL = "kyc-platform-channels"
+
     override fun onCreate() {
         super.onCreate()
         installHooks()
