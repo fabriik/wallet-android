@@ -34,18 +34,9 @@ class AmountConverter(
         destinationCurrency: String,
         quoteResponse: QuoteResponse
     ): Triple<EstimateSendingFee.Result, FeeAmountData?, BigDecimal> {
-        val receivingFeeRate = requireNotNull(quoteResponse.toFeeCurrency).rate
-
         val sourceFeeResult = estimateSendingFee(amount, sourceCurrency, fiatCurrency)
-        val sourceFee = when(sourceFeeResult) {
-            is EstimateSendingFee.Result.Estimated -> sourceFeeResult.data
-            else -> null
-        }
-
-        val sourceAmount =
-            if (sourceFee?.isFeeInWalletCurrency == true) amount - sourceFee.cryptoAmount else amount
-
-        val convertedAmount = sourceAmount.multiply(quoteResponse.exchangeRate)
+        val receivingFeeRate = requireNotNull(quoteResponse.toFeeCurrency).rate
+        val convertedAmount = amount.multiply(quoteResponse.exchangeRate)
 
         val destFee = estimateReceivingFee(quoteResponse, convertedAmount, destinationCurrency, fiatCurrency)
 
@@ -90,15 +81,8 @@ class AmountConverter(
             else -> amount
         }
 
-        val convertedAmount = destAmount.divide(quoteResponse.exchangeRate, 20, RoundingMode.HALF_UP)
-
-        val sourceFeeResult = estimateSendingFee(convertedAmount, sourceCurrency, fiatCurrency)
-        val sourceFee = when(sourceFeeResult) {
-            is EstimateSendingFee.Result.Estimated -> sourceFeeResult.data
-            else -> null
-        }
-        val sourceAmount =
-            if (sourceFee?.isFeeInWalletCurrency == true) convertedAmount + sourceFee.cryptoAmount else convertedAmount
+        val sourceAmount = destAmount.divide(quoteResponse.exchangeRate, 20, RoundingMode.HALF_UP)
+        val sourceFeeResult = estimateSendingFee(sourceAmount, sourceCurrency, fiatCurrency)
 
         return Triple(sourceFeeResult, destFee, sourceAmount)
     }

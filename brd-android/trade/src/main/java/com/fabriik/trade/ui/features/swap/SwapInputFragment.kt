@@ -317,7 +317,8 @@ class SwapInputFragment : Fragment(),
             tvRateValue.text = RATE_FORMAT.format(
                 state.sourceCryptoCurrency,
                 state.rate.formatCryptoForUi(
-                    state.destinationCryptoCurrency
+                    currencyCode = state.destinationCryptoCurrency,
+                    scale = 8
                 )
             )
 
