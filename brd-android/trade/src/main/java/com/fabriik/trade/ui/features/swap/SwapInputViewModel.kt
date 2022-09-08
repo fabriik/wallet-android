@@ -196,13 +196,14 @@ class SwapInputViewModel(
                 val stateChange = it.copy(
                     sourceFiatAmount = it.destinationFiatAmount,
                     sourceCryptoAmount = it.destinationCryptoAmount,
-                    destinationFiatAmount = it.sourceFiatAmount,
-                    destinationCryptoAmount = it.sourceCryptoAmount,
+                    destinationFiatAmount = BigDecimal.ZERO,
+                    destinationCryptoAmount = BigDecimal.ZERO,
                     sourceCryptoBalance = balance,
                     sourceCryptoCurrency = currentData.destinationCryptoCurrency,
                     destinationCryptoCurrency = currentData.sourceCryptoCurrency,
                     sendingNetworkFee = EstimateSendingFee.Result.Unknown,
                     receivingNetworkFee = null,
+                    quoteResponse = null
                 )
 
                 setEffect { SwapInputContract.Effect.CurrenciesReplaceAnimation(stateChange) }
@@ -213,7 +214,14 @@ class SwapInputViewModel(
     override fun onCurrenciesReplaceAnimationCompleted(state: SwapInputContract.State.Loaded) {
         callIfSwapNotActive(state.sourceCryptoCurrency, state) {
             setState { state }
-            requestNewQuote()
+
+            requestNewQuote { newState ->
+                convertAmount(
+                    amount = newState.sourceCryptoAmount,
+                    converter = convertSourceCryptoAmount,
+                    changeByUser = false
+                )
+            }
         }
 
         updateAmounts(
@@ -279,7 +287,7 @@ class SwapInputViewModel(
         }
     }
 
-    private fun requestNewQuote() {
+    private fun requestNewQuote(callback: (SwapInputContract.State.Loaded) -> Unit = {}) {
         viewModelScope.launch {
             val state = currentLoadedState ?: return@launch
             setState { state.copy(cryptoExchangeRateLoading = true) }
@@ -290,14 +298,14 @@ class SwapInputViewModel(
                 Status.SUCCESS -> {
                     val latestState = currentLoadedState ?: return@launch
                     val responseData = requireNotNull(response.data)
+                    val newState = latestState.copy(
+                        cryptoExchangeRateLoading = false,
+                        quoteResponse = responseData
+                    )
 
-                    setState {
-                        latestState.copy(
-                            cryptoExchangeRateLoading = false,
-                            quoteResponse = responseData
-                        )
-                    }
+                    setState { newState }
                     startQuoteTimer()
+                    callback(newState)
                 }
                 Status.ERROR -> {
                     val latestState = currentLoadedState ?: return@launch
