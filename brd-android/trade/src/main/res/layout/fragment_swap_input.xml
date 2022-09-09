@@ -36,11 +36,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
+                    android:layout_marginTop="8dp"
                     android:lineSpacingExtra="2sp"
                     tools:text="@string/Swap.KycLimits.Kyc1"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_rate_title" />
 
                 <TextView
                     android:id="@+id/tv_rate_title"
@@ -50,8 +51,8 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:text="@string/Swap.Input.Rate"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_kyc_message" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
 
                 <TextView
                     android:id="@+id/tv_rate_value"
@@ -97,7 +98,7 @@
                     android:layout_marginTop="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_rate_title" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_kyc_message" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_confirm"
