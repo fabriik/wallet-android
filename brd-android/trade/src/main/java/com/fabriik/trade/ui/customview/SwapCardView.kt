@@ -213,7 +213,7 @@ class SwapCardView @JvmOverloads constructor(
     }
 
     companion object {
-        const val SCALE_FIAT = 5
+        const val SCALE_FIAT = 2
         const val SCALE_CRYPTO = 8
         const val FADE_ANIMATION_DURATION = 1000L
         const val REPLACE_CURRENCIES_DURATION = 500L
