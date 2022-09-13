@@ -24,15 +24,6 @@ object FabriikToastUtil {
         )
     }
 
-    fun showRedInfo(parentView: View, message: String) {
-        showCustomSnackBar(
-            parentView = parentView,
-            message = message,
-            gravity = Gravity.BOTTOM,
-            background = R.drawable.bg_error_bubble
-        )
-    }
-
     fun showError(parentView: View, message: String) {
         showCustomSnackBar(
             parentView = parentView,
@@ -73,9 +64,8 @@ object FabriikToastUtil {
 
             it.layoutParams = params
             it.addView(view, 0)
+            snackBar.show()
         }
-
-        snackBar.show()
     }
 
     private const val STATUS_BAR_NAME = "status_bar_height"
