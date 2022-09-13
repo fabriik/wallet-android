@@ -42,37 +42,27 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/iv_logo"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_alignBottom="@id/total_assets_usd"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="16dp"
-                android:src="@drawable/ic_fabriik_logo" />
-
             <com.breadwallet.legacy.presenter.customviews.BaseTextView
+                android:layout_centerHorizontal="true"
                 android:id="@+id/total_assets_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
                 android:layout_marginTop="50dp"
                 android:layout_marginEnd="@dimen/activity_vertical_margin"
                 android:fontFamily="@font/mobile_font_medium"
-                android:text="@string/HomeScreen.totalAssets"
+                android:text="Balance"
                 android:textColor="@color/fabriik_black"
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
             <com.breadwallet.legacy.presenter.customviews.BaseTextView
+                android:layout_centerHorizontal="true"
                 android:id="@+id/total_assets_usd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/total_assets_label"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="@dimen/activity_vertical_margin"
                 android:layout_marginStart="8dp"
-                android:layout_toEndOf="@+id/iv_logo"
+                android:layout_marginEnd="@dimen/activity_vertical_margin"
                 android:fontFamily="@font/mobile_font_medium"
                 android:gravity="end"
                 android:textColor="@color/fabriik_black"
