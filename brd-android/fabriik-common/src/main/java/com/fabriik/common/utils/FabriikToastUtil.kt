@@ -57,7 +57,7 @@ object FabriikToastUtil {
         val snackBar = Snackbar.make(parentView, "", Snackbar.LENGTH_LONG).apply {
             this.view.setBackgroundResource(background)
         }
-        val height = getStatusBarHeight((parentView.context as Activity))
+        val height = parentView.height - parentView.context.resources.displayMetrics.heightPixels
 
         // setup snackBar view
         (snackBar.view as Snackbar.SnackbarLayout).let {
@@ -76,16 +76,5 @@ object FabriikToastUtil {
         }
 
         snackBar.show()
-    }
-
-    private const val STATUS_BAR_NAME = "status_bar_height"
-    private const val STATUS_BAR_TYPE = "dimen"
-    private const val STATUS_BAR_PACKAGE = "android"
-
-    private fun getStatusBarHeight(activity: Activity): Int {
-        val resourceId =
-            activity.resources.getIdentifier(STATUS_BAR_NAME, STATUS_BAR_TYPE, STATUS_BAR_PACKAGE)
-        return if (resourceId > 0) activity.resources.getDimensionPixelSize(resourceId)
-        else Rect().apply { activity.window.decorView.getWindowVisibleDisplayFrame(this) }.top
     }
 }
