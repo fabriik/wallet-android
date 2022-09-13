@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="FabriikAppTheme" parent="Theme.MaterialComponents.Light.Bridge">
+        <!-- Customize your theme here. -->
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:title">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">true</item>
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:statusBarColor">@android:color/darker_gray</item>
+        <item name="android:actionBarStyle">@style/BreadActionBar</item>
+        <item name="android:textViewStyle">@style/RobotoTextViewStyle</item>
+        <item name="android:buttonStyle">@style/RobotoButtonStyle</item>
+        <item name="android:editTextStyle">@style/EditTextStyle</item>
+        <item name="add_wallet_button_text">@color/blue_button_text</item>
+        <item name="colorControlNormal">@color/light_gray</item>
+        <item name="colorControlActivated">@color/prompt_action_button</item>
+        <item name="android:fontFamily">@font/mobile_font</item>
+        <item name="switchStyle">@style/switchStyle</item>
+        <item name="snackbarStyle">@style/snackBarStyle</item>
+        <item name="toolbar_back_arrow_dark">@drawable/ic_arrow_left</item>
+        <item name="android:windowSplashScreenBackground">#2B2B28</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_rockwallet_icon</item>
+    </style>
+</resources>
