@@ -309,7 +309,8 @@ class SwapInputFragment : Fragment(),
             cvSwap.setSourceCurrencyTitle(
                 getString(
                     R.string.Swap_Input_IHave, state.sourceCryptoBalance.formatCryptoForUi(
-                        state.sourceCryptoCurrency
+                        state.sourceCryptoCurrency,
+                        SwapCardView.SCALE_CRYPTO
                     )
                 )
             )
