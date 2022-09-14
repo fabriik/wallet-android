@@ -41,10 +41,8 @@ import com.breadwallet.R
 import com.breadwallet.databinding.ControllerHomeBinding
 import com.breadwallet.databinding.VerifyPromptBinding
 import com.breadwallet.legacy.presenter.customviews.BRButton
-import com.breadwallet.legacy.presenter.customviews.BREdit
 import com.breadwallet.legacy.presenter.customviews.BaseTextView
 import com.breadwallet.repository.RatesRepository
-import com.breadwallet.tools.animation.SpringAnimator
 import com.breadwallet.tools.manager.BRSharedPrefs
 import com.breadwallet.tools.security.BrdUserManager
 import com.breadwallet.ui.BaseMobiusController
@@ -52,8 +50,11 @@ import com.breadwallet.ui.controllers.AlertDialogController
 import com.breadwallet.ui.home.HomeScreen.E
 import com.breadwallet.ui.home.HomeScreen.F
 import com.breadwallet.ui.home.HomeScreen.M
+import com.breadwallet.ui.home.HomeScreen.SUPPORT_FORM_DIALOG
+import com.breadwallet.ui.home.HomeScreen.SUPPORT_FORM_DIALOG_POSITIVE
 import com.breadwallet.util.formatFiatForUi
-import com.breadwallet.util.isValidEmail
+import com.breadwallet.util.registerForGenericDialogResult
+import com.fabriik.common.ui.dialog.FabriikGenericDialog.Companion.EXTRA_TEXT_INPUT
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.GenericFastAdapter
 import com.mikepenz.fastadapter.adapters.GenericModelAdapter
@@ -65,15 +66,12 @@ import com.mikepenz.fastadapter.utils.DragDropUtil
 import com.spotify.mobius.disposables.Disposable
 import com.spotify.mobius.functions.Consumer
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Dispatchers.Main
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import org.kodein.di.direct
 import org.kodein.di.erased.instance
 import com.fabriik.registration.ui.RegistrationActivity
@@ -153,6 +151,15 @@ class HomeController(
 
         addWalletAdapter!!.add(AddWalletItem())
         registerForActivityResult(RegistrationActivity.REQUEST_CODE)
+
+        registerForGenericDialogResult(SUPPORT_FORM_DIALOG) { resultKey, bundle ->
+            val inputText = bundle.getString(EXTRA_TEXT_INPUT)
+            if (inputText.isNullOrEmpty()) return@registerForGenericDialogResult
+            when(resultKey) {
+                SUPPORT_FORM_DIALOG_POSITIVE ->
+                    eventConsumer.accept(E.OnSupportFormSubmitted(inputText))
+            }
+        }
     }
 
     override fun onDestroyView(view: View) {
@@ -320,18 +327,5 @@ class HomeController(
         }
 
         override fun itemTouchDropped(oldPosition: Int, newPosition: Int) = Unit
-    }
-
-    override fun onPositiveClicked(
-        dialogId: String,
-        controller: AlertDialogController,
-        result: AlertDialogController.DialogInputResult
-    ) {
-        eventConsumer.accept(
-            when(dialogId) {
-                DIALOG_PARTNERSHIP_NOTE_BUY -> E.OnBuyNoteSeen
-                else -> E.OnSupportFormSubmitted(result.inputText)
-            }
-        )
     }
 }
