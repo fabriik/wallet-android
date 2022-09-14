@@ -366,6 +366,11 @@ class SettingsScreenHandler(
             SettingsItem(
                 context.getString(R.string.Settings_wipe_android),
                 SettingsOption.WIPE
+            ),
+            SettingsItem(
+                title = context.getString(R.string.Settings_deleteAccount), //todo: check if account created
+                titleColorResId = R.color.light_error,
+                option = SettingsOption.DELETE_ACCOUNT
             )
         )
         if (isFingerPrintAvailableAndSetup(context)) {

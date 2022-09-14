@@ -57,7 +57,12 @@ class SettingsAdapter(
         private val binding = SettingsListItemBinding.bind(view)
 
         fun bindView(item: SettingsItem) {
+            val context = binding.root.context
+
             binding.itemTitle.text = item.title
+            binding.itemTitle.setTextColor(
+                ContextCompat.getColor(context, item.titleColorResId)
+            )
             item.iconResId?.let {
                 binding.settingIcon.isVisible = true
                 binding.settingIcon.setBackgroundResource(it)

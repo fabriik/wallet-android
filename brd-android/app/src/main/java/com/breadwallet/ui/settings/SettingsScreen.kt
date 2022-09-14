@@ -182,6 +182,10 @@ object SettingsScreen {
             override val navigationTarget = NavigationTarget.WipeWallet
         }
 
+        object GoToDeleteAccount : F(), NavigationEffect {
+            override val navigationTarget = NavigationTarget.DeleteAccount
+        }
+
         object GoToOnboarding : F(), NavigationEffect {
             override val navigationTarget = NavigationTarget.OnBoarding
         }

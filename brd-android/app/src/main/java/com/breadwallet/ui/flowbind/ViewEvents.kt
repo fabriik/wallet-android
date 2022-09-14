@@ -26,6 +26,7 @@ package com.breadwallet.ui.flowbind
 
 import android.view.MotionEvent
 import android.view.View
+import android.widget.CheckBox
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -36,6 +37,12 @@ fun View.clicks(): Flow<Unit> =
     callbackFlow {
         setOnClickListener { offer(Unit) }
         awaitClose { setOnClickListener(null) }
+    }.flowOn(Dispatchers.Main)
+
+fun CheckBox.checked(): Flow<Boolean> =
+    callbackFlow {
+        setOnCheckedChangeListener { _, isChecked -> offer(isChecked) }
+        awaitClose { setOnCheckedChangeListener(null) }
     }.flowOn(Dispatchers.Main)
 
 fun View.longClicks(): Flow<Unit> =

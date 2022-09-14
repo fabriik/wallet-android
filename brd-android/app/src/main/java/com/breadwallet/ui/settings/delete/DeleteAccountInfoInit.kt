@@ -1,7 +1,7 @@
 /**
  * BreadWallet
  *
- * Created by Pablo Budelli <pablo.budelli@breadwallet.com> on 10/17/19.
+ * Created by Pablo Budelli <pablo.budelli@breadwallet.com> on 12/6/19.
  * Copyright (c) 2019 breadwallet LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,15 +22,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.breadwallet.ui.settings
+package com.breadwallet.ui.settings.delete
 
-import com.breadwallet.R
+import com.breadwallet.ui.settings.delete.DeleteAccountInfo.F
+import com.breadwallet.ui.settings.delete.DeleteAccountInfo.M
+import com.spotify.mobius.First
+import com.spotify.mobius.First.first
+import com.spotify.mobius.Init
 
-data class SettingsItem(
-    val title: String,
-    val option: SettingsOption,
-    val iconResId: Int? = null,
-    val titleColorResId: Int = R.color.light_text_01,
-    val addOn: String = "",
-    val subHeader: String = ""
-)
+object DeleteAccountInfoInit : Init<M, F> {
+    override fun init(model: M): First<M, F> = first(model)
+}
