@@ -10,6 +10,7 @@ import android.text.style.ClickableSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -162,13 +163,17 @@ class OrderPreviewFragment : Fragment(),
                     OrderPreviewFragmentDirections.actionPaymentTimeout()
                 )
 
-            is OrderPreviewContract.Effect.PaymentProcessing ->
+            is OrderPreviewContract.Effect.PaymentProcessing -> {
+                // set callback
+                parentFragmentManager.setFragmentResult(REQUEST_KEY, bundleOf(RESULT_KEY to RESULT_NEW_QUOTE))
+
                 findNavController().navigate(
                     OrderPreviewFragmentDirections.actionPaymentProcessing(
                         redirectUrl = effect.redirectUrl,
                         paymentReference = effect.paymentReference
                     )
                 )
+            }
 
             OrderPreviewContract.Effect.RequestUserAuthentication ->
                 findNavController().navigate(
@@ -221,5 +226,8 @@ class OrderPreviewFragment : Fragment(),
     
     companion object {
         private const val RATE_FORMAT = "1 %s = %s"
+        const val REQUEST_KEY = "request_order_preview"
+        const val RESULT_KEY = "result_order_preview"
+        const val RESULT_NEW_QUOTE = "quote_used"
     }
 }
