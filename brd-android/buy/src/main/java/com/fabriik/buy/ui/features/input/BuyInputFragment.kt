@@ -15,6 +15,7 @@ import com.breadwallet.util.formatFiatForUi
 import com.fabriik.buy.R
 import com.fabriik.common.data.model.PaymentInstrument
 import com.fabriik.buy.databinding.FragmentBuyInputBinding
+import com.fabriik.buy.ui.features.orderpreview.OrderPreviewFragment
 import com.fabriik.buy.ui.features.paymentmethod.PaymentMethodFragment
 import com.fabriik.buy.ui.features.timeout.PaymentTimeoutFragment
 import com.fabriik.common.ui.base.FabriikView
@@ -106,6 +107,14 @@ class BuyInputFragment : Fragment(),
         parentFragmentManager.setFragmentResultListener(PaymentTimeoutFragment.REQUEST_KEY, this) { _, bundle ->
             val result = bundle.getString(PaymentTimeoutFragment.RESULT_KEY)
             if (result == PaymentTimeoutFragment.RESULT_TRY_AGAIN) {
+                viewModel.setEvent(BuyInputContract.Event.QuoteTimeoutRetry)
+            }
+        }
+
+        // listen for order preview callback
+        parentFragmentManager.setFragmentResultListener(OrderPreviewFragment.REQUEST_KEY, this) { _, bundle ->
+            val result = bundle.getString(OrderPreviewFragment.RESULT_KEY)
+            if (result == OrderPreviewFragment.RESULT_NEW_QUOTE) {
                 viewModel.setEvent(BuyInputContract.Event.QuoteTimeoutRetry)
             }
         }
