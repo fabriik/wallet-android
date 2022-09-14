@@ -62,6 +62,7 @@ import com.breadwallet.ui.settings.SettingsController
 import com.breadwallet.ui.settings.about.AboutController
 import com.breadwallet.ui.settings.analytics.ShareDataController
 import com.breadwallet.ui.settings.currency.DisplayCurrencyController
+import com.breadwallet.ui.settings.delete.DeleteAccountInfoController
 import com.breadwallet.ui.settings.fastsync.FastSyncController
 import com.breadwallet.ui.settings.fingerprint.FingerprintSettingsController
 import com.breadwallet.ui.settings.logview.LogcatController
@@ -488,6 +489,14 @@ class RouterNavigator(
     override fun wipeWallet() {
         router.pushController(
             RouterTransaction.with(WipeWalletController())
+                .pushChangeHandler(HorizontalChangeHandler())
+                .popChangeHandler(HorizontalChangeHandler())
+        )
+    }
+
+    override fun deleteAccount() {
+        router.pushController(
+            RouterTransaction.with(DeleteAccountInfoController())
                 .pushChangeHandler(HorizontalChangeHandler())
                 .popChangeHandler(HorizontalChangeHandler())
         )

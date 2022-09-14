@@ -1004,6 +1004,8 @@
     <string name="Settings.wipe">Unlink from this device</string>
     <!-- Wipe/delete your wallet from the current device. -->
     <string name="Settings.wipe.android">Wipe wallet from this device</string>
+    <!-- Unlink an account from the wallet. -->
+    <string name="Settings.deleteAccount">Delete account</string>
     <!-- Share data view body -->
     <string name="ShareData.body">Help improve Fabriik by sharing your anonymous data with us. This does not include any financial information. We respect your financial privacy.</string>
     <!-- Share data header -->
@@ -1504,4 +1506,10 @@
     <string name="Swap.TransactionItem.Purchased">Purchased</string>
     <string name="Swap.TransactionItem.PurchaseFailed">Purchase failed</string>
     <string name="Swap.TransactionItem.PurchasePending">Pending purchase</string>
+
+    <!-- Delete account screen -->
+    <string name="DeleteAccountInfo.Title">You are about to delete your Fabriik account.</string>
+    <string name="DeleteAccountInfo.Subtitle">What does this mean?</string>
+    <string name="DeleteAccountInfo.Description">- You will no longer be able to use your email to sign in into Fabriik Wallet\n\n- You will no longer be able to user your KYC and registration status\n\n- Your private keys are still yours, keep your security phrase in a safe place in case you need to restore your wallet.</string>
+    <string name="DeleteAccountInfo.Checkbox">I understand that the only way to recover my wallet is by entering my recovery phrase</string>
 </resources>

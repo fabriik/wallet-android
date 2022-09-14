@@ -147,6 +147,7 @@ object SettingsUpdate : Update<M, E, F>, SettingsScreenUpdateSpec {
                     SettingsOption.PAPER_KEY -> F.GoToAuthentication
                     SettingsOption.UPDATE_PIN -> F.GoToUpdatePin
                     SettingsOption.WIPE -> F.GoToWipeWallet
+                    SettingsOption.DELETE_ACCOUNT -> F.GoToDeleteAccount
                     SettingsOption.ONBOARDING_FLOW -> F.GoToOnboarding
                     SettingsOption.SEND_LOGS -> F.SendLogs
                     SettingsOption.API_SERVER -> F.ShowApiServerDialog

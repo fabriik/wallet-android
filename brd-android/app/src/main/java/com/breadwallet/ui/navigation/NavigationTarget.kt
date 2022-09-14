@@ -155,6 +155,7 @@ sealed class NavigationTarget : INavigationTarget {
     object FingerprintSettings : NavigationTarget()
     object WipeWallet : NavigationTarget()
     object OnBoarding : NavigationTarget()
+    object DeleteAccount : NavigationTarget()
     data class ImportWallet(
         val privateKey: String? = null,
         val isPasswordProtected: Boolean = false,

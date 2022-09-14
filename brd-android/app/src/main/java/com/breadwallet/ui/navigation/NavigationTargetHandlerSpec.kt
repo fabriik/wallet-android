@@ -46,6 +46,7 @@ interface NavigationTargetHandlerSpec {
         NavigationTarget.ShareDataSettings -> shareDataSettings()
         NavigationTarget.FingerprintSettings -> fingerprintSettings()
         NavigationTarget.WipeWallet -> wipeWallet()
+        NavigationTarget.DeleteAccount -> deleteAccount()
         NavigationTarget.OnBoarding -> onBoarding()
         is NavigationTarget.ImportWallet -> importWallet(effect)
         NavigationTarget.BitcoinNodeSelector -> bitcoinNodeSelector()
@@ -132,6 +133,8 @@ interface NavigationTargetHandlerSpec {
     fun fingerprintSettings(): Unit
 
     fun wipeWallet(): Unit
+
+    fun deleteAccount(): Unit
 
     fun onBoarding(): Unit
 
