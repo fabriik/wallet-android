@@ -56,6 +56,7 @@ import com.breadwallet.ui.pin.InputPinController
 import com.breadwallet.ui.profile.ProfileController
 import com.breadwallet.ui.provekey.PaperKeyProveController
 import com.breadwallet.ui.receive.ReceiveController
+import com.breadwallet.ui.recovery.RecoveryKeyController
 import com.breadwallet.ui.scanner.ScannerController
 import com.breadwallet.ui.send.SendSheetController
 import com.breadwallet.ui.settings.SettingsController
@@ -489,6 +490,14 @@ class RouterNavigator(
     override fun wipeWallet() {
         router.pushController(
             RouterTransaction.with(WipeWalletController())
+                .pushChangeHandler(HorizontalChangeHandler())
+                .popChangeHandler(HorizontalChangeHandler())
+        )
+    }
+
+    override fun goToRecoveryKey(effect: NavigationTarget.GoToRecoveryKey) {
+        router.pushController(
+            RouterTransaction.with(RecoveryKeyController(effect.mode, effect.phrase))
                 .pushChangeHandler(HorizontalChangeHandler())
                 .popChangeHandler(HorizontalChangeHandler())
         )
