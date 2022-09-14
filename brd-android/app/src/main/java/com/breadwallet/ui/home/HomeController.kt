@@ -81,7 +81,7 @@ private const val NETWORK_MAINNET = "MAINNET"
 
 class HomeController(
     args: Bundle? = null
-) : BaseMobiusController<M, E, F>(args), AlertDialogController.Listener {
+) : BaseMobiusController<M, E, F>(args) {
 
     override val defaultModel = M.createDefault()
     override val update = HomeScreenUpdate
