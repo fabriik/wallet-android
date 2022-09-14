@@ -38,10 +38,12 @@ import com.breadwallet.tools.util.Link
 import com.breadwallet.tools.util.eth
 import com.breadwallet.ui.navigation.NavigationEffect
 import com.breadwallet.ui.navigation.NavigationTarget
+import com.breadwallet.ui.send.SendSheetController.Companion.SHOW_XRP_MIN_POSITIVE
 import com.breadwallet.util.CurrencyCode
 import com.breadwallet.util.isBitcoin
 import com.breadwallet.util.isErc20
 import com.breadwallet.util.isEthereum
+import com.fabriik.common.ui.dialog.FabriikGenericDialogArgs
 import com.fabriik.support.pages.Topic
 import dev.zacsweers.redacted.annotations.Redacted
 import kotlinx.parcelize.Parcelize
@@ -499,11 +501,16 @@ object SendSheet {
         ) : F()
 
         object ShowXrpMinAmountInfo : F(), NavigationEffect {
-            override val navigationTarget = NavigationTarget.AlertDialog(
-                dialogId = SendSheetController.DIALOG_MIN_XRP_AMOUNT,
-                titleResId = R.string.Send_minXrpAmountTitle,
-                messageResId = R.string.Send_minXrpAmountDescription,
-                positiveButtonResId = R.string.Button_continueAction
+            override val navigationTarget = NavigationTarget.FabriikGenericDialog(
+                    FabriikGenericDialogArgs(
+                        requestKey = SendSheetController.DIALOG_MIN_XRP_AMOUNT,
+                        titleRes = R.string.Send_minXrpAmountTitle,
+                        descriptionRes = R.string.Send_minXrpAmountDescription,
+                        positive = FabriikGenericDialogArgs.ButtonData(
+                            titleRes = R.string.Button_continueAction,
+                            resultKey = SHOW_XRP_MIN_POSITIVE
+                        )
+                    )
             )
         }
 

@@ -46,7 +46,6 @@ import com.breadwallet.repository.RatesRepository
 import com.breadwallet.tools.manager.BRSharedPrefs
 import com.breadwallet.tools.security.BrdUserManager
 import com.breadwallet.ui.BaseMobiusController
-import com.breadwallet.ui.controllers.AlertDialogController
 import com.breadwallet.ui.home.HomeScreen.E
 import com.breadwallet.ui.home.HomeScreen.F
 import com.breadwallet.ui.home.HomeScreen.M
