@@ -114,7 +114,7 @@ class RegistrationApi(
     suspend fun deleteProfile(): Resource<Unit?> {
         return try {
             val response = service.deleteProfile()
-            Resource.success(Unit)
+            Resource.success(response)
         } catch (ex: Exception) {
             responseMapper.mapError(
                 context = context,
