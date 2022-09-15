@@ -74,6 +74,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="42dp"
+            android:buttonTint="@color/bg_checkbox_appcompat_button_tint"
             android:text="@string/DeleteAccountInfo.Checkbox"
             android:textColor="@color/light_text_01"
             android:lineSpacingExtra="4sp"
