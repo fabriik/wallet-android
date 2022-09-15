@@ -257,8 +257,7 @@ class RecoveryKeyController(
     override fun handleViewEffect(effect: ViewEffect) {
         when (effect) {
             is F.ErrorShake -> SpringAnimator.failShakeAnimation(applicationContext, view)
-            is F.WipeWallet -> { router.popCurrentController() } //todo: revert
-             //   activity?.getSystemService<ActivityManager>()?.clearApplicationUserData()
+            is F.WipeWallet -> activity?.getSystemService<ActivityManager>()?.clearApplicationUserData()
         }
     }
 

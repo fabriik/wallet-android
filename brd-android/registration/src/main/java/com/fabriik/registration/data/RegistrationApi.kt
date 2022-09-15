@@ -113,7 +113,7 @@ class RegistrationApi(
 
     suspend fun deleteProfile(): Resource<Unit?> {
         return try {
-            val response = service.getProfile()//todo:change
+            val response = service.deleteProfile()
             Resource.success(Unit)
         } catch (ex: Exception) {
             responseMapper.mapError(
