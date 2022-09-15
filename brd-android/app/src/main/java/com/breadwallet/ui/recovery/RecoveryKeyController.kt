@@ -50,10 +50,12 @@ import com.breadwallet.tools.util.Utils
 import com.breadwallet.ui.BaseMobiusController
 import com.breadwallet.ui.ViewEffect
 import com.breadwallet.ui.controllers.AlertDialogController
+import com.breadwallet.ui.recovery.RecoveryKey.DIALOG_ACCOUNT_DELETED
 import com.breadwallet.ui.recovery.RecoveryKey.E
 import com.breadwallet.ui.recovery.RecoveryKey.F
 import com.breadwallet.ui.recovery.RecoveryKey.M
 import com.breadwallet.util.DefaultTextWatcher
+import com.breadwallet.util.registerForGenericDialogResult
 import com.spotify.mobius.disposables.Disposable
 import com.spotify.mobius.functions.Consumer
 import drewcarlson.mobius.flow.FlowTransformer
@@ -153,6 +155,10 @@ class RecoveryKeyController(
                 RecoveryKey.Mode.DELETE_ACCOUNT -> {
                     title.text = resources.getString(R.string.RecoverWallet_header_delete_account)
                     description.text = resources.getString(R.string.RecoverWallet_subheader_delete_account)
+
+                    registerForGenericDialogResult(DIALOG_ACCOUNT_DELETED) { _, _ ->
+                        eventConsumer.accept(E.OnDeleteAccountDialogDismissed)
+                    }
                 }
                 RecoveryKey.Mode.RESET_PIN -> {
                     title.text = resources.getString(R.string.RecoverWallet_header_reset_pin)
@@ -251,8 +257,8 @@ class RecoveryKeyController(
     override fun handleViewEffect(effect: ViewEffect) {
         when (effect) {
             is F.ErrorShake -> SpringAnimator.failShakeAnimation(applicationContext, view)
-            is F.WipeWallet ->
-                activity?.getSystemService<ActivityManager>()?.clearApplicationUserData()
+            is F.WipeWallet -> { router.popCurrentController() } //todo: revert
+             //   activity?.getSystemService<ActivityManager>()?.clearApplicationUserData()
         }
     }
 

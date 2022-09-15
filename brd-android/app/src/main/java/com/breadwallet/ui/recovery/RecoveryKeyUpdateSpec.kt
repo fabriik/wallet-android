@@ -44,6 +44,7 @@ interface RecoveryKeyUpdateSpec {
         RecoveryKey.E.OnDeleteAccountCancelled -> onDeleteAccountCancelled(model)
         RecoveryKey.E.OnDeleteAccountApiFailed -> onDeleteAccountApiFailed(model)
         RecoveryKey.E.OnDeleteAccountApiCompleted -> onDeleteAccountApiCompleted(model)
+        RecoveryKey.E.OnDeleteAccountDialogDismissed -> onDeleteAccountDialogDismissed(model)
         RecoveryKey.E.OnLoadingCompleteExpected -> onLoadingCompleteExpected(model)
         RecoveryKey.E.OnContactSupportClicked -> onContactSupportClicked(model)
         is RecoveryKey.E.OnWordChanged -> onWordChanged(model, event)
@@ -84,6 +85,8 @@ interface RecoveryKeyUpdateSpec {
     fun onDeleteAccountApiFailed(model: RecoveryKey.M): Next<RecoveryKey.M, RecoveryKey.F>
 
     fun onDeleteAccountApiCompleted(model: RecoveryKey.M): Next<RecoveryKey.M, RecoveryKey.F>
+
+    fun onDeleteAccountDialogDismissed(model: RecoveryKey.M): Next<RecoveryKey.M, RecoveryKey.F>
 
     fun onLoadingCompleteExpected(model: RecoveryKey.M): Next<RecoveryKey.M, RecoveryKey.F>
 

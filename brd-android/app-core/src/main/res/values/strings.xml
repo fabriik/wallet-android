@@ -1515,4 +1515,8 @@
     <string name="DeleteAccountInfo.Subtitle">What does this mean?</string>
     <string name="DeleteAccountInfo.Description">- You will no longer be able to use your email to sign in into Fabriik Wallet\n\n- You will no longer be able to user your KYC and registration status\n\n- Your private keys are still yours, keep your security phrase in a safe place in case you need to restore your wallet.</string>
     <string name="DeleteAccountInfo.Checkbox">I understand that the only way to recover my wallet is by entering my recovery phrase</string>
+
+    <!-- Delete account dialog -->
+    <string name="DeleteAccountDialog.Title">Your account has been deleted. We are sorry to see you go.</string>
+    <string name="DeleteAccountDialog.Finish">Finish</string>
 </resources>

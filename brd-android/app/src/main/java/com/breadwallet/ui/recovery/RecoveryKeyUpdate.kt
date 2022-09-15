@@ -242,11 +242,15 @@ object RecoveryKeyUpdate : Update<M, E, F>, RecoveryKeyUpdateSpec {
     }
 
     override fun onDeleteAccountApiCompleted(model: M): Next<M, F> {
-        return dispatch(setOf<F>(F.WipeWallet))
+        return dispatch(setOf<F>(F.DeleteCompletedDialog))
     }
 
     override fun onDeleteAccountApiFailed(model: M): Next<M, F> {
         return dispatch(setOf<F>(F.ContactSupport))
+    }
+
+    override fun onDeleteAccountDialogDismissed(model: M): Next<M, F> {
+        return dispatch(setOf<F>(F.WipeWallet))
     }
 
     override fun onLoadingCompleteExpected(model: M): Next<M, F> = when {
