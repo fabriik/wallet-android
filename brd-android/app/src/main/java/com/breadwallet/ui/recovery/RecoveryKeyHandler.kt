@@ -89,7 +89,7 @@ fun createRecoveryKeyHandler(
             val response = registrationApi.deleteProfile()
             when (response.status) {
                 Status.SUCCESS -> E.OnDeleteAccountApiCompleted
-                Status.ERROR -> E.OnDeleteAccountApiFailed
+                Status.ERROR -> E.OnDeleteAccountApiFailed(response.message)
             }
         }
     }

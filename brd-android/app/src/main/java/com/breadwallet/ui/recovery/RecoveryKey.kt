@@ -142,7 +142,7 @@ object RecoveryKey {
         object OnWipeWalletCancelled : E()
         object OnDeleteAccountConfirmed : E()
         object OnDeleteAccountCancelled : E()
-        object OnDeleteAccountApiFailed : E()
+        data class OnDeleteAccountApiFailed(val message: String?) : E()
         object OnDeleteAccountApiCompleted : E()
         object OnDeleteAccountDialogDismissed : E()
         object OnLoadingCompleteExpected : E()
@@ -181,6 +181,14 @@ object RecoveryKey {
             override val navigationTarget = NavigationTarget.FabriikToast(
                 type = NavigationTarget.FabriikToast.Type.ERROR,
                 messageRes = R.string.RecoverWallet_invalid
+            )
+        }
+
+        data class GoToApiError(val message: String?) : F(), NavigationEffect {
+            override val navigationTarget = NavigationTarget.FabriikToast(
+                type = NavigationTarget.FabriikToast.Type.ERROR,
+                message = message,
+                messageRes = if (message == null) R.string.FabriikApi_DefaultError else null
             )
         }
 
