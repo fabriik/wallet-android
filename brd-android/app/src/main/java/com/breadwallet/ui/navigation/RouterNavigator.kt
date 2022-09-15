@@ -777,16 +777,21 @@ class RouterNavigator(
     }
 
     override fun fabriikToast(effect: NavigationTarget.FabriikToast) {
+        val message = when {
+            effect.messageRes != null -> router.activity?.getString(effect.messageRes)
+            else -> effect.message
+        } ?: return
+
         when (effect.type) {
             NavigationTarget.FabriikToast.Type.INFO ->
                 FabriikToastUtil.showInfo(
                     parentView = checkNotNull(router.activity).window.decorView,
-                    message = effect.message
+                    message = message
                 )
             NavigationTarget.FabriikToast.Type.ERROR ->
                 FabriikToastUtil.showError(
                     parentView = checkNotNull(router.activity).window.decorView,
-                    message = effect.message
+                    message = message
                 )
         }
     }

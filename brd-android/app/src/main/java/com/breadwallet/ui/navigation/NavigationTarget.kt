@@ -84,7 +84,8 @@ sealed class NavigationTarget : INavigationTarget {
 
     data class FabriikToast(
         val type: Type,
-        val message: String
+        val message: String? = null,
+        val messageRes: Int? = null
     ) : NavigationTarget() {
         enum class Type {
             INFO,
