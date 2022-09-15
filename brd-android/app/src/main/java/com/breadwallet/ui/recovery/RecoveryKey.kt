@@ -29,6 +29,7 @@ import com.breadwallet.R
 import com.breadwallet.ui.ViewEffect
 import com.breadwallet.ui.navigation.NavigationEffect
 import com.breadwallet.ui.navigation.NavigationTarget
+import com.breadwallet.ui.settings.SettingsController
 import com.fabriik.common.ui.dialog.FabriikGenericDialogArgs
 import com.fabriik.support.pages.Topic
 import dev.zacsweers.redacted.annotations.Redacted
@@ -133,6 +134,8 @@ object RecoveryKey {
         object OnRecoveryComplete : E()
         object OnFaqClicked : E()
         object OnNextClicked : E()
+        object OnBackClicked : E()
+        object OnDismissClicked : E()
 
         object OnRequestWipeWallet : E()
         object OnWipeWalletConfirmed : E()
@@ -147,6 +150,13 @@ object RecoveryKey {
     }
 
     sealed class F {
+        object GoBack : F(), NavigationEffect {
+            override val navigationTarget = NavigationTarget.Back
+        }
+
+        object GoBackToMenu : F(), NavigationEffect {
+            override val navigationTarget = NavigationTarget.BackTo(SettingsController::class.java)
+        }
 
         object GoToRecoveryKeyFaq : F(), NavigationEffect {
             override val navigationTarget = NavigationTarget.SupportDialog(Topic.RECOVERY_KEY)

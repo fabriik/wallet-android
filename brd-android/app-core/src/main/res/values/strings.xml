@@ -142,6 +142,7 @@
     <string name="Button.confirm">Confirm</string>
     <!-- Button label to open a email compose window with our support email in the to field. -->
     <string name="Button.contactSupport.android">Contact Support</string>
+    <string name="Button.contactSupport.android.underlined"><u>Contact Support</u></string>
     <!-- prompt continue button -->
     <string name="Button.continueAction">Continue</string>
     <!-- prompt dismiss button -->
@@ -669,7 +670,7 @@
     <!-- Recover wallet intro -->
     <string name="RecoverWallet.intro">Recover your Fabriik with your recovery phrase.</string>
     <!-- Invalid paper key message -->
-    <string name="RecoverWallet.invalid">The recovery phrase you entered is invalid. Please double-check each word and try again.</string>
+    <string name="RecoverWallet.invalid">Invalid recovery phrase. Please double-check each word and try again.</string>
     <!-- Previous button accessibility label -->
     <string name="RecoverWallet.leftArrow">Left Arrow</string>
     <!-- Next button label -->
@@ -679,6 +680,8 @@
     <!-- Next button accessibility label -->
     <string name="RecoverWallet.rightArrow">Right Arrow</string>
     <!-- Recover wallet sub-header -->
+    <string name="RecoverWallet.subtitle">Enter your Recovery Phrase</string>
+    <string name="RecoverWallet.description">Type your 12 Word Phrase</string>
     <string name="RecoverWallet.subheader">Enter the recovery phrase for the wallet you want to recover.</string>
     <!-- Reset PIN with paper key: sub-header -->
     <string name="RecoverWallet.subheader_reset_pin">To reset your PIN, enter the words from your recovery phrase into the boxes below.</string>
