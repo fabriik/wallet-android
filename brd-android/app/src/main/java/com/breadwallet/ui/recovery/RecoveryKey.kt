@@ -36,7 +36,7 @@ object RecoveryKey {
     const val DIALOG_WIPE = "dialog_wipe_confirm"
 
     enum class Mode {
-        RECOVER, WIPE, RESET_PIN
+        RECOVER, WIPE, RESET_PIN, DELETE_ACCOUNT
     }
 
     /** Represents a screen that allows users to enter a BIP39 mnemonic. */
@@ -133,6 +133,10 @@ object RecoveryKey {
         object OnRequestWipeWallet : E()
         object OnWipeWalletConfirmed : E()
         object OnWipeWalletCancelled : E()
+        object OnDeleteAccountConfirmed : E()
+        object OnDeleteAccountCancelled : E()
+        object OnDeleteAccountApiFailed : E()
+        object OnDeleteAccountApiCompleted : E()
         object OnLoadingCompleteExpected : E()
         object OnContactSupportClicked : E()
     }
@@ -179,6 +183,7 @@ object RecoveryKey {
         object ErrorShake : F(), ViewEffect
         object MonitorLoading : F()
         object ContactSupport : F()
+        object DeleteAccountApi : F()
 
         data class ValidateWord(
             val index: Int,
@@ -194,6 +199,15 @@ object RecoveryKey {
         }
 
         data class Unlink(
+            @Redacted val phrase: List<String>
+        ) : F() {
+            init {
+                require(phrase.size == 12) { "phrase must contain 12 words." }
+                require(phrase.all { it.isNotBlank() }) { "phrase cannot contain blank words." }
+            }
+        }
+
+        data class DeleteAccount(
             @Redacted val phrase: List<String>
         ) : F() {
             init {

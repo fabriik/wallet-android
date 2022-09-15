@@ -53,7 +53,7 @@ object DeleteAccountInfo {
             override val navigationTarget: NavigationTarget
         ) : F(), NavigationEffect {
             object GoBack : Nav(NavigationTarget.Back)
-            object GoToRecoveryPhrase: Nav(NavigationTarget.GoToRecoveryKey(RecoveryKey.Mode.WIPE))
+            object GoToRecoveryPhrase: Nav(NavigationTarget.GoToRecoveryKey(RecoveryKey.Mode.DELETE_ACCOUNT))
         }
     }
 }

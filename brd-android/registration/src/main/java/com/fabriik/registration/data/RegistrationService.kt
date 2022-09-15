@@ -34,4 +34,7 @@ interface RegistrationService {
 
     @GET("profile")
     suspend fun getProfile(): Profile
+
+    @DELETE("profile")
+    suspend fun deleteProfile()
 }

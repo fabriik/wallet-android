@@ -88,6 +88,8 @@ object RecoveryKeyUpdate : Update<M, E, F>, RecoveryKeyUpdateSpec {
                         F.ResetPin(model.phrase)
                     RecoveryKey.Mode.WIPE ->
                         F.Unlink(model.phrase)
+                    RecoveryKey.Mode.DELETE_ACCOUNT ->
+                        F.DeleteAccount(model.phrase)
                 }
                 next(
                     model.copy(isLoading = true),
@@ -227,6 +229,24 @@ object RecoveryKeyUpdate : Update<M, E, F>, RecoveryKeyUpdateSpec {
     override fun onWipeWalletCancelled(model: M): Next<M, F> = when {
         !model.isLoading || model.mode != RecoveryKey.Mode.WIPE -> noChange()
         else -> next(model.copy(isLoading = false))
+    }
+
+    override fun onDeleteAccountConfirmed(model: M): Next<M, F> = when {
+        !model.isLoading || model.mode != RecoveryKey.Mode.DELETE_ACCOUNT -> noChange()
+        else -> dispatch(setOf<F>(F.DeleteAccountApi))
+    }
+
+    override fun onDeleteAccountCancelled(model: M): Next<M, F> = when {
+        !model.isLoading || model.mode != RecoveryKey.Mode.DELETE_ACCOUNT -> noChange()
+        else -> next(model.copy(isLoading = false))
+    }
+
+    override fun onDeleteAccountApiCompleted(model: M): Next<M, F> {
+        return dispatch(setOf<F>(F.WipeWallet))
+    }
+
+    override fun onDeleteAccountApiFailed(model: M): Next<M, F> {
+        return dispatch(setOf<F>(F.ContactSupport))
     }
 
     override fun onLoadingCompleteExpected(model: M): Next<M, F> = when {

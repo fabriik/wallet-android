@@ -42,15 +42,19 @@ import com.breadwallet.ui.recovery.RecoveryKey.E
 import com.breadwallet.ui.recovery.RecoveryKey.F
 import com.breadwallet.ui.recovery.RecoveryKey.M.Companion.RECOVERY_KEY_WORDS_COUNT
 import com.breadwallet.util.asNormalizedString
+import com.fabriik.common.data.Status
+import com.fabriik.registration.data.RegistrationApi
 import drewcarlson.mobius.flow.subtypeEffectHandler
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.mapLatest
 
 private const val LOADING_WATCH_DELAY = 8_000L
 
 fun createRecoveryKeyHandler(
     breadApp: BreadApp,
     userManager: BrdUserManager,
-    supportManager: SupportManager
+    supportManager: SupportManager,
+    registrationApi: RegistrationApi
 ) = subtypeEffectHandler<F, E> {
     addFunction<F.Unlink> { effect ->
         val phraseBytes = effect.phrase.asNormalizedString().toByteArray()
@@ -63,6 +67,30 @@ fun createRecoveryKeyHandler(
             E.OnRequestWipeWallet
         } else {
             E.OnPhraseInvalid
+        }
+    }
+
+    addFunction<F.DeleteAccount> { effect ->
+        val phraseBytes = effect.phrase.asNormalizedString().toByteArray()
+        val storedPhrase = try {
+            userManager.getPhrase()
+        } catch (e: UserNotAuthenticatedException) {
+            return@addFunction E.OnDeleteAccountCancelled
+        }
+        if (storedPhrase?.contentEquals(phraseBytes) == true) {
+            E.OnDeleteAccountConfirmed
+        } else {
+            E.OnPhraseInvalid
+        }
+    }
+
+    addTransformer<F.DeleteAccountApi> {
+        it.mapLatest {
+            val response = registrationApi.deleteProfile()
+            when (response.status) {
+                Status.SUCCESS -> E.OnDeleteAccountApiCompleted
+                Status.ERROR -> E.OnDeleteAccountApiFailed
+            }
         }
     }
 

@@ -92,6 +92,7 @@ class RecoveryKeyController(
         get() = createRecoveryKeyHandler(
             applicationContext as BreadApp,
             direct.instance(),
+            direct.instance(),
             direct.instance()
         )
 
@@ -148,6 +149,10 @@ class RecoveryKeyController(
                 RecoveryKey.Mode.WIPE -> {
                     title.text = resources.getString(R.string.RecoveryKeyFlow_enterRecoveryKey)
                     description.text = resources.getString(R.string.WipeWallet_instruction)
+                }
+                RecoveryKey.Mode.DELETE_ACCOUNT -> {
+                    title.text = resources.getString(R.string.RecoverWallet_header_delete_account)
+                    description.text = resources.getString(R.string.RecoverWallet_subheader_delete_account)
                 }
                 RecoveryKey.Mode.RESET_PIN -> {
                     title.text = resources.getString(R.string.RecoverWallet_header_reset_pin)
