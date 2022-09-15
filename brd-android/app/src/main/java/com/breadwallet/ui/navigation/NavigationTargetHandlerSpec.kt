@@ -27,6 +27,7 @@ package com.breadwallet.ui.navigation
 interface NavigationTargetHandlerSpec {
     fun patch(effect: NavigationTarget): Unit = when (effect) {
         NavigationTarget.Back -> back()
+        is NavigationTarget.BackTo -> backTo(effect)
         NavigationTarget.ReviewBrd -> reviewBrd()
         NavigationTarget.QRScanner -> qRScanner()
         NavigationTarget.BrdLogin -> brdLogin()
@@ -98,6 +99,8 @@ interface NavigationTargetHandlerSpec {
     fun logcatViewer()
 
     fun back(): Unit
+
+    fun backTo(effect: NavigationTarget.BackTo): Unit
 
     fun reviewBrd(): Unit
 

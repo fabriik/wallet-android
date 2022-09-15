@@ -149,6 +149,14 @@ class RouterNavigator(
         }
     }
 
+    override fun backTo(effect: NavigationTarget.BackTo) {
+        val tag = router.backstack.filter { it.controller.javaClass == effect.target }
+            .mapNotNull { it.tag() }
+            .firstOrNull() ?: return
+
+        router.popToTag(tag)
+    }
+
     override fun reviewBrd() {
         EventUtils.pushEvent(EventUtils.EVENT_REVIEW_PROMPT_GOOGLE_PLAY_TRIGGERED)
         AppReviewPromptManager.openGooglePlay(checkNotNull(router.activity))
@@ -236,6 +244,7 @@ class RouterNavigator(
     override fun menu(effect: NavigationTarget.Menu) {
         router.pushController(
             RouterTransaction.with(SettingsController(effect.settingsOption))
+                .tag(SettingsController.TRANSACTION_TAG)
                 .popChangeHandler(VerticalChangeHandler())
                 .pushChangeHandler(VerticalChangeHandler())
         )
@@ -768,16 +777,21 @@ class RouterNavigator(
     }
 
     override fun fabriikToast(effect: NavigationTarget.FabriikToast) {
+        val message = when {
+            effect.messageRes != null -> router.activity?.getString(effect.messageRes)
+            else -> effect.message
+        } ?: return
+
         when (effect.type) {
             NavigationTarget.FabriikToast.Type.INFO ->
                 FabriikToastUtil.showInfo(
                     parentView = checkNotNull(router.activity).window.decorView,
-                    message = effect.message
+                    message = message
                 )
             NavigationTarget.FabriikToast.Type.ERROR ->
                 FabriikToastUtil.showError(
                     parentView = checkNotNull(router.activity).window.decorView,
-                    message = effect.message
+                    message = message
                 )
         }
     }

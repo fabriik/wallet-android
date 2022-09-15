@@ -37,12 +37,14 @@ interface RecoveryKeyUpdateSpec {
         RecoveryKey.E.OnRecoveryComplete -> onRecoveryComplete(model)
         RecoveryKey.E.OnFaqClicked -> onFaqClicked(model)
         RecoveryKey.E.OnNextClicked -> onNextClicked(model)
+        RecoveryKey.E.OnBackClicked -> onBackClicked(model)
+        RecoveryKey.E.OnDismissClicked -> onDismissClicked(model)
         RecoveryKey.E.OnRequestWipeWallet -> onRequestWipeWallet(model)
         RecoveryKey.E.OnWipeWalletConfirmed -> onWipeWalletConfirmed(model)
         RecoveryKey.E.OnWipeWalletCancelled -> onWipeWalletCancelled(model)
         RecoveryKey.E.OnDeleteAccountConfirmed -> onDeleteAccountConfirmed(model)
         RecoveryKey.E.OnDeleteAccountCancelled -> onDeleteAccountCancelled(model)
-        RecoveryKey.E.OnDeleteAccountApiFailed -> onDeleteAccountApiFailed(model)
+        is RecoveryKey.E.OnDeleteAccountApiFailed -> onDeleteAccountApiFailed(model, event)
         RecoveryKey.E.OnDeleteAccountApiCompleted -> onDeleteAccountApiCompleted(model)
         RecoveryKey.E.OnDeleteAccountDialogDismissed -> onDeleteAccountDialogDismissed(model)
         RecoveryKey.E.OnLoadingCompleteExpected -> onLoadingCompleteExpected(model)
@@ -72,6 +74,10 @@ interface RecoveryKeyUpdateSpec {
 
     fun onNextClicked(model: RecoveryKey.M): Next<RecoveryKey.M, RecoveryKey.F>
 
+    fun onBackClicked(model: RecoveryKey.M): Next<RecoveryKey.M, RecoveryKey.F>
+
+    fun onDismissClicked(model: RecoveryKey.M): Next<RecoveryKey.M, RecoveryKey.F>
+
     fun onRequestWipeWallet(model: RecoveryKey.M): Next<RecoveryKey.M, RecoveryKey.F>
 
     fun onWipeWalletConfirmed(model: RecoveryKey.M): Next<RecoveryKey.M, RecoveryKey.F>
@@ -82,7 +88,7 @@ interface RecoveryKeyUpdateSpec {
 
     fun onDeleteAccountCancelled(model: RecoveryKey.M): Next<RecoveryKey.M, RecoveryKey.F>
 
-    fun onDeleteAccountApiFailed(model: RecoveryKey.M): Next<RecoveryKey.M, RecoveryKey.F>
+    fun onDeleteAccountApiFailed(model: RecoveryKey.M, event: RecoveryKey.E.OnDeleteAccountApiFailed): Next<RecoveryKey.M, RecoveryKey.F>
 
     fun onDeleteAccountApiCompleted(model: RecoveryKey.M): Next<RecoveryKey.M, RecoveryKey.F>
 
