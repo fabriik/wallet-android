@@ -40,6 +40,11 @@ interface RecoveryKeyUpdateSpec {
         RecoveryKey.E.OnRequestWipeWallet -> onRequestWipeWallet(model)
         RecoveryKey.E.OnWipeWalletConfirmed -> onWipeWalletConfirmed(model)
         RecoveryKey.E.OnWipeWalletCancelled -> onWipeWalletCancelled(model)
+        RecoveryKey.E.OnDeleteAccountConfirmed -> onDeleteAccountConfirmed(model)
+        RecoveryKey.E.OnDeleteAccountCancelled -> onDeleteAccountCancelled(model)
+        RecoveryKey.E.OnDeleteAccountApiFailed -> onDeleteAccountApiFailed(model)
+        RecoveryKey.E.OnDeleteAccountApiCompleted -> onDeleteAccountApiCompleted(model)
+        RecoveryKey.E.OnDeleteAccountDialogDismissed -> onDeleteAccountDialogDismissed(model)
         RecoveryKey.E.OnLoadingCompleteExpected -> onLoadingCompleteExpected(model)
         RecoveryKey.E.OnContactSupportClicked -> onContactSupportClicked(model)
         is RecoveryKey.E.OnWordChanged -> onWordChanged(model, event)
@@ -72,6 +77,16 @@ interface RecoveryKeyUpdateSpec {
     fun onWipeWalletConfirmed(model: RecoveryKey.M): Next<RecoveryKey.M, RecoveryKey.F>
 
     fun onWipeWalletCancelled(model: RecoveryKey.M): Next<RecoveryKey.M, RecoveryKey.F>
+
+    fun onDeleteAccountConfirmed(model: RecoveryKey.M): Next<RecoveryKey.M, RecoveryKey.F>
+
+    fun onDeleteAccountCancelled(model: RecoveryKey.M): Next<RecoveryKey.M, RecoveryKey.F>
+
+    fun onDeleteAccountApiFailed(model: RecoveryKey.M): Next<RecoveryKey.M, RecoveryKey.F>
+
+    fun onDeleteAccountApiCompleted(model: RecoveryKey.M): Next<RecoveryKey.M, RecoveryKey.F>
+
+    fun onDeleteAccountDialogDismissed(model: RecoveryKey.M): Next<RecoveryKey.M, RecoveryKey.F>
 
     fun onLoadingCompleteExpected(model: RecoveryKey.M): Next<RecoveryKey.M, RecoveryKey.F>
 

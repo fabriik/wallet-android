@@ -26,6 +26,7 @@ package com.breadwallet.ui.settings.delete
 
 import com.breadwallet.ui.navigation.NavigationEffect
 import com.breadwallet.ui.navigation.NavigationTarget
+import com.breadwallet.ui.recovery.RecoveryKey
 
 object DeleteAccountInfo {
 
@@ -52,6 +53,7 @@ object DeleteAccountInfo {
             override val navigationTarget: NavigationTarget
         ) : F(), NavigationEffect {
             object GoBack : Nav(NavigationTarget.Back)
+            object GoToRecoveryPhrase: Nav(NavigationTarget.GoToRecoveryKey(RecoveryKey.Mode.DELETE_ACCOUNT))
         }
     }
 }

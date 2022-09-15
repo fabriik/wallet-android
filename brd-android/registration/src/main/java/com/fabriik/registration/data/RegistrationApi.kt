@@ -111,6 +111,18 @@ class RegistrationApi(
         }
     }
 
+    suspend fun deleteProfile(): Resource<Unit?> {
+        return try {
+            val response = service.deleteProfile()
+            Resource.success(response)
+        } catch (ex: Exception) {
+            responseMapper.mapError(
+                context = context,
+                exception = ex
+            )
+        }
+    }
+
     companion object {
 
         fun create(context: Context, moshiConverter: MoshiConverterFactory, interceptor: RegistrationApiInterceptor) = RegistrationApi(

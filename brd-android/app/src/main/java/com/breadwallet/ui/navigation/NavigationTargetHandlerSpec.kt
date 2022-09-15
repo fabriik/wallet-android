@@ -84,6 +84,7 @@ interface NavigationTargetHandlerSpec {
         is NavigationTarget.ShowInfoDialog -> showInfoDialog(effect)
         is NavigationTarget.FabriikToast -> fabriikToast(effect)
         is NavigationTarget.FabriikGenericDialog -> fabriikGenericDialog(effect)
+        is NavigationTarget.GoToRecoveryKey -> goToRecoveryKey(effect)
     }
 
     fun openKyc(effect: NavigationTarget.GoToKyc): Unit
@@ -201,4 +202,6 @@ interface NavigationTargetHandlerSpec {
     fun fabriikToast(effect: NavigationTarget.FabriikToast): Unit
 
     fun fabriikGenericDialog(effect: NavigationTarget.FabriikGenericDialog): Unit
+
+    fun goToRecoveryKey(effect: NavigationTarget.GoToRecoveryKey): Unit
 }

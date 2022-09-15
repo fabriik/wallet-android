@@ -30,6 +30,7 @@ import com.brd.bakerapi.models.Baker
 import com.breadwallet.model.InAppMessage
 import com.breadwallet.tools.util.Link
 import com.breadwallet.ui.auth.AuthMode
+import com.breadwallet.ui.recovery.RecoveryKey
 import com.breadwallet.ui.settings.SettingsSection
 import com.fabriik.common.ui.dialog.FabriikGenericDialogArgs
 import com.fabriik.registration.ui.RegistrationFlow
@@ -100,6 +101,11 @@ sealed class NavigationTarget : INavigationTarget {
         val onboarding: Boolean = false,
         val skipWriteDownKey: Boolean = false,
         val onComplete: OnCompleteAction = OnCompleteAction.GO_HOME
+    ) : NavigationTarget()
+
+    data class GoToRecoveryKey(
+        val mode: RecoveryKey.Mode,
+        val phrase: String? = null
     ) : NavigationTarget()
 
     data class AlertDialog(

@@ -45,7 +45,7 @@ object DeleteAccountInfoUpdate : Update<M, E, F>, DeleteAccountInfoUpdateSpec {
     }
 
     override fun onContinueClicked(model: M): Next<M, F> {
-        return dispatch(effects(F.Nav.GoBack)) //todo: change to recovery key
+        return dispatch(effects(F.Nav.GoToRecoveryPhrase))
     }
 
     override fun onCheckboxChanged(model: M, event: E.OnCheckboxChanged): Next<M, F> {

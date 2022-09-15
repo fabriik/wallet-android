@@ -24,19 +24,23 @@
  */
 package com.breadwallet.ui.recovery
 
+import android.view.Gravity
 import com.breadwallet.R
 import com.breadwallet.ui.ViewEffect
 import com.breadwallet.ui.navigation.NavigationEffect
 import com.breadwallet.ui.navigation.NavigationTarget
+import com.fabriik.common.ui.dialog.FabriikGenericDialogArgs
 import com.fabriik.support.pages.Topic
 import dev.zacsweers.redacted.annotations.Redacted
 
 object RecoveryKey {
 
     const val DIALOG_WIPE = "dialog_wipe_confirm"
+    const val DIALOG_ACCOUNT_DELETED = "dialog_account_deleted"
+    const val DIALOG_ACCOUNT_DELETED_POSITIVE = "dialog_account_deleted_positive"
 
     enum class Mode {
-        RECOVER, WIPE, RESET_PIN
+        RECOVER, WIPE, RESET_PIN, DELETE_ACCOUNT
     }
 
     /** Represents a screen that allows users to enter a BIP39 mnemonic. */
@@ -133,6 +137,11 @@ object RecoveryKey {
         object OnRequestWipeWallet : E()
         object OnWipeWalletConfirmed : E()
         object OnWipeWalletCancelled : E()
+        object OnDeleteAccountConfirmed : E()
+        object OnDeleteAccountCancelled : E()
+        object OnDeleteAccountApiFailed : E()
+        object OnDeleteAccountApiCompleted : E()
+        object OnDeleteAccountDialogDismissed : E()
         object OnLoadingCompleteExpected : E()
         object OnContactSupportClicked : E()
     }
@@ -175,10 +184,27 @@ object RecoveryKey {
             )
         }
 
+        object DeleteCompletedDialog : F(), NavigationEffect {
+            override val navigationTarget = NavigationTarget.FabriikGenericDialog(
+                FabriikGenericDialogArgs(
+                    requestKey = DIALOG_ACCOUNT_DELETED,
+                    showDismissButton = true,
+                    iconRes = R.drawable.ic_flow_completed,
+                    titleRes = R.string.DeleteAccountDialog_Title,
+                    titleTextGravity = Gravity.CENTER,
+                    positive = FabriikGenericDialogArgs.ButtonData(
+                        titleRes = R.string.DeleteAccountDialog_Finish,
+                        resultKey = DIALOG_ACCOUNT_DELETED_POSITIVE
+                    )
+                )
+            )
+        }
+
         object WipeWallet : F(), ViewEffect
         object ErrorShake : F(), ViewEffect
         object MonitorLoading : F()
         object ContactSupport : F()
+        object DeleteAccountApi : F()
 
         data class ValidateWord(
             val index: Int,
@@ -194,6 +220,15 @@ object RecoveryKey {
         }
 
         data class Unlink(
+            @Redacted val phrase: List<String>
+        ) : F() {
+            init {
+                require(phrase.size == 12) { "phrase must contain 12 words." }
+                require(phrase.all { it.isNotBlank() }) { "phrase cannot contain blank words." }
+            }
+        }
+
+        data class DeleteAccount(
             @Redacted val phrase: List<String>
         ) : F() {
             init {
