@@ -88,10 +88,7 @@ interface RecoveryKeyUpdateSpec {
 
     fun onDeleteAccountCancelled(model: RecoveryKey.M): Next<RecoveryKey.M, RecoveryKey.F>
 
-    fun onDeleteAccountApiFailed(
-        model: RecoveryKey.M,
-        event: RecoveryKey.E.OnDeleteAccountApiFailed
-    ): Next<RecoveryKey.M, RecoveryKey.F>
+    fun onDeleteAccountApiFailed(model: RecoveryKey.M, event: RecoveryKey.E.OnDeleteAccountApiFailed): Next<RecoveryKey.M, RecoveryKey.F>
 
     fun onDeleteAccountApiCompleted(model: RecoveryKey.M): Next<RecoveryKey.M, RecoveryKey.F>
 
