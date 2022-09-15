@@ -151,14 +151,6 @@ class RecoveryKeyController(
                         eventConsumer.accept(E.OnDeleteAccountDialogDismissed)
                     }
                 }
-                RecoveryKey.Mode.DELETE_ACCOUNT -> {
-                    title.text = resources.getString(R.string.RecoverWallet_header_delete_account)
-                    description.text = resources.getString(R.string.RecoverWallet_subheader_delete_account)
-
-                    registerForGenericDialogResult(DIALOG_ACCOUNT_DELETED) { _, _ ->
-                        eventConsumer.accept(E.OnDeleteAccountDialogDismissed)
-                    }
-                }
                 RecoveryKey.Mode.RESET_PIN -> {
                     tvSubtitle.text = resources.getString(R.string.RecoveryKeyFlow_enterRecoveryKey)
                     tvDescription.text =
