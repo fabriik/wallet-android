@@ -24,7 +24,11 @@
  */
 package com.breadwallet.ui.wallet
 
+import android.content.Context
+import com.breadwallet.R
 import com.breadwallet.platform.entities.GiftMetaData
+import com.fabriik.trade.data.model.SwapBuyTransactionData
+import com.fabriik.trade.data.response.ExchangeOrderStatus
 import dev.zacsweers.redacted.annotations.Redacted
 import java.math.BigDecimal
 
@@ -47,7 +51,76 @@ data class WalletTransaction(
     val feeToken: String = "",
     val confirmationsUntilFinal: Int,
     val gift: GiftMetaData? = null,
-    val isStaking: Boolean = false
+    val isStaking: Boolean = false,
+    val exchangeData: ExchangeData? = null
 ) {
     val isFeeForToken: Boolean = feeToken.isNotBlank()
+}
+
+sealed class ExchangeData(
+    val transactionData: SwapBuyTransactionData
+) {
+
+    abstract fun getIcon(): Int
+    abstract fun getTransactionTitle(context: Context): String?
+
+    class Deposit(transactionData: SwapBuyTransactionData) : ExchangeData(transactionData) {
+
+        override fun getIcon() = R.drawable.ic_transaction_swap
+
+        override fun getTransactionTitle(context: Context): String? {
+            return when (transactionData.exchangeStatus) {
+                ExchangeOrderStatus.PENDING -> context.getString(
+                    R.string.Swap_TransactionItem_PendingTo, transactionData.getWithdrawalCurrencyUpperCase()
+                )
+                ExchangeOrderStatus.COMPLETE -> context.getString(
+                    R.string.Swap_TransactionItem_SwappedTo, transactionData.getWithdrawalCurrencyUpperCase()
+                )
+                ExchangeOrderStatus.FAILED -> context.getString(
+                    R.string.Swap_TransactionItem_SwapToFailed, transactionData.getWithdrawalCurrencyUpperCase()
+                )
+                else -> null
+            }
+        }
+    }
+
+    class BuyWithdrawal(transactionData: SwapBuyTransactionData) : ExchangeData(transactionData) {
+
+        override fun getIcon() = R.drawable.ic_transaction_buy
+
+        override fun getTransactionTitle(context: Context): String? {
+            return when (transactionData.exchangeStatus) {
+                ExchangeOrderStatus.PENDING -> context.getString(
+                    R.string.Swap_TransactionItem_PurchasePending
+                )
+                ExchangeOrderStatus.COMPLETE -> context.getString(
+                    R.string.Swap_TransactionItem_Purchased
+                )
+                ExchangeOrderStatus.FAILED -> context.getString(
+                    R.string.Swap_TransactionItem_PurchaseFailed
+                )
+                else -> null
+            }
+        }
+    }
+
+    class SwapWithdrawal(transactionData: SwapBuyTransactionData) : ExchangeData(transactionData) {
+
+        override fun getIcon() = R.drawable.ic_transaction_swap
+
+        override fun getTransactionTitle(context: Context): String? {
+            return when (transactionData.exchangeStatus) {
+                ExchangeOrderStatus.PENDING -> context.getString(
+                    R.string.Swap_TransactionItem_PendingFrom, transactionData.getDepositCurrencyUpperCase()
+                )
+                ExchangeOrderStatus.COMPLETE -> context.getString(
+                    R.string.Swap_TransactionItem_SwappedFrom, transactionData.getDepositCurrencyUpperCase()
+                )
+                ExchangeOrderStatus.FAILED -> context.getString(
+                    R.string.Swap_TransactionItem_SwapFromFailed, transactionData.getDepositCurrencyUpperCase()
+                )
+                else -> null
+            }
+        }
+    }
 }

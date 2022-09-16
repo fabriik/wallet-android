@@ -49,6 +49,10 @@ import com.breadwallet.ui.scanner.ScannerController
 import com.breadwallet.ui.settings.SettingsScreen.E
 import com.breadwallet.ui.settings.SettingsScreen.F
 import com.breadwallet.ui.settings.SettingsScreen.M
+import com.breadwallet.ui.settings.SettingsScreen.TEST_FABRIIK_DIALOG
+import com.breadwallet.ui.settings.SettingsScreen.TEST_FABRIIK_DIALOG_NEGATIVE
+import com.breadwallet.ui.settings.SettingsScreen.TEST_FABRIIK_DIALOG_POSITIVE
+import com.breadwallet.util.registerForGenericDialogResult
 import com.platform.APIClient
 import com.spotify.mobius.Connectable
 import kotlinx.coroutines.flow.Flow
@@ -69,6 +73,7 @@ class SettingsController(
     AlertDialogController.Listener {
 
     companion object {
+        const val TRANSACTION_TAG = "tag_settings"
         private const val EXT_SECTION = "section"
     }
 
@@ -99,6 +104,7 @@ class SettingsController(
             direct.instance(),
             direct.instance(),
             direct.instance(),
+            direct.instance(),
             direct.instance()
         )
     }
@@ -114,6 +120,15 @@ class SettingsController(
                 DividerItemDecoration.VERTICAL
             )
         )
+
+        registerForGenericDialogResult(TEST_FABRIIK_DIALOG) { resultKey, _ ->
+            when (resultKey) {
+                TEST_FABRIIK_DIALOG_NEGATIVE ->
+                    eventConsumer.accept(E.OnTestGenericDialogResult("Test dialog negative button clicked"))
+                TEST_FABRIIK_DIALOG_POSITIVE ->
+                    eventConsumer.accept(E.OnTestGenericDialogResult("Test dialog positive button clicked"))
+            }
+        }
     }
 
     override fun bindView(modelFlow: Flow<M>): Flow<E> {
@@ -139,8 +154,8 @@ class SettingsController(
                     SettingsSection.HIDDEN,
                     SettingsSection.DEVELOPER_OPTION -> "Developer Options"
                     SettingsSection.SECURITY -> act.getString(R.string.MenuButton_security)
-                    SettingsSection.BTC_SETTINGS -> "Bitcoin ${act.getString(R.string.Settings_title)}"
-                    SettingsSection.BCH_SETTINGS -> "Bitcoin Cash ${act.getString(R.string.Settings_title)}"
+                    SettingsSection.BTC_SETTINGS -> "BTC ${act.getString(R.string.Settings_title)}"
+                    SettingsSection.BCH_SETTINGS -> "BCH ${act.getString(R.string.Settings_title)}"
                 }
                 val isHome = section == SettingsSection.HOME
                 closeButton.isVisible = isHome

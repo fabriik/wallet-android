@@ -143,6 +143,7 @@ class AuthenticationController(
             AuthMode.PIN_REQUIRED -> {
                 bindingPin.pinDigits.setup(
                     bindingPin.brkeyboard,
+                    true,
                     object : PinLayout.PinLayoutListener {
                         override fun onPinLocked() {
                             findListener<Listener>()?.onAuthenticationFailed()
@@ -155,7 +156,7 @@ class AuthenticationController(
                         }
 
                         override fun onInvalidPinInserted(pin: String, attemptsLeft: Int) {
-                            //ignored
+                            bindingPin.pinDigits.resetPin()
                         }
                     })
             }

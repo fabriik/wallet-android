@@ -98,7 +98,7 @@ object LoginScreen {
         data class GoToRecoveryKey(
             val resetPin: RecoveryKey.Mode
         ) : F(), NavigationEffect {
-            override val navigationTarget = NavigationTarget.RecoveryKeyScreen(resetPin)
+            override val navigationTarget = NavigationTarget.GoToRecoveryKey(resetPin)
         }
     }
 

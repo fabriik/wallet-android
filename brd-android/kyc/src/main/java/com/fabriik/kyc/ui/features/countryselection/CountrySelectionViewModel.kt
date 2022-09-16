@@ -9,13 +9,14 @@ import com.fabriik.common.utils.getString
 import com.fabriik.common.utils.toBundle
 import com.fabriik.kyc.R
 import com.fabriik.kyc.data.KycApi
+import com.fabriik.kyc.data.model.Country
 
 class CountrySelectionViewModel(
     application: Application,
     savedStateHandle: SavedStateHandle
 ) : FabriikViewModel<CountrySelectionContract.State, CountrySelectionContract.Event, CountrySelectionContract.Effect>(
     application, savedStateHandle
-) {
+), CountrySelectionEventHandler {
 
     private lateinit var arguments: CountrySelectionFragmentArgs
 
@@ -29,35 +30,30 @@ class CountrySelectionViewModel(
 
     override fun createInitialState() = CountrySelectionContract.State()
 
-    override fun handleEvent(event: CountrySelectionContract.Event) {
-        when (event) {
-            is CountrySelectionContract.Event.LoadCountries ->
-                loadCountries()
-
-            is CountrySelectionContract.Event.SearchChanged -> {
-                setState { copy(search = event.query ?: "") }
-                applyFilters()
-            }
-
-            is CountrySelectionContract.Event.CountrySelected ->
-                setEffect {
-                    CountrySelectionContract.Effect.Back(
-                        requestKey = arguments.requestKey,
-                        selectedCountry = event.country
-                    )
-                }
-
-            is CountrySelectionContract.Event.BackClicked ->
-                setEffect {
-                    CountrySelectionContract.Effect.Back(
-                        requestKey = arguments.requestKey,
-                        selectedCountry = null
-                    )
-                }
+    override fun onBackClicked() {
+        setEffect {
+            CountrySelectionContract.Effect.Back(
+                requestKey = arguments.requestKey,
+                selectedCountry = null
+            )
         }
     }
 
-    private fun loadCountries() {
+    override fun onCountrySelected(country: Country) {
+        setEffect {
+            CountrySelectionContract.Effect.Back(
+                requestKey = arguments.requestKey,
+                selectedCountry = country
+            )
+        }
+    }
+
+    override fun onSearchChanged(query: String?) {
+        setState { copy(search = query ?: "") }
+        applyFilters()
+    }
+
+    override fun onLoadCountries() {
         callApi(
             endState = { copy(initialLoadingVisible = false) },
             startState = { copy(initialLoadingVisible = true) },

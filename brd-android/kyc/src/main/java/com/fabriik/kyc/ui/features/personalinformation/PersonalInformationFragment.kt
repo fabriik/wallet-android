@@ -126,8 +126,8 @@ class PersonalInformationFragment : Fragment(),
 
     override fun render(state: PersonalInformationContract.State) {
         with(binding) {
-            viewLoading.isVisible = state.loadingVisible
-            viewCompleted.isVisible = state.completedViewVisible
+            viewLoading.root.isVisible = state.loadingVisible
+            viewCompleted.root.isVisible = state.completedViewVisible
             btnConfirm.isEnabled = state.confirmEnabled
             etCountry.setText(state.country?.name)
 

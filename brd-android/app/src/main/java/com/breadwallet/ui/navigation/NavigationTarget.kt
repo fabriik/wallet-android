@@ -24,18 +24,22 @@
  */
 package com.breadwallet.ui.navigation
 
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.brd.bakerapi.models.Baker
 import com.breadwallet.model.InAppMessage
 import com.breadwallet.tools.util.Link
+import com.breadwallet.ui.BaseController
 import com.breadwallet.ui.auth.AuthMode
 import com.breadwallet.ui.recovery.RecoveryKey
 import com.breadwallet.ui.settings.SettingsSection
-import com.fabriik.registration.ui.RegistrationActivity
+import com.fabriik.common.ui.dialog.FabriikGenericDialogArgs
 import com.fabriik.registration.ui.RegistrationFlow
 import com.fabriik.support.pages.Topic
+import com.fabriik.trade.data.model.SwapBuyTransactionData
 import dev.zacsweers.redacted.annotations.Redacted
 import java.math.BigDecimal
+import kotlin.reflect.KClass
 
 sealed class NavigationTarget : INavigationTarget {
     data class SendSheet(
@@ -49,7 +53,12 @@ sealed class NavigationTarget : INavigationTarget {
         val txHash: String
     ) : NavigationTarget()
 
+    data class ViewExchangeTransaction(
+        val transactionData: SwapBuyTransactionData
+    ) : NavigationTarget()
+
     object Back : NavigationTarget()
+    data class BackTo(val target: Class<*>) : NavigationTarget()
     object ReviewBrd : NavigationTarget()
     object GoToKyc : NavigationTarget()
     data class GoToRegistration(val flow: RegistrationFlow, val email: String? = null) : NavigationTarget()
@@ -58,6 +67,7 @@ sealed class NavigationTarget : INavigationTarget {
     object LogcatViewer : NavigationTarget()
     object MetadataViewer : NavigationTarget()
     object VerifyProfile : NavigationTarget()
+    object NoInternetScreen : NavigationTarget()
 
     data class DeepLink(
         val url: String? = null,
@@ -74,13 +84,18 @@ sealed class NavigationTarget : INavigationTarget {
 
     data class FabriikToast(
         val type: Type,
-        val message: String
+        val message: String? = null,
+        val messageRes: Int? = null
     ) : NavigationTarget() {
         enum class Type {
             INFO,
             ERROR
         }
     }
+
+    data class FabriikGenericDialog(
+        val args: FabriikGenericDialogArgs
+    ) : NavigationTarget()
 
     data class SupportDialog(
         val topic: Topic
@@ -90,6 +105,11 @@ sealed class NavigationTarget : INavigationTarget {
         val onboarding: Boolean = false,
         val skipWriteDownKey: Boolean = false,
         val onComplete: OnCompleteAction = OnCompleteAction.GO_HOME
+    ) : NavigationTarget()
+
+    data class GoToRecoveryKey(
+        val mode: RecoveryKey.Mode,
+        val phrase: String? = null
     ) : NavigationTarget()
 
     data class AlertDialog(
@@ -118,10 +138,7 @@ sealed class NavigationTarget : INavigationTarget {
     object Home : NavigationTarget()
     object Buy : NavigationTarget()
     object Profile : NavigationTarget()
-    data class Trade(
-        val currencies: List<String>
-    ) : NavigationTarget()
-
+    object Trade: NavigationTarget()
     object AddWallet : NavigationTarget()
     object DisabledScreen : NavigationTarget()
     object NativeApiExplorer : NavigationTarget()
@@ -151,6 +168,7 @@ sealed class NavigationTarget : INavigationTarget {
     object FingerprintSettings : NavigationTarget()
     object WipeWallet : NavigationTarget()
     object OnBoarding : NavigationTarget()
+    object DeleteAccount : NavigationTarget()
     data class ImportWallet(
         val privateKey: String? = null,
         val isPasswordProtected: Boolean = false,
@@ -205,11 +223,8 @@ sealed class NavigationTarget : INavigationTarget {
     ) : NavigationTarget()
 
     data class ShowInfoDialog(
+        @DrawableRes val image: Int? = null,
         @StringRes val title: Int,
         @StringRes val description: Int,
-    ) : NavigationTarget()
-
-    data class RecoveryKeyScreen(
-        val mode: RecoveryKey.Mode
     ) : NavigationTarget()
 }

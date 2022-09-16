@@ -56,6 +56,10 @@ class RegistrationEnterEmailFragment : Fragment(),
                     )
                 )
             }
+            cbPromotions.setOnCheckedChangeListener { buttonView, isChecked ->
+                viewModel.setEvent(RegistrationEnterEmailContract.Event.PromotionsClicked(isChecked))
+            }
+
         }
 
         // collect UI state
@@ -80,7 +84,7 @@ class RegistrationEnterEmailFragment : Fragment(),
     override fun render(state: RegistrationEnterEmailContract.State) {
         with(binding) {
             btnNext.isEnabled = state.nextEnabled
-            loadingView.isVisible = state.loadingVisible
+            loadingView.root.isVisible = state.loadingVisible
         }
     }
 

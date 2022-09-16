@@ -13,4 +13,7 @@ object VerifyUpdate : Update<M, E, F>, VerifyScreenUpdateSpec {
 
     override fun onVerifyClicked(model: M): Next<M, F> =
         dispatch(setOf(F.GoToAccountVerification))
+
+    override fun onDismissClicked(model: M): Next<M, F> =
+        dispatch(setOf(F.Dismiss))
 }

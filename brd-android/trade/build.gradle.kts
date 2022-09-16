@@ -7,6 +7,7 @@ plugins {
     id("kotlin-parcelize")
     id("dev.zacsweers.redacted")
     id("kotlin-kapt")
+    id("androidx.navigation.safeargs.kotlin")
 }
 
 apply(from = rootProject.file("gradle/flavors.gradle"))
@@ -33,12 +34,18 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
+    implementation(project(":brd-android:app-core"))
+    implementation(project(":brd-android:registration"))
     implementation(project(":brd-android:fabriik-common"))
 
     implementation(Libs.Androidx.AppCompat)
+    implementation(Libs.Androidx.Biometric)
     implementation(Libs.Androidx.Browser)
     implementation(Libs.Androidx.CoreKtx)
     implementation(Libs.Androidx.LifecycleLiveDataKtx)
@@ -51,4 +58,10 @@ dependencies {
 
     implementation(Libs.Networking.Moshi)
     kapt(Libs.Networking.MoshiCodegen)
+
+    implementation(Libs.Glide.Core)
+    kapt(Libs.Glide.Compiler)
+
+    testImplementation(Libs.JUnit.Core)
+    testImplementation(Libs.Mockito.Core)
 }

@@ -22,6 +22,15 @@ object FabriikToastUtil {
         )
     }
 
+    fun showRedInfo(parentView: View, message: String) {
+        showCustomSnackBar(
+            parentView = parentView,
+            message = message,
+            gravity = Gravity.BOTTOM,
+            background = R.drawable.bg_error_bubble
+        )
+    }
+
     fun showError(parentView: View, message: String) {
         showCustomSnackBar(
             parentView = parentView,
@@ -46,16 +55,18 @@ object FabriikToastUtil {
         val snackBar = Snackbar.make(parentView, "", Snackbar.LENGTH_LONG).apply {
             this.view.setBackgroundResource(background)
         }
+        val height = parentView.height - parentView.context.resources.displayMetrics.heightPixels
 
         // setup snackBar view
         (snackBar.view as Snackbar.SnackbarLayout).let {
             val params = it.layoutParams as ViewGroup.LayoutParams
             params.width = FrameLayout.LayoutParams.MATCH_PARENT
-
             if (params is CoordinatorLayout.LayoutParams) {
                 params.gravity = gravity
+                params.topMargin = height
             } else if (params is FrameLayout.LayoutParams) {
                 params.gravity = gravity
+                params.topMargin = height
             }
 
             it.layoutParams = params

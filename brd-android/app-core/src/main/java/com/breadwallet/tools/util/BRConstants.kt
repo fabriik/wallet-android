@@ -120,7 +120,7 @@ object BRConstants {
     /**
      * Social media links and privacy policy URLS
      */
-    const val URL_SUPPORT_PAGE = "https://app-support.fabriik.com/"
+    const val URL_SUPPORT_PAGE = FabriikApiConstants.URL_SUPPORT_PAGE
     const val URL_PRIVACY_POLICY = FabriikApiConstants.URL_PRIVACY_POLICY
     const val URL_TERMS_AND_CONDITIONS = FabriikApiConstants.URL_TERMS_AND_CONDITIONS
     const val URL_TWITTER = "https://twitter.com/fabriik_market"

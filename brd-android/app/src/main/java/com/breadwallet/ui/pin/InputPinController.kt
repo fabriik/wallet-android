@@ -104,6 +104,7 @@ class InputPinController(args: Bundle) : BaseMobiusController<M, E, F>(args) {
         when (effect) {
             F.ErrorShake -> SpringAnimator.failShakeAnimation(applicationContext, binding.pinDigits)
             F.ShowPinError -> toastLong(R.string.UpdatePin_setPinError)
+            F.ResetPin -> binding.pinDigits.resetPin()
         }
     }
 
@@ -116,7 +117,7 @@ class InputPinController(args: Bundle) : BaseMobiusController<M, E, F>(args) {
 
     private fun PinLayout.bindInput() = callbackFlow<E> {
         val channel = channel
-        setup(binding.brkeyboard, object : PinLayoutListener {
+        setup(binding.brkeyboard, true, object : PinLayoutListener {
             override fun onPinLocked() {
                 channel.offer(E.OnPinLocked)
             }

@@ -24,10 +24,13 @@
  */
 package com.breadwallet.ui.settings
 
+import com.breadwallet.R
+
 data class SettingsItem(
     val title: String,
     val option: SettingsOption,
     val iconResId: Int? = null,
+    val titleColorResId: Int = R.color.light_text_01,
     val addOn: String = "",
     val subHeader: String = ""
 )

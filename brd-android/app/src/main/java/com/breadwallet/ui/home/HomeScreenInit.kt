@@ -36,8 +36,6 @@ val HomeScreenInit = Init<M, F> { model ->
             F.RefreshProfile,
             F.LoadEnabledWallets,
             F.LoadIsBuyBellNeeded,
-            F.LoadIsBuyAlertNeeded,
-            F.LoadIsTradeAlertNeeded,
             F.LoadPrompt,
             F.CheckIfShowBuyAndSell,
             F.LoadConnectivityState

@@ -561,7 +561,6 @@ class APIClient(
         const val HEADER_TESTFLIGHT = "X-Testflight"
         const val HEADER_TESTNET = "X-Bitcoin-Testnet"
         private const val HEADER_ACCEPT_LANGUAGE = "Accept-Language"
-        const val HEADER_USER_AGENT = "User-agent"
         private const val HEADER_CONTENT_TYPE = "content-type"
 
         // User Agent constants

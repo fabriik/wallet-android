@@ -555,17 +555,11 @@
     <string name="PaymentProtocol.Errors.untrustedCertificate">신용할 수 없는 증명서</string>
     <string name="Platform.transaction_cancelled">거래 취소</string>
     <!-- Body text for a prompt that asks the user to subscribe to email updates to find out product updates. -->
-    <string name="Prompts.Email.body">주요 지원 및 제품 업데이트르 받을 첫 주인공이 되어 보세요.</string>
     <!-- Placeholder text for an email address text field. -->
-    <string name="Prompts.Email.placeholder">이메일 입력</string>
     <!-- Body text that is shown when the user successfully subscribes to email updates. -->
-    <string name="Prompts.Email.successBody">업데이트를 받기 위한 구독이 완료되었습니다.</string>
     <!-- Text that is displayed as a footnote when the user successfully subscribes to email updates. -->
-    <string name="Prompts.Email.successFootnote">계속해서 지지해 주셔서 감사합니다.</string>
     <!-- Title that is shown when the user successfully subscribes to email updates. -->
-    <string name="Prompts.Email.successTitle">감사합니다!</string>
     <!-- Title for a prompt that asks the user to subscribe to email updates to find out product updates. -->
-    <string name="Prompts.Email.title">일원 되기</string>
     <!-- Enable face ID prompt body -->
     <string name="Prompts.FaceId.body">페이스 ID를 사용하시려면 계속하기를 탭하세요</string>
     <!-- Enable face ID prompt title -->
