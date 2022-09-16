@@ -3,6 +3,7 @@
     <string name="Registration.EnterEmail.Title">Welcome!</string>
     <string name="Registration.EnterEmail.Subtitle">Create a Fabriik account by entering your email address.</string>
     <string name="Registration.EnterEmail.Email">Email</string>
+    <string name="Registration.EnterEmail.Promotions">I’m ok with receiving future promotion, offers and communications</string>
     <string name="Registration.EnterEmail.Next">Next</string>
 
     <string name="Registration.VerifyEmail.Title">Verify your email</string>

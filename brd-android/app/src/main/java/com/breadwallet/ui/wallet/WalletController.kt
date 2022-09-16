@@ -47,7 +47,6 @@ import com.breadwallet.breadbox.WalletState
 import com.breadwallet.breadbox.formatCryptoForUi
 import com.breadwallet.databinding.ControllerWalletBinding
 import com.breadwallet.effecthandler.metadata.MetaDataEffectHandler
-import com.breadwallet.ui.formatFiatForUi
 import com.breadwallet.logger.logDebug
 import com.breadwallet.model.PriceDataPoint
 import com.breadwallet.tools.animation.UiUtils
@@ -57,8 +56,6 @@ import com.breadwallet.ui.BaseMobiusController
 import com.breadwallet.ui.controllers.AlertDialogController
 import com.breadwallet.ui.flowbind.clicks
 import com.breadwallet.ui.home.MAX_CRYPTO_DIGITS
-import com.breadwallet.ui.navigation.NavigationTarget
-import com.breadwallet.ui.navigation.asSupportUrl
 import com.breadwallet.ui.navigation.fragmentManager
 import com.breadwallet.ui.wallet.WalletScreen.DIALOG_CREATE_ACCOUNT
 import com.breadwallet.ui.wallet.WalletScreen.E
@@ -67,7 +64,7 @@ import com.breadwallet.ui.wallet.WalletScreen.M
 import com.breadwallet.ui.wallet.spark.SparkAdapter
 import com.breadwallet.ui.wallet.spark.SparkView
 import com.breadwallet.ui.wallet.spark.animation.LineSparkAnimator
-import com.breadwallet.util.isBitcoin
+import com.breadwallet.util.formatFiatForUi
 import com.breadwallet.util.isTezos
 import com.fabriik.support.CashSupport
 import com.fabriik.support.pages.Topic
@@ -120,6 +117,7 @@ open class WalletController(args: Bundle) : BaseMobiusController<M, E, F>(args),
                 MetaDataEffectHandler(output, direct.instance(), direct.instance())
             },
             direct.instance(),
+            direct.instance(),
             direct.instance()
         )
 
@@ -160,7 +158,12 @@ open class WalletController(args: Bundle) : BaseMobiusController<M, E, F>(args),
             checkNotNull(fastAdapter).onClickListener = { _, _, item, _ ->
                 when (item) {
                     is TransactionListItem ->
-                        eventConsumer.accept(E.OnTransactionClicked(item.model.txHash))
+                        eventConsumer.accept(
+                            E.OnTransactionClicked(
+                                txHash = item.model.txHash,
+                                transactionData = item.model.exchangeData?.transactionData
+                            )
+                        )
                     is StakingItem -> eventConsumer.accept(E.OnStakingCellClicked)
                 }
                 true
@@ -550,7 +553,7 @@ open class WalletController(args: Bundle) : BaseMobiusController<M, E, F>(args),
         val currentTheme = UiUtils.getThemeId(activity)
 
         with(binding) {
-            if (currentTheme == R.style.AppTheme_Dark) {
+            if (currentTheme == R.style.FabriikAppTheme_Dark) {
                 val buttonColor = resources.getColor(R.color.wallet_footer_button_color_dark)
                 sendButton.setColor(buttonColor)
                 receiveButton.setColor(buttonColor)

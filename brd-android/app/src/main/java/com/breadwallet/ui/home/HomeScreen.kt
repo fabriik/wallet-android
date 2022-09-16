@@ -44,8 +44,6 @@ object HomeScreen {
         val promptId: PromptItem? = null,
         val hasInternet: Boolean = true,
         val isBuyBellNeeded: Boolean = false,
-        val isBuyAlertNeeded: Boolean = false,
-        val isTradeAlertNeeded: Boolean = false,
         val showBuyAndSell: Boolean = false,
         val rateAppPromptDontShowMeAgain: Boolean = false,
         val profile: Profile? = null
@@ -68,13 +66,9 @@ object HomeScreen {
 
         data class OnWalletsUpdated(@Redacted val wallets: List<Wallet>) : E()
 
-        data class OnSwapCurrenciesLoaded(val currencies: List<String>) : E()
-
         data class OnWalletDisplayOrderUpdated(@Redacted val displayOrder: List<String>) : E()
 
         data class OnBuyBellNeededLoaded(val isBuyBellNeeded: Boolean) : E()
-        data class OnBuyAlertNeededLoaded(val isBuyAlertNeeded: Boolean) : E()
-        data class OnTradeAlertNeededLoaded(val isTradeAlertNeeded: Boolean) : E()
 
         data class OnConnectionUpdated(val isConnected: Boolean) : E()
 
@@ -85,7 +79,6 @@ object HomeScreen {
         object OnBuyClicked : E()
         object OnBuyNoteSeen : E()
         object OnTradeClicked : E()
-        object OnTradeNoteSeen : E()
         object OnMenuClicked : E()
         object OnProfileClicked : E()
 
@@ -108,10 +101,10 @@ object HomeScreen {
         object OnEmailVerified : E()
         data class OnRateAppPromptDontShowClicked(val checked: Boolean) : E()
         object OnRateAppPromptNoThanksClicked : E()
-        data class OnEmailPromptClicked(@Redacted val email: String) : E()
         data class OnSupportFormSubmitted(val feedback: String) : E()
         data class OnProfileDataLoaded(val profile: Profile) : E()
         data class OnProfileDataLoadFailed(val message: String?) : E()
+        object OnVerifyPromptClicked : E()
     }
 
     sealed class F {
@@ -119,16 +112,16 @@ object HomeScreen {
         object LoadProfile : F()
         object RefreshProfile : F()
         object LoadWallets : F()
-        object LoadSwapCurrencies : F()
         object LoadEnabledWallets : F()
         object LoadIsBuyBellNeeded : F()
-        object LoadIsBuyAlertNeeded : F()
-        object LoadIsTradeAlertNeeded : F()
         object LoadPrompt : F()
         object LoadConnectivityState : F()
         object CheckInAppNotification : F()
         object CheckIfShowBuyAndSell : F()
         object RequestSessionVerification : F()
+        object GoToNoInternetScreen : F(), NavigationEffect {
+            override val navigationTarget = NavigationTarget.NoInternetScreen
+        }
 
         data class GoToDeepLink(val url: String) : F(), NavigationEffect {
             override val navigationTarget = NavigationTarget.DeepLink(url, true)
@@ -150,8 +143,8 @@ object HomeScreen {
             override val navigationTarget = NavigationTarget.Buy
         }
 
-        data class GoToTrade(val currencies: List<String>) : F(), NavigationEffect {
-            override val navigationTarget = NavigationTarget.Trade(currencies)
+        object GoToTrade : F(), NavigationEffect {
+            override val navigationTarget = NavigationTarget.Trade
         }
 
         object GoToMenu : F(), NavigationEffect {
@@ -198,15 +191,6 @@ object HomeScreen {
             )
         }
 
-        class ShowPartnershipNote(val dialogId: String, val messageResId: Int) : F(), NavigationEffect {
-            override val navigationTarget = NavigationTarget.AlertDialog(
-                dialogId = dialogId,
-                titleResId = R.string.HomeScreen_partnershipNoteTitle,
-                messageResId = messageResId,
-                positiveButtonResId = R.string.Button_continueAction
-            )
-        }
-
         data class RecordPushNotificationOpened(val campaignId: String) : F()
 
         data class UpdateWalletOrder(
@@ -222,12 +206,14 @@ object HomeScreen {
 
         object StartRescan : F()
 
-        data class SaveEmail(@Redacted val email: String) : F()
-
         object ClearRateAppPrompt : F()
         object SaveDontShowMeRateAppPrompt : F()
 
         data class SubmitSupportForm(val feedback: String) : F()
+
+        object GoToKyc : F(), NavigationEffect {
+            override val navigationTarget = NavigationTarget.GoToKyc
+        }
     }
 }
 
@@ -253,10 +239,10 @@ data class Wallet(
 }
 
 enum class PromptItem {
-    EMAIL_COLLECTION,
     FINGER_PRINT,
     PAPER_KEY,
     UPGRADE_PIN,
     RECOMMEND_RESCAN,
-    RATE_APP
+    RATE_APP,
+    VERIFY_USER
 }

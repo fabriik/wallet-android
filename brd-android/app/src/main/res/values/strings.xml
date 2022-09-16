@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <bool name="checkout_sandbox">false</bool>
+    <string name="checkout_api_token">pk_byq7m5tqryfedjnk4vtetrh4643</string>
+</resources>

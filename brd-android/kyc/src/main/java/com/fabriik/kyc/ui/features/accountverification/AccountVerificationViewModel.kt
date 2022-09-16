@@ -1,7 +1,6 @@
 package com.fabriik.kyc.ui.features.accountverification
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.breadwallet.tools.security.ProfileManager
@@ -11,11 +10,9 @@ import com.fabriik.common.utils.getString
 import com.fabriik.kyc.R
 import com.fabriik.kyc.ui.customview.AccountVerificationStatusView
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
 import org.kodein.di.erased.instance
@@ -26,7 +23,7 @@ class AccountVerificationViewModel(
 ) :
     FabriikViewModel<AccountVerificationContract.State, AccountVerificationContract.Event, AccountVerificationContract.Effect>(
         application, savedStateHandle
-    ), KodeinAware {
+    ), AccountVerificationEventHandler, KodeinAware {
 
     override val kodein by closestKodein { application }
     private val profileManager by kodein.instance<ProfileManager>()
@@ -37,32 +34,29 @@ class AccountVerificationViewModel(
 
     override fun createInitialState() = AccountVerificationContract.State.Empty()
 
-    override fun handleEvent(event: AccountVerificationContract.Event) {
-        when (event) {
-            is AccountVerificationContract.Event.BackClicked ->
-                setEffect { AccountVerificationContract.Effect.Back }
+    override fun onBackClicked() {
+        setEffect { AccountVerificationContract.Effect.Back }
+    }
 
-            is AccountVerificationContract.Event.DismissClicked ->
-                setEffect { AccountVerificationContract.Effect.Dismiss }
+    override fun onDismissClicked() {
+        setEffect { AccountVerificationContract.Effect.Dismiss }
+    }
 
-            is AccountVerificationContract.Event.InfoClicked ->
-                setEffect { AccountVerificationContract.Effect.Info }
+    override fun onInfoClicked() {
+        setEffect { AccountVerificationContract.Effect.Info }
+    }
 
-            is AccountVerificationContract.Event.Level1Clicked -> {
-                when (currentState) {
-                    is AccountVerificationContract.State.Content ->
-                        navigateOnLevel1Clicked()
-                }
-            }
-
-            is AccountVerificationContract.Event.Level2Clicked ->
-                when (currentState) {
-                    is AccountVerificationContract.State.Content ->
-                        navigateOnLevel2Clicked()
-                }
+    override fun onLevel1Clicked() {
+        if (currentState is AccountVerificationContract.State.Content) {
+            navigateOnLevel1Clicked()
         }
     }
 
+    override fun onLevel2Clicked() {
+        if (currentState is AccountVerificationContract.State.Content) {
+            navigateOnLevel2Clicked()
+        }
+    }
     fun updateProfile() {
         profileManager.updateProfile()
     }

@@ -78,6 +78,14 @@ object RecoveryKeyUpdate : Update<M, E, F>, RecoveryKeyUpdateSpec {
         }
     }
 
+    override fun onBackClicked(model: M): Next<M, F> {
+        return dispatch(setOf(F.GoBack))
+    }
+
+    override fun onDismissClicked(model: M): Next<M, F> {
+        return dispatch(setOf(F.GoBackToMenu))
+    }
+
     override fun onPhraseValidated(model: M, event: E.OnPhraseValidated): Next<M, F> {
         return when {
             event.errors.none { it } -> {
@@ -88,6 +96,8 @@ object RecoveryKeyUpdate : Update<M, E, F>, RecoveryKeyUpdateSpec {
                         F.ResetPin(model.phrase)
                     RecoveryKey.Mode.WIPE ->
                         F.Unlink(model.phrase)
+                    RecoveryKey.Mode.DELETE_ACCOUNT ->
+                        F.DeleteAccount(model.phrase)
                 }
                 next(
                     model.copy(isLoading = true),
@@ -227,6 +237,34 @@ object RecoveryKeyUpdate : Update<M, E, F>, RecoveryKeyUpdateSpec {
     override fun onWipeWalletCancelled(model: M): Next<M, F> = when {
         !model.isLoading || model.mode != RecoveryKey.Mode.WIPE -> noChange()
         else -> next(model.copy(isLoading = false))
+    }
+
+    override fun onDeleteAccountConfirmed(model: M): Next<M, F> = when {
+        !model.isLoading || model.mode != RecoveryKey.Mode.DELETE_ACCOUNT -> noChange()
+        else -> dispatch(setOf<F>(F.DeleteAccountApi))
+    }
+
+    override fun onDeleteAccountCancelled(model: M): Next<M, F> = when {
+        !model.isLoading || model.mode != RecoveryKey.Mode.DELETE_ACCOUNT -> noChange()
+        else -> next(model.copy(isLoading = false))
+    }
+
+    override fun onDeleteAccountApiCompleted(model: M): Next<M, F> {
+        return next(
+            model.copy(isLoading = false),
+            setOf<F>(F.DeleteCompletedDialog)
+        )
+    }
+
+    override fun onDeleteAccountApiFailed(model: M, event: E.OnDeleteAccountApiFailed): Next<M, F> {
+        return next(
+            model.copy(isLoading = false),
+            setOf<F>(F.GoToApiError(event.message))
+        )
+    }
+
+    override fun onDeleteAccountDialogDismissed(model: M): Next<M, F> {
+        return dispatch(setOf<F>(F.WipeWallet))
     }
 
     override fun onLoadingCompleteExpected(model: M): Next<M, F> = when {

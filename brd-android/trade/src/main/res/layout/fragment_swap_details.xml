@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.fabriik.common.ui.customview.FabriikToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:showBack="false"
+        app:title="@string/Swap.Details.Title" />
+
+    <ScrollView
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_swap_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="@color/light_tertiary"
+                app:cardCornerRadius="15dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="8dp"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/ic_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        tools:src="@drawable/ic_status_pending" />
+
+                    <TextView
+                        android:id="@+id/tv_status"
+                        style="@style/TextStyle.Title6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/light_text_03"
+                        tools:text="@string/Swap.Details.Status.Pending" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_order_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:backgroundTint="@color/white"
+                app:cardCornerRadius="15dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cv_swap_status">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="21dp">
+
+                    <TextView
+                        style="@style/TextStyle.Caption"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/Swap.Details.OrderId"
+                        android:textColor="@color/light_text_03" />
+
+                    <TextView
+                        android:id="@+id/tv_order_id"
+                        style="@style/TextStyle.Subtitle2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginHorizontal="58dp"
+                        android:layout_marginTop="6dp"
+                        android:background="@drawable/bg_order_id"
+                        android:gravity="center"
+                        android:drawableEnd="@drawable/ic_copy"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="2dp"
+                        android:textColor="@color/light_text_03"
+                        tools:text="13rXEZoh5NFj4q9aasdfkLp2dfjskdfnsfkskdf" />
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_swap_from"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:backgroundTint="@color/light_tertiary"
+                app:cardCornerRadius="15dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cv_order_id">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="8dp">
+
+                    <com.fabriik.trade.ui.customview.CryptoIconView
+                        android:id="@+id/ic_swap_from"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_swap_from"
+                        style="@style/TextStyle.Subtitle2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:textColor="@color/light_text_03"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/ic_swap_from"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="From BSV" />
+
+                    <TextView
+                        android:id="@+id/tv_from_currency_value"
+                        style="@style/TextStyle.Subtitle2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/light_text_03"
+                        app:layout_constraintBottom_toBottomOf="@id/ic_swap_from"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/ic_swap_from"
+                        tools:text="50 / $2,859.00 USD" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ic_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:rotation="90"
+                android:src="@drawable/ic_arrow_right"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cv_swap_from"
+                app:tint="@color/light_text_03" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_swap_to"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:backgroundTint="@color/light_tertiary"
+                app:cardCornerRadius="15dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ic_arrow">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="8dp">
+
+                    <com.fabriik.trade.ui.customview.CryptoIconView
+                        android:id="@+id/ic_swap_to"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_swap_to"
+                        style="@style/TextStyle.Subtitle2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:textColor="@color/light_text_03"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/ic_swap_to"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="To BSV" />
+
+                    <TextView
+                        android:id="@+id/tv_to_currency_value"
+                        style="@style/TextStyle.Subtitle2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/light_text_03"
+                        app:layout_constraintBottom_toBottomOf="@id/ic_swap_to"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/ic_swap_to"
+                        tools:text="0.095 / $2,857.48 USD" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_timestamp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:backgroundTint="@color/white"
+                app:cardCornerRadius="15dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cv_swap_to">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="21dp">
+
+                    <TextView
+                        android:id="@+id/tv_timestamp_title"
+                        style="@style/TextStyle.Body2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/Swap.Details.Timestamp"
+                        android:textColor="@color/light_text_04" />
+
+                    <TextView
+                        android:id="@+id/tv_timestamp"
+                        style="@style/TextStyle.Subtitle2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="4dp"
+                        android:textColor="@color/light_text_03"
+                        tools:text="22 Feb 2022, 1:29pm" />
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_swap_from_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:backgroundTint="@color/white"
+                app:cardCornerRadius="15dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cv_timestamp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="36dp"
+                    android:paddingVertical="10dp">
+
+                    <TextView
+                        android:id="@+id/tv_swap_from_id_title"
+                        style="@style/TextStyle.Body2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:textColor="@color/light_text_04"
+                        tools:text="Bitcoin BSV Transaction ID" />
+
+                    <TextView
+                        android:id="@+id/tv_swap_from_id"
+                        style="@style/TextStyle.Body2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:layout_gravity="center_horizontal"
+                        android:drawablePadding="4dp"
+                        android:drawableEnd="@drawable/ic_copy"
+                        android:textColor="@color/light_link_02"
+                        tools:text="39246726y89e1ruhut7e3xy78e1xg17gx71x2xuih7y7y8y8y8y2782yx78x8382643j21" />
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_swap_to_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:backgroundTint="@color/white"
+                app:cardCornerRadius="15dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cv_swap_from_id">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="21dp">
+
+                    <TextView
+                        android:id="@+id/tv_swap_to_id_title"
+                        style="@style/TextStyle.Body2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:textColor="@color/light_text_04"
+                        tools:text="BTC Transaction ID" />
+
+                    <TextView
+                        android:id="@+id/tv_swap_to_id"
+                        style="@style/TextStyle.Body2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:layout_gravity="center_horizontal"
+                        android:drawablePadding="4dp"
+                        android:drawableEnd="@drawable/ic_copy"
+                        android:textColor="@color/light_link_02"
+                        tools:text="39246726y89e1ruhut7e3xy78e1xg17gx71x2xuih7y7y8y8y8y2782yx78x8382643j21" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/initial_loading_indicator"
+        style="@style/FabriikLoadingIndicatorStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

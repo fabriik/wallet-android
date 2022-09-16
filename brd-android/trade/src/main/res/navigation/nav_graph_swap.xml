@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_swap"
+    app:startDestination="@id/fragmentSwapInput">
+
+    <fragment
+        android:id="@+id/fragmentSwapInput"
+        android:name="com.fabriik.trade.ui.features.swap.SwapInputFragment"
+        tools:layout="@layout/fragment_swap_input">
+
+        <action
+            android:id="@+id/actionAssetSelection"
+            app:destination="@+id/navGraphAssetSelection">
+
+            <argument
+                android:name="requestKey"
+                app:argType="string" />
+
+            <argument
+                android:name="sourceCurrency"
+                android:defaultValue="@null"
+                app:argType="string"
+                app:nullable="true" />
+
+            <argument
+                android:name="currencies"
+                app:argType="string[]" />
+
+        </action>
+
+        <action
+            android:id="@+id/actionSwapFailed"
+            app:destination="@id/fragmentSwapFailed" />
+
+        <action
+            android:id="@+id/actionSwapProcessing"
+            app:destination="@id/fragmentSwapProcessing" />
+
+        <action
+            android:id="@+id/actionConfirmationDialog"
+            app:destination="@id/dialogSwapConfirmation" />
+
+        <action
+            android:id="@+id/actionSwapAuthentication"
+            app:destination="@id/fragmentSwapAuthentication" />
+
+    </fragment>
+
+    <fragment android:id="@+id/fragmentSwapAuthentication"
+        android:name="com.fabriik.trade.ui.features.authentication.SwapAuthenticationFragment"
+        tools:layout="@layout/fragment_swap_authentication"/>
+
+    <fragment android:id="@+id/fragmentSwapFailed"
+        android:name="com.fabriik.trade.ui.features.failed.SwapFailedFragment"
+        tools:layout="@layout/fragment_swap_failed"/>
+
+    <include app:graph="@navigation/nav_graph_asset_selection"/>
+
+    <fragment
+        android:id="@+id/fragmentSwapProcessing"
+        android:name="com.fabriik.trade.ui.features.processing.SwapProcessingFragment"
+        tools:layout="@layout/fragment_swap_process">
+
+        <argument
+            android:name="exchangeId"
+            app:argType="string" />
+
+        <argument
+            android:name="coinFrom"
+            app:argType="string"
+            app:nullable="false" />
+
+        <argument
+            android:name="coinTo"
+            app:argType="string"
+            app:nullable="false" />
+
+        <action
+            android:id="@+id/actionSwapDetails"
+            app:destination="@id/fragmentSwapDetails" />
+
+    </fragment>
+
+    <fragment android:id="@+id/fragmentSwapDetails"
+        android:name="com.fabriik.trade.ui.features.swapdetails.SwapDetailsFragment"
+        tools:layout="@layout/fragment_swap_details">
+
+        <argument
+            android:name="exchangeId"
+            app:argType="string" />
+
+    </fragment>
+
+    <dialog
+        android:id="@+id/dialogSwapConfirmation"
+        android:name="com.fabriik.trade.ui.dialog.SwapConfirmationDialog"
+        tools:layout="@layout/fragment_swap_confirmation_dialog">
+
+        <argument
+            android:name="requestKey"
+            app:argType="string" />
+
+        <argument
+            android:name="toAmount"
+            app:argType="com.fabriik.trade.data.model.AmountData" />
+
+        <argument
+            android:name="fromAmount"
+            app:argType="com.fabriik.trade.data.model.AmountData" />
+
+        <argument
+            android:name="rateAmount"
+            app:argType="java.math.BigDecimal" />
+
+        <argument
+            android:name="sendingFeeAmount"
+            app:argType="com.fabriik.trade.data.model.FeeAmountData" />
+
+        <argument
+            android:name="receivingFeeAmount"
+            app:argType="com.fabriik.trade.data.model.FeeAmountData" />
+    </dialog>
+</navigation>

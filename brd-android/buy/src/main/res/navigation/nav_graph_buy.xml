@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_buy"
+    app:startDestination="@id/fragmentBuyInput">
+
+    <fragment
+        android:id="@+id/fragmentBuyInput"
+        android:name="com.fabriik.buy.ui.features.input.BuyInputFragment"
+        tools:layout="@layout/fragment_buy_input">
+
+        <action
+            android:id="@+id/actionAssetSelection"
+            app:destination="@+id/navGraphAssetSelection">
+
+            <argument
+                android:name="requestKey"
+                app:argType="string" />
+
+            <argument
+                android:name="sourceCurrency"
+                android:defaultValue="@null"
+                app:argType="string"
+                app:nullable="true" />
+
+            <argument
+                android:name="currencies"
+                app:argType="string[]" />
+
+        </action>
+
+        <action
+            android:id="@+id/actionAddCard"
+            app:destination="@id/fragmentAddCard" />
+
+        <action
+            android:id="@+id/actionPaymentMethod"
+            app:destination="@id/fragmentPaymentMethod" />
+
+        <action
+            android:id="@+id/actionOrderPreview"
+            app:destination="@id/fragmentOrderPreview" />
+
+    </fragment>
+
+    <include app:graph="@navigation/nav_graph_asset_selection"/>
+
+    <fragment
+        android:id="@+id/fragmentBillingAddress"
+        android:name="com.fabriik.buy.ui.features.billingaddress.BillingAddressFragment"
+        tools:layout="@layout/fragment_billing_address" >
+
+        <argument
+            android:name="cardToken"
+            app:argType="string" />
+
+        <action
+            android:id="@+id/actionCountrySelection"
+            app:destination="@id/navGraphCountrySelection">
+
+            <argument
+                android:name="requestKey"
+                app:argType="string" />
+
+        </action>
+
+        <action
+            android:id="@+id/actionPaymentMethod"
+            app:destination="@id/fragmentPaymentMethod"
+            app:popUpTo="@id/fragmentBuyInput"/>
+
+    </fragment>
+
+    <include app:graph="@navigation/nav_graph_country_selection"/>
+
+    <fragment
+        android:id="@+id/fragmentAddCard"
+        android:name="com.fabriik.buy.ui.features.addcard.AddCardFragment"
+        tools:layout="@layout/fragment_add_card" >
+
+        <action
+            android:id="@+id/actionBillingAddress"
+            app:destination="@id/fragmentBillingAddress" />
+
+    </fragment>
+
+    <fragment android:id="@+id/fragmentBuyAuthentication"
+        android:name="com.fabriik.trade.ui.features.authentication.SwapAuthenticationFragment"
+        tools:layout="@layout/fragment_swap_authentication"/>
+
+    <fragment android:id="@+id/fragmentPaymentProcessing"
+        android:name="com.fabriik.buy.ui.features.processing.PaymentProcessingFragment"
+        tools:layout="@layout/fragment_payment_processing">
+
+        <action android:id="@+id/actionBuyDetails"
+            app:destination="@id/fragmentBuyDetails"/>
+
+        <argument
+            android:name="paymentReference"
+            app:argType="string"
+            app:nullable="true"/>
+
+        <argument
+            android:name="redirectUrl"
+            app:argType="string"
+            app:nullable="true"/>
+
+    </fragment>
+
+    <fragment android:id="@+id/fragmentOrderPreview"
+        android:name="com.fabriik.buy.ui.features.orderpreview.OrderPreviewFragment"
+        tools:layout="@layout/fragment_order_preview">
+
+        <argument
+            android:name="fiatAmount"
+            app:argType="java.math.BigDecimal"/>
+
+        <argument
+            android:name="fiatCurrency"
+            app:argType="string"/>
+
+        <argument
+            android:name="cryptoCurrency"
+            app:argType="string"/>
+
+        <argument
+            android:name="networkFee"
+            app:argType="com.fabriik.trade.data.model.FeeAmountData"/>
+
+        <argument
+            android:name="quoteResponse"
+            app:argType="com.fabriik.trade.data.response.QuoteResponse"/>
+
+        <argument
+            android:name="paymentInstrument"
+            app:argType="com.fabriik.common.data.model.PaymentInstrument"/>
+
+        <action
+            android:id="@+id/actionUserAuthentication"
+            app:destination="@id/fragmentBuyAuthentication" />
+
+        <action
+            android:id="@+id/actionPaymentTimeout"
+            app:destination="@id/fragmentPaymentTimeout" />
+
+        <action
+            android:id="@+id/actionPaymentProcessing"
+            app:destination="@id/fragmentPaymentProcessing" />
+
+    </fragment>
+
+    <fragment android:id="@+id/fragmentPaymentMethod"
+        android:name="com.fabriik.buy.ui.features.paymentmethod.PaymentMethodFragment"
+        tools:layout="@layout/fragment_payment_method">
+
+        <action
+            android:id="@+id/actionAddCard"
+            app:destination="@id/fragmentAddCard" />
+
+    </fragment>
+
+    <fragment android:id="@+id/fragmentPaymentTimeout"
+        android:name="com.fabriik.buy.ui.features.timeout.PaymentTimeoutFragment"
+        tools:layout="@layout/fragment_payment_timeout">
+
+        <action android:id="@+id/actionBuy"
+            app:destination="@+id/fragmentBuyInput"
+            app:popUpTo="@id/fragmentBuyInput"/>
+
+    </fragment>
+
+    <fragment android:id="@+id/fragmentBuyDetails"
+        android:name="com.fabriik.buy.ui.features.buydetails.BuyDetailsFragment"
+        tools:layout="@layout/fragment_buy_details">
+
+        <argument
+            android:name="exchangeId"
+            app:argType="string" />
+
+        <argument
+            android:name="flow"
+            app:argType="com.fabriik.buy.data.enums.BuyDetailsFlow" />
+
+    </fragment>
+ 
+</navigation>

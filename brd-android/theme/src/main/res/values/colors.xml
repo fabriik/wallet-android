@@ -161,7 +161,6 @@
     <color name="wallet_delisted_token_background">#190C2A</color>
     <color name="wallet_delisted_token_icon_background">#3E3C61</color>
 
-
     <array name="pin_digit_button_colors">
         <item>#FE5A80</item>
         <item>#FC6469</item>
@@ -197,4 +196,9 @@
     <color name="fabriik_red">#D72431</color>
     <color name="fabriik_gold_100">#F7F5F1</color>
     <color name="fabriik_yellow">#F8BA37</color>
+    <color name="fabriik_dark_blue_buy">#1434CB</color>
+
+    <!-- Swap transaction item -->
+    <color name="swap_green">#0EBF15</color>
+    <color name="swap_light_green">#D6F5D6</color>
 </resources>

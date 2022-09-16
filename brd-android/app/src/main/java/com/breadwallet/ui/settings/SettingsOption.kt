@@ -50,6 +50,7 @@ enum class SettingsOption {
     UPDATE_PIN,
     PAPER_KEY,
     WIPE,
+    DELETE_ACCOUNT,
 
     // DEVELOPER OPTIONS
     SEND_LOGS,
@@ -65,6 +66,7 @@ enum class SettingsOption {
     VIEW_LOGS,
     COPY_PAPER_KEY,
     METADATA_VIEWER,
+    TEST_FABRIIK_GENERIC_DIALOG,
 
     // BTC
     REDEEM_PRIVATE_KEY,

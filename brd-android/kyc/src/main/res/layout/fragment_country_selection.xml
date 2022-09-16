@@ -6,32 +6,16 @@
     android:background="@color/white"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/tv_title"
-        style="@style/TextStyle.Title6"
-        android:layout_width="wrap_content"
+    <com.fabriik.common.ui.customview.FabriikToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="@string/CountrySelection.Title"
-        android:textColor="@color/light_text_01"
-        app:layout_constraintBottom_toBottomOf="@id/btn_back"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/btn_back" />
-
-    <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/btn_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:padding="8dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:scaleType="fitXY"
-        android:src="@drawable/ic_kyc_back"
-        android:tint="@color/light_icons_01"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:title="@string/CountrySelection.Title"
+        app:titleType="small"
+        app:showDismiss="false"/>
 
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/et_search"
@@ -43,7 +27,7 @@
         android:hint="@string/CountrySelection.SearchHint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_back"/>
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_countries"

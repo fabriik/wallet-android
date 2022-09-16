@@ -59,7 +59,6 @@ public final class UserMetricsUtil {
 
     /* Url fields */
     private static final String ME_METRICS_URL = APIClient.getBaseURL() + "/me/metrics";
-    private static final String ME_MAILING_LIST_SUBSCRIBE_URL = APIClient.getBaseURL() + "/me/mailing-list-subscribe";
 
     /* Metric field key */
     private static final String FIELD_METRIC = "metric";
@@ -211,22 +210,6 @@ public final class UserMetricsUtil {
         } catch (JSONException e) {
             Log.e(TAG, "Error constructing JSON payload for log SegWit event.", e);
         }
-    }
-
-    public static void makeEmailOptInRequest(final Context context, final String email) {
-        BRExecutor.getInstance().forLightWeightBackgroundTasks().execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    JSONObject payload = new JSONObject();
-                    payload.put(UserMetricsUtil.FIELD_EMAIL, email);
-
-                    sendMetricsRequestWithPayload(context, ME_MAILING_LIST_SUBSCRIBE_URL, payload);
-                } catch (JSONException e) {
-                    Log.e(TAG, "Error constructing JSON payload for email opt in request.", e);
-                }
-            }
-        });
     }
 
     /**

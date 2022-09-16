@@ -77,7 +77,7 @@ class SubmitPhotoFragment : Fragment(),
 
     override fun render(state: SubmitPhotoContract.State) {
         with(binding) {
-            loadingView.isVisible = state.loadingVisible
+            loadingView.root.isVisible = state.loadingVisible
 
             val content1 = when (state.documentType) {
                 SELFIE -> R.string.SubmitPhoto_Selfie_CheckedItem1
@@ -127,7 +127,7 @@ class SubmitPhotoFragment : Fragment(),
             }
 
             is SubmitPhotoContract.Effect.ShowToast ->
-                FabriikToastUtil.show(
+                FabriikToastUtil.showInfo(
                     parentView = binding.root,
                     message = effect.message
                 )

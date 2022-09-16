@@ -40,7 +40,7 @@
                     android:layout_width="22dp"
                     android:layout_height="22dp"
                     android:layout_above="@+id/tx_amount"
-                    android:layout_alignEnd="@id/tx_date"
+                    android:layout_alignEnd="@id/tx_title"
                     android:layout_marginEnd="10dp"
                     android:background="@drawable/ic_close_light_grey"/>
 
@@ -96,7 +96,7 @@
 
 
                 <com.breadwallet.legacy.presenter.customviews.BaseTextView
-                    android:id="@+id/tx_date"
+                    android:id="@+id/tx_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/divider1"
@@ -111,7 +111,7 @@
                     android:id="@+id/divider2"
                     android:layout_width="match_parent"
                     android:layout_height="1px"
-                    android:layout_below="@id/tx_date"
+                    android:layout_below="@id/tx_title"
                     android:layout_marginTop="14dp"
                     android:background="@color/light_gray"/>
 

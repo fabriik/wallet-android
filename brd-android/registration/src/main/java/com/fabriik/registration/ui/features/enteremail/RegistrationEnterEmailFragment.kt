@@ -18,7 +18,6 @@ import com.fabriik.common.utils.showKeyboard
 import com.fabriik.common.utils.textOrEmpty
 import com.fabriik.registration.R
 import com.fabriik.registration.databinding.FragmentRegistrationEnterEmailBinding
-import com.fabriik.registration.ui.RegistrationActivity
 import com.fabriik.registration.ui.RegistrationFlow
 import kotlinx.coroutines.flow.collect
 
@@ -57,6 +56,10 @@ class RegistrationEnterEmailFragment : Fragment(),
                     )
                 )
             }
+            cbPromotions.setOnCheckedChangeListener { buttonView, isChecked ->
+                viewModel.setEvent(RegistrationEnterEmailContract.Event.PromotionsClicked(isChecked))
+            }
+
         }
 
         // collect UI state
@@ -81,7 +84,7 @@ class RegistrationEnterEmailFragment : Fragment(),
     override fun render(state: RegistrationEnterEmailContract.State) {
         with(binding) {
             btnNext.isEnabled = state.nextEnabled
-            loadingView.isVisible = state.loadingVisible
+            loadingView.root.isVisible = state.loadingVisible
         }
     }
 
@@ -91,7 +94,7 @@ class RegistrationEnterEmailFragment : Fragment(),
                 requireActivity().finish()
 
             is RegistrationEnterEmailContract.Effect.ShowToast ->
-                FabriikToastUtil.show(
+                FabriikToastUtil.showInfo(
                     parentView = binding.root,
                     message = effect.message
                 )

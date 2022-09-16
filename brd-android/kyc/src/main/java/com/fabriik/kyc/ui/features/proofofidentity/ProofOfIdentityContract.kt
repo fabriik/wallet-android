@@ -12,7 +12,7 @@ interface ProofOfIdentityContract {
         object PassportClicked : Event()
         object DrivingLicenceClicked : Event()
         object ResidencePermitClicked : Event()
-        object Dismiss : Event()
+        object DismissClicked : Event()
     }
 
     sealed class Effect : FabriikContract.Effect {

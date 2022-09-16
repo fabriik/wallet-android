@@ -164,8 +164,8 @@ public final class EventUtils {
     public static final String PROMPT_PAPER_KEY = EventUtils.EVENT_PROMPT_PREFIX + "paperKeyPrompt";
     public static final String PROMPT_UPGRADE_PIN = EventUtils.EVENT_PROMPT_PREFIX + "upgradePinPrompt";
     public static final String PROMPT_RECOMMEND_RESCAN = EventUtils.EVENT_PROMPT_PREFIX + "recommendRescanPrompt";
-    public static final String PROMPT_EMAIL = EventUtils.EVENT_PROMPT_PREFIX + "emailPrompt";
     public static final String PROMPT_RATE_APP = EventUtils.EVENT_PROMPT_PREFIX + "rateAppPrompt";
+    public static final String PROMPT_VERIFY_USER = EventUtils.EVENT_PROMPT_PREFIX + "verifyUserPrompt";
     // Gift events
     public static final String EVENT_GIFT_SEND = "gift.send";
     public static final String EVENT_GIFT_REDEEM = "gift.redeem";
