@@ -37,7 +37,13 @@ data class QuoteResponse(
     val fromFeeCurrency: FeeCurrency?,
 
     @Json(name="to_fee_currency")
-    val toFeeCurrency: FeeCurrency?
+    val toFeeCurrency: FeeCurrency?,
+
+    @Json(name="from_fee")
+    val fromFee: BigDecimal?,
+
+    @Json(name="to_fee")
+    val toFee: BigDecimal?
 ): Parcelable {
 
     fun isExpired() = timestamp < System.currentTimeMillis()

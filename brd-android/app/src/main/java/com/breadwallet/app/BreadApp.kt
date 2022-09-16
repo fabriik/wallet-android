@@ -85,7 +85,9 @@ import com.fabriik.trade.data.SwapApi
 import com.fabriik.trade.data.SwapApiInterceptor
 import com.fabriik.trade.data.SwapTransactionsFetcher
 import com.fabriik.trade.data.SwapTransactionsRepository
-import com.fabriik.trade.utils.EstimateSwapFee
+import com.fabriik.trade.utils.CreateFeeAmountData
+import com.fabriik.trade.utils.EstimateReceivingFee
+import com.fabriik.trade.utils.EstimateSendingFee
 import com.platform.APIClient
 import com.platform.HTTPServer
 import com.platform.interfaces.KVStoreProvider
@@ -516,8 +518,16 @@ class BreadApp : Application(), KodeinAware, CameraXConfig.Provider {
             BakersApiClient.create(instance())
         }
 
-        bind<EstimateSwapFee>() with singleton {
-            EstimateSwapFee(instance(), instance(), instance())
+        bind<EstimateReceivingFee>() with singleton {
+            EstimateReceivingFee(instance())
+        }
+        
+        bind<EstimateSendingFee>() with singleton {
+            EstimateSendingFee(instance(), instance())
+        }
+
+        bind<CreateFeeAmountData>() with singleton {
+            CreateFeeAmountData(instance())
         }
     }
 
@@ -531,7 +541,7 @@ class BreadApp : Application(), KodeinAware, CameraXConfig.Provider {
     private val conversionTracker by instance<ConversionTracker>()
     private val swapTransactionsFetcher by instance<SwapTransactionsFetcher>()
     private val connectivityStateProvider by instance<ConnectivityStateProvider>()
-    private val CHANNEL = "kyc-platform-channels"
+
     override fun onCreate() {
         super.onCreate()
         installHooks()

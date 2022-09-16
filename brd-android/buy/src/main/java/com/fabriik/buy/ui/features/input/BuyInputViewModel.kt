@@ -12,7 +12,7 @@ import com.fabriik.common.data.model.PaymentInstrument
 import com.fabriik.common.data.Status
 import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.common.utils.getString
-import com.fabriik.trade.utils.EstimateSwapFee
+import com.fabriik.trade.utils.EstimateReceivingFee
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -20,7 +20,6 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
 import org.kodein.di.erased.instance
 import java.math.BigDecimal
-import java.math.RoundingMode
 
 class BuyInputViewModel(
     application: Application
@@ -31,7 +30,7 @@ class BuyInputViewModel(
     override val kodein by closestKodein { application }
 
     private val buyApi by kodein.instance<BuyApi>()
-    private val estimateFee by kodein.instance<EstimateSwapFee>()
+    private val estimateFee by kodein.instance<EstimateReceivingFee>()
     private val profileManager by kodein.instance<ProfileManager>()
     private val metaDataManager by kodein.instance<AccountMetaDataProvider>()
 
@@ -127,29 +126,25 @@ class BuyInputViewModel(
     }
 
     private fun onAmountChanged(state: BuyInputContract.State.Loaded, cryptoAmount: BigDecimal, fiatAmount: BigDecimal, cryptoAmountChangeByUser: Boolean, fiatAmountChangeByUser: Boolean) {
-        setState { state.copy(networkFee = null).validate() }
+        val networkFee = estimateFee(
+            quote = state.quoteResponse,
+            amount = cryptoAmount,
+            fiatCode = state.fiatCurrency,
+            walletCurrency = state.cryptoCurrency
+        )
 
-        viewModelScope.launch(Dispatchers.IO) {
-            val networkFee = estimateFee(
-                amount = cryptoAmount,
-                fiatCode = state.fiatCurrency,
-                walletCurrency = state.cryptoCurrency
-            )
-
-            val latestState = currentLoadedState ?: return@launch
-            setState {
-                latestState.copy(
-                    networkFee = networkFee,
-                    fiatAmount = fiatAmount,
-                    cryptoAmount = cryptoAmount,
-                ).validate()
-            }
-
-            updateAmounts(
-                fiatAmountChangedByUser = fiatAmountChangeByUser,
-                cryptoAmountChangedByUser = cryptoAmountChangeByUser,
-            )
+        setState {
+            state.copy(
+                networkFee = networkFee,
+                fiatAmount = fiatAmount,
+                cryptoAmount = cryptoAmount,
+            ).validate()
         }
+
+        updateAmounts(
+            fiatAmountChangedByUser = fiatAmountChangeByUser,
+            cryptoAmountChangedByUser = cryptoAmountChangeByUser,
+        )
     }
 
     override fun onContinueClicked() {

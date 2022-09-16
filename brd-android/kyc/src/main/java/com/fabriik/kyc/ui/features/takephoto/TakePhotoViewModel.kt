@@ -3,6 +3,7 @@ package com.fabriik.kyc.ui.features.takephoto
 import android.Manifest
 import android.app.Application
 import android.content.pm.PackageManager
+import android.net.Uri
 import androidx.camera.core.CameraSelector
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
@@ -21,7 +22,7 @@ class TakePhotoViewModel(
     savedStateHandle: SavedStateHandle
 ) : FabriikViewModel<TakePhotoContract.State, TakePhotoContract.Event, TakePhotoContract.Effect>(
     application, savedStateHandle
-), LifecycleObserver {
+), TakePhotoEventHandler, LifecycleObserver {
 
     private lateinit var arguments: TakePhotoFragmentArgs
 
@@ -63,53 +64,55 @@ class TakePhotoViewModel(
         )
     }
 
-    override fun handleEvent(event: TakePhotoContract.Event) {
-        when (event) {
-            is TakePhotoContract.Event.BackClicked ->
-                setEffect { TakePhotoContract.Effect.Back }
+    override fun onBackClicked() {
+        setEffect { TakePhotoContract.Effect.Back }
+    }
 
-            is TakePhotoContract.Event.DismissClicked ->
-                setEffect { TakePhotoContract.Effect.Dismiss }
+    override fun onDismissCLicked() {
+        setEffect { TakePhotoContract.Effect.Dismiss }
+    }
 
-            is TakePhotoContract.Event.CameraPermissionResult ->
-                setEffect {
-                    if (event.granted) {
-                        TakePhotoContract.Effect.SetupCamera(
-                            currentState.preferredLensFacing
-                        )
-                    } else {
-                        TakePhotoContract.Effect.RequestCameraPermission
-                    }
-                }
+    override fun onTakePhotoFailed() {
+        setEffect {
+            TakePhotoContract.Effect.ShowToast(
+                getString(R.string.FabriikApi_DefaultError)
+            )
+        }
+    }
 
-            is TakePhotoContract.Event.TakePhotoFailed ->
-                setEffect {
-                    TakePhotoContract.Effect.ShowToast(
-                        getString(R.string.FabriikApi_DefaultError)
-                    )
-                }
+    override fun onCameraPermissionResult(granted: Boolean) {
+        setEffect {
+            if (granted) {
+                TakePhotoContract.Effect.SetupCamera(
+                    currentState.preferredLensFacing
+                )
+            } else {
+                TakePhotoContract.Effect.RequestCameraPermission
+            }
+        }
+    }
 
-            is TakePhotoContract.Event.TakePhotoCompleted ->
-                setEffect {
-                    TakePhotoContract.Effect.GoToPreview(
-                        currentData = DocumentData(
-                            documentSide = currentState.documentSide,
-                            imageUri = event.uri
-                        ),
-                        documentData = arguments.documentData,
-                        documentType = currentState.documentType
-                    )
-                }
+    override fun onTakePhotoCompleted(uri: Uri) {
+        setEffect {
+            TakePhotoContract.Effect.GoToPreview(
+                currentData = DocumentData(
+                    documentSide = currentState.documentSide,
+                    imageUri = uri
+                ),
+                documentData = arguments.documentData,
+                documentType = currentState.documentType
+            )
+        }
+    }
 
-            is TakePhotoContract.Event.TakePhotoClicked ->
-                setEffect {
-                    TakePhotoContract.Effect.TakePhoto(
-                        generateFileName(
-                            type = currentState.documentType,
-                            side = currentState.documentSide
-                        )
-                    )
-                }
+    override fun onTakePhotoClicked() {
+        setEffect {
+            TakePhotoContract.Effect.TakePhoto(
+                generateFileName(
+                    type = currentState.documentType,
+                    side = currentState.documentSide
+                )
+            )
         }
     }
 

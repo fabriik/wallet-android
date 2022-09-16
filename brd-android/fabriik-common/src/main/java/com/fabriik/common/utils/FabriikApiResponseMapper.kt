@@ -13,11 +13,11 @@ import retrofit2.HttpException
 import retrofit2.Response
 import java.io.EOFException
 
-class FabriikApiResponseMapper {
-
-    private val moshi = Moshi.Builder()
+class FabriikApiResponseMapper(
+    private val moshi: Moshi = Moshi.Builder()
         .addLast(KotlinJsonAdapterFactory())
         .build()
+) {
 
     fun <T> mapFabriikApiResponseSuccess(response: FabriikApiResponse<T?>): Resource<T?> {
         return when {
@@ -39,7 +39,7 @@ class FabriikApiResponseMapper {
         }
     }
 
-    fun <T> mapError(context: Context, exception: Exception) : Resource<T?> {
+    fun <T> mapError(context: Context, exception: Exception): Resource<T?> {
         var errorMessage: String? = null
 
         if (exception is HttpException) {

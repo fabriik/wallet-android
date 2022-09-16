@@ -50,6 +50,7 @@ enum class SettingsOption {
     UPDATE_PIN,
     PAPER_KEY,
     WIPE,
+    DELETE_ACCOUNT,
 
     // DEVELOPER OPTIONS
     SEND_LOGS,

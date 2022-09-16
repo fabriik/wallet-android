@@ -56,6 +56,10 @@ class RegistrationEnterEmailFragment : Fragment(),
                     )
                 )
             }
+            cbPromotions.setOnCheckedChangeListener { buttonView, isChecked ->
+                viewModel.setEvent(RegistrationEnterEmailContract.Event.PromotionsClicked(isChecked))
+            }
+
         }
 
         // collect UI state

@@ -34,7 +34,6 @@ import com.bluelinelabs.conductor.RouterTransaction
 import com.bluelinelabs.conductor.changehandler.FadeChangeHandler
 import com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler
 import com.bluelinelabs.conductor.changehandler.VerticalChangeHandler
-import com.breadwallet.BuildConfig
 import com.breadwallet.R
 import com.breadwallet.breadbox.BreadBox
 import com.breadwallet.legacy.presenter.settings.NotificationSettingsController
@@ -57,12 +56,14 @@ import com.breadwallet.ui.pin.InputPinController
 import com.breadwallet.ui.profile.ProfileController
 import com.breadwallet.ui.provekey.PaperKeyProveController
 import com.breadwallet.ui.receive.ReceiveController
+import com.breadwallet.ui.recovery.RecoveryKeyController
 import com.breadwallet.ui.scanner.ScannerController
 import com.breadwallet.ui.send.SendSheetController
 import com.breadwallet.ui.settings.SettingsController
 import com.breadwallet.ui.settings.about.AboutController
 import com.breadwallet.ui.settings.analytics.ShareDataController
 import com.breadwallet.ui.settings.currency.DisplayCurrencyController
+import com.breadwallet.ui.settings.delete.DeleteAccountInfoController
 import com.breadwallet.ui.settings.fastsync.FastSyncController
 import com.breadwallet.ui.settings.fingerprint.FingerprintSettingsController
 import com.breadwallet.ui.settings.logview.LogcatController
@@ -87,7 +88,6 @@ import com.breadwallet.util.CryptoUriParser
 import com.breadwallet.util.isBrd
 import com.breadwallet.util.showFabriikGenericDialog
 import com.fabriik.buy.ui.BuyActivity
-import com.fabriik.buy.ui.BuyWebViewActivity
 import com.fabriik.common.ui.features.nointernet.NoInternetActivity
 import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.kyc.ui.KycActivity
@@ -149,6 +149,14 @@ class RouterNavigator(
         }
     }
 
+    override fun backTo(effect: NavigationTarget.BackTo) {
+        val tag = router.backstack.filter { it.controller.javaClass == effect.target }
+            .mapNotNull { it.tag() }
+            .firstOrNull() ?: return
+
+        router.popToTag(tag)
+    }
+
     override fun reviewBrd() {
         EventUtils.pushEvent(EventUtils.EVENT_REVIEW_PROMPT_GOOGLE_PLAY_TRIGGERED)
         AppReviewPromptManager.openGooglePlay(checkNotNull(router.activity))
@@ -204,11 +212,7 @@ class RouterNavigator(
 
         router.activity?.let {
             it.startActivity(
-                if (BuildConfig.DEBUG) {
-                    BuyActivity.getStartIntent(it)
-                } else {
-                    BuyWebViewActivity.getStartIntent(it)
-                }
+                BuyActivity.getStartIntent(it)
             )
         }
     }
@@ -240,6 +244,7 @@ class RouterNavigator(
     override fun menu(effect: NavigationTarget.Menu) {
         router.pushController(
             RouterTransaction.with(SettingsController(effect.settingsOption))
+                .tag(SettingsController.TRANSACTION_TAG)
                 .popChangeHandler(VerticalChangeHandler())
                 .pushChangeHandler(VerticalChangeHandler())
         )
@@ -494,6 +499,22 @@ class RouterNavigator(
     override fun wipeWallet() {
         router.pushController(
             RouterTransaction.with(WipeWalletController())
+                .pushChangeHandler(HorizontalChangeHandler())
+                .popChangeHandler(HorizontalChangeHandler())
+        )
+    }
+
+    override fun goToRecoveryKey(effect: NavigationTarget.GoToRecoveryKey) {
+        router.pushController(
+            RouterTransaction.with(RecoveryKeyController(effect.mode, effect.phrase))
+                .pushChangeHandler(HorizontalChangeHandler())
+                .popChangeHandler(HorizontalChangeHandler())
+        )
+    }
+
+    override fun deleteAccount() {
+        router.pushController(
+            RouterTransaction.with(DeleteAccountInfoController())
                 .pushChangeHandler(HorizontalChangeHandler())
                 .popChangeHandler(HorizontalChangeHandler())
         )
@@ -759,10 +780,9 @@ class RouterNavigator(
         val activity = checkNotNull(router.activity)
         val parentView = activity.window.decorView
         val message = when {
-            effect.message != null -> effect.message
-            effect.messageRes != null -> activity.getString(effect.messageRes)
-            else -> activity.getString(R.string.FabriikApi_DefaultError)
-        }
+            effect.messageRes != null -> router.activity?.getString(effect.messageRes)
+            else -> effect.message
+        } ?: return
 
         when (effect.type) {
             NavigationTarget.FabriikToast.Type.INFO ->

@@ -555,17 +555,11 @@
     <string name="PaymentProtocol.Errors.untrustedCertificate">opålitligt certifikat</string>
     <string name="Platform.transaction_cancelled">Transaktionen annullerad</string>
     <!-- Body text for a prompt that asks the user to subscribe to email updates to find out product updates. -->
-    <string name="Prompts.Email.body">Var först med att få viktiga support- och produktuppdateringar </string>
     <!-- Placeholder text for an email address text field. -->
-    <string name="Prompts.Email.placeholder">ange din e-post</string>
     <!-- Body text that is shown when the user successfully subscribes to email updates. -->
-    <string name="Prompts.Email.successBody">Du prenumererar nu på uppdateringar</string>
     <!-- Text that is displayed as a footnote when the user successfully subscribes to email updates. -->
-    <string name="Prompts.Email.successFootnote">Vi uppskattar ditt fortsatta stöd</string>
     <!-- Title that is shown when the user successfully subscribes to email updates. -->
-    <string name="Prompts.Email.successTitle">Tack!</string>
     <!-- Title for a prompt that asks the user to subscribe to email updates to find out product updates. -->
-    <string name="Prompts.Email.title">Häng med i utvecklingen</string>
     <!-- Enable face ID prompt body -->
     <string name="Prompts.FaceId.body">Klicka Fortsätt för att aktivera Face ID</string>
     <!-- Enable face ID prompt title -->

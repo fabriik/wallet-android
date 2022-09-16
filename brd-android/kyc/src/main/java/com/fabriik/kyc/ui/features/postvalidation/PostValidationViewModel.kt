@@ -11,7 +11,7 @@ class PostValidationViewModel(
     application: Application
 ) : FabriikViewModel<PostValidationContract.State, PostValidationContract.Event, PostValidationContract.Effect>(
     application
-), KodeinAware {
+), PostValidationEventHandler, KodeinAware {
 
     override val kodein by closestKodein { application }
     private val profileManager by kodein.instance<ProfileManager>()
@@ -22,11 +22,7 @@ class PostValidationViewModel(
 
     override fun createInitialState() = PostValidationContract.State
 
-    override fun handleEvent(event: PostValidationContract.Event) {
-        when (event) {
-
-            is PostValidationContract.Event.ConfirmClicked ->
-                setEffect { PostValidationContract.Effect.Profile }
-        }
+    override fun onConfirmClicked() {
+        setEffect { PostValidationContract.Effect.Profile }
     }
 }

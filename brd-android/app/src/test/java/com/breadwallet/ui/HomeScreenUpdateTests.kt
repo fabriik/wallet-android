@@ -181,19 +181,4 @@ class HomeScreenUpdateTests {
                 )
             )
     }
-
-    @Test
-    fun promptLoaded() {
-        val initState = M.createDefault()
-
-        spec.given(initState)
-            .`when`(
-                E.OnPromptLoaded(promptId = PromptItem.EMAIL_COLLECTION)
-            )
-            .then(
-                assertThatNext(
-                    hasModel(initState.copy(promptId = PromptItem.EMAIL_COLLECTION))
-                )
-            )
-    }
 }

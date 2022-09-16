@@ -44,7 +44,6 @@ object HomeScreen {
         val promptId: PromptItem? = null,
         val hasInternet: Boolean = true,
         val isBuyBellNeeded: Boolean = false,
-        val isBuyAlertNeeded: Boolean = false,
         val showBuyAndSell: Boolean = false,
         val rateAppPromptDontShowMeAgain: Boolean = false,
         val profile: Profile? = null
@@ -70,7 +69,6 @@ object HomeScreen {
         data class OnWalletDisplayOrderUpdated(@Redacted val displayOrder: List<String>) : E()
 
         data class OnBuyBellNeededLoaded(val isBuyBellNeeded: Boolean) : E()
-        data class OnBuyAlertNeededLoaded(val isBuyAlertNeeded: Boolean) : E()
 
         data class OnConnectionUpdated(val isConnected: Boolean) : E()
 
@@ -103,7 +101,6 @@ object HomeScreen {
         object OnEmailVerified : E()
         data class OnRateAppPromptDontShowClicked(val checked: Boolean) : E()
         object OnRateAppPromptNoThanksClicked : E()
-        data class OnEmailPromptClicked(@Redacted val email: String) : E()
         data class OnSupportFormSubmitted(val feedback: String) : E()
         data class OnProfileDataLoaded(val profile: Profile) : E()
         data class OnProfileDataLoadFailed(val message: String?) : E()
@@ -117,7 +114,6 @@ object HomeScreen {
         object LoadWallets : F()
         object LoadEnabledWallets : F()
         object LoadIsBuyBellNeeded : F()
-        object LoadIsBuyAlertNeeded : F()
         object LoadPrompt : F()
         object LoadConnectivityState : F()
         object CheckInAppNotification : F()
@@ -195,15 +191,6 @@ object HomeScreen {
             )
         }
 
-        class ShowPartnershipNote(val dialogId: String, val messageResId: Int) : F(), NavigationEffect {
-            override val navigationTarget = NavigationTarget.AlertDialog(
-                dialogId = dialogId,
-                titleResId = R.string.HomeScreen_partnershipNoteTitle,
-                messageResId = messageResId,
-                positiveButtonResId = R.string.Button_continueAction
-            )
-        }
-
         data class RecordPushNotificationOpened(val campaignId: String) : F()
 
         data class UpdateWalletOrder(
@@ -218,8 +205,6 @@ object HomeScreen {
         data class DismissPrompt(val promptItem: PromptItem) : F()
 
         object StartRescan : F()
-
-        data class SaveEmail(@Redacted val email: String) : F()
 
         object ClearRateAppPrompt : F()
         object SaveDontShowMeRateAppPrompt : F()
@@ -254,7 +239,6 @@ data class Wallet(
 }
 
 enum class PromptItem {
-    EMAIL_COLLECTION,
     FINGER_PRINT,
     PAPER_KEY,
     UPGRADE_PIN,

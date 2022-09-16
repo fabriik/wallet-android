@@ -13,7 +13,7 @@
     <string name="ProfileStatusView.statusSubtitleDefault">Get full access to your Fabriik wallet</string>
     <string name="ProfileStatusView.statusSubtitleLevel1Verified">Current limit: $1,000/day</string>
     <string name="ProfileStatusView.statusSubtitleLevel2Pending">We’ll let you know when your account is verified.</string>
-    <string name="ProfileStatusView.statusSubtitleLevel2Verified">Congratulations! You now have full access to your Fabriik wallet.</string>
+    <string name="ProfileStatusView.statusSubtitleLevel2Verified">Swap limit: $10,000 USD/day\nBuy limit: $500 USD/day</string>
     <string name="ProfileStatusView.statusSubtitleLevel2Failure">Oops! We had some issues processing your data</string>
     <string name="ProfileStatusView.declinedVerificationButton">Why is my verification declined?</string>
     <string name="ProfileStatusView.statusPending">Pending</string>
@@ -27,9 +27,10 @@
     <string name="AccountVerification.Level1.Tag">Swap limit: $1,000/day ($10,000 lifetime)</string>
     <string name="AccountVerification.Level1.CheckedItem1">Personal Information</string>
     <string name="AccountVerification.Level2">Level 2</string>
-    <string name="AccountVerification.Level2.Tag">Swap limit: $10,000 per Swap, no lifetime limit</string>
+    <string name="AccountVerification.Level2.Tag.Swap">Swap limits: $10,000 per Swap, no lifetime limit</string>
+    <string name="AccountVerification.Level2.Tag.Buy">Buy limits: $500 USD/day, no lifetime limit</string>
     <string name="AccountVerification.Level2.CheckedItem1">ID Verification</string>
-    <string name="AccountVerification.Level2.CheckedItem2">Proof of life</string>
+    <string name="AccountVerification.Level2.CheckedItem2">Selfie verification</string>
     <string name="AccountVerification.Level2.CompleteLevel1First">Please complete Level 1 verification first.</string>
     <string name="AccountVerification.Level2.PendingVerification">Unavailable while KYC verification is pending.</string>
     <string name="AccountVerification.Level2.UpdateLevel1IfDataChanged">If your personal information has changed, please first update Level 1 KYC and then continue with

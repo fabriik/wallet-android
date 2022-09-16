@@ -142,6 +142,7 @@
     <string name="Button.confirm">Confirm</string>
     <!-- Button label to open a email compose window with our support email in the to field. -->
     <string name="Button.contactSupport.android">Contact Support</string>
+    <string name="Button.contactSupport.android.underlined"><u>Contact Support</u></string>
     <!-- prompt continue button -->
     <string name="Button.continueAction">Continue</string>
     <!-- prompt dismiss button -->
@@ -567,17 +568,11 @@
     <string name="PaymentProtocol.Errors.untrustedCertificate">untrusted certificate</string>
     <string name="Platform.transaction_cancelled">Transaction Cancelled</string>
     <!-- Body text for a prompt that asks the user to subscribe to email updates to find out product updates. -->
-    <string name="Prompts.Email.body">Be the first to receive important support and product updates</string>
     <!-- Placeholder text for an email address text field. -->
-    <string name="Prompts.Email.placeholder">enter your email</string>
     <!-- Body text that is shown when the user successfully subscribes to email updates. -->
-    <string name="Prompts.Email.successBody">You have successfully subscribed to receive updates</string>
     <!-- Text that is displayed as a footnote when the user successfully subscribes to email updates. -->
-    <string name="Prompts.Email.successFootnote">We appreciate your continued support</string>
     <!-- Title that is shown when the user successfully subscribes to email updates. -->
-    <string name="Prompts.Email.successTitle">Thank you!</string>
     <!-- Title for a prompt that asks the user to subscribe to email updates to find out product updates. -->
-    <string name="Prompts.Email.title">Get in the loop</string>
     <!-- Enable face ID prompt body -->
     <string name="Prompts.FaceId.body">Tap Continue to enable Face ID</string>
     <!-- Enable face ID prompt title -->
@@ -675,7 +670,7 @@
     <!-- Recover wallet intro -->
     <string name="RecoverWallet.intro">Recover your Fabriik with your recovery phrase.</string>
     <!-- Invalid paper key message -->
-    <string name="RecoverWallet.invalid">The recovery phrase you entered is invalid. Please double-check each word and try again.</string>
+    <string name="RecoverWallet.invalid">Invalid recovery phrase. Please double-check each word and try again.</string>
     <!-- Previous button accessibility label -->
     <string name="RecoverWallet.leftArrow">Left Arrow</string>
     <!-- Next button label -->
@@ -685,9 +680,14 @@
     <!-- Next button accessibility label -->
     <string name="RecoverWallet.rightArrow">Right Arrow</string>
     <!-- Recover wallet sub-header -->
+    <string name="RecoverWallet.subtitle">Enter your Recovery Phrase</string>
+    <string name="RecoverWallet.description">Type your 12 Word Phrase</string>
     <string name="RecoverWallet.subheader">Enter the recovery phrase for the wallet you want to recover.</string>
     <!-- Reset PIN with paper key: sub-header -->
     <string name="RecoverWallet.subheader_reset_pin">To reset your PIN, enter the words from your recovery phrase into the boxes below.</string>
+    <!-- Reset PIN with paper key: sub-header -->
+    <string name="RecoverWallet.header_delete_account">Enter recovery phrase</string>
+    <string name="RecoverWallet.subheader_delete_account">Please enter your recovery phrase to delete your account and unlink your wallet</string>
     <!-- Instructs the user to enter words from the set of recovery key words. -->
     <string name="RecoveryKeyFlow.confirmRecoveryInputError">The word you entered is incorrect. Please try again.</string>
     <!-- Instructs the user to enter words from the set of recovery phrase words. -->
@@ -1010,6 +1010,8 @@
     <string name="Settings.wipe">Unlink from this device</string>
     <!-- Wipe/delete your wallet from the current device. -->
     <string name="Settings.wipe.android">Wipe wallet from this device</string>
+    <!-- Unlink an account from the wallet. -->
+    <string name="Settings.deleteAccount">Delete account</string>
     <!-- Share data view body -->
     <string name="ShareData.body">Help improve Fabriik by sharing your anonymous data with us. This does not include any financial information. We respect your financial privacy.</string>
     <!-- Share data header -->
@@ -1510,4 +1512,14 @@
     <string name="Swap.TransactionItem.Purchased">Purchased</string>
     <string name="Swap.TransactionItem.PurchaseFailed">Purchase failed</string>
     <string name="Swap.TransactionItem.PurchasePending">Pending purchase</string>
+
+    <!-- Delete account screen -->
+    <string name="DeleteAccountInfo.Title">You are about to delete your Fabriik account.</string>
+    <string name="DeleteAccountInfo.Subtitle">What does this mean?</string>
+    <string name="DeleteAccountInfo.Description">- You will no longer be able to use your email to sign in into Fabriik Wallet\n\n- You will no longer be able to user your KYC and registration status\n\n- Your private keys are still yours, keep your security phrase in a safe place in case you need to restore your wallet.</string>
+    <string name="DeleteAccountInfo.Checkbox">I understand that the only way to recover my wallet is by entering my recovery phrase</string>
+
+    <!-- Delete account dialog -->
+    <string name="DeleteAccountDialog.Title">Your account has been deleted. We are sorry to see you go.</string>
+    <string name="DeleteAccountDialog.Finish">Finish</string>
 </resources>

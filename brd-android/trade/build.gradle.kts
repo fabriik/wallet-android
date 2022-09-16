@@ -61,4 +61,7 @@ dependencies {
 
     implementation(Libs.Glide.Core)
     kapt(Libs.Glide.Compiler)
+
+    testImplementation(Libs.JUnit.Core)
+    testImplementation(Libs.Mockito.Core)
 }

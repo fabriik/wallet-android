@@ -555,17 +555,11 @@
     <string name="PaymentProtocol.Errors.untrustedCertificate">el certificado no es de confianza</string>
     <string name="Platform.transaction_cancelled">Transacción cancelada</string>
     <!-- Body text for a prompt that asks the user to subscribe to email updates to find out product updates. -->
-    <string name="Prompts.Email.body">Sé el primero en recibir soporte y actualizaciones importantes de productos</string>
     <!-- Placeholder text for an email address text field. -->
-    <string name="Prompts.Email.placeholder">indica tu correo electrónico</string>
     <!-- Body text that is shown when the user successfully subscribes to email updates. -->
-    <string name="Prompts.Email.successBody">Te has suscrito correctamente para recibir actualizaciones</string>
     <!-- Text that is displayed as a footnote when the user successfully subscribes to email updates. -->
-    <string name="Prompts.Email.successFootnote">Te agradecemos tu apoyo continuo</string>
     <!-- Title that is shown when the user successfully subscribes to email updates. -->
-    <string name="Prompts.Email.successTitle">¡Gracias!</string>
     <!-- Title for a prompt that asks the user to subscribe to email updates to find out product updates. -->
-    <string name="Prompts.Email.title">Ponte al día</string>
     <!-- Enable face ID prompt body -->
     <string name="Prompts.FaceId.body">Pulsa Continuar para activar Face ID</string>
     <!-- Enable face ID prompt title -->

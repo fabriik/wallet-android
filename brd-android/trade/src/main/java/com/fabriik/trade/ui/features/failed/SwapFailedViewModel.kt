@@ -7,17 +7,15 @@ class SwapFailedViewModel(
     application: Application
 ) : FabriikViewModel<SwapFailedContract.State, SwapFailedContract.Event, SwapFailedContract.Effect>(
     application
-) {
+), SwapFailedEventHandler {
 
     override fun createInitialState() = SwapFailedContract.State()
 
-    override fun handleEvent(event: SwapFailedContract.Event) {
-        when (event) {
-            SwapFailedContract.Event.SwapAgainClicked ->
-                setEffect { SwapFailedContract.Effect.Back }
+    override fun onGoHomeClicked() {
+        setEffect { SwapFailedContract.Effect.Dismiss }
+    }
 
-            SwapFailedContract.Event.GoHomeClicked ->
-                setEffect { SwapFailedContract.Effect.Dismiss }
-        }
+    override fun onSwapAgainClicked() {
+        setEffect { SwapFailedContract.Effect.Back }
     }
 }

@@ -17,14 +17,13 @@ import kotlinx.coroutines.launch
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
 import org.kodein.di.erased.instance
-import java.time.ZoneOffset.UTC
 import java.util.*
 
 class PersonalInformationViewModel(
     application: Application
 ) : FabriikViewModel<PersonalInformationContract.State, PersonalInformationContract.Event, PersonalInformationContract.Effect>(
     application
-), KodeinAware {
+), PersonalInformationEventHandler, KodeinAware {
 
     override val kodein by closestKodein { application }
     private val profileManager by kodein.instance<ProfileManager>()
@@ -38,51 +37,49 @@ class PersonalInformationViewModel(
 
     override fun createInitialState() = PersonalInformationContract.State()
 
-    override fun handleEvent(event: PersonalInformationContract.Event) {
-        when (event) {
-            is PersonalInformationContract.Event.LoadProfile -> {
-                val profile = profileManager.getProfile()
-                setState {
-                    copy(
-                        name = profile?.firstName ?: "",
-                        lastName = profile?.lastName ?: "",
-                        dateOfBirth = profile?.dateOfBirth,
-                        country = profile?.country?.let { Country(it, it) },
-                    )
-                }
-            }
+    override fun onBackClicked() {
+        setEffect { PersonalInformationContract.Effect.GoBack }
+    }
 
-            is PersonalInformationContract.Event.BackClicked ->
-                setEffect { PersonalInformationContract.Effect.GoBack }
+    override fun onDismissClicked() {
+        setEffect { PersonalInformationContract.Effect.Dismiss() }
+    }
 
-            is PersonalInformationContract.Event.DismissClicked ->
-                setEffect { PersonalInformationContract.Effect.Dismiss() }
+    override fun onCountryClicked() {
+        setEffect { PersonalInformationContract.Effect.CountrySelection }
+    }
 
-            is PersonalInformationContract.Event.CountryClicked ->
-                setEffect { PersonalInformationContract.Effect.CountrySelection }
+    override fun onNameChanged(name: String) {
+        setState { copy(name = name).validate() }
+    }
 
-            PersonalInformationContract.Event.DateClicked ->
-                setEffect {
-                    PersonalInformationContract.Effect.DateSelection(currentState.dateOfBirth)
-                }
+    override fun onLastNameChanged(lastName: String) {
+        setState { copy(lastName = lastName).validate() }
+    }
 
-            is PersonalInformationContract.Event.ConfirmClicked ->
-                confirmClicked()
+    override fun onCountryChanged(country: Country) {
+        setState { copy(country = country).validate() }
+    }
 
-            is PersonalInformationContract.Event.NameChanged ->
-                setState { copy(name = event.name).validate() }
+    override fun onDateClicked() {
+        setEffect { PersonalInformationContract.Effect.DateSelection(currentState.dateOfBirth) }
+    }
 
-            is PersonalInformationContract.Event.LastNameChanged ->
-                setState { copy(lastName = event.lastName).validate() }
+    override fun onDateChanged(date: Long) {
+        val calendar = Calendar.getInstance(SimpleTimeZone(0, "UTC"))
+        calendar.timeInMillis = date
+        setState { copy(dateOfBirth = calendar).validate() }
+    }
 
-            is PersonalInformationContract.Event.CountryChanged ->
-                setState { copy(country = event.country).validate() }
-
-            is PersonalInformationContract.Event.DateChanged -> {
-                val calendar = Calendar.getInstance(SimpleTimeZone(0, "UTC"))
-                calendar.timeInMillis = event.date
-                setState { copy(dateOfBirth = calendar).validate() }
-            }
+    override fun onLoadProfile() {
+        val profile = profileManager.getProfile()
+        setState {
+            copy(
+                name = profile?.firstName ?: "",
+                lastName = profile?.lastName ?: "",
+                dateOfBirth = profile?.dateOfBirth,
+                country = profile?.country?.let { Country(it, it) },
+            )
         }
     }
 
@@ -95,7 +92,7 @@ class PersonalInformationViewModel(
         }
     }
 
-    private fun confirmClicked() {
+    override fun onConfirmClicked() {
         if (!isAgeValid()) {
             setEffect {
                 PersonalInformationContract.Effect.ShowToast(getString(R.string.KYC_Error_Underage))

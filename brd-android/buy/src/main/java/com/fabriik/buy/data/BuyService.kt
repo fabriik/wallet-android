@@ -35,11 +35,4 @@ interface BuyService {
     suspend fun createOrder(
         @Body body: CreateBuyOrderRequest
     ): CreateBuyOrderResponse
-
-    //Todo: remove /reserve
-    @GET("reserve")
-    suspend fun getPaymentUrl(
-        @Header("Authorization") auth: String,
-        @Query("test") isTestNetwork: Boolean
-    ): ReservationUrlResponse
 }

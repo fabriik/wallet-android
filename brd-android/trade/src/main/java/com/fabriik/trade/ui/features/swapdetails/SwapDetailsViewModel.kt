@@ -18,7 +18,7 @@ class SwapDetailsViewModel(
 ) :
     FabriikViewModel<SwapDetailsContract.State, SwapDetailsContract.Event, SwapDetailsContract.Effect>(
         application, savedStateHandle
-    ), KodeinAware {
+    ), SwapDetailsEventHandler, KodeinAware {
 
     override val kodein by closestKodein { application }
 
@@ -37,32 +37,7 @@ class SwapDetailsViewModel(
 
     override fun createInitialState() = SwapDetailsContract.State.Loading
 
-    override fun handleEvent(event: SwapDetailsContract.Event) {
-        when (event) {
-            SwapDetailsContract.Event.LoadData ->
-                loadData()
-
-            SwapDetailsContract.Event.DismissClicked ->
-                setEffect { SwapDetailsContract.Effect.Dismiss }
-
-            SwapDetailsContract.Event.OrderIdClicked -> {
-                val state = currentLoadedState ?: return
-                setEffect { SwapDetailsContract.Effect.CopyToClipboard(state.data.orderId) }
-            }
-
-            SwapDetailsContract.Event.SourceTransactionIdClicked -> {
-                val transactionID = currentLoadedState?.data?.source?.transactionId ?: return
-                setEffect { SwapDetailsContract.Effect.CopyToClipboard(transactionID) }
-            }
-
-            SwapDetailsContract.Event.DestinationTransactionIdClicked -> {
-                val transactionID = currentLoadedState?.data?.destination?.transactionId ?: return
-                setEffect { SwapDetailsContract.Effect.CopyToClipboard(transactionID) }
-            }
-        }
-    }
-
-    private fun loadData() {
+    override fun onLoadData() {
         callApi(
             endState = { currentState },
             startState = { currentState },
@@ -83,5 +58,24 @@ class SwapDetailsViewModel(
                 }
             }
         )
+    }
+
+    override fun onDismissClicked() {
+        setEffect { SwapDetailsContract.Effect.Dismiss }
+    }
+
+    override fun onOrderIdClicked() {
+        val state = currentLoadedState ?: return
+        setEffect { SwapDetailsContract.Effect.CopyToClipboard(state.data.orderId) }
+    }
+
+    override fun onSourceTransactionIdClicked() {
+        val transactionID = currentLoadedState?.data?.source?.transactionId ?: return
+        setEffect { SwapDetailsContract.Effect.CopyToClipboard(transactionID) }
+    }
+
+    override fun onDestinationTransactionIdClicked() {
+        val transactionID = currentLoadedState?.data?.destination?.transactionId ?: return
+        setEffect { SwapDetailsContract.Effect.CopyToClipboard(transactionID) }
     }
 }

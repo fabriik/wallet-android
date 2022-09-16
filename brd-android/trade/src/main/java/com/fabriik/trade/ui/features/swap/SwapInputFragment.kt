@@ -16,13 +16,13 @@ import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.breadwallet.breadbox.formatCryptoForUi
 import com.breadwallet.tools.util.Utils.hideKeyboard
-import com.fabriik.common.ui.customview.FabriikSwitch
 import com.fabriik.common.ui.dialog.FabriikGenericDialog
 import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.trade.ui.customview.SwapCardView
 import com.fabriik.trade.ui.dialog.SwapConfirmationDialog
 import com.fabriik.trade.ui.features.assetselection.AssetSelectionFragment
 import com.fabriik.trade.ui.features.authentication.SwapAuthenticationViewModel
+import com.fabriik.trade.utils.EstimateSendingFee
 import java.math.BigDecimal
 import java.util.*
 
@@ -309,7 +309,8 @@ class SwapInputFragment : Fragment(),
             cvSwap.setSourceCurrencyTitle(
                 getString(
                     R.string.Swap_Input_IHave, state.sourceCryptoBalance.formatCryptoForUi(
-                        state.sourceCryptoCurrency
+                        state.sourceCryptoCurrency,
+                        SwapCardView.SCALE_CRYPTO
                     )
                 )
             )
@@ -317,12 +318,18 @@ class SwapInputFragment : Fragment(),
             tvRateValue.text = RATE_FORMAT.format(
                 state.sourceCryptoCurrency,
                 state.rate.formatCryptoForUi(
-                    state.destinationCryptoCurrency
+                    currencyCode = state.destinationCryptoCurrency,
+                    scale = 8
                 )
             )
 
             cvSwap.setInputFieldsEnabled(state.quoteResponse != null)
-            cvSwap.setSendingNetworkFee(state.sendingNetworkFee)
+            cvSwap.setSendingNetworkFee(
+                when (state.sendingNetworkFee) {
+                    is EstimateSendingFee.Result.Estimated -> state.sendingNetworkFee.data
+                    else -> null
+                }
+            )
             cvSwap.setReceivingNetworkFee(state.receivingNetworkFee)
 
             btnConfirm.isEnabled = state.confirmButtonEnabled
