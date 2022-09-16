@@ -51,17 +51,17 @@ object InputPinUpdate : Update<M, E, F>, InputPinUpdateSpec {
             M.Mode.VERIFY -> if (event.isPinCorrect) {
                 next(model.copy(pinUpdateMode = true, mode = M.Mode.NEW))
             } else {
-                next(model, setOf<F>(F.ErrorShake))
+                next(model, setOf<F>(F.ErrorShake, F.ResetPin))
             }
             M.Mode.NEW -> {
-                next(model.copy(mode = M.Mode.CONFIRM, pin = event.pin))
+                next(model.copy(mode = M.Mode.CONFIRM, pin = event.pin), setOf<F>(F.ResetPin))
             }
             M.Mode.CONFIRM -> if (event.pin == model.pin) {
                 next(model, setOf<F>(F.SetupPin(model.pin)))
             } else {
                 next(
                     model.copy(mode = M.Mode.NEW, pin = ""),
-                    setOf<F>(F.ErrorShake)
+                    setOf<F>(F.ErrorShake, F.ResetPin)
                 )
             }
         }

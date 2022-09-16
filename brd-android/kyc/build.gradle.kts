@@ -60,4 +60,7 @@ dependencies {
 
     implementation(Libs.Networking.Moshi)
     kapt(Libs.Networking.MoshiCodegen)
+
+    testImplementation(Libs.JUnit.Core)
+    testImplementation(Libs.Mockito.Core)
 }

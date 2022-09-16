@@ -66,7 +66,7 @@ fun Transfer.hashString(): String =
 
 // TODO: Move somewhere UI related
 fun BigDecimal.formatCryptoForUi(
-    currencyCode: String,
+    currencyCode: String?,
     scale: Int = 5,
     negate: Boolean = false
 ): String {
@@ -80,7 +80,12 @@ fun BigDecimal.formatCryptoForUi(
     currencyFormat.decimalFormatSymbols = decimalFormatSymbols
     currencyFormat.maximumFractionDigits = scale
     currencyFormat.minimumFractionDigits = 0
-    return "${currencyFormat.format(amount)} ${currencyCode.toUpperCase()}"
+
+    return if (currencyCode == null) {
+        currencyFormat.format(amount)
+    } else {
+        "${currencyFormat.format(amount)} ${currencyCode.toUpperCase()}"
+    }
 }
 
 val Wallet.currencyId: String

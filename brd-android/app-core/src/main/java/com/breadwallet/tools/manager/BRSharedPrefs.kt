@@ -61,8 +61,6 @@ object BRSharedPrefs {
     private const val SCREEN_WIDTH = "screenWidth"
     private const val BUNDLE_HASH_PREFIX = "bundleHash_"
     private const val SEGWIT = "segwit"
-    private const val EMAIL_OPT_IN = "emailOptIn"
-    private const val EMAIL_OPT_IN_DISMISSED = "emailOptInDismissed"
     private const val CURRENT_CURRENCY = "currentCurrency"
     private const val PAPER_KEY_WRITTEN_DOWN = "phraseWritten"
     private const val PREFER_STANDARD_FEE = "favorStandardFee"
@@ -112,8 +110,8 @@ object BRSharedPrefs {
     private const val APP_RATE_PROMPT_DONT_ASK_AGAIN = "app-rate-prompt-dont-ask-again"
     private const val APP_RATE_PROMPT_SHOULD_PROMPT = "app-rate-prompt-should-prompt"
     private const val APP_RATE_PROMPT_SHOULD_PROMPT_DEBUG = "app-rate-prompt-should-prompt-debug"
-    private const val BUY_NOTE_PROMPT_SHOULD_PROMPT = "buy-note-prompt-should-prompt"
-    private const val TRADE_NOTE_PROMPT_SHOULD_PROMPT = "trade-note-prompt-should-prompt"
+    private const val VERIFY_PROMPT = "verifyPrompt"
+
     const val APP_FOREGROUNDED_COUNT = "appForegroundedCount"
     const val APP_RATE_PROMPT_HAS_RATED = "appReviewPromptHasRated"
 
@@ -349,23 +347,11 @@ object BRSharedPrefs {
     fun getIsSegwitEnabled(): Boolean =
         brdPrefs.getBoolean(SEGWIT, false)
 
-    fun putEmailOptIn(hasOpted: Boolean) =
-        brdPrefs.edit { putBoolean(EMAIL_OPT_IN, hasOpted) }
-
-    fun getEmailOptIn(): Boolean =
-        brdPrefs.getBoolean(EMAIL_OPT_IN, false)
-
     fun putRewardsAnimationShown(wasShown: Boolean) =
         brdPrefs.edit { putBoolean(REWARDS_ANIMATION_SHOWN, wasShown) }
 
     fun getRewardsAnimationShown(): Boolean =
         brdPrefs.getBoolean(REWARDS_ANIMATION_SHOWN, false)
-
-    fun putEmailOptInDismissed(dismissed: Boolean) =
-        brdPrefs.edit { putBoolean(EMAIL_OPT_IN_DISMISSED, dismissed) }
-
-    fun getEmailOptInDismissed(): Boolean =
-        brdPrefs.getBoolean(EMAIL_OPT_IN_DISMISSED, false)
 
     /**
      * Get the debug bundle from shared preferences or empty if not available.
@@ -599,14 +585,6 @@ object BRSharedPrefs {
         _trackedConversionChanges.value = getTrackedConversions()
     }
 
-    var buyNotePromptShouldPrompt: Boolean
-        get() = brdPrefs.getBoolean(BUY_NOTE_PROMPT_SHOULD_PROMPT, true)
-        set(value) = brdPrefs.edit { putBoolean(BUY_NOTE_PROMPT_SHOULD_PROMPT, value) }
-
-    var tradeNotePromptShouldPrompt: Boolean
-        get() = brdPrefs.getBoolean(TRADE_NOTE_PROMPT_SHOULD_PROMPT, true)
-        set(value) = brdPrefs.edit { putBoolean(TRADE_NOTE_PROMPT_SHOULD_PROMPT, value) }
-
     var appRatePromptShouldPrompt: Boolean
         get() = brdPrefs.getBoolean(APP_RATE_PROMPT_SHOULD_PROMPT, false)
         set(value) = brdPrefs.edit { putBoolean(APP_RATE_PROMPT_SHOULD_PROMPT, value) }
@@ -625,6 +603,11 @@ object BRSharedPrefs {
     var appRatePromptDontAskAgain: Boolean
         get() = brdPrefs.getBoolean(APP_RATE_PROMPT_DONT_ASK_AGAIN, false)
         set(value) = brdPrefs.edit { putBoolean(APP_RATE_PROMPT_DONT_ASK_AGAIN, value) }
+            .also { promptChangeChannel.offer(Unit) }
+
+    var verifyProfilePrompt: Boolean
+        get() = brdPrefs.getBoolean(VERIFY_PROMPT, true)
+        set(value) = brdPrefs.edit { putBoolean(VERIFY_PROMPT, value) }
             .also { promptChangeChannel.offer(Unit) }
 
     fun promptChanges(): Flow<Unit> =

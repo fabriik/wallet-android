@@ -28,7 +28,6 @@ import android.app.ActivityManager
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
-import android.util.TypedValue
 import android.view.KeyEvent
 import android.view.View
 import android.view.WindowManager
@@ -43,17 +42,19 @@ import androidx.core.view.isVisible
 import com.breadwallet.R
 import com.breadwallet.app.BreadApp
 import com.breadwallet.databinding.ControllerRecoveryKeyBinding
+import com.fabriik.common.utils.showErrorState
 import com.breadwallet.tools.animation.BRDialog
 import com.breadwallet.tools.animation.SpringAnimator
 import com.breadwallet.tools.util.Utils
 import com.breadwallet.ui.BaseMobiusController
 import com.breadwallet.ui.ViewEffect
 import com.breadwallet.ui.controllers.AlertDialogController
+import com.breadwallet.ui.recovery.RecoveryKey.DIALOG_ACCOUNT_DELETED
 import com.breadwallet.ui.recovery.RecoveryKey.E
 import com.breadwallet.ui.recovery.RecoveryKey.F
 import com.breadwallet.ui.recovery.RecoveryKey.M
 import com.breadwallet.util.DefaultTextWatcher
-import com.fabriik.common.data.showErrorState
+import com.breadwallet.util.registerForGenericDialogResult
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.spotify.mobius.disposables.Disposable
@@ -93,6 +94,7 @@ class RecoveryKeyController(
     override val flowEffectHandler: FlowTransformer<F, E>
         get() = createRecoveryKeyHandler(
             applicationContext as BreadApp,
+            direct.instance(),
             direct.instance(),
             direct.instance()
         )
@@ -139,24 +141,46 @@ class RecoveryKeyController(
         with(binding) {
             when (currentModel.mode) {
                 RecoveryKey.Mode.WIPE -> {
-                    tvTitle.text = resources.getString(R.string.RecoveryKeyFlow_enterRecoveryKey)
+                    tvSubtitle.text = resources.getString(R.string.RecoveryKeyFlow_enterRecoveryKey)
+                    tvDescription.text = resources.getString(R.string.WipeWallet_instruction)
+                }
+                RecoveryKey.Mode.DELETE_ACCOUNT -> {
+                    tvSubtitle.text = resources.getString(R.string.RecoverWallet_header_delete_account)
+                    tvDescription.text = resources.getString(R.string.RecoverWallet_subheader_delete_account)
+
+                    registerForGenericDialogResult(DIALOG_ACCOUNT_DELETED) { _, _ ->
+                        eventConsumer.accept(E.OnDeleteAccountDialogDismissed)
+                    }
                 }
                 RecoveryKey.Mode.RESET_PIN -> {
-                    tvTitle.text = resources.getString(R.string.RecoverWallet_header_reset_pin)
+                    tvSubtitle.text = resources.getString(R.string.RecoveryKeyFlow_enterRecoveryKey)
+                    tvDescription.text =
+                        resources.getString(R.string.RecoverWallet_subheader_reset_pin)
                 }
                 RecoveryKey.Mode.RECOVER -> Unit
             }
 
+            toolbar.setShowBackButton(true)
+            toolbar.setShowDismissButton(currentModel.mode == RecoveryKey.Mode.DELETE_ACCOUNT)
+            btnFaq.isVisible = currentModel.mode != RecoveryKey.Mode.DELETE_ACCOUNT
+
             btnFaq.setOnClickListener {
                 output.accept(E.OnFaqClicked)
             }
+
             btnNext.setOnClickListener {
                 Utils.hideKeyboard(activity)
                 output.accept(E.OnNextClicked)
             }
-            btnBack.setOnClickListener {
+
+            toolbar.setBackButtonClickListener {
                 output.accept(E.OnBackClicked)
             }
+
+            toolbar.setDismissButtonClickListener {
+                output.accept(E.OnDismissClicked)
+            }
+
             btnContactSupport.setOnClickListener {
                 output.accept(E.OnContactSupportClicked)
             }
@@ -206,10 +230,6 @@ class RecoveryKeyController(
             binding.btnContactSupport.isVisible = it
         }
 
-        ifChanged(M::showInvalidPhraseError) {
-            binding.viewErrorBubble.isVisible = it
-        }
-
         ifChanged(M::errors) { errors ->
             wordInputs.zip(errors)
                 .forEach { (input, error) ->
@@ -221,8 +241,7 @@ class RecoveryKeyController(
     override fun handleViewEffect(effect: ViewEffect) {
         when (effect) {
             is F.ErrorShake -> SpringAnimator.failShakeAnimation(applicationContext, view)
-            is F.WipeWallet ->
-                activity?.getSystemService<ActivityManager>()?.clearApplicationUserData()
+            is F.WipeWallet -> activity?.getSystemService<ActivityManager>()?.clearApplicationUserData()
         }
     }
 

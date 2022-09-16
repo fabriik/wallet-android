@@ -9,10 +9,9 @@
         android:usesCleartextTraffic="false">
 
         <activity
-            android:name=".ui.TradeWebViewActivity"
-            android:exported="true"
+            android:name=".ui.SwapActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+            android:theme="@style/FabriikAppTheme.Fabriik"/>
 
     </application>
 </manifest>

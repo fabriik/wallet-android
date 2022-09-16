@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import com.fabriik.common.data.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
@@ -13,7 +12,7 @@ import kotlinx.coroutines.launch
 abstract class FabriikViewModel<State : FabriikContract.State, Event : FabriikContract.Event, Effect : FabriikContract.Effect>(
     application: Application,
     private val savedStateHandle: SavedStateHandle? = null
-) : AndroidViewModel(application) {
+) : AndroidViewModel(application), FabriikEventHandler<Event> {
 
     private val initialState : State by lazy {
         if (savedStateHandle != null) {
@@ -75,6 +74,4 @@ abstract class FabriikViewModel<State : FabriikContract.State, Event : FabriikCo
     }
 
     protected abstract fun createInitialState() : State
-
-    protected abstract fun handleEvent(event: Event)
 }

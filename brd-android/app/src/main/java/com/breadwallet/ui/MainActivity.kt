@@ -63,6 +63,7 @@ import com.breadwallet.ui.navigation.OnCompleteAction
 import com.breadwallet.ui.navigation.RouterNavigator
 import com.breadwallet.ui.onboarding.IntroController
 import com.breadwallet.ui.onboarding.OnBoardingController
+import com.breadwallet.ui.onboarding.WelcomeController
 import com.breadwallet.ui.pin.InputPinController
 import com.breadwallet.ui.recovery.RecoveryKey
 import com.breadwallet.ui.recovery.RecoveryKeyController
@@ -173,7 +174,7 @@ class MainActivity : AppCompatActivity(), KodeinAware {
                     userManager.isMigrationRequired() -> MigrateController()
                     else -> when (userManager.getState()) {
                         is BrdUserState.Disabled -> DisabledController()
-                        is BrdUserState.Uninitialized -> IntroController()
+                        is BrdUserState.Uninitialized -> WelcomeController()
                         else -> if (userManager.hasPinCode()) {
                             val intentUrl = processIntentData(intent)
                             LoginController(intentUrl)

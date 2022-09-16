@@ -25,9 +25,9 @@
 package com.breadwallet.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.content.Intent
+import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.ImageButton
@@ -39,20 +39,21 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.breadwallet.BuildConfig
 import com.breadwallet.R
 import com.breadwallet.databinding.ControllerHomeBinding
+import com.breadwallet.databinding.VerifyPromptBinding
 import com.breadwallet.legacy.presenter.customviews.BRButton
 import com.breadwallet.legacy.presenter.customviews.BREdit
 import com.breadwallet.legacy.presenter.customviews.BaseTextView
 import com.breadwallet.repository.RatesRepository
 import com.breadwallet.tools.animation.SpringAnimator
 import com.breadwallet.tools.manager.BRSharedPrefs
+import com.breadwallet.tools.security.BrdUserManager
 import com.breadwallet.ui.BaseMobiusController
 import com.breadwallet.ui.controllers.AlertDialogController
-import com.breadwallet.ui.formatFiatForUi
 import com.breadwallet.ui.home.HomeScreen.E
 import com.breadwallet.ui.home.HomeScreen.F
 import com.breadwallet.ui.home.HomeScreen.M
+import com.breadwallet.util.formatFiatForUi
 import com.breadwallet.util.isValidEmail
-import com.fabriik.registration.data.RegistrationApi
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.GenericFastAdapter
 import com.mikepenz.fastadapter.adapters.GenericModelAdapter
@@ -105,6 +106,7 @@ class HomeController(
     private var fastAdapter: GenericFastAdapter? = null
     private var walletAdapter: ModelAdapter<Wallet, WalletListItem>? = null
     private var addWalletAdapter: ItemAdapter<AddWalletItem>? = null
+    private val userManager by instance<BrdUserManager>()
 
     override fun bindView(output: Consumer<E>): Disposable {
         return with (binding) {
@@ -248,50 +250,27 @@ class HomeController(
                     eventConsumer.accept(E.OnRescanPromptClicked)
                 }
             }
-            PromptItem.EMAIL_COLLECTION -> {
-                return getEmailPrompt()
-            }
             PromptItem.RATE_APP -> return getRateAppPrompt()
+            PromptItem.VERIFY_USER -> return getVerifyUserPrompt()
         }
         return baseLayout
     }
 
-    private fun getEmailPrompt(): View {
-        val act = checkNotNull(activity)
-        val customLayout = act.layoutInflater.inflate(R.layout.email_prompt, null)
-        val customTitle = customLayout.findViewById<BaseTextView>(R.id.prompt_title)
-        val customDescription =
-            customLayout.findViewById<BaseTextView>(R.id.prompt_description)
-        val footNote = customLayout.findViewById<BaseTextView>(R.id.prompt_footnote)
-        val submitButton = customLayout.findViewById<BRButton>(R.id.submit_button)
-        val closeButton = customLayout.findViewById<ImageView>(R.id.close_button)
-        val emailEditText = customLayout.findViewById<BREdit>(R.id.email_edit)
-        submitButton.setColor(act.getColor(R.color.create_new_wallet_button_dark))
-        customTitle.text = act.getString(R.string.Prompts_Email_title)
-        customDescription.text = act.getString(R.string.Prompts_Email_body)
-        closeButton.setOnClickListener {
-            eventConsumer.accept(E.OnPromptDismissed(PromptItem.EMAIL_COLLECTION))
+    private fun getVerifyUserPrompt(): View {
+        val verifyPrompt = VerifyPromptBinding.inflate(LayoutInflater.from(activity))
+        verifyPrompt.btnCancel.setOnClickListener {
+            userManager.updateVerifyPrompt(false)
+            eventConsumer.accept(E.OnPromptDismissed(PromptItem.VERIFY_USER))
         }
-        submitButton.setOnClickListener {
-            val email = emailEditText.text.toString().trim { it <= ' ' }
-            if (email.isValidEmail()) {
-                eventConsumer.accept(E.OnEmailPromptClicked(email))
-                emailEditText.visibility = View.INVISIBLE
-                submitButton.visibility = View.INVISIBLE
-                footNote.visibility = View.VISIBLE
-                customTitle.text = act.getString(R.string.Prompts_Email_successTitle)
-                customDescription.text = act.getString(R.string.Prompts_Email_successBody)
-                viewAttachScope.launch(Main) {
-                    delay(EMAIL_SUCCESS_DELAY)
-                    binding.promptContainer.removeAllViews()
-                }
-            } else {
-                SpringAnimator.failShakeAnimation(act, emailEditText)
-            }
 
+        verifyPrompt.btnVerifyAccount.setOnClickListener {
+            eventConsumer.accept(E.OnProfileClicked)
+            binding.promptContainer.removeAllViews()
         }
-        return customLayout
+
+        return verifyPrompt.root
     }
+
 
     private fun getRateAppPrompt(): View {
         val act = checkNotNull(activity)
@@ -351,7 +330,6 @@ class HomeController(
         eventConsumer.accept(
             when(dialogId) {
                 DIALOG_PARTNERSHIP_NOTE_BUY -> E.OnBuyNoteSeen
-                DIALOG_PARTNERSHIP_NOTE_SWAP -> E.OnTradeNoteSeen
                 else -> E.OnSupportFormSubmitted(result.inputText)
             }
         )

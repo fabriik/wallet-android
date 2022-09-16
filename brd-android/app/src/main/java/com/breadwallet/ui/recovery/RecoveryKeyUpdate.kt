@@ -48,8 +48,7 @@ object RecoveryKeyUpdate : Update<M, E, F>, RecoveryKeyUpdateSpec {
             else -> next(
                 model.copy(
                     phrase = model.phrase.replaceAt(event.index, event.word),
-                    errors = model.errors.replaceAt(event.index, false),
-                    showInvalidPhraseError = false
+                    errors = model.errors.replaceAt(event.index, false)
                 )
             )
         }
@@ -73,10 +72,7 @@ object RecoveryKeyUpdate : Update<M, E, F>, RecoveryKeyUpdateSpec {
         return when {
             model.isLoading -> noChange()
             else -> next(
-                model.copy(
-                    isLoading = true,
-                    showInvalidPhraseError = false
-                ),
+                model.copy(isLoading = true),
                 setOf<F>(F.ValidatePhrase(model.phrase))
             )
         }
@@ -84,6 +80,10 @@ object RecoveryKeyUpdate : Update<M, E, F>, RecoveryKeyUpdateSpec {
 
     override fun onBackClicked(model: M): Next<M, F> {
         return dispatch(setOf(F.GoBack))
+    }
+
+    override fun onDismissClicked(model: M): Next<M, F> {
+        return dispatch(setOf(F.GoBackToMenu))
     }
 
     override fun onPhraseValidated(model: M, event: E.OnPhraseValidated): Next<M, F> {
@@ -96,12 +96,11 @@ object RecoveryKeyUpdate : Update<M, E, F>, RecoveryKeyUpdateSpec {
                         F.ResetPin(model.phrase)
                     RecoveryKey.Mode.WIPE ->
                         F.Unlink(model.phrase)
+                    RecoveryKey.Mode.DELETE_ACCOUNT ->
+                        F.DeleteAccount(model.phrase)
                 }
                 next(
-                    model.copy(
-                        isLoading = true,
-                        showInvalidPhraseError = false
-                    ),
+                    model.copy(isLoading = true),
                     setOf(
                         F.MonitorLoading,
                         nextEffect
@@ -112,8 +111,7 @@ object RecoveryKeyUpdate : Update<M, E, F>, RecoveryKeyUpdateSpec {
                 model.copy(
                     errors = event.errors,
                     isLoading = false,
-                    showContactSupport = false,
-                    showInvalidPhraseError = false
+                    showContactSupport = false
                 ), emptySet()
             )
         }
@@ -161,8 +159,7 @@ object RecoveryKeyUpdate : Update<M, E, F>, RecoveryKeyUpdateSpec {
         return next(
             model.copy(
                 isLoading = false,
-                showContactSupport = false,
-                showInvalidPhraseError = true
+                showContactSupport = false
             ), emptySet()
         )
     }
@@ -215,8 +212,7 @@ object RecoveryKeyUpdate : Update<M, E, F>, RecoveryKeyUpdateSpec {
         return next(
             model.copy(
                 isLoading = false,
-                showContactSupport = false,
-                showInvalidPhraseError = true
+                showContactSupport = false
             ), emptySet()
         )
     }
@@ -237,6 +233,34 @@ object RecoveryKeyUpdate : Update<M, E, F>, RecoveryKeyUpdateSpec {
     override fun onWipeWalletCancelled(model: M): Next<M, F> = when {
         !model.isLoading || model.mode != RecoveryKey.Mode.WIPE -> noChange()
         else -> next(model.copy(isLoading = false))
+    }
+
+    override fun onDeleteAccountConfirmed(model: M): Next<M, F> = when {
+        !model.isLoading || model.mode != RecoveryKey.Mode.DELETE_ACCOUNT -> noChange()
+        else -> dispatch(setOf<F>(F.DeleteAccountApi))
+    }
+
+    override fun onDeleteAccountCancelled(model: M): Next<M, F> = when {
+        !model.isLoading || model.mode != RecoveryKey.Mode.DELETE_ACCOUNT -> noChange()
+        else -> next(model.copy(isLoading = false))
+    }
+
+    override fun onDeleteAccountApiCompleted(model: M): Next<M, F> {
+        return next(
+            model.copy(isLoading = false),
+            setOf<F>(F.DeleteCompletedDialog)
+        )
+    }
+
+    override fun onDeleteAccountApiFailed(model: M, event: E.OnDeleteAccountApiFailed): Next<M, F> {
+        return next(
+            model.copy(isLoading = false),
+            setOf<F>(F.GoToApiError(event.message))
+        )
+    }
+
+    override fun onDeleteAccountDialogDismissed(model: M): Next<M, F> {
+        return dispatch(setOf<F>(F.WipeWallet))
     }
 
     override fun onLoadingCompleteExpected(model: M): Next<M, F> = when {

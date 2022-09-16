@@ -1,6 +1,6 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.Bridge">
+    <style name="FabriikAppTheme" parent="Theme.MaterialComponents.Light.Bridge">
         <!-- Customize your theme here. -->
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:title">false</item>
@@ -45,7 +45,7 @@
         <item name="android:layout_margin">24dp</item>
     </style>
 
-    <style name="AppTheme.Dark" parent="AppTheme">
+    <style name="FabriikAppTheme.Dark" parent="FabriikAppTheme">
         <item name="android:windowBackground">@color/black</item>
         <item name="android:textColor">@color/white</item>
         <item name="tertiary_background">@color/tertiary_background</item>
@@ -78,7 +78,7 @@
         <item name="link_wallet_subtitle_text_color">@color/link_wallet_subtitle_dark</item>
     </style>
 
-    <style name="AppTheme.Light" parent="AppTheme">
+    <style name="FabriikAppTheme.Light" parent="FabriikAppTheme">
         <item name="android:windowBackground">@color/white</item>
         <item name="android:textColor">@color/red</item>
         <item name="secondary_text_color">@color/almost_black</item>
@@ -197,7 +197,7 @@
 
     <attr name="textAppearanceError" format="reference" />
 
-    <style name="AppTheme.FlutterTheme">
+    <style name="FabriikAppTheme.FlutterTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>

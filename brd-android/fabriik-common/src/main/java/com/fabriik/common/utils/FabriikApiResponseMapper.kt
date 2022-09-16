@@ -1,6 +1,7 @@
 package com.fabriik.common.utils
 
 import android.content.Context
+import android.util.Log
 import com.fabriik.common.R
 import com.fabriik.common.data.FabriikApiResponse
 import com.fabriik.common.data.Resource
@@ -10,12 +11,13 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.ResponseBody
 import retrofit2.HttpException
 import retrofit2.Response
+import java.io.EOFException
 
-class FabriikApiResponseMapper {
-
-    private val moshi = Moshi.Builder()
+class FabriikApiResponseMapper(
+    private val moshi: Moshi = Moshi.Builder()
         .addLast(KotlinJsonAdapterFactory())
         .build()
+) {
 
     fun <T> mapFabriikApiResponseSuccess(response: FabriikApiResponse<T?>): Resource<T?> {
         return when {
@@ -37,7 +39,7 @@ class FabriikApiResponseMapper {
         }
     }
 
-    fun <T> mapError(context: Context, exception: Exception) : Resource<T?> {
+    fun <T> mapError(context: Context, exception: Exception): Resource<T?> {
         var errorMessage: String? = null
 
         if (exception is HttpException) {
@@ -57,10 +59,14 @@ class FabriikApiResponseMapper {
                 Types.newParameterizedType(FabriikApiResponse::class.java, Any::class.java)
             val responseAdapter = moshi.adapter<FabriikApiResponse<Any>>(responseType)
 
-            val response = responseAdapter.fromJson(
-                it.source()
-            )
-            response?.error?.message
+            try {
+                val errorJson = it.string()
+                val response = responseAdapter.fromJson(errorJson)
+                response?.error?.message
+            } catch (ex: Exception) {
+                Log.d("FabriikApiResponseMapper", "Parsing exception ${ex.message ?: "unknown"}")
+                null
+            }
         }
     }
 }

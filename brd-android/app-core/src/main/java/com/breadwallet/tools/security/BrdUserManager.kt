@@ -51,8 +51,8 @@ interface BrdUserManager {
 
     suspend fun configurePinCode(pinCode: String)
     suspend fun clearPinCode(phrase: ByteArray)
-    fun verifyPinCode(pinCode: String): Boolean
     fun getRemainingPinAttempts(): Int
+    fun verifyPinCode(pinCode: String, walletLockable: Boolean): Boolean
     fun hasPinCode(): Boolean
     fun pinCodeNeedsUpgrade(): Boolean
 
@@ -73,5 +73,13 @@ interface BrdUserManager {
     fun getBdbJwt(): String?
     fun putBdbJwt(jwt: String, exp: Long)
 
+    fun showVerifyPrompt(): Boolean
+    fun updateVerifyPrompt(showVerifyPrompt: Boolean)
+
     fun onActivityResult(requestCode: Int, resultCode: Int)
+
+    companion object {
+        const val PIN_LENGTH = 6
+        const val LEGACY_PIN_LENGTH = 4
+    }
 }

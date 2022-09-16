@@ -31,11 +31,15 @@ import com.breadwallet.ui.ViewEffect
 import com.breadwallet.ui.navigation.NavigationEffect
 import com.breadwallet.ui.navigation.NavigationTarget
 import com.breadwallet.util.CurrencyCode
+import com.fabriik.common.ui.dialog.FabriikGenericDialogArgs
 import dev.zacsweers.redacted.annotations.Redacted
 
 object SettingsScreen {
 
     const val CONFIRM_EXPORT_TRANSACTIONS_DIALOG = "confirm_export"
+    const val TEST_FABRIIK_DIALOG = "fabriik_test_dialog"
+    const val TEST_FABRIIK_DIALOG_POSITIVE = "fabriik_test_dialog_pos"
+    const val TEST_FABRIIK_DIALOG_NEGATIVE = "fabriik_test_dialog_neg"
 
     data class M(
         val section: SettingsSection,
@@ -67,6 +71,7 @@ object SettingsScreen {
         object OnWalletsUpdated : E()
         object ShowHiddenOptions : E()
         object OnCloseHiddenMenu : E()
+        data class OnTestGenericDialogResult(val message: String) : E()
 
         data class OnATMMapClicked(val url: String, val mapJson: String) : E()
 
@@ -177,6 +182,10 @@ object SettingsScreen {
             override val navigationTarget = NavigationTarget.WipeWallet
         }
 
+        object GoToDeleteAccount : F(), NavigationEffect {
+            override val navigationTarget = NavigationTarget.DeleteAccount
+        }
+
         object GoToOnboarding : F(), NavigationEffect {
             override val navigationTarget = NavigationTarget.OnBoarding
         }
@@ -219,6 +228,32 @@ object SettingsScreen {
 
         object RelaunchHomeScreen : F(), NavigationEffect {
             override val navigationTarget = NavigationTarget.Home
+        }
+
+        data class ShowToast(val message: String) : F(), NavigationEffect {
+            override val navigationTarget = NavigationTarget.FabriikToast(
+                type = NavigationTarget.FabriikToast.Type.INFO,
+                message = message
+            )
+        }
+
+        object TestFabriikGenericDialog : F(), NavigationEffect {
+            override val navigationTarget = NavigationTarget.FabriikGenericDialog(
+                args = FabriikGenericDialogArgs(
+                    title = "Test title",
+                    description = "Test description",
+                    positive = FabriikGenericDialogArgs.ButtonData(
+                        icon = R.drawable.fingerprint_icon,
+                        title = "Test positive button",
+                        resultKey = TEST_FABRIIK_DIALOG_POSITIVE
+                    ),
+                    negative = FabriikGenericDialogArgs.ButtonData(
+                        title = "Test negative button",
+                        resultKey = TEST_FABRIIK_DIALOG_NEGATIVE
+                    ),
+                    requestKey = TEST_FABRIIK_DIALOG
+                )
+            )
         }
 
         object ShowConfirmExportTransactions : F(), NavigationEffect {

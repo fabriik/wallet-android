@@ -18,8 +18,8 @@ import com.fabriik.kyc.R
 import com.fabriik.kyc.databinding.FragmentAccountVerificationBinding
 import com.fabriik.kyc.ui.customview.AccountVerificationStatusView
 import com.fabriik.kyc.ui.customview.CheckedTextView
-import com.fabriik.kyc.ui.dialogs.InfoDialog
-import com.fabriik.kyc.ui.dialogs.InfoDialogArgs
+import com.fabriik.common.ui.dialog.InfoDialog
+import com.fabriik.common.ui.dialog.InfoDialogArgs
 import kotlinx.coroutines.flow.collect
 
 class AccountVerificationFragment : Fragment(),
@@ -85,7 +85,8 @@ class AccountVerificationFragment : Fragment(),
                     setStatusState(tvLevel1Status, state.level1State.statusState)
 
                     // level 2 configuration
-                    tvLevel2Tag.isEnabled = state.level2State.isEnabled
+                    tvLevel2TagSwap.isEnabled = state.level2State.isEnabled
+                    tvLevel2TagBuy.isEnabled = state.level2State.isEnabled
                     setStatusState(tvLevel2Status, state.level2State.statusState)
 
                     tvLevel2CheckedItem1.setStateIcon(state.level2State.statusState)
@@ -125,7 +126,7 @@ class AccountVerificationFragment : Fragment(),
                 )
 
             is AccountVerificationContract.Effect.ShowToast ->
-                FabriikToastUtil.show(
+                FabriikToastUtil.showInfo(
                     parentView = binding.root,
                     message = effect.message
                 )
@@ -177,8 +178,8 @@ class AccountVerificationFragment : Fragment(),
     private fun showInfoDialog() {
         val fm = requireActivity().supportFragmentManager
         val infoArgs = InfoDialogArgs(
-            R.string.AccountVerification_InfoView_title,
-            R.string.AccountVerification_InfoVIew_description,
+            title = R.string.AccountVerification_InfoView_title,
+            description = R.string.AccountVerification_InfoVIew_description,
         )
         InfoDialog(infoArgs).show(fm, "info_dialog")
     }

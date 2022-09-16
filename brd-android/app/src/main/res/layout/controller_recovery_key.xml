@@ -12,31 +12,14 @@
         android:layout_height="wrap_content"
         android:background="@color/white">
 
-        <TextView
-            android:id="@+id/tv_title"
-            style="@style/TextStyle.Title6"
-            android:layout_width="wrap_content"
+        <com.fabriik.common.ui.customview.FabriikToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/bread_margin"
-            android:text="@string/RecoverWallet.header"
-            android:textColor="@color/light_text_01"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/btn_faq"
-            app:layout_constraintBottom_toBottomOf="@id/btn_faq" />
-
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/btn_back"
-            android:layout_width="@dimen/faq_dimen"
-            android:layout_height="@dimen/faq_dimen"
-            android:layout_marginStart="@dimen/bread_margin"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:scaleType="fitXY"
-            android:src="@drawable/ic_back"
-            android:tint="@color/light_icons_01"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/btn_faq"
-            app:layout_constraintBottom_toBottomOf="@id/btn_faq" />
+            app:titleType="none"/>
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/btn_faq"
@@ -49,7 +32,8 @@
             android:src="?attr/faq_button_primary_color"
             android:tint="@color/light_icons_01"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@id/toolbar"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"/>
 
         <TextView
             android:id="@+id/tv_subtitle"
@@ -65,7 +49,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
         <TextView
             android:id="@+id/tv_description"
@@ -393,18 +377,6 @@
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
         </GridLayout>
-
-        <com.fabriik.common.ui.views.ErrorBubbleView
-            android:id="@+id/view_error_bubble"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:text="@string/RecoverWallet.invalid"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Error description"
-            tools:visibility="visible" />
 
         <include
             android:id="@+id/loading_view"

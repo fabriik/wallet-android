@@ -57,7 +57,7 @@ class ResetPinInputController(args: Bundle? = null) : BaseMobiusController<M, E,
 
     private fun PinLayout.bindInput() = callbackFlow<E> {
         val channel = channel
-        setup(binding.keyboard, object : PinLayoutListener {
+        setup(binding.keyboard, false, object : PinLayoutListener {
             override fun onInvalidPinInserted(pin: String, attemptsLeft: Int) {
                 channel.offer(E.OnPinEntered(pin, false))
             }

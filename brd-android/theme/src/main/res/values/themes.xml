@@ -1,5 +1,5 @@
 <resources>
-    <style name="AltAppTheme" parent="Theme.MaterialComponents">
+    <style name="AltFabriikAppTheme" parent="Theme.MaterialComponents">
         <item name="colorPrimary">@color/white</item>
         <item name="colorSecondary">@color/brd_orange</item>
         <item name="android:colorBackground">@color/white</item>
