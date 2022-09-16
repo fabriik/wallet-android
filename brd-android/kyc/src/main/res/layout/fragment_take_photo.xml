@@ -24,14 +24,14 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:type="document"/>
 
-    <com.fabriik.kyc.ui.customview.KycToolbar
+    <com.fabriik.common.ui.customview.FabriikToolbar
         android:id="@+id/toolbar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:showTitle="false"
+        app:titleType="none"
         app:tintColor="@color/light_inverse_icons_01" />
 
     <View

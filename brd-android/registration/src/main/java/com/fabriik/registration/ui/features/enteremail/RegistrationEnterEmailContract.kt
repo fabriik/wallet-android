@@ -7,6 +7,7 @@ interface RegistrationEnterEmailContract {
     sealed class Event : FabriikContract.Event {
         object NextClicked : Event()
         object DismissClicked : Event()
+        data class PromotionsClicked(val checked: Boolean) : Event()
         data class EmailChanged(val email: String) : Event()
     }
 
@@ -19,6 +20,7 @@ interface RegistrationEnterEmailContract {
     data class State(
         val email: String = "",
         val nextEnabled: Boolean = false,
+        val promotionsEnabled: Boolean = true,
         val loadingVisible: Boolean = false
     ): FabriikContract.State
 }

@@ -29,7 +29,6 @@ import android.app.KeyguardManager
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
-import android.os.Parcelable
 import android.security.keystore.KeyPermanentlyInvalidatedException
 import android.security.keystore.UserNotAuthenticatedException
 import android.text.format.DateUtils
@@ -48,7 +47,6 @@ import com.breadwallet.tools.manager.BRReportsManager
 import com.breadwallet.tools.manager.BRSharedPrefs
 import com.breadwallet.platform.interfaces.AccountMetaDataProvider
 import com.fabriik.common.data.model.Profile
-import com.fabriik.common.utils.adapter.CalendarJsonAdapter
 import com.platform.tools.Session
 import com.platform.tools.SessionState
 import com.squareup.moshi.JsonAdapter
@@ -84,8 +82,6 @@ import java.util.concurrent.atomic.AtomicInteger
 import javax.crypto.Cipher
 import kotlin.math.pow
 
-const val PIN_LENGTH = 6
-const val LEGACY_PIN_LENGTH = 4
 private const val MAX_UNLOCK_ATTEMPTS = 3
 private const val JWT_EXP_PADDING_MS = 10_000L
 private const val ANDROID_KEY_STORE = "AndroidKeyStore"
@@ -118,7 +114,8 @@ private const val MANUFACTURER_GOOGLE = "Google"
 class CryptoUserManager(
     context: Context,
     private val createStore: () -> SharedPreferences?,
-    private val metaDataProvider: AccountMetaDataProvider
+    private val metaDataProvider: AccountMetaDataProvider,
+    private val moshi: Moshi
 ) : BrdUserManager {
 
     private var store: SharedPreferences? = null
@@ -321,7 +318,7 @@ class CryptoUserManager(
 
     override suspend fun configurePinCode(pinCode: String) {
         checkNotNull(getPhrase()) { "Phrase is null, cannot set pin code." }
-        check(pinCode.length == PIN_LENGTH && pinCode.toIntOrNull() != null) {
+        check(pinCode.length == BrdUserManager.PIN_LENGTH && pinCode.toIntOrNull() != null) {
             "Invalid pin code."
         }
 
@@ -340,21 +337,15 @@ class CryptoUserManager(
         stateChangeChannel.offer(Unit)
     }
 
-    override fun verifyPinCode(pinCode: String) =
+    override fun verifyPinCode(pinCode: String, walletLockable: Boolean) =
         if (pinCode == getPinCode()) {
-            putFailCount(0)
-            putFailTimestamp(0)
-            locked.set(false)
-            stateChangeChannel.offer(Unit)
+            resetFailedInputs()
             true
         } else {
-            val failCount = getFailCount() + 1
-            putFailCount(failCount)
-            if (failCount >= MAX_UNLOCK_ATTEMPTS) {
-                BRSharedPrefs.getSecureTime()
-                    .also(::putFailTimestamp)
-                    .also(::startDisabledTimer)
-                stateChangeChannel.offer(Unit)
+            if (!walletLockable) {
+                resetFailedInputs()
+            } else {
+                countFailedInputs()
             }
             false
         }
@@ -364,7 +355,7 @@ class CryptoUserManager(
     override fun hasPinCode() = getPinCode().isNotBlank()
 
     override fun pinCodeNeedsUpgrade() =
-        getPinCode().let { it.isNotBlank() && it.length != PIN_LENGTH }
+        getPinCode().let { it.isNotBlank() && it.length != BrdUserManager.PIN_LENGTH }
 
     override fun lock() {
         if (!locked.getAndSet(true)) {
@@ -394,11 +385,11 @@ class CryptoUserManager(
     }
 
     @Synchronized
-    override fun getProfile() = profile ?: checkNotNull(store).getProfile()
+    override fun getProfile() = profile ?: getProfile(checkNotNull(store))
 
     @Synchronized
     override fun putProfile(profile: Profile?) {
-        checkNotNull(store).edit { putProfile(profile) }
+        putProfile(checkNotNull(store).edit(), profile)
         this.profile = profile
     }
 
@@ -441,6 +432,16 @@ class CryptoUserManager(
             remove(KEY_SESSION_STATE)
         }
         session = null
+    }
+
+    @Synchronized
+    override fun showVerifyPrompt(): Boolean {
+        return BRSharedPrefs.verifyProfilePrompt
+    }
+
+    @Synchronized
+    override fun updateVerifyPrompt(showVerifyPrompt: Boolean) {
+        BRSharedPrefs.verifyProfilePrompt = showVerifyPrompt
     }
 
     @Synchronized
@@ -534,7 +535,7 @@ class CryptoUserManager(
 
     private fun disabledUntil(failCount: Int, failTimestamp: Long): Long {
         val pow =
-            PIN_LENGTH.toDouble()
+            BrdUserManager.PIN_LENGTH.toDouble()
                 .pow((failCount - MAX_UNLOCK_ATTEMPTS).toDouble()) * DateUtils.MINUTE_IN_MILLIS
         return (failTimestamp + pow).toLong()
     }
@@ -707,27 +708,37 @@ class CryptoUserManager(
         val isOorAbove = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
         return isGoogleDevice && isOmr1 || !isGoogleDevice && isOorAbove
     }
-}
 
-fun SharedPreferences.getProfile() : Profile? {
-    val moshi = Moshi.Builder()
-        .add(Calendar::class.java, CalendarJsonAdapter())
-        .build()
+    private fun getProfile(prefs: SharedPreferences) : Profile? {
+        val adapter: JsonAdapter<Profile> = moshi.adapter(Profile::class.java)
+        val json = prefs.getString(KEY_PROFILE, null) ?: return null
+        return adapter.fromJson(json)
+    }
 
-    val adapter: JsonAdapter<Profile> = moshi.adapter(Profile::class.java)
-    val json = getString(KEY_PROFILE, null) ?: return null
-    return adapter.fromJson(json)
-}
+    private fun putProfile(editor: SharedPreferences.Editor, profile: Profile?) {
+        val adapter: JsonAdapter<Profile> = moshi.adapter(Profile::class.java)
+        editor.putString(
+            KEY_PROFILE, if (profile == null) null else adapter.toJson(profile)
+        ).apply()
+    }
 
-fun SharedPreferences.Editor.putProfile(profile: Profile?) {
-    val moshi = Moshi.Builder()
-        .add(Calendar::class.java, CalendarJsonAdapter())
-        .build()
+    private fun resetFailedInputs() {
+        putFailCount(0)
+        putFailTimestamp(0)
+        locked.set(false)
+        stateChangeChannel.offer(Unit)
+    }
 
-    val adapter: JsonAdapter<Profile> = moshi.adapter(Profile::class.java)
-    putString(
-        KEY_PROFILE, if (profile == null) null else adapter.toJson(profile)
-    )
+    private fun countFailedInputs() {
+        val failCount = getFailCount() + 1
+        putFailCount(failCount)
+        if (failCount >= MAX_UNLOCK_ATTEMPTS) {
+            BRSharedPrefs.getSecureTime()
+                .also(::putFailTimestamp)
+                .also(::startDisabledTimer)
+            stateChangeChannel.offer(Unit)
+        }
+    }
 }
 
 fun SharedPreferences.getBytes(key: String, defaultValue: ByteArray?): ByteArray? {

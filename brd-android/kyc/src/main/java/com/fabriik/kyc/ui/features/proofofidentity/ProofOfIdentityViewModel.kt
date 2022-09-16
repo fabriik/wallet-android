@@ -13,54 +13,53 @@ class ProofOfIdentityViewModel(
     application: Application
 ) : FabriikViewModel<ProofOfIdentityContract.State, ProofOfIdentityContract.Event, ProofOfIdentityContract.Effect>(
     application
-) {
+), ProofOfIdentityEventHandler {
 
     private val kycApi = KycApi.create(application.applicationContext)
 
     override fun createInitialState() = ProofOfIdentityContract.State()
 
-    override fun handleEvent(event: ProofOfIdentityContract.Event) {
-        when (event) {
-            is ProofOfIdentityContract.Event.LoadDocuments ->
-                loadDocuments()
+    override fun onBackClicked() {
+        setEffect { ProofOfIdentityContract.Effect.GoBack }
+    }
 
-            is ProofOfIdentityContract.Event.BackClicked ->
-                setEffect { ProofOfIdentityContract.Effect.GoBack }
+    override fun onDismissClicked() {
+        setEffect { ProofOfIdentityContract.Effect.Dismiss }
+    }
 
-            is ProofOfIdentityContract.Event.IdCardClicked ->
-                setEffect {
-                    ProofOfIdentityContract.Effect.GoToDocumentUpload(
-                        DocumentType.ID_CARD
-                    )
-                }
-
-            is ProofOfIdentityContract.Event.PassportClicked ->
-                setEffect {
-                    ProofOfIdentityContract.Effect.GoToDocumentUpload(
-                        DocumentType.PASSPORT
-                    )
-                }
-
-            is ProofOfIdentityContract.Event.DrivingLicenceClicked ->
-                setEffect {
-                    ProofOfIdentityContract.Effect.GoToDocumentUpload(
-                        DocumentType.DRIVING_LICENCE
-                    )
-                }
-
-            is ProofOfIdentityContract.Event.ResidencePermitClicked ->
-                setEffect {
-                    ProofOfIdentityContract.Effect.GoToDocumentUpload(
-                        DocumentType.RESIDENCE_PERMIT
-                    )
-                }
-
-            is ProofOfIdentityContract.Event.Dismiss ->
-                setEffect { ProofOfIdentityContract.Effect.Dismiss }
+    override fun onIdCardClicked() {
+        setEffect {
+            ProofOfIdentityContract.Effect.GoToDocumentUpload(
+                DocumentType.ID_CARD
+            )
         }
     }
 
-    private fun loadDocuments() {
+    override fun onPassportClicked() {
+        setEffect {
+            ProofOfIdentityContract.Effect.GoToDocumentUpload(
+                DocumentType.PASSPORT
+            )
+        }
+    }
+
+    override fun onDrivingLicenceClicked() {
+        setEffect {
+            ProofOfIdentityContract.Effect.GoToDocumentUpload(
+                DocumentType.DRIVING_LICENCE
+            )
+        }
+    }
+
+    override fun onResidencePermitClicked() {
+        setEffect {
+            ProofOfIdentityContract.Effect.GoToDocumentUpload(
+                DocumentType.RESIDENCE_PERMIT
+            )
+        }
+    }
+
+    override fun onLoadDocuments() {
         callApi(
             endState = { copy(initialLoadingVisible = false) },
             startState = { copy(initialLoadingVisible = true) },

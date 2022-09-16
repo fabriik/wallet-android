@@ -42,7 +42,7 @@ class CountrySelectionFragment : Fragment(),
         binding = FragmentCountrySelectionBinding.bind(view)
 
         with(binding) {
-            btnBack.setOnClickListener {
+            toolbar.setBackButtonClickListener {
                 viewModel.setEvent(CountrySelectionContract.Event.BackClicked)
             }
 
@@ -96,7 +96,7 @@ class CountrySelectionFragment : Fragment(),
             }
 
             is CountrySelectionContract.Effect.ShowToast ->
-                FabriikToastUtil.show(
+                FabriikToastUtil.showInfo(
                     parentView = binding.root,
                     message = effect.message
                 )

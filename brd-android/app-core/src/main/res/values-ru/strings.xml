@@ -555,17 +555,11 @@
     <string name="PaymentProtocol.Errors.untrustedCertificate">недостоверный сертификат</string>
     <string name="Platform.transaction_cancelled">Транзакция отменена</string>
     <!-- Body text for a prompt that asks the user to subscribe to email updates to find out product updates. -->
-    <string name="Prompts.Email.body">Станьте первым, кто получит существенную поддержку и обновления продукта</string>
     <!-- Placeholder text for an email address text field. -->
-    <string name="Prompts.Email.placeholder">введите ваш адрес электронной почты</string>
     <!-- Body text that is shown when the user successfully subscribes to email updates. -->
-    <string name="Prompts.Email.successBody">Вы успешно подписались на получение обновлений</string>
     <!-- Text that is displayed as a footnote when the user successfully subscribes to email updates. -->
-    <string name="Prompts.Email.successFootnote">Мы ценим вашу непрерывную поддержку</string>
     <!-- Title that is shown when the user successfully subscribes to email updates. -->
-    <string name="Prompts.Email.successTitle">Спасибо!</string>
     <!-- Title for a prompt that asks the user to subscribe to email updates to find out product updates. -->
-    <string name="Prompts.Email.title">Войти в узкий круг</string>
     <!-- Enable face ID prompt body -->
     <string name="Prompts.FaceId.body">Нажмите \"Продолжить\", чтобы включить Идентификацию по лицу</string>
     <!-- Enable face ID prompt title -->

@@ -4,6 +4,7 @@
         <item name="android:background">@drawable/b_fabriik_blue</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">16sp</item>
+        <item name="android:textAppearance">@style/TextStyle.Button</item>
     </style>
 
     <style name="Fabriik.Button.Washed">

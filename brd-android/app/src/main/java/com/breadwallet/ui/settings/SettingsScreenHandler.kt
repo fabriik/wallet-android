@@ -62,7 +62,9 @@ import com.breadwallet.ui.settings.SettingsScreen.F
 import com.breadwallet.util.errorHandler
 import com.platform.APIClient
 import com.breadwallet.platform.interfaces.AccountMetaDataProvider
+import com.breadwallet.tools.security.ProfileManager
 import com.breadwallet.util.isBitcoinLike
+import com.fabriik.common.data.model.Profile
 import com.spotify.mobius.Connection
 import com.spotify.mobius.functions.Consumer
 import kotlinx.coroutines.CoroutineScope
@@ -114,7 +116,8 @@ class SettingsScreenHandler(
     private val userManager: BrdUserManager,
     private val breadBox: BreadBox,
     private val bdbAuthInterceptor: BdbAuthInterceptor,
-    private val supportManager: SupportManager
+    private val supportManager: SupportManager,
+    private val profileManager: ProfileManager
 ) : Connection<F>, CoroutineScope {
 
     override val coroutineContext = SupervisorJob() + Dispatchers.Default + errorHandler()
@@ -124,6 +127,7 @@ class SettingsScreenHandler(
         when (value) {
             is F.LoadOptions -> {
                 merge(
+                    profileManager.profileChanges(),
                     BRSharedPrefs.promptChanges(),
                     BRSharedPrefs.preferredFiatIsoChanges().map { }
                 ).onStart { emit(Unit) }
@@ -233,7 +237,7 @@ class SettingsScreenHandler(
         val items: List<SettingsItem> = when (section) {
             SettingsSection.HOME -> getHomeOptions()
             SettingsSection.PREFERENCES -> preferences
-            SettingsSection.SECURITY -> securitySettings()
+            SettingsSection.SECURITY -> securitySettings(profileManager.getProfile())
             SettingsSection.DEVELOPER_OPTION -> getDeveloperOptions()
             SettingsSection.BTC_SETTINGS -> btcOptions
             SettingsSection.BCH_SETTINGS -> bchOptions
@@ -332,11 +336,11 @@ class SettingsScreenHandler(
             addOn = BRSharedPrefs.getPreferredFiatIso()
         ),
         SettingsItem(
-            "Bitcoin ${context.getString(R.string.Settings_title)}", // TODO move Bitcoin to a constant
+            "BTC ${context.getString(R.string.Settings_title)}", // TODO move Bitcoin to a constant
             SettingsOption.BTC_MENU
         ),
         SettingsItem(
-            "Bitcoin Cash ${context.getString(R.string.Settings_title)}", // TODO move Bitcoin Cash to a constant
+            "BCH ${context.getString(R.string.Settings_title)}", // TODO move Bitcoin Cash to a constant
             SettingsOption.BCH_MENU
         ),
         SettingsItem(
@@ -353,7 +357,7 @@ class SettingsScreenHandler(
         )
     )
 
-    private fun securitySettings(): List<SettingsItem> {
+    private fun securitySettings(profile: Profile?): List<SettingsItem> {
         val items = mutableListOf(
             SettingsItem(
                 context.getString(R.string.UpdatePin_updateTitle),
@@ -368,6 +372,7 @@ class SettingsScreenHandler(
                 SettingsOption.WIPE
             )
         )
+
         if (isFingerPrintAvailableAndSetup(context)) {
             items.add(
                 0, SettingsItem(
@@ -376,6 +381,17 @@ class SettingsScreenHandler(
                 )
             )
         }
+
+        if (profile != null) {
+            items.add(
+                SettingsItem(
+                    title = context.getString(R.string.Settings_deleteAccount),
+                    titleColorResId = R.color.light_error,
+                    option = SettingsOption.DELETE_ACCOUNT
+                )
+            )
+        }
+
         return items.toList()
     }
 
@@ -445,6 +461,10 @@ class SettingsScreenHandler(
                 "Toggle Rate App Prompt",
                 SettingsOption.TOGGLE_RATE_APP_PROMPT,
                 addOn = "show=$toggleRateAppPromptAddOn"
+            ),
+            SettingsItem(
+                "Show Fabriik generic dialog",
+                SettingsOption.TEST_FABRIIK_GENERIC_DIALOG
             ),
         ) + getHiddenOptions()
     }
@@ -524,12 +544,12 @@ class SettingsScreenHandler(
             }
 
         }
-        val authority = buildString {
-            append(AUTHORITY_BASE)
-            if (!breadBox.isMainnet) append(".testnet")
-            if (BuildConfig.DEBUG) append(".debug")
-        }
-        output.accept(E.OnTransactionsExportFileGenerated(FileProvider.getUriForFile(context, authority, file)))
+
+        output.accept(
+            E.OnTransactionsExportFileGenerated(
+                FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID, file)
+            )
+        )
     }
 
     private fun Transfer.export(memo: String, feeWallet: Wallet, currencyId: String): String {

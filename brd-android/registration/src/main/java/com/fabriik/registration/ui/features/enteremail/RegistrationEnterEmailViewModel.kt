@@ -20,31 +20,31 @@ import org.kodein.di.android.closestKodein
 import org.kodein.di.erased.instance
 
 class RegistrationEnterEmailViewModel(
-    application: Application
+    application: Application,
 ) : FabriikViewModel<RegistrationEnterEmailContract.State, RegistrationEnterEmailContract.Event, RegistrationEnterEmailContract.Effect>(
     application
-), KodeinAware {
+), RegistrationEnterEmailEventHandler, KodeinAware {
 
     override val kodein by closestKodein { application }
     private val registrationApi by instance<RegistrationApi>()
     private val registrationUtils by instance<RegistrationUtils>()
+    private val userManager by instance<BrdUserManager>()
 
     override fun createInitialState() = RegistrationEnterEmailContract.State()
 
-    override fun handleEvent(event: RegistrationEnterEmailContract.Event) {
-        when (event) {
-            is RegistrationEnterEmailContract.Event.EmailChanged ->
-                setState { copy(email = event.email).validate() }
-
-            is RegistrationEnterEmailContract.Event.DismissClicked ->
-                setEffect { RegistrationEnterEmailContract.Effect.Dismiss }
-
-            is RegistrationEnterEmailContract.Event.NextClicked ->
-                onNextClicked()
-        }
+    override fun onDismissClicked() {
+        setEffect { RegistrationEnterEmailContract.Effect.Dismiss }
     }
 
-    private fun onNextClicked() {
+    override fun onEmailChanged(email: String) {
+        setState { copy(email = email).validate() }
+    }
+
+    override fun onPromotionsClicked(isChecked: Boolean) {
+        setState { copy(promotionsEnabled = isChecked) }
+    }
+
+    override fun onNextClicked() {
         viewModelScope.launch(Dispatchers.IO) {
             val token = TokenHolder.retrieveToken()
             if (token.isNullOrBlank()) {
@@ -63,6 +63,7 @@ class RegistrationEnterEmailViewModel(
                     registrationApi.associateEmail(
                         email = currentState.email,
                         token = token,
+                        subscribe = currentState.promotionsEnabled,
                         headers = registrationUtils.getAssociateRequestHeaders(
                             salt = currentState.email,
                             token = token
@@ -72,6 +73,7 @@ class RegistrationEnterEmailViewModel(
                 callback = {
                     when (it.status) {
                         Status.SUCCESS -> {
+                            userManager.updateVerifyPrompt(true)
                             SessionHolder.updateSession(
                                 sessionKey = it.data!!.sessionKey,
                                 state = SessionState.CREATED

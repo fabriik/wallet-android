@@ -24,7 +24,7 @@
  */
 package brd
 
-private val ciTag = System.getenv("CI_COMMIT_TAG")
+private val ciTag = (System.getenv("CI_COMMIT_TAG") ?: System.getenv("CIRCLE_TAG"))
     ?.split("-") // <target>-x.x.x.x
     ?.lastOrNull()
     ?.split(".")
@@ -35,13 +35,13 @@ object BrdRelease {
     private val marketing = ciTag?.firstOrNull() ?: 4
 
     /** Minor version. Usually affected by product. Maximum value: 99 */
-    private val product = ciTag?.get(1) ?: 13
+    private val product = ciTag?.get(1) ?: 14
 
     /** Hot fix version. Usually affected by engineering. Maximum value: 9 */
     private val engineering = ciTag?.get(2) ?: 0
 
     /** Build version. Increase for each new build. Maximum value: 999 */
-    private val build = ciTag?.lastOrNull() ?: 50
+    private val build = ciTag?.lastOrNull() ?: 7
 
     init {
         check(marketing in 0..99)

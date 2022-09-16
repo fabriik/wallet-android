@@ -555,17 +555,11 @@
     <string name="PaymentProtocol.Errors.untrustedCertificate">信頼できない証明書</string>
     <string name="Platform.transaction_cancelled">キャンセルされた取引</string>
     <!-- Body text for a prompt that asks the user to subscribe to email updates to find out product updates. -->
-    <string name="Prompts.Email.body">誰よりも早く重要なサポートを受け,製品をアップデートしましょう</string>
     <!-- Placeholder text for an email address text field. -->
-    <string name="Prompts.Email.placeholder">メールアドレスを入力してください</string>
     <!-- Body text that is shown when the user successfully subscribes to email updates. -->
-    <string name="Prompts.Email.successBody">アップデートを受け取るための申し込みが完了しました</string>
     <!-- Text that is displayed as a footnote when the user successfully subscribes to email updates. -->
-    <string name="Prompts.Email.successFootnote">継続的なサポートに感謝いたします</string>
     <!-- Title that is shown when the user successfully subscribes to email updates. -->
-    <string name="Prompts.Email.successTitle">ありがとうございます！</string>
     <!-- Title for a prompt that asks the user to subscribe to email updates to find out product updates. -->
-    <string name="Prompts.Email.title">輪に加わりましょう</string>
     <!-- Enable face ID prompt body -->
     <string name="Prompts.FaceId.body">Face IDを有効にするには続行をタップして下さい</string>
     <!-- Enable face ID prompt title -->

@@ -6,7 +6,7 @@ defaults: &defaults
   docker:
     - image: circleci/android:api-30-ndk
   working_directory: ~/brd-mobile
-  resource_class: medium+
+  resource_class: large
 
   environment:
     SDK_FILENAME: sdk-tools-linux-4333796.zip
@@ -30,7 +30,6 @@ commands:
           name: Pull submodules
           command: |
             git submodule update --init --recursive
-
   # Refresh gradle command
   refresh-gradle:
     steps:
@@ -41,10 +40,10 @@ commands:
             - v1-dependencies-{{ checksum "brd-android/build.gradle.kts" }}-{{ checksum "brd-android/app/build.gradle.kts" }}
 
       # Refresh gradle
-#      - run:
-#          name: Refresh gradle
-#          command: |
-#            ./gradlew  dependencies
+      #      - run:
+      #          name: Refresh gradle
+      #          command: |
+      #            ./gradlew  dependencies
 
       # save cache - Gradle
       - save_cache:
@@ -67,13 +66,11 @@ jobs:
           name: Run unit tests
           command: |
             ./gradlew  --console=plain  testDevelopmentTestnetDebugUnitTest
-
       # Generate Jacoco report
       - run:
           name: Generate Jacoco report
           command: |
             ./gradlew  --console=plain :brd-android:app:jacocoTestReport
-
   # Release job (build apk and aab)
   release:
     <<: *defaults
@@ -83,36 +80,39 @@ jobs:
       - node/install
       # Prepare keystore
       - run:
+          name: Ensure env is set
+          command: |
+            echo "CIRCLE_TAG = $CIRCLE_TAG"
+            echo "CI_COMMIT_TAG = $CIRCLE_TAG"
+      - run:
           name: Prepare keystore
           command: |
             mkdir /home/circleci/key
             echo $release_keystore > /home/circleci/key/base64
             base64 -d /home/circleci/key/base64 > /home/circleci/key/keystore
             ls -la /home/circleci/key
-
-      # Install fireup
-      - run:
-          name: Install fireup
-          command: |
-            npm install --global fireup-cli
-            fireup config:set storage.bucket $STORAGE_BUCKET_ID
-            echo "$FIREBASE_ADMIN_SERVICE" | base64 --decode > serviceAccount.json
-            fireup config:set service.account serviceAccount.json
-      # Build apk
       - run:
           name: Build release apk - ProductionMainnet
           command: |
             ./gradlew --console=plain brd-android:app:assembleProductionMainnetRelease
       - run:
+          name: Build debug apk - ProductionMainnet
+          command: |
+            ./gradlew --console=plain brd-android:app:assembleProductionMainnetDebug
+      - run:
           name: Build release apk - StagingMainnet
           command: |
             ./gradlew --console=plain brd-android:app:assembleStagingMainnetRelease
+      - run:
+          name: Build debug apk - StagingMainnet
+          command: |
+            ./gradlew --console=plain brd-android:app:assembleStagingMainnetDebug
       - run:
           name: Build release apk - DevelopmentMainnet
           command: |
             ./gradlew --console=plain brd-android:app:assembleDevelopmentMainnetRelease
       - run:
-          name: Build release apk - DevelopmentMainnet Debug
+          name: Build debug apk - DevelopmentMainnet Debug
           command: |
             ./gradlew --console=plain brd-android:app:assembleDevelopmentMainnetDebug
       # Prepare artifacts
@@ -121,29 +121,41 @@ jobs:
           command: |
             mkdir -p ~/artifacts
             cp -r ./brd-android/app/build/outputs/apk/productionMainnet/release ~/artifacts;
+             cp -r ./brd-android/app/build/outputs/apk/productionMainnet/debug ~/artifacts;
             cp -r ./brd-android/app/build/outputs/apk/developmentMainnet/release ~/artifacts;
             cp -r ./brd-android/app/build/outputs/apk/developmentMainnet/debug ~/artifacts;
             cp -r ./brd-android/app/build/outputs/apk/stagingMainnet/release ~/artifacts;
+            cp -r ./brd-android/app/build/outputs/apk/stagingMainnet/debug ~/artifacts;
           when: always
-
-#      - run:
-#          name: Upload Artifacts
-#          command: |
-#            for file in ~/artifacts/*.apk; do echo $(pwd)/$file; done
-#            fireup up ~/artifacts/developmentMainnet-release-4.11.1.32.apk -pc > release.txt
-#            cp -r release.txt ~/artifacts;
-#          when: always
-      # Upload artifacts
+      - run:
+          name: Prepare release notes
+          command: |
+            npm i firebase-admin isomorphic-fetch
+            echo "$FIREBASE_ADMIN_SERVICE" > serviceAccount.json
+      - run:
+          name: Upload to firebase bucket
+          command: |
+            curl -s 'https://firebasestorage.googleapis.com/v0/b/fabriik-internal-distribution/o/upload-to-storage.js?alt=media&token=3990982e-3101-44cf-8ca0-27687f46112f' -o ./firebase-upload.js
+            node ./firebase-upload.js
       - store_artifacts:
           path: ~/artifacts
 workflows:
-  test_and_build:
+  test:
     jobs:
       - test
+  test_and_build:
+    jobs:
+      - test:
+          filters:
+            tags:
+              only: /release-\d+.\d+.\d+.\d+/
+            branches:
+              ignore: /.*/
       - release:
           filters:
+            tags:
+              only: /release-\d+.\d+.\d+.\d+/
             branches:
-              only:
-                - /release\/.*/
+              ignore: /.*/
           requires:
             - test

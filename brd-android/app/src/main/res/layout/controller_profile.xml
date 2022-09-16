@@ -21,7 +21,7 @@
             android:layout_marginEnd="8dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:padding="8dp"
-            android:src="@drawable/ic_kyc_dismiss" />
+            android:src="@drawable/ic_dismiss" />
 
     </androidx.appcompat.widget.Toolbar>
 
@@ -44,9 +44,14 @@
         <TextView
             android:id="@+id/tv_profile_name"
             style="@style/TextStyle.Title4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="28dp"
             android:layout_marginTop="10dp"
+            android:autoSizeMaxTextSize="24sp"
+            android:autoSizeMinTextSize="12sp"
+            android:autoSizeTextType="uniform"
+            android:gravity="center"
+            android:paddingHorizontal="16dp"
             android:textColor="@color/light_text_01"
             app:layout_constrainedWidth="true"
             app:layout_constraintEnd_toStartOf="@id/btn_change_email"

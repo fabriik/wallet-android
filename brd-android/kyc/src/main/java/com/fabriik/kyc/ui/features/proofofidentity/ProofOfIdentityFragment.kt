@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -14,8 +12,6 @@ import androidx.navigation.fragment.findNavController
 import com.fabriik.common.ui.base.FabriikView
 import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.kyc.R
-import com.fabriik.kyc.data.enums.DocumentSide
-import com.fabriik.kyc.data.enums.DocumentType
 import com.fabriik.kyc.databinding.FragmentProofOfIdentityBinding
 import kotlinx.coroutines.flow.collect
 
@@ -41,7 +37,7 @@ class ProofOfIdentityFragment : Fragment(),
             }
 
             toolbar.setDismissButtonClickListener {
-                viewModel.setEvent(ProofOfIdentityContract.Event.Dismiss)
+                viewModel.setEvent(ProofOfIdentityContract.Event.DismissClicked)
             }
 
             cvIdCard.setOnClickListener {
@@ -93,7 +89,7 @@ class ProofOfIdentityFragment : Fragment(),
     override fun handleEffect(effect: ProofOfIdentityContract.Effect) {
         when (effect) {
             is ProofOfIdentityContract.Effect.ShowToast ->
-                FabriikToastUtil.show(
+                FabriikToastUtil.showInfo(
                     parentView = binding.root,
                     message = effect.message
                 )

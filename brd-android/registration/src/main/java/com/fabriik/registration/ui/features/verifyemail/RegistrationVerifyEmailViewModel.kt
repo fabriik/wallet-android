@@ -6,6 +6,8 @@ import android.text.style.StyleSpan
 import androidx.core.text.toSpannable
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.breadwallet.tools.security.BrdUserManager
+import com.breadwallet.tools.security.ProfileManager
 import com.fabriik.common.data.Status
 import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.common.utils.getString
@@ -29,12 +31,14 @@ class RegistrationVerifyEmailViewModel(
     savedStateHandle: SavedStateHandle
 ) : FabriikViewModel<RegistrationVerifyEmailContract.State, RegistrationVerifyEmailContract.Event, RegistrationVerifyEmailContract.Effect>(
     application, savedStateHandle
-), KodeinAware {
+), RegistrationVerifyEmailEventHandler, KodeinAware {
 
     override val kodein by closestKodein { application }
     private val registrationApi by instance<RegistrationApi>()
 
     private lateinit var arguments: RegistrationVerifyEmailFragmentArgs
+    private val userManager by instance<BrdUserManager>()
+    private val profileManager by instance<ProfileManager>()
 
     override fun parseArguments(savedStateHandle: SavedStateHandle) {
         arguments = RegistrationVerifyEmailFragmentArgs.fromBundle(
@@ -47,31 +51,24 @@ class RegistrationVerifyEmailViewModel(
         changeEmailButtonVisible = arguments.flow != RegistrationFlow.RE_VERIFY
     )
 
-    override fun handleEvent(event: RegistrationVerifyEmailContract.Event) {
-        when (event) {
-            is RegistrationVerifyEmailContract.Event.DismissClicked ->
-                setEffect { RegistrationVerifyEmailContract.Effect.Dismiss() }
+    override fun onDismissClicked() {
+        setEffect { RegistrationVerifyEmailContract.Effect.Dismiss() }
+    }
 
-            is RegistrationVerifyEmailContract.Event.CodeChanged ->
-                setState {
-                    copy(
-                        code = event.code,
-                        codeErrorVisible = false
-                    ).validate()
-                }
+    override fun onChangeEmailClicked() {
+        setEffect { RegistrationVerifyEmailContract.Effect.Back }
+    }
 
-            is RegistrationVerifyEmailContract.Event.ResendEmailClicked ->
-                resendEmail()
-
-            is RegistrationVerifyEmailContract.Event.ChangeEmailClicked ->
-                setEffect { RegistrationVerifyEmailContract.Effect.Back }
-
-            is RegistrationVerifyEmailContract.Event.ConfirmClicked ->
-                verifyEmail()
+    override fun onCodeChanged(code: String) {
+        setState {
+            copy(
+                code = code,
+                codeErrorVisible = false
+            ).validate()
         }
     }
 
-    private fun verifyEmail() {
+    override fun onConfirmClicked() {
         val currentSession = SessionHolder.getSession()
         if (currentSession.isDefaultSession()) {
             setEffect {
@@ -89,6 +86,9 @@ class RegistrationVerifyEmailViewModel(
             callback = {
                 when (it.status) {
                     Status.SUCCESS -> {
+                        userManager.updateVerifyPrompt(false)
+                        profileManager.updateProfile()
+
                         SessionHolder.updateSession(
                             sessionKey = currentSession.key,
                             state = SessionState.VERIFIED
@@ -117,7 +117,7 @@ class RegistrationVerifyEmailViewModel(
         }
     }
 
-    private fun resendEmail() {
+    override fun onResendEmailClicked() {
         callApi(
             endState = { currentState },
             startState = { currentState },

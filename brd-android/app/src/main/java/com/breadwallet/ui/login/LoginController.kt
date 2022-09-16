@@ -138,10 +138,11 @@ class LoginController(args: Bundle? = null) :
             }
 
             override fun onInvalidPinInserted(pin: String, attemptsLeft: Int) {
+                binding.pinDigits.resetPin()
                 channel.offer(E.OnAuthenticationFailed)
             }
         }
-        setup(binding.brkeyboard, pinListener)
+        setup(binding.brkeyboard, true, pinListener)
         awaitClose { cleanUp() }
     }
 
