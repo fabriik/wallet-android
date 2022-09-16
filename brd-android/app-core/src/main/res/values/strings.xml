@@ -1495,7 +1495,6 @@
     <string name="VerifyAccount.Subtitle">We need to verify your identity in order to buy/sell and swap crypto.</string>
     <string name="VerifyAccount.Button">Verify your account</string>
 
-<<<<<<< HEAD
     <!-- Reset pin screen -->
     <string name="ResetPin.title">Reset PIN</string>
     <string name="ResetPin.subtitleNewPin">Set your new PIN</string>
