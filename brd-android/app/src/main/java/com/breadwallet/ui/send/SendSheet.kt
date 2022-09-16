@@ -577,10 +577,9 @@ object SendSheet {
         }
 
         object ShowTransferFailed : F(), NavigationEffect {
-            override val navigationTarget = NavigationTarget.AlertDialog(
-                titleResId = R.string.Alert_error,
-                messageResId = R.string.Send_publishTransactionError,
-                positiveButtonResId = R.string.Button_ok
+            override val navigationTarget = NavigationTarget.FabriikToast(
+                type = NavigationTarget.FabriikToast.Type.ERROR,
+                messageRes = R.string.Send_publishTransactionError
             )
         }
 
