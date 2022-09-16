@@ -1,7 +1,6 @@
 package com.fabriik.common.utils
 
-import android.app.Activity
-import android.graphics.Rect
+import android.os.Build
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -48,7 +47,12 @@ object FabriikToastUtil {
         val snackBar = Snackbar.make(parentView, "", Snackbar.LENGTH_LONG).apply {
             this.view.setBackgroundResource(background)
         }
-        val height = parentView.height - parentView.context.resources.displayMetrics.heightPixels
+
+        val topMargin = when {
+            gravity == Gravity.TOP && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P ->
+                parentView.rootWindowInsets?.displayCutout?.safeInsetTop ?: 0
+            else -> 0
+        }
 
         // setup snackBar view
         (snackBar.view as Snackbar.SnackbarLayout).let {
@@ -56,10 +60,10 @@ object FabriikToastUtil {
             params.width = FrameLayout.LayoutParams.MATCH_PARENT
             if (params is CoordinatorLayout.LayoutParams) {
                 params.gravity = gravity
-                params.topMargin = height
+                params.topMargin = topMargin
             } else if (params is FrameLayout.LayoutParams) {
                 params.gravity = gravity
-                params.topMargin = height
+                params.topMargin = topMargin
             }
 
             it.layoutParams = params
