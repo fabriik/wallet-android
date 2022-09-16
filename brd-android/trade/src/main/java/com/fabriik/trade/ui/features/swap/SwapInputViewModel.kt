@@ -770,7 +770,11 @@ class SwapInputViewModel(
 
     private fun validate(state: SwapInputContract.State.Loaded) = when {
         state.sendingNetworkFee is EstimateSendingFee.Result.InsufficientFunds ->
-            SwapInputContract.ErrorMessage.InsufficientFunds(state.sourceCryptoBalance, state.sourceCryptoCurrency)
+            if (state.sendingNetworkFee.currencyCode.isErc20()) {
+                SwapInputContract.ErrorMessage.InsufficientEthFundsForFee
+            } else {
+                SwapInputContract.ErrorMessage.InsufficientFunds(state.sourceCryptoBalance, state.sourceCryptoCurrency)
+            }
         state.sendingNetworkFee !is EstimateSendingFee.Result.Estimated || state.receivingNetworkFee == null ->
             SwapInputContract.ErrorMessage.NetworkIssues
         state.sourceCryptoBalance < state.sourceCryptoAmount ->

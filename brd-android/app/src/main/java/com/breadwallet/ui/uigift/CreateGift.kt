@@ -207,9 +207,9 @@ object CreateGift {
         }
 
         data class ShowError(val error: Error) : F(), NavigationEffect {
-            override val navigationTarget = NavigationTarget.AlertDialog(
-                error.name,
-                messageResId = when(error) {
+            override val navigationTarget = NavigationTarget.FabriikToast(
+                type = NavigationTarget.FabriikToast.Type.ERROR,
+                messageRes = when(error) {
                     Error.PAPER_WALLET_ERROR -> R.string.CreateGift_unexpectedError
                     Error.SERVER_ERROR -> R.string.CreateGift_serverError
                     Error.INSUFFICIENT_BALANCE_ERROR -> R.string.CreateGift_insufficientBalanceError
@@ -217,8 +217,7 @@ object CreateGift {
                     Error.INPUT_AMOUNT_ERROR -> R.string.CreateGift_inputAmountError
                     Error.INPUT_RECIPIENT_NAME_ERROR -> R.string.CreateGift_inputRecipientNameError
                     Error.TRANSACTION_ERROR -> R.string.CreateGift_unexpectedError
-                },
-                positiveButtonResId = R.string.Button_ok
+                }
             )
         }
     }
