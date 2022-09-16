@@ -44,6 +44,7 @@ import java.io.File
 import java.io.IOException
 import java.util.Currency
 import java.util.concurrent.TimeUnit.MILLISECONDS
+import kotlin.time.DurationUnit
 import kotlin.time.days
 import kotlin.time.toDuration
 
@@ -73,7 +74,7 @@ fun createDisplayCurrencyHandler(
 
 private fun File.isExpired(): Boolean {
     return (lastModified() - System.currentTimeMillis())
-        .toDuration(MILLISECONDS) > 1.days
+        .toDuration(DurationUnit.MILLISECONDS) > 1.days
 }
 
 private fun String.toFiatCurrencies(): List<String> {

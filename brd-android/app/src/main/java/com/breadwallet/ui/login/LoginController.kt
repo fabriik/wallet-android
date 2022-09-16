@@ -138,12 +138,13 @@ class LoginController(args: Bundle? = null) :
                     if (isPinCorrect) {
                         E.OnAuthenticationSuccess
                     } else {
+                        binding.pinDigits.resetPin()
                         E.OnAuthenticationFailed
                     }
                 )
             }
         }
-        setup(binding.brkeyboard, pinListener)
+        setup(binding.brkeyboard, true, pinListener)
         awaitClose { cleanUp() }
     }
 

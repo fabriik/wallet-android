@@ -44,10 +44,10 @@ import com.breadwallet.tools.util.btc
 import com.breadwallet.ui.BaseMobiusController
 import com.breadwallet.ui.ViewEffect
 import com.breadwallet.ui.flowbind.clicks
-import com.breadwallet.ui.formatFiatForUi
 import com.breadwallet.ui.uigift.ShareGift.E
 import com.breadwallet.ui.uigift.ShareGift.F
 import com.breadwallet.ui.uigift.ShareGift.M
+import com.breadwallet.util.formatFiatForUi
 import drewcarlson.mobius.flow.FlowTransformer
 import drewcarlson.mobius.flow.flowTransformer
 import kotlinx.coroutines.Dispatchers.IO

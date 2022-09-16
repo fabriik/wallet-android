@@ -27,6 +27,7 @@ package com.breadwallet.ui.navigation
 interface NavigationTargetHandlerSpec {
     fun patch(effect: NavigationTarget): Unit = when (effect) {
         NavigationTarget.Back -> back()
+        is NavigationTarget.BackTo -> backTo(effect)
         NavigationTarget.ReviewBrd -> reviewBrd()
         NavigationTarget.QRScanner -> qRScanner()
         NavigationTarget.BrdLogin -> brdLogin()
@@ -34,7 +35,8 @@ interface NavigationTargetHandlerSpec {
         NavigationTarget.Buy -> buy()
         NavigationTarget.Profile -> profile()
         NavigationTarget.VerifyProfile -> verifyProfile()
-        is NavigationTarget.Trade -> trade(effect.currencies)
+        NavigationTarget.NoInternetScreen -> noInternetScreen()
+        NavigationTarget.Trade -> trade()
         NavigationTarget.AddWallet -> addWallet()
         NavigationTarget.DisabledScreen -> disabledScreen()
         NavigationTarget.NativeApiExplorer -> nativeApiExplorer()
@@ -45,6 +47,7 @@ interface NavigationTargetHandlerSpec {
         NavigationTarget.ShareDataSettings -> shareDataSettings()
         NavigationTarget.FingerprintSettings -> fingerprintSettings()
         NavigationTarget.WipeWallet -> wipeWallet()
+        NavigationTarget.DeleteAccount -> deleteAccount()
         NavigationTarget.OnBoarding -> onBoarding()
         is NavigationTarget.ImportWallet -> importWallet(effect)
         NavigationTarget.BitcoinNodeSelector -> bitcoinNodeSelector()
@@ -54,6 +57,7 @@ interface NavigationTargetHandlerSpec {
         is NavigationTarget.SendSheet -> sendSheet(effect)
         is NavigationTarget.ReceiveSheet -> receiveSheet(effect)
         is NavigationTarget.ViewTransaction -> viewTransaction(effect)
+        is NavigationTarget.ViewExchangeTransaction -> viewExchangeTransaction(effect)
         is NavigationTarget.DeepLink -> deepLink(effect)
         is NavigationTarget.GoToInAppMessage -> goToInAppMessage(effect)
         is NavigationTarget.Wallet -> wallet(effect)
@@ -80,6 +84,8 @@ interface NavigationTargetHandlerSpec {
         is NavigationTarget.GoToRegistration -> openRegistration(effect)
         is NavigationTarget.ShowInfoDialog -> showInfoDialog(effect)
         is NavigationTarget.FabriikToast -> fabriikToast(effect)
+        is NavigationTarget.FabriikGenericDialog -> fabriikGenericDialog(effect)
+        is NavigationTarget.GoToRecoveryKey -> goToRecoveryKey(effect)
         is NavigationTarget.PinResetCompleted -> pinResetCompleted()
     }
 
@@ -95,6 +101,8 @@ interface NavigationTargetHandlerSpec {
 
     fun back(): Unit
 
+    fun backTo(effect: NavigationTarget.BackTo): Unit
+
     fun reviewBrd(): Unit
 
     fun qRScanner(): Unit
@@ -109,7 +117,7 @@ interface NavigationTargetHandlerSpec {
 
     fun verifyProfile(): Unit
 
-    fun trade(currencies: List<String>): Unit
+    fun trade(): Unit
 
     fun addWallet(): Unit
 
@@ -131,6 +139,8 @@ interface NavigationTargetHandlerSpec {
 
     fun wipeWallet(): Unit
 
+    fun deleteAccount(): Unit
+
     fun onBoarding(): Unit
 
     fun importWallet(effect: NavigationTarget.ImportWallet): Unit
@@ -146,6 +156,8 @@ interface NavigationTargetHandlerSpec {
     fun receiveSheet(effect: NavigationTarget.ReceiveSheet): Unit
 
     fun viewTransaction(effect: NavigationTarget.ViewTransaction): Unit
+
+    fun viewExchangeTransaction(effect: NavigationTarget.ViewExchangeTransaction): Unit
 
     fun deepLink(effect: NavigationTarget.DeepLink): Unit
 
@@ -189,7 +201,13 @@ interface NavigationTargetHandlerSpec {
 
     fun showInfoDialog(effect: NavigationTarget.ShowInfoDialog): Unit
 
+    fun noInternetScreen() : Unit
+
     fun fabriikToast(effect: NavigationTarget.FabriikToast): Unit
+
+    fun fabriikGenericDialog(effect: NavigationTarget.FabriikGenericDialog): Unit
+
+    fun goToRecoveryKey(effect: NavigationTarget.GoToRecoveryKey): Unit
 
     fun pinResetCompleted(): Unit
 }

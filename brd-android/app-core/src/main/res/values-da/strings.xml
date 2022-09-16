@@ -555,17 +555,11 @@
     <string name="PaymentProtocol.Errors.untrustedCertificate">certifikat der ikke er tillid til</string>
     <string name="Platform.transaction_cancelled">Transaktion annulleret</string>
     <!-- Body text for a prompt that asks the user to subscribe to email updates to find out product updates. -->
-    <string name="Prompts.Email.body">Vær den første til at modtage vigtige support- og produktopdateringer</string>
     <!-- Placeholder text for an email address text field. -->
-    <string name="Prompts.Email.placeholder">Indtast din e-mail</string>
     <!-- Body text that is shown when the user successfully subscribes to email updates. -->
-    <string name="Prompts.Email.successBody">Du har abonneret på at modtage opdateringer</string>
     <!-- Text that is displayed as a footnote when the user successfully subscribes to email updates. -->
-    <string name="Prompts.Email.successFootnote">Vi værdsætter din fortsatte støtte</string>
     <!-- Title that is shown when the user successfully subscribes to email updates. -->
-    <string name="Prompts.Email.successTitle">Tak skal du have!</string>
     <!-- Title for a prompt that asks the user to subscribe to email updates to find out product updates. -->
-    <string name="Prompts.Email.title">Hold dig opdateret</string>
     <!-- Enable face ID prompt body -->
     <string name="Prompts.FaceId.body">Tryk Fortsæt for at aktivere Face ID</string>
     <!-- Enable face ID prompt title -->

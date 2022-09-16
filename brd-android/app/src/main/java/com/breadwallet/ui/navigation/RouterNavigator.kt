@@ -26,7 +26,6 @@ package com.breadwallet.ui.navigation
 
 import android.content.Intent
 import android.net.Uri
-import android.view.View
 import android.widget.Toast
 import com.bluelinelabs.conductor.Controller
 import com.bluelinelabs.conductor.ControllerChangeHandler
@@ -58,12 +57,14 @@ import com.breadwallet.ui.profile.ProfileController
 import com.breadwallet.ui.provekey.PaperKeyProveController
 import com.breadwallet.ui.receive.ReceiveController
 import com.breadwallet.ui.resetpin.completed.PinResetCompletedController
+import com.breadwallet.ui.recovery.RecoveryKeyController
 import com.breadwallet.ui.scanner.ScannerController
 import com.breadwallet.ui.send.SendSheetController
 import com.breadwallet.ui.settings.SettingsController
 import com.breadwallet.ui.settings.about.AboutController
 import com.breadwallet.ui.settings.analytics.ShareDataController
 import com.breadwallet.ui.settings.currency.DisplayCurrencyController
+import com.breadwallet.ui.settings.delete.DeleteAccountInfoController
 import com.breadwallet.ui.settings.fastsync.FastSyncController
 import com.breadwallet.ui.settings.fingerprint.FingerprintSettingsController
 import com.breadwallet.ui.settings.logview.LogcatController
@@ -86,14 +87,16 @@ import com.breadwallet.ui.uigift.ShareGiftController
 import com.breadwallet.ui.verifyaccount.VerifyController
 import com.breadwallet.util.CryptoUriParser
 import com.breadwallet.util.isBrd
-import com.fabriik.buy.ui.BuyWebViewActivity
+import com.breadwallet.util.showFabriikGenericDialog
+import com.fabriik.buy.ui.BuyActivity
+import com.fabriik.common.ui.features.nointernet.NoInternetActivity
 import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.kyc.ui.KycActivity
-import com.fabriik.kyc.ui.dialogs.InfoDialog
-import com.fabriik.kyc.ui.dialogs.InfoDialogArgs
+import com.fabriik.common.ui.dialog.InfoDialog
+import com.fabriik.common.ui.dialog.InfoDialogArgs
 import com.fabriik.registration.ui.RegistrationActivity
 import com.fabriik.support.CashSupport
-import com.fabriik.trade.ui.TradeWebViewLauncher
+import com.fabriik.trade.ui.SwapActivity
 import com.platform.util.AppReviewPromptManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -145,6 +148,14 @@ class RouterNavigator(
         if (!router.handleBack()) {
             router.activity?.onBackPressed()
         }
+    }
+
+    override fun backTo(effect: NavigationTarget.BackTo) {
+        val tag = router.backstack.filter { it.controller.javaClass == effect.target }
+            .mapNotNull { it.tag() }
+            .firstOrNull() ?: return
+
+        router.popToTag(tag)
     }
 
     override fun reviewBrd() {
@@ -202,9 +213,7 @@ class RouterNavigator(
 
         router.activity?.let {
             it.startActivity(
-                BuyWebViewActivity.getStartIntent(
-                    it
-                )
+                BuyActivity.getStartIntent(it)
             )
         }
     }
@@ -225,11 +234,10 @@ class RouterNavigator(
         )
     }
 
-    override fun trade(currencies: List<String>) {
+    override fun trade() {
         router.activity?.let {
-            TradeWebViewLauncher.launch(
-                activity = it,
-                currencies = currencies
+            it.startActivity(
+                SwapActivity.getStartIntent(it)
             )
         }
     }
@@ -237,6 +245,7 @@ class RouterNavigator(
     override fun menu(effect: NavigationTarget.Menu) {
         router.pushController(
             RouterTransaction.with(SettingsController(effect.settingsOption))
+                .tag(SettingsController.TRANSACTION_TAG)
                 .popChangeHandler(VerticalChangeHandler())
                 .pushChangeHandler(VerticalChangeHandler())
         )
@@ -266,6 +275,22 @@ class RouterNavigator(
     override fun viewTransaction(effect: NavigationTarget.ViewTransaction) {
         val controller = TxDetailsController(effect.currencyId, effect.txHash)
         router.pushController(RouterTransaction.with(controller))
+    }
+
+    override fun viewExchangeTransaction(effect: NavigationTarget.ViewExchangeTransaction) {
+        router.activity?.let {
+            it.startActivity(
+                if (effect.transactionData.isBuyTransaction()) {
+                    BuyActivity.getStartIntentForSwapDetails(
+                        it, effect.transactionData.exchangeId
+                    )
+                } else {
+                    SwapActivity.getStartIntentForSwapDetails(
+                        it, effect.transactionData.exchangeId
+                    )
+                }
+            )
+        }
     }
 
     override fun deepLink(effect: NavigationTarget.DeepLink) {
@@ -321,7 +346,11 @@ class RouterNavigator(
 
     override fun showInfoDialog(effect: NavigationTarget.ShowInfoDialog) {
         val fm = router.fragmentManager()
-        val infoArgs = InfoDialogArgs(effect.title, effect.description)
+        val infoArgs = InfoDialogArgs(
+            image = effect.image,
+            title = effect.title,
+            description = effect.description
+        )
 
         InfoDialog(infoArgs).show(fm ?: error("Can't find fragment Manager"), "info_dialog")
     }
@@ -471,6 +500,22 @@ class RouterNavigator(
     override fun wipeWallet() {
         router.pushController(
             RouterTransaction.with(WipeWalletController())
+                .pushChangeHandler(HorizontalChangeHandler())
+                .popChangeHandler(HorizontalChangeHandler())
+        )
+    }
+
+    override fun goToRecoveryKey(effect: NavigationTarget.GoToRecoveryKey) {
+        router.pushController(
+            RouterTransaction.with(RecoveryKeyController(effect.mode, effect.phrase))
+                .pushChangeHandler(HorizontalChangeHandler())
+                .popChangeHandler(HorizontalChangeHandler())
+        )
+    }
+
+    override fun deleteAccount() {
+        router.pushController(
+            RouterTransaction.with(DeleteAccountInfoController())
                 .pushChangeHandler(HorizontalChangeHandler())
                 .popChangeHandler(HorizontalChangeHandler())
         )
@@ -724,11 +769,36 @@ class RouterNavigator(
         router.pushController(RouterTransaction.with(SelectBakersController(effect.bakers)))
     }
 
+    override fun noInternetScreen() {
+        router.activity?.let {
+            it.startActivity(
+                NoInternetActivity.getStartIntent(it)
+            )
+        }
+    }
+
     override fun fabriikToast(effect: NavigationTarget.FabriikToast) {
-        FabriikToastUtil.show(
-            parentView = checkNotNull(router.activity).window.decorView,
-            message = effect.message
-        )
+        val message = when {
+            effect.messageRes != null -> router.activity?.getString(effect.messageRes)
+            else -> effect.message
+        } ?: return
+
+        when (effect.type) {
+            NavigationTarget.FabriikToast.Type.INFO ->
+                FabriikToastUtil.showInfo(
+                    parentView = checkNotNull(router.activity).window.decorView,
+                    message = message
+                )
+            NavigationTarget.FabriikToast.Type.ERROR ->
+                FabriikToastUtil.showError(
+                    parentView = checkNotNull(router.activity).window.decorView,
+                    message = message
+                )
+        }
+    }
+
+    override fun fabriikGenericDialog(effect: NavigationTarget.FabriikGenericDialog) {
+        router.showFabriikGenericDialog(effect.args)
     }
 
     override fun pinResetCompleted() {

@@ -31,6 +31,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.net.ConnectivityManager
 import android.os.Build
+import android.os.Process
 import androidx.annotation.VisibleForTesting
 import androidx.camera.camera2.Camera2Config
 import androidx.camera.core.CameraXConfig
@@ -46,6 +47,7 @@ import com.brd.bakerapi.BakersApiClient
 import com.brd.prefs.AndroidPreferences
 import com.brd.prefs.Preferences
 import com.breadwallet.BuildConfig
+import com.breadwallet.R
 import com.breadwallet.breadbox.*
 import com.breadwallet.corecrypto.CryptoApiProvider
 import com.breadwallet.crypto.CryptoApi
@@ -68,11 +70,24 @@ import com.breadwallet.ui.uigift.GiftBackup
 import com.breadwallet.ui.uigift.SharedPrefsGiftBackup
 import com.breadwallet.util.*
 import com.breadwallet.util.usermetrics.UserMetricsUtil
+import com.checkout.android_sdk.CheckoutAPIClient
+import com.checkout.android_sdk.Utils.Environment
+import com.fabriik.buy.data.BuyApi
+import com.fabriik.buy.data.BuyApiInterceptor
 import com.fabriik.common.data.FabriikApiConstants
+import com.fabriik.common.utils.adapter.BigDecimalAdapter
+import com.fabriik.common.utils.adapter.CalendarJsonAdapter
 import com.fabriik.registration.data.RegistrationApi
 import com.fabriik.registration.data.RegistrationApiInterceptor
 import com.fabriik.registration.utils.RegistrationUtils
 import com.fabriik.registration.utils.UserSessionManager
+import com.fabriik.trade.data.SwapApi
+import com.fabriik.trade.data.SwapApiInterceptor
+import com.fabriik.trade.data.SwapTransactionsFetcher
+import com.fabriik.trade.data.SwapTransactionsRepository
+import com.fabriik.trade.utils.CreateFeeAmountData
+import com.fabriik.trade.utils.EstimateReceivingFee
+import com.fabriik.trade.utils.EstimateSendingFee
 import com.platform.APIClient
 import com.platform.HTTPServer
 import com.platform.interfaces.KVStoreProvider
@@ -82,6 +97,8 @@ import com.platform.sqlite.PlatformSqliteHelper
 import com.platform.tools.KVStoreManager
 import com.platform.tools.SessionHolder
 import com.platform.tools.TokenHolder
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import drewcarlson.blockset.BdbService
 import io.ktor.client.*
 import io.ktor.client.engine.okhttp.*
@@ -96,6 +113,7 @@ import org.kodein.di.direct
 import org.kodein.di.erased.bind
 import org.kodein.di.erased.instance
 import org.kodein.di.erased.singleton
+import retrofit2.converter.moshi.MoshiConverterFactory
 import java.io.File
 import java.io.UnsupportedEncodingException
 import java.util.*
@@ -269,7 +287,7 @@ class BreadApp : Application(), KodeinAware, CameraXConfig.Provider {
         }
 
         bind<BrdUserManager>() with singleton {
-            CryptoUserManager(this@BreadApp, ::createCryptoEncryptedPrefs, instance())
+            CryptoUserManager(this@BreadApp, ::createCryptoEncryptedPrefs, instance(), instance())
         }
 
         bind<GiftBackup>() with singleton {
@@ -280,6 +298,14 @@ class BreadApp : Application(), KodeinAware, CameraXConfig.Provider {
             KVStoreManager(this@BreadApp)
         }
 
+        bind<CheckoutAPIClient>() with singleton {
+            CheckoutAPIClient(
+                this@BreadApp,
+                getString(R.string.checkout_api_token),
+                if (resources.getBoolean(R.bool.checkout_sandbox)) Environment.SANDBOX else Environment.LIVE
+            )
+        }
+
         val localMetadataManager by lazy { MetaDataManager(direct.instance()) }
 
         bind<WalletProvider>() with singleton { localMetadataManager }
@@ -287,6 +313,19 @@ class BreadApp : Application(), KodeinAware, CameraXConfig.Provider {
         bind<AccountMetaDataProvider>() with singleton { localMetadataManager }
 
         bind<OkHttpClient>() with singleton { OkHttpClient() }
+
+        bind<Moshi>() with singleton {
+            Moshi.Builder()
+                .add(BigDecimalAdapter)
+                .add(Calendar::class.java, CalendarJsonAdapter())
+                .addLast(KotlinJsonAdapterFactory())
+                .build()
+        }
+
+        bind<MoshiConverterFactory>() with singleton {
+            val moshi = instance<Moshi>()
+            MoshiConverterFactory.create(moshi)
+        }
 
         bind<BdbAuthInterceptor>() with singleton {
             val httpClient = instance<OkHttpClient>()
@@ -406,9 +445,47 @@ class BreadApp : Application(), KodeinAware, CameraXConfig.Provider {
             BRDApiClient.create(AndroidBRDAuthProvider(instance()))
         }
 
+        bind<SwapTransactionsRepository>() with singleton {
+            SwapTransactionsRepository()
+        }
+        bind<SwapTransactionsFetcher>() with singleton {
+            SwapTransactionsFetcher(instance(), instance())
+        }
+
+        bind<SwapApi>() with singleton {
+            SwapApi.create(
+                this@BreadApp,
+                instance(),
+                instance()
+            )
+        }
+
+        bind<SwapApiInterceptor>() with singleton {
+            SwapApiInterceptor(
+                this@BreadApp,
+                applicationScope
+            )
+        }
+
+        bind<BuyApi>() with singleton {
+            BuyApi.create(
+                this@BreadApp,
+                instance(),
+                instance()
+            )
+        }
+
+        bind<BuyApiInterceptor>() with singleton {
+            BuyApiInterceptor(
+                this@BreadApp,
+                applicationScope
+            )
+        }
+
         bind<RegistrationApi>() with singleton {
             RegistrationApi.create(
                 this@BreadApp,
+                instance(),
                 instance()
             )
         }
@@ -440,6 +517,18 @@ class BreadApp : Application(), KodeinAware, CameraXConfig.Provider {
         bind<BakersApiClient>() with singleton {
             BakersApiClient.create(instance())
         }
+
+        bind<EstimateReceivingFee>() with singleton {
+            EstimateReceivingFee(instance())
+        }
+        
+        bind<EstimateSendingFee>() with singleton {
+            EstimateSendingFee(instance(), instance())
+        }
+
+        bind<CreateFeeAmountData>() with singleton {
+            CreateFeeAmountData(instance())
+        }
     }
 
     private var accountLockJob: Job? = null
@@ -450,8 +539,9 @@ class BreadApp : Application(), KodeinAware, CameraXConfig.Provider {
     private val ratesFetcher by instance<RatesFetcher>()
     private val accountMetaData by instance<AccountMetaDataProvider>()
     private val conversionTracker by instance<ConversionTracker>()
+    private val swapTransactionsFetcher by instance<SwapTransactionsFetcher>()
     private val connectivityStateProvider by instance<ConnectivityStateProvider>()
-    private val CHANNEL = "kyc-platform-channels"
+
     override fun onCreate() {
         super.onCreate()
         installHooks()
@@ -463,6 +553,7 @@ class BreadApp : Application(), KodeinAware, CameraXConfig.Provider {
         TokenHolder.provideContext(this)
         SessionHolder.provideContext(this)
         UserSessionManager.provideContext(this)
+        KodeinProvider.provideKodein(getKodeinInstance())
 
         ProcessLifecycleOwner.get().lifecycle.addObserver(ApplicationLifecycleObserver())
         ApplicationLifecycleObserver.addApplicationLifecycleListener { event ->
@@ -483,6 +574,12 @@ class BreadApp : Application(), KodeinAware, CameraXConfig.Provider {
         // Start our local server as soon as the application instance is created, since we need to
         // display support WebViews during onboarding.
         HTTPServer.getInstance().startServer(this)
+
+        if (BuildConfig.DEBUG) {
+            val pid = Process.myPid()
+            val whiteList = "logcat -P '$pid'"
+            Runtime.getRuntime().exec(whiteList).waitFor()
+        }
     }
 
     /**
@@ -561,8 +658,8 @@ class BreadApp : Application(), KodeinAware, CameraXConfig.Provider {
         }
 
         ratesFetcher.start(startedScope)
-        
         conversionTracker.start(startedScope)
+        swapTransactionsFetcher.start(startedScope)
     }
 
     private fun incrementAppForegroundedCounter() {
@@ -626,23 +723,12 @@ class BreadApp : Application(), KodeinAware, CameraXConfig.Provider {
         }
     }
 
-    fun createHttpHeaders(): Map<String, String> {
-        // Split the default device user agent string by spaces and take the first string.
-        // Example user agent string: "Dalvik/1.6.0 (Linux; U;Android 5.1; LG-F320SBuild/KOT49I.F320S22g) Android/9"
-        // We only want: "Dalvik/1.6.0"
-        val deviceUserAgent =
-            (System.getProperty(APIClient.SYSTEM_PROPERTY_USER_AGENT) ?: "")
-                .split("\\s".toRegex())
-                .firstOrNull()
-
-        // The BRD server expects the following user agent: appName/appVersion engine/engineVersion plaform/plaformVersion
-        val brdUserAgent = "${APIClient.UA_APP_NAME}${BuildConfig.VERSION_CODE} $deviceUserAgent ${APIClient.UA_PLATFORM}${Build.VERSION.RELEASE}"
-
+    private fun createHttpHeaders(): Map<String, String> {
         return mapOf(
             APIClient.HEADER_IS_INTERNAL to if (BuildConfig.IS_INTERNAL_BUILD) BRConstants.TRUE else BRConstants.FALSE,
             APIClient.HEADER_TESTFLIGHT to if (BuildConfig.DEBUG) BRConstants.TRUE else BRConstants.FALSE,
             APIClient.HEADER_TESTNET to if (BuildConfig.BITCOIN_TESTNET) BRConstants.TRUE else BRConstants.FALSE,
-            APIClient.HEADER_USER_AGENT to brdUserAgent
+            FabriikApiConstants.HEADER_USER_AGENT to FabriikApiConstants.USER_AGENT_VALUE
         )
     }
 }

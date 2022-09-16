@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:layout_width="wrap_content"
+    tools:layout_height="wrap_content"
+    tools:parentTag="LinearLayout"
+    tools:orientation="horizontal"
+    tools:padding="8dp">
+
+    <com.fabriik.trade.ui.customview.CryptoIconView
+        android:id="@+id/view_icon"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        tools:background="@color/light_icons_01" />
+
+    <TextView
+        android:id="@+id/tv_currency"
+        style="@style/TextStyle.Title4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:textAllCaps="true"
+        tools:text="BTC" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_arrow"
+        android:layout_width="16dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:adjustViewBounds="true"
+        android:layout_marginStart="10dp"
+        android:src="@drawable/ic_chevron_down"
+        android:tint="@color/light_primary"/>
+
+</merge>

@@ -25,10 +25,7 @@
 package com.breadwallet.ui.home
 
 import android.content.Context
-import android.util.Log
-import com.breadwallet.R
 import com.breadwallet.breadbox.*
-import com.breadwallet.crypto.WalletManagerState
 import com.breadwallet.ext.throttleLatest
 import com.breadwallet.model.Experiments
 import com.breadwallet.model.InAppMessage
@@ -51,8 +48,6 @@ import com.breadwallet.ui.home.HomeScreen.F
 import com.breadwallet.util.usermetrics.UserMetricsUtil
 import com.breadwallet.platform.interfaces.AccountMetaDataProvider
 import com.breadwallet.tools.security.ProfileManager
-import com.fabriik.common.data.Status
-import com.fabriik.registration.data.RegistrationApi
 import com.platform.interfaces.WalletProvider
 import com.platform.util.AppReviewPromptManager
 import com.squareup.picasso.Callback
@@ -82,17 +77,10 @@ fun createHomeScreenHandler(
     supportManager: SupportManager,
     profileManager: ProfileManager
 ) = subtypeEffectHandler<F, E> {
-    addConsumer<F.SaveEmail> { effect ->
-        UserMetricsUtil.makeEmailOptInRequest(context, effect.email)
-        BRSharedPrefs.putEmailOptIn(true)
-    }
     addFunction<F.DismissPrompt> { effect ->
         when (effect.promptItem) {
             PromptItem.FINGER_PRINT -> {
                 BRSharedPrefs.putPromptDismissed(PROMPT_DISMISSED_FINGERPRINT, true)
-            }
-            PromptItem.EMAIL_COLLECTION -> {
-                BRSharedPrefs.putEmailOptInDismissed(true)
             }
         }
         E.CheckForPrompt
@@ -101,11 +89,8 @@ fun createHomeScreenHandler(
         // TODO: Move this logic elsewhere, a generic PromptManager
         BRSharedPrefs.promptChanges().mapLatest {
             val promptId = when {
+                brdUser.showVerifyPrompt() -> PromptItem.VERIFY_USER
                 BRSharedPrefs.appRatePromptShouldPromptDebug -> PromptItem.RATE_APP
-                !BRSharedPrefs.getEmailOptIn()
-                    && !BRSharedPrefs.getEmailOptInDismissed() -> {
-                    PromptItem.EMAIL_COLLECTION
-                }
                 brdUser.pinCodeNeedsUpgrade() -> PromptItem.UPGRADE_PIN
                 !BRSharedPrefs.phraseWroteDown -> PromptItem.PAPER_KEY
                 AppReviewPromptManager.shouldPrompt() -> PromptItem.RATE_APP
@@ -161,16 +146,6 @@ fun createHomeScreenHandler(
         E.OnBuyBellNeededLoaded(isBuyBellNeeded)
     }
 
-    addFunction<F.LoadIsBuyAlertNeeded> {
-        val isBuyAlertNeeded = BRSharedPrefs.buyNotePromptShouldPrompt
-        E.OnBuyAlertNeededLoaded(isBuyAlertNeeded)
-    }
-
-    addFunction<F.LoadIsTradeAlertNeeded> {
-        val isTradeAlertNeeded = BRSharedPrefs.tradeNotePromptShouldPrompt
-        E.OnTradeAlertNeededLoaded(isTradeAlertNeeded)
-    }
-
     addTransformer<F.LoadEnabledWallets> {
         walletProvider.enabledWallets().mapLatest { wallets ->
             val fiatIso = BRSharedPrefs.getPreferredFiatIso()
@@ -198,25 +173,6 @@ fun createHomeScreenHandler(
                     val name = TokenUtil.tokenForCode(it.currency.code)?.name
                     it.asWallet(name, fiatIso, ratesRepo)
                 })
-            }
-    }
-
-    addTransformer<F.LoadSwapCurrencies> { effects ->
-        effects.flatMapLatest { breadBox.system() }
-            .throttleLatest(WALLET_UPDATE_THROTTLE)
-            .mapLatest { system ->
-                val networks = system.networks
-                val currencies = TokenUtil.getTokenItems()
-                    .filter { token ->
-                        val hasNetwork = networks.any { it.containsCurrency(token.currencyId) }
-                        val isErc20 = token.type == "erc20"
-                        (token.isSupported && (isErc20 || hasNetwork))
-                    }
-                    .map {
-                        if (it.symbol == "usdt") "${it.symbol}20" else it.symbol
-                    }
-
-                E.OnSwapCurrenciesLoaded(currencies)
             }
     }
 
@@ -283,8 +239,8 @@ private fun getPromptName(prompt: PromptItem): String = when (prompt) {
     PromptItem.PAPER_KEY -> EventUtils.PROMPT_PAPER_KEY
     PromptItem.UPGRADE_PIN -> EventUtils.PROMPT_UPGRADE_PIN
     PromptItem.RECOMMEND_RESCAN -> EventUtils.PROMPT_RECOMMEND_RESCAN
-    PromptItem.EMAIL_COLLECTION -> EventUtils.PROMPT_EMAIL
     PromptItem.RATE_APP -> EventUtils.PROMPT_RATE_APP
+    PromptItem.VERIFY_USER -> EventUtils.PROMPT_VERIFY_USER
 }
 
 private fun TokenItem.asWallet(

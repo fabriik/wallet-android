@@ -417,7 +417,11 @@ object WalletUpdate : Update<M, E, F>, WalletScreenUpdateSpec {
     ): Next<M, F> =
         dispatch(
             effects(
-                F.Nav.GoToTransaction(model.currencyCode, event.txHash)
+                if (event.transactionData == null) {
+                    F.Nav.GoToTransaction(model.currencyCode, event.txHash)
+                } else {
+                    F.Nav.GoToExchangeTransaction(event.transactionData)
+                }
             )
         )
 

@@ -25,13 +25,10 @@
 package com.breadwallet.ui.home
 
 import com.breadwallet.tools.util.EventUtils
-import com.breadwallet.R
-import com.breadwallet.tools.manager.BRSharedPrefs
 import com.breadwallet.ui.home.HomeScreen.E
 import com.breadwallet.ui.home.HomeScreen.F
 import com.breadwallet.ui.home.HomeScreen.M
-import com.fabriik.common.data.model.canUseBuyTrade
-import com.fabriik.common.data.model.isUserRegistered
+import com.fabriik.common.data.model.*
 import com.platform.tools.SessionHolder
 import com.spotify.mobius.Effects.effects
 import com.spotify.mobius.Next.dispatch
@@ -41,7 +38,6 @@ import com.spotify.mobius.Update
 
 const val MAX_CRYPTO_DIGITS = 8
 const val DIALOG_PARTNERSHIP_NOTE_BUY = "buy_part_note"
-const val DIALOG_PARTNERSHIP_NOTE_SWAP = "swap_part_note"
 
 val HomeScreenUpdate = Update<M, E, F> { model, event ->
     when (event) {
@@ -54,8 +50,6 @@ val HomeScreenUpdate = Update<M, E, F> { model, event ->
             setOf(F.UpdateWalletOrder(event.displayOrder))
         )
         is E.OnBuyBellNeededLoaded -> next(model.copy(isBuyBellNeeded = event.isBuyBellNeeded))
-        is E.OnBuyAlertNeededLoaded -> next(model.copy(isBuyAlertNeeded = event.isBuyAlertNeeded))
-        is E.OnTradeAlertNeededLoaded -> next(model.copy(isTradeAlertNeeded = event.isTradeAlertNeeded))
         is E.OnEnabledWalletsUpdated -> {
             next(
                 model.copy(
@@ -95,60 +89,38 @@ val HomeScreenUpdate = Update<M, E, F> { model, event ->
             }
         }
         is E.OnAddWalletsClicked -> dispatch(effects(F.GoToAddWallet))
-        E.OnBuyClicked -> when {
-            !model.profile.isUserRegistered() -> dispatch(effects(F.GoToRegistration))
-            !SessionHolder.isUserSessionVerified() -> dispatch(effects(F.RequestSessionVerification))
-            !model.profile.canUseBuyTrade() -> dispatch(effects(F.GoToVerifyProfile))
-            else -> {
-                val isBuyAlertNeeded = model.isBuyAlertNeeded
-                BRSharedPrefs.buyNotePromptShouldPrompt = false
-
-                next<M, F>(
-                    model.copy(isBuyAlertNeeded = false),
-                    effects(
-                        if (isBuyAlertNeeded) {
-                            F.ShowPartnershipNote(
-                                dialogId = DIALOG_PARTNERSHIP_NOTE_BUY,
-                                messageResId = R.string.HomeScreen_partnershipNoteBuyDescription
-                            )
-                        } else {
-                            F.GoToBuy
-                        }
-                    )
-                )
-            }
-        }
-        E.OnTradeClicked -> when {
-            !model.profile.isUserRegistered() -> dispatch(effects(F.GoToRegistration))
-            !SessionHolder.isUserSessionVerified() -> dispatch(effects(F.RequestSessionVerification))
-            !model.profile.canUseBuyTrade() -> dispatch(effects(F.GoToVerifyProfile))
-            else -> {
-                val isTradeAlertNeeded = model.isTradeAlertNeeded
-                BRSharedPrefs.tradeNotePromptShouldPrompt = false
-
-                next<M, F>(
-                    model.copy(isTradeAlertNeeded = false),
-                    effects(
-                        if (isTradeAlertNeeded) {
-                            F.ShowPartnershipNote(
-                                dialogId = DIALOG_PARTNERSHIP_NOTE_SWAP,
-                                messageResId = R.string.HomeScreen_partnershipNoteSwapDescription
-                            )
-                        } else {
-                            F.LoadSwapCurrencies
-                        }
-                    )
-                )
-            }
-        }
+        E.OnBuyClicked -> dispatch(
+            effects(
+                when {
+                    model.profile.isRegistrationNeeded() -> F.GoToRegistration
+                    model.profile.isEmailVerificationNeeded() || !SessionHolder.isUserSessionVerified() ->
+                        F.RequestSessionVerification
+                    !model.hasInternet -> F.GoToNoInternetScreen
+                    !model.profile.canUseBuy() -> F.GoToVerifyProfile
+                    else -> F.GoToBuy
+                }
+            )
+        )
+        E.OnTradeClicked -> dispatch(
+            effects(
+                when {
+                    model.profile.isRegistrationNeeded() -> F.GoToRegistration
+                    model.profile.isEmailVerificationNeeded() || !SessionHolder.isUserSessionVerified() ->
+                        F.RequestSessionVerification
+                    !model.hasInternet -> F.GoToNoInternetScreen
+                    !model.profile.canUseTrade() -> F.GoToVerifyProfile
+                    else -> F.GoToTrade
+                }
+            )
+	    )
         E.OnBuyNoteSeen -> dispatch(effects(F.GoToBuy))
-        E.OnTradeNoteSeen -> dispatch(effects(F.LoadSwapCurrencies))
         E.OnMenuClicked -> dispatch(effects(F.GoToMenu))
         E.OnProfileClicked -> dispatch(
             effects(
                 when {
-                    !model.profile.isUserRegistered() -> F.GoToRegistration
-                    !SessionHolder.isUserSessionVerified() -> F.RequestSessionVerification
+                    model.profile.isRegistrationNeeded() -> F.GoToRegistration
+                    model.profile.isEmailVerificationNeeded() || !SessionHolder.isUserSessionVerified() ->
+                        F.RequestSessionVerification
                     else -> F.GoToProfile
                 }
             )
@@ -206,12 +178,12 @@ val HomeScreenUpdate = Update<M, E, F> { model, event ->
         }
         is E.OnPromptDismissed -> {
             val promptName = when (event.promptId) {
-                PromptItem.EMAIL_COLLECTION -> EventUtils.PROMPT_EMAIL
                 PromptItem.FINGER_PRINT -> EventUtils.PROMPT_TOUCH_ID
                 PromptItem.PAPER_KEY -> EventUtils.PROMPT_PAPER_KEY
                 PromptItem.UPGRADE_PIN -> EventUtils.PROMPT_UPGRADE_PIN
                 PromptItem.RECOMMEND_RESCAN -> EventUtils.PROMPT_RECOMMEND_RESCAN
                 PromptItem.RATE_APP -> EventUtils.PROMPT_RATE_APP
+                PromptItem.VERIFY_USER -> EventUtils.PROMPT_VERIFY_USER
             }
             val eventName = promptName + EventUtils.EVENT_PROMPT_SUFFIX_DISMISSED
             val effects = mutableSetOf(F.DismissPrompt(event.promptId), F.TrackEvent(eventName))
@@ -282,20 +254,15 @@ val HomeScreenUpdate = Update<M, E, F> { model, event ->
             }
             dispatch(effects)
         }
-        is E.OnEmailPromptClicked -> {
-            val eventName = EventUtils.PROMPT_EMAIL + EventUtils.EVENT_PROMPT_SUFFIX_TRIGGER
-            dispatch(
-                effects(
-                    F.SaveEmail(event.email),
-                    F.TrackEvent(eventName)
-                )
-            )
-        }
         is E.OnSupportFormSubmitted -> dispatch(
             effects(F.SubmitSupportForm(event.feedback))
         )
-        is E.OnSwapCurrenciesLoaded -> dispatch(
-            effects(F.GoToTrade(event.currencies))
-        )
+
+        is E.OnVerifyPromptClicked -> {
+            when {
+                model.profile.isRegistrationNeeded() -> dispatch(effects(F.GoToRegistration))
+                else -> dispatch(effects(F.GoToKyc))
+            }
+        }
     }
 }

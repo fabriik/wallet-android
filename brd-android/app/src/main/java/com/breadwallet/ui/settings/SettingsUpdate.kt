@@ -106,6 +106,9 @@ object SettingsUpdate : Update<M, E, F>, SettingsScreenUpdateSpec {
             setOf(F.GenerateTransactionsExportFile)
         )
 
+    override fun onTestGenericDialogResult(model: M, event: E.OnTestGenericDialogResult): Next<M, F> =
+        dispatch(setOf(F.ShowToast(event.message)))
+
     override fun onTransactionsExportFileGenerated(model: M, event: E.OnTransactionsExportFileGenerated): Next<M, F> =
         next(
             model.copy(isLoading = false),
@@ -144,6 +147,7 @@ object SettingsUpdate : Update<M, E, F>, SettingsScreenUpdateSpec {
                     SettingsOption.PAPER_KEY -> F.GoToAuthentication
                     SettingsOption.UPDATE_PIN -> F.GoToUpdatePin
                     SettingsOption.WIPE -> F.GoToWipeWallet
+                    SettingsOption.DELETE_ACCOUNT -> F.GoToDeleteAccount
                     SettingsOption.ONBOARDING_FLOW -> F.GoToOnboarding
                     SettingsOption.SEND_LOGS -> F.SendLogs
                     SettingsOption.API_SERVER -> F.ShowApiServerDialog
@@ -163,6 +167,7 @@ object SettingsUpdate : Update<M, E, F>, SettingsScreenUpdateSpec {
                     SettingsOption.COPY_PAPER_KEY -> F.CopyPaperKey
                     SettingsOption.METADATA_VIEWER -> F.ViewMetadata
                     SettingsOption.EXPORT_TRANSACTIONS -> F.ShowConfirmExportTransactions
+                    SettingsOption.TEST_FABRIIK_GENERIC_DIALOG -> F.TestFabriikGenericDialog
                 }
             )
         )

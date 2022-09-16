@@ -8,11 +8,10 @@
         android:allowBackup="false"
         android:usesCleartextTraffic="false">
 
-        <activity
-            android:name=".ui.BuyWebViewActivity"
-            android:exported="true"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity android:name=".ui.BuyActivity"
+            android:exported="false"
+            android:theme="@style/FabriikAppTheme.Fabriik"
+            android:screenOrientation="portrait" />
 
     </application>
 </manifest>
