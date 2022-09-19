@@ -52,8 +52,8 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-            app:pinDigitsResId="@drawable/ic_pin_dot_empty_blue"
-            app:pinFilledDotResId="@drawable/ic_pin_dot_filled_blue">
+            app:pinDigitsResId="@drawable/ic_pin_dot_empty_green"
+            app:pinFilledDotResId="@drawable/ic_pin_dot_filled_green">
 
         </com.breadwallet.legacy.presenter.customviews.PinLayout>
 

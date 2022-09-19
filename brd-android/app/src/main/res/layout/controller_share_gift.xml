@@ -57,7 +57,7 @@
                 android:layout_height="30dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:src="@drawable/ic_flower"
+                android:src="@drawable/ic_rockwallet_icon"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintBottom_toBottomOf="@+id/labelApproxFiat"
                 app:layout_constraintEnd_toStartOf="@+id/labelApproxFiat"

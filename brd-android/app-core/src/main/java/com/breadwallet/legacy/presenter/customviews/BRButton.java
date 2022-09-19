@@ -272,7 +272,6 @@ public class BRButton extends Button {
             bPaint.setColor(getContext().getColor(buttonColorValue.resourceId));
             bPaint.setStyle(Paint.Style.FILL);
         }
-
         // Recover wallet button
         else if (type == 7) {
             setHasShadow(false);

@@ -4,7 +4,7 @@
     android:id="@+id/activity_pit"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/light_green_background"
     android:clickable="true">
 
     <ImageView
@@ -15,7 +15,7 @@
         android:layout_marginTop="130dp"
         android:layout_marginEnd="16dp"
         android:gravity="center_horizontal"
-        android:src="@drawable/ic_flower_blue"
+        android:src="@drawable/ic_rockwallet_icon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -34,8 +34,8 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title"
         app:layout_constraintVertical_bias="0.75"
-        app:pinDigitsResId="@drawable/ic_pin_dot_empty_blue"
-        app:pinFilledDotResId="@drawable/ic_pin_dot_filled_blue">
+        app:pinDigitsResId="@drawable/ic_pin_dot_empty_green"
+        app:pinFilledDotResId="@drawable/ic_pin_dot_filled_green">
 
     </com.breadwallet.legacy.presenter.customviews.PinLayout>
 
