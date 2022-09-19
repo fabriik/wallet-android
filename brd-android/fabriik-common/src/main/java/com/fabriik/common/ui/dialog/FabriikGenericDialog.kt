@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
@@ -37,6 +38,7 @@ class FabriikGenericDialog : DialogFragment() {
             ?: throw IllegalStateException()
 
         with(binding) {
+            setupIcon(ivIcon)
             setupTitle(tvTitle)
             setupDescription(tvDescription)
             setupDismissButton(btnDismiss)
@@ -50,9 +52,15 @@ class FabriikGenericDialog : DialogFragment() {
         show(manager, TAG)
     }
 
+    private fun setupIcon(view: ImageView) {
+        args.iconRes?.let(view::setImageResource)
+        view.isVisible = args.iconRes != null
+    }
+
     private fun setupTitle(view: TextView) {
         val title = if (args.titleRes != null) getString(args.titleRes!!) else args.title
         view.text = title
+        view.gravity = args.titleTextGravity
         view.isVisible = title != null
     }
 

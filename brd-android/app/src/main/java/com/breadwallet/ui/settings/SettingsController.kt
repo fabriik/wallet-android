@@ -73,6 +73,7 @@ class SettingsController(
     AlertDialogController.Listener {
 
     companion object {
+        const val TRANSACTION_TAG = "tag_settings"
         private const val EXT_SECTION = "section"
     }
 
@@ -98,6 +99,7 @@ class SettingsController(
         SettingsScreenHandler(
             output,
             applicationContext!!,
+            direct.instance(),
             direct.instance(),
             direct.instance(),
             direct.instance(),
