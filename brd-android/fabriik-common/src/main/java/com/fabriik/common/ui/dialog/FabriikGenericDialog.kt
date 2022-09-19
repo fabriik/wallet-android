@@ -14,7 +14,6 @@ import androidx.fragment.app.FragmentManager
 import com.fabriik.common.R
 import com.fabriik.common.databinding.DialogFabriikGenericBinding
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.textfield.TextInputLayout
 import java.lang.IllegalStateException
 
 class FabriikGenericDialog : DialogFragment() {
@@ -44,7 +43,6 @@ class FabriikGenericDialog : DialogFragment() {
             setupDismissButton(btnDismiss)
             setupPositiveButton(btnPositive)
             setupNegativeButton(btnNegative)
-            setupInputTextField(inputTextField)
         }
     }
 
@@ -78,7 +76,7 @@ class FabriikGenericDialog : DialogFragment() {
 
         button.setOnClickListener {
             val resultKey = args.positive?.resultKey ?: return@setOnClickListener
-            notifyListeners(resultKey, binding.etDialog.text.toString())
+            notifyListeners(resultKey)
         }
     }
 
@@ -90,31 +88,22 @@ class FabriikGenericDialog : DialogFragment() {
 
         button.setOnClickListener {
             val resultKey = args.negative?.resultKey ?: return@setOnClickListener
-            notifyListeners(resultKey, null)
+            notifyListeners(resultKey)
         }
     }
 
     private fun setupDismissButton(button: ImageButton) {
         button.isVisible = args.showDismissButton
         button.setOnClickListener {
-            notifyListeners(RESULT_KEY_DISMISSED, null)
+            notifyListeners(RESULT_KEY_DISMISSED)
         }
     }
 
-    private fun setupInputTextField(view: TextInputLayout) {
-        val hintText = if (args.textInputHintRes != null) getString(args.textInputHintRes!!) else args.textInputHint
-        view.isVisible = hintText != null
-        view.hint = hintText
-    }
-
-    private fun notifyListeners(result: String, extraInput: String?) {
+    private fun notifyListeners(result: String) {
         dismissAllowingStateLoss()
 
         requireActivity().supportFragmentManager.setFragmentResult(
-            args.requestKey, bundleOf(
-                EXTRA_RESULT to result,
-                EXTRA_TEXT_INPUT to extraInput
-            )
+            args.requestKey, bundleOf(EXTRA_RESULT to result)
         )
     }
 
@@ -122,7 +111,6 @@ class FabriikGenericDialog : DialogFragment() {
         private const val TAG = "Fabriik-Generic-Dialog"
         private const val EXTRA_ARGS = "args"
         const val EXTRA_RESULT = "result"
-        const val EXTRA_TEXT_INPUT = "input"
         private const val RESULT_KEY_DISMISSED = "result_dismissed"
 
         fun newInstance(args: FabriikGenericDialogArgs): FabriikGenericDialog {
