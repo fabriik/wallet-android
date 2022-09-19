@@ -30,6 +30,7 @@ import com.breadwallet.ui.ViewEffect
 import com.breadwallet.ui.navigation.NavigationEffect
 import com.breadwallet.ui.navigation.NavigationTarget
 import com.breadwallet.util.CurrencyCode
+import com.fabriik.common.ui.dialog.FabriikGenericDialogArgs
 import com.fabriik.support.pages.Topic
 import dev.zacsweers.redacted.annotations.Redacted
 import java.math.BigDecimal
@@ -38,6 +39,7 @@ object Import {
 
     const val CONFIRM_IMPORT_DIALOG = "confirm_import"
     const val IMPORT_SUCCESS_DIALOG = "import_success"
+    const val IMPORT_SUCCESS_DIALOG_POSITIVE = "import_success_dialog_positive"
 
     data class M(
         @Redacted val privateKey: String? = null,
@@ -180,11 +182,16 @@ object Import {
             )
         }
         object ShowImportSuccess : F(), NavigationEffect {
-            override val navigationTarget = NavigationTarget.AlertDialog(
-                titleResId = R.string.Import_success,
-                messageResId = R.string.Import_SuccessBody,
-                positiveButtonResId = R.string.Button_ok,
-                dialogId = IMPORT_SUCCESS_DIALOG
+            override val navigationTarget = NavigationTarget.FabriikGenericDialog(
+                FabriikGenericDialogArgs(
+                    requestKey = IMPORT_SUCCESS_DIALOG,
+                    titleRes = R.string.Import_success,
+                    descriptionRes = R.string.Import_SuccessBody,
+                    positive = FabriikGenericDialogArgs.ButtonData(
+                        resultKey = IMPORT_SUCCESS_DIALOG_POSITIVE,
+                        titleRes = R.string.Button_ok,
+                    )
+                )
             )
         }
 
