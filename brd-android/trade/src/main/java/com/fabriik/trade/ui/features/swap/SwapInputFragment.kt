@@ -19,6 +19,7 @@ import com.breadwallet.tools.util.Utils.hideKeyboard
 import com.fabriik.common.ui.dialog.FabriikGenericDialog
 import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.trade.ui.customview.SwapCardView
+import com.fabriik.trade.ui.customview.SwapCardView.Companion.SCALE_CRYPTO
 import com.fabriik.trade.ui.dialog.SwapConfirmationDialog
 import com.fabriik.trade.ui.features.assetselection.AssetSelectionFragment
 import com.fabriik.trade.ui.features.authentication.SwapAuthenticationViewModel
@@ -309,8 +310,8 @@ class SwapInputFragment : Fragment(),
             cvSwap.setSourceCurrencyTitle(
                 getString(
                     R.string.Swap_Input_IHave, state.sourceCryptoBalance.formatCryptoForUi(
-                        state.sourceCryptoCurrency,
-                        SwapCardView.SCALE_CRYPTO
+                        currencyCode = state.sourceCryptoCurrency,
+                        scale = SCALE_CRYPTO
                     )
                 )
             )
@@ -319,7 +320,7 @@ class SwapInputFragment : Fragment(),
                 state.sourceCryptoCurrency,
                 state.rate.formatCryptoForUi(
                     currencyCode = state.destinationCryptoCurrency,
-                    scale = 8
+                    scale = SCALE_CRYPTO
                 )
             )
 
