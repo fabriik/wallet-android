@@ -11,6 +11,7 @@ import com.fabriik.trade.R
 import com.fabriik.trade.data.model.AmountData
 import com.fabriik.trade.data.model.FeeAmountData
 import com.fabriik.trade.data.response.QuoteResponse
+import com.fabriik.trade.ui.customview.SwapCardView.Companion.SCALE_CRYPTO
 import com.fabriik.trade.utils.EstimateSendingFee
 import java.math.BigDecimal
 import java.util.*
@@ -148,7 +149,10 @@ interface SwapInputContract {
 
         class MinSwapAmount(private val minAmount: BigDecimal, private val cryptoCurrency: String) : ErrorMessage() {
             override fun toString(context: Context) = context.getString(
-                R.string.Swap_Input_Error_MinAmount, minAmount.formatCryptoForUi(cryptoCurrency)
+                R.string.Swap_Input_Error_MinAmount, minAmount.formatCryptoForUi(
+                    currencyCode = cryptoCurrency,
+                    scale = SCALE_CRYPTO
+                )
             )
         }
 

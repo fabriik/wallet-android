@@ -1,7 +1,7 @@
 /**
  * BreadWallet
  *
- * Created by Pablo Budelli <pablo.budelli@breadwallet.com> on 10/17/19.
+ * Created by Pablo Budelli <pablo.budelli@breadwallet.com> on 10/25/19.
  * Copyright (c) 2019 breadwallet LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,64 +22,38 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.breadwallet.ui.settings
+package com.breadwallet.ui.settings.delete
 
-enum class SettingsOption {
-    // HOME
-    SCAN_QR,
-    FEEDBACK,
-    PREFERENCES,
-    SECURITY_SETTINGS,
-    SUPPORT,
-    SUBMIT_REVIEW,
-    ABOUT,
-    ATM_FINDER,
-    EXPORT_TRANSACTIONS,
-    DEVELOPER_OPTIONS,
+import com.breadwallet.ui.navigation.NavigationEffect
+import com.breadwallet.ui.navigation.NavigationTarget
+import com.breadwallet.ui.recovery.RecoveryKey
 
-    // PREFERENCES
-    CURRENCY,
-    BTC_MENU,
-    BCH_MENU,
-    SHARE_ANONYMOUS_DATA,
-    RESET_DEFAULT_CURRENCIES,
-    NOTIFICATIONS,
+object DeleteAccountInfo {
 
-    // SECURITY SETTINGS
-    FINGERPRINT_AUTH,
-    UPDATE_PIN,
-    PAPER_KEY,
-    WIPE,
-    DELETE_ACCOUNT,
+    data class M(
+        val checkboxEnable: Boolean = false,
+        val continueEnabled: Boolean = false
+    ) {
 
-    // DEVELOPER OPTIONS
-    SEND_LOGS,
-    API_SERVER,
-    ONBOARDING_FLOW,
-    WEB_PLAT_DEBUG_URL,
-    WEB_PLAT_BUNDLE,
-    TOKEN_BUNDLE,
-    NATIVE_API_EXPLORER,
-    WIPE_NO_PROMPT,
-    ENABLE_ALL_WALLETS,
-    TOGGLE_RATE_APP_PROMPT,
-    VIEW_LOGS,
-    COPY_PAPER_KEY,
-    METADATA_VIEWER,
-    TEST_FABRIIK_GENERIC_DIALOG,
+        companion object {
+            fun createDefault(): M {
+                return M()
+            }
+        }
+    }
 
-    // BTC
-    REDEEM_PRIVATE_KEY,
-    SYNC_BLOCKCHAIN_BTC,
-    SYNC_BLOCKCHAIN_BCH,
-    BTC_NODES,
-    ENABLE_SEG_WIT,
-    VIEW_LEGACY_ADDRESS,
-    FAST_SYNC_BTC,
+    sealed class E {
+        object OnDismissClicked : E()
+        object OnContinueClicked : E()
+        data class OnCheckboxChanged(val enable: Boolean) : E()
+    }
 
-    // Hidden
-    CLEAR_BLOCKCHAIN_DATA,
-    REFRESH_TOKENS,
-    DETAILED_LOGGING,
+    sealed class F {
+        sealed class Nav(
+            override val navigationTarget: NavigationTarget
+        ) : F(), NavigationEffect {
+            object GoBack : Nav(NavigationTarget.Back)
+            object GoToRecoveryPhrase: Nav(NavigationTarget.GoToRecoveryKey(RecoveryKey.Mode.DELETE_ACCOUNT))
+        }
+    }
 }
-

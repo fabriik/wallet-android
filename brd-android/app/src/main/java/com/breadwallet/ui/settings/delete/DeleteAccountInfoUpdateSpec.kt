@@ -1,8 +1,8 @@
 /**
  * BreadWallet
  *
- * Created by Pablo Budelli <pablo.budelli@breadwallet.com> on 10/17/19.
- * Copyright (c) 2019 breadwallet LLC
+ * Created by Drew Carlson <drew.carlson@breadwallet.com> on 8/14/20.
+ * Copyright (c) 2020 breadwallet LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,15 +22,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.breadwallet.ui.settings
+package com.breadwallet.ui.settings.delete
 
-import com.breadwallet.R
+import com.spotify.mobius.Next
 
-data class SettingsItem(
-    val title: String,
-    val option: SettingsOption,
-    val iconResId: Int? = null,
-    val titleColorResId: Int = R.color.light_text_01,
-    val addOn: String = "",
-    val subHeader: String = ""
-)
+interface DeleteAccountInfoUpdateSpec {
+    fun patch(model: DeleteAccountInfo.M, event: DeleteAccountInfo.E): Next<DeleteAccountInfo.M, DeleteAccountInfo.F> = when (event) {
+        DeleteAccountInfo.E.OnDismissClicked -> onDismissClicked(model)
+        DeleteAccountInfo.E.OnContinueClicked -> onContinueClicked(model)
+        is DeleteAccountInfo.E.OnCheckboxChanged -> onCheckboxChanged(model, event)
+    }
+
+    fun onDismissClicked(model: DeleteAccountInfo.M): Next<DeleteAccountInfo.M, DeleteAccountInfo.F>
+
+    fun onContinueClicked(model: DeleteAccountInfo.M): Next<DeleteAccountInfo.M, DeleteAccountInfo.F>
+
+    fun onCheckboxChanged(model: DeleteAccountInfo.M, event: DeleteAccountInfo.E.OnCheckboxChanged): Next<DeleteAccountInfo.M, DeleteAccountInfo.F>
+}

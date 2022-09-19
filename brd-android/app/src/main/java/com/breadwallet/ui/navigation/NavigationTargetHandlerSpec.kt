@@ -27,6 +27,7 @@ package com.breadwallet.ui.navigation
 interface NavigationTargetHandlerSpec {
     fun patch(effect: NavigationTarget): Unit = when (effect) {
         NavigationTarget.Back -> back()
+        is NavigationTarget.BackTo -> backTo(effect)
         NavigationTarget.ReviewBrd -> reviewBrd()
         NavigationTarget.QRScanner -> qRScanner()
         NavigationTarget.BrdLogin -> brdLogin()
@@ -46,6 +47,7 @@ interface NavigationTargetHandlerSpec {
         NavigationTarget.ShareDataSettings -> shareDataSettings()
         NavigationTarget.FingerprintSettings -> fingerprintSettings()
         NavigationTarget.WipeWallet -> wipeWallet()
+        NavigationTarget.DeleteAccount -> deleteAccount()
         NavigationTarget.OnBoarding -> onBoarding()
         is NavigationTarget.ImportWallet -> importWallet(effect)
         NavigationTarget.BitcoinNodeSelector -> bitcoinNodeSelector()
@@ -83,6 +85,7 @@ interface NavigationTargetHandlerSpec {
         is NavigationTarget.ShowInfoDialog -> showInfoDialog(effect)
         is NavigationTarget.FabriikToast -> fabriikToast(effect)
         is NavigationTarget.FabriikGenericDialog -> fabriikGenericDialog(effect)
+        is NavigationTarget.GoToRecoveryKey -> goToRecoveryKey(effect)
     }
 
     fun openKyc(effect: NavigationTarget.GoToKyc): Unit
@@ -96,6 +99,8 @@ interface NavigationTargetHandlerSpec {
     fun logcatViewer()
 
     fun back(): Unit
+
+    fun backTo(effect: NavigationTarget.BackTo): Unit
 
     fun reviewBrd(): Unit
 
@@ -132,6 +137,8 @@ interface NavigationTargetHandlerSpec {
     fun fingerprintSettings(): Unit
 
     fun wipeWallet(): Unit
+
+    fun deleteAccount(): Unit
 
     fun onBoarding(): Unit
 
@@ -198,4 +205,6 @@ interface NavigationTargetHandlerSpec {
     fun fabriikToast(effect: NavigationTarget.FabriikToast): Unit
 
     fun fabriikGenericDialog(effect: NavigationTarget.FabriikGenericDialog): Unit
+
+    fun goToRecoveryKey(effect: NavigationTarget.GoToRecoveryKey): Unit
 }

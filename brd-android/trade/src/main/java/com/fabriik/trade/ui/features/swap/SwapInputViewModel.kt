@@ -5,7 +5,6 @@ import android.security.keystore.UserNotAuthenticatedException
 import androidx.lifecycle.viewModelScope
 import com.breadwallet.breadbox.BreadBox
 import com.breadwallet.breadbox.addressFor
-import com.breadwallet.breadbox.formatCryptoForUi
 import com.breadwallet.crypto.Amount
 import com.breadwallet.crypto.Transfer
 import com.breadwallet.crypto.TransferFeeBasis
@@ -770,7 +769,11 @@ class SwapInputViewModel(
 
     private fun validate(state: SwapInputContract.State.Loaded) = when {
         state.sendingNetworkFee is EstimateSendingFee.Result.InsufficientFunds ->
-            SwapInputContract.ErrorMessage.InsufficientFunds(state.sourceCryptoBalance, state.sourceCryptoCurrency)
+            if (state.sendingNetworkFee.currencyCode.isErc20()) {
+                SwapInputContract.ErrorMessage.InsufficientEthFundsForFee
+            } else {
+                SwapInputContract.ErrorMessage.InsufficientFunds(state.sourceCryptoBalance, state.sourceCryptoCurrency)
+            }
         state.sendingNetworkFee !is EstimateSendingFee.Result.Estimated || state.receivingNetworkFee == null ->
             SwapInputContract.ErrorMessage.NetworkIssues
         state.sourceCryptoBalance < state.sourceCryptoAmount ->

@@ -29,7 +29,9 @@ import androidx.annotation.StringRes
 import com.brd.bakerapi.models.Baker
 import com.breadwallet.model.InAppMessage
 import com.breadwallet.tools.util.Link
+import com.breadwallet.ui.BaseController
 import com.breadwallet.ui.auth.AuthMode
+import com.breadwallet.ui.recovery.RecoveryKey
 import com.breadwallet.ui.settings.SettingsSection
 import com.fabriik.common.ui.dialog.FabriikGenericDialogArgs
 import com.fabriik.registration.ui.RegistrationFlow
@@ -37,6 +39,7 @@ import com.fabriik.support.pages.Topic
 import com.fabriik.trade.data.model.SwapBuyTransactionData
 import dev.zacsweers.redacted.annotations.Redacted
 import java.math.BigDecimal
+import kotlin.reflect.KClass
 
 sealed class NavigationTarget : INavigationTarget {
     data class SendSheet(
@@ -55,6 +58,7 @@ sealed class NavigationTarget : INavigationTarget {
     ) : NavigationTarget()
 
     object Back : NavigationTarget()
+    data class BackTo(val target: Class<*>) : NavigationTarget()
     object ReviewBrd : NavigationTarget()
     object GoToKyc : NavigationTarget()
     data class GoToRegistration(val flow: RegistrationFlow, val email: String? = null) : NavigationTarget()
@@ -80,7 +84,8 @@ sealed class NavigationTarget : INavigationTarget {
 
     data class FabriikToast(
         val type: Type,
-        val message: String
+        val message: String? = null,
+        val messageRes: Int? = null
     ) : NavigationTarget() {
         enum class Type {
             INFO,
@@ -100,6 +105,11 @@ sealed class NavigationTarget : INavigationTarget {
         val onboarding: Boolean = false,
         val skipWriteDownKey: Boolean = false,
         val onComplete: OnCompleteAction = OnCompleteAction.GO_HOME
+    ) : NavigationTarget()
+
+    data class GoToRecoveryKey(
+        val mode: RecoveryKey.Mode,
+        val phrase: String? = null
     ) : NavigationTarget()
 
     data class AlertDialog(
@@ -155,6 +165,7 @@ sealed class NavigationTarget : INavigationTarget {
     object FingerprintSettings : NavigationTarget()
     object WipeWallet : NavigationTarget()
     object OnBoarding : NavigationTarget()
+    object DeleteAccount : NavigationTarget()
     data class ImportWallet(
         val privateKey: String? = null,
         val isPasswordProtected: Boolean = false,

@@ -12,10 +12,13 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import androidx.annotation.StringRes
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.SavedStateHandle
+import com.fabriik.common.R
+import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.*
 import java.math.BigDecimal
 import java.text.DecimalFormat
@@ -107,6 +110,12 @@ fun EditText.afterTextChangedDebounce(delayMillis: Long, callback: (Editable) ->
             }
         }
     }
+}
+
+fun TextInputLayout.showErrorState(errorState: Boolean) {
+    foreground = ContextCompat.getDrawable(
+        context, if (errorState) R.drawable.bg_input_view_error else R.drawable.bg_input_view
+    )
 }
 
 fun Array<String>.contains(other: String, ignoreCase: Boolean = false): Boolean {
