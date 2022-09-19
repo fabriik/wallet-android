@@ -106,7 +106,7 @@ object HomeScreen {
         object OnEmailVerified : E()
         data class OnRateAppPromptDontShowClicked(val checked: Boolean) : E()
         object OnRateAppPromptNoThanksClicked : E()
-        data class OnSupportFormSubmitted(val feedback: String) : E()
+        object OnPositiveDialogClicked : E()
         data class OnProfileDataLoaded(val profile: Profile) : E()
         data class OnProfileDataLoadFailed(val message: String?) : E()
         object OnVerifyPromptClicked : E()
@@ -186,12 +186,11 @@ object HomeScreen {
             override val navigationTarget = NavigationTarget.ReviewBrd
         }
 
-        object GoToSupportForm : F(), NavigationEffect {
+        object GoToSupportDialog : F(), NavigationEffect {
             override val navigationTarget = NavigationTarget.FabriikGenericDialog(
                 FabriikGenericDialogArgs(
                     titleRes = R.string.SupportForm_helpUsImprove,
                     descriptionRes = R.string.SupportForm_feedbackAppreciated,
-                    textInputHintRes = R.string.SupportForm_pleaseDescribe,
                     positive = FabriikGenericDialogArgs.ButtonData(
                         titleRes = R.string.Button_submit,
                         resultKey = SUPPORT_FORM_DIALOG_POSITIVE
@@ -223,10 +222,12 @@ object HomeScreen {
         object ClearRateAppPrompt : F()
         object SaveDontShowMeRateAppPrompt : F()
 
-        data class SubmitSupportForm(val feedback: String) : F()
-
         object GoToKyc : F(), NavigationEffect {
             override val navigationTarget = NavigationTarget.GoToKyc
+        }
+
+        object GoToFeedback : F(), NavigationEffect{
+            override val navigationTarget = NavigationTarget.GoToFeedback
         }
     }
 }

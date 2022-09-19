@@ -248,15 +248,16 @@ val HomeScreenUpdate = Update<M, E, F> { model, event ->
             next(model.copy(rateAppPromptDontShowMeAgain = event.checked))
         }
         E.OnRateAppPromptNoThanksClicked -> {
-            val effects = mutableSetOf<F>(F.GoToSupportForm)
+            val effects = mutableSetOf<F>(F.GoToSupportDialog)
             if (model.rateAppPromptDontShowMeAgain) {
                 effects.add(F.SaveDontShowMeRateAppPrompt)
             }
             dispatch(effects)
         }
-        is E.OnSupportFormSubmitted -> dispatch(
-            effects(F.SubmitSupportForm(event.feedback))
-        )
+
+        is E.OnPositiveDialogClicked -> {
+            dispatch(effects(F.GoToFeedback))
+        }
 
         is E.OnVerifyPromptClicked -> {
             when {

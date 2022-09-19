@@ -53,7 +53,6 @@ import com.breadwallet.ui.home.HomeScreen.SUPPORT_FORM_DIALOG
 import com.breadwallet.ui.home.HomeScreen.SUPPORT_FORM_DIALOG_POSITIVE
 import com.breadwallet.util.formatFiatForUi
 import com.breadwallet.util.registerForGenericDialogResult
-import com.fabriik.common.ui.dialog.FabriikGenericDialog.Companion.EXTRA_TEXT_INPUT
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.GenericFastAdapter
 import com.mikepenz.fastadapter.adapters.GenericModelAdapter
@@ -151,12 +150,10 @@ class HomeController(
         addWalletAdapter!!.add(AddWalletItem())
         registerForActivityResult(RegistrationActivity.REQUEST_CODE)
 
-        registerForGenericDialogResult(SUPPORT_FORM_DIALOG) { resultKey, bundle ->
-            val inputText = bundle.getString(EXTRA_TEXT_INPUT)
-            if (inputText.isNullOrEmpty()) return@registerForGenericDialogResult
+        registerForGenericDialogResult(SUPPORT_FORM_DIALOG) { resultKey, _->
             when(resultKey) {
                 SUPPORT_FORM_DIALOG_POSITIVE ->
-                    eventConsumer.accept(E.OnSupportFormSubmitted(inputText))
+                    eventConsumer.accept(E.OnPositiveDialogClicked)
             }
         }
     }
