@@ -101,6 +101,7 @@ class SendSheetController(args: Bundle? = null) :
         const val DIALOG_NO_ETH_FOR_TOKEN_TRANSFER_NEGATIVE = "adjust_for_fee_negative"
         const val DIALOG_MIN_XRP_AMOUNT = "min_xrp_amount"
         const val DIALOG_PAYMENT_ERROR = "payment_error"
+        const val DIALOG_PAYMENT_ERROR_POSITIVE = "payment_error_positive"
         const val SHOW_XRP_MIN_POSITIVE = "show_xrp_positive"
     }
 
