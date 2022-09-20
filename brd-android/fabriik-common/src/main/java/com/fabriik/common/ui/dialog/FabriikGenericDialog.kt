@@ -69,13 +69,9 @@ class FabriikGenericDialog : DialogFragment() {
     }
 
     private fun getStringRes(): String {
-        val messageArgs = args.messageArgs ?: return getString(args.descriptionRes!!)
+        val messageArgs = args.messageArgs?.toTypedArray() ?: emptyArray()
 
-        return when (messageArgs.size) {
-            1 -> getString(args.descriptionRes!!, messageArgs[0])
-            2 -> getString(args.descriptionRes!!, messageArgs[0], messageArgs[1])
-            else -> getString(args.descriptionRes!!)
-        }
+        return getString(args.descriptionRes!!, *messageArgs)
     }
 
     private fun setupPositiveButton(button: MaterialButton) {
