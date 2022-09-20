@@ -46,6 +46,7 @@ import com.breadwallet.ui.auth.AuthenticationController
 import com.breadwallet.ui.controllers.AlertDialogController
 import com.breadwallet.ui.flowbind.clicks
 import com.breadwallet.ui.scanner.ScannerController
+import com.breadwallet.ui.settings.SettingsScreen.CONFIRM_EXPORT_TRANSACTIONS_DIALOG
 import com.breadwallet.ui.settings.SettingsScreen.E
 import com.breadwallet.ui.settings.SettingsScreen.F
 import com.breadwallet.ui.settings.SettingsScreen.M
@@ -129,6 +130,13 @@ class SettingsController(
                     eventConsumer.accept(E.OnTestGenericDialogResult("Test dialog positive button clicked"))
             }
         }
+
+        registerForGenericDialogResult(CONFIRM_EXPORT_TRANSACTIONS_DIALOG) {resultKey, _ ->
+            when (resultKey) {
+                TEST_FABRIIK_DIALOG_POSITIVE ->
+                    eventConsumer.accept(E.OnExportTransactionsConfirmed)
+            }
+        }
     }
 
     override fun bindView(modelFlow: Flow<M>): Flow<E> {
@@ -195,14 +203,6 @@ class SettingsController(
 
     override fun onAuthenticationSuccess() {
         eventConsumer.accept(E.OnAuthenticated)
-    }
-
-    override fun onPositiveClicked(
-        dialogId: String,
-        controller: AlertDialogController,
-        result: AlertDialogController.DialogInputResult
-    ) {
-        eventConsumer.accept(E.OnExportTransactionsConfirmed)
     }
 
     /** Developer options dialogs */

@@ -25,6 +25,7 @@
 package com.breadwallet.ui.importwallet
 
 import android.os.Bundle
+import android.view.View
 import androidx.core.os.bundleOf
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -37,11 +38,15 @@ import com.breadwallet.ui.ViewEffect
 import com.breadwallet.ui.controllers.AlertDialogController
 import com.breadwallet.ui.flowbind.clicks
 import com.breadwallet.ui.importwallet.Import.CONFIRM_IMPORT_DIALOG
+import com.breadwallet.ui.importwallet.Import.CONFIRM_IMPORT_DIALOG_NEGATIVE
+import com.breadwallet.ui.importwallet.Import.CONFIRM_IMPORT_DIALOG_POSITIVE
 import com.breadwallet.ui.importwallet.Import.E
 import com.breadwallet.ui.importwallet.Import.F
 import com.breadwallet.ui.importwallet.Import.IMPORT_SUCCESS_DIALOG
+import com.breadwallet.ui.importwallet.Import.IMPORT_SUCCESS_DIALOG_POSITIVE
 import com.breadwallet.ui.importwallet.Import.M
 import com.breadwallet.ui.scanner.ScannerController
+import com.breadwallet.util.registerForGenericDialogResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
@@ -103,10 +108,31 @@ class ImportController(
         get() = createImportHandler(
             direct.instance(),
             direct.instance(),
-            direct.instance()
+            direct.instance(),
+            requireContext()
         )
 
     private val binding by viewBinding(ControllerImportWalletBinding::inflate)
+
+    override fun onCreateView(view: View) {
+        super.onCreateView(view)
+
+        registerForGenericDialogResult(CONFIRM_IMPORT_DIALOG) { resultKey, _ ->
+            when (resultKey) {
+                CONFIRM_IMPORT_DIALOG_POSITIVE ->
+                    eventConsumer.accept(E.OnImportConfirm)
+                CONFIRM_IMPORT_DIALOG_NEGATIVE ->
+                    eventConsumer.accept(E.OnImportCancel)
+            }
+        }
+
+        registerForGenericDialogResult(IMPORT_SUCCESS_DIALOG) { resultKey, _ ->
+            when (resultKey) {
+                IMPORT_SUCCESS_DIALOG_POSITIVE ->
+                    eventConsumer.accept(E.OnCloseClicked)
+            }
+        }
+    }
 
     override fun bindView(modelFlow: Flow<M>): Flow<E> {
         modelFlow
@@ -165,42 +191,6 @@ class ImportController(
             E.OnKeyScanned(link.privateKey, link.passwordProtected)
                 .run(eventConsumer::accept)
         }
-    }
-
-    override fun onPositiveClicked(
-        dialogId: String,
-        controller: AlertDialogController,
-        result: AlertDialogController.DialogInputResult
-    ) {
-        when (dialogId) {
-            CONFIRM_IMPORT_DIALOG -> E.OnImportConfirm
-            IMPORT_SUCCESS_DIALOG -> E.OnCloseClicked
-            else -> null
-        }?.run(eventConsumer::accept)
-    }
-
-    override fun onDismissed(
-        dialogId: String,
-        controller: AlertDialogController,
-        result: AlertDialogController.DialogInputResult
-    ) {
-        onDismissOrNegative(dialogId)
-    }
-
-    override fun onNegativeClicked(
-        dialogId: String,
-        controller: AlertDialogController,
-        result: AlertDialogController.DialogInputResult
-    ) {
-        onDismissOrNegative(dialogId)
-    }
-
-    private fun onDismissOrNegative(dialogId: String) {
-        when (dialogId) {
-            CONFIRM_IMPORT_DIALOG -> E.OnImportCancel
-            IMPORT_SUCCESS_DIALOG -> E.OnCloseClicked
-            else -> null
-        }?.run(eventConsumer::accept)
     }
 
     override fun handleViewEffect(effect: ViewEffect) {

@@ -24,6 +24,8 @@
  */
 package com.breadwallet.ui.importwallet
 
+import android.content.Context
+import com.breadwallet.R
 import com.breadwallet.app.GiftTracker
 import com.breadwallet.breadbox.BreadBox
 import com.breadwallet.breadbox.hashString
@@ -45,10 +47,11 @@ import kotlinx.coroutines.flow.take
 fun createImportHandler(
     breadBox: BreadBox,
     walletImporter: WalletImporter,
-    giftTracker: GiftTracker
+    giftTracker: GiftTracker,
+    context: Context
 ) = subtypeEffectHandler<Import.F, Import.E> {
     addFunction(handleValidateKey(breadBox))
-    addFunction(handleEstimateImport(breadBox, walletImporter))
+    addFunction(handleEstimateImport(breadBox, walletImporter,context))
     addFunction(handleSubmitTransfer(walletImporter, giftTracker))
     addConsumer<Import.F.TrackEvent> { (event) ->
         EventUtils.pushEvent(event)
@@ -91,7 +94,8 @@ private fun handleValidateKey(
 
 private fun handleEstimateImport(
     breadBox: BreadBox,
-    walletImporter: WalletImporter
+    walletImporter: WalletImporter,
+    context: Context
 ): suspend (Import.F.EstimateImport) -> Import.E = { effect ->
     val privateKey = effect.privateKey.toByteArray()
     val password = when (effect) {
@@ -119,12 +123,15 @@ private fun handleEstimateImport(
     } else {
         val walletBalance = walletFound.balance.toBigDecimal()
         when (val result = walletImporter.estimateFee()) {
-            is WalletImporter.FeeResult.Success ->
+            is WalletImporter.FeeResult.Success -> {
+                val balance = walletFound.balance.toBigDecimal()
+                val fee = result.feeBasis.fee.toBigDecimal()
+                val receiveAmount = balance - fee
                 Import.E.Estimate.Success(
-                    walletFound.balance,
-                    result.feeBasis.fee,
-                    walletFound.currencyCode
+                    currencyCode = walletFound.currencyCode,
+                    description = context.getString(R.string.Import_confirm, receiveAmount, fee)
                 )
+            }
             is WalletImporter.FeeResult.InsufficientFunds ->
                 Import.E.Estimate.BalanceTooLow(walletBalance)
             is WalletImporter.FeeResult.Failed ->

@@ -25,7 +25,6 @@
 package com.breadwallet.ui.importwallet
 
 import com.breadwallet.R
-import com.breadwallet.crypto.Amount
 import com.breadwallet.ui.ViewEffect
 import com.breadwallet.ui.navigation.NavigationEffect
 import com.breadwallet.ui.navigation.NavigationTarget
@@ -38,6 +37,8 @@ import java.math.BigDecimal
 object Import {
 
     const val CONFIRM_IMPORT_DIALOG = "confirm_import"
+    const val CONFIRM_IMPORT_DIALOG_POSITIVE = "confirm_import_positive"
+    const val CONFIRM_IMPORT_DIALOG_NEGATIVE = "confirm_import_negative"
     const val IMPORT_SUCCESS_DIALOG = "import_success"
     const val IMPORT_SUCCESS_DIALOG_POSITIVE = "import_success_dialog_positive"
 
@@ -123,9 +124,8 @@ object Import {
 
         sealed class Estimate : E() {
             data class Success(
-                val balance: Amount,
-                val feeAmount: Amount,
-                val currencyCode: CurrencyCode
+                val currencyCode: CurrencyCode,
+                val description: String,
             ) : Estimate()
 
             data class FeeError(
@@ -196,16 +196,22 @@ object Import {
         }
 
         data class ShowConfirmImport(
-            val receiveAmount: String,
-            val feeAmount: String
+            val message: String,
         ) : F(), NavigationEffect {
-            override val navigationTarget = NavigationTarget.AlertDialog(
-                titleResId = R.string.Import_title,
-                messageResId = R.string.Import_confirm,
-                messageArgs = listOf(receiveAmount, feeAmount),
-                positiveButtonResId = R.string.Import_importButton,
-                negativeButtonResId = R.string.Button_cancel,
-                dialogId = CONFIRM_IMPORT_DIALOG
+            override val navigationTarget = NavigationTarget.FabriikGenericDialog(
+                FabriikGenericDialogArgs(
+                    requestKey = CONFIRM_IMPORT_DIALOG,
+                    titleRes = R.string.Import_title,
+                    descriptionRes = R.string.Import_confirm,
+                    positive = FabriikGenericDialogArgs.ButtonData(
+                        resultKey = CONFIRM_IMPORT_DIALOG_POSITIVE,
+                        titleRes = R.string.Import_importButton,
+                    ),
+                    negative = FabriikGenericDialogArgs.ButtonData(
+                        resultKey = CONFIRM_IMPORT_DIALOG_NEGATIVE,
+                        titleRes = R.string.Button_cancel
+                    )
+                )
             )
         }
 
