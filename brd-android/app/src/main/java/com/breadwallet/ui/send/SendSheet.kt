@@ -38,6 +38,9 @@ import com.breadwallet.tools.util.Link
 import com.breadwallet.tools.util.eth
 import com.breadwallet.ui.navigation.NavigationEffect
 import com.breadwallet.ui.navigation.NavigationTarget
+import com.breadwallet.ui.send.SendSheetController.Companion.DIALOG_NO_ETH_FOR_TOKEN_TRANSFER
+import com.breadwallet.ui.send.SendSheetController.Companion.DIALOG_NO_ETH_FOR_TOKEN_TRANSFER_NEGATIVE
+import com.breadwallet.ui.send.SendSheetController.Companion.DIALOG_NO_ETH_FOR_TOKEN_TRANSFER_POSITIVE
 import com.breadwallet.ui.send.SendSheetController.Companion.SHOW_XRP_MIN_POSITIVE
 import com.breadwallet.util.CurrencyCode
 import com.breadwallet.util.isBitcoin
@@ -518,13 +521,21 @@ object SendSheet {
             val currencyCode: CurrencyCode,
             val networkFee: BigDecimal
         ) : F(), NavigationEffect {
-            override val navigationTarget = NavigationTarget.AlertDialog(
-                dialogId = SendSheetController.DIALOG_NO_ETH_FOR_TOKEN_TRANSFER,
-                titleResId = R.string.Send_insufficientGasTitle,
-                messageResId = R.string.Send_insufficientGasMessage,
-                messageArgs = listOf(networkFee.formatCryptoForUi(currencyCode)),
-                positiveButtonResId = R.string.Button_continueAction,
-                negativeButtonResId = R.string.Button_cancel
+            override val navigationTarget = NavigationTarget.FabriikGenericDialog(
+                FabriikGenericDialogArgs(
+                    requestKey = DIALOG_NO_ETH_FOR_TOKEN_TRANSFER,
+                    titleRes = R.string.Send_insufficientGasTitle,
+                    descriptionRes = R.string.Send_insufficientGasMessage,
+                    messageArgs = listOf(networkFee.formatCryptoForUi(currencyCode)),
+                    positive = FabriikGenericDialogArgs.ButtonData(
+                        resultKey = DIALOG_NO_ETH_FOR_TOKEN_TRANSFER_POSITIVE,
+                        titleRes = R.string.Button_continueAction
+                    ),
+                    negative = FabriikGenericDialogArgs.ButtonData(
+                        resultKey = DIALOG_NO_ETH_FOR_TOKEN_TRANSFER_NEGATIVE,
+                        titleRes = R.string.Button_cancel
+                    )
+                )
             )
         }
 

@@ -65,6 +65,7 @@ import com.breadwallet.ui.send.SendSheet.M
 import com.breadwallet.util.formatFiatForUi
 import com.breadwallet.util.isErc20
 import com.breadwallet.util.isEthereum
+import com.breadwallet.util.registerForGenericDialogResult
 import com.fabriik.support.CashSupport
 import com.fabriik.support.pages.Topic
 import kotlinx.coroutines.channels.awaitClose
@@ -96,6 +97,8 @@ class SendSheetController(args: Bundle? = null) :
 
     companion object {
         const val DIALOG_NO_ETH_FOR_TOKEN_TRANSFER = "adjust_for_fee"
+        const val DIALOG_NO_ETH_FOR_TOKEN_TRANSFER_POSITIVE = "adjust_for_fee_positive"
+        const val DIALOG_NO_ETH_FOR_TOKEN_TRANSFER_NEGATIVE = "adjust_for_fee_negative"
         const val DIALOG_MIN_XRP_AMOUNT = "min_xrp_amount"
         const val DIALOG_PAYMENT_ERROR = "payment_error"
         const val SHOW_XRP_MIN_POSITIVE = "show_xrp_positive"
@@ -161,6 +164,13 @@ class SendSheetController(args: Bundle? = null) :
 
             layoutSheetBody.layoutTransition = UiUtils.getDefaultTransition()
             layoutSheetBody.setOnTouchListener(SlideDetector(router, layoutSheetBody))
+        }
+
+        registerForGenericDialogResult(DIALOG_NO_ETH_FOR_TOKEN_TRANSFER) { resultKey, _ ->
+            when(resultKey) {
+                DIALOG_NO_ETH_FOR_TOKEN_TRANSFER_POSITIVE ->
+                    eventConsumer.accept(E.GoToEthWallet)
+            }
         }
     }
 
@@ -556,18 +566,6 @@ class SendSheetController(args: Bundle? = null) :
 
     override fun onAuthenticationCancelled() {
         eventConsumer.accept(E.OnAuthCancelled)
-    }
-
-    override fun onPositiveClicked(
-        dialogId: String,
-        controller: AlertDialogController,
-        result: AlertDialogController.DialogInputResult
-    ) {
-        when (dialogId) {
-            DIALOG_NO_ETH_FOR_TOKEN_TRANSFER -> {
-                eventConsumer.accept(E.GoToEthWallet)
-            }
-        }
     }
 
     override fun onPositiveClicked(controller: ConfirmTxController) {
