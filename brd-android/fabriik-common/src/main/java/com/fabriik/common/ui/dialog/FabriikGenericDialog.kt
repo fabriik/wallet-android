@@ -63,9 +63,19 @@ class FabriikGenericDialog : DialogFragment() {
     }
 
     private fun setupDescription(view: TextView) {
-        val description = if (args.descriptionRes != null) getString(args.descriptionRes!!) else args.description
+        val description = if (args.descriptionRes != null) getStringRes() else args.description
         view.text = description
         view.isVisible = description != null
+    }
+
+    private fun getStringRes(): String {
+        val messageArgs = args.messageArgs ?: return getString(args.descriptionRes!!)
+
+        return when (messageArgs.size) {
+            1 -> getString(args.descriptionRes!!, messageArgs[0])
+            2 -> getString(args.descriptionRes!!, messageArgs[0], messageArgs[1])
+            else -> getString(args.descriptionRes!!)
+        }
     }
 
     private fun setupPositiveButton(button: MaterialButton) {
