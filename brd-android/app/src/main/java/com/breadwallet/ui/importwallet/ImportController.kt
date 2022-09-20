@@ -46,6 +46,7 @@ import com.breadwallet.ui.importwallet.Import.IMPORT_SUCCESS_DIALOG_POSITIVE
 import com.breadwallet.ui.importwallet.Import.M
 import com.breadwallet.ui.scanner.ScannerController
 import com.breadwallet.util.registerForGenericDialogResult
+import com.fabriik.common.ui.dialog.FabriikGenericDialog.Companion.RESULT_KEY_DISMISSED
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
@@ -126,6 +127,8 @@ class ImportController(
         registerForGenericDialogResult(IMPORT_SUCCESS_DIALOG) { resultKey, _ ->
             when (resultKey) {
                 IMPORT_SUCCESS_DIALOG_POSITIVE ->
+                    eventConsumer.accept(E.OnCloseClicked)
+                RESULT_KEY_DISMISSED ->
                     eventConsumer.accept(E.OnCloseClicked)
             }
         }

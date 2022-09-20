@@ -47,6 +47,7 @@ import com.breadwallet.ui.controllers.AlertDialogController
 import com.breadwallet.ui.flowbind.clicks
 import com.breadwallet.ui.scanner.ScannerController
 import com.breadwallet.ui.settings.SettingsScreen.CONFIRM_EXPORT_TRANSACTIONS_DIALOG
+import com.breadwallet.ui.settings.SettingsScreen.CONFIRM_EXPORT_TRANSACTIONS_DIALOG_POSITIVE
 import com.breadwallet.ui.settings.SettingsScreen.E
 import com.breadwallet.ui.settings.SettingsScreen.F
 import com.breadwallet.ui.settings.SettingsScreen.M
@@ -133,7 +134,7 @@ class SettingsController(
 
         registerForGenericDialogResult(CONFIRM_EXPORT_TRANSACTIONS_DIALOG) {resultKey, _ ->
             when (resultKey) {
-                TEST_FABRIIK_DIALOG_POSITIVE ->
+                CONFIRM_EXPORT_TRANSACTIONS_DIALOG_POSITIVE ->
                     eventConsumer.accept(E.OnExportTransactionsConfirmed)
             }
         }

@@ -510,6 +510,7 @@ object SendSheet {
                     FabriikGenericDialogArgs(
                         requestKey = SendSheetController.DIALOG_MIN_XRP_AMOUNT,
                         titleRes = R.string.Send_minXrpAmountTitle,
+                        showDismissButton = true,
                         descriptionRes = R.string.Send_minXrpAmountDescription,
                         positive = FabriikGenericDialogArgs.ButtonData(
                             titleRes = R.string.Button_continueAction,
@@ -593,6 +594,7 @@ object SendSheet {
                     requestKey = DIALOG_PAYMENT_ERROR,
                     titleRes = R.string.Alert_error,
                     description = message,
+                    showDismissButton = true,
                     positive = FabriikGenericDialogArgs.ButtonData(
                         resultKey = DIALOG_PAYMENT_ERROR_POSITIVE,
                         titleRes = R.string.Button_ok

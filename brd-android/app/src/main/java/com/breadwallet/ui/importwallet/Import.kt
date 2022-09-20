@@ -189,6 +189,7 @@ object Import {
                     requestKey = IMPORT_SUCCESS_DIALOG,
                     titleRes = R.string.Import_success,
                     descriptionRes = R.string.Import_SuccessBody,
+                    showDismissButton = true,
                     positive = FabriikGenericDialogArgs.ButtonData(
                         resultKey = IMPORT_SUCCESS_DIALOG_POSITIVE,
                         titleRes = R.string.Button_ok,

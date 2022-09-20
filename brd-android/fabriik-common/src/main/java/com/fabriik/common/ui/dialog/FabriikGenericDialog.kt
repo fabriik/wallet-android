@@ -117,7 +117,7 @@ class FabriikGenericDialog : DialogFragment() {
         private const val TAG = "Fabriik-Generic-Dialog"
         private const val EXTRA_ARGS = "args"
         const val EXTRA_RESULT = "result"
-        private const val RESULT_KEY_DISMISSED = "result_dismissed"
+        const val RESULT_KEY_DISMISSED = "result_dismissed"
 
         fun newInstance(args: FabriikGenericDialogArgs): FabriikGenericDialog {
             val dialog = FabriikGenericDialog()
