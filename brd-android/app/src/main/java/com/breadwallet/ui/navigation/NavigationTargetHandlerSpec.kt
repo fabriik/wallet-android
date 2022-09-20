@@ -63,7 +63,6 @@ interface NavigationTargetHandlerSpec {
         is NavigationTarget.Wallet -> wallet(effect)
         is NavigationTarget.SupportPage -> supportPage(effect)
         is NavigationTarget.SetPin -> setPin(effect)
-        is NavigationTarget.AlertDialog -> alertDialog(effect)
         is NavigationTarget.Authentication -> authentication(effect)
         is NavigationTarget.WriteDownKey -> writeDownKey(effect)
         is NavigationTarget.PaperKey -> paperKey(effect)
@@ -167,8 +166,6 @@ interface NavigationTargetHandlerSpec {
     fun supportPage(effect: NavigationTarget.SupportPage): Unit
 
     fun setPin(effect: NavigationTarget.SetPin): Unit
-
-    fun alertDialog(effect: NavigationTarget.AlertDialog): Unit
 
     fun authentication(effect: NavigationTarget.Authentication): Unit
 
