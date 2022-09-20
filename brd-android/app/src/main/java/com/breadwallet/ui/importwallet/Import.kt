@@ -25,6 +25,7 @@
 package com.breadwallet.ui.importwallet
 
 import com.breadwallet.R
+import com.breadwallet.crypto.Amount
 import com.breadwallet.ui.ViewEffect
 import com.breadwallet.ui.navigation.NavigationEffect
 import com.breadwallet.ui.navigation.NavigationTarget
@@ -125,7 +126,8 @@ object Import {
         sealed class Estimate : E() {
             data class Success(
                 val currencyCode: CurrencyCode,
-                val description: String,
+                val balance: Amount,
+                val feeAmount: Amount,
             ) : Estimate()
 
             data class FeeError(
@@ -196,13 +198,15 @@ object Import {
         }
 
         data class ShowConfirmImport(
-            val message: String,
+            val receiveAmount: String,
+            val feeAmount: String
         ) : F(), NavigationEffect {
             override val navigationTarget = NavigationTarget.FabriikGenericDialog(
                 FabriikGenericDialogArgs(
                     requestKey = CONFIRM_IMPORT_DIALOG,
                     titleRes = R.string.Import_title,
                     descriptionRes = R.string.Import_confirm,
+                    messageArgs = listOf(receiveAmount, feeAmount),
                     positive = FabriikGenericDialogArgs.ButtonData(
                         resultKey = CONFIRM_IMPORT_DIALOG_POSITIVE,
                         titleRes = R.string.Import_importButton,

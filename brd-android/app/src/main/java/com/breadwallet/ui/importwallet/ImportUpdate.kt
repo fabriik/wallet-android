@@ -122,12 +122,15 @@ val ImportUpdate = Update<M, E, F> { model, event ->
             next(model, setOf<F>(estimateEffect))
         }
         is E.Estimate.Success -> {
+            val balance = event.balance.toBigDecimal()
+            val fee = event.feeAmount.toBigDecimal()
             next(
                 model.copy(
                     currencyCode = event.currencyCode
                 ), setOf(
                     F.ShowConfirmImport(
-                        message = event.description
+                        receiveAmount = (balance - fee).toPlainString(),
+                        feeAmount = fee.toPlainString()
                     )
                 )
             )

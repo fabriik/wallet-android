@@ -35,7 +35,6 @@ import com.breadwallet.databinding.ControllerImportWalletBinding
 import com.breadwallet.tools.util.Link
 import com.breadwallet.ui.BaseMobiusController
 import com.breadwallet.ui.ViewEffect
-import com.breadwallet.ui.controllers.AlertDialogController
 import com.breadwallet.ui.flowbind.clicks
 import com.breadwallet.ui.importwallet.Import.CONFIRM_IMPORT_DIALOG
 import com.breadwallet.ui.importwallet.Import.CONFIRM_IMPORT_DIALOG_NEGATIVE
@@ -70,7 +69,6 @@ class ImportController(
     args: Bundle? = null
 ) : BaseMobiusController<M, E, F>(args),
     ScannerController.Listener,
-    AlertDialogController.Listener,
     PasswordController.Listener {
 
     constructor(
@@ -108,8 +106,7 @@ class ImportController(
         get() = createImportHandler(
             direct.instance(),
             direct.instance(),
-            direct.instance(),
-            requireContext()
+            direct.instance()
         )
 
     private val binding by viewBinding(ControllerImportWalletBinding::inflate)

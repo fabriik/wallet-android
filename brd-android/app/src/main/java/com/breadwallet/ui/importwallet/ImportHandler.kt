@@ -47,11 +47,10 @@ import kotlinx.coroutines.flow.take
 fun createImportHandler(
     breadBox: BreadBox,
     walletImporter: WalletImporter,
-    giftTracker: GiftTracker,
-    context: Context
+    giftTracker: GiftTracker
 ) = subtypeEffectHandler<Import.F, Import.E> {
     addFunction(handleValidateKey(breadBox))
-    addFunction(handleEstimateImport(breadBox, walletImporter,context))
+    addFunction(handleEstimateImport(breadBox, walletImporter))
     addFunction(handleSubmitTransfer(walletImporter, giftTracker))
     addConsumer<Import.F.TrackEvent> { (event) ->
         EventUtils.pushEvent(event)
@@ -94,8 +93,7 @@ private fun handleValidateKey(
 
 private fun handleEstimateImport(
     breadBox: BreadBox,
-    walletImporter: WalletImporter,
-    context: Context
+    walletImporter: WalletImporter
 ): suspend (Import.F.EstimateImport) -> Import.E = { effect ->
     val privateKey = effect.privateKey.toByteArray()
     val password = when (effect) {
@@ -124,12 +122,10 @@ private fun handleEstimateImport(
         val walletBalance = walletFound.balance.toBigDecimal()
         when (val result = walletImporter.estimateFee()) {
             is WalletImporter.FeeResult.Success -> {
-                val balance = walletFound.balance.toBigDecimal()
-                val fee = result.feeBasis.fee.toBigDecimal()
-                val receiveAmount = balance - fee
                 Import.E.Estimate.Success(
+                    balance = walletFound.balance,
+                    feeAmount = result.feeBasis.fee,
                     currencyCode = walletFound.currencyCode,
-                    description = context.getString(R.string.Import_confirm, receiveAmount, fee)
                 )
             }
             is WalletImporter.FeeResult.InsufficientFunds ->
