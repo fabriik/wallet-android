@@ -24,8 +24,6 @@
  */
 package com.breadwallet.ui.importwallet
 
-import android.content.Context
-import com.breadwallet.R
 import com.breadwallet.app.GiftTracker
 import com.breadwallet.breadbox.BreadBox
 import com.breadwallet.breadbox.hashString
@@ -121,13 +119,12 @@ private fun handleEstimateImport(
     } else {
         val walletBalance = walletFound.balance.toBigDecimal()
         when (val result = walletImporter.estimateFee()) {
-            is WalletImporter.FeeResult.Success -> {
+            is WalletImporter.FeeResult.Success ->
                 Import.E.Estimate.Success(
                     balance = walletFound.balance,
                     feeAmount = result.feeBasis.fee,
                     currencyCode = walletFound.currencyCode,
                 )
-            }
             is WalletImporter.FeeResult.InsufficientFunds ->
                 Import.E.Estimate.BalanceTooLow(walletBalance)
             is WalletImporter.FeeResult.Failed ->

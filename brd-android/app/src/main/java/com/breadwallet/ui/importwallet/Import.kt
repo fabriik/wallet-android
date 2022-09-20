@@ -125,9 +125,9 @@ object Import {
 
         sealed class Estimate : E() {
             data class Success(
-                val currencyCode: CurrencyCode,
                 val balance: Amount,
                 val feeAmount: Amount,
+                val currencyCode: CurrencyCode
             ) : Estimate()
 
             data class FeeError(
