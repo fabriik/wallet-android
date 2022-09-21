@@ -58,17 +58,22 @@ class CountrySelectionViewModel(
             endState = { copy(initialLoadingVisible = false) },
             startState = { copy(initialLoadingVisible = true) },
             action = { kycApi.getCountries() },
-            callback = {
-                when (it.status) {
+            callback = { response ->
+                when (response.status) {
                     Status.SUCCESS -> {
-                        setState { copy(countries = it.data!!) }
+                        setState {
+                            val us = response.data!!.find { it.code == "US" }
+                            val arrayList = ArrayList(response.data!!)
+                            arrayList.add(0, us)
+                            copy(countries = arrayList)
+                        }
                         applyFilters()
                     }
 
                     Status.ERROR ->
                         setEffect {
                             CountrySelectionContract.Effect.ShowToast(
-                                it.message ?: getString(R.string.FabriikApi_DefaultError)
+                                response.message ?: getString(R.string.FabriikApi_DefaultError)
                             )
                         }
                 }
