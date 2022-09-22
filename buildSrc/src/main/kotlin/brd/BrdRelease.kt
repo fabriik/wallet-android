@@ -35,7 +35,7 @@ object BrdRelease {
     private val marketing = ciTag?.firstOrNull() ?: 4
 
     /** Minor version. Usually affected by product. Maximum value: 99 */
-    private val product = ciTag?.get(1) ?: 15
+    private val product = ciTag?.get(1) ?: 16
 
     /** Hot fix version. Usually affected by engineering. Maximum value: 9 */
     private val engineering = ciTag?.get(2) ?: 0
@@ -57,7 +57,7 @@ object BrdRelease {
     val buildVersion = build
     val internalVersionName = "$marketing.$product.$engineering.$build"
 
-    const val ANDROID_TARGET_SDK = 30
+    const val ANDROID_TARGET_SDK = 31
     const val ANDROID_COMPILE_SDK = 31
     const val ANDROID_MINIMUM_SDK = 24
     const val ANDROID_BUILD_TOOLS = "30.0.2"
