@@ -67,7 +67,7 @@ class CountrySelectionViewModel(
                             arrayList.add(0, us)
                             copy(countries = arrayList)
                         }
-                        applyFilters()
+                        initialState()
                     }
 
                     Status.ERROR ->
@@ -79,6 +79,19 @@ class CountrySelectionViewModel(
                 }
             }
         )
+    }
+
+    private fun initialState() {
+        setState {
+            copy(
+                adapterItems = currentState.countries.map {
+                    CountrySelectionAdapter.Item(
+                        icon = FlagUtil.getDrawableId(getApplication(), it.code),
+                        country = it
+                    )
+                }
+            )
+        }
     }
 
     private fun applyFilters() {
