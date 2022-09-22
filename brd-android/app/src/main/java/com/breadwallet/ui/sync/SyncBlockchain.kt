@@ -27,7 +27,11 @@ package com.breadwallet.ui.sync
 import com.breadwallet.R
 import com.breadwallet.ui.navigation.NavigationEffect
 import com.breadwallet.ui.navigation.NavigationTarget
+import com.breadwallet.ui.sync.SyncBlockchainController.Companion.DIALOG_CONFIRM_SYNC
+import com.breadwallet.ui.sync.SyncBlockchainController.Companion.DIALOG_CONFIRM_SYNC_NEGATIVE
+import com.breadwallet.ui.sync.SyncBlockchainController.Companion.DIALOG_CONFIRM_SYNC_POSITIVE
 import com.breadwallet.util.CurrencyCode
+import com.fabriik.common.ui.dialog.FabriikGenericDialogArgs
 import com.fabriik.support.pages.Topic
 
 object SyncBlockchain {
@@ -46,19 +50,26 @@ object SyncBlockchain {
             val currencyCode: CurrencyCode
         ) : F()
 
-
+        object ShowSyncConfirmation: F(), NavigationEffect {
+            override val navigationTarget = NavigationTarget.FabriikGenericDialog(
+                FabriikGenericDialogArgs(
+                    requestKey = DIALOG_CONFIRM_SYNC,
+                    titleRes = R.string.ReScan_alertTitle,
+                    descriptionRes = R.string.ReScan_footer,
+                    positive = FabriikGenericDialogArgs.ButtonData(
+                        resultKey = DIALOG_CONFIRM_SYNC_POSITIVE,
+                        titleRes = R.string.ReScan_alertAction
+                    ),
+                    negative = FabriikGenericDialogArgs.ButtonData(
+                        resultKey = DIALOG_CONFIRM_SYNC_NEGATIVE,
+                        titleRes = R.string.Button_cancel
+                    )
+                )
+            )
+        }
         sealed class Nav(
             override val navigationTarget: NavigationTarget
         ) : F(), NavigationEffect {
-
-            object ShowSyncConfirmation : Nav(
-                NavigationTarget.AlertDialog(
-                    messageResId = R.string.ReScan_footer,
-                    titleResId = R.string.ReScan_alertTitle,
-                    positiveButtonResId = R.string.ReScan_alertAction,
-                    negativeButtonResId = R.string.Button_cancel
-                )
-            )
 
             object GoToHome : Nav(NavigationTarget.Home)
 
