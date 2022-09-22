@@ -62,6 +62,9 @@ enum class ExchangeOrderStatus {
 
     @Json(name = "REFUNDED")
     REFUNDED,
+
+    @Json(name = "MANUALLY_SETTLED")
+    MANUALLY_SETTLED,
 }
 
 enum class Type {

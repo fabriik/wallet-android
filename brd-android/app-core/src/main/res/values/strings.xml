@@ -1512,6 +1512,7 @@
     <string name="Swap.TransactionItem.Purchased">Purchased</string>
     <string name="Swap.TransactionItem.PurchaseFailed">Purchase failed</string>
     <string name="Swap.TransactionItem.PurchasePending">Pending purchase</string>
+    <string name="Swap.TransactionItem.Refunded">Refunded</string>
 
     <!-- Delete account screen -->
     <string name="DeleteAccountInfo.Title">You are about to delete your Fabriik account.</string>
