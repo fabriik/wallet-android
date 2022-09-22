@@ -89,7 +89,7 @@ class CountrySelectionViewModel(
                         other = currentState.search,
                         ignoreCase = true
                     )
-                }.map {
+                }.distinct().map {
                     CountrySelectionAdapter.Item(
                         icon = FlagUtil.getDrawableId(getApplication(), it.code),
                         country = it
