@@ -25,6 +25,7 @@
 package com.breadwallet.ui.sync
 
 import android.os.Bundle
+import android.view.View
 import androidx.core.os.bundleOf
 import com.breadwallet.databinding.ControllerSyncBlockchainBinding
 import com.breadwallet.ui.BaseMobiusController
@@ -34,6 +35,7 @@ import com.breadwallet.ui.sync.SyncBlockchain.E
 import com.breadwallet.ui.sync.SyncBlockchain.F
 import com.breadwallet.ui.sync.SyncBlockchain.M
 import com.breadwallet.util.CurrencyCode
+import com.breadwallet.util.registerForGenericDialogResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
@@ -46,6 +48,12 @@ class SyncBlockchainController(
     args: Bundle
 ) : BaseMobiusController<M, E, F>(args),
     AlertDialogController.Listener {
+
+    companion object {
+        const val DIALOG_CONFIRM_SYNC = "dialog_confirm_sync"
+        const val DIALOG_CONFIRM_SYNC_POSITIVE = "dialog_confirm_sync_positive"
+        const val DIALOG_CONFIRM_SYNC_NEGATIVE = "dialog_confirm_sync_negative"
+    }
 
     constructor(currencyCode: CurrencyCode) : this(
         bundleOf(
@@ -61,6 +69,14 @@ class SyncBlockchainController(
 
     private val binding by viewBinding(ControllerSyncBlockchainBinding::inflate)
 
+    override fun onCreateView(view: View) {
+        registerForGenericDialogResult(DIALOG_CONFIRM_SYNC) { resultKey,_ ->
+            when (resultKey) {
+                DIALOG_CONFIRM_SYNC_POSITIVE ->
+                    eventConsumer.accept(E.OnConfirmSyncClicked)
+            }
+        }
+    }
     override fun bindView(modelFlow: Flow<M>): Flow<E> {
         return with(binding) {
             merge(
@@ -68,13 +84,5 @@ class SyncBlockchainController(
                 buttonScan.clicks().map { E.OnSyncClicked }
             )
         }
-    }
-
-    override fun onPositiveClicked(
-        dialogId: String,
-        controller: AlertDialogController,
-        result: AlertDialogController.DialogInputResult
-    ) {
-        eventConsumer.accept(E.OnConfirmSyncClicked)
     }
 }

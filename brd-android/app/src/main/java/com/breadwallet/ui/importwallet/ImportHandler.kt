@@ -121,9 +121,9 @@ private fun handleEstimateImport(
         when (val result = walletImporter.estimateFee()) {
             is WalletImporter.FeeResult.Success ->
                 Import.E.Estimate.Success(
-                    walletFound.balance,
-                    result.feeBasis.fee,
-                    walletFound.currencyCode
+                    balance = walletFound.balance,
+                    feeAmount = result.feeBasis.fee,
+                    currencyCode = walletFound.currencyCode,
                 )
             is WalletImporter.FeeResult.InsufficientFunds ->
                 Import.E.Estimate.BalanceTooLow(walletBalance)
