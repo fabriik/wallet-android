@@ -53,7 +53,7 @@ object BrdRelease {
     // The version code must be monotonically increasing. It is used by Android to maintain upgrade/downgrade
     // relationship between builds with a max value of 2 100 000 000.
     val versionCode = (marketing * 1000000) + (product * 10000) + (engineering * 1000) + build
-    val versionName = "$marketing.$product.$engineering"
+    val versionName = "rockwallet-$marketing.$product.$engineering"
     val buildVersion = build
     val internalVersionName = "$marketing.$product.$engineering.$build"
 
