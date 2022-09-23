@@ -200,6 +200,7 @@ class BuyDetailsFragment : Fragment(),
             ExchangeOrderStatus.COMPLETE -> R.string.Swap_Details_Status_Complete
             ExchangeOrderStatus.FAILED -> R.string.Swap_Details_Status_Failed
             ExchangeOrderStatus.REFUNDED -> R.string.Swap_Details_Status_Refunded
+            ExchangeOrderStatus.MANUALLY_SETTLED -> R.string.Swap_Details_Status_Manually_Settled
         }
     }
 
@@ -208,7 +209,8 @@ class BuyDetailsFragment : Fragment(),
             ExchangeOrderStatus.PENDING -> R.drawable.ic_status_pending
             ExchangeOrderStatus.FAILED -> R.drawable.ic_status_failed
             ExchangeOrderStatus.COMPLETE -> R.drawable.ic_status_complete
-            ExchangeOrderStatus.REFUNDED -> R.drawable.ic_status_complete
+            ExchangeOrderStatus.REFUNDED -> R.drawable.ic_status_refunded
+            ExchangeOrderStatus.MANUALLY_SETTLED -> R.drawable.ic_status_complete
         }
     }
 
