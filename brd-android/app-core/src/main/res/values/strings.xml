@@ -1505,13 +1505,14 @@
     <!-- Transaction item custom view -->
     <string name="Swap.TransactionItem.SwappedFrom">Swapped from %s</string>
     <string name="Swap.TransactionItem.SwappedTo">Swapped to %s</string>
-    <string name="Swap.TransactionItem.PendingFrom">Pending swap from %s</string>
-    <string name="Swap.TransactionItem.PendingTo">Pending swap to %s</string>
+    <string name="Swap.TransactionItem.SwappingFrom">Swapping from %s</string>
+    <string name="Swap.TransactionItem.SwappingTo">Swapping to %s</string>
     <string name="Swap.TransactionItem.SwapFromFailed">Swap from %s failed</string>
     <string name="Swap.TransactionItem.SwapToFailed">Swap to %s failed</string>
     <string name="Swap.TransactionItem.Purchased">Purchased</string>
     <string name="Swap.TransactionItem.PurchaseFailed">Purchase failed</string>
     <string name="Swap.TransactionItem.PurchasePending">Pending purchase</string>
+    <string name="Swap.TransactionItem.Refunded">Refunded</string>
 
     <!-- Delete account screen -->
     <string name="DeleteAccountInfo.Title">You are about to delete your Fabriik account.</string>

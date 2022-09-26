@@ -190,4 +190,7 @@
     <!-- Swap transaction item -->
     <color name="swap_green">#0EBF15</color>
     <color name="swap_light_green">#D6F5D6</color>
+    <color name="swap_error_bg">#FBE2E3</color>
+    <color name="swap_pending_bg">#EFEFF2</color>
+    <color name="swap_pending">#6C6A7F</color>
 </resources>

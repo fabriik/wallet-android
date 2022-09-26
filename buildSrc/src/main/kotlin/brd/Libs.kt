@@ -30,7 +30,6 @@ private const val KOTLINX_ATOMICFU_VERSION = "0.15.0"
 private const val KOTLINX_DATETIME_VERSION = "0.2.0"
 private const val KOTLINX_SERIALIZATION_VERSION = "1.1.0"
 private const val COROUTINES_VERSION = "1.4.3-native-mt"
-private const val WALLETKIT_VERSION = "6.3.5"
 private const val FIREBASE_APPDIST_VERSION = "2.1.1"
 private const val FIREBASE_MESSAGING_VERSION = "21.0.1"
 private const val FIREBASE_ANALYTICS_VERSION = "18.0.2"
@@ -62,7 +61,7 @@ private const val JUNIT_KTX_VERSION = "1.1.2-rc01"
 private const val OKHTTP_VERSION = "4.5.0"
 private const val PICASSO_VERSION = "2.71828"
 private const val JETTY_VERSION = "9.2.19.v20160908" // DO NOT UPGRADE
-private const val LEAKCANARY_VERSION = "2.6"
+private const val LEAKCANARY_VERSION = "2.9.1"
 private const val ANR_WATCHDOG_VERSION = "1.4.0"
 private const val ZXING_VERSION = "3.3.3"
 private const val COMMONS_IO_VERSION = "2.6"
@@ -81,9 +80,6 @@ private const val NAVIGATION_VERSION = "2.3.5"
 private const val AGP_VERSION = "4.1.3"
 private const val SERVICES_PLUGIN_VERSION = "4.3.4"
 private const val AUTODESK_VERSION = "0.6.2"
-private const val CASH_UI_VERSION = "4.4-fabriik"
-const val COMPOSE_VERSION = "1.0.0-beta02"
-private const val ACCOMPANIST_VERSION = "0.6.2"
 private const val BLOCKSET_VERSION = "0.1.3"
 private const val RETROFIT_VERSION = "2.9.0"
 private const val MOSHI_VERSION = "1.12.0"
@@ -310,20 +306,7 @@ object Libs {
         const val CoroutineWorker = "com.autodesk:coroutineworker:$AUTODESK_VERSION"
     }
 
-    object Atmcoin {
-        const val CashUi = "com.github.atmcoin.cash-ui-android:cashUI:$CASH_UI_VERSION"
-    }
-
     object Checkout {
         const val Frames = "com.github.checkout:frames-android:$CHECKOUT_FRAMES_VERSION"
-    }
-
-    object Compose {
-        const val Ui = "androidx.compose.ui:ui:$COMPOSE_VERSION"
-        const val Tooling = "androidx.compose.ui:ui-tooling:$COMPOSE_VERSION"
-        const val Foundation = "androidx.compose.foundation:foundation:$COMPOSE_VERSION"
-        const val Material = "androidx.compose.material:material:$COMPOSE_VERSION"
-        const val MaterialIcons = "androidx.compose.material:material-icons-extended:$COMPOSE_VERSION"
-        const val AccompanistPicasso = "dev.chrisbanes.accompanist:accompanist-picasso:$ACCOMPANIST_VERSION"
     }
 }

@@ -32,10 +32,10 @@ private val ciTag = (System.getenv("CI_COMMIT_TAG") ?: System.getenv("CIRCLE_TAG
 
 object BrdRelease {
     /** Major version. Usually affected by marketing. Maximum value: 99 */
-    private val marketing = ciTag?.firstOrNull() ?: 4
+    private val marketing = ciTag?.firstOrNull() ?: 5
 
     /** Minor version. Usually affected by product. Maximum value: 99 */
-    private val product = ciTag?.get(1) ?: 16
+    private val product = ciTag?.get(1) ?: 0
 
     /** Hot fix version. Usually affected by engineering. Maximum value: 9 */
     private val engineering = ciTag?.get(2) ?: 0
@@ -57,7 +57,7 @@ object BrdRelease {
     val buildVersion = build
     val internalVersionName = "$marketing.$product.$engineering.$build"
 
-    const val ANDROID_TARGET_SDK = 31
+    const val ANDROID_TARGET_SDK = 30
     const val ANDROID_COMPILE_SDK = 31
     const val ANDROID_MINIMUM_SDK = 24
     const val ANDROID_BUILD_TOOLS = "30.0.2"
