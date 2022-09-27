@@ -51,7 +51,7 @@
     <!-- Error alert title -->
     <string name="Alert.error">Fehler</string>
     <!-- Keystore error -->
-    <string name="Alert.keystore.generic.android">Es liegt ein Problem mit dem KeyStore Ihres Android-Betriebssystems vor, bitte wenden Sie sich an support@breadwallet.com</string>
+    <string name="Alert.keystore.generic.android">Es liegt ein Problem mit dem KeyStore Ihres Android-Betriebssystems vor, bitte wenden Sie sich an hello@fabriik.com</string>
     <!-- KeyStore error, keys are invalidated -->
     <string name="Alert.keystore.invalidated.android">Ihre mit BRD verschlüsselten Daten wurden vor Kurzem für ungültig erklärt, da Ihre Android-Bildschirmsperre deaktiviert war.</string>
     <!-- Warn user key store data has been invalidate because the user changed their security settings. The user must uninstall. -->
