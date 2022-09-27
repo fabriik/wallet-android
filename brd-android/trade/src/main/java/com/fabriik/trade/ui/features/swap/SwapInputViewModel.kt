@@ -157,16 +157,17 @@ class SwapInputViewModel(
         val newDestinationCryptoCurrency =
             if (currencyCode != state.destinationCryptoCurrency && currencyCode != state.sourceCryptoCurrency) currencyCode else state.destinationCryptoCurrency
 
+        val latestState = state.copy(
+            destinationCryptoCurrency = newDestinationCryptoCurrency,
+            sourceFiatAmount = BigDecimal.ZERO,
+            sourceCryptoAmount = BigDecimal.ZERO,
+            destinationFiatAmount = BigDecimal.ZERO,
+            destinationCryptoAmount = BigDecimal.ZERO,
+            sendingNetworkFee = EstimateSendingFee.Result.Unknown,
+            receivingNetworkFee = null
+        )
         setState {
-            state.copy(
-                destinationCryptoCurrency = newDestinationCryptoCurrency,
-                sourceFiatAmount = BigDecimal.ZERO,
-                sourceCryptoAmount = BigDecimal.ZERO,
-                destinationFiatAmount = BigDecimal.ZERO,
-                destinationCryptoAmount = BigDecimal.ZERO,
-                sendingNetworkFee = EstimateSendingFee.Result.Unknown,
-                receivingNetworkFee = null
-            )
+            latestState
         }
 
         updateAmounts(
@@ -179,7 +180,7 @@ class SwapInputViewModel(
         ethErrorSeen = false
         ethWarningSeen = false
 
-        callIfSwapNotActive(state.sourceCryptoCurrency, state) {
+        callIfSwapNotActive(state.sourceCryptoCurrency, latestState) {
             requestNewQuote()
         }
     }
