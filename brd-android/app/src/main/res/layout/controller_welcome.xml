@@ -72,7 +72,7 @@
         android:layout_marginRight="8dp"
         android:fontFamily="@font/mobile_font_book"
         android:lineSpacingMultiplier="1.3"
-        android:text="Empowering you in the emerging digital asset economy"
+        android:text="@string/OnboardingPageOne.title"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="20sp"

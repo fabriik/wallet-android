@@ -50,7 +50,7 @@
                 android:layout_marginTop="50dp"
                 android:layout_marginEnd="@dimen/activity_vertical_margin"
                 android:fontFamily="@font/mobile_font_medium"
-                android:text="Balance"
+                android:text="@string/HomeScreen.totalAssets"
                 android:textColor="@color/fabriik_black"
                 android:textSize="14sp"
                 android:textStyle="bold" />
