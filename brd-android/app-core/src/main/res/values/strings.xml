@@ -51,7 +51,7 @@
     <!-- Error alert title -->
     <string name="Alert.error">Error</string>
     <!-- Keystore error -->
-    <string name="Alert.keystore.generic.android">There is a problem with your Android OS keystore, please contact support@Fabriik.com</string>
+    <string name="Alert.keystore.generic.android">There is a problem with your Android OS keystore, please contact hello@fabriik.com</string>
     <!-- KeyStore error, keys are invalidated -->
     <string name="Alert.keystore.invalidated.android">Your Fabriik encrypted data was recently invalidated because your Android lock screen was disabled.</string>
     <!-- Warn user key store data has been invalidate because the user changed their security settings. The user must uninstall. -->

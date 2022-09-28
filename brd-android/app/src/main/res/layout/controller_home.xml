@@ -65,9 +65,10 @@
                 android:layout_marginEnd="@dimen/activity_vertical_margin"
                 android:fontFamily="@font/mobile_font_medium"
                 android:gravity="end"
+                android:singleLine="true"
                 android:textColor="@color/fabriik_black"
-                android:textSize="32sp"
-                tools:text="$190.30" />
+                android:textSize="26sp"
+                tools:text="$19232342340.30" />
 
         </RelativeLayout>
 
