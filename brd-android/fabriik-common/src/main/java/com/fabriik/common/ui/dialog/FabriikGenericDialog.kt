@@ -109,7 +109,9 @@ class FabriikGenericDialog : DialogFragment() {
         dismissAllowingStateLoss()
 
         requireActivity().supportFragmentManager.setFragmentResult(
-            args.requestKey, bundleOf(EXTRA_RESULT to result)
+            args.requestKey, (args.extraData ?: Bundle()).apply {
+                putString(EXTRA_RESULT, result)
+            }
         )
     }
 

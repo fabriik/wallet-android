@@ -13,7 +13,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fabriik.buy.R
 import com.fabriik.buy.databinding.FragmentPaymentMethodBinding
+import com.fabriik.common.data.model.PaymentInstrument
 import com.fabriik.common.ui.base.FabriikView
+import com.fabriik.common.ui.dialog.FabriikGenericDialog
 import com.fabriik.common.utils.FabriikToastUtil
 import kotlinx.coroutines.flow.collect
 
@@ -75,6 +77,20 @@ class PaymentMethodFragment : Fragment(),
                 handleEffect(it)
             }
         }
+
+        // listen for removal confirmation dialog result
+        requireActivity().supportFragmentManager.setFragmentResultListener(PaymentMethodViewModel.REQUEST_CONFIRMATION_DIALOG, this) { _, bundle ->
+            val result = bundle.getString(FabriikGenericDialog.EXTRA_RESULT)
+            val paymentInstrument = bundle.getParcelable<PaymentInstrument>(
+                PaymentMethodViewModel.EXTRA_CONFIRMATION_DIALOG_DATA
+            )
+
+            if (result == PaymentMethodViewModel.RESULT_CONFIRMATION_DIALOG_REMOVE && paymentInstrument != null) {
+                viewModel.setEvent(
+                    PaymentMethodContract.Event.PaymentInstrumentRemovalConfirmed(paymentInstrument)
+                )
+            }
+        }
     }
 
     override fun render(state: PaymentMethodContract.State) {
@@ -102,8 +118,15 @@ class PaymentMethodFragment : Fragment(),
             is PaymentMethodContract.Effect.ShowError ->
                 FabriikToastUtil.showError(binding.root, effect.message)
 
+            is PaymentMethodContract.Effect.ShowToast ->
+                FabriikToastUtil.showInfo(binding.root, effect.message)
+
+            is PaymentMethodContract.Effect.ShowConfirmationDialog ->
+                FabriikGenericDialog.newInstance(effect.args)
+                    .show(parentFragmentManager)
+
             is PaymentMethodContract.Effect.ShowOptionsBottomSheet ->
-                {}
+                {} //todo
         }
     }
 

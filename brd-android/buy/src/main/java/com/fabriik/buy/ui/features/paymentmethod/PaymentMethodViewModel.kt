@@ -1,6 +1,7 @@
 package com.fabriik.buy.ui.features.paymentmethod
 
 import android.app.Application
+import androidx.core.os.bundleOf
 import androidx.lifecycle.SavedStateHandle
 import com.fabriik.buy.R
 import com.fabriik.buy.data.BuyApi
@@ -8,6 +9,7 @@ import com.fabriik.buy.ui.features.addcard.AddCardFlow
 import com.fabriik.common.data.Status
 import com.fabriik.common.data.model.PaymentInstrument
 import com.fabriik.common.ui.base.FabriikViewModel
+import com.fabriik.common.ui.dialog.FabriikGenericDialogArgs
 import com.fabriik.common.utils.getString
 import com.fabriik.common.utils.toBundle
 import org.kodein.di.KodeinAware
@@ -69,7 +71,38 @@ class PaymentMethodViewModel(
     }
 
     override fun onPaymentInstrumentOptionsClicked(paymentInstrument: PaymentInstrument) {
-        setEffect { PaymentMethodContract.Effect.ShowOptionsBottomSheet(paymentInstrument) }
+        //setEffect { PaymentMethodContract.Effect.ShowOptionsBottomSheet(paymentInstrument) }
+
+        setEffect {
+            PaymentMethodContract.Effect.ShowConfirmationDialog(
+                FabriikGenericDialogArgs(
+                    requestKey = REQUEST_CONFIRMATION_DIALOG,
+                    titleRes = R.string.Buy_SelectPaymentMethod_RemovalConfirmationDialog_Title,
+                    descriptionRes = R.string.Buy_SelectPaymentMethod_RemovalConfirmationDialog_Description,
+                    positive = FabriikGenericDialogArgs.ButtonData(
+                        titleRes = R.string.Buy_SelectPaymentMethod_RemovalConfirmationDialog_Remove,
+                        resultKey = RESULT_CONFIRMATION_DIALOG_REMOVE
+                    ),
+                    negative = FabriikGenericDialogArgs.ButtonData(
+                        titleRes = R.string.Button_cancel,
+                        resultKey = RESULT_CONFIRMATION_DIALOG_CANCEL
+                    ),
+                    extraData = bundleOf(EXTRA_CONFIRMATION_DIALOG_DATA to paymentInstrument),
+                    showDismissButton = true
+                )
+            )
+        }
+    }
+
+    override fun onPaymentInstrumentRemovalConfirmed(paymentInstrument: PaymentInstrument) {
+        // todo: api call
+
+        setEffect {
+            PaymentMethodContract.Effect.ShowToast(
+                //  getString(R.string.Buy_SelectPaymentMethod_CardRemovalFailed)
+                getString(R.string.Buy_SelectPaymentMethod_CardRemoved)
+            )
+        }
     }
 
     private fun loadInitialData() {
@@ -91,5 +124,12 @@ class PaymentMethodViewModel(
                 }
             }
         )
+    }
+
+    companion object {
+        const val EXTRA_CONFIRMATION_DIALOG_DATA = "extra_confirmation_dialog_data"
+        const val REQUEST_CONFIRMATION_DIALOG = "request_confirmation_dialog"
+        const val RESULT_CONFIRMATION_DIALOG_REMOVE = "result_confirmation_dialog_remove"
+        const val RESULT_CONFIRMATION_DIALOG_CANCEL = "result_confirmation_dialog_cancel"
     }
 }

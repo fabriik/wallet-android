@@ -12,6 +12,7 @@ interface PaymentMethodEventHandler: FabriikEventHandler<PaymentMethodContract.E
             is PaymentMethodContract.Event.AddCardClicked -> onAddCardClicked()
             is PaymentMethodContract.Event.PaymentInstrumentClicked -> onPaymentInstrumentClicked(event.paymentInstrument)
             is PaymentMethodContract.Event.PaymentInstrumentOptionsClicked -> onPaymentInstrumentOptionsClicked(event.paymentInstrument)
+            is PaymentMethodContract.Event.PaymentInstrumentRemovalConfirmed -> onPaymentInstrumentRemovalConfirmed(event.paymentInstrument)
         }
     }
 
@@ -24,4 +25,6 @@ interface PaymentMethodEventHandler: FabriikEventHandler<PaymentMethodContract.E
     fun onPaymentInstrumentClicked(paymentInstrument: PaymentInstrument)
 
     fun onPaymentInstrumentOptionsClicked(paymentInstrument: PaymentInstrument)
+
+    fun onPaymentInstrumentRemovalConfirmed(paymentInstrument: PaymentInstrument)
 }

@@ -18,7 +18,6 @@ object FabriikToastUtil {
         showCustomSnackBar(
             parentView = parentView,
             message = message,
-            gravity = Gravity.BOTTOM,
             background = R.drawable.bg_info_prompt
         )
     }
@@ -27,7 +26,6 @@ object FabriikToastUtil {
         showCustomSnackBar(
             parentView = parentView,
             message = message,
-            gravity = Gravity.TOP,
             background = R.drawable.bg_error_bubble
         )
     }
@@ -35,7 +33,7 @@ object FabriikToastUtil {
     private fun showCustomSnackBar(
         parentView: View,
         message: String,
-        gravity: Int,
+        gravity: Int = Gravity.TOP,
         @DrawableRes background: Int
     ) {
         val view = TextView(parentView.context).apply {
