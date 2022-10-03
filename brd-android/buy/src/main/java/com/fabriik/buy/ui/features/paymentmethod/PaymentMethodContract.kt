@@ -22,6 +22,7 @@ interface PaymentMethodContract : FabriikContract {
 
     data class State(
         val paymentInstruments: List<PaymentInstrument>,
-        val initialLoadingIndicator: Boolean = false
+        val initialLoadingIndicator: Boolean = false,
+        val showDismissButton: Boolean = false
     ) : FabriikContract.State
 }

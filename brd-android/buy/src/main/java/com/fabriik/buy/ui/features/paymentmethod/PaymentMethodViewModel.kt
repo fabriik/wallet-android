@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.SavedStateHandle
 import com.fabriik.buy.R
 import com.fabriik.buy.data.BuyApi
+import com.fabriik.buy.ui.features.addcard.AddCardFlow
 import com.fabriik.common.data.Status
 import com.fabriik.common.data.model.PaymentInstrument
 import com.fabriik.common.ui.base.FabriikViewModel
@@ -39,11 +40,18 @@ class PaymentMethodViewModel(
     }
 
     override fun createInitialState() = PaymentMethodContract.State(
-        paymentInstruments = emptyList()
+        paymentInstruments = emptyList(),
+        showDismissButton = arguments.flow == AddCardFlow.BUY
     )
 
     override fun onBackClicked() {
-        setEffect { PaymentMethodContract.Effect.Back() }
+        setEffect {
+            if (arguments.flow == AddCardFlow.BUY) {
+                PaymentMethodContract.Effect.Back()
+            } else {
+                PaymentMethodContract.Effect.Dismiss
+            }
+        }
     }
 
     override fun onDismissClicked() {
@@ -55,7 +63,9 @@ class PaymentMethodViewModel(
     }
 
     override fun onPaymentInstrumentSelected(paymentInstrument: PaymentInstrument) {
-        setEffect { PaymentMethodContract.Effect.Back(paymentInstrument) }
+        if (arguments.flow == AddCardFlow.BUY) {
+            setEffect { PaymentMethodContract.Effect.Back(paymentInstrument) }
+        }
     }
 
     private fun loadInitialData() {

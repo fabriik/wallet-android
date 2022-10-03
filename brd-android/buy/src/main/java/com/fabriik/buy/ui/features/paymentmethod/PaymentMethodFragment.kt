@@ -77,6 +77,7 @@ class PaymentMethodFragment : Fragment(),
 
     override fun render(state: PaymentMethodContract.State) {
         adapter.submitList(state.paymentInstruments)
+        binding.toolbar.setShowDismissButton(state.showDismissButton)
         binding.content.isVisible = !state.initialLoadingIndicator
         binding.loadingIndicator.isVisible = state.initialLoadingIndicator
     }
