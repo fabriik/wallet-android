@@ -188,7 +188,7 @@ class RouterNavigator(
 
         val intent = Intent(Intent.ACTION_SENDTO).apply {
             data = Uri.parse("mailto:")
-            putExtra(Intent.EXTRA_EMAIL, arrayOf("feedback@fabriik.com"))
+            putExtra(Intent.EXTRA_EMAIL, arrayOf("hello@fabriik.com"))
             putExtra(Intent.EXTRA_SUBJECT, activity.getString(R.string.Feedback_subject))
         }
 
