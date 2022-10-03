@@ -85,6 +85,7 @@
     <string name="Buy.SelectPaymentMethod.RemovalConfirmationDialog.Title">Are you sure you want to remove this card?</string>
     <string name="Buy.SelectPaymentMethod.RemovalConfirmationDialog.Description">You will no longer be able to use it to buy assets.</string>
     <string name="Buy.SelectPaymentMethod.RemovalConfirmationDialog.Remove">Remove</string>
+    <string name="Buy.SelectPaymentMethod.RemovePaymentMethod">Remove payment method</string>
     <string name="Buy.SelectPaymentMethod.CardRemoved">Card removed</string>
     <string name="Buy.SelectPaymentMethod.CardRemovalFailed">Card removal failed. Please try again.</string>
 

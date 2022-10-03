@@ -11,6 +11,7 @@ interface PaymentMethodContract : FabriikContract {
         object BackClicked : Event()
         object DismissClicked : Event()
         object AddCardClicked : Event()
+        data class RemoveOptionClicked(val paymentInstrument: PaymentInstrument): Event()
         data class PaymentInstrumentClicked(val paymentInstrument: PaymentInstrument): Event()
         data class PaymentInstrumentOptionsClicked(val paymentInstrument: PaymentInstrument): Event()
         data class PaymentInstrumentRemovalConfirmed(val paymentInstrument: PaymentInstrument): Event()

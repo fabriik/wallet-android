@@ -64,15 +64,7 @@ class PaymentMethodViewModel(
         setEffect { PaymentMethodContract.Effect.AddCard(arguments.flow) }
     }
 
-    override fun onPaymentInstrumentClicked(paymentInstrument: PaymentInstrument) {
-        if (arguments.flow == AddCardFlow.BUY) {
-            setEffect { PaymentMethodContract.Effect.Back(paymentInstrument) }
-        }
-    }
-
-    override fun onPaymentInstrumentOptionsClicked(paymentInstrument: PaymentInstrument) {
-        //setEffect { PaymentMethodContract.Effect.ShowOptionsBottomSheet(paymentInstrument) }
-
+    override fun onRemoveOptionClicked(paymentInstrument: PaymentInstrument) {
         setEffect {
             PaymentMethodContract.Effect.ShowConfirmationDialog(
                 FabriikGenericDialogArgs(
@@ -92,6 +84,16 @@ class PaymentMethodViewModel(
                 )
             )
         }
+    }
+
+    override fun onPaymentInstrumentClicked(paymentInstrument: PaymentInstrument) {
+        if (arguments.flow == AddCardFlow.BUY) {
+            setEffect { PaymentMethodContract.Effect.Back(paymentInstrument) }
+        }
+    }
+
+    override fun onPaymentInstrumentOptionsClicked(paymentInstrument: PaymentInstrument) {
+        setEffect { PaymentMethodContract.Effect.ShowOptionsBottomSheet(paymentInstrument) }
     }
 
     override fun onPaymentInstrumentRemovalConfirmed(paymentInstrument: PaymentInstrument) {
