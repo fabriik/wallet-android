@@ -95,14 +95,24 @@ class PaymentMethodViewModel(
     }
 
     override fun onPaymentInstrumentRemovalConfirmed(paymentInstrument: PaymentInstrument) {
-        // todo: api call
-
-        setEffect {
-            PaymentMethodContract.Effect.ShowToast(
-                //  getString(R.string.Buy_SelectPaymentMethod_CardRemovalFailed)
-                getString(R.string.Buy_SelectPaymentMethod_CardRemoved)
-            )
-        }
+        callApi(
+            endState = { copy(fullScreenLoadingIndicator = false) },
+            startState = { copy(fullScreenLoadingIndicator = true) },
+            action = { buyApi.deletePaymentInstrument(paymentInstrument) },
+            callback = {
+                setEffect {
+                    if (it.status == Status.SUCCESS) {
+                        PaymentMethodContract.Effect.ShowToast(
+                            getString(R.string.Buy_SelectPaymentMethod_CardRemoved)
+                        )
+                    } else {
+                        PaymentMethodContract.Effect.ShowError(
+                            getString(R.string.Buy_SelectPaymentMethod_CardRemovalFailed)
+                        )
+                    }
+                }
+            }
+        )
     }
 
     private fun loadInitialData() {

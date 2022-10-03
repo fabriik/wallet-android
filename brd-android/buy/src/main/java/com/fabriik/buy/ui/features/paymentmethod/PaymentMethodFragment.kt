@@ -98,6 +98,7 @@ class PaymentMethodFragment : Fragment(),
         binding.toolbar.setShowDismissButton(state.showDismissButton)
         binding.content.isVisible = !state.initialLoadingIndicator
         binding.loadingIndicator.isVisible = state.initialLoadingIndicator
+        binding.fullScreenLoadingView.root.isVisible = state.fullScreenLoadingIndicator
     }
 
     override fun handleEffect(effect: PaymentMethodContract.Effect) {
