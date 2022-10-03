@@ -1,6 +1,7 @@
 package com.fabriik.buy.ui.features.addcard
 
 import android.app.Application
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.checkout.android_sdk.CheckoutAPIClient
 import com.checkout.android_sdk.Request.CardTokenisationRequest
@@ -12,6 +13,7 @@ import com.fabriik.buy.utils.formatCardNumber
 import com.fabriik.buy.utils.formatDate
 import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.common.utils.getString
+import com.fabriik.common.utils.toBundle
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.kodein.di.KodeinAware
@@ -19,16 +21,27 @@ import org.kodein.di.android.closestKodein
 import org.kodein.di.erased.instance
 
 class AddCardViewModel(
-    application: Application
+    application: Application,
+    savedStateHandle: SavedStateHandle
 ) : FabriikViewModel<AddCardContract.State, AddCardContract.Event, AddCardContract.Effect>(
-    application
+    application, savedStateHandle
 ), AddCardEventHandler, KodeinAware {
 
     override val kodein by closestKodein { application }
 
     private val checkoutApi by kodein.instance<CheckoutAPIClient>()
 
+    private lateinit var arguments: AddCardFragmentArgs
+
     override fun createInitialState() = AddCardContract.State()
+
+    override fun parseArguments(savedStateHandle: SavedStateHandle) {
+        super.parseArguments(savedStateHandle)
+
+        arguments = AddCardFragmentArgs.fromBundle(
+            savedStateHandle.toBundle()
+        )
+    }
 
     override fun onBackClicked() {
         setEffect { AddCardContract.Effect.Back }
@@ -45,7 +58,7 @@ class AddCardViewModel(
             checkoutApi.setTokenListener(object : CheckoutAPIClient.OnTokenGenerated {
                 override fun onTokenGenerated(response: CardTokenisationResponse) {
                     setState { copy(loadingIndicatorVisible = false) }
-                    setEffect { AddCardContract.Effect.BillingAddress(response.token) }
+                    setEffect { AddCardContract.Effect.BillingAddress(response.token, arguments.flow) }
                 }
 
                 override fun onError(error: CardTokenisationFail) {

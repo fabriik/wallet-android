@@ -1,5 +1,6 @@
 package com.fabriik.buy.ui.features.paymentmethod
 
+import com.fabriik.buy.ui.features.addcard.AddCardFlow
 import com.fabriik.common.data.model.PaymentInstrument
 import com.fabriik.common.ui.base.FabriikContract
 
@@ -14,13 +15,14 @@ interface PaymentMethodContract : FabriikContract {
 
     sealed class Effect : FabriikContract.Effect {
         object Dismiss : Effect()
-        object AddCard : Effect()
+        data class AddCard(val flow: AddCardFlow) : Effect()
         data class Back(val selectedInstrument: PaymentInstrument? = null) : Effect()
         data class ShowError(val message: String) : Effect()
     }
 
     data class State(
         val paymentInstruments: List<PaymentInstrument>,
-        val initialLoadingIndicator: Boolean = false
+        val initialLoadingIndicator: Boolean = false,
+        val showDismissButton: Boolean = false
     ) : FabriikContract.State
 }

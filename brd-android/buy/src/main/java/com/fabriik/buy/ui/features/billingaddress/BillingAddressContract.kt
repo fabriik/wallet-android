@@ -1,5 +1,6 @@
 package com.fabriik.buy.ui.features.billingaddress
 
+import com.fabriik.buy.ui.features.addcard.AddCardFlow
 import com.fabriik.common.ui.base.FabriikContract
 import com.fabriik.kyc.data.model.Country
 
@@ -23,8 +24,8 @@ class BillingAddressContract : FabriikContract {
     sealed class Effect : FabriikContract.Effect {
         object Back : Effect()
         object Dismiss : Effect()
-        object PaymentMethod : Effect()
         object CountrySelection : Effect()
+        data class PaymentMethod(val flow: AddCardFlow) : Effect()
         data class ShowToast(val message: String): Effect()
         data class OpenWebsite(val url: String): Effect()
     }

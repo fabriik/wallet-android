@@ -159,8 +159,12 @@ class BillingAddressFragment : Fragment(),
                 )
             }
 
-            BillingAddressContract.Effect.PaymentMethod ->
-                findNavController().navigate(BillingAddressFragmentDirections.actionPaymentMethod())
+            is BillingAddressContract.Effect.PaymentMethod ->
+                findNavController().navigate(
+                    BillingAddressFragmentDirections.actionPaymentMethod(
+                        effect.flow
+                    )
+                )
 
             is BillingAddressContract.Effect.ShowToast ->
                 FabriikToastUtil.showInfo(
