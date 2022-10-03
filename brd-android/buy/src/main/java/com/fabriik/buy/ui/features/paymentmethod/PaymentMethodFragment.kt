@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fabriik.buy.R
 import com.fabriik.buy.databinding.FragmentPaymentMethodBinding
@@ -24,11 +23,14 @@ class PaymentMethodFragment : Fragment(),
     private lateinit var binding: FragmentPaymentMethodBinding
     private val viewModel: PaymentMethodViewModel by viewModels()
 
-    private val adapter = PaymentMethodSelectionAdapter {
-        viewModel.setEvent(
-            PaymentMethodContract.Event.PaymentInstrumentSelected(it)
-        )
-    }
+    private val adapter = PaymentMethodSelectionAdapter(
+        clickCallback = {
+            viewModel.setEvent(PaymentMethodContract.Event.PaymentInstrumentClicked(it))
+        },
+        optionsClickCallback = {
+            viewModel.setEvent(PaymentMethodContract.Event.PaymentInstrumentOptionsClicked(it))
+        }
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -99,6 +101,9 @@ class PaymentMethodFragment : Fragment(),
 
             is PaymentMethodContract.Effect.ShowError ->
                 FabriikToastUtil.showError(binding.root, effect.message)
+
+            is PaymentMethodContract.Effect.ShowOptionsBottomSheet ->
+                {}
         }
     }
 

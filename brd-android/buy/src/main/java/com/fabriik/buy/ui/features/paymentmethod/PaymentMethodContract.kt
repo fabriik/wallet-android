@@ -10,7 +10,8 @@ interface PaymentMethodContract : FabriikContract {
         object BackClicked : Event()
         object DismissClicked : Event()
         object AddCardClicked : Event()
-        data class PaymentInstrumentSelected(val paymentInstrument: PaymentInstrument): Event()
+        data class PaymentInstrumentClicked(val paymentInstrument: PaymentInstrument): Event()
+        data class PaymentInstrumentOptionsClicked(val paymentInstrument: PaymentInstrument): Event()
     }
 
     sealed class Effect : FabriikContract.Effect {
@@ -18,6 +19,7 @@ interface PaymentMethodContract : FabriikContract {
         data class AddCard(val flow: AddCardFlow) : Effect()
         data class Back(val selectedInstrument: PaymentInstrument? = null) : Effect()
         data class ShowError(val message: String) : Effect()
+        data class ShowOptionsBottomSheet(val paymentInstrument: PaymentInstrument) : Effect()
     }
 
     data class State(

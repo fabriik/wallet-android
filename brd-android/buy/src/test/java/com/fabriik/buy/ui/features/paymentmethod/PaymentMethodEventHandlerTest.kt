@@ -16,7 +16,7 @@ class PaymentMethodEventHandlerTest {
         override fun onBackClicked() {}
         override fun onDismissClicked() {}
         override fun onAddCardClicked() {}
-        override fun onPaymentInstrumentSelected(paymentInstrument: PaymentInstrument) {}
+        override fun onPaymentInstrumentClicked(paymentInstrument: PaymentInstrument) {}
     }
 
     @Test
@@ -39,7 +39,7 @@ class PaymentMethodEventHandlerTest {
 
     @Test
     fun handleEvent_paymentInstrumentSelected_callOnPaymentInstrumentSelected() {
-        handler.handleEvent(PaymentMethodContract.Event.PaymentInstrumentSelected(paymentInstrument))
-        verify(handler).onPaymentInstrumentSelected(paymentInstrument)
+        handler.handleEvent(PaymentMethodContract.Event.PaymentInstrumentClicked(paymentInstrument))
+        verify(handler).onPaymentInstrumentClicked(paymentInstrument)
     }
 }

@@ -62,10 +62,14 @@ class PaymentMethodViewModel(
         setEffect { PaymentMethodContract.Effect.AddCard(arguments.flow) }
     }
 
-    override fun onPaymentInstrumentSelected(paymentInstrument: PaymentInstrument) {
+    override fun onPaymentInstrumentClicked(paymentInstrument: PaymentInstrument) {
         if (arguments.flow == AddCardFlow.BUY) {
             setEffect { PaymentMethodContract.Effect.Back(paymentInstrument) }
         }
+    }
+
+    override fun onPaymentInstrumentOptionsClicked(paymentInstrument: PaymentInstrument) {
+        setEffect { PaymentMethodContract.Effect.ShowOptionsBottomSheet(paymentInstrument) }
     }
 
     private fun loadInitialData() {
