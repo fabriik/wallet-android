@@ -10,6 +10,9 @@ import androidx.navigation.fragment.NavHostFragment
 import com.fabriik.buy.R
 import com.fabriik.buy.data.enums.BuyDetailsFlow
 import com.fabriik.buy.databinding.ActivityBuyBinding
+import com.fabriik.buy.ui.features.addcard.AddCardFlow
+import com.fabriik.buy.ui.features.paymentmethod.PaymentMethodFragment
+import com.fabriik.buy.ui.features.paymentmethod.PaymentMethodFragmentArgs
 import kotlinx.parcelize.Parcelize
 
 class BuyActivity : AppCompatActivity() {
@@ -80,8 +83,10 @@ class BuyActivity : AppCompatActivity() {
             val intent = Intent(context, BuyActivity::class.java)
             intent.putExtra(
                 EXTRA_ARGS, Args(
-                    startDestination =  R.id.fragmentPaymentMethod,
-                    bundle = bundleOf()
+                    startDestination = R.id.fragmentPaymentMethod,
+                    bundle = bundleOf(
+                        EXTRA_FLOW to AddCardFlow.PROFILE
+                    )
                 )
             )
             return intent
