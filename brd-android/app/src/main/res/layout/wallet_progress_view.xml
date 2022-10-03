@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/progress_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/toolbar_layout"
+    android:animateLayoutChanges="true"
+    android:background="@color/sync_toolbar"
+    android:orientation="vertical"
+    tools:showIn="@layout/controller_wallet">
+
+    <RelativeLayout
+        android:id="@+id/progress_layout_margins"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:orientation="vertical">
+
+        <com.breadwallet.legacy.presenter.customviews.BaseTextView
+            android:id="@+id/syncing_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="5dp"
+            android:text="Processing a new buy / swap"
+            android:textColor="@color/sync_toolbar_text"
+            android:textSize="14sp" />
+
+    </RelativeLayout>
+</LinearLayout>

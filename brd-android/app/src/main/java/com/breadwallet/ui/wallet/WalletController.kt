@@ -129,6 +129,8 @@ open class WalletController(args: Bundle) : BaseMobiusController<M, E, F>(args),
     private var txAdapter: GenericModelAdapter<WalletTransaction>? = null
     private var syncAdapter: ItemAdapter<SyncingItem>? = null
     private var stakingAdapter: ItemAdapter<StakingItem>? = null
+    private var processingAdapter: ItemAdapter<ProcessingItem>? = null
+
     private var mPriceDataAdapter = SparkAdapter()
     private val mIntervalButtons: List<TextView>
         get() = with(binding.chartContainer) {
@@ -156,7 +158,8 @@ open class WalletController(args: Bundle) : BaseMobiusController<M, E, F>(args),
             txAdapter = ModelAdapter { TransactionListItem(it, currentModel.isCryptoPreferred) }
             syncAdapter = ItemAdapter()
             stakingAdapter = ItemAdapter()
-            fastAdapter = FastAdapter.with(listOf(syncAdapter!!, stakingAdapter!!, txAdapter!!))
+            processingAdapter = ItemAdapter()
+            fastAdapter = FastAdapter.with(listOf(syncAdapter!!, processingAdapter!!, stakingAdapter!!, txAdapter!!))
             checkNotNull(fastAdapter).onClickListener = { _, _, item, _ ->
                 when (item) {
                     is TransactionListItem ->
@@ -199,6 +202,9 @@ open class WalletController(args: Bundle) : BaseMobiusController<M, E, F>(args),
             appbar.addOnOffsetChangedListener(this@WalletController)
 
             giftButton.visibility = View.GONE
+
+            processingAdapter!!.setNewList(listOf(ProcessingItem()))
+            fastAdapter?.notifyAdapterDataSetChanged()
         }
 
         registerForGenericDialogResult(DIALOG_CREATE_ACCOUNT) {resultKey, _ ->
@@ -323,10 +329,11 @@ open class WalletController(args: Bundle) : BaseMobiusController<M, E, F>(args),
         layoutManager: LinearLayoutManager,
         output: SendChannel<E>
     ) {
+        val processingItemCount = processingAdapter!!.adapterItemCount
         val syncItemCount = syncAdapter!!.adapterItemCount
         val stakingItemCount = stakingAdapter!!.adapterItemCount
-        val firstIndex = layoutManager.findFirstVisibleItemPosition() - syncItemCount - stakingItemCount
-        val lastIndex = layoutManager.findLastVisibleItemPosition() - syncItemCount - stakingItemCount
+        val firstIndex = layoutManager.findFirstVisibleItemPosition() - syncItemCount - stakingItemCount - processingItemCount
+        val lastIndex = layoutManager.findLastVisibleItemPosition() - syncItemCount - stakingItemCount - processingItemCount
         if (firstIndex > RecyclerView.NO_POSITION) {
             output.offer(
                 E.OnVisibleTransactionsChanged(

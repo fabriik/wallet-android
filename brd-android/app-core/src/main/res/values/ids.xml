@@ -23,6 +23,8 @@
     <item name="transaction_item" type="id"/>
     <item name="swap_transaction_item" type="id"/>
     <item name="syncing_item" type="id"/>
+    <item name="processing_item" type="id"/>
+
     <item name="drawer_layout_id" type="id"/>
     <item name="staking_item" type="id"/>
     <item name="baker_item" type="id"/>
