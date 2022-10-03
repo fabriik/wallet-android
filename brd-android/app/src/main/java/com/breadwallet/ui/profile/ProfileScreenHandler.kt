@@ -21,6 +21,11 @@ fun createProfileScreenHandler(
     addFunction<F.LoadOptions> {
         val items = listOf(
             ProfileItem(
+                title = context.getString(R.string.Profile_PaymentMethod),
+                option = ProfileOption.PAYMENT_METHOD,
+                iconResId = R.drawable.ic_credit_card
+            ),
+            ProfileItem(
                 title = context.getString(R.string.MenuButton_security),
                 option = ProfileOption.SECURITY_SETTINGS,
                 iconResId = R.drawable.ic_security_settings

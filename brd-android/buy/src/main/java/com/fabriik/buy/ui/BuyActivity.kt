@@ -75,5 +75,16 @@ class BuyActivity : AppCompatActivity() {
             )
             return intent
         }
+
+        fun getStartIntentForPaymentMethod(context: Context): Intent {
+            val intent = Intent(context, BuyActivity::class.java)
+            intent.putExtra(
+                EXTRA_ARGS, Args(
+                    startDestination =  R.id.fragmentPaymentMethod,
+                    bundle = bundleOf()
+                )
+            )
+            return intent
+        }
     }
 }

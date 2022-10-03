@@ -91,8 +91,10 @@ class PaymentMethodFragment : Fragment(),
             PaymentMethodContract.Effect.Dismiss ->
                 activity?.finish()
 
-            PaymentMethodContract.Effect.AddCard ->
-                findNavController().navigate(PaymentMethodFragmentDirections.actionAddCard())
+            is PaymentMethodContract.Effect.AddCard ->
+                findNavController().navigate(
+                    PaymentMethodFragmentDirections.actionAddCard(effect.flow)
+                )
 
             is PaymentMethodContract.Effect.ShowError ->
                 FabriikToastUtil.showError(binding.root, effect.message)

@@ -217,6 +217,14 @@ class RouterNavigator(
         }
     }
 
+    override fun paymentMethod() {
+        router.activity?.let {
+            it.startActivity(
+                BuyActivity.getStartIntentForPaymentMethod(it)
+            )
+        }
+    }
+
     override fun profile() {
         router.pushController(
             RouterTransaction.with(ProfileController())
