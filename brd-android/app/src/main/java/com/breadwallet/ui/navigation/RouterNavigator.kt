@@ -212,7 +212,7 @@ class RouterNavigator(
 
         router.activity?.let {
             it.startActivity(
-                BuyActivity.getStartIntent(it)
+                BuyActivity.getDefaultStartIntent(it)
             )
         }
     }
@@ -288,7 +288,7 @@ class RouterNavigator(
         router.activity?.let {
             it.startActivity(
                 if (effect.transactionData.isBuyTransaction()) {
-                    BuyActivity.getStartIntentForSwapDetails(
+                    BuyActivity.getStartIntentForBuyDetails(
                         it, effect.transactionData.exchangeId
                     )
                 } else {
