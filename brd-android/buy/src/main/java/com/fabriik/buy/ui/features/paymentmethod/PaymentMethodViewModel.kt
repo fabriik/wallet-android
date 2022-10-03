@@ -100,6 +100,12 @@ class PaymentMethodViewModel(
             startState = { copy(fullScreenLoadingIndicator = true) },
             action = { buyApi.deletePaymentInstrument(paymentInstrument) },
             callback = {
+                val updatedList = currentState.paymentInstruments.toMutableList().apply {
+                    remove(paymentInstrument)
+                }
+
+                setState { copy(paymentInstruments = updatedList) }
+
                 setEffect {
                     if (it.status == Status.SUCCESS) {
                         PaymentMethodContract.Effect.ShowToast(

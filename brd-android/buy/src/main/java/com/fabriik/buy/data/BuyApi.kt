@@ -79,8 +79,8 @@ class BuyApi(
 
     suspend fun deletePaymentInstrument(paymentInstrument: PaymentInstrument): Resource<ResponseBody?> {
         return try {
-            val response = service.deletePaymentInstrument(paymentInstrument.id)
-            Resource.success(data = response)
+            service.deletePaymentInstrument(paymentInstrument.id)
+            Resource.success(data = null)
         } catch (ex: Exception) {
             responseMapper.mapError(
                 context = context,
