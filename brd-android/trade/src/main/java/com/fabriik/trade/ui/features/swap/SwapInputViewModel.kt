@@ -529,7 +529,7 @@ class SwapInputViewModel(
             is EstimateSendingFee.Result.InsufficientFunds ->
                 showSwapError(
                     if (sourceFeeData.currencyCode.isErc20()) {
-                        SwapInputContract.ErrorMessage.InsufficientEthFundsForFee
+                        SwapInputContract.ErrorMessage.InsufficientEthFundsForFee(sourceFeeData.currencyCode)
                     } else {
                         SwapInputContract.ErrorMessage.InsufficientFunds(
                             requireNotNull(currentLoadedState?.sourceCryptoBalance), sourceFeeData.currencyCode
@@ -553,7 +553,7 @@ class SwapInputViewModel(
                 if (ethBalance < sourceFeeEthAmount && !ethErrorSeen) {
                     ethErrorSeen = true
                     ethWarningSeen = false
-                    showSwapError(SwapInputContract.ErrorMessage.InsufficientEthFundsForFee)
+                    showSwapError(SwapInputContract.ErrorMessage.InsufficientEthFundsForFee(sourceFeeData.data.cryptoCurrency))
                 } else if (ethBalance > BigDecimal.ZERO && !ethWarningSeen) {
                     ethErrorSeen = false
                     ethWarningSeen = true
@@ -771,7 +771,7 @@ class SwapInputViewModel(
     private fun validate(state: SwapInputContract.State.Loaded) = when {
         state.sendingNetworkFee is EstimateSendingFee.Result.InsufficientFunds ->
             if (state.sendingNetworkFee.currencyCode.isErc20()) {
-                SwapInputContract.ErrorMessage.InsufficientEthFundsForFee
+                SwapInputContract.ErrorMessage.InsufficientEthFundsForFee(state.sendingNetworkFee.currencyCode)
             } else {
                 SwapInputContract.ErrorMessage.InsufficientFunds(state.sourceCryptoBalance, state.sourceCryptoCurrency)
             }

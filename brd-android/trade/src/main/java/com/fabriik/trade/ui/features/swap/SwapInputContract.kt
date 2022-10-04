@@ -141,9 +141,9 @@ interface SwapInputContract {
             )
         }
 
-        object InsufficientEthFundsForFee : ErrorMessage() {
+        class InsufficientEthFundsForFee(val cryptoCurrency: String) : ErrorMessage() {
             override fun toString(context: Context) = context.getString(
-                R.string.Swap_Input_Error_EthFeeBalance
+                R.string.Swap_Input_Error_EthFeeBalance, cryptoCurrency.uppercase()
             )
         }
 
