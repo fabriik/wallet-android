@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.annotation.IdRes
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.viewbinding.ViewBinding
 import com.fabriik.common.R
@@ -48,18 +47,16 @@ abstract class FabriikBottomSheet<Binding: ViewBinding> : BottomSheetDialogFragm
         show(fragmentManager, this.javaClass.name + System.currentTimeMillis())
     }
 
-    protected fun dismissWithResult(requestKey: String, resultKey: String, data: Bundle? = null) {
-        /*getParentFragmentManager().setFragmentResult(
-            requestKey,
-            resultToBundle(resultKey, dataToReturn)
-        )*/
+    protected fun dismissWithResult(requestKey: String, resultKey: String) {
+        parentFragmentManager.setFragmentResult(
+            requestKey, resultToBundle(resultKey)
+        )
         dismissAllowingStateLoss()
     }
 
-    protected fun resultToBundle(resultKey: String, dataToReturn: Bundle?): Bundle {
-        val bundle = Bundle()
+    private fun resultToBundle(resultKey: String): Bundle {
+        val bundle = arguments ?: Bundle()
         bundle.putString(EXTRA_RESULT_KEY, resultKey)
-        dataToReturn?.let { bundle.putParcelable(EXTRA_DATA_TO_RETURN, it) }
         return bundle
     }
 
@@ -69,7 +66,6 @@ abstract class FabriikBottomSheet<Binding: ViewBinding> : BottomSheetDialogFragm
 
     companion object {
         const val EXTRA_RESULT_KEY = "extra_result_key"
-        const val EXTRA_DATA_TO_RETURN = "extra_data_to_return"
 
         @IdRes
         private val BOTTOM_SHEET_ID = R.id.design_bottom_sheet

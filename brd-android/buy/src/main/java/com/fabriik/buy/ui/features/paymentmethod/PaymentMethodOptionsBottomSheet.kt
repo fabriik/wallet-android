@@ -2,7 +2,9 @@ package com.fabriik.buy.ui.features.paymentmethod
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import com.fabriik.buy.databinding.BottomSheetPaymentMethodOptionsBinding
+import com.fabriik.common.data.model.PaymentInstrument
 import com.fabriik.common.ui.dialog.FabriikBottomSheet
 
 class PaymentMethodOptionsBottomSheet: FabriikBottomSheet<BottomSheetPaymentMethodOptionsBinding>() {
@@ -17,9 +19,14 @@ class PaymentMethodOptionsBottomSheet: FabriikBottomSheet<BottomSheetPaymentMeth
 
     companion object {
         const val REQUEST_KEY = "PaymentMethodOptionsBottomSheet"
-        const val RESULT_KEY_CANCEL = "PaymentMethodOptionsBottomSheet"
-        const val RESULT_KEY_REMOVE = "PaymentMethodOptionsBottomSheet"
+        const val RESULT_KEY_CANCEL = "PaymentMethodOptionsBottomSheet_cancel"
+        const val RESULT_KEY_REMOVE = "PaymentMethodOptionsBottomSheet_remove"
+        const val EXTRA_PAYMENT_INSTRUMENT = "PaymentMethodOptionsBottomSheet_paymentInstrument"
 
-        fun newInstance() = PaymentMethodOptionsBottomSheet()
+        fun newInstance(paymentInstrument: PaymentInstrument) = PaymentMethodOptionsBottomSheet().apply {
+            arguments = bundleOf(
+                EXTRA_PAYMENT_INSTRUMENT to paymentInstrument
+            )
+        }
     }
 }

@@ -15,6 +15,7 @@ import com.fabriik.buy.R
 import com.fabriik.buy.databinding.FragmentPaymentMethodBinding
 import com.fabriik.common.data.model.PaymentInstrument
 import com.fabriik.common.ui.base.FabriikView
+import com.fabriik.common.ui.dialog.FabriikBottomSheet
 import com.fabriik.common.ui.dialog.FabriikGenericDialog
 import com.fabriik.common.utils.FabriikToastUtil
 import kotlinx.coroutines.flow.collect
@@ -78,6 +79,18 @@ class PaymentMethodFragment : Fragment(),
             }
         }
 
+        // listen for options bottom sheet dialog result
+        parentFragmentManager.setFragmentResultListener(PaymentMethodOptionsBottomSheet.REQUEST_KEY, this) { _, bundle ->
+            val result = bundle.getString(FabriikBottomSheet.EXTRA_RESULT_KEY)
+            val paymentInstrument = bundle.getParcelable<PaymentInstrument>(
+                PaymentMethodOptionsBottomSheet.EXTRA_PAYMENT_INSTRUMENT
+            )
+
+            if (result == PaymentMethodOptionsBottomSheet.RESULT_KEY_REMOVE && paymentInstrument != null) {
+                viewModel.setEvent(PaymentMethodContract.Event.RemoveOptionClicked(paymentInstrument))
+            }
+        }
+
         // listen for removal confirmation dialog result
         requireActivity().supportFragmentManager.setFragmentResultListener(PaymentMethodViewModel.REQUEST_CONFIRMATION_DIALOG, this) { _, bundle ->
             val result = bundle.getString(FabriikGenericDialog.EXTRA_RESULT)
@@ -104,7 +117,9 @@ class PaymentMethodFragment : Fragment(),
     override fun handleEffect(effect: PaymentMethodContract.Effect) {
         when (effect) {
             is PaymentMethodContract.Effect.Back -> {
-                parentFragmentManager.setFragmentResult(REQUEST_KEY, bundleOf(RESULT_KEY to effect.selectedInstrument))
+                parentFragmentManager.setFragmentResult(
+                    REQUEST_KEY, bundleOf(RESULT_KEY to effect.selectedInstrument)
+                )
                 findNavController().popBackStack()
             }
 
@@ -127,7 +142,7 @@ class PaymentMethodFragment : Fragment(),
                     .show(parentFragmentManager)
 
             is PaymentMethodContract.Effect.ShowOptionsBottomSheet ->
-                PaymentMethodOptionsBottomSheet.newInstance()
+                PaymentMethodOptionsBottomSheet.newInstance(effect.paymentInstrument)
                     .show(parentFragmentManager)
         }
     }
