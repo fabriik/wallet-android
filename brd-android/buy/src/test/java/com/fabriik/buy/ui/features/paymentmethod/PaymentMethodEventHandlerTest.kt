@@ -16,7 +16,10 @@ class PaymentMethodEventHandlerTest {
         override fun onBackClicked() {}
         override fun onDismissClicked() {}
         override fun onAddCardClicked() {}
+        override fun onRemoveOptionClicked(paymentInstrument: PaymentInstrument) {}
         override fun onPaymentInstrumentClicked(paymentInstrument: PaymentInstrument) {}
+        override fun onPaymentInstrumentOptionsClicked(paymentInstrument: PaymentInstrument) {}
+        override fun onPaymentInstrumentRemovalConfirmed(paymentInstrument: PaymentInstrument) {}
     }
 
     @Test
@@ -38,8 +41,26 @@ class PaymentMethodEventHandlerTest {
     }
 
     @Test
-    fun handleEvent_paymentInstrumentSelected_callOnPaymentInstrumentSelected() {
+    fun handleEvent_paymentInstrumentClicked_callOnPaymentInstrumentClicked() {
         handler.handleEvent(PaymentMethodContract.Event.PaymentInstrumentClicked(paymentInstrument))
         verify(handler).onPaymentInstrumentClicked(paymentInstrument)
+    }
+
+    @Test
+    fun handleEvent_paymentInstrumentOptionsClicked_callOnPaymentInstrumentOptionsClicked() {
+        handler.handleEvent(PaymentMethodContract.Event.PaymentInstrumentOptionsClicked(paymentInstrument))
+        verify(handler).onPaymentInstrumentOptionsClicked(paymentInstrument)
+    }
+
+    @Test
+    fun handleEvent_removeOptionClicked_callOnRemoveOptionClicked() {
+        handler.handleEvent(PaymentMethodContract.Event.RemoveOptionClicked(paymentInstrument))
+        verify(handler).onRemoveOptionClicked(paymentInstrument)
+    }
+
+    @Test
+    fun handleEvent_paymentInstrumentRemovalConfirmed_callOnPaymentInstrumentRemovalConfirmed() {
+        handler.handleEvent(PaymentMethodContract.Event.PaymentInstrumentRemovalConfirmed(paymentInstrument))
+        verify(handler).onPaymentInstrumentRemovalConfirmed(paymentInstrument)
     }
 }
