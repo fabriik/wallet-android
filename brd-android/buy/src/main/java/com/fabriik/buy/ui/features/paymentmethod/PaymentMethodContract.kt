@@ -20,7 +20,7 @@ interface PaymentMethodContract : FabriikContract {
     sealed class Effect : FabriikContract.Effect {
         object Dismiss : Effect()
         data class AddCard(val flow: AddCardFlow) : Effect()
-        data class Back(val selectedInstrument: PaymentInstrument? = null) : Effect()
+        data class Back(val result: PaymentMethodFragment.Result) : Effect()
         data class ShowError(val message: String) : Effect()
         data class ShowToast(val message: String): Effect()
         data class ShowOptionsBottomSheet(val paymentInstrument: PaymentInstrument) : Effect()
@@ -28,6 +28,7 @@ interface PaymentMethodContract : FabriikContract {
     }
 
     data class State(
+        val dataUpdated: Boolean = false,
         val paymentInstruments: List<PaymentInstrument>,
         val initialLoadingIndicator: Boolean = false,
         val fullScreenLoadingIndicator: Boolean = false,

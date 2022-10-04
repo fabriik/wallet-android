@@ -1,6 +1,7 @@
 package com.fabriik.buy.ui.features.paymentmethod
 
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,7 @@ import com.fabriik.common.ui.dialog.FabriikBottomSheet
 import com.fabriik.common.ui.dialog.FabriikGenericDialog
 import com.fabriik.common.utils.FabriikToastUtil
 import kotlinx.coroutines.flow.collect
+import kotlinx.parcelize.Parcelize
 
 class PaymentMethodFragment : Fragment(),
     FabriikView<PaymentMethodContract.State, PaymentMethodContract.Effect> {
@@ -118,7 +120,7 @@ class PaymentMethodFragment : Fragment(),
         when (effect) {
             is PaymentMethodContract.Effect.Back -> {
                 parentFragmentManager.setFragmentResult(
-                    REQUEST_KEY, bundleOf(RESULT_KEY to effect.selectedInstrument)
+                    REQUEST_KEY, bundleOf(RESULT_KEY to effect.result)
                 )
                 findNavController().popBackStack()
             }
@@ -150,5 +152,13 @@ class PaymentMethodFragment : Fragment(),
     companion object {
         const val REQUEST_KEY = "request_payment_method"
         const val RESULT_KEY = "result_payment_method"
+    }
+
+    sealed class Result: Parcelable {
+        @Parcelize
+        data class Cancelled(val dataUpdated: Boolean): Result()
+
+        @Parcelize
+        data class Selected(val paymentInstrument: PaymentInstrument): Result()
     }
 }

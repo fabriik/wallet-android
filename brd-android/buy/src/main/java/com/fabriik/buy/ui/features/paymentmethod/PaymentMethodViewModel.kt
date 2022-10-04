@@ -49,7 +49,9 @@ class PaymentMethodViewModel(
     override fun onBackClicked() {
         setEffect {
             if (arguments.flow == AddCardFlow.BUY) {
-                PaymentMethodContract.Effect.Back()
+                PaymentMethodContract.Effect.Back(
+                    PaymentMethodFragment.Result.Cancelled(currentState.dataUpdated)
+                )
             } else {
                 PaymentMethodContract.Effect.Dismiss
             }
@@ -88,7 +90,11 @@ class PaymentMethodViewModel(
 
     override fun onPaymentInstrumentClicked(paymentInstrument: PaymentInstrument) {
         if (arguments.flow == AddCardFlow.BUY) {
-            setEffect { PaymentMethodContract.Effect.Back(paymentInstrument) }
+            setEffect {
+                PaymentMethodContract.Effect.Back(
+                    PaymentMethodFragment.Result.Selected(paymentInstrument)
+                )
+            }
         }
     }
 
@@ -106,7 +112,12 @@ class PaymentMethodViewModel(
                     remove(paymentInstrument)
                 }
 
-                setState { copy(paymentInstruments = updatedList) }
+                setState {
+                    copy(
+                        paymentInstruments = updatedList,
+                        dataUpdated = true
+                    )
+                }
 
                 setEffect {
                     if (it.status == Status.SUCCESS) {
