@@ -8,6 +8,7 @@ import com.breadwallet.tools.security.ProfileManager
 import com.breadwallet.tools.util.TokenUtil
 import com.fabriik.buy.R
 import com.fabriik.buy.data.BuyApi
+import com.fabriik.buy.ui.features.paymentmethod.PaymentMethodFragment
 import com.fabriik.common.data.model.PaymentInstrument
 import com.fabriik.common.data.Status
 import com.fabriik.common.ui.base.FabriikViewModel
@@ -74,13 +75,16 @@ class BuyInputViewModel(
         requestNewQuote()
     }
 
-    override fun onPaymentMethodChanged(paymentInstrument: PaymentInstrument) {
-        val state = currentLoadedState ?: return
+    override fun onPaymentMethodResultReceived(result: PaymentMethodFragment.Result) {
+        when (result) {
+            is PaymentMethodFragment.Result.Selected -> {
+                val state = currentLoadedState ?: return
+                setState { state.copy(selectedPaymentMethod = result.paymentInstrument).validate() }
+            }
 
-        setState {
-            state.copy(
-                selectedPaymentMethod = paymentInstrument
-            ).validate()
+            is PaymentMethodFragment.Result.Cancelled -> if (result.dataUpdated) {
+                refreshPaymentInstruments()
+            }
         }
     }
 
@@ -217,6 +221,22 @@ class BuyInputViewModel(
                     selectedPaymentMethod = instrumentsResponse.data?.lastOrNull(),
                     profile = profileManager.getProfile()
                 )
+            }
+        }
+    }
+
+    private fun refreshPaymentInstruments() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val instrumentsResponse = buyApi.getPaymentInstruments().data ?: emptyList()
+
+            val currentState = currentLoadedState ?: return@launch
+            val isSelectedMethodInList = instrumentsResponse.any {
+                it.id == currentState.selectedPaymentMethod?.id
+            }
+
+            // remove selected payment method if it was removed
+            if (!isSelectedMethodInList) {
+                setState { currentState.copy(selectedPaymentMethod = null) }
             }
         }
     }
