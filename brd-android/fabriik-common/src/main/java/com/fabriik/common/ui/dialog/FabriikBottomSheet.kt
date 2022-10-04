@@ -7,9 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.annotation.IdRes
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.viewbinding.ViewBinding
-import com.google.android.material.R
+import com.fabriik.common.R
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
@@ -17,9 +18,10 @@ abstract class FabriikBottomSheet<Binding: ViewBinding> : BottomSheetDialogFragm
 
     protected lateinit var binding: Binding
 
+    override fun getTheme() = R.style.FabriikBottomSheetDialog
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)
-
         dialog.setOnShowListener {
             val bottomSheet = dialog.findViewById<FrameLayout>(BOTTOM_SHEET_ID)
                 ?: return@setOnShowListener
@@ -32,7 +34,7 @@ abstract class FabriikBottomSheet<Binding: ViewBinding> : BottomSheetDialogFragm
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         super.onCreateView(inflater, container, savedInstanceState)
-        binding = createBinding(inflater, container, true)
+        binding = createBinding(inflater, container, false)
         return binding.root
     }
 

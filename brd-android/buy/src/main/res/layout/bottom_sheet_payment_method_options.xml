@@ -4,17 +4,17 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <Button
-        android:id="@+id/tv_remove"
-        style="@style/TextStyle.Button"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_remove"
+        style="@style/FabriikBottomSheetTextButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
         android:text="@string/Buy.SelectPaymentMethod.RemovePaymentMethod" />
 
-    <TextView
-        android:id="@+id/tv_cancel"
-        style="@style/TextStyle.Button"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_cancel"
+        style="@style/FabriikBottomSheetTextButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"

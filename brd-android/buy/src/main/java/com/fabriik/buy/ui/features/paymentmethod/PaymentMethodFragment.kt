@@ -127,7 +127,8 @@ class PaymentMethodFragment : Fragment(),
                     .show(parentFragmentManager)
 
             is PaymentMethodContract.Effect.ShowOptionsBottomSheet ->
-                {} //todo
+                PaymentMethodOptionsBottomSheet.newInstance()
+                    .show(parentFragmentManager)
         }
     }
 

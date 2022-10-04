@@ -11,13 +11,15 @@ class PaymentMethodOptionsBottomSheet: FabriikBottomSheet<BottomSheetPaymentMeth
         BottomSheetPaymentMethodOptionsBinding.inflate(inflater, container, attach)
 
     override fun setupBottomSheet() {
-        binding.tvCancel.setOnClickListener { dismissWithResult(REQUEST_KEY, RESULT_KEY_CANCEL) }
-        binding.tvRemove.setOnClickListener { dismissWithResult(REQUEST_KEY, RESULT_KEY_REMOVE) }
+        binding.btnCancel.setOnClickListener { dismissWithResult(REQUEST_KEY, RESULT_KEY_CANCEL) }
+        binding.btnRemove.setOnClickListener { dismissWithResult(REQUEST_KEY, RESULT_KEY_REMOVE) }
     }
 
     companion object {
         const val REQUEST_KEY = "PaymentMethodOptionsBottomSheet"
         const val RESULT_KEY_CANCEL = "PaymentMethodOptionsBottomSheet"
         const val RESULT_KEY_REMOVE = "PaymentMethodOptionsBottomSheet"
+
+        fun newInstance() = PaymentMethodOptionsBottomSheet()
     }
 }
