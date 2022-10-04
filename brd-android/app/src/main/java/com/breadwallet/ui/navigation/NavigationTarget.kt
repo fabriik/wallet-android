@@ -121,6 +121,7 @@ sealed class NavigationTarget : INavigationTarget {
 
     object Home : NavigationTarget()
     object Buy : NavigationTarget()
+    object PaymentMethod : NavigationTarget()
     object Profile : NavigationTarget()
     object Trade: NavigationTarget()
     object AddWallet : NavigationTarget()

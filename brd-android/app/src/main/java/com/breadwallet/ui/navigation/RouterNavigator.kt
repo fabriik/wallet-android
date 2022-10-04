@@ -188,7 +188,7 @@ class RouterNavigator(
 
         val intent = Intent(Intent.ACTION_SENDTO).apply {
             data = Uri.parse("mailto:")
-            putExtra(Intent.EXTRA_EMAIL, arrayOf("feedback@fabriik.com"))
+            putExtra(Intent.EXTRA_EMAIL, arrayOf("hello@fabriik.com"))
             putExtra(Intent.EXTRA_SUBJECT, activity.getString(R.string.Feedback_subject))
         }
 
@@ -212,7 +212,15 @@ class RouterNavigator(
 
         router.activity?.let {
             it.startActivity(
-                BuyActivity.getStartIntent(it)
+                BuyActivity.getDefaultStartIntent(it)
+            )
+        }
+    }
+
+    override fun paymentMethod() {
+        router.activity?.let {
+            it.startActivity(
+                BuyActivity.getStartIntentForPaymentMethod(it)
             )
         }
     }
@@ -280,7 +288,7 @@ class RouterNavigator(
         router.activity?.let {
             it.startActivity(
                 if (effect.transactionData.isBuyTransaction()) {
-                    BuyActivity.getStartIntentForSwapDetails(
+                    BuyActivity.getStartIntentForBuyDetails(
                         it, effect.transactionData.exchangeId
                     )
                 } else {

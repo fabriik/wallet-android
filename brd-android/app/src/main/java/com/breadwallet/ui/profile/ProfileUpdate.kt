@@ -41,6 +41,7 @@ object ProfileUpdate : Update<M, E, F>, ProfileScreenUpdateSpec {
     override fun onOptionClicked(model: M, event: E.OnOptionClicked): Next<M, F> = dispatch(
         setOf(
             when (event.option) {
+                ProfileOption.PAYMENT_METHOD -> F.GoToPaymentMethod
                 ProfileOption.SECURITY_SETTINGS -> F.GoToSettings(SettingsSection.SECURITY)
                 ProfileOption.PREFERENCES -> F.GoToSettings(SettingsSection.PREFERENCES)
             }

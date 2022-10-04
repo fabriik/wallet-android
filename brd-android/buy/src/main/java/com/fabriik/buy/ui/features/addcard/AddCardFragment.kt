@@ -109,7 +109,9 @@ class AddCardFragment : Fragment(), FabriikView<AddCardContract.State, AddCardCo
 
             is AddCardContract.Effect.BillingAddress ->
                 findNavController().navigate(
-                    AddCardFragmentDirections.actionBillingAddress(effect.token)
+                    AddCardFragmentDirections.actionBillingAddress(
+                        effect.token, effect.flow
+                    )
                 )
 
             is AddCardContract.Effect.ShowError ->
@@ -130,4 +132,9 @@ class AddCardFragment : Fragment(), FabriikView<AddCardContract.State, AddCardCo
 
         InfoDialog(args).show(fm, InfoDialog.TAG)
     }
+}
+
+enum class AddCardFlow {
+    BUY,
+    PROFILE
 }

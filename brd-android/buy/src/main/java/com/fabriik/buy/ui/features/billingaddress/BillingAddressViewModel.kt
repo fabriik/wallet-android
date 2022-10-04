@@ -68,7 +68,7 @@ class BillingAddressViewModel(
 
                         setEffect {
                             if (redirectUrl.isNullOrBlank()) {
-                                BillingAddressContract.Effect.PaymentMethod
+                                BillingAddressContract.Effect.PaymentMethod(arguments.flow)
                             } else {
                                 BillingAddressContract.Effect.OpenWebsite(redirectUrl)
                             }
@@ -126,7 +126,7 @@ class BillingAddressViewModel(
             startState = { copy(loadingIndicatorVisible = true) },
             action = { buyApi.getPaymentStatus(reference) },
             callback = {
-                setEffect { BillingAddressContract.Effect.PaymentMethod }
+                setEffect { BillingAddressContract.Effect.PaymentMethod(arguments.flow) }
             }
         )
     }
