@@ -7,6 +7,7 @@ import com.fabriik.buy.data.BuyApi
 import com.fabriik.buy.data.enums.PaymentStatus
 import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.common.utils.toBundle
+import com.fabriik.trade.data.SwapTransactionsFetcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -24,6 +25,7 @@ class PaymentProcessingViewModel(
     override val kodein by closestKodein { application }
 
     private val buyApi by kodein.instance<BuyApi>()
+    private val transactionsFetcher by kodein.instance<SwapTransactionsFetcher>()
 
     private val currentProcessingState: PaymentProcessingContract.State.Processing?
         get() = state.value as PaymentProcessingContract.State.Processing?
@@ -96,6 +98,7 @@ class PaymentProcessingViewModel(
             callback = {
                 setState {
                     if (it.data == PaymentStatus.CAPTURED || it.data == PaymentStatus.CARD_VERIFIED) {
+                        transactionsFetcher.refreshData()
                         PaymentProcessingContract.State.PaymentCompleted(reference)
                     } else {
                         PaymentProcessingContract.State.PaymentFailed(reference)
