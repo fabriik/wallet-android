@@ -29,7 +29,6 @@ import androidx.annotation.StringRes
 import com.brd.bakerapi.models.Baker
 import com.breadwallet.model.InAppMessage
 import com.breadwallet.tools.util.Link
-import com.breadwallet.ui.BaseController
 import com.breadwallet.ui.auth.AuthMode
 import com.breadwallet.ui.recovery.RecoveryKey
 import com.breadwallet.ui.settings.SettingsSection
@@ -39,7 +38,6 @@ import com.fabriik.support.pages.Topic
 import com.fabriik.trade.data.model.SwapBuyTransactionData
 import dev.zacsweers.redacted.annotations.Redacted
 import java.math.BigDecimal
-import kotlin.reflect.KClass
 
 sealed class NavigationTarget : INavigationTarget {
     data class SendSheet(
@@ -164,6 +162,7 @@ sealed class NavigationTarget : INavigationTarget {
         val scanned: Boolean = false,
         val gift: Boolean = false,
     ) : NavigationTarget()
+
     object BitcoinNodeSelector : NavigationTarget()
     object EnableSegWit : NavigationTarget()
     object LegacyAddress : NavigationTarget()
