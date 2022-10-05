@@ -14,6 +14,8 @@ import com.breadwallet.util.formatFiatForUi
 import com.breadwallet.util.withParentheses
 import com.fabriik.trade.data.model.AmountData
 import com.fabriik.trade.databinding.FragmentSwapConfirmationDialogBinding
+import com.fabriik.trade.ui.customview.SwapCardView.Companion.SCALE_CRYPTO
+import com.fabriik.trade.ui.customview.SwapCardView.Companion.SCALE_FIAT
 
 class SwapConfirmationDialog : DialogFragment() {
 
@@ -38,34 +40,40 @@ class SwapConfirmationDialog : DialogFragment() {
             tvRateValue.text = RATE_FORMAT.format(
                 args.fromAmount.cryptoCurrency,
                 args.rateAmount.formatCryptoForUi(
-                    args.toAmount.cryptoCurrency
+                    currencyCode = args.toAmount.cryptoCurrency,
+                    scale = SCALE_CRYPTO
                 )
             )
 
             args.sendingFeeAmount.run {
                 tvSendingFeeFiatValue.text = fiatAmount.formatFiatForUi(
                     currencyCode = fiatCurrency,
-                    showCurrencyName = true
+                    showCurrencyName = true,
+                    scale = SCALE_FIAT
                 ).withParentheses()
 
                 tvSendingFeeCryptoValue.text = cryptoAmount.formatCryptoForUi(
-                    cryptoCurrency
+                    currencyCode = cryptoCurrency,
+                    scale = SCALE_CRYPTO
                 )
             }
 
             args.receivingFeeAmount.run {
                 tvReceivingFeeFiatValue.text = fiatAmount.formatFiatForUi(
                     currencyCode = fiatCurrency,
-                    showCurrencyName = true
+                    showCurrencyName = true,
+                    scale = SCALE_FIAT
                 ).withParentheses()
 
                 tvReceivingFeeCryptoValue.text = cryptoAmount.formatCryptoForUi(
-                    cryptoCurrency
+                    currencyCode = cryptoCurrency,
+                    scale = SCALE_CRYPTO
                 )
             }
 
             tvTotalValue.text = args.fromAmount.cryptoAmount.formatCryptoForUi(
-                args.fromAmount.cryptoCurrency
+                currencyCode = args.fromAmount.cryptoCurrency,
+                scale = SCALE_CRYPTO
             )
 
             btnCancel.setOnClickListener {
@@ -89,11 +97,13 @@ class SwapConfirmationDialog : DialogFragment() {
     private fun formatCurrencyAmount(data: AmountData): String {
         val fiatText = data.fiatAmount.formatFiatForUi(
             currencyCode = data.fiatCurrency,
-            showCurrencyName = true
+            showCurrencyName = true,
+            scale = SCALE_FIAT
         )
 
         val cryptoText = data.cryptoAmount.formatCryptoForUi(
-            data.cryptoCurrency
+            currencyCode = data.cryptoCurrency,
+            scale = SCALE_CRYPTO
         )
 
         return "$cryptoText ${fiatText.withParentheses()}"

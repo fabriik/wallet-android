@@ -44,8 +44,8 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_logo"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_width="130dp"
+                android:layout_height="30dp"
                 android:layout_alignBottom="@id/total_assets_usd"
                 android:layout_alignParentStart="true"
                 android:layout_marginStart="16dp"
@@ -70,14 +70,15 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/total_assets_label"
                 android:layout_alignParentEnd="true"
-                android:layout_marginEnd="@dimen/activity_vertical_margin"
                 android:layout_marginStart="8dp"
+                android:layout_marginEnd="@dimen/activity_vertical_margin"
                 android:layout_toEndOf="@+id/iv_logo"
                 android:fontFamily="@font/mobile_font_medium"
                 android:gravity="end"
+                android:singleLine="true"
                 android:textColor="@color/fabriik_black"
-                android:textSize="32sp"
-                tools:text="$190.30" />
+                android:textSize="26sp"
+                tools:text="$19232342340.30" />
 
         </RelativeLayout>
 

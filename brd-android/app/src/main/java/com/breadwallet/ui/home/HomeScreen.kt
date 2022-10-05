@@ -32,12 +32,17 @@ import com.breadwallet.ui.navigation.NavigationTarget
 import com.breadwallet.ui.navigation.OnCompleteAction
 import com.breadwallet.ui.settings.SettingsSection
 import com.fabriik.common.data.model.Profile
-import com.fabriik.registration.ui.RegistrationActivity
+import com.fabriik.common.ui.dialog.FabriikGenericDialogArgs
 import com.fabriik.registration.ui.RegistrationFlow
 import dev.zacsweers.redacted.annotations.Redacted
 import java.math.BigDecimal
 
 object HomeScreen {
+
+    const val SUPPORT_FORM_DIALOG = "fabriik_support_dialog"
+    const val SUPPORT_FORM_DIALOG_POSITIVE = "fabriik_support_dialog_pos"
+    const val SUPPORT_FORM_DIALOG_NEGATIVE = "fabriik_support_dialog_neg"
+
     data class M(
         val wallets: Map<String, Wallet> = emptyMap(),
         val displayOrder: List<String> = emptyList(),
@@ -101,7 +106,7 @@ object HomeScreen {
         object OnEmailVerified : E()
         data class OnRateAppPromptDontShowClicked(val checked: Boolean) : E()
         object OnRateAppPromptNoThanksClicked : E()
-        data class OnSupportFormSubmitted(val feedback: String) : E()
+        object OnPositiveDialogClicked : E()
         data class OnProfileDataLoaded(val profile: Profile) : E()
         data class OnProfileDataLoadFailed(val message: String?) : E()
         object OnVerifyPromptClicked : E()
@@ -181,13 +186,21 @@ object HomeScreen {
             override val navigationTarget = NavigationTarget.ReviewBrd
         }
 
-        object GoToSupportForm : F(), NavigationEffect {
-            override val navigationTarget = NavigationTarget.AlertDialog(
-                titleResId = R.string.SupportForm_helpUsImprove,
-                messageResId = R.string.SupportForm_feedbackAppreciated,
-                positiveButtonResId = R.string.Button_submit,
-                negativeButtonResId = R.string.SupportForm_notNow,
-                textInputPlaceholderResId = R.string.SupportForm_pleaseDescribe
+        object GoToSupportDialog : F(), NavigationEffect {
+            override val navigationTarget = NavigationTarget.FabriikGenericDialog(
+                FabriikGenericDialogArgs(
+                    titleRes = R.string.SupportForm_helpUsImprove,
+                    descriptionRes = R.string.SupportForm_feedbackAppreciated,
+                    positive = FabriikGenericDialogArgs.ButtonData(
+                        titleRes = R.string.Button_submit,
+                        resultKey = SUPPORT_FORM_DIALOG_POSITIVE
+                    ),
+                    negative = FabriikGenericDialogArgs.ButtonData(
+                        titleRes = R.string.SupportForm_notNow,
+                        resultKey = SUPPORT_FORM_DIALOG_NEGATIVE
+                    ),
+                    requestKey = SUPPORT_FORM_DIALOG
+                )
             )
         }
 
@@ -209,10 +222,12 @@ object HomeScreen {
         object ClearRateAppPrompt : F()
         object SaveDontShowMeRateAppPrompt : F()
 
-        data class SubmitSupportForm(val feedback: String) : F()
-
         object GoToKyc : F(), NavigationEffect {
             override val navigationTarget = NavigationTarget.GoToKyc
+        }
+
+        object GoToFeedback : F(), NavigationEffect{
+            override val navigationTarget = NavigationTarget.GoToFeedback
         }
     }
 }

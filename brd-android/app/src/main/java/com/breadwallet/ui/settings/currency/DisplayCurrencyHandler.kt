@@ -43,17 +43,14 @@ import org.json.JSONException
 import java.io.File
 import java.io.IOException
 import java.util.Currency
-import java.util.concurrent.TimeUnit.MILLISECONDS
 import kotlin.time.DurationUnit
 import kotlin.time.days
 import kotlin.time.toDuration
 
 private const val CURRENCIES_URL = "${COINGECKO_API_URL}supported_vs_currencies"
-private const val FIAT_CURRENCIES_FILENAME = "fiatcurrencies.json"
 
 fun createDisplayCurrencyHandler(
     context: Context,
-    http: OkHttpClient
 ) = subtypeEffectHandler<F, E> {
     addFunction<F.SetDisplayCurrency> {
         putPreferredFiatIso(iso = it.currencyCode)

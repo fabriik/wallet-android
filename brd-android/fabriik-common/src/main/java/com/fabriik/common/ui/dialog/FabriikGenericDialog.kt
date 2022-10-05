@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -64,9 +63,15 @@ class FabriikGenericDialog : DialogFragment() {
     }
 
     private fun setupDescription(view: TextView) {
-        val description = if (args.descriptionRes != null) getString(args.descriptionRes!!) else args.description
+        val description = if (args.descriptionRes != null) getStringRes() else args.description
         view.text = description
         view.isVisible = description != null
+    }
+
+    private fun getStringRes(): String {
+        val messageArgs = args.messageArgs?.toTypedArray() ?: emptyArray()
+
+        return getString(args.descriptionRes!!, *messageArgs)
     }
 
     private fun setupPositiveButton(button: MaterialButton) {
@@ -104,7 +109,9 @@ class FabriikGenericDialog : DialogFragment() {
         dismissAllowingStateLoss()
 
         requireActivity().supportFragmentManager.setFragmentResult(
-            args.requestKey, bundleOf(EXTRA_RESULT to result)
+            args.requestKey, (args.extraData ?: Bundle()).apply {
+                putString(EXTRA_RESULT, result)
+            }
         )
     }
 
@@ -112,7 +119,7 @@ class FabriikGenericDialog : DialogFragment() {
         private const val TAG = "Fabriik-Generic-Dialog"
         private const val EXTRA_ARGS = "args"
         const val EXTRA_RESULT = "result"
-        private const val RESULT_KEY_DISMISSED = "result_dismissed"
+        const val RESULT_KEY_DISMISSED = "result_dismissed"
 
         fun newInstance(args: FabriikGenericDialogArgs): FabriikGenericDialog {
             val dialog = FabriikGenericDialog()

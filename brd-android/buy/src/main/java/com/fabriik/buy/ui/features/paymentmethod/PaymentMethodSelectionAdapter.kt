@@ -8,10 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.fabriik.common.data.model.PaymentInstrument
 import com.fabriik.buy.databinding.ListItemPaymentMethodBinding
 
-class PaymentMethodSelectionAdapter(private val callback: (PaymentInstrument) -> Unit) :
-    ListAdapter<PaymentInstrument, PaymentMethodSelectionAdapter.ViewHolder>(
-        CountryDiffCallback
-    ) {
+class PaymentMethodSelectionAdapter(
+    private val clickCallback: (PaymentInstrument) -> Unit,
+    private val optionsClickCallback: (PaymentInstrument) -> Unit
+) : ListAdapter<PaymentInstrument, PaymentMethodSelectionAdapter.ViewHolder>(CountryDiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -24,18 +24,21 @@ class PaymentMethodSelectionAdapter(private val callback: (PaymentInstrument) ->
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(
             item = getItem(position),
-            callback = callback
+            clickCallback = clickCallback,
+            optionsClickCallback = optionsClickCallback
         )
     }
 
-    class ViewHolder(val binding: ListItemPaymentMethodBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(val binding: ListItemPaymentMethodBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: PaymentInstrument, callback: (PaymentInstrument) -> Unit) {
+        fun bind(item: PaymentInstrument, clickCallback: (PaymentInstrument) -> Unit, optionsClickCallback: (PaymentInstrument) -> Unit) {
             with(binding) {
                 tvDate.text = item.expiryDate
                 tvCardNumber.text = item.hiddenCardNumber
                 ivCardLogo.setImageResource(item.cardTypeIcon)
-                root.setOnClickListener { callback(item) }
+                root.setOnClickListener { clickCallback(item) }
+                btnMore.setOnClickListener { optionsClickCallback(item) }
             }
         }
     }
@@ -46,7 +49,7 @@ class PaymentMethodSelectionAdapter(private val callback: (PaymentInstrument) ->
 
         override fun areContentsTheSame(oldItem: PaymentInstrument, newItem: PaymentInstrument) =
             oldItem.last4Numbers == newItem.last4Numbers &&
-            oldItem.expiryMonth == newItem.expiryMonth &&
-            oldItem.expiryYear == newItem.expiryYear
+                    oldItem.expiryMonth == newItem.expiryMonth &&
+                    oldItem.expiryYear == newItem.expiryYear
     }
 }
