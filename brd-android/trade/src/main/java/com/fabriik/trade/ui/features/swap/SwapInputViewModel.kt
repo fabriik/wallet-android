@@ -825,7 +825,7 @@ class SwapInputViewModel(
         }
 
     companion object {
-        const val QUOTE_TIMER = 60
+        const val QUOTE_TIMER = 15
         private const val DIALOG_RESULT_GOT_IT = "result_got_it"
         private const val DIALOG_REQUEST_CHECK_ASSETS = "request_check_assets"
         private const val DIALOG_REQUEST_TEMP_UNAVAILABLE = "request_temp_unvailable"
