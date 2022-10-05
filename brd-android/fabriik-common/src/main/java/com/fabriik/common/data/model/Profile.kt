@@ -62,4 +62,4 @@ private fun Profile?.isVerifiedCustomer() =
 
 fun Profile.isKyc1(): Boolean = hasRole(ProfileRole.KYC_LEVEL_1)
 
-fun Profile.isKyc2(): Boolean = false//hasRole(ProfileRole.KYC_LEVEL_2)
+fun Profile.isKyc2(): Boolean = hasRole(ProfileRole.KYC_LEVEL_2)
