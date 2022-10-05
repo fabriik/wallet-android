@@ -35,10 +35,7 @@ ProfileController(
             model.copy(
                 isLoading = true
             ),
-            setOf(
-                F.LoadOptions,
-                F.LoadProfileData
-            )
+            setOf(F.LoadProfileData)
         )
     }
 
