@@ -76,6 +76,14 @@
         <item name="android:textAppearance">@style/TextStyle.Button</item>
     </style>
 
+    <style name="FabriikBottomSheetTextButtonStyle" parent="FabriikTextButtonStyle">
+        <item name="android:gravity">start</item>
+        <item name="paddingEnd">16dp</item>
+        <item name="paddingStart">16dp</item>
+        <item name="android:textSize">18sp</item>
+        <item name="fontFamily">@font/roboto_regular</item>
+    </style>
+
     <style name="FabriikRadioButtonStyle" parent="Widget.MaterialComponents.CompoundButton.RadioButton">
         <item name="materialThemeOverlay">@style/FabriikRadioButton.ThemeOverlay</item>
         <item name="android:textColor">@color/light_text_01</item>
@@ -197,5 +205,14 @@
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/light_text_02</item>
         <item name="android:fontFamily">@font/roboto_regular</item>
+    </style>
+
+    <style name="FabriikBottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/FabriikBottomSheetDialogStyle</item>
+    </style>
+
+    <style name="FabriikBottomSheetDialogStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:layout_margin">16dp</item>
+        <item name="android:background">@drawable/bg_bottom_sheet</item>
     </style>
 </resources>

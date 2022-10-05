@@ -41,6 +41,7 @@ object ProfileUpdate : Update<M, E, F>, ProfileScreenUpdateSpec {
     override fun onOptionClicked(model: M, event: E.OnOptionClicked): Next<M, F> = dispatch(
         setOf(
             when (event.option) {
+                ProfileOption.PAYMENT_METHOD -> F.GoToPaymentMethod
                 ProfileOption.SECURITY_SETTINGS -> F.GoToSettings(SettingsSection.SECURITY)
                 ProfileOption.PREFERENCES -> F.GoToSettings(SettingsSection.PREFERENCES)
             }
@@ -54,9 +55,9 @@ object ProfileUpdate : Update<M, E, F>, ProfileScreenUpdateSpec {
         )
     )
 
-    override fun onProfileDataLoadFailed(model: M, event: E.OnProfileDataLoadFailed): Next<M, F> =
-        next(
-            model.copy(isLoading = false),
-            setOf(F.ShowFabriikToast(event.message ?: ""))
-        )
+    override fun onProfileDataLoadFailed(model: M, event: E.OnProfileDataLoadFailed): Next<M, F>  {
+        val newModel = model.copy(isLoading = false)
+        val effects = if (event.message == null) emptySet() else setOf(F.ShowFabriikToast(event.message))
+        return next(newModel, effects)
+    }
 }

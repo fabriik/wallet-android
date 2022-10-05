@@ -237,6 +237,12 @@ class BRDFirebaseMessagingService : FirebaseMessagingService() {
         val url = getMixpanelDeepLink(remoteMessage.data)
         val campaignId = remoteMessage.data[MP_CAMPAIGN_ID]
 
+        val pendingIntentFlags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        } else {
+            PendingIntent.FLAG_UPDATE_CURRENT
+        }
+
         return PendingIntent.getActivity(
             applicationContext, 0,
             Intent(applicationContext, MainActivity::class.java).apply {
@@ -245,17 +251,24 @@ class BRDFirebaseMessagingService : FirebaseMessagingService() {
                     putExtra(MainActivity.EXTRA_DATA, url)
                 }
                 putExtra(MainActivity.EXTRA_PUSH_NOTIFICATION_CAMPAIGN_ID, campaignId)
-            }, PendingIntent.FLAG_UPDATE_CURRENT
+            }, pendingIntentFlags
         )
     }
 
-    private fun getHomePendingIntent(): PendingIntent =
-        PendingIntent.getActivity(
+    private fun getHomePendingIntent(): PendingIntent {
+        val pendingIntentFlags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        } else {
+            0
+        }
+
+        return PendingIntent.getActivity(
             applicationContext, 0,
             Intent(applicationContext, MainActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            }, 0
+            }, pendingIntentFlags
         )
+    }
 
     private fun getMixpanelDeepLink(messageData: Map<String, String>): String? =
         if (messageData.containsKey(MP_NOTIFICATION_BRD_EXTRAS)) {

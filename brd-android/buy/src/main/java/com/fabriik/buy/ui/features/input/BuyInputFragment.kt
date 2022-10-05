@@ -15,6 +15,7 @@ import com.breadwallet.util.formatFiatForUi
 import com.fabriik.buy.R
 import com.fabriik.common.data.model.PaymentInstrument
 import com.fabriik.buy.databinding.FragmentBuyInputBinding
+import com.fabriik.buy.ui.features.addcard.AddCardFlow
 import com.fabriik.buy.ui.features.orderpreview.OrderPreviewFragment
 import com.fabriik.buy.ui.features.paymentmethod.PaymentMethodFragment
 import com.fabriik.buy.ui.features.timeout.PaymentTimeoutFragment
@@ -97,10 +98,8 @@ class BuyInputFragment : Fragment(),
 
         // listen for destination currency changes
         parentFragmentManager.setFragmentResultListener(PaymentMethodFragment.REQUEST_KEY, this) { _, bundle ->
-            val selectedPaymentInstrument = bundle.getParcelable(PaymentMethodFragment.RESULT_KEY) as PaymentInstrument?
-            if (selectedPaymentInstrument != null) {
-                viewModel.setEvent(BuyInputContract.Event.PaymentMethodChanged(selectedPaymentInstrument))
-            }
+            val result = bundle.getParcelable(PaymentMethodFragment.RESULT_KEY) as PaymentMethodFragment.Result?
+            result?.let { viewModel.setEvent(BuyInputContract.Event.PaymentMethodResultReceived(it)) }
         }
 
         // listen for payment timeout callback
@@ -143,10 +142,18 @@ class BuyInputFragment : Fragment(),
                 requireActivity().finish()
 
             BuyInputContract.Effect.AddCard ->
-                findNavController().navigate(BuyInputFragmentDirections.actionAddCard())
+                findNavController().navigate(
+                    BuyInputFragmentDirections.actionAddCard(
+                        AddCardFlow.BUY
+                    )
+                )
 
             is BuyInputContract.Effect.PaymentMethodSelection ->
-                findNavController().navigate(BuyInputFragmentDirections.actionPaymentMethod())
+                findNavController().navigate(
+                    BuyInputFragmentDirections.actionPaymentMethod(
+                        AddCardFlow.BUY
+                    )
+                )
 
             is BuyInputContract.Effect.OpenOrderPreview ->
                 findNavController().navigate(

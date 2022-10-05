@@ -48,6 +48,10 @@ object ProfileScreen {
             override val navigationTarget = NavigationTarget.Menu(section)
         }
 
+        object GoToPaymentMethod : F(), NavigationEffect {
+            override val navigationTarget = NavigationTarget.PaymentMethod
+        }
+
         object ShowInfoDialog : F(), NavigationEffect {
             override val navigationTarget = NavigationTarget.ShowInfoDialog(
                 title = R.string.Profile_InfoDialog_title,

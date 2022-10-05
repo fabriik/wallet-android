@@ -65,6 +65,10 @@
 
         </action>
 
+        <argument
+            android:name="flow"
+            app:argType="com.fabriik.buy.ui.features.addcard.AddCardFlow"/>
+
         <action
             android:id="@+id/actionPaymentMethod"
             app:destination="@id/fragmentPaymentMethod"
@@ -78,6 +82,10 @@
         android:id="@+id/fragmentAddCard"
         android:name="com.fabriik.buy.ui.features.addcard.AddCardFragment"
         tools:layout="@layout/fragment_add_card" >
+
+        <argument
+            android:name="flow"
+            app:argType="com.fabriik.buy.ui.features.addcard.AddCardFlow"/>
 
         <action
             android:id="@+id/actionBillingAddress"
@@ -153,6 +161,10 @@
     <fragment android:id="@+id/fragmentPaymentMethod"
         android:name="com.fabriik.buy.ui.features.paymentmethod.PaymentMethodFragment"
         tools:layout="@layout/fragment_payment_method">
+
+        <argument
+            android:name="flow"
+            app:argType="com.fabriik.buy.ui.features.addcard.AddCardFlow"/>
 
         <action
             android:id="@+id/actionAddCard"

@@ -214,9 +214,9 @@ object Staking {
         }
 
         object ShowBakerError : F(), NavigationEffect {
-            override val navigationTarget = NavigationTarget.AlertDialog(
-                messageResId = R.string.Staking_loadingBakerError,
-                positiveButtonResId = R.string.Button_ok
+            override val navigationTarget = NavigationTarget.FabriikToast(
+                type = NavigationTarget.FabriikToast.Type.ERROR,
+                messageRes = R.string.Staking_loadingBakerError
             )
         }
     }

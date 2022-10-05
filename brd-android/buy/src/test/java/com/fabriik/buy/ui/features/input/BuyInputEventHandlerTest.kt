@@ -1,5 +1,5 @@
 package com.fabriik.buy.ui.features.input
-import com.fabriik.common.data.model.PaymentInstrument
+import com.fabriik.buy.ui.features.paymentmethod.PaymentMethodFragment
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
@@ -11,7 +11,7 @@ import java.math.BigDecimal
 @RunWith(MockitoJUnitRunner::class)
 class BuyInputEventHandlerTest {
 
-    @Mock lateinit var paymentInstrument: PaymentInstrument
+    @Mock lateinit var paymentMethodResult: PaymentMethodFragment.Result
 
     @Spy val handler = object : BuyInputEventHandler {
         override fun onDismissClicked() {}
@@ -19,7 +19,7 @@ class BuyInputEventHandlerTest {
         override fun onPaymentMethodClicked() {}
         override fun onCryptoCurrencyClicked() {}
         override fun onQuoteTimeoutRetry() {}
-        override fun onPaymentMethodChanged(paymentInstrument: PaymentInstrument) {}
+        override fun onPaymentMethodResultReceived(result: PaymentMethodFragment.Result) {}
         override fun onCryptoCurrencyChanged(currencyCode: String) {}
         override fun onFiatAmountChanged(fiatAmount: BigDecimal, changeByUser: Boolean) {}
         override fun onCryptoAmountChanged(cryptoAmount: BigDecimal, changeByUser: Boolean) {}
@@ -57,8 +57,8 @@ class BuyInputEventHandlerTest {
 
     @Test
     fun handleEvent_paymentMethodChanged_callOnPaymentMethodChanged() {
-        handler.handleEvent(BuyInputContract.Event.PaymentMethodChanged(paymentInstrument))
-        verify(handler).onPaymentMethodChanged(paymentInstrument)
+        handler.handleEvent(BuyInputContract.Event.PaymentMethodResultReceived(paymentMethodResult))
+        verify(handler).onPaymentMethodResultReceived(paymentMethodResult)
     }
 
     @Test
