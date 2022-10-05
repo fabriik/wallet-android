@@ -33,7 +33,7 @@ object ProfileScreen {
     }
 
     sealed class F {
-        object LoadOptions : F()
+        data class LoadOptions(val profile: Profile?) : F()
         object LoadProfileData : F()
 
         object GoBack : F(), NavigationEffect {
