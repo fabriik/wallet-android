@@ -96,16 +96,16 @@
         <item name="colorSecondary">@color/light_interaction_primary_focused</item>
     </style>
 
-    <style name="FabriikSnackBarStyle" parent="@style/Widget.MaterialComponents.Snackbar">
-        <item name="android:layout_margin">24dp</item>
-    </style>
-
     <style name="FabriikCardViewStyle" parent="Widget.MaterialComponents.CardView">
         <item name="contentPadding">16dp</item>
         <item name="cardCornerRadius">@dimen/radius_l</item>
         <item name="cardBackgroundColor">@color/white</item>
         <item name="cardElevation">36dp</item>
         <item name="rippleColor">@color/fabriik_ripple_color</item>
+    </style>
+
+    <style name="FabriikSnackBarStyle" parent="@style/Widget.MaterialComponents.Snackbar">
+        <item name="android:layout_margin">24dp</item>
     </style>
 
     <style name="FabriikLoadingIndicatorStyle" parent="Widget.MaterialComponents.CircularProgressIndicator">
@@ -158,13 +158,6 @@
     <style name="FabriikEditTextStyle.Clickable">
         <item name="android:focusable">false</item>
         <item name="android:cursorVisible">false</item>
-    </style>
-
-    <style name="FabriikErrorBubbleView" parent="TextStyle.Body2">
-        <item name="android:background">@drawable/bg_error_bubble</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:padding">16dp</item>
-        <item name="android:visibility">gone</item>
     </style>
 
     <style name="FabriikToastTextAppearance" parent="TextStyle.Body2">

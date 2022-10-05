@@ -35,6 +35,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
@@ -177,16 +178,20 @@ class RecoveryKeyController(
             btnFaq.setOnClickListener {
                 output.accept(E.OnFaqClicked)
             }
+
             btnNext.setOnClickListener {
                 Utils.hideKeyboard(activity)
                 output.accept(E.OnNextClicked)
             }
+
             toolbar.setBackButtonClickListener {
                 output.accept(E.OnBackClicked)
             }
+
             toolbar.setDismissButtonClickListener {
                 output.accept(E.OnDismissClicked)
             }
+
             btnContactSupport.setOnClickListener {
                 output.accept(E.OnContactSupportClicked)
             }

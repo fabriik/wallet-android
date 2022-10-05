@@ -30,9 +30,10 @@ interface LoginScreenUpdateSpec {
     fun patch(model: LoginScreen.M, event: LoginScreen.E): Next<LoginScreen.M, LoginScreen.F> = when (event) {
         LoginScreen.E.OnFingerprintClicked -> onFingerprintClicked(model)
         LoginScreen.E.OnPinLocked -> onPinLocked(model)
+        LoginScreen.E.OnResetPinClicked -> onResetPinClicked(model)
         LoginScreen.E.OnUnlockAnimationEnd -> onUnlockAnimationEnd(model)
         LoginScreen.E.OnAuthenticationSuccess -> onAuthenticationSuccess(model)
-        LoginScreen.E.OnAuthenticationFailed -> onAuthenticationFailed(model)
+        is LoginScreen.E.OnAuthenticationFailed -> onAuthenticationFailed(model, event)
         is LoginScreen.E.OnFingerprintEnabled -> onFingerprintEnabled(model, event)
     }
 
@@ -40,11 +41,13 @@ interface LoginScreenUpdateSpec {
 
     fun onPinLocked(model: LoginScreen.M): Next<LoginScreen.M, LoginScreen.F>
 
+    fun onResetPinClicked(model: LoginScreen.M): Next<LoginScreen.M, LoginScreen.F>
+
     fun onUnlockAnimationEnd(model: LoginScreen.M): Next<LoginScreen.M, LoginScreen.F>
 
     fun onAuthenticationSuccess(model: LoginScreen.M): Next<LoginScreen.M, LoginScreen.F>
 
-    fun onAuthenticationFailed(model: LoginScreen.M): Next<LoginScreen.M, LoginScreen.F>
+    fun onAuthenticationFailed(model: LoginScreen.M, event: LoginScreen.E.OnAuthenticationFailed): Next<LoginScreen.M, LoginScreen.F>
 
     fun onFingerprintEnabled(model: LoginScreen.M, event: LoginScreen.E.OnFingerprintEnabled): Next<LoginScreen.M, LoginScreen.F>
 }
