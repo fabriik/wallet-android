@@ -1,5 +1,6 @@
 package com.fabriik.buy.ui.features.input
 
+import com.fabriik.buy.ui.features.paymentmethod.PaymentMethodFragment
 import com.fabriik.common.data.model.PaymentInstrument
 import com.fabriik.common.ui.base.FabriikEventHandler
 import java.math.BigDecimal
@@ -15,8 +16,8 @@ interface BuyInputEventHandler: FabriikEventHandler<BuyInputContract.Event> {
             is BuyInputContract.Event.CryptoCurrencyClicked -> onCryptoCurrencyClicked()
             is BuyInputContract.Event.FiatAmountChange -> onFiatAmountChanged(event.amount, true)
             is BuyInputContract.Event.CryptoAmountChange -> onCryptoAmountChanged(event.amount, true)
-            is BuyInputContract.Event.PaymentMethodChanged -> onPaymentMethodChanged(event.paymentInstrument)
             is BuyInputContract.Event.CryptoCurrencyChanged -> onCryptoCurrencyChanged(event.currencyCode)
+            is BuyInputContract.Event.PaymentMethodResultReceived -> onPaymentMethodResultReceived(event.result)
         }
     }
 
@@ -30,11 +31,11 @@ interface BuyInputEventHandler: FabriikEventHandler<BuyInputContract.Event> {
 
     fun onQuoteTimeoutRetry()
 
-    fun onPaymentMethodChanged(paymentInstrument: PaymentInstrument)
-
     fun onCryptoCurrencyChanged(currencyCode: String)
 
     fun onFiatAmountChanged(fiatAmount: BigDecimal, changeByUser: Boolean)
 
     fun onCryptoAmountChanged(cryptoAmount: BigDecimal, changeByUser: Boolean)
+
+    fun onPaymentMethodResultReceived(result: PaymentMethodFragment.Result)
 }

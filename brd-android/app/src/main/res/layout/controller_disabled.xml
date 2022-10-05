@@ -1,83 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                   xmlns:tools="http://schemas.android.com/tools"
-                                                   android:id="@+id/layout"
-                                                   android:layout_width="match_parent"
-                                                   android:layout_height="match_parent"
-                                                   android:background="@color/white">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/reset_button"
-        style="@style/Fabriik.Button"
-        android:layout_width="200dp"
-        android:layout_height="60dp"
-        android:layout_marginBottom="32dp"
-        android:layout_marginEnd="32dp"
-        android:includeFontPadding="false"
-        android:minHeight="20dp"
-        android:paddingTop="8dp"
-        android:text="@string/UnlockScreen.resetPin"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
-
-    <com.breadwallet.legacy.presenter.customviews.BaseTextView
-        android:id="@+id/disabled"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="0dp"
-        android:text="@string/Disabled.title"
-        android:textColor="@color/fabriik_black"
-        android:textSize="@dimen/header"
-        android:fontFamily="@font/mobile_font_book"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.499" />
-
-    <com.breadwallet.legacy.presenter.customviews.BaseTextView
-        android:id="@+id/until_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="0dp"
-        android:layout_marginTop="8dp"
-        android:textColor="@color/fabriik_shuttle_grey"
-        android:fontFamily="@font/mobile_font_book"
-        app:layout_constraintHorizontal_bias="0.506"
-        app:layout_constraintLeft_toLeftOf="@+id/disabled"
-        app:layout_constraintRight_toRightOf="@+id/disabled"
-        app:layout_constraintTop_toBottomOf="@+id/disabled"
-        tools:text="Subtitle 1"/>
-
-    <com.breadwallet.legacy.presenter.customviews.BaseTextView
-        android:id="@+id/attempts_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="0dp"
-        android:layout_marginTop="8dp"
-        android:fontFamily="@font/mobile_font_book"
-        android:textColor="@color/fabriik_shuttle_grey"
-        app:layout_constraintLeft_toLeftOf="@+id/disabled"
-        app:layout_constraintRight_toRightOf="@+id/disabled"
-        app:layout_constraintTop_toBottomOf="@+id/until_label"
-        tools:text="Subtitle 2" />
-
-    <ImageButton
-        android:id="@+id/faq_button"
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/btn_faq"
         android:layout_width="@dimen/faq_dimen"
         android:layout_height="@dimen/faq_dimen"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/faq_question_black"
-        android:backgroundTint="@color/fabriik_black"
+        android:layout_marginTop="@dimen/bread_margin"
+        android:layout_marginEnd="@dimen/bread_margin"
+        android:scaleType="fitXY"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/faq_question_black"
+        android:tint="@color/light_icons_01"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_title"
+        style="@style/TextStyle.Title4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/Disabled.title"
+        android:textColor="@color/light_text_01"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_faq"
+        app:layout_constraintVertical_bias="0.13" />
+
+    <TextView
+        android:id="@+id/tv_counter"
+        style="@style/TextStyle.Title5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:textColor="@color/light_text_02"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="00:06:00" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_image"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp"
+        android:src="@drawable/ic_wallet_disabled"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintBottom_toTopOf="@+id/btn_reset_pin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_counter"
+        app:layout_constraintVertical_bias="0.3"
+        app:layout_constraintWidth_percent="0.5" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_reset_pin"
+        style="@style/FabriikButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="12dp"
+        android:text="@string/Disabled.resetPin"
+        app:layout_constraintBottom_toTopOf="@+id/tv_hint"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_hint"
+        style="@style/TextStyle.Caption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="40dp"
+        android:gravity="center"
+        android:text="@string/Disabled.recoverHint"
+        android:textColor="@color/light_text_02"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

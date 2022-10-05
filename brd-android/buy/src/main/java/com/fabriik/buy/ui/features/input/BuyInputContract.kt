@@ -3,6 +3,7 @@ package com.fabriik.buy.ui.features.input
 import android.content.Context
 import com.breadwallet.util.formatFiatForUi
 import com.fabriik.buy.R
+import com.fabriik.buy.ui.features.paymentmethod.PaymentMethodFragment
 import com.fabriik.common.data.model.PaymentInstrument
 import com.fabriik.common.data.model.Profile
 import com.fabriik.common.data.model.isKyc1
@@ -24,8 +25,8 @@ interface BuyInputContract {
 
         data class FiatAmountChange(val amount: BigDecimal) : Event()
         data class CryptoAmountChange(val amount: BigDecimal) : Event()
-        data class PaymentMethodChanged(val paymentInstrument: PaymentInstrument) : Event()
         data class CryptoCurrencyChanged(val currencyCode: String) : Event()
+        data class PaymentMethodResultReceived(val result: PaymentMethodFragment.Result) : Event()
     }
 
     sealed class Effect : FabriikContract.Effect {

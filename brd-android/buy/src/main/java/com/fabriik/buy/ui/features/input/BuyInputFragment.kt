@@ -98,10 +98,8 @@ class BuyInputFragment : Fragment(),
 
         // listen for destination currency changes
         parentFragmentManager.setFragmentResultListener(PaymentMethodFragment.REQUEST_KEY, this) { _, bundle ->
-            val selectedPaymentInstrument = bundle.getParcelable(PaymentMethodFragment.RESULT_KEY) as PaymentInstrument?
-            if (selectedPaymentInstrument != null) {
-                viewModel.setEvent(BuyInputContract.Event.PaymentMethodChanged(selectedPaymentInstrument))
-            }
+            val result = bundle.getParcelable(PaymentMethodFragment.RESULT_KEY) as PaymentMethodFragment.Result?
+            result?.let { viewModel.setEvent(BuyInputContract.Event.PaymentMethodResultReceived(it)) }
         }
 
         // listen for payment timeout callback

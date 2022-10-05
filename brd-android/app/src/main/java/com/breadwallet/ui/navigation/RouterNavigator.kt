@@ -56,6 +56,7 @@ import com.breadwallet.ui.pin.InputPinController
 import com.breadwallet.ui.profile.ProfileController
 import com.breadwallet.ui.provekey.PaperKeyProveController
 import com.breadwallet.ui.receive.ReceiveController
+import com.breadwallet.ui.resetpin.completed.PinResetCompletedController
 import com.breadwallet.ui.recovery.RecoveryKeyController
 import com.breadwallet.ui.scanner.ScannerController
 import com.breadwallet.ui.send.SendSheetController
@@ -791,6 +792,14 @@ class RouterNavigator(
 
     override fun fabriikGenericDialog(effect: NavigationTarget.FabriikGenericDialog) {
         router.showFabriikGenericDialog(effect.args)
+    }
+
+    override fun pinResetCompleted() {
+        router.pushController(
+            RouterTransaction.with(
+                PinResetCompletedController()
+            )
+        )
     }
 
     private inline fun <reified T : Controller> pushSingleInstance(
