@@ -6,6 +6,7 @@ import com.breadwallet.R
 import com.breadwallet.tools.security.ProfileManager
 import com.breadwallet.ui.profile.ProfileScreen.E
 import com.breadwallet.ui.profile.ProfileScreen.F
+import com.fabriik.common.data.model.isKyc2
 import drewcarlson.mobius.flow.flowTransformer
 import drewcarlson.mobius.flow.subtypeEffectHandler
 import kotlinx.coroutines.flow.combine
@@ -19,12 +20,7 @@ fun createProfileScreenHandler(
 ) = subtypeEffectHandler<F, E> {
 
     addFunction<F.LoadOptions> {
-        val items = listOf(
-            ProfileItem(
-                title = context.getString(R.string.Profile_PaymentMethod),
-                option = ProfileOption.PAYMENT_METHOD,
-                iconResId = R.drawable.ic_credit_card
-            ),
+        val items = mutableListOf(
             ProfileItem(
                 title = context.getString(R.string.MenuButton_security),
                 option = ProfileOption.SECURITY_SETTINGS,
@@ -36,6 +32,17 @@ fun createProfileScreenHandler(
                 iconResId = R.drawable.ic_preferences
             )
         )
+
+        if (it.profile?.isKyc2() == true) {
+            items.add(
+                0, ProfileItem(
+                    title = context.getString(R.string.Profile_PaymentMethod),
+                    option = ProfileOption.PAYMENT_METHOD,
+                    iconResId = R.drawable.ic_credit_card
+                )
+            )
+        }
+
         E.OnOptionsLoaded(items)
     }
 

@@ -1540,5 +1540,4 @@
     <!-- Delete account dialog -->
     <string name="DeleteAccountDialog.Title">Your account has been deleted. We are sorry to see you go.</string>
     <string name="DeleteAccountDialog.Finish">Finish</string>
-
 </resources>

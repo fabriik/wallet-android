@@ -28,10 +28,10 @@ object ProfileUpdate : Update<M, E, F>, ProfileScreenUpdateSpec {
         dispatch(setOf(F.ShowInfoDialog))
 
     override fun onVerificationDeclinedInfoClicked(model: M): Next<M, F> =
-        dispatch(setOf(F.GoToKyc)) // TODO: open dialog instead
+        dispatch(setOf(F.GoToKyc))
 
     override fun onChangeEmailClicked(model: M): Next<M, F> =
-        dispatch(emptySet()) //todo: call registration flow
+        dispatch(emptySet())
 
     override fun onOptionsLoaded(
         model: M,
@@ -52,12 +52,16 @@ object ProfileUpdate : Update<M, E, F>, ProfileScreenUpdateSpec {
         model.copy(
             profile = event.profile,
             isLoading = false
-        )
+        ),
+        setOf(F.LoadOptions(event.profile))
     )
 
     override fun onProfileDataLoadFailed(model: M, event: E.OnProfileDataLoadFailed): Next<M, F>  {
         val newModel = model.copy(isLoading = false)
-        val effects = if (event.message == null) emptySet() else setOf(F.ShowFabriikToast(event.message))
+        val effects = when (event.message) {
+            null -> setOf(F.LoadOptions(null))
+            else -> setOf(F.ShowFabriikToast(event.message), F.LoadOptions(null))
+        }
         return next(newModel, effects)
     }
 }

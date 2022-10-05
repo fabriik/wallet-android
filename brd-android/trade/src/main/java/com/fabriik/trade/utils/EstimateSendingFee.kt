@@ -83,6 +83,7 @@ class EstimateSendingFee(
         class InsufficientFunds(val currencyCode: String): Result()
         class Estimated(val data: FeeAmountData): Result() {
             fun cryptoAmountIfIncludedOrZero() = data.cryptoAmountIfIncludedOrZero()
+            fun cryptoAmountIfIncludedOrNull() = data.cryptoAmountIfIncludedOrNull()
         }
     }
 }

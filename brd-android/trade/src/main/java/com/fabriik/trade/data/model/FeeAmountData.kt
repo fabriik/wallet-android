@@ -16,6 +16,7 @@ data class FeeAmountData(
 ) : Parcelable {
 
     fun cryptoAmountIfIncludedOrZero(): BigDecimal = if (isFeeInWalletCurrency) cryptoAmount else BigDecimal.ZERO
+    fun cryptoAmountIfIncludedOrNull(): BigDecimal? = if (isFeeInWalletCurrency) cryptoAmount else null
 
     fun formatFiatForUi() = fiatAmount.formatFiatForUi(
         currencyCode = fiatCurrency,
