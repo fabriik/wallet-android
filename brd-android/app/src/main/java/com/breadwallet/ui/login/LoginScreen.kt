@@ -27,6 +27,7 @@ package com.breadwallet.ui.login
 import com.breadwallet.ui.ViewEffect
 import com.breadwallet.ui.navigation.NavigationEffect
 import com.breadwallet.ui.navigation.NavigationTarget
+import com.breadwallet.ui.recovery.RecoveryKey
 import dev.zacsweers.redacted.annotations.Redacted
 
 object LoginScreen {
@@ -51,18 +52,23 @@ object LoginScreen {
     sealed class E {
         object OnFingerprintClicked : E()
         object OnPinLocked : E()
+        object OnResetPinClicked : E()
         object OnUnlockAnimationEnd : E()
         data class OnFingerprintEnabled(val enabled: Boolean) : E()
 
         object OnAuthenticationSuccess : E()
-        object OnAuthenticationFailed : E()
+        data class OnAuthenticationFailed(val attemptsLeft: Int?) : E()
     }
 
     sealed class F {
         object UnlockBrdUser : F()
         object CheckFingerprintEnable : F()
         object AuthenticationSuccess : F(), ViewEffect
-        object AuthenticationFailed : F(), ViewEffect
+
+        data class AuthenticationFailed(
+            val attemptsLeft: Int?
+        ) : F(), ViewEffect
+
         data class TrackEvent(
             val eventName: String,
             val attributes: Map<String, String>? = null
@@ -88,5 +94,13 @@ object LoginScreen {
         ) : F(), NavigationEffect {
             override val navigationTarget = NavigationTarget.Wallet(currencyCode)
         }
+
+        data class GoToRecoveryKey(
+            val resetPin: RecoveryKey.Mode
+        ) : F(), NavigationEffect {
+            override val navigationTarget = NavigationTarget.GoToRecoveryKey(resetPin)
+        }
     }
+
+    data class InvalidPinError(val attemptsLeft: Int)
 }

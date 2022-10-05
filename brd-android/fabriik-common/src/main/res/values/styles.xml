@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="FabriikTheme.Dialog.Alert" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
         <item name="materialAlertDialogTitleTextStyle">@style/FabriikTheme.Dialog.Alert.Title</item>
         <item name="materialAlertDialogBodyTextStyle">@style/FabriikTheme.Dialog.Alert.Body</item>
@@ -95,16 +96,16 @@
         <item name="colorSecondary">@color/light_interaction_primary_focused</item>
     </style>
 
-    <style name="FabriikSnackBarStyle" parent="@style/Widget.MaterialComponents.Snackbar">
-        <item name="android:layout_margin">24dp</item>
-    </style>
-
     <style name="FabriikCardViewStyle" parent="Widget.MaterialComponents.CardView">
         <item name="contentPadding">16dp</item>
         <item name="cardCornerRadius">@dimen/radius_l</item>
         <item name="cardBackgroundColor">@color/white</item>
         <item name="cardElevation">36dp</item>
         <item name="rippleColor">@color/fabriik_ripple_color</item>
+    </style>
+
+    <style name="FabriikSnackBarStyle" parent="@style/Widget.MaterialComponents.Snackbar">
+        <item name="android:layout_margin">24dp</item>
     </style>
 
     <style name="FabriikLoadingIndicatorStyle" parent="Widget.MaterialComponents.CircularProgressIndicator">

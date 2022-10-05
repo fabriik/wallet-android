@@ -1497,6 +1497,11 @@
     <string name="VerifyAccount.Button">Verify your account</string>
 
     <!-- Reset pin screen -->
+    <string name="LoginController.title">Secured wallet</string>
+    <string name="LoginController.subtitle">Enter your PIN</string>
+    <string name="LoginController.resetPin"><u>Reset PIN</u></string>
+    <string name="LoginController.invalidPinError">Incorrect PIN. The wallet will get disabled after %d more failed %s.</string>
+
     <string name="ResetPin.title">Reset PIN</string>
     <string name="ResetPin.subtitleNewPin">Set your new PIN</string>
     <string name="ResetPin.subtitleConfirmNewPin">Confirm your new PIN</string>
@@ -1505,6 +1510,11 @@
     <!-- Pin reset completed screen -->
     <string name="PinResetCompleted.title">Your PIN was reset successfully!</string>
     <string name="PinResetCompleted.button">Go to dashboard</string>
+
+    <plurals name="attempts">
+        <item quantity="one">attempt</item>
+        <item quantity="other">attempts</item>
+    </plurals>
 
     <!-- Home screen verify dialog -->
     <string name="HomeScreen.VerifyDialog.Title">Get full access to your Fabriik wallet!</string>

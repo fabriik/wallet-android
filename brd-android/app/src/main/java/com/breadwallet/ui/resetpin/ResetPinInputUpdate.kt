@@ -27,11 +27,14 @@ object ResetPinInputUpdate : Update<M, E, F>, ResetPinInputUpdateSpec {
             } else {
                 next(
                     model.copy(mode = M.Mode.NEW, pin = ""),
-                    setOf<F>(F.ErrorShake)
+                    setOf<F>(F.ErrorShake, F.ResetPin)
                 )
             }
             M.Mode.NEW -> {
-                next(model.copy(mode = M.Mode.CONFIRM, pin = event.pin))
+                next(
+                    model.copy(mode = M.Mode.CONFIRM, pin = event.pin),
+                    setOf<F>(F.ResetPin)
+                )
             }
         }
     }
