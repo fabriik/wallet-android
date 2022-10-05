@@ -4,8 +4,7 @@
     <style name="FabriikTheme.Dialog.Alert" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
         <item name="materialAlertDialogTitleTextStyle">@style/FabriikTheme.Dialog.Alert.Title</item>
         <item name="materialAlertDialogBodyTextStyle">@style/FabriikTheme.Dialog.Alert.Body</item>
-        <item name="buttonBarPositiveButtonStyle">@style/FabriikTheme.Dialog.Alert.PositiveButton
-        </item>
+        <item name="buttonBarPositiveButtonStyle">@style/FabriikTheme.Dialog.Alert.PositiveButton</item>
     </style>
 
     <style name="FabriikTheme.Dialog.Alert.Title" parent="MaterialAlertDialog.MaterialComponents.Title.Text">

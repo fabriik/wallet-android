@@ -38,10 +38,10 @@ import com.breadwallet.tools.security.BrdUserState
 import com.breadwallet.tools.util.EventUtils
 import com.breadwallet.ui.BaseController
 import com.breadwallet.ui.login.LoginController
-import com.breadwallet.ui.navigation.fragmentManager
+import com.breadwallet.ui.navigation.NavigationTarget
+import com.breadwallet.ui.navigation.RouterNavigator
 import com.breadwallet.ui.recovery.RecoveryKey
 import com.breadwallet.ui.recovery.RecoveryKeyController
-import com.fabriik.support.CashSupport
 import com.fabriik.support.pages.Topic
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.flow.flowOn
@@ -54,17 +54,18 @@ class DisabledController(args: Bundle? = null) : BaseController(args) {
 
     private val userManager by instance<BrdUserManager>()
     private val binding by viewBinding(ControllerDisabledBinding::inflate)
+    private val navigator = RouterNavigator { router }
 
     override fun onCreateView(view: View) {
         super.onCreateView(view)
 
-        binding.faqButton.setOnClickListener {
-            router.fragmentManager()?.let {
-                CashSupport.Builder().detail(Topic.WALLET_DISABLED).build().show(it)
-            }
+        binding.btnFaq.setOnClickListener {
+            navigator.showSupportPage(
+                NavigationTarget.SupportDialog(Topic.WALLET_DISABLED)
+            )
         }
 
-        binding.resetButton.setOnClickListener {
+        binding.btnResetPin.setOnClickListener {
             val controller = RecoveryKeyController(RecoveryKey.Mode.RESET_PIN)
             router.pushController(
                 RouterTransaction.with(controller)
@@ -92,14 +93,14 @@ class DisabledController(args: Bundle? = null) : BaseController(args) {
     override fun handleBack(): Boolean {
         val isDisabled = userManager.getState() is BrdUserState.Disabled
         if (isDisabled) {
-            SpringAnimator.failShakeAnimation(activity, binding.disabled)
+            SpringAnimator.failShakeAnimation(activity, binding.tvTitle)
         }
 
         return isDisabled
     }
 
     private fun walletDisabled(seconds: Int) {
-        binding.untilLabel.text = String.format(
+        binding.tvCounter.text = String.format(
             Locale.ROOT,
             "%02d:%02d:%02d",
             seconds / 3600,
