@@ -527,16 +527,7 @@ class SwapInputViewModel(
             is EstimateSendingFee.Result.NetworkIssues ->
                 showSwapError(SwapInputContract.ErrorMessage.NetworkIssues)
             is EstimateSendingFee.Result.InsufficientFunds ->
-                showSwapError(
-                    if (sourceFeeData.currencyCode.isErc20()) {
-                        SwapInputContract.ErrorMessage.InsufficientEthFundsForFee(sourceFeeData.currencyCode)
-                    } else {
-                        SwapInputContract.ErrorMessage.InsufficientFunds(
-                            currentLoadedState?.requiredSourceFee ?: BigDecimal.ZERO, sourceFeeData.currencyCode
-                        )
-                    }
-                )
-
+                showSwapError(mapToInsufficientFundsError(sourceFeeData))
             is EstimateSendingFee.Result.Estimated -> {
                 val sourceFeeEthAmount = when {
                     sourceFeeData.data.isEthereum() -> sourceFeeData.data.cryptoAmount
@@ -770,13 +761,7 @@ class SwapInputViewModel(
 
     private fun validate(state: SwapInputContract.State.Loaded) = when {
         state.sendingNetworkFee is EstimateSendingFee.Result.InsufficientFunds ->
-            if (state.sendingNetworkFee.currencyCode.isErc20()) {
-                SwapInputContract.ErrorMessage.InsufficientEthFundsForFee(state.sendingNetworkFee.currencyCode)
-            } else {
-                SwapInputContract.ErrorMessage.InsufficientFunds(
-                    currentLoadedState?.requiredSourceFee ?: BigDecimal.ZERO, state.sourceCryptoCurrency
-                )
-            }
+            mapToInsufficientFundsError(state.sendingNetworkFee)
         state.sendingNetworkFee !is EstimateSendingFee.Result.Estimated || state.receivingNetworkFee == null ->
             SwapInputContract.ErrorMessage.NetworkIssues
         state.sourceCryptoBalance < state.sourceCryptoAmount + state.sendingNetworkFee.cryptoAmountIfIncludedOrZero() ->
@@ -812,6 +797,15 @@ class SwapInputViewModel(
             )
         }
     }
+
+    private fun mapToInsufficientFundsError(error: EstimateSendingFee.Result.InsufficientFunds) =
+        if (error.currencyCode.isErc20()) {
+            SwapInputContract.ErrorMessage.InsufficientEthFundsForFee(error.currencyCode)
+        } else {
+            SwapInputContract.ErrorMessage.InsufficientFunds(
+                currentLoadedState?.requiredSourceFee ?: BigDecimal.ZERO, error.currencyCode
+            )
+        }
 
     private fun Flow<Transfer>.mapToResult(): Flow<TransferResult> =
         mapNotNull { transfer ->
