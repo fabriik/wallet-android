@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:title="@string/Buy.SelectPaymentMethod.Title"
-        app:titleType="small" />
+        app:titleType="small"
+        app:showDismiss="false"/>
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/content"
@@ -101,5 +102,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <include
+        android:id="@+id/full_screen_loading_view"
+        layout="@layout/view_fabriik_loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:elevation="10dp"
+        android:visibility="gone"
+        tools:visibility="visible" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

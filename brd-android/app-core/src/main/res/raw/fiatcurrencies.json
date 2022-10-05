@@ -2,5 +2,11 @@
   "usd",
   "cad",
   "gbp",
-  "eur"
+  "eur",
+  "jpy",
+  "ngn",
+  "ars",
+  "brl",
+  "mxn",
+  "chf"
 ]

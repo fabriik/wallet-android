@@ -189,7 +189,7 @@ class RouterNavigator(
 
         val intent = Intent(Intent.ACTION_SENDTO).apply {
             data = Uri.parse("mailto:")
-            putExtra(Intent.EXTRA_EMAIL, arrayOf("feedback@fabriik.com"))
+            putExtra(Intent.EXTRA_EMAIL, arrayOf("hello@fabriik.com"))
             putExtra(Intent.EXTRA_SUBJECT, activity.getString(R.string.Feedback_subject))
         }
 
@@ -213,7 +213,15 @@ class RouterNavigator(
 
         router.activity?.let {
             it.startActivity(
-                BuyActivity.getStartIntent(it)
+                BuyActivity.getDefaultStartIntent(it)
+            )
+        }
+    }
+
+    override fun paymentMethod() {
+        router.activity?.let {
+            it.startActivity(
+                BuyActivity.getStartIntentForPaymentMethod(it)
             )
         }
     }
@@ -281,7 +289,7 @@ class RouterNavigator(
         router.activity?.let {
             it.startActivity(
                 if (effect.transactionData.isBuyTransaction()) {
-                    BuyActivity.getStartIntentForSwapDetails(
+                    BuyActivity.getStartIntentForBuyDetails(
                         it, effect.transactionData.exchangeId
                     )
                 } else {
@@ -391,23 +399,6 @@ class RouterNavigator(
             mode = effect.mode,
             title = res.getString(effect.titleResId ?: R.string.VerifyPin_title),
             message = res.getString(effect.messageResId ?: R.string.VerifyPin_continueBody)
-        )
-        router.pushController(RouterTransaction.with(controller))
-    }
-
-    override fun alertDialog(effect: NavigationTarget.AlertDialog) {
-        val res = checkNotNull(router.activity).resources
-        val message = effect.message ?: effect.messageResId?.let {
-            res.getString(it, *effect.messageArgs.toTypedArray())
-        } ?: ""
-        val controller = AlertDialogController(
-            dialogId = effect.dialogId,
-            message = message,
-            title = effect.title ?: effect.titleResId?.run(res::getString) ?: "",
-            positiveText = effect.positiveButtonResId?.run(res::getString),
-            negativeText = effect.negativeButtonResId?.run(res::getString),
-            textInputPlaceholder = effect.textInputPlaceholder
-                ?: effect.textInputPlaceholderResId?.run(res::getString)
         )
         router.pushController(RouterTransaction.with(controller))
     }
@@ -778,6 +769,8 @@ class RouterNavigator(
     }
 
     override fun fabriikToast(effect: NavigationTarget.FabriikToast) {
+        val activity = checkNotNull(router.activity)
+        val parentView = activity.window.decorView
         val message = when {
             effect.messageRes != null -> router.activity?.getString(effect.messageRes)
             else -> effect.message
@@ -786,12 +779,12 @@ class RouterNavigator(
         when (effect.type) {
             NavigationTarget.FabriikToast.Type.INFO ->
                 FabriikToastUtil.showInfo(
-                    parentView = checkNotNull(router.activity).window.decorView,
+                    parentView = parentView,
                     message = message
                 )
             NavigationTarget.FabriikToast.Type.ERROR ->
                 FabriikToastUtil.showError(
-                    parentView = checkNotNull(router.activity).window.decorView,
+                    parentView = parentView,
                     message = message
                 )
         }

@@ -40,7 +40,7 @@ class EmailValidatorTest {
 
     @Test
     fun invoke_validEmail1_returnTrue() {
-        val actual = EmailValidator("support@fabriik.com")
+        val actual = EmailValidator("hello@fabriik.com")
         Assert.assertTrue(actual)
     }
 }

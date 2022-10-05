@@ -112,19 +112,6 @@ sealed class NavigationTarget : INavigationTarget {
         val phrase: String? = null
     ) : NavigationTarget()
 
-    data class AlertDialog(
-        val dialogId: String = "",
-        val title: String? = null,
-        val message: String? = null,
-        val titleResId: Int? = null,
-        val messageResId: Int? = null,
-        val messageArgs: List<Any> = emptyList(),
-        val positiveButtonResId: Int? = null,
-        val negativeButtonResId: Int? = null,
-        val textInputPlaceholder: String? = null,
-        val textInputPlaceholderResId: Int? = null
-    ) : NavigationTarget()
-
     object BrdLogin : NavigationTarget()
     data class Authentication(
         val mode: AuthMode = AuthMode.PIN_REQUIRED,
@@ -136,6 +123,7 @@ sealed class NavigationTarget : INavigationTarget {
 
     object Home : NavigationTarget()
     object Buy : NavigationTarget()
+    object PaymentMethod : NavigationTarget()
     object Profile : NavigationTarget()
     object Trade: NavigationTarget()
     object AddWallet : NavigationTarget()

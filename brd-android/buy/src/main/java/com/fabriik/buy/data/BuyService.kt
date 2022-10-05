@@ -5,6 +5,8 @@ import com.fabriik.buy.data.request.CreateBuyOrderRequest
 import com.fabriik.buy.data.response.*
 import com.fabriik.trade.data.response.QuoteResponse
 import com.fabriik.trade.data.response.SupportedCurrenciesResponse
+import okhttp3.ResponseBody
+import retrofit2.Response
 import retrofit2.http.*
 
 interface BuyService {
@@ -19,6 +21,9 @@ interface BuyService {
 
     @GET("payment-instruments")
     suspend fun getPaymentInstruments(): PaymentInstrumentsResponse
+
+    @DELETE("payment-instrument")
+    suspend fun deletePaymentInstrument(@Query("instrument_id") instrumentId: String): Response<Unit>
 
     @GET("payment-status")
     suspend fun getPaymentStatus(

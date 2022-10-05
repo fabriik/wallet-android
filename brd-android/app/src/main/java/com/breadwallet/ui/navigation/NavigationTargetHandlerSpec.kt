@@ -63,7 +63,6 @@ interface NavigationTargetHandlerSpec {
         is NavigationTarget.Wallet -> wallet(effect)
         is NavigationTarget.SupportPage -> supportPage(effect)
         is NavigationTarget.SetPin -> setPin(effect)
-        is NavigationTarget.AlertDialog -> alertDialog(effect)
         is NavigationTarget.Authentication -> authentication(effect)
         is NavigationTarget.WriteDownKey -> writeDownKey(effect)
         is NavigationTarget.PaperKey -> paperKey(effect)
@@ -86,6 +85,7 @@ interface NavigationTargetHandlerSpec {
         is NavigationTarget.FabriikToast -> fabriikToast(effect)
         is NavigationTarget.FabriikGenericDialog -> fabriikGenericDialog(effect)
         is NavigationTarget.GoToRecoveryKey -> goToRecoveryKey(effect)
+        is NavigationTarget.PaymentMethod -> paymentMethod()
         is NavigationTarget.PinResetCompleted -> pinResetCompleted()
     }
 
@@ -169,8 +169,6 @@ interface NavigationTargetHandlerSpec {
 
     fun setPin(effect: NavigationTarget.SetPin): Unit
 
-    fun alertDialog(effect: NavigationTarget.AlertDialog): Unit
-
     fun authentication(effect: NavigationTarget.Authentication): Unit
 
     fun writeDownKey(effect: NavigationTarget.WriteDownKey): Unit
@@ -208,6 +206,8 @@ interface NavigationTargetHandlerSpec {
     fun fabriikGenericDialog(effect: NavigationTarget.FabriikGenericDialog): Unit
 
     fun goToRecoveryKey(effect: NavigationTarget.GoToRecoveryKey): Unit
+
+    fun paymentMethod(): Unit
 
     fun pinResetCompleted(): Unit
 }

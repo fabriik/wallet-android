@@ -39,6 +39,8 @@ object RecoveryKey {
     const val DIALOG_WIPE = "dialog_wipe_confirm"
     const val DIALOG_ACCOUNT_DELETED = "dialog_account_deleted"
     const val DIALOG_ACCOUNT_DELETED_POSITIVE = "dialog_account_deleted_positive"
+    const val DIALOG_WIPE_POSITIVE = "dialog_wipe_confirm_positive"
+    const val DIALOG_WIPE_NEGATIVE = "dialog_wipe_confirm_negative"
 
     enum class Mode {
         RECOVER, WIPE, RESET_PIN, DELETE_ACCOUNT
@@ -193,12 +195,20 @@ object RecoveryKey {
         }
 
         object GoToWipeWallet : F(), NavigationEffect {
-            override val navigationTarget = NavigationTarget.AlertDialog(
-                dialogId = DIALOG_WIPE,
-                titleResId = R.string.WipeWallet_alertTitle,
-                messageResId = R.string.WipeWallet_alertMessage,
-                positiveButtonResId = R.string.WipeWallet_wipe,
-                negativeButtonResId = R.string.Button_cancel
+            override val navigationTarget = NavigationTarget.FabriikGenericDialog(
+                FabriikGenericDialogArgs(
+                    requestKey = DIALOG_WIPE,
+                    titleRes = R.string.WipeWallet_alertTitle,
+                    descriptionRes = R.string.WipeWallet_alertMessage,
+                    positive = FabriikGenericDialogArgs.ButtonData(
+                        titleRes = R.string.WipeWallet_wipe,
+                        resultKey = DIALOG_WIPE_POSITIVE
+                    ),
+                    negative = FabriikGenericDialogArgs.ButtonData(
+                        titleRes = R.string.Button_cancel,
+                        resultKey = DIALOG_WIPE_NEGATIVE
+                    )
+                )
             )
         }
 

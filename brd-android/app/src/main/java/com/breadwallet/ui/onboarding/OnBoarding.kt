@@ -74,8 +74,8 @@ object OnBoarding {
         object CreateWallet : F()
 
         data class ShowError(val message: String) : F(), NavigationEffect {
-            override val navigationTarget = NavigationTarget.AlertDialog(
-                title = "",
+            override val navigationTarget = NavigationTarget.FabriikToast(
+                type = NavigationTarget.FabriikToast.Type.ERROR,
                 message = message
             )
         }
