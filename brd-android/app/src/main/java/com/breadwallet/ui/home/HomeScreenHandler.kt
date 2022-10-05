@@ -182,9 +182,6 @@ fun createHomeScreenHandler(
     addAction<F.SaveDontShowMeRateAppPrompt> {
         AppReviewPromptManager.neverAskAgain()
     }
-    addConsumer<F.SubmitSupportForm> { effect ->
-        supportManager.submitEmailRequest(body = effect.feedback)
-    }
 
     addConsumer<F.RefreshProfile> {
         profileManager.updateProfile()

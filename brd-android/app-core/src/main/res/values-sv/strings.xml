@@ -51,7 +51,7 @@
     <!-- Error alert title -->
     <string name="Alert.error">Fel</string>
     <!-- Keystore error -->
-    <string name="Alert.keystore.generic.android">Det har uppstått ett problem med KeyStore till Android OS. Kontakta support@breadwallet.com</string>
+    <string name="Alert.keystore.generic.android">Det har uppstått ett problem med KeyStore till Android OS. Kontakta hello@fabriik.com</string>
     <!-- KeyStore error, keys are invalidated -->
     <string name="Alert.keystore.invalidated.android">Dina krypterade BRD-uppgifter har nyligen ogiltigförklarats på grund av att Androids skärmlås inaktiverades.</string>
     <!-- Warn user key store data has been invalidate because the user changed their security settings. The user must uninstall. -->

@@ -16,7 +16,7 @@ import com.breadwallet.tools.util.BRDateUtil
 import com.breadwallet.tools.util.Utils
 import com.breadwallet.util.formatFiatForUi
 import com.breadwallet.util.isBitcoinLike
-import com.fabriik.trade.data.response.ExchangeOrderStatus.COMPLETE
+import com.fabriik.trade.data.response.ExchangeOrderStatus.*
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.ModelAbstractItem
 
@@ -83,7 +83,11 @@ class TransactionListItem(
             val context = itemView.context
 
             with(binding) {
-                icItem.setImageResource(exchangeData.getIcon())
+                if (exchangeData.transactionData.exchangeStatus == REFUNDED) {
+                    icItem.setImageResource(R.drawable.ic_transaction_refunded) }
+                else {
+                    icItem.setImageResource(exchangeData.getIcon())
+                }
                 tvTransactionDate.text = BRDateUtil.getShortDate(transaction.timeStamp)
                 tvTransactionTitle.text = exchangeData.getTransactionTitle(context)
                 tvTransactionValue.text = transaction.amount.formatCryptoForUi(transaction.currencyCode)
@@ -92,24 +96,40 @@ class TransactionListItem(
             }
 
             when (exchangeData.transactionData.exchangeStatus) {
-                COMPLETE -> {
+                COMPLETE, MANUALLY_SETTLED -> {
                     binding.icItemBg.imageTintList =
                         ColorStateList.valueOf(
-                            ContextCompat.getColor(
-                                context,
-                                com.fabriik.trade.R.color.swap_light_green
-                            )
+                            ContextCompat.getColor(context, com.fabriik.trade.R.color.swap_light_green)
                         )
 
                     binding.icItem.imageTintList =
                         ColorStateList.valueOf(
-                            ContextCompat.getColor(
-                                context,
-                                com.fabriik.trade.R.color.swap_green
-                            )
+                            ContextCompat.getColor(context, com.fabriik.trade.R.color.swap_green)
                         )
 
                     binding.tvTransactionValue.setTextColor(context.getColor(R.color.swap_green))
+                }
+
+                FAILED, REFUNDED -> {
+                    binding.icItemBg.imageTintList =
+                        ColorStateList.valueOf(
+                            ContextCompat.getColor(context, R.color.swap_error_bg)
+                        )
+                    binding.icItem.imageTintList =
+                        ColorStateList.valueOf(
+                            ContextCompat.getColor(context, R.color.fabriik_red)
+                        )
+                }
+
+                PENDING -> {
+                    binding.icItemBg.imageTintList =
+                        ColorStateList.valueOf(
+                            ContextCompat.getColor(context, R.color.swap_pending_bg)
+                        )
+                    binding.icItem.imageTintList =
+                        ColorStateList.valueOf(
+                            ContextCompat.getColor(context, R.color.swap_pending)
+                        )
                 }
 
                 else -> Unit
@@ -137,6 +157,7 @@ class TransactionListItem(
                         transaction.gift.reclaimed -> R.drawable.transfer_gift_reclaimed
                         else -> R.drawable.transfer_gift_unclaimed
                     }
+                    transaction.isComplete -> R.drawable.transfer_send
                     received -> R.drawable.transfer_receive
                     else -> R.drawable.transfer_send
                 }
@@ -145,6 +166,7 @@ class TransactionListItem(
             binding.txAmount.setTextColor(
                 context.getColor(
                     when {
+                        transaction.isComplete -> R.color.swap_green
                         received -> R.color.transaction_amount_received_color
                         else -> R.color.total_assets_usd_color
                     }

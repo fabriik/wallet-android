@@ -29,7 +29,8 @@ class AddCardContract : FabriikContract {
         object ShowCvvInfoDialog : Effect()
 
         data class BillingAddress(
-            val token: String
+            val token: String,
+            val flow: AddCardFlow
         ) : Effect()
 
         data class ShowError(

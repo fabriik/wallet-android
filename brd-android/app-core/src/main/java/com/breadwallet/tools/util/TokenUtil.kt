@@ -167,7 +167,7 @@ object TokenUtil {
     }
 
     fun coingeckoIdForCode(code: String): String? {
-        return coingeckoIdMap[code.toUpperCase(Locale.ROOT)]
+        return coingeckoIdMap[code.uppercase(Locale.ROOT)]
             ?: tokenForCode(code)?.coingeckoId
     }
 
@@ -243,7 +243,7 @@ object TokenUtil {
         return if (iconFile.exists()) iconFile.absolutePath else null
     }
 
-    fun getTokenStartColor(currencyCode: String): String? {
+    fun getTokenStartColor(currencyCode: String): String {
         val tokenItem = tokenMap[currencyCode.toLowerCase(Locale.ROOT)]
         return if (tokenItem != null && !tokenItem.startColor.isNullOrBlank()) {
             tokenItem.startColor
@@ -252,7 +252,7 @@ object TokenUtil {
         }
     }
 
-    fun getTokenEndColor(currencyCode: String): String? {
+    fun getTokenEndColor(currencyCode: String): String {
         val tokenItem = tokenMap[currencyCode.toLowerCase(Locale.ROOT)]
         return if (tokenItem != null && !tokenItem.endColor.isNullOrBlank()) {
             tokenItem.endColor

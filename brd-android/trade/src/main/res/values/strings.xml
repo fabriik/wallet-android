@@ -54,6 +54,7 @@
     <string name="Swap.Details.Status.Pending">Pending</string>
     <string name="Swap.Details.Status.Complete">Complete</string>
     <string name="Swap.Details.Status.Refunded">Refunded</string>
+    <string name="Swap.Details.Status.Manually_Settled">Manually settled</string>
     <string name="Swap.Details.Status.Failed">Failed</string>
     <string name="Swap.Details.Title">Swap details</string>
     <string name="Swap.Details.OrderId">Fabriik Order ID</string>
