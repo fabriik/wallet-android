@@ -164,6 +164,8 @@ class LoginController(args: Bundle? = null) :
             F.AuthenticationSuccess -> unlockWallet()
             is F.AuthenticationFailed -> {
                 val attemptsLeft = effect.attemptsLeft ?: return
+                if (attemptsLeft <= 0) return
+
                 val attemptsText = resources!!.getQuantityText(R.plurals.attempts, attemptsLeft)
 
                 FabriikToastUtil.showError(

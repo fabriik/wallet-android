@@ -51,6 +51,7 @@ object ResetPinInput {
             }
         }
 
+        object ResetPin : F(), ViewEffect
         object ErrorShake : F(), ViewEffect
         object ShowPinError : F(), ViewEffect
 

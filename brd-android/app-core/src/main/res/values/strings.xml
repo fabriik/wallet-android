@@ -1500,7 +1500,7 @@
     <string name="LoginController.title">Secured wallet</string>
     <string name="LoginController.subtitle">Enter your PIN</string>
     <string name="LoginController.resetPin"><u>Reset PIN</u></string>
-    <string name="LoginController.invalidPinError">Incorrect PIN. The wallet will get disabled for 6 minutes after %d more failed %s.</string>
+    <string name="LoginController.invalidPinError">Incorrect PIN. The wallet will get disabled after %d more failed %s.</string>
 
     <string name="ResetPin.title">Reset PIN</string>
     <string name="ResetPin.subtitleNewPin">Set your new PIN</string>
