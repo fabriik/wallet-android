@@ -114,6 +114,13 @@ interface SwapInputContract {
                 get() = profile?.isKyc1() == true
             val isKyc2: Boolean
                 get() = profile?.isKyc2() == true
+            val requiredSourceFee: BigDecimal?
+                get() = estimatedSourceFee ?: quoteResponse?.fromFee
+            private val estimatedSourceFee: BigDecimal?
+                get() = when (sendingNetworkFee) {
+                    is EstimateSendingFee.Result.Estimated -> sendingNetworkFee.cryptoAmountIfIncludedOrNull()
+                    else -> null
+                }
         }
     }
 
@@ -127,11 +134,9 @@ interface SwapInputContract {
             )
         }
 
-        class InsufficientFunds(private val balance: BigDecimal, currencyCode: String) : ErrorMessage() {
-            private val currencyCodeUppercase = currencyCode.toUpperCase(Locale.ROOT)
-
+        class InsufficientFunds(private val requiredFee: BigDecimal, val currencyCode: String) : ErrorMessage() {
             override fun toString(context: Context) = context.getString(
-                R.string.Swap_Input_Error_InsuficientFunds, currencyCodeUppercase, currencyCodeUppercase, balance.formatCryptoForUi(null)
+                R.string.Swap_Input_Error_InsuficientFunds,  requiredFee.formatCryptoForUi(null), currencyCode.uppercase()
             )
         }
 

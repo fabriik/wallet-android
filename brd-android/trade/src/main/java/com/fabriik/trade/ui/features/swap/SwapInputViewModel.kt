@@ -532,7 +532,7 @@ class SwapInputViewModel(
                         SwapInputContract.ErrorMessage.InsufficientEthFundsForFee(sourceFeeData.currencyCode)
                     } else {
                         SwapInputContract.ErrorMessage.InsufficientFunds(
-                            requireNotNull(currentLoadedState?.sourceCryptoBalance), sourceFeeData.currencyCode
+                            currentLoadedState?.requiredSourceFee ?: BigDecimal.ZERO, sourceFeeData.currencyCode
                         )
                     }
                 )
@@ -773,14 +773,16 @@ class SwapInputViewModel(
             if (state.sendingNetworkFee.currencyCode.isErc20()) {
                 SwapInputContract.ErrorMessage.InsufficientEthFundsForFee(state.sendingNetworkFee.currencyCode)
             } else {
-                SwapInputContract.ErrorMessage.InsufficientFunds(state.sourceCryptoBalance, state.sourceCryptoCurrency)
+                SwapInputContract.ErrorMessage.InsufficientFunds(
+                    currentLoadedState?.requiredSourceFee ?: BigDecimal.ZERO, state.sourceCryptoCurrency
+                )
             }
         state.sendingNetworkFee !is EstimateSendingFee.Result.Estimated || state.receivingNetworkFee == null ->
             SwapInputContract.ErrorMessage.NetworkIssues
-        state.sourceCryptoBalance < state.sourceCryptoAmount ->
-            SwapInputContract.ErrorMessage.InsufficientFunds(state.sourceCryptoBalance, state.sourceCryptoCurrency)
         state.sourceCryptoBalance < state.sourceCryptoAmount + state.sendingNetworkFee.cryptoAmountIfIncludedOrZero() ->
-            SwapInputContract.ErrorMessage.InsufficientFundsForFee
+            SwapInputContract.ErrorMessage.InsufficientFunds(
+                currentLoadedState?.requiredSourceFee ?: BigDecimal.ZERO, state.sourceCryptoCurrency
+            )
         state.sourceCryptoAmount < state.minCryptoAmount ->
             SwapInputContract.ErrorMessage.MinSwapAmount(state.minCryptoAmount, state.sourceCryptoCurrency)
         state.sourceFiatAmount > state.dailySwapAmountLeft ->

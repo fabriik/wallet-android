@@ -24,7 +24,7 @@
     <!-- Swap input screen errors -->
     <string name="Swap.Input.Error.OneSwapLimit">A maximum of one swap can be active for a currency at a time</string>
     <string name="Swap.Input.Error.QuoteExpired">Your swap request timed out. Please try again.</string>
-    <string name="Swap.Input.Error.InsuficientFunds">You don\'t have enough %s to complete this swap. Your current %s balance is %s</string>
+    <string name="Swap.Input.Error.InsuficientFunds">You need %1$s %2$s in your wallet to cover network fees. Please add more %2$s to your wallet. </string>
     <string name="Swap.Input.Error.MinAmount">The amount is lower than the minimum of %s. Pleae enter a higher amount.</string>
     <string name="Swap.Input.Error.Network">We are having temporary network issues. Please try again later.</string>
     <string name="Swap.Input.Error.Kyc1DailyLimit">The amount is higher than your daily limit of $1,000 USD. Please upgrade your account or enter a lower amount.</string>
