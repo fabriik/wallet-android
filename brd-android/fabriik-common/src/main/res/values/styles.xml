@@ -159,13 +159,6 @@
         <item name="android:cursorVisible">false</item>
     </style>
 
-    <style name="FabriikErrorBubbleView" parent="TextStyle.Body2">
-        <item name="android:background">@drawable/bg_error_bubble</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:padding">16dp</item>
-        <item name="android:visibility">gone</item>
-    </style>
-
     <style name="FabriikToastTextAppearance" parent="TextStyle.Body2">
         <item name="android:textColor">@color/white</item>
     </style>
