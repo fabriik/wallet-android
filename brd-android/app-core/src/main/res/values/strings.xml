@@ -569,12 +569,6 @@
     <!-- Untrusted certificate payment protocol error message -->
     <string name="PaymentProtocol.Errors.untrustedCertificate">untrusted certificate</string>
     <string name="Platform.transaction_cancelled">Transaction Cancelled</string>
-    <!-- Body text for a prompt that asks the user to subscribe to email updates to find out product updates. -->
-    <!-- Placeholder text for an email address text field. -->
-    <!-- Body text that is shown when the user successfully subscribes to email updates. -->
-    <!-- Text that is displayed as a footnote when the user successfully subscribes to email updates. -->
-    <!-- Title that is shown when the user successfully subscribes to email updates. -->
-    <!-- Title for a prompt that asks the user to subscribe to email updates to find out product updates. -->
     <!-- Enable face ID prompt body -->
     <string name="Prompts.FaceId.body">Tap Continue to enable Face ID</string>
     <!-- Enable face ID prompt title -->
@@ -1526,4 +1520,7 @@
     <!-- Delete account dialog -->
     <string name="DeleteAccountDialog.Title">Your account has been deleted. We are sorry to see you go.</string>
     <string name="DeleteAccountDialog.Finish">Finish</string>
+
+    <string name="PinResetCompleted.title">Your PIN was reset successfully!</string>
+    <string name="PinResetCompleted.button">Go to dashboard</string>
 </resources>

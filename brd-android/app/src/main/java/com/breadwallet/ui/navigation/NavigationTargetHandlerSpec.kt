@@ -86,6 +86,7 @@ interface NavigationTargetHandlerSpec {
         is NavigationTarget.FabriikGenericDialog -> fabriikGenericDialog(effect)
         is NavigationTarget.GoToRecoveryKey -> goToRecoveryKey(effect)
         is NavigationTarget.PaymentMethod -> paymentMethod()
+        is NavigationTarget.PinResetCompleted -> pinResetCompleted()
     }
 
     fun openKyc(effect: NavigationTarget.GoToKyc): Unit
@@ -207,4 +208,6 @@ interface NavigationTargetHandlerSpec {
     fun goToRecoveryKey(effect: NavigationTarget.GoToRecoveryKey): Unit
 
     fun paymentMethod(): Unit
+
+    fun pinResetCompleted(): Unit
 }
