@@ -71,13 +71,19 @@ sealed class ExchangeData(
         override fun getTransactionTitle(context: Context): String? {
             return when (transactionData.exchangeStatus) {
                 ExchangeOrderStatus.PENDING -> context.getString(
-                    R.string.Swap_TransactionItem_PendingTo, transactionData.getWithdrawalCurrencyUpperCase()
+                    R.string.Swap_TransactionItem_SwappingTo,
+                    transactionData.getWithdrawalCurrencyUpperCase()
                 )
-                ExchangeOrderStatus.COMPLETE -> context.getString(
-                    R.string.Swap_TransactionItem_SwappedTo, transactionData.getWithdrawalCurrencyUpperCase()
+                ExchangeOrderStatus.COMPLETE, ExchangeOrderStatus.MANUALLY_SETTLED -> context.getString(
+                    R.string.Swap_TransactionItem_SwappedTo,
+                    transactionData.getWithdrawalCurrencyUpperCase()
                 )
                 ExchangeOrderStatus.FAILED -> context.getString(
-                    R.string.Swap_TransactionItem_SwapToFailed, transactionData.getWithdrawalCurrencyUpperCase()
+                    R.string.Swap_TransactionItem_SwapToFailed,
+                    transactionData.getWithdrawalCurrencyUpperCase()
+                )
+                ExchangeOrderStatus.REFUNDED -> context.getString(
+                    R.string.Swap_TransactionItem_Refunded
                 )
                 else -> null
             }
@@ -93,11 +99,14 @@ sealed class ExchangeData(
                 ExchangeOrderStatus.PENDING -> context.getString(
                     R.string.Swap_TransactionItem_PurchasePending
                 )
-                ExchangeOrderStatus.COMPLETE -> context.getString(
+                ExchangeOrderStatus.COMPLETE, ExchangeOrderStatus.MANUALLY_SETTLED -> context.getString(
                     R.string.Swap_TransactionItem_Purchased
                 )
                 ExchangeOrderStatus.FAILED -> context.getString(
                     R.string.Swap_TransactionItem_PurchaseFailed
+                )
+                ExchangeOrderStatus.REFUNDED -> context.getString(
+                    R.string.Swap_TransactionItem_Refunded
                 )
                 else -> null
             }
@@ -111,13 +120,19 @@ sealed class ExchangeData(
         override fun getTransactionTitle(context: Context): String? {
             return when (transactionData.exchangeStatus) {
                 ExchangeOrderStatus.PENDING -> context.getString(
-                    R.string.Swap_TransactionItem_PendingFrom, transactionData.getDepositCurrencyUpperCase()
+                    R.string.Swap_TransactionItem_SwappingFrom,
+                    transactionData.getDepositCurrencyUpperCase()
                 )
-                ExchangeOrderStatus.COMPLETE -> context.getString(
-                    R.string.Swap_TransactionItem_SwappedFrom, transactionData.getDepositCurrencyUpperCase()
+                ExchangeOrderStatus.COMPLETE, ExchangeOrderStatus.MANUALLY_SETTLED -> context.getString(
+                    R.string.Swap_TransactionItem_SwappedFrom,
+                    transactionData.getDepositCurrencyUpperCase()
                 )
                 ExchangeOrderStatus.FAILED -> context.getString(
-                    R.string.Swap_TransactionItem_SwapFromFailed, transactionData.getDepositCurrencyUpperCase()
+                    R.string.Swap_TransactionItem_SwapFromFailed,
+                    transactionData.getDepositCurrencyUpperCase()
+                )
+                ExchangeOrderStatus.REFUNDED -> context.getString(
+                    R.string.Swap_TransactionItem_Refunded
                 )
                 else -> null
             }

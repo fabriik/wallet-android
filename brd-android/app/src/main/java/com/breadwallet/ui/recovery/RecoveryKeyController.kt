@@ -50,6 +50,9 @@ import com.breadwallet.ui.BaseMobiusController
 import com.breadwallet.ui.ViewEffect
 import com.breadwallet.ui.controllers.AlertDialogController
 import com.breadwallet.ui.recovery.RecoveryKey.DIALOG_ACCOUNT_DELETED
+import com.breadwallet.ui.recovery.RecoveryKey.DIALOG_WIPE
+import com.breadwallet.ui.recovery.RecoveryKey.DIALOG_WIPE_NEGATIVE
+import com.breadwallet.ui.recovery.RecoveryKey.DIALOG_WIPE_POSITIVE
 import com.breadwallet.ui.recovery.RecoveryKey.E
 import com.breadwallet.ui.recovery.RecoveryKey.F
 import com.breadwallet.ui.recovery.RecoveryKey.M
@@ -57,6 +60,7 @@ import com.breadwallet.util.DefaultTextWatcher
 import com.breadwallet.util.registerForGenericDialogResult
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.breadwallet.util.registerForGenericDialogResult
 import com.spotify.mobius.disposables.Disposable
 import com.spotify.mobius.functions.Consumer
 import drewcarlson.mobius.flow.FlowTransformer
@@ -133,6 +137,13 @@ class RecoveryKeyController(
                 null,
                 0
             )
+        }
+
+        registerForGenericDialogResult(DIALOG_WIPE) {resultKey, _ ->
+            when (resultKey) {
+                DIALOG_WIPE_POSITIVE -> eventConsumer.accept(E.OnWipeWalletConfirmed)
+                DIALOG_WIPE_NEGATIVE -> eventConsumer.accept(E.OnWipeWalletCancelled)
+            }
         }
     }
 
@@ -242,36 +253,6 @@ class RecoveryKeyController(
         when (effect) {
             is F.ErrorShake -> SpringAnimator.failShakeAnimation(applicationContext, view)
             is F.WipeWallet -> activity?.getSystemService<ActivityManager>()?.clearApplicationUserData()
-        }
-    }
-
-    override fun onPositiveClicked(
-        dialogId: String,
-        controller: AlertDialogController,
-        result: AlertDialogController.DialogInputResult
-    ) {
-        when (dialogId) {
-            RecoveryKey.DIALOG_WIPE -> eventConsumer.accept(E.OnWipeWalletConfirmed)
-        }
-    }
-
-    override fun onNegativeClicked(
-        dialogId: String,
-        controller: AlertDialogController,
-        result: AlertDialogController.DialogInputResult
-    ) {
-        when (dialogId) {
-            RecoveryKey.DIALOG_WIPE -> eventConsumer.accept(E.OnWipeWalletCancelled)
-        }
-    }
-
-    override fun onDismissed(
-        dialogId: String,
-        controller: AlertDialogController,
-        result: AlertDialogController.DialogInputResult
-    ) {
-        when (dialogId) {
-            RecoveryKey.DIALOG_WIPE -> eventConsumer.accept(E.OnWipeWalletCancelled)
         }
     }
 

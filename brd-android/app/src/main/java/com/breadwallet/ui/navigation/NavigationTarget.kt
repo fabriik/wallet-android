@@ -29,7 +29,6 @@ import androidx.annotation.StringRes
 import com.brd.bakerapi.models.Baker
 import com.breadwallet.model.InAppMessage
 import com.breadwallet.tools.util.Link
-import com.breadwallet.ui.BaseController
 import com.breadwallet.ui.auth.AuthMode
 import com.breadwallet.ui.recovery.RecoveryKey
 import com.breadwallet.ui.settings.SettingsSection
@@ -39,7 +38,6 @@ import com.fabriik.support.pages.Topic
 import com.fabriik.trade.data.model.SwapBuyTransactionData
 import dev.zacsweers.redacted.annotations.Redacted
 import java.math.BigDecimal
-import kotlin.reflect.KClass
 
 sealed class NavigationTarget : INavigationTarget {
     data class SendSheet(
@@ -112,19 +110,6 @@ sealed class NavigationTarget : INavigationTarget {
         val phrase: String? = null
     ) : NavigationTarget()
 
-    data class AlertDialog(
-        val dialogId: String = "",
-        val title: String? = null,
-        val message: String? = null,
-        val titleResId: Int? = null,
-        val messageResId: Int? = null,
-        val messageArgs: List<Any> = emptyList(),
-        val positiveButtonResId: Int? = null,
-        val negativeButtonResId: Int? = null,
-        val textInputPlaceholder: String? = null,
-        val textInputPlaceholderResId: Int? = null
-    ) : NavigationTarget()
-
     object BrdLogin : NavigationTarget()
     data class Authentication(
         val mode: AuthMode = AuthMode.PIN_REQUIRED,
@@ -137,6 +122,7 @@ sealed class NavigationTarget : INavigationTarget {
 
     object Home : NavigationTarget()
     object Buy : NavigationTarget()
+    object PaymentMethod : NavigationTarget()
     object Profile : NavigationTarget()
     object Trade: NavigationTarget()
     object AddWallet : NavigationTarget()

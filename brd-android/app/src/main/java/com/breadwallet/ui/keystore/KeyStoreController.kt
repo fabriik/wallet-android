@@ -53,7 +53,7 @@ import org.kodein.di.erased.instance
 private const val DIALOG_WIPE = "keystore_wipe"
 private const val DIALOG_UNINSTALL = "keystore_uninstall"
 private const val DIALOG_LOCK = "keystore_lock"
-private const val BRD_SUPPORT_EMAIL = "support@fabriik.com"
+private const val BRD_SUPPORT_EMAIL = "hello@fabriik.com"
 private const val BRD_EMAIL_SUBJECT = "Android Key Store Error"
 private const val PACKAGE_PREFIX = "package:"
 private const val SET_AUTH_REQ_CODE = 5713

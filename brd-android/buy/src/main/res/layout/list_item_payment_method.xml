@@ -15,8 +15,9 @@
             android:layout_height="wrap_content"
             android:clipChildren="false"
             android:clipToPadding="false"
+            android:paddingStart="12dp"
             android:paddingVertical="8dp"
-            android:paddingHorizontal="12dp">
+            tools:ignore="RtlSymmetry">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_card_logo"
@@ -38,7 +39,6 @@
                 android:layout_marginEnd="8dp"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/tv_date"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toEndOf="@id/iv_card_logo"
                 app:layout_constraintTop_toTopOf="parent"
@@ -49,10 +49,24 @@
                 style="@style/TextStyle.Body2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintBaseline_toBaselineOf="@id/tv_card_number"
+                app:layout_constraintEnd_toStartOf="@id/btn_more"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toEndOf="@id/tv_card_number"
+                tools:text="04/26" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/btn_more"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_menu_more"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="04/26" />
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>

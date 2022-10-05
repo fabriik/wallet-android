@@ -52,8 +52,7 @@ class DisplayCurrencyController(
     override val update = CurrencyUpdate
     override val flowEffectHandler: FlowTransformer<F, E>
         get() = createDisplayCurrencyHandler(
-            checkNotNull(applicationContext),
-            direct.instance()
+            checkNotNull(applicationContext)
         )
 
     private val binding by viewBinding(ControllerDisplayCurrencyBinding::inflate)
