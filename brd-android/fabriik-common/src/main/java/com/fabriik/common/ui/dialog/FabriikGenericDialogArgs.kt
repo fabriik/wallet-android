@@ -1,5 +1,6 @@
 package com.fabriik.common.ui.dialog
 
+import android.os.Bundle
 import android.os.Parcelable
 import android.view.Gravity
 import androidx.annotation.DrawableRes
@@ -19,6 +20,7 @@ class FabriikGenericDialogArgs(
     val descriptionRes: Int? = null,
     val showDismissButton: Boolean = false,
     val messageArgs: List<String>? = null,
+    val extraData: Bundle? = null,
 ) : Parcelable {
 
     @Parcelize
