@@ -160,7 +160,8 @@ object RecoveryKeyUpdate : Update<M, E, F>, RecoveryKeyUpdateSpec {
             model.copy(
                 isLoading = false,
                 showContactSupport = false
-            ), emptySet()
+            ),
+            setOf(F.GoToPhraseError)
         )
     }
 
