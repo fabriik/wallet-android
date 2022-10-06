@@ -195,6 +195,10 @@ class SwapCardView @JvmOverloads constructor(
         }
     }
 
+    fun setReplaceButtonEnabled(enabled: Boolean) {
+        binding.btnSwap.isEnabled = enabled
+    }
+
     private fun startReplaceAnimationForView(animatedView: View, originalView: View, diffY: Float, callback: () -> Unit = {}) {
         animatedView.startAnimation(
             TranslateAnimation(0f, 0f, 0f, diffY).apply {

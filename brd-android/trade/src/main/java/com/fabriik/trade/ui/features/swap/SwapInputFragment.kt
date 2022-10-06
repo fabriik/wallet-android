@@ -281,10 +281,12 @@ class SwapInputFragment : Fragment(),
     private fun startCurrenciesReplaceAnimation(stateChange: SwapInputContract.State.Loaded) {
         binding.cvSwap.startReplaceAnimation(
             replaceAnimationStarted = {
+                binding.cvSwap.setReplaceButtonEnabled(false)
                 binding.cvSwap.setSourceCurrency(stateChange.sourceCryptoCurrency.uppercase())
                 binding.cvSwap.setDestinationCurrency(stateChange.destinationCryptoCurrency.uppercase())
             },
             replaceAnimationCompleted = {
+                binding.cvSwap.setReplaceButtonEnabled(true)
                 viewModel.setEvent(
                     SwapInputContract.Event.OnCurrenciesReplaceAnimationCompleted(
                         stateChange
