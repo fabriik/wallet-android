@@ -26,6 +26,7 @@ package com.breadwallet.ui.send
 
 import android.content.Context
 import android.security.keystore.UserNotAuthenticatedException
+import android.util.Log
 import com.breadwallet.R
 import com.breadwallet.breadbox.BreadBox
 import com.breadwallet.breadbox.addressFor
@@ -77,7 +78,7 @@ import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.math.BigDecimal
 
-private const val RATE_UPDATE_MS = 60_000L
+private const val RATE_UPDATE_MS = 15_000L
 
 object SendSheetHandler {
 
@@ -214,27 +215,41 @@ object SendSheetHandler {
     private fun handleEstimateFee(
         breadBox: BreadBox
     ) = flowTransformer<F.EstimateFee, E> { effects ->
-        effects.mapNotNull { effect ->
-            val wallet = breadBox.wallet(effect.currencyCode).first()
+        effects.transformLatest { effect ->
+            while(true) {
+                val wallet = breadBox.wallet(effect.currencyCode).first()
 
-            // Skip if address is not valid
-            val address = wallet.addressFor(effect.address) ?: return@mapNotNull null
-            if (wallet.containsAddress(address))
-                return@mapNotNull null
-            val amount = Amount.create(effect.amount.toDouble(), wallet.unit)
-            val networkFee = wallet.feeForSpeed(effect.transferSpeed)
+                // Skip if address is not valid
+                val address = wallet.addressFor(effect.address) ?: return@transformLatest
+                if (wallet.containsAddress(address))
+                    return@transformLatest
+                val amount = Amount.create(effect.amount.toDouble(), wallet.unit)
+                val networkFee = wallet.feeForSpeed(effect.transferSpeed)
 
-            try {
-                val data = wallet.estimateFee(address, amount, networkFee)
-                val fee = data.fee.toBigDecimal()
-                check(!fee.isZero()) { "Estimated fee was zero" }
-                E.OnNetworkFeeUpdated(effect.address, effect.amount, fee, data)
-            } catch (e: FeeEstimationError) {
-                logError("Failed get fee estimate", e)
-                E.OnInsufficientBalance
-            } catch (e: IllegalStateException) {
-                logError("Failed get fee estimate", e)
-                E.OnNetworkFeeError
+                try {
+                    val data = wallet.estimateFee(address, amount, networkFee)
+                    val fee = data.fee.toBigDecimal()
+                    check(!fee.isZero()) { "Estimated fee was zero" }
+                    emit(
+                        E.OnNetworkFeeUpdated(effect.address, effect.amount, fee, data)
+                    )
+
+
+                } catch (e: FeeEstimationError) {
+                    logError("Failed get fee estimate", e)
+                    emit(
+                        E.OnInsufficientBalance
+                    )
+
+                } catch (e: IllegalStateException) {
+                    logError("Failed get fee estimate", e)
+                    emit(
+                        E.OnNetworkFeeError
+                    )
+
+                }
+
+                delay(RATE_UPDATE_MS)
             }
         }
     }
