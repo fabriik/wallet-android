@@ -8,7 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.TranslateAnimation
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
+import androidx.core.view.postDelayed
 import com.breadwallet.breadbox.formatCryptoForUi
 import com.breadwallet.tools.util.Utils
 import com.breadwallet.util.formatFiatForUi
@@ -146,42 +148,62 @@ class SwapCardView @JvmOverloads constructor(
         binding.viewInputBuyingCurrency.setCryptoAmount(amount, changeByUser)
     }
 
-    fun startReplaceAnimation(replaceAnimationCompleted: () -> Unit) {
+    fun startReplaceAnimation(replaceAnimationStarted: () -> Unit, replaceAnimationCompleted: () -> Unit) {
         val sourceSelectionView = binding.viewInputSellingCurrency.getSelectionView()
+        val sourceSelectionAnimationView = binding.viewInputSellingCurrency.getSelectionAnimationView()
         val sourceSelectionViewPosition = IntArray(2)
         sourceSelectionView.getLocationOnScreen(sourceSelectionViewPosition)
 
         val destinationSelectionView = binding.viewInputBuyingCurrency.getSelectionView()
+        val destinationSelectionAnimationView = binding.viewInputBuyingCurrency.getSelectionAnimationView()
         val destinationSelectionViewPosition = IntArray(2)
         destinationSelectionView.getLocationOnScreen(destinationSelectionViewPosition)
 
         val diffY = (destinationSelectionViewPosition[1] - sourceSelectionViewPosition[1]).toFloat()
 
-        sourceSelectionView.startAnimation(
-            TranslateAnimation(0f, 0f, 0f, diffY).apply {
-                duration = REPLACE_CURRENCIES_DURATION
+        sourceSelectionAnimationView.setCryptoCurrency(sourceSelectionView.currency) {
+            destinationSelectionAnimationView.setCryptoCurrency(destinationSelectionView.currency) {
+                sourceSelectionAnimationView.isVisible = true
+                destinationSelectionAnimationView.isVisible = true
+
+                sourceSelectionView.isInvisible = true
+                destinationSelectionView.isInvisible = true
+
+                replaceAnimationStarted()
+
+                postDelayed(100) {
+                    sourceSelectionAnimationView.startAnimation(
+                        TranslateAnimation(0f, 0f, 0f, diffY).apply {
+                            duration = REPLACE_CURRENCIES_DURATION
+                        }
+                    )
+
+                    destinationSelectionAnimationView.startAnimation(
+                        TranslateAnimation(0f, 0f, 0f, -diffY).apply {
+                            duration = REPLACE_CURRENCIES_DURATION
+                            setAnimationListener(object : Animation.AnimationListener {
+                                override fun onAnimationStart(animation: Animation?) {}
+
+                                override fun onAnimationRepeat(animation: Animation?) {}
+
+                                override fun onAnimationEnd(animation: Animation?) {
+                                    sourceSelectionView.isVisible = true
+                                    destinationSelectionView.isVisible = true
+                                    sourceSelectionAnimationView.isInvisible = true
+                                    destinationSelectionAnimationView.isInvisible = true
+                                    replaceAnimationCompleted()
+                                }
+                            })
+                        }
+                    )
+
+                    val animatorSet = AnimatorSet()
+                    animatorSet.duration = FADE_ANIMATION_DURATION
+                    animatorSet.playTogether(alphaAnimationForAnimatedViews)
+                    animatorSet.start()
+                }
             }
-        )
-
-        destinationSelectionView.startAnimation(
-            TranslateAnimation(0f, 0f, 0f, -diffY).apply {
-                duration = REPLACE_CURRENCIES_DURATION
-                setAnimationListener(object : Animation.AnimationListener {
-                    override fun onAnimationStart(animation: Animation?) {}
-
-                    override fun onAnimationRepeat(animation: Animation?) {}
-
-                    override fun onAnimationEnd(animation: Animation?) {
-                        replaceAnimationCompleted()
-                    }
-                })
-            }
-        )
-
-        val animatorSet = AnimatorSet()
-        animatorSet.duration = FADE_ANIMATION_DURATION
-        animatorSet.playTogether(alphaAnimationForAnimatedViews)
-        animatorSet.start()
+        }
     }
 
     fun setInputFieldsEnabled(enabled: Boolean) {

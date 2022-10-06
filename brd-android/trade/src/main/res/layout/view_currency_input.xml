@@ -46,6 +46,15 @@
         tools:text="USD" />
 
     <com.fabriik.trade.ui.customview.CurrencySelectorView
+        android:id="@+id/view_currency_selector_animation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="10dp"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+
+    <com.fabriik.trade.ui.customview.CurrencySelectorView
         android:id="@+id/view_currency_selector"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

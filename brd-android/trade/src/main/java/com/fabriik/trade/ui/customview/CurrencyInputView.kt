@@ -60,8 +60,8 @@ class CurrencyInputView @JvmOverloads constructor(
         binding.tvFiatCurrency.text = currency
     }
 
-    fun setCryptoCurrency(currency: String?) {
-        currency?.let { binding.viewCurrencySelector.setCryptoCurrency(it) }
+    fun setCryptoCurrency(currency: String?, iconLoadedCallback: () -> Unit = {}) {
+        binding.viewCurrencySelector.setCryptoCurrency(currency, iconLoadedCallback)
     }
 
     private fun onFiatAmountChanged(value: String) {
@@ -94,7 +94,9 @@ class CurrencyInputView @JvmOverloads constructor(
         }
     }
 
-    fun getSelectionView(): View = binding.viewCurrencySelector
+    fun getSelectionView() = binding.viewCurrencySelector
+
+    fun getSelectionAnimationView() = binding.viewCurrencySelectorAnimation
 
     fun getAnimatedViews() : List<View> = listOf(
         binding.tvTitle, binding.tvFiatCurrency, binding.etFiatAmount, binding.etCryptoAmount

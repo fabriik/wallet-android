@@ -279,13 +279,19 @@ class SwapInputFragment : Fragment(),
     }
 
     private fun startCurrenciesReplaceAnimation(stateChange: SwapInputContract.State.Loaded) {
-        binding.cvSwap.startReplaceAnimation {
-            viewModel.setEvent(
-                SwapInputContract.Event.OnCurrenciesReplaceAnimationCompleted(
-                    stateChange
+        binding.cvSwap.startReplaceAnimation(
+            replaceAnimationStarted = {
+                binding.cvSwap.setSourceCurrency(stateChange.sourceCryptoCurrency.uppercase())
+                binding.cvSwap.setDestinationCurrency(stateChange.destinationCryptoCurrency.uppercase())
+            },
+            replaceAnimationCompleted = {
+                viewModel.setEvent(
+                    SwapInputContract.Event.OnCurrenciesReplaceAnimationCompleted(
+                        stateChange
+                    )
                 )
-            )
-        }
+            },
+        )
     }
 
     private fun handleErrorState(state: SwapInputContract.State.Error) {
@@ -305,8 +311,8 @@ class SwapInputFragment : Fragment(),
     private fun handleLoadedState(state: SwapInputContract.State.Loaded) {
         with(binding) {
             cvSwap.setFiatCurrency(state.fiatCurrency)
-            cvSwap.setSourceCurrency(state.sourceCryptoCurrency.toUpperCase(Locale.ROOT))
-            cvSwap.setDestinationCurrency(state.destinationCryptoCurrency.toUpperCase(Locale.ROOT))
+            cvSwap.setSourceCurrency(state.sourceCryptoCurrency.uppercase())
+            cvSwap.setDestinationCurrency(state.destinationCryptoCurrency.uppercase())
             cvSwap.setSourceCurrencyTitle(
                 getString(
                     R.string.Swap_Input_IHave, state.sourceCryptoBalance.formatCryptoForUi(
