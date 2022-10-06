@@ -149,52 +149,23 @@ class SwapCardView @JvmOverloads constructor(
     }
 
     fun startReplaceAnimation(replaceAnimationStarted: () -> Unit, replaceAnimationCompleted: () -> Unit) {
-        val sourceSelectionView = binding.viewInputSellingCurrency.getSelectionView()
-        val sourceSelectionAnimationView = binding.viewInputSellingCurrency.getSelectionAnimationView()
-        val sourceSelectionViewPosition = IntArray(2)
-        sourceSelectionView.getLocationOnScreen(sourceSelectionViewPosition)
-
-        val destinationSelectionView = binding.viewInputBuyingCurrency.getSelectionView()
-        val destinationSelectionAnimationView = binding.viewInputBuyingCurrency.getSelectionAnimationView()
-        val destinationSelectionViewPosition = IntArray(2)
-        destinationSelectionView.getLocationOnScreen(destinationSelectionViewPosition)
-
-        val diffY = (destinationSelectionViewPosition[1] - sourceSelectionViewPosition[1]).toFloat()
-
-        sourceSelectionAnimationView.setCryptoCurrency(sourceSelectionView.currency) {
-            destinationSelectionAnimationView.setCryptoCurrency(destinationSelectionView.currency) {
-                sourceSelectionAnimationView.isVisible = true
-                destinationSelectionAnimationView.isVisible = true
-
-                sourceSelectionView.isInvisible = true
-                destinationSelectionView.isInvisible = true
+        binding.viewInputSellingCurrency.prepareForAnimation { sourceViewPositionY, sourceOriginalView, sourceAnimationView ->
+            binding.viewInputBuyingCurrency.prepareForAnimation { destinationViewPositionY, destinationOriginalView, destinationAnimationView ->
+                val diffY = (destinationViewPositionY - sourceViewPositionY).toFloat()
 
                 replaceAnimationStarted()
 
                 postDelayed(100) {
-                    sourceSelectionAnimationView.startAnimation(
-                        TranslateAnimation(0f, 0f, 0f, diffY).apply {
-                            duration = REPLACE_CURRENCIES_DURATION
-                        }
+                    startReplaceAnimationForView(
+                        diffY = diffY,
+                        originalView = sourceOriginalView,
+                        animatedView = sourceAnimationView
                     )
-
-                    destinationSelectionAnimationView.startAnimation(
-                        TranslateAnimation(0f, 0f, 0f, -diffY).apply {
-                            duration = REPLACE_CURRENCIES_DURATION
-                            setAnimationListener(object : Animation.AnimationListener {
-                                override fun onAnimationStart(animation: Animation?) {}
-
-                                override fun onAnimationRepeat(animation: Animation?) {}
-
-                                override fun onAnimationEnd(animation: Animation?) {
-                                    sourceSelectionView.isVisible = true
-                                    destinationSelectionView.isVisible = true
-                                    sourceSelectionAnimationView.isInvisible = true
-                                    destinationSelectionAnimationView.isInvisible = true
-                                    replaceAnimationCompleted()
-                                }
-                            })
-                        }
+                    startReplaceAnimationForView(
+                        diffY = -diffY,
+                        callback = replaceAnimationCompleted,
+                        originalView = destinationOriginalView,
+                        animatedView = destinationAnimationView
                     )
 
                     val animatorSet = AnimatorSet()
@@ -222,6 +193,23 @@ class SwapCardView @JvmOverloads constructor(
             viewInputBuyingCurrency.hideKeyboard()
             viewInputSellingCurrency.hideKeyboard()
         }
+    }
+
+    private fun startReplaceAnimationForView(animatedView: View, originalView: View, diffY: Float, callback: () -> Unit = {}) {
+        animatedView.startAnimation(
+            TranslateAnimation(0f, 0f, 0f, diffY).apply {
+                duration = REPLACE_CURRENCIES_DURATION
+                setAnimationListener(object : Animation.AnimationListener {
+                    override fun onAnimationStart(animation: Animation?) {}
+                    override fun onAnimationRepeat(animation: Animation?) {}
+                    override fun onAnimationEnd(animation: Animation?) {
+                        originalView.isVisible = true
+                        animatedView.isInvisible = true
+                        callback()
+                    }
+                })
+            }
+        )
     }
 
     interface Callback {

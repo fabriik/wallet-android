@@ -5,6 +5,8 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import com.breadwallet.ext.isZero
 import com.fabriik.common.utils.*
 import com.fabriik.trade.R
@@ -94,9 +96,24 @@ class CurrencyInputView @JvmOverloads constructor(
         }
     }
 
-    fun getSelectionView() = binding.viewCurrencySelector
+    fun prepareForAnimation(callback: (Int, View, View) -> Unit) {
+        val selectionView = binding.viewCurrencySelector
+        val selectionAnimationView = binding.viewCurrencySelectorAnimation
 
-    fun getSelectionAnimationView() = binding.viewCurrencySelectorAnimation
+        val selectionViewPosition = IntArray(2)
+        selectionView.getLocationOnScreen(selectionViewPosition)
+
+        selectionAnimationView.setCryptoCurrency(selectionView.currency) {
+            selectionAnimationView.isVisible = true
+            selectionView.isInvisible = true
+
+            callback(
+                selectionViewPosition[1],
+                selectionView,
+                selectionAnimationView
+            )
+        }
+    }
 
     fun getAnimatedViews() : List<View> = listOf(
         binding.tvTitle, binding.tvFiatCurrency, binding.etFiatAmount, binding.etCryptoAmount
