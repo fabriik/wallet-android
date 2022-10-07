@@ -29,7 +29,6 @@ class PaymentProcessingViewModelTest {
             PaymentProcessingFragmentArgs(
                 TEST_PAYMENT_REFERENCE, TEST_REDIRECT_URL
             ).toBundle().toMap()
-
         )
 
         viewModel = PaymentProcessingViewModel(
