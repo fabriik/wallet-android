@@ -38,7 +38,6 @@ import com.breadwallet.R
 import com.breadwallet.breadbox.BreadBox
 import com.breadwallet.legacy.presenter.settings.NotificationSettingsController
 import com.breadwallet.logger.logError
-import com.breadwallet.platform.interfaces.AccountMetaDataProvider
 import com.breadwallet.tools.util.*
 import com.breadwallet.ui.addwallets.AddWalletsController
 import com.breadwallet.ui.auth.AuthenticationController
@@ -56,8 +55,9 @@ import com.breadwallet.ui.pin.InputPinController
 import com.breadwallet.ui.profile.ProfileController
 import com.breadwallet.ui.provekey.PaperKeyProveController
 import com.breadwallet.ui.receive.ReceiveController
-import com.breadwallet.ui.resetpin.completed.PinResetCompletedController
 import com.breadwallet.ui.recovery.RecoveryKeyController
+import com.breadwallet.ui.resetpin.ResetPinInputController
+import com.breadwallet.ui.resetpin.completed.PinResetCompletedController
 import com.breadwallet.ui.scanner.ScannerController
 import com.breadwallet.ui.send.SendSheetController
 import com.breadwallet.ui.settings.SettingsController
@@ -120,7 +120,6 @@ class RouterNavigator(
 
     private val breadBox by instance<BreadBox>()
     private val uriParser by instance<CryptoUriParser>()
-    private val metaDataManager by instance<AccountMetaDataProvider>()
 
     override fun navigateTo(target: INavigationTarget) =
         patch(target as NavigationTarget)
@@ -792,6 +791,14 @@ class RouterNavigator(
 
     override fun fabriikGenericDialog(effect: NavigationTarget.FabriikGenericDialog) {
         router.showFabriikGenericDialog(effect.args)
+    }
+
+    override fun pinReset() {
+        router.pushController(
+            RouterTransaction.with(
+                ResetPinInputController()
+            )
+        )
     }
 
     override fun pinResetCompleted() {

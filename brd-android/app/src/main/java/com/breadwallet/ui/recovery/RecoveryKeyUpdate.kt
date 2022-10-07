@@ -44,7 +44,7 @@ object RecoveryKeyUpdate : Update<M, E, F>, RecoveryKeyUpdateSpec {
     ): Next<M, F> {
         return when {
             model.phrase[event.index] == event.word ||
-                model.isLoading -> noChange()
+                    model.isLoading -> noChange()
             else -> next(
                 model.copy(
                     phrase = model.phrase.replaceAt(event.index, event.word),
@@ -112,7 +112,7 @@ object RecoveryKeyUpdate : Update<M, E, F>, RecoveryKeyUpdateSpec {
                     errors = event.errors,
                     isLoading = false,
                     showContactSupport = false
-                ), setOf(F.ErrorShake)
+                ), emptySet()
             )
         }
     }
@@ -147,10 +147,12 @@ object RecoveryKeyUpdate : Update<M, E, F>, RecoveryKeyUpdateSpec {
     }
 
     override fun onPhraseSaveFailed(model: M): Next<M, F> {
-        return next(model.copy(
-            isLoading = false,
-            showContactSupport = false
-        ))
+        return next(
+            model.copy(
+                isLoading = false,
+                showContactSupport = false
+            )
+        )
     }
 
     override fun onPhraseInvalid(model: M): Next<M, F> {
@@ -158,10 +160,8 @@ object RecoveryKeyUpdate : Update<M, E, F>, RecoveryKeyUpdateSpec {
             model.copy(
                 isLoading = false,
                 showContactSupport = false
-            ), setOf<F>(
-                F.ErrorShake,
-                F.GoToPhraseError
-            )
+            ),
+            setOf(F.GoToPhraseError)
         )
     }
 
@@ -214,10 +214,7 @@ object RecoveryKeyUpdate : Update<M, E, F>, RecoveryKeyUpdateSpec {
             model.copy(
                 isLoading = false,
                 showContactSupport = false
-            ), setOf<F>(
-                F.ErrorShake,
-                F.GoToPhraseError
-            )
+            ), emptySet()
         )
     }
 

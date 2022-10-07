@@ -13,6 +13,7 @@ class CurrencySelectorView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : LinearLayout(context, attrs) {
 
+    var currency: String? = null
     private val binding: ViewCurrencySelectorBinding
 
     init {
@@ -23,10 +24,14 @@ class CurrencySelectorView @JvmOverloads constructor(
         )
     }
 
-    fun setCryptoCurrency(currency: String) {
+    fun setCryptoCurrency(currency: String?, iconLoadedCallback: () -> Unit = {}) {
+        this.currency = currency
+        if (currency == null) return
+
         binding.root.post {
             binding.tvCurrency.text = currency
             binding.viewIcon.loadIcon(
+                callback = iconLoadedCallback,
                 currencyCode = currency,
                 scope = this@CurrencySelectorView.viewScope
             )

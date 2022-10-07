@@ -86,6 +86,7 @@ interface NavigationTargetHandlerSpec {
         is NavigationTarget.FabriikGenericDialog -> fabriikGenericDialog(effect)
         is NavigationTarget.GoToRecoveryKey -> goToRecoveryKey(effect)
         is NavigationTarget.PaymentMethod -> paymentMethod()
+        is NavigationTarget.PinReset -> pinReset()
         is NavigationTarget.PinResetCompleted -> pinResetCompleted()
     }
 
@@ -208,6 +209,8 @@ interface NavigationTargetHandlerSpec {
     fun goToRecoveryKey(effect: NavigationTarget.GoToRecoveryKey): Unit
 
     fun paymentMethod(): Unit
+
+    fun pinReset(): Unit
 
     fun pinResetCompleted(): Unit
 }
