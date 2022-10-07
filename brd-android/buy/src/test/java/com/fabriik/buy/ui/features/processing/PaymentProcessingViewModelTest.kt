@@ -83,7 +83,7 @@ class PaymentProcessingViewModelTest {
     }
 }
 
-private fun FabriikViewModel<*,*,*>.testEffect(
+fun FabriikViewModel<*,*,*>.testEffect(
     action: () -> Unit, targetEffect: FabriikContract.Effect
 ) = runBlocking {
     val actual = effect
@@ -93,4 +93,4 @@ private fun FabriikViewModel<*,*,*>.testEffect(
     Assert.assertEquals(targetEffect, actual)
 }
 
-private fun Bundle.toMap() = keySet().associateWith { get(it) }
+fun Bundle.toMap() = keySet().associateWith { get(it) }
