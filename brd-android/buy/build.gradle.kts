@@ -64,4 +64,5 @@ dependencies {
 
     testImplementation(Libs.JUnit.Core)
     testImplementation(Libs.Mockito.Core)
+    testImplementation(Libs.Coroutines.Test)
 }

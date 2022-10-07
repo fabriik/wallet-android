@@ -57,7 +57,8 @@ dependencies {
     api(brd.Libs.Networking.Moshi)
     kapt(brd.Libs.Networking.MoshiCodegen)
 
-    testImplementation(brd.Libs.JUnit.Core)
-    testImplementation(brd.Libs.Mockito.Core)
-    testImplementation(brd.Libs.Robolectric.Core)
+    testApi(brd.Libs.JUnit.Core)
+    testApi(brd.Libs.Mockito.Core)
+    testApi(brd.Libs.Robolectric.Core)
+    testApi(brd.Libs.Coroutines.Test)
 }

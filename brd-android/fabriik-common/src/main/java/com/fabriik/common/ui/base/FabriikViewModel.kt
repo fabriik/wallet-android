@@ -1,6 +1,7 @@
 package com.fabriik.common.ui.base
 
 import android.app.Application
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
@@ -42,7 +43,8 @@ abstract class FabriikViewModel<State : FabriikContract.State, Event : FabriikCo
         viewModelScope.launch { _event.emit(newEvent) }
     }
 
-    protected fun setEffect(builder: () -> Effect) {
+    @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
+    fun setEffect(builder: () -> Effect) {
         val effectValue = builder()
         viewModelScope.launch { _effect.send(effectValue) }
     }
@@ -73,5 +75,6 @@ abstract class FabriikViewModel<State : FabriikContract.State, Event : FabriikCo
         }
     }
 
-    protected abstract fun createInitialState() : State
+    @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
+    abstract fun createInitialState() : State
 }
