@@ -194,8 +194,10 @@ class SwapInputViewModel(
 
             currentLoadedState?.let {
                 val stateChange = it.copy(
-                    sourceFiatAmount = it.destinationFiatAmount,
-                    sourceCryptoAmount = it.destinationCryptoAmount,
+//                    sourceFiatAmount = it.destinationFiatAmount,
+                    sourceFiatAmount = BigDecimal.ZERO,
+//                    sourceCryptoAmount = it.destinationCryptoAmount,
+                    sourceCryptoAmount = BigDecimal.ZERO,
                     destinationFiatAmount = BigDecimal.ZERO,
                     destinationCryptoAmount = BigDecimal.ZERO,
                     sourceCryptoBalance = balance,
