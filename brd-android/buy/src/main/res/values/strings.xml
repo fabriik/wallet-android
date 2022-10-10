@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Buy input screen
-    <string name="Buy.Input.Title">Buy</string>
     <string name="Buy.Input.Rate">Rate:</string>
     <string name="Buy.Input.IWant">I want</string>
-    <string name="Buy.Input.PayWith">Pay with</string>
     <string name="Buy.Input.Continue">Continue</string>
     <string name="Buy.Input.LeftSwitchOption">Min</string>
     <string name="Buy.Input.RightSwitchOption">Max</string>

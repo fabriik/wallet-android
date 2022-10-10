@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:showBack="false"
-            app:title="@string/Buy.Input.Title" />
+            app:title="@string/HomeScreen.buy" />
 
         <ScrollView
             android:id="@+id/content"
@@ -117,7 +117,7 @@
                             style="@style/TextStyle.Caption"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/Buy.Input.PayWith"
+                            android:text="@string/Buy.PayWith"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -180,7 +180,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
-                    android:text="@string/Buy.Input.Continue"
+                    android:text="@string/Button.continueAction"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
