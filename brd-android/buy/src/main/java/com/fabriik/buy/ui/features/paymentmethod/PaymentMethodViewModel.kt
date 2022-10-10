@@ -121,11 +121,11 @@ class PaymentMethodViewModel(
                 setEffect {
                     if (it.status == Status.SUCCESS) {
                         PaymentMethodContract.Effect.ShowToast(
-                            getString(R.string.Buy_SelectPaymentMethod_CardRemoved)
+                            getString(R.string.Buy_CardRemoved)
                         )
                     } else {
                         PaymentMethodContract.Effect.ShowError(
-                            getString(R.string.Buy_SelectPaymentMethod_CardRemovalFailed)
+                            getString(R.string.Buy_CardRemovalFailed)
                         )
                     }
                 }

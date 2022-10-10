@@ -12,7 +12,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:showBack="false"
-        app:title="@string/Buy.Details.Title" />
+        app:title="@string/Buy.Details" />
 
     <ScrollView
         android:id="@+id/content"
@@ -56,7 +56,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/light_text_03"
-                        tools:text="@string/Buy.Details.Status.Pending" />
+                        tools:text="@string/Transaction.pending" />
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
