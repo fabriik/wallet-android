@@ -66,9 +66,9 @@ class AddCardViewModelTest {
 
     @Test
     fun onCardNumberChanged_verifyState() {
-        val newCardNumber = "1234 5678 9012 3456"
+        val newCardNumber = "1234567890123456"
         viewModel.onCardNumberChanged(newCardNumber)
-        Assert.assertEquals(newCardNumber, viewModel.currentState.cardNumber)
+        Assert.assertEquals("1234 5678 9012 3456", viewModel.currentState.cardNumber)
     }
 
     @Test
