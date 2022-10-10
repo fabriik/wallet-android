@@ -205,6 +205,85 @@ We are sorry to see you go.</string>
     <string name="Button.wipe.android">Wipe</string>
     <!-- Yes button -->
     <string name="Button.yes">Yes</string>
+    <!-- 3D Secure label on buy flow -->
+    <string name="Buy.3DSecure">3D Secure</string>
+    <!-- Add card title for buy cryptos -->
+    <string name="Buy.AddCard">Add card</string>
+    <!-- Add a debit or credit card label on add card flow -->
+    <string name="Buy.AddDebitCreditCard">Add a debit or credit card</string>
+    <!-- Address label in billing address view on buy flow -->
+    <string name="Buy.Address">Address</string>
+    <!-- Billing address label on buy flow -->
+    <string name="Buy.BillingAddress">Billing address</string>
+    <!-- Buy min and max limit text -->
+    <string name="Buy.BuyLimits">Currently, minimum limit for buy is $%@ USD and maximum limit is $%@ USD/day.</string>
+    <!-- Card label on add card flow -->
+    <string name="Buy.Card">Card</string>
+    <!-- CVV label in add card flow -->
+    <string name="Buy.CardCVV">CVV</string>
+    <!-- Card fee message label in order preview screen -->
+    <string name="Buy.CardFee">This fee is charged to cover costs associated with payment processing.</string>
+    <!-- Card number label in add card flow -->
+    <string name="Buy.CardNumber">Card number</string>
+    <!-- Card removal failed error message on delete card flow -->
+    <string name="Buy.CardRemovalFailed">Card removal failed. Please try again.</string>
+    <!-- Card removed message on delete card flow -->
+    <string name="Buy.CardRemoved">Card removed</string>
+    <!-- City label in billing address view on buy flow -->
+    <string name="Buy.City">City</string>
+    <!-- Please confirm your CVV label in payment view -->
+    <string name="Buy.ConfirmCVV">Please confirm your CVV</string>
+    <string name="Buy.Country">Country</string>
+    <!-- Buy details title -->
+    <string name="Buy.Details">Purchase details</string>
+    <!-- There was an error while processing your payment title in buy failure screen -->
+    <string name="Buy.ErrorProcessingPayment">There was an error while processing your payment</string>
+    <!-- Failure transaction message on buy  -->
+    <string name="Buy.FailureTransactionMessage">Please contact your card issuer/bank or try again with a different payment method.</string>
+    <!-- First Name label in billing address view on buy flow -->
+    <string name="Buy.FirstName">First Name</string>
+    <!-- Last Name label in billing address view on buy flow -->
+    <string name="Buy.LastName">Last Name</string>
+    <!-- Month and year label in add card flow -->
+    <string name="Buy.MonthYear">MM/YY</string>
+    <!-- Network fee message in order preview screen -->
+    <string name="Buy.NetworkFeeMessage">Network fee prices vary depending on the blockchain in which you are receiving your assets. This is an external fee to cover mining and transaction costs.</string>
+    <!-- Network fees label in order preview screen -->
+    <string name="Buy.NetworkFees">Network fees</string>
+    <!-- Order preview title -->
+    <string name="Buy.OrderPreview">Order preview</string>
+    <!-- Payment failed error message on order preview screen -->
+    <string name="Buy.PaymentFailed">Payment failed</string>
+    <!-- Payment method label in buy select card screen -->
+    <string name="Buy.PaymentMethod">Payment method</string>
+    <!-- Pay with label in buy flow -->
+    <string name="Buy.PayWith">Pay with</string>
+    <!-- Purchase success text in purchase details screen  -->
+    <string name="Buy.PurchaseSuccessText">This purchase will appear as ‘Fabriik Wallet’ on your bank statement.</string>
+    <!-- Your assets are on the way message in purchase details screen -->
+    <string name="Buy.PurchaseSuccessTitle">Your assets are on the way!</string>
+    <!-- Are you sure you want to remove this card title dialog -->
+    <string name="Buy.RemoveCard">Are you sure you want to remove card ending in</string>
+    <!-- You will no longer be able to use it to buy assets description on removing card dialog  -->
+    <string name="Buy.RemoveCardOption">You will no longer be able to use it to buy assets.</string>
+    <!-- Remove payment method action sheet option on profile screen -->
+    <string name="Buy.RemovePaymentMethod">Remove payment method</string>
+    <!-- Security code (CVV) label in add card flow -->
+    <string name="Buy.SecurityCode">Security code (CVV)</string>
+    <!-- Explanation of security code in popup -->
+    <string name="Buy.SecurityCodePopup">Please enter the 3 digit CVV number as it appears on the back of your card</string>
+    <!-- Select payment method title in buy flow -->
+    <string name="Buy.SelectPayment">Select payment method</string>
+    <!-- State/Province label in billing address view on buy flow -->
+    <string name="Buy.StateProvince">State/Province</string>
+    <!-- By placing this order you agree to our terms message when ordering -->
+    <string name="Buy.Terms">By placing this order you agree to our</string>
+    <!-- Try a different payment method button title in failure buy screen -->
+    <string name="Buy.TryAnotherPayment">Try a different payment method</string>
+    <!-- Your order label in buy flow -->
+    <string name="Buy.YourOrder">Your order:</string>
+    <!-- ZIP/Postal Code label in billing address view on buy flow -->
+    <string name="Buy.ZIPPostalCode">ZIP/Postal Code</string>
     <!-- Camera plugin instruction -->
     <string name="CameraPlugin.centerInstruction">Center your ID in the box</string>
     <string name="CloudBackup.backupDeleted">Backup Erased</string>
