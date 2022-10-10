@@ -79,15 +79,15 @@
     <string name="Buy.OrderPreview.NetworkFeesDialog.Content">Network fee prices vary depending on the blockchain in which you are receiving your assets. This is an external fee to cover mining and transaction costs.</string>
 
     <!-- Select payment method screen -->
-    <string name="Buy.SelectPaymentMethod.Title">Select payment method</string>
-    <string name="Buy.SelectPaymentMethod.Subtitle">Card</string>
-    <string name="Buy.SelectPaymentMethod.Subtext">Add a debit or credit card</string>
-    <string name="Buy.SelectPaymentMethod.RemovalConfirmationDialog.Title">Are you sure you want to remove this card?</string>
-    <string name="Buy.SelectPaymentMethod.RemovalConfirmationDialog.Description">You will no longer be able to use it to buy assets.</string>
-    <string name="Buy.SelectPaymentMethod.RemovalConfirmationDialog.Remove">Remove</string>
-    <string name="Buy.SelectPaymentMethod.RemovePaymentMethod">Remove payment method</string>
-    <string name="Buy.SelectPaymentMethod.CardRemoved">Card removed</string>
-    <string name="Buy.SelectPaymentMethod.CardRemovalFailed">Card removal failed. Please try again.</string>
+    <string name="Buy.SelectPayment">Select payment method</string>
+    <string name="Buy.Card">Card</string>
+    <string name="Buy.AddDebitCreditCard">Add a debit or credit card</string>
+    <string name="Buy.RemoveCard">Are you sure you want to remove this card?</string>
+    <string name="Buy.RemoveCardOption">You will no longer be able to use it to buy assets.</string>
+    <string name="Buy.Remove">Remove</string>
+    <string name="Buy.RemovePaymentMethod">Remove payment method</string>
+    <string name="Buy.CardRemoved">Card removed</string>
+    <string name="Buy.CardRemovalFailed">Card removal failed. Please try again.</string>
 
     <string name="Buy.KycLimits.Kyc1">Currently, the required minimum for purchasing assets is $30.00 USD per transaction, and the maximum per day is $500.00 USD.</string>
     <string name="Buy.KycLimits.Kyc2">Currently, the required minimum for purchasing assets is $30.00 USD per transaction, and the maximum per day is $500.00 USD.</string>
