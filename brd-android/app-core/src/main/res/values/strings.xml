@@ -225,6 +225,7 @@ We are sorry to see you go.</string>
     <string name="Buy.CardFee">This fee is charged to cover costs associated with payment processing.</string>
     <!-- Card number label in add card flow -->
     <string name="Buy.CardNumber">Card number</string>
+    <string name="Buy.CardNumberHint">XXXX XXXX XXXX XXXX</string>
     <!-- Card removal failed error message on delete card flow -->
     <string name="Buy.CardRemovalFailed">Card removal failed. Please try again.</string>
     <!-- Card removed message on delete card flow -->
@@ -234,10 +235,12 @@ We are sorry to see you go.</string>
     <!-- Please confirm your CVV label in payment view -->
     <string name="Buy.ConfirmCVV">Please confirm your CVV</string>
     <string name="Buy.Country">Country</string>
+    <string name="Buy.CvvHint">XXX</string>
     <!-- Buy details title -->
     <string name="Buy.Details">Purchase details</string>
     <!-- There was an error while processing your payment title in buy failure screen -->
     <string name="Buy.ErrorProcessingPayment">There was an error while processing your payment</string>
+    <string name="Buy.ExpirationDate">Expiration date</string>
     <!-- Failure transaction message on buy  -->
     <string name="Buy.FailureTransactionMessage">Please contact your card issuer/bank or try again with a different payment method.</string>
     <!-- First Name label in billing address view on buy flow -->

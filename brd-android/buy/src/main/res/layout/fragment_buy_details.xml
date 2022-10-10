@@ -121,7 +121,7 @@
                         style="@style/TextStyle.Body2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/Buy.Details.Rate"
+                        android:text="@string/Swap.Rate"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -141,9 +141,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:text="@string/Buy.Details.AmountPurchased"
+                        android:text="@{@string/Swap.AmountPurchased + `:`}"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_rate_title" />
+                        app:layout_constraintTop_toBottomOf="@id/tv_rate_title"
+                        tools:text="@string/Swap.AmountPurchased" />
 
                     <TextView
                         android:id="@+id/tv_purchased_amount"
@@ -160,9 +161,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:text="@string/Buy.Details.CardFee"
+                        android:text="@{@string/Swap.CardFee + `:`}"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_purchased_amount_title" />
+                        app:layout_constraintTop_toBottomOf="@id/tv_purchased_amount_title"
+                        tools:text="@string/Swap.CardFee" />
 
                     <TextView
                         android:id="@+id/tv_credit_fee_amount"
@@ -179,9 +181,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:text="@string/Buy.Details.NetworkFee"
+                        android:text="@{@string/Swap.MiningNetworkFee + `:`}"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_credit_fee_title" />
+                        app:layout_constraintTop_toBottomOf="@id/tv_credit_fee_title"
+                        tools:text="@string/Swap.MiningNetworkFee" />
 
                     <TextView
                         android:id="@+id/tv_network_fee_amount"
@@ -208,7 +211,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
-                        android:text="@string/Buy.Details.Total"
+                        android:text="@string/Swap.Total"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/view_line" />
 
@@ -226,7 +229,7 @@
                         style="@style/TextStyle.Caption"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/Buy.Details.PaidWith"
+                        android:text="@string/Swap.PaidWith"
                         android:layout_marginTop="16dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tv_total_title" />
@@ -265,7 +268,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="@string/Buy.Details.OrderId"
+                        android:text="@string/Swap.TransactionID"
                         android:textColor="@color/light_text_03" />
 
                     <TextView
@@ -312,7 +315,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="@string/Buy.Details.Timestamp"
+                        android:text="@string/Swap.Timestamp"
                         android:textColor="@color/light_text_04" />
 
                     <TextView

@@ -134,7 +134,7 @@ class OrderPreviewFragment : Fragment(),
                 showCurrencyName = true
             )
 
-            tvCreditFeeTitle.text = getString(R.string.Buy_OrderPreview_CreditCardFee, state.cardFeePercent.formatPercent())
+            tvCreditFeeTitle.text = "${getString(R.string.Swap_CardFee)} (${state.cardFeePercent.formatPercent()})"
 
             tvNetworkFeeValue.text = state.networkFee.formatFiatForUi()
 
