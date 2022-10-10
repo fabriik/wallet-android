@@ -44,6 +44,22 @@
     <string name="AccountCreation.timeout">The Request timed out. Please try again later.</string>
     <!-- Confirm Account Creation Title -->
     <string name="AccountCreation.title">Confirm Account Creation</string>
+    <string name="AccountCreation.WalletDisabledTitle">Why is my wallet disabled?</string>
+    <!-- Popup text when the account is deleted -->
+    <string name="AccountDelete.AccountDeletedPopup">Your account has been deleted.
+We are sorry to see you go.</string>
+    <!-- Delete account title  -->
+    <string name="AccountDelete.DeleteAccountTitle">You are about to delete your Fabriik account.</string>
+    <!-- Delete account explanation title -->
+    <string name="AccountDelete.DeleteWhatMean">What does this mean?</string>
+    <!-- Delete account explanation part one -->
+    <string name="AccountDelete.ExplanationOne">-You will no longer be able to use your email to sign in into Fabriik Wallet</string>
+    <!-- Delete account explanation part three -->
+    <string name="AccountDelete.ExplanationThree">-Your private keys are still yours, keep your security phrase in a safe place in case you need to restore your wallet.</string>
+    <!-- Delete account explanation part two -->
+    <string name="AccountDelete.ExplanationTwo">-You will no longer be able to user your KYC and registration status</string>
+    <!-- Recover wallet text after deleting account -->
+    <string name="AccountDelete.RecoverWallet">I understand that the only way to recover my wallet is by entering my recovery phrase</string>
     <!-- Default wallet name -->
     <string name="AccountHeader.defaultWalletName">My Fabriik</string>
     <!-- Third party keyboard warning -->
@@ -1533,18 +1549,4 @@
     <string name="Swap.TransactionItem.PurchasePending">Pending purchase</string>
     <string name="Swap.TransactionItem.Refunded">Refunded</string>
 
-    <!-- Delete account title  -->
-    <string name="AccountDelete.DeleteAccountTitle">You are about to delete your Fabriik account.</string>
-    <!-- Delete account explanation title -->
-    <string name="AccountDelete.DeleteWhatMean">What does this mean?</string>
-    <!-- Delete account explanation part one -->
-    <string name="AccountDelete.ExplanationOne">-You will no longer be able to use your email to sign in into Fabriik Wallet</string>
-    <!-- Delete account explanation part three -->
-    <string name="AccountDelete.ExplanationThree">-Your private keys are still yours, keep your security phrase in a safe place in case you need to restore your wallet.</string>
-    <!-- Delete account explanation part two -->
-    <string name="AccountDelete.ExplanationTwo">-You will no longer be able to user your KYC and registration status</string>
-    <!-- Recover wallet text after deleting account -->
-    <string name="AccountDelete.RecoverWallet">I understand that the only way to recover my wallet is by entering my recovery phrase</string>
-    <!-- Popup text when the account is deleted -->
-    <string name="AccountDelete.AccountDeletedPopup">Your account has been deleted.We are sorry to see you go.</string>
 </resources>
