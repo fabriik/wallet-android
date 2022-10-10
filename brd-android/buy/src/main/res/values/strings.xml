@@ -93,9 +93,9 @@
     <string name="Buy.KycLimits.Kyc2">Currently, the required minimum for purchasing assets is $30.00 USD per transaction, and the maximum per day is $500.00 USD.</string>
 
     <!-- Payment timeout screen -->
-    <string name="Buy.Timeout.Title">Payment verification timeout</string>
-    <string name="Buy.Timeout.Description">The payment has expired due to inactivity. Please try again with the same card, or use a different card.</string>
-    <string name="Buy.Timeout.TryAgain">Try again</string>
+    <string name="PaymentConfirmation.PaymentTimeout">Payment verification timeout</string>
+    <string name="PaymentConfirmation.PaymentExpired">The payment has expired due to inactivity. Please try again with the same card, or use a different card.</string>
+    <string name="PaymentConfirmation.TryAgain">Try again</string>
 
     <!-- Order details screen -->
     <string name="Buy.Details.Title">Purchase details</string>
