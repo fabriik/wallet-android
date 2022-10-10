@@ -12,7 +12,7 @@ import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
 @Config(application = TestFabriikApplication::class)
-class PaymentProcessingViewModelTest {
+class PaymentTimeoutViewModelTest {
 
     private lateinit var viewModel: PaymentTimeoutViewModel
 

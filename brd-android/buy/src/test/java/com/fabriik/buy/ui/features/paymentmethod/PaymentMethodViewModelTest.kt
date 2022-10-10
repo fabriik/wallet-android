@@ -18,7 +18,7 @@ import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
 @Config(application = TestFabriikApplication::class)
-class PaymentProcessingViewModelTest {
+class PaymentMethodViewModelTest {
 
     @Mock lateinit var paymentInstrument: PaymentInstrument
 

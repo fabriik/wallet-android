@@ -23,7 +23,7 @@ import java.math.BigDecimal
 
 @RunWith(RobolectricTestRunner::class)
 @Config(application = TestFabriikApplication::class)
-class PaymentProcessingViewModelTest {
+class BuyDetailsViewModelTest {
 
     private lateinit var viewModel: BuyDetailsViewModel
     private lateinit var savedStateHandle: SavedStateHandle
