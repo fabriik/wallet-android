@@ -17,14 +17,14 @@
     <string name="Buy.Input.Error.Network">We are having temporary network issues. Please try again later.</string>
 
     <!-- Billing address screen -->
-    <string name="Buy.BillingAdress.Title">Billing address</string>
-    <string name="Buy.BillingAddress.FirstName">First Name</string>
-    <string name="Buy.BillingAddress.LastName">Last Name</string>
-    <string name="Buy.BillingAddress.Country">Country</string>
-    <string name="Buy.BillingAddress.StateProvince">State/Province</string>
-    <string name="Buy.BillingAddress.PostalCode">ZIP/Postal Code</string>
-    <string name="Buy.BillingAddress.Address">Address</string>
-    <string name="Buy.BillingAddress.City">City</string>
+    <string name="Buy.BillingAddress">Billing address</string>
+    <string name="Buy.FirstName">First Name</string>
+    <string name="Buy.LastName">Last Name</string>
+    <string name="Buy.Country">Country</string>
+    <string name="Buy.StateProvince">State/Province</string>
+    <string name="Buy.ZIPPostalCode">ZIP/Postal Code</string>
+    <string name="Buy.Address">Address</string>
+    <string name="Buy.City">City</string>
 
     <!-- Add card screen -->
     <string name="Buy.AddCard.Title">Add card</string>
