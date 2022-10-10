@@ -149,6 +149,8 @@
     <string name="Button.dismiss">Dismiss</string>
     <!-- Done button title -->
     <string name="Button.done">Done</string>
+    <!-- Finish button title -->
+    <string name="Button.Finish">Finish</string>
     <!-- Button to return to the "home" screen (the home screen is the top menu). -->
     <string name="Button.Home">Home</string>
     <!-- Ignore button label -->
@@ -1531,13 +1533,18 @@
     <string name="Swap.TransactionItem.PurchasePending">Pending purchase</string>
     <string name="Swap.TransactionItem.Refunded">Refunded</string>
 
-    <!-- Delete account screen -->
-    <string name="DeleteAccountInfo.Title">You are about to delete your Fabriik account.</string>
-    <string name="DeleteAccountInfo.Subtitle">What does this mean?</string>
-    <string name="DeleteAccountInfo.Description">- You will no longer be able to use your email to sign in into Fabriik Wallet\n\n- You will no longer be able to user your KYC and registration status\n\n- Your private keys are still yours, keep your security phrase in a safe place in case you need to restore your wallet.</string>
-    <string name="DeleteAccountInfo.Checkbox">I understand that the only way to recover my wallet is by entering my recovery phrase</string>
-
-    <!-- Delete account dialog -->
-    <string name="DeleteAccountDialog.Title">Your account has been deleted. We are sorry to see you go.</string>
-    <string name="DeleteAccountDialog.Finish">Finish</string>
+    <!-- Delete account title  -->
+    <string name="AccountDelete.DeleteAccountTitle">You are about to delete your Fabriik account.</string>
+    <!-- Delete account explanation title -->
+    <string name="AccountDelete.DeleteWhatMean">What does this mean?</string>
+    <!-- Delete account explanation part one -->
+    <string name="AccountDelete.ExplanationOne">-You will no longer be able to use your email to sign in into Fabriik Wallet</string>
+    <!-- Delete account explanation part three -->
+    <string name="AccountDelete.ExplanationThree">-Your private keys are still yours, keep your security phrase in a safe place in case you need to restore your wallet.</string>
+    <!-- Delete account explanation part two -->
+    <string name="AccountDelete.ExplanationTwo">-You will no longer be able to user your KYC and registration status</string>
+    <!-- Recover wallet text after deleting account -->
+    <string name="AccountDelete.RecoverWallet">I understand that the only way to recover my wallet is by entering my recovery phrase</string>
+    <!-- Popup text when the account is deleted -->
+    <string name="AccountDelete.AccountDeletedPopup">Your account has been deleted.We are sorry to see you go.</string>
 </resources>

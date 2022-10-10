@@ -218,10 +218,10 @@ object RecoveryKey {
                     requestKey = DIALOG_ACCOUNT_DELETED,
                     showDismissButton = true,
                     iconRes = R.drawable.ic_flow_completed,
-                    titleRes = R.string.DeleteAccountDialog_Title,
+                    titleRes = R.string.AccountDelete_AccountDeletedPopup,
                     titleTextGravity = Gravity.CENTER,
                     positive = FabriikGenericDialogArgs.ButtonData(
-                        titleRes = R.string.DeleteAccountDialog_Finish,
+                        titleRes = R.string.Button_Finish,
                         resultKey = DIALOG_ACCOUNT_DELETED_POSITIVE
                     )
                 )

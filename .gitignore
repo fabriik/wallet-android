@@ -17,6 +17,7 @@ local.properties
 .idea/
 external/walletkit/.idea
 .david/
+.phrase.yml
 
 # Created by https://www.gitignore.io/api/jetbrains
 
