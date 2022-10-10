@@ -1176,6 +1176,69 @@ We are sorry to see you go.</string>
     <string name="SupportForm.helpUsImprove">Help us improve</string>
     <string name="SupportForm.notNow">Not now</string>
     <string name="SupportForm.pleaseDescribe">Please describe your experience</string>
+    <!-- Add item label in swap flow -->
+    <string name="Swap.AddItem">Add item!</string>
+    <!-- Amount purchased label in detail swap screen -->
+    <string name="Swap.AmountPurchased">Amount purchased</string>
+    <!-- Back to Home button -->
+    <string name="Swap.BackToHome">Back to Home</string>
+    <!-- Balance text on swap -->
+    <string name="Swap.Balance">I have %@ %@</string>
+    <!-- Card fee label in swap details screen -->
+    <string name="Swap.CardFee">Card fee</string>
+    <!-- Title on check your assets popup -->
+    <string name="Swap.CheckAssets">Check your assets!</string>
+    <!-- Text body in check your assets popup -->
+    <string name="Swap.CheckAssetsBody">In order to succesfully perform a swap, make sure you have two or more of our supported swap assets (BSV, BTC, ETH, BCH, SHIB, USDT) activated and funded within your wallet.</string>
+    <!-- Swap details title -->
+    <string name="Swap.Details">Swap details</string>
+    <!-- There was an error while processing your transaction title in failure swap screen -->
+    <string name="Swap.ErrorProcessingTransaction">There was an error while processing your transaction</string>
+    <!-- Error swap message on Failure screen -->
+    <string name="Swap.FailureSwapMessage">Please try swapping again or come back later.</string>
+    <!-- Popup button got it -->
+    <string name="Swap.GotItButton">Got it!</string>
+    <!-- Swap and Buy I want label from currency -->
+    <string name="Swap.iWant">I want</string>
+    <!-- Mining network fee label in swap details screen -->
+    <string name="Swap.MiningNetworkFee">Mining network fee</string>
+    <!-- Not a valid pair -->
+    <string name="Swap.NotValidPair">Not a valid pair</string>
+    <!-- Paid with label in swap details screen -->
+    <string name="Swap.PaidWith">Paid with</string>
+    <!-- Exchange label rate -->
+    <string name="Swap.Rate">Rate:</string>
+    <!-- Rate label in swap screen -->
+    <string name="Swap.RateValue">Rate</string>
+    <!-- Receiving network fee text label on Swap screen -->
+    <string name="Swap.ReceiveNetworkFee">Receiving network fee
+(included)</string>
+    <!-- Receiving fee label on Swap screen -->
+    <string name="Swap.ReceivingFee">Receiving fee
+</string>
+    <!-- Select assets title in swap flow -->
+    <string name="Swap.SelectAssets">Select assets</string>
+    <!-- Sending fee label on swap screen -->
+    <string name="Swap.SendingFee">Sending fee
+</string>
+    <!-- Sending network fee text label on Swap screen -->
+    <string name="Swap.SendNetworkFee">Sending network fee
+(included)</string>
+    <!-- Send network fee not included label on swap -->
+    <string name="Swap.sendNetworkFeeNotIncluded">Sending network fee
+(not included)</string>
+    <!-- Swap again button title in swap failure screen -->
+    <string name="Swap.SwapAgain">Swap again</string>
+    <!-- Swap min and max limit text -->
+    <string name="Swap.SwapLimits">Currently, minimum limit for swap is $%@ USD and maximum limit is $%@ USD/day.</string>
+    <!-- Swap status message on swap flow -->
+    <string name="Swap.SwapStatus">Your %@ is estimated to arrive in 30 minutes. You can continue to use your wallet. We\'ll let you know when your swap has finished.</string>
+    <!-- Timestamp label in swap details screen -->
+    <string name="Swap.Timestamp">Timestamp</string>
+    <!-- Total label in swap details screen -->
+    <string name="Swap.Total">Total:</string>
+    <!-- Transaction ID label in swap details screen -->
+    <string name="Swap.TransactionID">Fabriik Transaction ID</string>
     <!-- Syncing view done syncing state header text -->
     <string name="SyncingView.activity">Activity</string>
     <!-- Syncing view connectiong state header text -->

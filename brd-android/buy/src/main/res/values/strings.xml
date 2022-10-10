@@ -6,7 +6,6 @@
     <string name="Buy.Input.Continue">Continue</string>
     <string name="Buy.Input.LeftSwitchOption">Min</string>
     <string name="Buy.Input.RightSwitchOption">Max</string>
-    <string name="Buy.Input.SelectPaymentMethod">Select a payment method</string>
     <string name="Buy.Input.LimitsDisclaimer">Currently, minimum limit for buy is $30.00 USD and maximum limit is $500.00 USD per day.</string>
 
     <string name="Buy.Input.Error.MinAmount">The amount is lower than the minimum of %s. Please enter a higher amount.</string>

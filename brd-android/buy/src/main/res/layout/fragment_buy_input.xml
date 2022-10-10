@@ -35,7 +35,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
-                    android:text="@string/Buy.Input.Rate"
+                    android:text="@string/Swap.Rate"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -70,7 +70,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="8dp"
-                    android:text="@string/Buy.Input.LimitsDisclaimer"
+                    android:text="@string/Buy.BuyLimits"
                     app:layout_constrainedWidth="true"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0"
@@ -92,7 +92,7 @@
                         android:id="@+id/view_crypto_input"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:title="@string/Buy.Input.IWant" />
+                        app:title="@string/Swap.iWant" />
 
                 </com.google.android.material.card.MaterialCardView>
 
@@ -127,7 +127,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="14dp"
-                            android:text="@string/Buy.Input.SelectPaymentMethod"
+                            android:text="@string/Buy.SelectPaymentMethod"
                             app:layout_constrainedWidth="true"
                             app:layout_constraintEnd_toStartOf="@+id/iv_chevron"
                             app:layout_constraintHorizontal_bias="0"
