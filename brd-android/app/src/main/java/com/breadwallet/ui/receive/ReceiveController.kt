@@ -41,6 +41,7 @@ import com.breadwallet.tools.animation.SlideDetector
 import com.breadwallet.tools.animation.UiUtils
 import com.breadwallet.tools.manager.BRSharedPrefs
 import com.breadwallet.tools.qrcode.QRUtils
+import com.breadwallet.tools.util.TokenUtil
 import com.breadwallet.ui.BaseMobiusController
 import com.breadwallet.ui.ViewEffect
 import com.breadwallet.ui.changehandlers.BottomSheetChangeHandler
@@ -211,10 +212,8 @@ class ReceiveController(args: Bundle) : BaseMobiusController<M, E, F>(args) {
             }
 
             ifChanged(M::currencyCode) {
-                title.text = "%s %s".format(
-                    res.getString(R.string.Receive_title),
-                    currencyCode.toUpperCase(Locale.ROOT)
-                )
+                val currencyName = TokenUtil.tokenForCode(currencyCode)?.name ?: currencyCode
+                title.text = "%s %s".format(res.getString(R.string.Receive_title), currencyName)
             }
 
             ifChanged(
