@@ -383,6 +383,8 @@ We are sorry to see you go.</string>
     <string name="EME.permissions.callRequest">Request %1$s smart contract call</string>
     <!-- Service capabilities description -->
     <string name="EME.permissions.paymentRequest">Request %1$s payment</string>
+    <string name="ErrorMessages.amountTooLow">The amount is lower than the minimum of %s %s. Please enter a higher amount.</string>
+    <string name="ErrorMessages.AmountTooHigh">The amount is higher than your daily limit of %s %s. Please enter a lower amount.</string>
     <!-- Email unavailable alert title -->
     <string name="ErrorMessages.emailUnavailableMessage">This device isn\'t configured to send email with the iOS mail app.</string>
     <!-- Email unavailable alert title -->
@@ -392,6 +394,7 @@ We are sorry to see you go.</string>
     <!-- Messaging unavailable alert title -->
     <string name="ErrorMessages.messagingUnavailableMessage">This device isn\'t configured to send messages.</string>
     <!-- Messaging unavailable alert title -->
+    <string name="ErrorMessages.NetworkIssues">We are having temporary network issues. Please try again later.</string>
     <string name="ErrorMessages.messagingUnavailableTitle">Messaging Unavailable</string>
     <!-- Fingerprint was not recognized by the scanner, please try scanning again -->
     <string name="ErrorMessages.touchIdFailed.android">Fingerprint not recognized. Please try again.</string>
