@@ -1234,8 +1234,7 @@ We are sorry to see you go.</string>
     <!-- Rate label in swap screen -->
     <string name="Swap.RateValue">Rate</string>
     <!-- Receiving network fee text label on Swap screen -->
-    <string name="Swap.ReceiveNetworkFee">Receiving network fee
-(included)</string>
+    <string name="Swap.ReceiveNetworkFee">Receiving network fee\n(included)</string>
     <!-- Receiving fee label on Swap screen -->
     <string name="Swap.ReceivingFee">Receiving fee
 </string>

@@ -835,7 +835,7 @@ class SwapInputViewModel(
             descriptionRes = R.string.Swap_Input_Dialog_CheckAssets_Message,
             showDismissButton = true,
             positive = FabriikGenericDialogArgs.ButtonData(
-                titleRes = R.string.Swap_Input_Dialog_Button_GotIt,
+                titleRes = R.string.Swap_GotItButton,
                 resultKey = DIALOG_RESULT_GOT_IT
             ),
             requestKey = DIALOG_REQUEST_CHECK_ASSETS
@@ -846,7 +846,7 @@ class SwapInputViewModel(
             descriptionRes = R.string.Swap_Input_Dialog_TemporarlyUnavailable_Message,
             showDismissButton = true,
             positive = FabriikGenericDialogArgs.ButtonData(
-                titleRes = R.string.Swap_Input_Dialog_Button_GotIt,
+                titleRes = R.string.Swap_GotItButton,
                 resultKey = DIALOG_RESULT_GOT_IT
             ),
             requestKey = DIALOG_REQUEST_TEMP_UNAVAILABLE

@@ -131,7 +131,7 @@ class SwapDetailsFragment : Fragment(),
                 )
 
                 if (data.destination.transactionId.isNullOrEmpty()) {
-                    tvSwapToId.text = getString(R.string.Swap_Details_Status_Pending)
+                    tvSwapToId.text = getString(R.string.Transaction_pending)
                     tvSwapToId.setCompoundDrawablesRelative(null, null, null, null)
                     tvSwapToId.setTextColor(ContextCompat.getColor(requireContext(), R.color.light_text_02))
                 } else {
@@ -154,7 +154,7 @@ class SwapDetailsFragment : Fragment(),
                 )
 
                 if (data.source.transactionId.isNullOrEmpty()) {
-                    tvSwapFromId.text = getString(R.string.Swap_Details_Status_Pending)
+                    tvSwapFromId.text = getString(R.string.Transaction_pending)
                     tvSwapFromId.setCompoundDrawablesRelative(null, null, null, null)
                     tvSwapFromId.setTextColor(ContextCompat.getColor(requireContext(), R.color.light_text_02))
                 } else {
@@ -207,7 +207,7 @@ class SwapDetailsFragment : Fragment(),
         BRClipboardManager.putClipboard(data)
 
         FabriikToastUtil.showInfo(
-            binding.root, getString(R.string.Swap_Details_Copied)
+            binding.root, getString(R.string.Receive_copied)
         )
     }
 }
