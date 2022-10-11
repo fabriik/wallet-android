@@ -1204,7 +1204,7 @@ We are sorry to see you go.</string>
     <!-- Back to Home button -->
     <string name="Swap.BackToHome">Back to Home</string>
     <!-- Balance text on swap -->
-    <string name="Swap.Balance">I have %@ %@</string>
+    <string name="Swap.Balance">I have %s %s</string>
     <!-- Card fee label in swap details screen -->
     <string name="Swap.CardFee">Card fee</string>
     <string name="Swap.CardFee.android">Card fee:</string>
@@ -1515,24 +1515,54 @@ We are sorry to see you go.</string>
     <string name="UnlockScreen.touchIdTitle.android">Authentication required</string>
     <!-- Update PIN caption text -->
     <string name="UpdatePin.caption">Remember this PIN. If you forget it, you won\'t be able to access your assets.</string>
+    <!-- Contact Support button on update pin view -->
+    <string name="UpdatePin.ContactSupport">Contact Support</string>
     <!-- PIN creation info. -->
-    <string name="UpdatePin.createInstruction">Your PIN will be used to unlock your Fabriik and send money.</string>
+    <string name="UpdatePin.createInstruction">Your PIN will be used to unlock your Fabriik Wallet and send money</string>
     <!-- Update PIN title -->
     <string name="UpdatePin.createTitle">Set PIN</string>
     <!-- Update PIN title -->
-    <string name="UpdatePin.createTitleConfirm">Re-Enter PIN</string>
+    <string name="UpdatePin.createTitleConfirm">Confirm your new PIN</string>
+    <!-- Disabled until text on disabled wallet view -->
+    <string name="UpdatePin.DisabledUntil">Disabled until:</string>
     <!-- Enter current PIN instruction -->
     <string name="UpdatePin.enterCurrent">Enter your current PIN.</string>
     <!-- Enter new PIN instruction -->
     <string name="UpdatePin.enterNew">Enter your new PIN.</string>
+    <!-- Enter your PIN label to finish the transaction -->
+    <string name="UpdatePin.EnterPin">Please enter your PIN to confirm the transaction</string>
+    <!-- Enter PIN instruction -->
+    <string name="UpdatePin.enterYourPin">Enter your PIN</string>
+    <!-- Incorrect PIN popup message -->
+    <string name="UpdatePin.IncorrectPin">Incorrect PIN. The wallet will get disabled for 6 minutes after</string>
+    <!-- Number of attempts left on pin entry screen -->
+    <string name="UpdatePin.OneAttempt">1 more failed attempt.</string>
     <!-- Re-Enter new PIN instruction -->
     <string name="UpdatePin.reEnterNew">Re-Enter your new PIN.</string>
+    <!-- Attempts remaining on pin entry screen -->
+    <string name="UpdatePin.RemainingAttempts">Attempts remaining:</string>
+    <!-- Your PIN was reset successfully message -->
+    <string name="UpdatePin.ResetPinSuccess">Your PIN was reset successfully!</string>
+    <!-- Enter PIN header -->
+    <string name="UpdatePin.securedWallet">Secured wallet</string>
+    <!-- Update PIN title -->
+    <string name="UpdatePin.setNewPinTitle">Set your new PIN</string>
     <!-- Update PIN failure error message. -->
     <string name="UpdatePin.setPinError">Sorry, could not update PIN.</string>
     <!-- Update PIN failure alert view title -->
     <string name="UpdatePin.setPinErrorTitle">Update PIN Error</string>
+    <!-- Number of attempts left on pin entry screen -->
+    <string name="UpdatePin.TwoAttempts">2 more failed attempts.</string>
+    <!-- Update pin popup explanation when pressing "?" button -->
+    <string name="UpdatePin.UpdatePinPopup">The Fabriik Wallet app requires you to set a PIN to secure your wallet, separate from your device passcode.
+
+You will be required to enter the PIN to view your balance or send money, which keeps your wallet private even if you let someone use your phone or if your phone is stolen by someone who knows your device passcode.
+
+Do not forget your wallet PIN! It can only be reset by using your Recovery Phrase. If you forget your PIN and lose your Recovery Phrase, your wallet will be lost.</string>
     <!-- Update PIN title -->
     <string name="UpdatePin.updateTitle">Update PIN</string>
+    <!-- Why do I need a PIN title explanation popup -->
+    <string name="UpdatePin.WhyPIN">Why do I need a PIN?</string>
     <!-- Authorize to copy wallet addresses alert message -->
     <string name="URLHandling.addressaddressListAlertMessage">Copy wallet addresses to clipboard?</string>
     <!-- Authorize to copy wallet address PIN view prompt. -->
