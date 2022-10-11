@@ -9,7 +9,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:title="@string/Buy.SelectPaymentMethod.Title"
+        app:title="@string/Buy.SelectPayment"
         app:titleType="small"
         app:showDismiss="false"/>
 
@@ -52,7 +52,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
-                        android:text="@string/Buy.SelectPaymentMethod.Subtitle"
+                        android:text="@string/Buy.Card"
                         app:layout_constraintStart_toEndOf="@id/ic_credit_card"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -60,7 +60,7 @@
                         style="@style/TextStyle.Body2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/Buy.SelectPaymentMethod.Subtext"
+                        android:text="@string/Buy.AddDebitCreditCard"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="@id/tv_subtitle"
                         app:layout_constraintTop_toBottomOf="@id/tv_subtitle" />

@@ -63,8 +63,8 @@ class OrderPreviewViewModel(
     override fun onCreditInfoClicked() {
         setEffect {
             OrderPreviewContract.Effect.ShowInfoDialog(
-                title = R.string.Buy_OrderPreview_CardFeesDialog_Title,
-                description = R.string.Buy_OrderPreview_CardFeesDialog_Content
+                title = R.string.Swap_CardFee,
+                description = R.string.Buy_CardFee
             )
         }
     }
@@ -72,8 +72,8 @@ class OrderPreviewViewModel(
     override fun onNetworkInfoClicked() {
         setEffect {
             OrderPreviewContract.Effect.ShowInfoDialog(
-                title = R.string.Buy_OrderPreview_NetworkFeesDialog_Title,
-                description = R.string.Buy_OrderPreview_NetworkFeesDialog_Content
+                title = R.string.Buy_NetworkFees,
+                description = R.string.Buy_NetworkFeeMessage
             )
         }
     }
@@ -82,8 +82,8 @@ class OrderPreviewViewModel(
         setEffect {
             OrderPreviewContract.Effect.ShowInfoDialog(
                 image = R.drawable.ic_info_cvv,
-                title = R.string.Buy_AddCard_CvvDialog_Title,
-                description = R.string.Buy_AddCard_CvvDialog_Content
+                title = R.string.Buy_SecurityCode,
+                description = R.string.Buy_SecurityCodePopup
             )
         }
     }

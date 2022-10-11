@@ -36,7 +36,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/iv_icon"
-            tools:text="@string/Buy.ProcessingSucceed.Title" />
+            tools:text="@string/Buy.PurchaseSuccessTitle" />
 
         <TextView
             android:id="@+id/tv_description"
@@ -53,14 +53,14 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_title"
-            tools:text="@string/Buy.ProcessingSucceed.Description" />
+            tools:text="@string/Buy.PurchaseSuccessText" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_home"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
-            android:text="@string/Buy.Processing.BackToHome"
+            android:text="@string/Swap.BackToHome"
             app:layout_constraintBottom_toTopOf="@id/btn_different_method"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -70,7 +70,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
-            android:text="@string/Buy.Processing.TryDifferentMethod"
+            android:text="@string/Buy.TryAnotherPayment"
             app:layout_constraintBottom_toTopOf="@id/btn_purchase_details"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -81,7 +81,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
-            android:text="@string/Buy.Processing.PurchaseDetails"
+            android:text="@string/Buy.Details"
             app:layout_constraintBottom_toTopOf="@id/btn_contact_support"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -93,7 +93,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginBottom="16dp"
-            android:text="@string/Buy.Processing.ContactSupport"
+            android:text="@string/Button.contactSupport.android"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -121,7 +121,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="24dp"
-            android:text="@string/Buy.Processing.ProcessingPayment"
+            android:text="@string/Buy.ProcessingPayment"
             android:textColor="@color/white" />
 
     </LinearLayout>

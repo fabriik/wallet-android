@@ -100,8 +100,8 @@ class PaymentProcessingFragment : Fragment(),
             contentProcessing.isVisible = false
 
             ivIcon.setImageResource(R.drawable.ic_payment_failed)
-            tvTitle.setText(R.string.Buy_ProcessingFailed_Title)
-            tvDescription.setText(R.string.Buy_ProcessingFailed_Description)
+            tvTitle.setText(R.string.Buy_ErrorProcessingPayment)
+            tvDescription.setText(R.string.Buy_FailureTransactionMessage)
 
             btnHome.isVisible = false
             btnContactSupport.isVisible = true
@@ -116,8 +116,8 @@ class PaymentProcessingFragment : Fragment(),
             contentProcessing.isVisible = false
 
             ivIcon.setImageResource(R.drawable.ic_payment_succeed)
-            tvTitle.setText(R.string.Buy_ProcessingSucceed_Title)
-            tvDescription.setText(R.string.Buy_ProcessingSucceed_Description)
+            tvTitle.setText(R.string.Buy_PurchaseSuccessTitle)
+            tvDescription.setText(R.string.Buy_PurchaseSuccessText)
 
             btnHome.isVisible = true
             btnContactSupport.isVisible = false

@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        android:text="@string/Buy.SelectPaymentMethod.RemovePaymentMethod" />
+        android:text="@string/Buy.RemovePaymentMethod" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_cancel"

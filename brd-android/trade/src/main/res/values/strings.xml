@@ -42,10 +42,6 @@
     <string name="Swap.Failed.BackToHome">Back to Home</string>
     <string name="Swap.Failed.SwapAgain">Swap again</string>
 
-  <!-- Asset selection screen -->
-    <string name="Swap.AssetsSelection.Title">Select assets</string>
-    <string name="Swap.AssetsSelection.SearchHint">Search</string>
-
     <!-- Pin auth screen -->
     <string name="Swap.PinAuth.Title">Enter your PIN</string>
     <string name="Swap.PinAuth.Subtitle">Please enter your PIN to confirm the transaction</string>
