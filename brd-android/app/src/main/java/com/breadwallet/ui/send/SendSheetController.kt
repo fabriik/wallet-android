@@ -47,6 +47,7 @@ import com.breadwallet.tools.animation.UiUtils
 import com.breadwallet.tools.manager.BRSharedPrefs
 import com.breadwallet.tools.util.BRConstants
 import com.breadwallet.tools.util.Link
+import com.breadwallet.tools.util.TokenUtil
 import com.breadwallet.tools.util.Utils
 import com.breadwallet.ui.BaseMobiusController
 import com.breadwallet.ui.auth.AuthenticationController
@@ -366,8 +367,10 @@ class SendSheetController(args: Bundle? = null) :
                 M::isAmountCrypto
             ) {
                 val sendTitle = res.getString(R.string.Send_title)
+                val currencyName = TokenUtil.tokenForCode(currencyCode)?.name ?: currencyCode
                 val upperCaseCurrencyCode = currencyCode.toUpperCase(Locale.getDefault())
-                labelTitle.text = "%s %s".format(sendTitle, upperCaseCurrencyCode)
+
+                labelTitle.text = "%s %s".format(sendTitle, currencyName)
                 buttonCurrencySelect.text = when {
                     isAmountCrypto -> upperCaseCurrencyCode
                     else -> {
