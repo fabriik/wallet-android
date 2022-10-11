@@ -311,7 +311,7 @@ We are sorry to see you go.</string>
     <string name="CloudBackup.mainTitle">iCloud Recovery Backup</string>
     <string name="CloudBackup.mainWarning">iCloud Keychain must be turned on in the iOS Settings app for this feature to work</string>
     <string name="CloudBackup.mainWarningConfirmation">Are you sure you want to disable iCloud Backup? This will delete your backup from all devices.</string>
-    <string name="CloudBackup.pinAttempts">Attempts remaining before erasing backup: %1$@</string>
+    <string name="CloudBackup.pinAttempts">Attempts remaining before erasing backup: %1$s</string>
     <string name="CloudBackup.recoverButton">Restore from Recovery Phrase</string>
     <string name="CloudBackup.recoverHeader">Enter PIN to unlock iCloud backup</string>
     <string name="CloudBackup.restoreButton">Restore from iCloud Backup</string>
@@ -321,7 +321,7 @@ We are sorry to see you go.</string>
     <string name="CloudBackup.step3">Tap iCloud.</string>
     <string name="CloudBackup.step4">Verify that iCloud Keychain is ON</string>
     <string name="CloudBackup.understandText">I understand that this feature will not work unless iCloud Keychain is enabled.</string>
-    <string name="CloudBackup.warningBody">Your iCloud backup will be erased after %1$@ more incorrect PIN attempts.</string>
+    <string name="CloudBackup.warningBody">Your iCloud backup will be erased after %1$s more incorrect PIN attempts.</string>
     <!-- Amount to Send: ($1.00) -->
     <string name="Confirmation.amountLabel">Amount to Send:</string>
     <string name="Confirmation.destinationTag">Destination Tag</string>
@@ -824,7 +824,7 @@ We are sorry to see you go.</string>
     <!-- Title for a button that takes the user to the wallet after setting up the recovery key. -->
     <string name="RecoveryKeyFlow.goToWalletButtonTitle">Go to Wallet</string>
     <!-- Hint text for recovery key intro page, e.g., Step 2 -->
-    <string name="RecoveryKeyFlow.howItWorksStep">How it works - Step %1$@</string>
+    <string name="RecoveryKeyFlow.howItWorksStep">How it works - Step %1$s</string>
     <!-- Error text displayed when the user enters an incorrect recovery phrase -->
     <string name="RecoveryKeyFlow.invalidPhrase">Some of the words you entered do not match your recovery phrase. Please try again.</string>
     <!-- Title for recovery key intro page -->
@@ -872,7 +872,7 @@ We are sorry to see you go.</string>
     <!-- Title for the write recovery phrase screen -->
     <string name="RecoveryKeyFlow.writeKeyScreenTitle">Your Recovery Phrase</string>
     <!-- Title for the step number when the user pages through the recovery words -->
-    <string name="RecoveryKeyFlow.writeKeyStepTitle">%1$@ of %2$@</string>
+    <string name="RecoveryKeyFlow.writeKeyStepTitle">%1$s of %2$s</string>
     <!-- No amount entered error message. -->
     <string name="RequestAnAmount.noAmount">Please enter an amount first.</string>
     <!-- Request a specific amount of bitcoin -->
@@ -908,7 +908,7 @@ We are sorry to see you go.</string>
     <!-- Scan bitcoin address camera flash toggle -->
     <string name="Scanner.flashButtonLabel">Camera Flash</string>
     <!-- (alert dialog message) Would you like to send a [Bitcoin / Bitcoin Cash / Ethereum] payment to this address?") -->
-    <string name="Scanner.paymentPromptMessage">Would you like to send a %1$@ payment to this address?</string>
+    <string name="Scanner.paymentPromptMessage">Would you like to send a %1$s payment to this address?</string>
     <!-- alert dialog title -->
     <string name="Scanner.paymentPromptTitle">Send Payment</string>
     <!-- Complete filter label -->
@@ -1185,7 +1185,7 @@ We are sorry to see you go.</string>
     <!-- button label -->
     <string name="StartPaperPhrase.buttonTitle">Write Down Recovery Phrase</string>
     <!-- Argument is date; date should be on a new line -->
-    <string name="StartPaperPhrase.date">Last written down on\n %1$@</string>
+    <string name="StartPaperPhrase.date">Last written down on\n %1$s</string>
     <!-- button label -->
     <string name="StartViewController.createButton">Create New Wallet</string>
     <!-- Start view message -->
@@ -1350,6 +1350,8 @@ We are sorry to see you go.</string>
     <string name="Transaction.exchangeOnDaySent">Exchange rate when sent:</string>
     <!-- Transaction failed status text -->
     <string name="Transaction.failed">Failed</string>
+    <!-- Failed swap label in transaction view -->
+    <string name="Transaction.FailedSwap">Failed swap</string>
     <!-- (b600 fee) -->
     <string name="Transaction.fee">(%1$s fee)</string>
     <!-- Invalid transaction -->
@@ -1359,6 +1361,14 @@ We are sorry to see you go.</string>
     <string name="Transaction.ManuallySettled">Manually settled</string>
     <!-- Transaction is pending status text -->
     <string name="Transaction.pending">Pending</string>
+    <!-- Pending purchase label in transaction view -->
+    <string name="Transaction.PendingPurchase">Pending purchase</string>
+    <!-- Pending swap label in transaction view -->
+    <string name="Transaction.PendingSwap">Pending swap</string>
+    <!-- Purchased label in transaction view -->
+    <string name="Transaction.Purchased">Purchased</string>
+    <!-- Purchase failed label in transaction view -->
+    <string name="Transaction.PurchaseFailed">Purchase failed</string>
     <!-- Receive status text: 'In progress: 20%' -->
     <string name="Transaction.receivedStatus">In progress: %1$s</string>
     <string name="Transaction.refunded">Refunded</string>
@@ -1371,7 +1381,9 @@ We are sorry to see you go.</string>
     <string name="Transaction.stakingTo">staking to %1$s</string>
     <!-- eg. Starting balance: $50.00 -->
     <string name="Transaction.starting">Starting balance: %1$s</string>
-    <!-- e.g. "[The money you paid was a] Fee for token transfer: Fabriik" (Fabriik is the token that was transfered) -->
+    <!-- Swapped transaction label -->
+    <string name="Transaction.Swapped">Swapped</string>
+    <!-- e.g. "[The money you paid was a] Fee for token transfer: BRD" (BRD is the token that was transfered) -->
     <string name="Transaction.tokenTransfer">Fee for token transfer: %1$s</string>
     <string name="Transaction.toRecipient">to %1$s</string>
     <!-- Waiting to be confirmed string -->
@@ -1711,9 +1723,5 @@ We are sorry to see you go.</string>
     <string name="Swap.TransactionItem.SwappingTo">Swapping to %s</string>
     <string name="Swap.TransactionItem.SwapFromFailed">Swap from %s failed</string>
     <string name="Swap.TransactionItem.SwapToFailed">Swap to %s failed</string>
-    <string name="Swap.TransactionItem.Purchased">Purchased</string>
-    <string name="Swap.TransactionItem.PurchaseFailed">Purchase failed</string>
-    <string name="Swap.TransactionItem.PurchasePending">Pending purchase</string>
-    <string name="Swap.TransactionItem.Refunded">Refunded</string>
 
 </resources>
