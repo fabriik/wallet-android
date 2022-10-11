@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Swap input screen -->
+    <!-- Swap input screen
     <string name="Swap.Input.Title">Swap</string>
     <string name="Swap.Input.IHave">I have %s</string>
     <string name="Swap.Input.IWant">I want</string>
@@ -14,14 +14,12 @@
     <string name="Swap.Input.ReceivingFeeTitle">Receiving network fee</string>
     <string name="Swap.Input.ReceivingFeeIncludedTitle">Receiving network fee\n(included)</string>
 
-    <!-- Swap input screen dialogs -->
     <string name="Swap.Input.Dialog.CheckAssets.Title">Check your assets!</string>
     <string name="Swap.Input.Dialog.CheckAssets.Message">In order to successfully perform a swap, make sure you have two or more of our supported swap assets activated and funded within your wallet.</string>
     <string name="Swap.Input.Dialog.TemporarlyUnavailable.Title">Swap is temporarily unavailable</string>
     <string name="Swap.Input.Dialog.TemporarlyUnavailable.Message">We are having temporary issues connecting to our network. Please try again later.</string>
     <string name="Swap.Input.Dialog.Button.GotIt">Got it!</string>
 
-    <!-- Swap input screen errors -->
     <string name="Swap.Input.Error.OneSwapLimit">A maximum of one swap can be active for a currency at a time</string>
     <string name="Swap.Input.Error.QuoteExpired">Your swap request timed out. Please try again.</string>
     <string name="Swap.Input.Error.InsuficientFunds">You need %1$s %2$s in your wallet to cover network fees. Please add more %2$s to your wallet. </string>
@@ -36,17 +34,14 @@
     <string name="Swap.Input.Error.EthFeeBalance">%1$s is an ERC-20 token on the Ethereum blockchain and requires ETH network fees. Please add ETH to your wallet.</string>
     <string name="Swap.Input.Warning.EthFeeBalance">It seems that your transaction takes place in the Ethereum network, please keep in mind that network fees will be charged in ETH</string>
 
-    <!-- Swap failed screen -->
     <string name="Swap.Failed.Title">There was an error while processing your transaction</string>
     <string name="Swap.Failed.Description">Please try swapping again or come back later.</string>
     <string name="Swap.Failed.BackToHome">Back to Home</string>
     <string name="Swap.Failed.SwapAgain">Swap again</string>
 
-    <!-- Pin auth screen -->
     <string name="Swap.PinAuth.Title">Enter your PIN</string>
     <string name="Swap.PinAuth.Subtitle">Please enter your PIN to confirm the transaction</string>
 
-    <!-- Details Screen -->
     <string name="Swap.Details.Status.Pending">Pending</string>
     <string name="Swap.Details.Status.Complete">Complete</string>
     <string name="Swap.Details.Status.Refunded">Refunded</string>
@@ -61,7 +56,6 @@
     <string name="Swap.Details.TransactionIdTo.Title">%1$s Transaction ID</string>
     <string name="Swap.Details.Copied">Copied to clipboard.</string>
 
-    <!-- Confirmation dialog -->
     <string name="Swap.Confirmation.Title">Confirmation</string>
     <string name="Swap.Confirmation.From">From</string>
     <string name="Swap.Confirmation.To">To</string>
@@ -73,7 +67,6 @@
     <string name="Swap.Confirmation.Confirm">Confirm</string>
     <string name="Swap.Confirmation.Cancel">Cancel</string>
 
-    <!-- Swap processing screen -->
     <string name="Swap.Processing.BackToHome">Back to Home</string>
     <string name="Swap.Processing.SwapDetails">Swap details</string>
 
@@ -83,5 +76,5 @@
 
     <string name="Swap.KycLimits.Kyc1">Currently, minimum limit for swap is $50.00 USD and\nmaximum limit is $1,000.00 USD/day.</string>
     <string name="Swap.KycLimits.Kyc2">Currently, minimum limit for swap is $50.00 USD and\nmaximum limit is $10,000.00 USD/day.</string>
-
+-->
 </resources>

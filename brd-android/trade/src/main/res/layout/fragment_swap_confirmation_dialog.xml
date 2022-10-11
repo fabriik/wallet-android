@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
         android:layout_marginTop="16dp"
-        android:text="@string/Swap.Confirmation.Title"
+        android:text="@string/Confirmation.title"
         android:textColor="@color/light_text_03"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
         android:layout_marginTop="16dp"
-        android:text="@string/Swap.Confirmation.From"
+        android:text="@string/TransactionDetails.addressFromHeader"
         android:textColor="@color/light_text_02"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/view_divider" />
@@ -60,7 +60,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
-        android:text="@string/Swap.Confirmation.To"
+        android:text="@string/TransactionDetails.addressToHeader"
         android:textColor="@color/light_text_02"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_from_value" />
@@ -83,7 +83,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
-        android:text="@string/Swap.Confirmation.Rate"
+        android:text="@string/Swap.RateValue"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_to_value" />
 
@@ -105,7 +105,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
-        android:text="@string/Swap.Confirmation.SendingFee"
+        android:text="@string/Swap.SendingFee"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_rate_value" />
 
@@ -138,7 +138,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
-        android:text="@string/Swap.Confirmation.ReceivingFee"
+        android:text="@string/Swap.ReceivingFee"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_sending_fee_fiat_value" />
 
@@ -171,7 +171,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
-        android:text="@string/Swap.Confirmation.Cost"
+        android:text="@string/Confirmation.totalLabel"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_receiving_fee_fiat_value" />
 
@@ -192,7 +192,7 @@
         android:layout_height="48dp"
         android:layout_marginHorizontal="24dp"
         android:layout_marginTop="16dp"
-        android:text="@string/Swap.Confirmation.Confirm"
+        android:text="@string/Button.confirm"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_total_value" />
@@ -204,7 +204,7 @@
         android:layout_marginHorizontal="24dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/bg_cancel_btn"
-        android:text="@string/Swap.Confirmation.Cancel"
+        android:text="@string/Button.cancel"
         android:textAllCaps="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
