@@ -83,7 +83,7 @@ sealed class ExchangeData(
                     transactionData.getWithdrawalCurrencyUpperCase()
                 )
                 ExchangeOrderStatus.REFUNDED -> context.getString(
-                    R.string.Swap_TransactionItem_Refunded
+                    R.string.Transaction_refunded
                 )
                 else -> null
             }
@@ -97,16 +97,16 @@ sealed class ExchangeData(
         override fun getTransactionTitle(context: Context): String? {
             return when (transactionData.exchangeStatus) {
                 ExchangeOrderStatus.PENDING -> context.getString(
-                    R.string.Swap_TransactionItem_PurchasePending
+                    R.string.Transaction_PendingPurchase
                 )
                 ExchangeOrderStatus.COMPLETE, ExchangeOrderStatus.MANUALLY_SETTLED -> context.getString(
-                    R.string.Swap_TransactionItem_Purchased
+                    R.string.Transaction_Purchased
                 )
                 ExchangeOrderStatus.FAILED -> context.getString(
-                    R.string.Swap_TransactionItem_PurchaseFailed
+                    R.string.Transaction_PurchaseFailed
                 )
                 ExchangeOrderStatus.REFUNDED -> context.getString(
-                    R.string.Swap_TransactionItem_Refunded
+                    R.string.Transaction_refunded
                 )
                 else -> null
             }
@@ -132,7 +132,7 @@ sealed class ExchangeData(
                     transactionData.getDepositCurrencyUpperCase()
                 )
                 ExchangeOrderStatus.REFUNDED -> context.getString(
-                    R.string.Swap_TransactionItem_Refunded
+                    R.string.Transaction_refunded
                 )
                 else -> null
             }
