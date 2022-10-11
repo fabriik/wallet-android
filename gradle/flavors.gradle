@@ -10,7 +10,7 @@ android {
             buildConfigField "boolean", "BITCOIN_TESTNET", "false"
 
             if (isAppModule) {
-                applicationId "com.fabriik.app"
+                applicationId "com.rockwallet.app"
             }
         }
         stagingMainnet {
@@ -20,7 +20,7 @@ android {
             buildConfigField "boolean", "BITCOIN_TESTNET", "false"
 
             if (isAppModule) {
-                applicationId "com.fabriik.app.stg.mainnet"
+                applicationId "com.rockwallet.app.stg.mainnet"
             }
         }
         developmentMainnet {
@@ -30,7 +30,7 @@ android {
             buildConfigField "boolean", "BITCOIN_TESTNET", "false"
 
             if (isAppModule) {
-                applicationId "com.fabriik.app.dev.mainnet"
+                applicationId "com.rockwallet.app.dev.mainnet"
             }
         }
         developmentTestnet {
@@ -40,7 +40,7 @@ android {
             buildConfigField "boolean", "BITCOIN_TESTNET", "true"
 
             if (isAppModule) {
-                applicationId "com.fabriik.app.dev.testnet"
+                applicationId "com.rockwallet.app.dev.testnet"
             }
         }
     }

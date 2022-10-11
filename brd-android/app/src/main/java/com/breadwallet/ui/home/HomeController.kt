@@ -74,7 +74,6 @@ import org.kodein.di.direct
 import org.kodein.di.erased.instance
 import com.fabriik.registration.ui.RegistrationActivity
 
-private const val EMAIL_SUCCESS_DELAY = 3_000L
 private const val NETWORK_TESTNET = "TESTNET"
 private const val NETWORK_MAINNET = "MAINNET"
 

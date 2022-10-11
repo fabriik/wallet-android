@@ -1,25 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/intro_layout"
     android:background="@color/dark_blue_fabriik"
-                                                   android:layout_width="match_parent"
-                                                   android:layout_height="match_parent"
-                                                   android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <com.airbnb.lottie.LottieAnimationView
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/animationView"
         android:layout_marginBottom="40dp"
         android:layout_marginTop="128dp"
-        android:id="@+id/animationView"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        app:lottie_rawRes="@raw/fabriik_animation"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_rockwallet_icon" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        app:layout_constraintTop_toBottomOf="@+id/animationView"
+        android:id="@+id/animationView2"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="40dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_rockwallet_letters" />
 
     <com.breadwallet.legacy.presenter.customviews.BRButton
         android:id="@+id/button_new_wallet"
@@ -28,7 +37,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:padding="10dp"
-        android:text="@string/Onboarding.getStarted"
+        android:text="@string/StartViewController.createButton"
         android:textColor="@color/white"
         android:textSize="@dimen/button_text_size"
         app:buttonColor="@color/on_boarding_buy_button"
@@ -73,7 +82,7 @@
         app:layout_constraintBottom_toTopOf="@+id/button_new_wallet"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logo_view"
+        app:layout_constraintTop_toBottomOf="@+id/animationView2"
         app:layout_constraintVertical_bias="0.13" />
 
     <ImageButton

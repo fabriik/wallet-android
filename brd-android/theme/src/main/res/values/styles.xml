@@ -19,8 +19,6 @@
         <item name="switchStyle">@style/switchStyle</item>
         <item name="snackbarStyle">@style/snackBarStyle</item>
         <item name="toolbar_back_arrow_dark">@drawable/ic_arrow_left</item>
-        <item name="android:windowSplashScreenBackground">@color/white</item>
-        <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_splash_screen</item>
     </style>
 
     <!-- ActionBar styles -->

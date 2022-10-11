@@ -1,5 +1,6 @@
 package com.breadwallet.ui.onboarding
 
+import android.graphics.Paint
 import android.os.Bundle
 import android.view.View
 import com.bluelinelabs.conductor.RouterTransaction
@@ -40,6 +41,8 @@ class WelcomeController(
             buttonNewWallet.setOnClickListener {
                 eventConsumer.accept(E.OnBrowseClicked)
             }
+
+            buttonRecoverWallet.paintFlags = buttonRecoverWallet.paintFlags or Paint.UNDERLINE_TEXT_FLAG
         }
     }
 }

@@ -71,7 +71,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:pinDigitsResId="@drawable/ic_pin_dot_empty_blue"
-        app:pinFilledDotResId="@drawable/ic_pin_dot_filled_blue"/>
+            app:pinDigitsResId="@drawable/ic_pin_dot_empty_green"
+        app:pinFilledDotResId="@drawable/ic_pin_dot_filled_green"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

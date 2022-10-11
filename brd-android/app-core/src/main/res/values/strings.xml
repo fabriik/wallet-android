@@ -475,7 +475,7 @@ We are sorry to see you go.</string>
     <!-- This section lists the users wallets -->
     <string name="HomeScreen.portfolio">Wallets</string>
     <!-- Label for the total balance of all the user's assets (style is all lower case if your language permits) -->
-    <string name="HomeScreen.totalAssets">Total Assets</string>
+    <string name="HomeScreen.totalAssets">Balance</string>
     <!-- (Tap here to) trade (your assets for other assets) -->
     <string name="HomeScreen.trade">Swap</string>
     <!-- Home screen toolbar 'balance' button -->
@@ -639,7 +639,7 @@ We are sorry to see you go.</string>
     <!-- Onboarding screen Page 4 title -->
     <string name="OnboardingPageFour.title">Start investing today with as little as $50!</string>
     <!-- Onboarding screen Page 1 title -->
-    <string name="OnboardingPageOne.title">Welcome to your new digital asset wallet!</string>
+    <string name="OnboardingPageOne.title">Empowering you in the emerging digital asset economy</string>
     <!-- Onboarding screen Page 3 subtitle -->
     <string name="OnboardingPageThree.subtitle">Invest and diversify with Fabriik, easily and securely.</string>
     <!-- Onboarding screen Page 3 title -->
