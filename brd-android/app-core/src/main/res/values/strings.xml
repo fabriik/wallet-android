@@ -247,6 +247,7 @@ We are sorry to see you go.</string>
     <string name="Buy.FirstName">First Name</string>
     <!-- Last Name label in billing address view on buy flow -->
     <string name="Buy.LastName">Last Name</string>
+    <string name="Buy.InvalidExpirationDate">Entered expiration date is not valid!</string>
     <!-- Month and year label in add card flow -->
     <string name="Buy.MonthYear">MM/YY</string>
     <!-- Network fee message in order preview screen -->
@@ -261,6 +262,7 @@ We are sorry to see you go.</string>
     <string name="Buy.PaymentMethod">Payment method</string>
     <!-- Pay with label in buy flow -->
     <string name="Buy.PayWith">Pay with</string>
+    <string name="Buy.ProcessingPayment">Processing payment</string>
     <!-- Purchase success text in purchase details screen  -->
     <string name="Buy.PurchaseSuccessText">This purchase will appear as ‘Fabriik Wallet’ on your bank statement.</string>
     <!-- Your assets are on the way message in purchase details screen -->
@@ -648,8 +650,14 @@ We are sorry to see you go.</string>
     <string name="OnboardingPageTwo.title">Join people around the world who trust Fabriik.</string>
     <!-- Eg. Send 1.0Eth to purchase CCC -->
     <string name="PaymentConfirmation.amountText">Send %1$s to purchase %2$s</string>
+    <!-- Payment expired message -->
+    <string name="PaymentConfirmation.PaymentExpired">The payment has expired due to inactivity. Please try again with the same card, or use a different card.</string>
+    <!-- Payment verification timeout message -->
+    <string name="PaymentConfirmation.PaymentTimeout">Payment verification timeout</string>
     <!-- Payment confirmation view title -->
     <string name="PaymentConfirmation.title">Confirmation</string>
+    <!-- Try again button title in payment view -->
+    <string name="PaymentConfirmation.TryAgain">Try again</string>
     <!-- Bad Payment request alert title -->
     <string name="PaymentProtocol.Errors.badPaymentRequest">Bad Payment Request</string>
     <!-- Error opening payment protocol file message -->
