@@ -80,8 +80,8 @@ class OrderPreviewFragment : Fragment(),
                 viewModel.setEvent(OrderPreviewContract.Event.OnConfirmClicked)
             }
 
-            val clickableText = getString(R.string.Buy_OrderPreview_TermsCondition)
-            val fullText = getString(R.string.Buy_OrderPreview_Subtext, clickableText)
+            val clickableText = getString(R.string.About_terms)
+            val fullText = getString(R.string.Buy_Terms_android, clickableText)
             tvTermsConditions.text = getSpannableText(fullText, clickableText)
             tvTermsConditions.movementMethod = LinkMovementMethod.getInstance()
         }

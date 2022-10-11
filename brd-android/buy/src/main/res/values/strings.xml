@@ -77,7 +77,6 @@
     <string name="Buy.Details.Title">Purchase details</string>
     <string name="Buy.Details.OrderId">Fabriik Transaction ID</string>
     <string name="Buy.Details.Timestamp">Timestamp</string>
-    <string name="Buy.Details.CryptoTransactionId">%s Transaction ID</string>
     <string name="Buy.Details.Status.Pending">Pending</string>
     <string name="Buy.Details.Status.Complete">Complete</string>
     <string name="Buy.Details.Status.Refunded">Refunded</string>

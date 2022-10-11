@@ -185,6 +185,7 @@ We are sorry to see you go.</string>
     <string name="Button.openSettings">Open Settings</string>
     <!-- receive button -->
     <string name="Button.receive">Receive</string>
+    <string name="Button.remove">Remove</string>
     <!-- Button label to open Security Settings. -->
     <string name="Button.securitySettings.android">Security Settings</string>
     <!-- Click this button to sell an asset -->
@@ -269,6 +270,7 @@ We are sorry to see you go.</string>
     <string name="Buy.PurchaseSuccessTitle">Your assets are on the way!</string>
     <!-- Are you sure you want to remove this card title dialog -->
     <string name="Buy.RemoveCard">Are you sure you want to remove card ending in</string>
+    <string name="Buy.RemoveCard.android">Are you sure you want to remove card ending in %s?</string>
     <!-- You will no longer be able to use it to buy assets description on removing card dialog  -->
     <string name="Buy.RemoveCardOption">You will no longer be able to use it to buy assets.</string>
     <!-- Remove payment method action sheet option on profile screen -->
@@ -283,8 +285,10 @@ We are sorry to see you go.</string>
     <string name="Buy.StateProvince">State/Province</string>
     <!-- By placing this order you agree to our terms message when ordering -->
     <string name="Buy.Terms">By placing this order you agree to our</string>
+    <string name="Buy.Terms.android">By placing this order you agree to our %s</string>
     <!-- Try a different payment method button title in failure buy screen -->
     <string name="Buy.TryAnotherPayment">Try a different payment method</string>
+    <string name="Buy.txHashHeader">%s Transaction ID</string>
     <!-- Your order label in buy flow -->
     <string name="Buy.YourOrder">Your order:</string>
     <!-- ZIP/Postal Code label in billing address view on buy flow -->

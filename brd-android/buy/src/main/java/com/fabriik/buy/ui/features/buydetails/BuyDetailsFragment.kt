@@ -172,7 +172,7 @@ class BuyDetailsFragment : Fragment(),
 
             // {cryptoCurrency} Transaction ID item
             tvCryptoTransactionIdTitle.text = getString(
-                R.string.Buy_Details_CryptoTransactionId, data.destination.currency.uppercase(Locale.getDefault())
+                R.string.Buy_txHashHeader, data.destination.currency.uppercase()
             )
 
             if (data.destination.transactionId.isNullOrEmpty()) {
