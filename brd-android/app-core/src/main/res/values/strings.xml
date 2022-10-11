@@ -218,6 +218,7 @@ We are sorry to see you go.</string>
     <string name="Buy.BillingAddress">Billing address</string>
     <!-- Buy min and max limit text -->
     <string name="Buy.BuyLimits">Currently, minimum limit for buy is $%@ USD and maximum limit is $%@ USD/day.</string>
+    <string name="Buy.BuyLimits.android">Currently, minimum limit for buy is $30.00 USD and maximum limit is $500.00 USD per day.</string>
     <!-- Card label on add card flow -->
     <string name="Buy.Card">Card</string>
     <!-- CVV label in add card flow -->
