@@ -282,6 +282,7 @@ We are sorry to see you go.</string>
     <string name="Buy.SecurityCodePopup">Please enter the 3 digit CVV number as it appears on the back of your card</string>
     <!-- Select payment method title in buy flow -->
     <string name="Buy.SelectPayment">Select payment method</string>
+    <string name="Buy.SelectPaymentMethod">Select a payment method</string>
     <!-- State/Province label in billing address view on buy flow -->
     <string name="Buy.StateProvince">State/Province</string>
     <!-- By placing this order you agree to our terms message when ordering -->
@@ -1199,12 +1200,14 @@ We are sorry to see you go.</string>
     <string name="Swap.AddItem">Add item!</string>
     <!-- Amount purchased label in detail swap screen -->
     <string name="Swap.AmountPurchased">Amount purchased</string>
+    <string name="Swap.AmountPurchased.android">Amount purchased:</string>
     <!-- Back to Home button -->
     <string name="Swap.BackToHome">Back to Home</string>
     <!-- Balance text on swap -->
     <string name="Swap.Balance">I have %@ %@</string>
     <!-- Card fee label in swap details screen -->
     <string name="Swap.CardFee">Card fee</string>
+    <string name="Swap.CardFee.android">Card fee:</string>
     <!-- Title on check your assets popup -->
     <string name="Swap.CheckAssets">Check your assets!</string>
     <!-- Text body in check your assets popup -->
@@ -1221,6 +1224,7 @@ We are sorry to see you go.</string>
     <string name="Swap.iWant">I want</string>
     <!-- Mining network fee label in swap details screen -->
     <string name="Swap.MiningNetworkFee">Mining network fee</string>
+    <string name="Swap.MiningNetworkFee.android">Mining network fee:</string>
     <!-- Not a valid pair -->
     <string name="Swap.NotValidPair">Not a valid pair</string>
     <!-- Paid with label in swap details screen -->

@@ -141,10 +141,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:text="@{@string/Swap.AmountPurchased + `:`}"
+                        android:text="@string/Swap.AmountPurchased.android"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_rate_title"
-                        tools:text="@string/Swap.AmountPurchased" />
+                        app:layout_constraintTop_toBottomOf="@id/tv_rate_title" />
 
                     <TextView
                         android:id="@+id/tv_purchased_amount"
@@ -161,10 +160,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:text="@{@string/Swap.CardFee + `:`}"
+                        android:text="@string/Swap.CardFee.android"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_purchased_amount_title"
-                        tools:text="@string/Swap.CardFee" />
+                        app:layout_constraintTop_toBottomOf="@id/tv_purchased_amount_title" />
 
                     <TextView
                         android:id="@+id/tv_credit_fee_amount"
@@ -181,10 +179,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:text="@{@string/Swap.MiningNetworkFee + `:`}"
+                        android:text="@string/Swap.MiningNetworkFee.android"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_credit_fee_title"
-                        tools:text="@string/Swap.MiningNetworkFee" />
+                        app:layout_constraintTop_toBottomOf="@id/tv_credit_fee_title" />
 
                     <TextView
                         android:id="@+id/tv_network_fee_amount"
