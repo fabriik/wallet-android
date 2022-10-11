@@ -317,10 +317,11 @@ class SwapInputFragment : Fragment(),
             cvSwap.setDestinationCurrency(state.destinationCryptoCurrency.uppercase())
             cvSwap.setSourceCurrencyTitle(
                 getString(
-                    R.string.Swap_Input_IHave, state.sourceCryptoBalance.formatCryptoForUi(
-                        currencyCode = state.sourceCryptoCurrency,
+                    R.string.Swap_Balance, state.sourceCryptoBalance.formatCryptoForUi(
+                        currencyCode = null,
                         scale = SCALE_CRYPTO
-                    )
+                    ),
+                    state.sourceCryptoCurrency
                 )
             )
 

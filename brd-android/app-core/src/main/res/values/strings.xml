@@ -1239,6 +1239,7 @@ We are sorry to see you go.</string>
     <!-- Receiving fee label on Swap screen -->
     <string name="Swap.ReceivingFee">Receiving fee
 </string>
+    <string name="Swap.RequestTimedOut">Your swap request timed out. Please try again.</string>
     <!-- Select assets title in swap flow -->
     <string name="Swap.SelectAssets">Select assets</string>
     <!-- Sending fee label on swap screen -->
