@@ -71,8 +71,7 @@ class PaymentMethodViewModel(
             PaymentMethodContract.Effect.ShowConfirmationDialog(
                 FabriikGenericDialogArgs(
                     requestKey = REQUEST_CONFIRMATION_DIALOG,
-                    titleRes = R.string.Buy_SelectPaymentMethod_RemovalConfirmationDialog_Title,
-                    descriptionRes = R.string.Buy_SelectPaymentMethod_RemovalConfirmationDialog_Description,
+                    title = getString(R.string.Buy_SelectPaymentMethod_RemovalConfirmationDialog_Title, paymentInstrument.last4Numbers),
                     positive = FabriikGenericDialogArgs.ButtonData(
                         titleRes = R.string.Buy_SelectPaymentMethod_RemovalConfirmationDialog_Remove,
                         resultKey = RESULT_CONFIRMATION_DIALOG_REMOVE
