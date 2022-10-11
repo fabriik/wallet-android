@@ -246,9 +246,9 @@ We are sorry to see you go.</string>
     <string name="Buy.FailureTransactionMessage">Please contact your card issuer/bank or try again with a different payment method.</string>
     <!-- First Name label in billing address view on buy flow -->
     <string name="Buy.FirstName">First Name</string>
+    <string name="Buy.InvalidExpirationDate">Entered expiration date is not valid!</string>
     <!-- Last Name label in billing address view on buy flow -->
     <string name="Buy.LastName">Last Name</string>
-    <string name="Buy.InvalidExpirationDate">Entered expiration date is not valid!</string>
     <!-- Month and year label in add card flow -->
     <string name="Buy.MonthYear">MM/YY</string>
     <!-- Network fee message in order preview screen -->
