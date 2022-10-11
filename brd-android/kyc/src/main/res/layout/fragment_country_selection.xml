@@ -13,7 +13,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:title="@string/CountrySelection.Title"
+        app:title="@string/Buy.Country"
         app:titleType="small"
         app:showDismiss="false"/>
 
@@ -24,7 +24,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:hint="@string/CountrySelection.SearchHint"
+        android:hint="@string/Search.search"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"/>
