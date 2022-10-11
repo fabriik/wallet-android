@@ -176,7 +176,7 @@ class BuyDetailsFragment : Fragment(),
             )
 
             if (data.destination.transactionId.isNullOrEmpty()) {
-                tvCryptoTransactionId.text = getString(R.string.Buy_Details_Status_Pending)
+                tvCryptoTransactionId.text = getString(R.string.Transaction_pending)
                 tvCryptoTransactionId.setCompoundDrawablesRelative(null, null, null, null)
                 tvCryptoTransactionId.setTextColor(ContextCompat.getColor(requireContext(), R.color.light_text_02))
             } else {
@@ -196,11 +196,11 @@ class BuyDetailsFragment : Fragment(),
 
     private fun setStatusTitle(status: ExchangeOrderStatus): Int {
         return when (status) {
-            ExchangeOrderStatus.PENDING -> R.string.Swap_Details_Status_Pending
-            ExchangeOrderStatus.COMPLETE -> R.string.Swap_Details_Status_Complete
-            ExchangeOrderStatus.FAILED -> R.string.Swap_Details_Status_Failed
-            ExchangeOrderStatus.REFUNDED -> R.string.Swap_Details_Status_Refunded
-            ExchangeOrderStatus.MANUALLY_SETTLED -> R.string.Swap_Details_Status_Manually_Settled
+            ExchangeOrderStatus.PENDING -> R.string.Transaction_pending
+            ExchangeOrderStatus.COMPLETE -> R.string.Transaction_complete
+            ExchangeOrderStatus.FAILED -> R.string.Transaction_failed
+            ExchangeOrderStatus.REFUNDED -> R.string.Transaction_refunded
+            ExchangeOrderStatus.MANUALLY_SETTLED -> R.string.Transaction_ManuallySettled
         }
     }
 

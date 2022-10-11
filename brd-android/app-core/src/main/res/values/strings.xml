@@ -1344,10 +1344,12 @@ We are sorry to see you go.</string>
     <string name="Transaction.invalid">INVALID</string>
     <!-- Timestamp label for event that just happened -->
     <string name="Transaction.justNow">just now</string>
+    <string name="Transaction.ManuallySettled">Manually settled</string>
     <!-- Transaction is pending status text -->
     <string name="Transaction.pending">Pending</string>
     <!-- Receive status text: 'In progress: 20%' -->
     <string name="Transaction.receivedStatus">In progress: %1$s</string>
+    <string name="Transaction.refunded">Refunded</string>
     <!-- Send status text: 'In progress: 20%' -->
     <string name="Transaction.sendingStatus">In progress: %1$s</string>
     <!-- sending to <address> -->
