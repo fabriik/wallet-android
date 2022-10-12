@@ -82,8 +82,7 @@
     <string name="Buy.SelectPaymentMethod.Title">Select payment method</string>
     <string name="Buy.SelectPaymentMethod.Subtitle">Card</string>
     <string name="Buy.SelectPaymentMethod.Subtext">Add a debit or credit card</string>
-    <string name="Buy.SelectPaymentMethod.RemovalConfirmationDialog.Title">Are you sure you want to remove this card?</string>
-    <string name="Buy.SelectPaymentMethod.RemovalConfirmationDialog.Description">You will no longer be able to use it to buy assets.</string>
+    <string name="Buy.SelectPaymentMethod.RemovalConfirmationDialog.Title">Are you sure you want to remove card ending in %s?</string>
     <string name="Buy.SelectPaymentMethod.RemovalConfirmationDialog.Remove">Remove</string>
     <string name="Buy.SelectPaymentMethod.RemovePaymentMethod">Remove payment method</string>
     <string name="Buy.SelectPaymentMethod.CardRemoved">Card removed</string>
