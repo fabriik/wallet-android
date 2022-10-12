@@ -679,6 +679,8 @@ We are sorry to see you go.</string>
     <string name="Import.warning">Importing a wallet does not include transaction history or other details.</string>
     <!-- Wrong password alert message -->
     <string name="Import.wrongPassword">Wrong password, please try again.</string>
+    <!-- Input view invalid code -->
+    <string name="InputView.InvalidCode">Invalid code</string>
     <!-- Close app button -->
     <string name="JailbreakWarnings.close">Close</string>
     <!-- Ignore jailbreak warning button -->

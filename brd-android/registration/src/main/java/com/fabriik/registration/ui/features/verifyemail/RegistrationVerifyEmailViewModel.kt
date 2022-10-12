@@ -127,7 +127,7 @@ class RegistrationVerifyEmailViewModel(
                     Status.SUCCESS ->
                         setEffect {
                             RegistrationVerifyEmailContract.Effect.ShowToast(
-                                getString(R.string.Registration_VerifyEmail_CodeSent)
+                                getString(R.string.AccountCreation_CodeSent)
                             )
                         }
 
@@ -141,7 +141,8 @@ class RegistrationVerifyEmailViewModel(
 
     private fun createSubtitle(): CharSequence {
         val email = arguments.email
-        val fullText = getString(R.string.Registration_VerifyEmail_Subtitle, email)
+        val titleText = getString(R.string.AccountCreation_EnterCode)
+        val fullText = "$titleText:\n$email"
         val startIndex = fullText.indexOf(email)
         val spannable = fullText.toSpannable()
         spannable.setSpan(StyleSpan(Typeface.BOLD), startIndex, startIndex + email.length, 0)
