@@ -95,7 +95,7 @@ class PersonalInformationViewModel(
     override fun onConfirmClicked() {
         if (!isAgeValid()) {
             setEffect {
-                PersonalInformationContract.Effect.ShowToast(getString(R.string.KYC_Error_Underage))
+                PersonalInformationContract.Effect.ShowToast(getString(R.string.ErrorMessages_Kyc_Underage))
             }
             return
         }
