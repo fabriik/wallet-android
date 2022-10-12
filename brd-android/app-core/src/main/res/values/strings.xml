@@ -53,7 +53,7 @@ You may still be able to send these tokens to another platform. For more details
     <!-- Document confirmation label for KYC2 -->
     <string name="Account.DocumentConfirmation">Make sure document details are clearly visible and within the frame</string>
     <!-- $10000 per BTC -->
-    <string name="Account.exchangeRate">%1$@ per %2$@</string>
+    <string name="Account.exchangeRate">%1$s per %2$s</string>
     <!-- Get full access for the Fabriik wallet label on profile screen -->
     <string name="Account.FullAccess">Get full access to your Fabriik wallet</string>
     <!-- ID Verification title on account screen -->
