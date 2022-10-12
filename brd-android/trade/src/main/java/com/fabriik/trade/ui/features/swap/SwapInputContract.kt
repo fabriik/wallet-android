@@ -2,6 +2,7 @@ package com.fabriik.trade.ui.features.swap
 
 import android.content.Context
 import com.breadwallet.breadbox.formatCryptoForUi
+import com.breadwallet.util.formatFiatForUi
 import com.fabriik.common.data.model.Profile
 import com.fabriik.common.data.model.isKyc1
 import com.fabriik.common.data.model.isKyc2
@@ -162,21 +163,30 @@ interface SwapInputContract {
             )
         }
 
-        object Kyc1DailyLimit : ErrorMessage() {
+        data class Kyc1DailyLimit(val limit: BigDecimal, val fiatCurrency: String) : ErrorMessage() {
             override fun toString(context: Context) = context.getString(
-                R.string.ErrorMessages_overDailyLimit //todo: amount
+                R.string.ErrorMessages_overDailyLimit, limit.formatFiatForUi(
+                    currencyCode = fiatCurrency,
+                    showCurrencyName = false
+                )
             )
         }
 
-        object Kyc1LifetimeLimit : ErrorMessage() {
+        data class Kyc1LifetimeLimit(val limit: BigDecimal, val fiatCurrency: String) : ErrorMessage() {
             override fun toString(context: Context) = context.getString(
-                R.string.ErrorMessages_overLifetimeLimit //todo: amount
+                R.string.ErrorMessages_overLifetimeLimit, limit.formatFiatForUi(
+                    currencyCode = fiatCurrency,
+                    showCurrencyName = false
+                )
             )
         }
 
-        object Kyc2DailyLimit : ErrorMessage() {
+        data class Kyc2DailyLimit(val limit: BigDecimal, val fiatCurrency: String) : ErrorMessage() {
             override fun toString(context: Context) = context.getString(
-                R.string.ErrorMessages_overDailyLimit //todo: amount
+                R.string.ErrorMessages_overDailyLimit, limit.formatFiatForUi(
+                    currencyCode = fiatCurrency,
+                    showCurrencyName = false
+                )
             )
         }
     }

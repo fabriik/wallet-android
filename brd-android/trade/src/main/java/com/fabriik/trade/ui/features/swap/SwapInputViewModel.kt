@@ -770,10 +770,18 @@ class SwapInputViewModel(
             )
         state.sourceCryptoAmount < state.minCryptoAmount ->
             SwapInputContract.ErrorMessage.MinSwapAmount(state.minCryptoAmount, state.sourceCryptoCurrency)
-        state.sourceFiatAmount > state.dailySwapAmountLeft ->
-            if (state.isKyc1) SwapInputContract.ErrorMessage.Kyc1DailyLimit else SwapInputContract.ErrorMessage.Kyc2DailyLimit
-        state.isKyc1 && state.sourceFiatAmount > state.lifetimeSwapAmountLeft ->
-            SwapInputContract.ErrorMessage.Kyc1LifetimeLimit
+        state.sourceFiatAmount > state.dailySwapAmountLeft -> {
+            val limit = state.profile?.exchangeLimits?.swapAllowanceDaily ?: BigDecimal.ZERO
+            if (state.isKyc1) {
+                SwapInputContract.ErrorMessage.Kyc1DailyLimit(limit, state.fiatCurrency)
+            } else {
+                SwapInputContract.ErrorMessage.Kyc2DailyLimit(limit, state.fiatCurrency)
+            }
+        }
+        state.isKyc1 && state.sourceFiatAmount > state.lifetimeSwapAmountLeft -> {
+            val limit = state.profile?.exchangeLimits?.swapAllowanceLifetime ?: BigDecimal.ZERO
+            SwapInputContract.ErrorMessage.Kyc1LifetimeLimit(limit, state.fiatCurrency)
+        }
         else -> null
     }
 
