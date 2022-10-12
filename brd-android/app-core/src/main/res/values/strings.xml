@@ -185,6 +185,7 @@ We are sorry to see you go.</string>
     <string name="Button.openSettings">Open Settings</string>
     <!-- receive button -->
     <string name="Button.receive">Receive</string>
+    <string name="Button.remove">Remove</string>
     <!-- Button label to open Security Settings. -->
     <string name="Button.securitySettings.android">Security Settings</string>
     <!-- Click this button to sell an asset -->
@@ -205,6 +206,95 @@ We are sorry to see you go.</string>
     <string name="Button.wipe.android">Wipe</string>
     <!-- Yes button -->
     <string name="Button.yes">Yes</string>
+    <!-- 3D Secure label on buy flow -->
+    <string name="Buy.3DSecure">3D Secure</string>
+    <!-- Add card title for buy cryptos -->
+    <string name="Buy.AddCard">Add card</string>
+    <!-- Add a debit or credit card label on add card flow -->
+    <string name="Buy.AddDebitCreditCard">Add a debit or credit card</string>
+    <!-- Address label in billing address view on buy flow -->
+    <string name="Buy.Address">Address</string>
+    <!-- Billing address label on buy flow -->
+    <string name="Buy.BillingAddress">Billing address</string>
+    <!-- Buy min and max limit text -->
+    <string name="Buy.BuyLimits">Currently, minimum limit for buy is $%@ USD and maximum limit is $%@ USD/day.</string>
+    <string name="Buy.BuyLimits.android">Currently, minimum limit for buy is $30.00 USD and maximum limit is $500.00 USD per day.</string>
+    <!-- Card label on add card flow -->
+    <string name="Buy.Card">Card</string>
+    <!-- CVV label in add card flow -->
+    <string name="Buy.CardCVV">CVV</string>
+    <!-- Card fee message label in order preview screen -->
+    <string name="Buy.CardFee">This fee is charged to cover costs associated with payment processing.</string>
+    <!-- Card number label in add card flow -->
+    <string name="Buy.CardNumber">Card number</string>
+    <string name="Buy.CardNumberHint">XXXX XXXX XXXX XXXX</string>
+    <!-- Card removal failed error message on delete card flow -->
+    <string name="Buy.CardRemovalFailed">Card removal failed. Please try again.</string>
+    <!-- Card removed message on delete card flow -->
+    <string name="Buy.CardRemoved">Card removed</string>
+    <!-- City label in billing address view on buy flow -->
+    <string name="Buy.City">City</string>
+    <!-- Please confirm your CVV label in payment view -->
+    <string name="Buy.ConfirmCVV">Please confirm your CVV</string>
+    <string name="Buy.Country">Country</string>
+    <string name="Buy.CvvHint">XXX</string>
+    <!-- Buy details title -->
+    <string name="Buy.Details">Purchase details</string>
+    <!-- There was an error while processing your payment title in buy failure screen -->
+    <string name="Buy.ErrorProcessingPayment">There was an error while processing your payment</string>
+    <string name="Buy.ExpirationDate">Expiration date</string>
+    <!-- Failure transaction message on buy  -->
+    <string name="Buy.FailureTransactionMessage">Please contact your card issuer/bank or try again with a different payment method.</string>
+    <!-- First Name label in billing address view on buy flow -->
+    <string name="Buy.FirstName">First Name</string>
+    <string name="Buy.InvalidExpirationDate">Entered expiration date is not valid!</string>
+    <!-- Last Name label in billing address view on buy flow -->
+    <string name="Buy.LastName">Last Name</string>
+    <!-- Month and year label in add card flow -->
+    <string name="Buy.MonthYear">MM/YY</string>
+    <!-- Network fee message in order preview screen -->
+    <string name="Buy.NetworkFeeMessage">Network fee prices vary depending on the blockchain in which you are receiving your assets. This is an external fee to cover mining and transaction costs.</string>
+    <!-- Network fees label in order preview screen -->
+    <string name="Buy.NetworkFees">Network fees</string>
+    <!-- Order preview title -->
+    <string name="Buy.OrderPreview">Order preview</string>
+    <!-- Payment failed error message on order preview screen -->
+    <string name="Buy.PaymentFailed">Payment failed</string>
+    <!-- Payment method label in buy select card screen -->
+    <string name="Buy.PaymentMethod">Payment method</string>
+    <!-- Pay with label in buy flow -->
+    <string name="Buy.PayWith">Pay with</string>
+    <string name="Buy.ProcessingPayment">Processing payment</string>
+    <!-- Purchase success text in purchase details screen  -->
+    <string name="Buy.PurchaseSuccessText">This purchase will appear as ‘Fabriik Wallet’ on your bank statement.</string>
+    <!-- Your assets are on the way message in purchase details screen -->
+    <string name="Buy.PurchaseSuccessTitle">Your assets are on the way!</string>
+    <!-- Are you sure you want to remove this card title dialog -->
+    <string name="Buy.RemoveCard">Are you sure you want to remove card ending in</string>
+    <string name="Buy.RemoveCard.android">Are you sure you want to remove card ending in %s?</string>
+    <!-- You will no longer be able to use it to buy assets description on removing card dialog  -->
+    <string name="Buy.RemoveCardOption">You will no longer be able to use it to buy assets.</string>
+    <!-- Remove payment method action sheet option on profile screen -->
+    <string name="Buy.RemovePaymentMethod">Remove payment method</string>
+    <!-- Security code (CVV) label in add card flow -->
+    <string name="Buy.SecurityCode">Security code (CVV)</string>
+    <!-- Explanation of security code in popup -->
+    <string name="Buy.SecurityCodePopup">Please enter the 3 digit CVV number as it appears on the back of your card</string>
+    <!-- Select payment method title in buy flow -->
+    <string name="Buy.SelectPayment">Select payment method</string>
+    <string name="Buy.SelectPaymentMethod">Select a payment method</string>
+    <!-- State/Province label in billing address view on buy flow -->
+    <string name="Buy.StateProvince">State/Province</string>
+    <!-- By placing this order you agree to our terms message when ordering -->
+    <string name="Buy.Terms">By placing this order you agree to our</string>
+    <string name="Buy.Terms.android">By placing this order you agree to our %s</string>
+    <!-- Try a different payment method button title in failure buy screen -->
+    <string name="Buy.TryAnotherPayment">Try a different payment method</string>
+    <string name="Buy.txHashHeader">%s Transaction ID</string>
+    <!-- Your order label in buy flow -->
+    <string name="Buy.YourOrder">Your order:</string>
+    <!-- ZIP/Postal Code label in billing address view on buy flow -->
+    <string name="Buy.ZIPPostalCode">ZIP/Postal Code</string>
     <!-- Camera plugin instruction -->
     <string name="CameraPlugin.centerInstruction">Center your ID in the box</string>
     <string name="CloudBackup.backupDeleted">Backup Erased</string>
@@ -221,7 +311,7 @@ We are sorry to see you go.</string>
     <string name="CloudBackup.mainTitle">iCloud Recovery Backup</string>
     <string name="CloudBackup.mainWarning">iCloud Keychain must be turned on in the iOS Settings app for this feature to work</string>
     <string name="CloudBackup.mainWarningConfirmation">Are you sure you want to disable iCloud Backup? This will delete your backup from all devices.</string>
-    <string name="CloudBackup.pinAttempts">Attempts remaining before erasing backup: %1$@</string>
+    <string name="CloudBackup.pinAttempts">Attempts remaining before erasing backup: %1$s</string>
     <string name="CloudBackup.recoverButton">Restore from Recovery Phrase</string>
     <string name="CloudBackup.recoverHeader">Enter PIN to unlock iCloud backup</string>
     <string name="CloudBackup.restoreButton">Restore from iCloud Backup</string>
@@ -231,7 +321,7 @@ We are sorry to see you go.</string>
     <string name="CloudBackup.step3">Tap iCloud.</string>
     <string name="CloudBackup.step4">Verify that iCloud Keychain is ON</string>
     <string name="CloudBackup.understandText">I understand that this feature will not work unless iCloud Keychain is enabled.</string>
-    <string name="CloudBackup.warningBody">Your iCloud backup will be erased after %1$@ more incorrect PIN attempts.</string>
+    <string name="CloudBackup.warningBody">Your iCloud backup will be erased after %1$s more incorrect PIN attempts.</string>
     <!-- Amount to Send: ($1.00) -->
     <string name="Confirmation.amountLabel">Amount to Send:</string>
     <string name="Confirmation.destinationTag">Destination Tag</string>
@@ -299,6 +389,8 @@ We are sorry to see you go.</string>
     <string name="EME.permissions.callRequest">Request %1$s smart contract call</string>
     <!-- Service capabilities description -->
     <string name="EME.permissions.paymentRequest">Request %1$s payment</string>
+    <string name="ErrorMessages.amountTooLow">The amount is lower than the minimum of %s %s. Please enter a higher amount.</string>
+    <string name="ErrorMessages.AmountTooHigh">The amount is higher than your daily limit of %s %s. Please enter a lower amount.</string>
     <!-- Email unavailable alert title -->
     <string name="ErrorMessages.emailUnavailableMessage">This device isn\'t configured to send email with the iOS mail app.</string>
     <!-- Email unavailable alert title -->
@@ -308,6 +400,7 @@ We are sorry to see you go.</string>
     <!-- Messaging unavailable alert title -->
     <string name="ErrorMessages.messagingUnavailableMessage">This device isn\'t configured to send messages.</string>
     <!-- Messaging unavailable alert title -->
+    <string name="ErrorMessages.NetworkIssues">We are having temporary network issues. Please try again later.</string>
     <string name="ErrorMessages.messagingUnavailableTitle">Messaging Unavailable</string>
     <!-- Fingerprint was not recognized by the scanner, please try scanning again -->
     <string name="ErrorMessages.touchIdFailed.android">Fingerprint not recognized. Please try again.</string>
@@ -566,8 +659,14 @@ We are sorry to see you go.</string>
     <string name="OnboardingPageTwo.title">Join people around the world who trust Fabriik.</string>
     <!-- Eg. Send 1.0Eth to purchase CCC -->
     <string name="PaymentConfirmation.amountText">Send %1$s to purchase %2$s</string>
+    <!-- Payment expired message -->
+    <string name="PaymentConfirmation.PaymentExpired">The payment has expired due to inactivity. Please try again with the same card, or use a different card.</string>
+    <!-- Payment verification timeout message -->
+    <string name="PaymentConfirmation.PaymentTimeout">Payment verification timeout</string>
     <!-- Payment confirmation view title -->
     <string name="PaymentConfirmation.title">Confirmation</string>
+    <!-- Try again button title in payment view -->
+    <string name="PaymentConfirmation.TryAgain">Try again</string>
     <!-- Bad Payment request alert title -->
     <string name="PaymentProtocol.Errors.badPaymentRequest">Bad Payment Request</string>
     <!-- Error opening payment protocol file message -->
@@ -725,7 +824,7 @@ We are sorry to see you go.</string>
     <!-- Title for a button that takes the user to the wallet after setting up the recovery key. -->
     <string name="RecoveryKeyFlow.goToWalletButtonTitle">Go to Wallet</string>
     <!-- Hint text for recovery key intro page, e.g., Step 2 -->
-    <string name="RecoveryKeyFlow.howItWorksStep">How it works - Step %1$@</string>
+    <string name="RecoveryKeyFlow.howItWorksStep">How it works - Step %1$s</string>
     <!-- Error text displayed when the user enters an incorrect recovery phrase -->
     <string name="RecoveryKeyFlow.invalidPhrase">Some of the words you entered do not match your recovery phrase. Please try again.</string>
     <!-- Title for recovery key intro page -->
@@ -773,7 +872,7 @@ We are sorry to see you go.</string>
     <!-- Title for the write recovery phrase screen -->
     <string name="RecoveryKeyFlow.writeKeyScreenTitle">Your Recovery Phrase</string>
     <!-- Title for the step number when the user pages through the recovery words -->
-    <string name="RecoveryKeyFlow.writeKeyStepTitle">%1$@ of %2$@</string>
+    <string name="RecoveryKeyFlow.writeKeyStepTitle">%1$s of %2$s</string>
     <!-- No amount entered error message. -->
     <string name="RequestAnAmount.noAmount">Please enter an amount first.</string>
     <!-- Request a specific amount of bitcoin -->
@@ -809,7 +908,7 @@ We are sorry to see you go.</string>
     <!-- Scan bitcoin address camera flash toggle -->
     <string name="Scanner.flashButtonLabel">Camera Flash</string>
     <!-- (alert dialog message) Would you like to send a [Bitcoin / Bitcoin Cash / Ethereum] payment to this address?") -->
-    <string name="Scanner.paymentPromptMessage">Would you like to send a %1$@ payment to this address?</string>
+    <string name="Scanner.paymentPromptMessage">Would you like to send a %1$s payment to this address?</string>
     <!-- alert dialog title -->
     <string name="Scanner.paymentPromptTitle">Send Payment</string>
     <!-- Complete filter label -->
@@ -1086,7 +1185,7 @@ We are sorry to see you go.</string>
     <!-- button label -->
     <string name="StartPaperPhrase.buttonTitle">Write Down Recovery Phrase</string>
     <!-- Argument is date; date should be on a new line -->
-    <string name="StartPaperPhrase.date">Last written down on\n %1$@</string>
+    <string name="StartPaperPhrase.date">Last written down on\n %1$s</string>
     <!-- button label -->
     <string name="StartViewController.createButton">Create New Wallet</string>
     <!-- Start view message -->
@@ -1097,6 +1196,72 @@ We are sorry to see you go.</string>
     <string name="SupportForm.helpUsImprove">Help us improve</string>
     <string name="SupportForm.notNow">Not now</string>
     <string name="SupportForm.pleaseDescribe">Please describe your experience</string>
+    <!-- Add item label in swap flow -->
+    <string name="Swap.AddItem">Add item!</string>
+    <!-- Amount purchased label in detail swap screen -->
+    <string name="Swap.AmountPurchased">Amount purchased</string>
+    <string name="Swap.AmountPurchased.android">Amount purchased:</string>
+    <!-- Back to Home button -->
+    <string name="Swap.BackToHome">Back to Home</string>
+    <!-- Balance text on swap -->
+    <string name="Swap.Balance">I have %@ %@</string>
+    <!-- Card fee label in swap details screen -->
+    <string name="Swap.CardFee">Card fee</string>
+    <string name="Swap.CardFee.android">Card fee:</string>
+    <!-- Title on check your assets popup -->
+    <string name="Swap.CheckAssets">Check your assets!</string>
+    <!-- Text body in check your assets popup -->
+    <string name="Swap.CheckAssetsBody">In order to succesfully perform a swap, make sure you have two or more of our supported swap assets (BSV, BTC, ETH, BCH, SHIB, USDT) activated and funded within your wallet.</string>
+    <!-- Swap details title -->
+    <string name="Swap.Details">Swap details</string>
+    <!-- There was an error while processing your transaction title in failure swap screen -->
+    <string name="Swap.ErrorProcessingTransaction">There was an error while processing your transaction</string>
+    <!-- Error swap message on Failure screen -->
+    <string name="Swap.FailureSwapMessage">Please try swapping again or come back later.</string>
+    <!-- Popup button got it -->
+    <string name="Swap.GotItButton">Got it!</string>
+    <!-- Swap and Buy I want label from currency -->
+    <string name="Swap.iWant">I want</string>
+    <!-- Mining network fee label in swap details screen -->
+    <string name="Swap.MiningNetworkFee">Mining network fee</string>
+    <string name="Swap.MiningNetworkFee.android">Mining network fee:</string>
+    <!-- Not a valid pair -->
+    <string name="Swap.NotValidPair">Not a valid pair</string>
+    <!-- Paid with label in swap details screen -->
+    <string name="Swap.PaidWith">Paid with</string>
+    <!-- Exchange label rate -->
+    <string name="Swap.Rate">Rate:</string>
+    <!-- Rate label in swap screen -->
+    <string name="Swap.RateValue">Rate</string>
+    <!-- Receiving network fee text label on Swap screen -->
+    <string name="Swap.ReceiveNetworkFee">Receiving network fee
+(included)</string>
+    <!-- Receiving fee label on Swap screen -->
+    <string name="Swap.ReceivingFee">Receiving fee
+</string>
+    <!-- Select assets title in swap flow -->
+    <string name="Swap.SelectAssets">Select assets</string>
+    <!-- Sending fee label on swap screen -->
+    <string name="Swap.SendingFee">Sending fee
+</string>
+    <!-- Sending network fee text label on Swap screen -->
+    <string name="Swap.SendNetworkFee">Sending network fee
+(included)</string>
+    <!-- Send network fee not included label on swap -->
+    <string name="Swap.sendNetworkFeeNotIncluded">Sending network fee
+(not included)</string>
+    <!-- Swap again button title in swap failure screen -->
+    <string name="Swap.SwapAgain">Swap again</string>
+    <!-- Swap min and max limit text -->
+    <string name="Swap.SwapLimits">Currently, minimum limit for swap is $%@ USD and maximum limit is $%@ USD/day.</string>
+    <!-- Swap status message on swap flow -->
+    <string name="Swap.SwapStatus">Your %@ is estimated to arrive in 30 minutes. You can continue to use your wallet. We\'ll let you know when your swap has finished.</string>
+    <!-- Timestamp label in swap details screen -->
+    <string name="Swap.Timestamp">Timestamp</string>
+    <!-- Total label in swap details screen -->
+    <string name="Swap.Total">Total:</string>
+    <!-- Transaction ID label in swap details screen -->
+    <string name="Swap.TransactionID">Fabriik Transaction ID</string>
     <!-- Syncing view done syncing state header text -->
     <string name="SyncingView.activity">Activity</string>
     <!-- Syncing view connectiong state header text -->
@@ -1185,16 +1350,28 @@ We are sorry to see you go.</string>
     <string name="Transaction.exchangeOnDaySent">Exchange rate when sent:</string>
     <!-- Transaction failed status text -->
     <string name="Transaction.failed">Failed</string>
+    <!-- Failed swap label in transaction view -->
+    <string name="Transaction.FailedSwap">Failed swap</string>
     <!-- (b600 fee) -->
     <string name="Transaction.fee">(%1$s fee)</string>
     <!-- Invalid transaction -->
     <string name="Transaction.invalid">INVALID</string>
     <!-- Timestamp label for event that just happened -->
     <string name="Transaction.justNow">just now</string>
+    <string name="Transaction.ManuallySettled">Manually settled</string>
     <!-- Transaction is pending status text -->
     <string name="Transaction.pending">Pending</string>
+    <!-- Pending purchase label in transaction view -->
+    <string name="Transaction.PendingPurchase">Pending purchase</string>
+    <!-- Pending swap label in transaction view -->
+    <string name="Transaction.PendingSwap">Pending swap</string>
+    <!-- Purchased label in transaction view -->
+    <string name="Transaction.Purchased">Purchased</string>
+    <!-- Purchase failed label in transaction view -->
+    <string name="Transaction.PurchaseFailed">Purchase failed</string>
     <!-- Receive status text: 'In progress: 20%' -->
     <string name="Transaction.receivedStatus">In progress: %1$s</string>
+    <string name="Transaction.refunded">Refunded</string>
     <!-- Send status text: 'In progress: 20%' -->
     <string name="Transaction.sendingStatus">In progress: %1$s</string>
     <!-- sending to <address> -->
@@ -1204,7 +1381,9 @@ We are sorry to see you go.</string>
     <string name="Transaction.stakingTo">staking to %1$s</string>
     <!-- eg. Starting balance: $50.00 -->
     <string name="Transaction.starting">Starting balance: %1$s</string>
-    <!-- e.g. "[The money you paid was a] Fee for token transfer: Fabriik" (Fabriik is the token that was transfered) -->
+    <!-- Swapped transaction label -->
+    <string name="Transaction.Swapped">Swapped</string>
+    <!-- e.g. "[The money you paid was a] Fee for token transfer: BRD" (BRD is the token that was transfered) -->
     <string name="Transaction.tokenTransfer">Fee for token transfer: %1$s</string>
     <string name="Transaction.toRecipient">to %1$s</string>
     <!-- Waiting to be confirmed string -->
@@ -1544,9 +1723,5 @@ We are sorry to see you go.</string>
     <string name="Swap.TransactionItem.SwappingTo">Swapping to %s</string>
     <string name="Swap.TransactionItem.SwapFromFailed">Swap from %s failed</string>
     <string name="Swap.TransactionItem.SwapToFailed">Swap to %s failed</string>
-    <string name="Swap.TransactionItem.Purchased">Purchased</string>
-    <string name="Swap.TransactionItem.PurchaseFailed">Purchase failed</string>
-    <string name="Swap.TransactionItem.PurchasePending">Pending purchase</string>
-    <string name="Swap.TransactionItem.Refunded">Refunded</string>
 
 </resources>
