@@ -136,7 +136,7 @@ interface SwapInputContract {
 
         class InsufficientFunds(private val requiredFee: BigDecimal, val currencyCode: String) : ErrorMessage() {
             override fun toString(context: Context) = context.getString(
-                R.string.ErrorMessages_balanceTooLow,  requiredFee.formatCryptoForUi(null), currencyCode.uppercase()
+                R.string.ErrorMessages_balanceTooLow, requiredFee.formatCryptoForUi(null), currencyCode.uppercase(), currencyCode.uppercase()
             )
         }
 
