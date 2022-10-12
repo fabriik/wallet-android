@@ -16,6 +16,7 @@ import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.breadwallet.breadbox.formatCryptoForUi
 import com.breadwallet.tools.util.Utils.hideKeyboard
+import com.breadwallet.util.formatFiatForUi
 import com.fabriik.common.ui.dialog.FabriikGenericDialog
 import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.trade.ui.customview.SwapCardView
@@ -352,11 +353,21 @@ class SwapInputFragment : Fragment(),
             fullScreenLoadingView.root.isVisible = state.fullScreenLoadingVisible
             initialLoadingIndicator.isVisible = false
 
-            if (state.isKyc2) {
-                tvKycMessage.text = getString(R.string.Swap_SwapLimits) //todo: enter amount
-            } else if(state.isKyc1) {
-                tvKycMessage.text = getString(R.string.Swap_SwapLimits) //todo: enter amount
-            }
+            val minAmount = state.quoteResponse?.minimumValueUsd ?: BigDecimal.ZERO
+            val minText = minAmount.formatFiatForUi(
+                currencyCode = state.fiatCurrency,
+                showCurrencyName = false,
+                showCurrencySymbol = false
+            )
+
+            val maxAmount = state.profile?.exchangeLimits?.swapAllowanceDaily ?: BigDecimal.ZERO
+            val maxText = maxAmount.formatFiatForUi(
+                currencyCode = state.fiatCurrency,
+                showCurrencyName = false,
+                showCurrencySymbol = false
+            )
+
+            tvKycMessage.text = getString(R.string.Swap_SwapLimits, minText, maxText)
         }
     }
 
