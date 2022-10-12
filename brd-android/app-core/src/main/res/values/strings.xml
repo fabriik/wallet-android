@@ -22,28 +22,118 @@
     <string name="AccessibilityLabels.close">Close</string>
     <!-- Support center accessibiliy label -->
     <string name="AccessibilityLabels.faq">Support Center</string>
+    <!-- Account limits title in profile view -->
+    <string name="Account.AccountLimits">ACCOUNT LIMITS</string>
+    <!-- Account Verification screen title -->
+    <string name="Account.AccountVerification">Account Verification</string>
+    <!-- Verify your account label on profile screen -->
+    <string name="Account.AccountVerify">Verify your account</string>
     <!-- Account balance -->
     <string name="Account.balance">Balance</string>
+    <!-- Before confirm photo label in create account screen -->
+    <string name="Account.BeforeConfirm">Before you confirm, please:</string>
+    <!-- Change your email title on registration flow -->
+    <string name="Account.ChangeEmail">Change your email</string>
+    <!-- Country title label in select countries view -->
+    <string name="Account.Country">Country</string>
+    <!-- Create a Fabriik account by entering your email address label in registration flow -->
+    <string name="Account.CreateAccount">Create a Fabriik account by entering your email address.</string>
+    <!-- Current limit per day label in profile screen -->
+    <string name="Account.CurrentLimit">Current limit: $1,000/day</string>
+    <!-- Issues for processing your data label on profile screen -->
+    <string name="Account.DataIssues">Oops! We had some issues processing your data</string>
+    <!-- Date of birth label in create account -->
+    <string name="Account.DateOfBirth">Date of birth</string>
+    <!-- Delete account option in menu -->
+    <string name="Account.DeleteAccount">Delete account</string>
     <!-- Delisted token alert banner message -->
-    <string name="Account.delistedToken">This token has been delisted. \n\nYou may still be able to send these tokens to another platform. For more details, visit our support page.</string>
+    <string name="Account.delistedToken">This token has been delisted.
+
+You may still be able to send these tokens to another platform. For more details, visit our support page.</string>
+    <!-- Document confirmation label for KYC2 -->
+    <string name="Account.DocumentConfirmation">Make sure document details are clearly visible and within the frame</string>
     <!-- $10000 per BTC -->
     <string name="Account.exchangeRate">%1$s per %2$s</string>
+    <!-- Get full access for the Fabriik wallet label on profile screen -->
+    <string name="Account.FullAccess">Get full access to your Fabriik wallet</string>
+    <!-- ID Verification title on account screen -->
+    <string name="Account.IDVerification">ID Verification</string>
     <!-- Loading Wallet Message -->
     <string name="Account.loadingMessage">Loading Wallet</string>
+    <!-- Verify your account to get full access to the wallet message -->
+    <string name="Account.MessageVerifyAccount">Verify your account to get full access to your Fabriik wallet!</string>
+    <!-- Account Personal Information title -->
+    <string name="Account.PersonalInformation">Personal Information</string>
+    <!-- Promotion and offers label when registering account -->
+    <string name="Account.Promotion">I\'m ok with receiving future promotion, offers and communications</string>
+    <!-- Proof of Identity title in add document for kyc2 -->
+    <string name="Account.ProofOfIdentity">Proof of Identity</string>
+    <!-- Retake photo button on create account -->
+    <string name="Account.RetakePhoto">Retake photo</string>
+    <!-- Submit your photo for document id title -->
+    <string name="Account.SubmitPhoto">Submit your photo</string>
+    <!-- Swap and buy limit per day description label -->
+    <string name="Account.SwapAndBuyLimit">Swap limit: $10,000 USD/day
+Buy limit: $500 USD/day</string>
+    <!-- Upgrade your limits label in profile screen -->
+    <string name="Account.UpgradeLimits">Upgrade your limits</string>
+    <!-- You need to be at least 18 years old to complete Level 1 verification label in verify account -->
+    <string name="Account.Verification">You need to be at least 18 years old to complete Level 1 verification</string>
+    <!-- Why is the verification declined label in profile screen -->
+    <string name="Account.VerificationDeclined">Why is my verification declined?</string>
+    <!-- Verified account message on profile screen -->
+    <string name="Account.VerifiedAccountMessage">We’ll let you know when your account is verified.</string>
+    <!-- Verify account text in popup -->
+    <string name="Account.VerifyAccountText">If you verify your account, you are given access to:
+・Unlimited deposits/withdrawals
+・Enhanced security
+・Full asset support
+・Buy assets with credit card
+・24/7/365 live customer support</string>
+    <!-- Enter and verify your email address for your account label in registration flow -->
+    <string name="Account.VerifyEmail">Enter and verify your new email address for your Fabriik account.</string>
+    <string name="Account.VerifyIdentity">We need to verify your identity in order to buy/sell and swap crypto.</string>
+    <!-- Verify personal information text explanation -->
+    <string name="Account.VerifyPersonalInformation">We need to verify your personal information for compliance purposes. This information won’t be shared with outside sources unless required by law.</string>
+    <!-- Welcome title on registration screen -->
+    <string name="Account.Welcome">Welcome!</string>
+    <!-- Why verify my account title -->
+    <string name="Account.WhyVerify">Why should I verify my account?</string>
+    <!-- Write your name as it appears on your ID label in create account -->
+    <string name="Account.WriteYourName">Write your name as it appears on your ID</string>
     <!-- Confirm Account Creation mesage body -->
     <string name="AccountCreation.body">Only create a Hedera account if you intend on storing HBAR in your wallet.</string>
+    <!-- Change my email label -->
+    <string name="AccountCreation.ChangeEmail">Change my email</string>
+    <!-- Verification code sent message -->
+    <string name="AccountCreation.CodeSent">Verification code sent.</string>
     <!-- Create Account button label -->
     <string name="AccountCreation.create">Create Account</string>
     <!-- Creating Account progress Label -->
     <string name="AccountCreation.creating">Creating Account</string>
+    <!-- Enter the code message in create account flow -->
+    <string name="AccountCreation.EnterCode">Please enter the code we’ve sent to</string>
     <!-- Creating Account progress Label -->
     <string name="AccountCreation.error">An error occurred during account creation. Please try again later.</string>
     <!-- Not Now button label. -->
     <string name="AccountCreation.notNow">Not Now</string>
+    <!-- Re-send my code label -->
+    <string name="AccountCreation.ResendCode">Re-send my code</string>
     <!-- Creating Account progress Label -->
     <string name="AccountCreation.timeout">The Request timed out. Please try again later.</string>
     <!-- Confirm Account Creation Title -->
     <string name="AccountCreation.title">Confirm Account Creation</string>
+    <!-- Verify your email label -->
+    <string name="AccountCreation.VerifyEmail">Verify your email</string>
+    <!-- Why the wallet is disabled text -->
+    <string name="AccountCreation.WalletDisabled">If you enter an incorrect wallet PIN too many times, your wallet will become disabled for a certain amount of time.
+This is to prevent someone else from trying to guess your PIN by quickly making many guesses.
+If your wallet is disabled, wait until the time shown and you will be able to enter your PIN again.
+
+If you continue to enter the incorrect PIN, the amount of waiting time in between attempts will increase. Eventually, the app will reset and you can start a new wallet.
+
+If you have the recovery phrase for your wallet, you can use it to reset your PIN by clicking the “Reset PIN” button.</string>
+    <!-- Why is my wallet disabled title on popup -->
     <string name="AccountCreation.WalletDisabledTitle">Why is my wallet disabled?</string>
     <!-- Popup text when the account is deleted -->
     <string name="AccountDelete.AccountDeletedPopup">Your account has been deleted.
@@ -589,6 +679,8 @@ We are sorry to see you go.</string>
     <string name="Import.warning">Importing a wallet does not include transaction history or other details.</string>
     <!-- Wrong password alert message -->
     <string name="Import.wrongPassword">Wrong password, please try again.</string>
+    <!-- Input view invalid code -->
+    <string name="InputView.InvalidCode">Invalid code</string>
     <!-- Close app button -->
     <string name="JailbreakWarnings.close">Close</string>
     <!-- Ignore jailbreak warning button -->
