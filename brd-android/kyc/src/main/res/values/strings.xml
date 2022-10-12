@@ -83,15 +83,4 @@ Level 2 KYC.</string>
     <string name="TakePhoto.Selfie.Title">Please take a selfie</string>
     <string name="TakePhoto.Selfie.Description">Make sure your face is in the frame and it’s clearly visible.</string>
 
-    <!-- Submit photo screen
-    <string name="SubmitPhoto.Title">Submit your photo</string>
-    <string name="SubmitPhoto.RetakeButton">Retake photo</string>
-    <string name="SubmitPhoto.Subtitle">Before you confirm, please:</string>
-    <string name="SubmitPhoto.Document.Passport.CheckedItem1">You have captured the entire document</string>
-    <string name="SubmitPhoto.Document.CheckedItem1.Front">You have captured the entire front page of the document</string>
-    <string name="SubmitPhoto.Document.CheckedItem1.Back">You have captured the entire back page of the document</string>
-    <string name="SubmitPhoto.Document.CheckedItem2">Make sure document details are clearly visible and within the frame</string>
-    <string name="SubmitPhoto.Selfie.CheckedItem1">You have captured your entire face in the frame.</string>
-    <string name="SubmitPhoto.Selfie.CheckedItem2">Your face is clearly visible.</string>-->
-
 </resources>
