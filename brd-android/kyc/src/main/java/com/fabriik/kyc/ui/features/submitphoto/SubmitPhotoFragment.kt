@@ -80,17 +80,17 @@ class SubmitPhotoFragment : Fragment(),
             loadingView.root.isVisible = state.loadingVisible
 
             val content1 = when (state.documentType) {
-                SELFIE -> R.string.SubmitPhoto_Selfie_CheckedItem1
-                PASSPORT -> R.string.SubmitPhoto_Document_Passport_CheckedItem1
+                SELFIE -> R.string.AccountKYCLevelTwo_FaceCaptureInstructions
+                PASSPORT -> R.string.AccountKYCLevelTwo_DocumentConfirmation
                 else -> when (state.currentData.documentSide) {
-                    DocumentSide.FRONT -> R.string.SubmitPhoto_Document_CheckedItem1_Front
-                    DocumentSide.BACK -> R.string.SubmitPhoto_Document_CheckedItem1_Back
+                    DocumentSide.FRONT -> R.string.AccountKYCLevelTwo_FrontPageInstructions
+                    DocumentSide.BACK -> R.string.AccountKYCLevelTwo_BackPageInstructions
                 }
             }
 
             val content2 = when (state.documentType) {
-                SELFIE -> R.string.SubmitPhoto_Selfie_CheckedItem2
-                else -> R.string.SubmitPhoto_Document_CheckedItem2
+                SELFIE -> R.string.AccountKYCLevelTwo_FaceVisibleConfirmation
+                else -> R.string.Account_DocumentConfirmation
             }
 
             checkedItem1.setContent(context?.getString(content1))
