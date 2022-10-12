@@ -218,7 +218,7 @@ class BuyDetailsFragment : Fragment(),
         BRClipboardManager.putClipboard(data)
 
         FabriikToastUtil.showInfo(
-            binding.root, getString(R.string.Swap_Details_Copied)
+            binding.root, getString(R.string.Receive_copied)
         )
     }
 

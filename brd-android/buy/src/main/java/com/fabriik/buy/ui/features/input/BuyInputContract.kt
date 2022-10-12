@@ -85,7 +85,7 @@ interface BuyInputContract {
 
         object NetworkIssues : ErrorMessage() {
             override fun toString(context: Context) = context.getString(
-                R.string.Swap_Input_Error_Network
+                R.string.ErrorMessages_NetworkIssues
             )
         }
 
