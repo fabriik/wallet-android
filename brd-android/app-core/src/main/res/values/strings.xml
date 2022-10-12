@@ -453,6 +453,7 @@ We are sorry to see you go.</string>
   - currency code
   -->
     <string name="ErrorMessages.swapAmountTooHigh">The amount is higher than the swap maximum of %s %s.</string>
+    <string name="ErrorMessages.temporaryNetworkIssues">We are having temporary issues connecting to our network. Please try again later.</string>
     <!-- Fingerprint was not recognized by the scanner, please try scanning again -->
     <string name="ErrorMessages.touchIdFailed.android">Fingerprint not recognized. Please try again.</string>
     <!-- Unknown error text message -->
