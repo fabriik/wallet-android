@@ -322,7 +322,7 @@ class SwapInputFragment : Fragment(),
                         currencyCode = null,
                         scale = SCALE_CRYPTO
                     ),
-                    state.sourceCryptoCurrency
+                    state.sourceCryptoCurrency.uppercase()
                 )
             )
 
