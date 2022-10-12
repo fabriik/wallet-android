@@ -257,7 +257,7 @@ class SwapInputViewModel(
 
         setEffect {
             SwapInputContract.Effect.ShowError(
-                message = getString(R.string.Swap_Input_Error_OneSwapLimit)
+                message = getString(R.string.ErrorMessages_pendingExchange)
             )
         }
     }
@@ -319,7 +319,7 @@ class SwapInputViewModel(
 
                     setEffect {
                         SwapInputContract.Effect.ShowError(
-                            getString(R.string.Swap_Input_Error_NoSelectedPairData)
+                            getString(R.string.ErrorMessages_ExchangeQuoteFailed)
                         )
                     }
                 }
@@ -405,7 +405,7 @@ class SwapInputViewModel(
             if (quoteData == null) {
                 setEffect {
                     SwapInputContract.Effect.ShowError(
-                        getString(R.string.Swap_Input_Error_NoSelectedPairData)
+                        getString(R.string.ErrorMessages_ExchangeQuoteFailed)
                     )
                 }
             } else {
@@ -551,7 +551,7 @@ class SwapInputViewModel(
 
                     setEffect {
                         SwapInputContract.Effect.ShowToast(
-                            message = getString(R.string.Swap_Input_Warning_EthFeeBalance)
+                            message = getString(R.string.Swap_transactionInEthereumNetwork)
                         )
                     }
                 }
@@ -831,8 +831,8 @@ class SwapInputViewModel(
         private const val DIALOG_REQUEST_TEMP_UNAVAILABLE = "request_temp_unvailable"
 
         val DIALOG_CHECK_ASSETS_ARGS = FabriikGenericDialogArgs(
-            titleRes = R.string.Swap_Input_Dialog_CheckAssets_Title,
-            descriptionRes = R.string.Swap_Input_Dialog_CheckAssets_Message,
+            titleRes = R.string.Swap_CheckAssets,
+            descriptionRes = R.string.Swap_CheckAssetsBody,
             showDismissButton = true,
             positive = FabriikGenericDialogArgs.ButtonData(
                 titleRes = R.string.Swap_GotItButton,
@@ -842,8 +842,8 @@ class SwapInputViewModel(
         )
 
         val DIALOG_TEMP_UNAVAILABLE_ARGS = FabriikGenericDialogArgs(
-            titleRes = R.string.Swap_Input_Dialog_TemporarlyUnavailable_Title,
-            descriptionRes = R.string.Swap_Input_Dialog_TemporarlyUnavailable_Message,
+            titleRes = R.string.Swap_temporarilyUnavailable,
+            descriptionRes = R.string.ErrorMessages_temporaryNetworkIssues,
             showDismissButton = true,
             positive = FabriikGenericDialogArgs.ButtonData(
                 titleRes = R.string.Swap_GotItButton,

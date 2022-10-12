@@ -353,9 +353,9 @@ class SwapInputFragment : Fragment(),
             initialLoadingIndicator.isVisible = false
 
             if (state.isKyc2) {
-                tvKycMessage.text = getString(R.string.Swap_KycLimits_Kyc2)
+                tvKycMessage.text = getString(R.string.Swap_SwapLimits) //todo: enter amount
             } else if(state.isKyc1) {
-                tvKycMessage.text = getString(R.string.Swap_KycLimits_Kyc1)
+                tvKycMessage.text = getString(R.string.Swap_SwapLimits) //todo: enter amount
             }
         }
     }

@@ -1264,7 +1264,7 @@ We are sorry to see you go.</string>
     <!-- Title on check your assets popup -->
     <string name="Swap.CheckAssets">Check your assets!</string>
     <!-- Text body in check your assets popup -->
-    <string name="Swap.CheckAssetsBody">In order to succesfully perform a swap, make sure you have two or more of our supported swap assets (BSV, BTC, ETH, BCH, SHIB, USDT) activated and funded within your wallet.</string>
+    <string name="Swap.CheckAssetsBody">In order to successfully perform a swap, make sure you have two or more of our supported swap assets (BSV, BTC, ETH, BCH, SHIB, USDT) activated and funded within your wallet.</string>
     <!-- Swap details title -->
     <string name="Swap.Details">Swap details</string>
     <!-- There was an error while processing your transaction title in failure swap screen -->
@@ -1307,7 +1307,7 @@ We are sorry to see you go.</string>
     <string name="Swap.SwapAgain">Swap again</string>
     <string name="Swap.Swapping">Swapping %1$s/%2$s</string>
     <!-- Swap min and max limit text -->
-    <string name="Swap.SwapLimits">Currently, minimum limit for swap is $%@ USD and maximum limit is $%@ USD/day.</string>
+    <string name="Swap.SwapLimits">Currently, minimum limit for swap is $%s USD and maximum limit is $%s USD/day.</string>
     <!-- Swap status message on swap flow -->
     <string name="Swap.SwapStatus">Your %s is estimated to arrive in 30 minutes. You can continue to use your wallet. We\'ll let you know when your swap has finished.</string>
     <!-- Timestamp label in swap details screen -->
