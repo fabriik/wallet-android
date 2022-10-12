@@ -16,6 +16,7 @@ import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.breadwallet.breadbox.formatCryptoForUi
 import com.breadwallet.tools.util.Utils.hideKeyboard
+import com.breadwallet.util.formatFiatForUi
 import com.fabriik.common.ui.dialog.FabriikGenericDialog
 import com.fabriik.common.utils.FabriikToastUtil
 import com.fabriik.trade.ui.customview.SwapCardView
@@ -317,10 +318,11 @@ class SwapInputFragment : Fragment(),
             cvSwap.setDestinationCurrency(state.destinationCryptoCurrency.uppercase())
             cvSwap.setSourceCurrencyTitle(
                 getString(
-                    R.string.Swap_Input_IHave, state.sourceCryptoBalance.formatCryptoForUi(
-                        currencyCode = state.sourceCryptoCurrency,
+                    R.string.Swap_Balance, state.sourceCryptoBalance.formatCryptoForUi(
+                        currencyCode = null,
                         scale = SCALE_CRYPTO
-                    )
+                    ),
+                    state.sourceCryptoCurrency.uppercase()
                 )
             )
 
@@ -351,11 +353,21 @@ class SwapInputFragment : Fragment(),
             fullScreenLoadingView.root.isVisible = state.fullScreenLoadingVisible
             initialLoadingIndicator.isVisible = false
 
-            if (state.isKyc2) {
-                tvKycMessage.text = getString(R.string.Swap_KycLimits_Kyc2)
-            } else if(state.isKyc1) {
-                tvKycMessage.text = getString(R.string.Swap_KycLimits_Kyc1)
-            }
+            val minAmount = state.quoteResponse?.minimumValueUsd ?: BigDecimal.ZERO
+            val minText = minAmount.formatFiatForUi(
+                currencyCode = state.fiatCurrency,
+                showCurrencyName = false,
+                showCurrencySymbol = false
+            )
+
+            val maxAmount = state.profile?.exchangeLimits?.swapAllowanceDaily ?: BigDecimal.ZERO
+            val maxText = maxAmount.formatFiatForUi(
+                currencyCode = state.fiatCurrency,
+                showCurrencyName = false,
+                showCurrencySymbol = false
+            )
+
+            tvKycMessage.text = getString(R.string.Swap_SwapLimits, minText, maxText)
         }
     }
 

@@ -257,7 +257,7 @@ class SwapInputViewModel(
 
         setEffect {
             SwapInputContract.Effect.ShowError(
-                message = getString(R.string.Swap_Input_Error_OneSwapLimit)
+                message = getString(R.string.ErrorMessages_pendingExchange)
             )
         }
     }
@@ -319,7 +319,7 @@ class SwapInputViewModel(
 
                     setEffect {
                         SwapInputContract.Effect.ShowError(
-                            getString(R.string.Swap_Input_Error_NoSelectedPairData)
+                            getString(R.string.ErrorMessages_ExchangeQuoteFailed)
                         )
                     }
                 }
@@ -331,7 +331,7 @@ class SwapInputViewModel(
         setState { SwapInputContract.State.Error }
         setEffect {
             SwapInputContract.Effect.ShowToast(
-                getString(R.string.Swap_Input_Error_Network)
+                getString(R.string.ErrorMessages_NetworkIssues)
             )
         }
     }
@@ -405,7 +405,7 @@ class SwapInputViewModel(
             if (quoteData == null) {
                 setEffect {
                     SwapInputContract.Effect.ShowError(
-                        getString(R.string.Swap_Input_Error_NoSelectedPairData)
+                        getString(R.string.ErrorMessages_ExchangeQuoteFailed)
                     )
                 }
             } else {
@@ -551,7 +551,7 @@ class SwapInputViewModel(
 
                     setEffect {
                         SwapInputContract.Effect.ShowToast(
-                            message = getString(R.string.Swap_Input_Warning_EthFeeBalance)
+                            message = getString(R.string.Swap_transactionInEthereumNetwork)
                         )
                     }
                 }
@@ -564,7 +564,7 @@ class SwapInputViewModel(
         if (state == null) {
             setEffect {
                 SwapInputContract.Effect.ShowToast(
-                    getString(R.string.Swap_Input_Error_Network)
+                    getString(R.string.ErrorMessages_NetworkIssues)
                 )
             }
             return
@@ -770,10 +770,18 @@ class SwapInputViewModel(
             )
         state.sourceCryptoAmount < state.minCryptoAmount ->
             SwapInputContract.ErrorMessage.MinSwapAmount(state.minCryptoAmount, state.sourceCryptoCurrency)
-        state.sourceFiatAmount > state.dailySwapAmountLeft ->
-            if (state.isKyc1) SwapInputContract.ErrorMessage.Kyc1DailyLimit else SwapInputContract.ErrorMessage.Kyc2DailyLimit
-        state.isKyc1 && state.sourceFiatAmount > state.lifetimeSwapAmountLeft ->
-            SwapInputContract.ErrorMessage.Kyc1LifetimeLimit
+        state.sourceFiatAmount > state.dailySwapAmountLeft -> {
+            val limit = state.profile?.exchangeLimits?.swapAllowanceDaily ?: BigDecimal.ZERO
+            if (state.isKyc1) {
+                SwapInputContract.ErrorMessage.Kyc1DailyLimit(limit, state.fiatCurrency)
+            } else {
+                SwapInputContract.ErrorMessage.Kyc2DailyLimit(limit, state.fiatCurrency)
+            }
+        }
+        state.isKyc1 && state.sourceFiatAmount > state.lifetimeSwapAmountLeft -> {
+            val limit = state.profile?.exchangeLimits?.swapAllowanceLifetime ?: BigDecimal.ZERO
+            SwapInputContract.ErrorMessage.Kyc1LifetimeLimit(limit, state.fiatCurrency)
+        }
         else -> null
     }
 
@@ -831,22 +839,22 @@ class SwapInputViewModel(
         private const val DIALOG_REQUEST_TEMP_UNAVAILABLE = "request_temp_unvailable"
 
         val DIALOG_CHECK_ASSETS_ARGS = FabriikGenericDialogArgs(
-            titleRes = R.string.Swap_Input_Dialog_CheckAssets_Title,
-            descriptionRes = R.string.Swap_Input_Dialog_CheckAssets_Message,
+            titleRes = R.string.Swap_CheckAssets,
+            descriptionRes = R.string.Swap_CheckAssetsBody,
             showDismissButton = true,
             positive = FabriikGenericDialogArgs.ButtonData(
-                titleRes = R.string.Swap_Input_Dialog_Button_GotIt,
+                titleRes = R.string.Swap_GotItButton,
                 resultKey = DIALOG_RESULT_GOT_IT
             ),
             requestKey = DIALOG_REQUEST_CHECK_ASSETS
         )
 
         val DIALOG_TEMP_UNAVAILABLE_ARGS = FabriikGenericDialogArgs(
-            titleRes = R.string.Swap_Input_Dialog_TemporarlyUnavailable_Title,
-            descriptionRes = R.string.Swap_Input_Dialog_TemporarlyUnavailable_Message,
+            titleRes = R.string.Swap_temporarilyUnavailable,
+            descriptionRes = R.string.ErrorMessages_temporaryNetworkIssues,
             showDismissButton = true,
             positive = FabriikGenericDialogArgs.ButtonData(
-                titleRes = R.string.Swap_Input_Dialog_Button_GotIt,
+                titleRes = R.string.Swap_GotItButton,
                 resultKey = DIALOG_RESULT_GOT_IT
             ),
             requestKey = DIALOG_REQUEST_TEMP_UNAVAILABLE

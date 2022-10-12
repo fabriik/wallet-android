@@ -106,7 +106,7 @@ class SwapCardView @JvmOverloads constructor(
             val fiatText = it.fiatAmount.formatFiatForUi(it.fiatCurrency, SCALE_FIAT)
             val cryptoText = it.cryptoAmount.formatCryptoForUi(it.cryptoCurrency, SCALE_CRYPTO)
             binding.tvSellingCurrencyNetworkFee.text = "$cryptoText\n$fiatText"
-            binding.tvSellingCurrencyNetworkFeeTitle.setText(R.string.Swap_Input_SendingFeeTitle)
+            binding.tvSellingCurrencyNetworkFeeTitle.setText(R.string.Swap_sendNetworkFeeNotIncluded)
         }
     }
 
@@ -118,13 +118,7 @@ class SwapCardView @JvmOverloads constructor(
             val fiatText = it.fiatAmount.formatFiatForUi(it.fiatCurrency, SCALE_FIAT)
             val cryptoText = it.cryptoAmount.formatCryptoForUi(it.cryptoCurrency, SCALE_CRYPTO)
             binding.tvBuyingCurrencyNetworkFee.text = "$cryptoText\n$fiatText"
-            binding.tvBuyingCurrencyNetworkFeeTitle.setText(
-                if (it.isFeeInWalletCurrency) {
-                    R.string.Swap_Input_ReceivingFeeIncludedTitle
-                } else {
-                    R.string.Swap_Input_ReceivingFeeTitle
-                }
-            )
+            binding.tvBuyingCurrencyNetworkFeeTitle.setText(R.string.Swap_ReceiveNetworkFee)
         }
     }
 

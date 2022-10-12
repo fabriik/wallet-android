@@ -12,7 +12,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:showBack="false"
-        app:title="@string/Swap.Details.Title" />
+        app:title="@string/Swap.Details" />
 
     <ScrollView
         android:id="@+id/content"
@@ -56,7 +56,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/light_text_03"
-                        tools:text="@string/Swap.Details.Status.Pending" />
+                        tools:text="@string/Transaction.pending" />
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -83,7 +83,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="@string/Swap.Details.OrderId"
+                        android:text="@string/Swap.TransactionID"
                         android:textColor="@color/light_text_03" />
 
                     <TextView
@@ -244,7 +244,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="@string/Swap.Details.Timestamp"
+                        android:text="@string/Swap.Timestamp"
                         android:textColor="@color/light_text_04" />
 
                     <TextView

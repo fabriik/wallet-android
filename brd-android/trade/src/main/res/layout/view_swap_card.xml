@@ -21,7 +21,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view_input_selling_currency"
         tools:visibility="visible"
-        tools:text="@string/Swap.Input.SendingFeeTitle" />
+        tools:text="@string/Swap.SendNetworkFee" />
 
     <TextView
         android:id="@+id/tv_selling_currency_network_fee"
@@ -72,7 +72,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view_input_buying_currency"
         tools:visibility="visible"
-        tools:text="@string/Swap.Input.ReceivingFeeTitle" />
+        tools:text="@string/Swap.ReceiveNetworkFee" />
 
     <TextView
         android:id="@+id/tv_buying_currency_network_fee"
@@ -97,7 +97,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_swap"
-        app:title="@string/Swap.Input.IWant" />
+        app:title="@string/Swap.iWant" />
 
     <com.fabriik.trade.ui.customview.CurrencyInputView
         android:id="@+id/view_input_selling_currency"
@@ -106,6 +106,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:title="@string/Swap.Input.IHave" />
+        tools:title="@string/Swap.Balance" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

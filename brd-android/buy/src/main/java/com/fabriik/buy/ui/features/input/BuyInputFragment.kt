@@ -225,6 +225,22 @@ class BuyInputFragment : Fragment(),
             fullScreenLoadingView.root.isVisible = state.fullScreenLoadingVisible
 
             tvRateValue.isVisible = !state.rateLoadingVisible && state.quoteResponse != null
+
+            val minAmount = state.quoteResponse?.minimumValueUsd ?: BigDecimal.ZERO
+            val minText = minAmount.formatFiatForUi(
+                currencyCode = state.fiatCurrency,
+                showCurrencyName = false,
+                showCurrencySymbol = false
+            )
+
+            val maxAmount = state.quoteResponse?.maximumValueUsd ?: BigDecimal.ZERO
+            val maxText = maxAmount.formatFiatForUi(
+                currencyCode = state.fiatCurrency,
+                showCurrencyName = false,
+                showCurrencySymbol = false
+            )
+
+            tvLimitsDisclaimer.text = getString(R.string.Buy_BuyLimits, minText, maxText)
         }
     }
 

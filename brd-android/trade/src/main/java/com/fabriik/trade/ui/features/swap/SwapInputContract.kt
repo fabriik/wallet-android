@@ -2,6 +2,7 @@ package com.fabriik.trade.ui.features.swap
 
 import android.content.Context
 import com.breadwallet.breadbox.formatCryptoForUi
+import com.breadwallet.util.formatFiatForUi
 import com.fabriik.common.data.model.Profile
 import com.fabriik.common.data.model.isKyc1
 import com.fabriik.common.data.model.isKyc2
@@ -130,52 +131,62 @@ interface SwapInputContract {
 
         object NetworkIssues : ErrorMessage() {
             override fun toString(context: Context) = context.getString(
-                R.string.Swap_Input_Error_Network
+                R.string.ErrorMessages_NetworkIssues
             )
         }
 
         class InsufficientFunds(private val requiredFee: BigDecimal, val currencyCode: String) : ErrorMessage() {
             override fun toString(context: Context) = context.getString(
-                R.string.Swap_Input_Error_InsuficientFunds,  requiredFee.formatCryptoForUi(null), currencyCode.uppercase()
+                R.string.ErrorMessages_balanceTooLow, requiredFee.formatCryptoForUi(null), currencyCode.uppercase(), currencyCode.uppercase()
             )
         }
 
         object InsufficientFundsForFee : ErrorMessage() {
             override fun toString(context: Context) = context.getString(
-                R.string.Swap_Input_Error_FeeFunds
+                R.string.ErrorMessages_networkFee
             )
         }
 
         class InsufficientEthFundsForFee(val cryptoCurrency: String) : ErrorMessage() {
             override fun toString(context: Context) = context.getString(
-                R.string.Swap_Input_Error_EthFeeBalance, cryptoCurrency.uppercase()
+                R.string.ErrorMessages_notEnoughEthForFee, cryptoCurrency.uppercase()
             )
         }
 
         class MinSwapAmount(private val minAmount: BigDecimal, private val cryptoCurrency: String) : ErrorMessage() {
             override fun toString(context: Context) = context.getString(
-                R.string.Swap_Input_Error_MinAmount, minAmount.formatCryptoForUi(
-                    currencyCode = cryptoCurrency,
+                R.string.ErrorMessages_amountTooLow, minAmount.formatCryptoForUi(
+                    currencyCode = null,
                     scale = SCALE_CRYPTO
+                ),
+                cryptoCurrency
+            )
+        }
+
+        data class Kyc1DailyLimit(val limit: BigDecimal, val fiatCurrency: String) : ErrorMessage() {
+            override fun toString(context: Context) = context.getString(
+                R.string.ErrorMessages_overDailyLimit, limit.formatFiatForUi(
+                    currencyCode = fiatCurrency,
+                    showCurrencyName = false
                 )
             )
         }
 
-        object Kyc1DailyLimit : ErrorMessage() {
+        data class Kyc1LifetimeLimit(val limit: BigDecimal, val fiatCurrency: String) : ErrorMessage() {
             override fun toString(context: Context) = context.getString(
-                R.string.Swap_Input_Error_Kyc1DailyLimit
+                R.string.ErrorMessages_overLifetimeLimit, limit.formatFiatForUi(
+                    currencyCode = fiatCurrency,
+                    showCurrencyName = false
+                )
             )
         }
 
-        object Kyc1LifetimeLimit : ErrorMessage() {
+        data class Kyc2DailyLimit(val limit: BigDecimal, val fiatCurrency: String) : ErrorMessage() {
             override fun toString(context: Context) = context.getString(
-                R.string.Swap_Input_Error_Kyc1LifetimeLimit
-            )
-        }
-
-        object Kyc2DailyLimit : ErrorMessage() {
-            override fun toString(context: Context) = context.getString(
-                R.string.Swap_Input_Error_Kyc2DailyLimit
+                R.string.ErrorMessages_overDailyLimit, limit.formatFiatForUi(
+                    currencyCode = fiatCurrency,
+                    showCurrencyName = false
+                )
             )
         }
     }
