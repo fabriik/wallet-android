@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="Registration.EnterEmail.Title">Welcome!</string>
+    <!--<string name="Registration.EnterEmail.Title">Welcome!</string>
     <string name="Registration.EnterEmail.Subtitle">Create a Fabriik account by entering your email address.</string>
     <string name="Registration.EnterEmail.Email">Email</string>
     <string name="Registration.EnterEmail.Promotions">I’m ok with receiving future promotion, offers and communications</string>
@@ -12,5 +12,5 @@
     <string name="Registration.VerifyEmail.Resend">Re-send my code</string>
     <string name="Registration.VerifyEmail.ChangeEmail">Change my email</string>
     <string name="Registration.VerifyEmail.InvalidCode">Invalid code</string>
-    <string name="Registration.VerifyEmail.CodeSent">Verification code sent.</string>
+    <string name="Registration.VerifyEmail.CodeSent">Verification code sent.</string>-->
 </resources>
