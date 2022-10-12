@@ -1258,7 +1258,7 @@ We are sorry to see you go.</string>
     <!-- Back to Home button -->
     <string name="Swap.BackToHome">Back to Home</string>
     <!-- Balance text on swap -->
-    <string name="Swap.Balance">I have %@ %@</string>
+    <string name="Swap.Balance">I have %s %s</string>
     <!-- Card fee label in swap details screen -->
     <string name="Swap.CardFee">Card fee</string>
     <string name="Swap.CardFee.android">Card fee:</string>
