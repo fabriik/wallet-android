@@ -70,12 +70,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="8dp"
-                    android:text="@string/Buy.BuyLimits.android"
                     app:layout_constrainedWidth="true"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_rate_title" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_rate_title"
+                    tools:text="@string/Buy.BuyLimits" />
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cv_crypto_input"
