@@ -331,7 +331,7 @@ class SwapInputViewModel(
         setState { SwapInputContract.State.Error }
         setEffect {
             SwapInputContract.Effect.ShowToast(
-                getString(R.string.Swap_Input_Error_Network)
+                getString(R.string.ErrorMessages_NetworkIssues)
             )
         }
     }
@@ -564,7 +564,7 @@ class SwapInputViewModel(
         if (state == null) {
             setEffect {
                 SwapInputContract.Effect.ShowToast(
-                    getString(R.string.Swap_Input_Error_Network)
+                    getString(R.string.ErrorMessages_NetworkIssues)
                 )
             }
             return

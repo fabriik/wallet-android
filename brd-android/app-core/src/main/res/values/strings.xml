@@ -391,6 +391,7 @@ We are sorry to see you go.</string>
     <string name="EME.permissions.paymentRequest">Request %1$s payment</string>
     <string name="ErrorMessages.amountTooLow">The amount is lower than the minimum of %s %s. Please enter a higher amount.</string>
     <string name="ErrorMessages.AmountTooHigh">The amount is higher than your daily limit of %s %s. Please enter a lower amount.</string>
+    <string name="ErrorMessages.balanceTooLow">You need %s %s in your wallet to cover network fees. Please add more %s to your wallet.</string>
     <!-- Email unavailable alert title -->
     <string name="ErrorMessages.emailUnavailableMessage">This device isn\'t configured to send email with the iOS mail app.</string>
     <!-- Email unavailable alert title -->
@@ -400,6 +401,7 @@ We are sorry to see you go.</string>
     <!-- Messaging unavailable alert title -->
     <string name="ErrorMessages.messagingUnavailableMessage">This device isn\'t configured to send messages.</string>
     <!-- Messaging unavailable alert title -->
+    <string name="ErrorMessages.networkFee">This swap doesn\'t cover the included network fee. Please add more funds to your wallet or change the amount you\'re swapping.</string>
     <string name="ErrorMessages.NetworkIssues">We are having temporary network issues. Please try again later.</string>
     <string name="ErrorMessages.messagingUnavailableTitle">Messaging Unavailable</string>
     <!-- Fingerprint was not recognized by the scanner, please try scanning again -->
@@ -1252,10 +1254,11 @@ We are sorry to see you go.</string>
 (not included)</string>
     <!-- Swap again button title in swap failure screen -->
     <string name="Swap.SwapAgain">Swap again</string>
+    <string name="Swap.Swapping">Swapping %1$s/%2$s</string>
     <!-- Swap min and max limit text -->
     <string name="Swap.SwapLimits">Currently, minimum limit for swap is $%@ USD and maximum limit is $%@ USD/day.</string>
     <!-- Swap status message on swap flow -->
-    <string name="Swap.SwapStatus">Your %@ is estimated to arrive in 30 minutes. You can continue to use your wallet. We\'ll let you know when your swap has finished.</string>
+    <string name="Swap.SwapStatus">Your %s is estimated to arrive in 30 minutes. You can continue to use your wallet. We\'ll let you know when your swap has finished.</string>
     <!-- Timestamp label in swap details screen -->
     <string name="Swap.Timestamp">Timestamp</string>
     <!-- Total label in swap details screen -->

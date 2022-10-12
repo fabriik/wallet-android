@@ -130,52 +130,53 @@ interface SwapInputContract {
 
         object NetworkIssues : ErrorMessage() {
             override fun toString(context: Context) = context.getString(
-                R.string.Swap_Input_Error_Network
+                R.string.ErrorMessages_NetworkIssues
             )
         }
 
         class InsufficientFunds(private val requiredFee: BigDecimal, val currencyCode: String) : ErrorMessage() {
             override fun toString(context: Context) = context.getString(
-                R.string.Swap_Input_Error_InsuficientFunds,  requiredFee.formatCryptoForUi(null), currencyCode.uppercase()
+                R.string.ErrorMessages_balanceTooLow,  requiredFee.formatCryptoForUi(null), currencyCode.uppercase()
             )
         }
 
         object InsufficientFundsForFee : ErrorMessage() {
             override fun toString(context: Context) = context.getString(
-                R.string.Swap_Input_Error_FeeFunds
+                R.string.ErrorMessages_networkFee
             )
         }
 
         class InsufficientEthFundsForFee(val cryptoCurrency: String) : ErrorMessage() {
             override fun toString(context: Context) = context.getString(
-                R.string.Swap_Input_Error_EthFeeBalance, cryptoCurrency.uppercase()
+                R.string.ErrorMessages_notEnoughEthForFee, cryptoCurrency.uppercase()
             )
         }
 
         class MinSwapAmount(private val minAmount: BigDecimal, private val cryptoCurrency: String) : ErrorMessage() {
             override fun toString(context: Context) = context.getString(
-                R.string.Swap_Input_Error_MinAmount, minAmount.formatCryptoForUi(
-                    currencyCode = cryptoCurrency,
+                R.string.ErrorMessages_amountTooLow, minAmount.formatCryptoForUi(
+                    currencyCode = null,
                     scale = SCALE_CRYPTO
-                )
+                ),
+                cryptoCurrency
             )
         }
 
         object Kyc1DailyLimit : ErrorMessage() {
             override fun toString(context: Context) = context.getString(
-                R.string.Swap_Input_Error_Kyc1DailyLimit
+                R.string.ErrorMessages_overDailyLimit //todo: amount
             )
         }
 
         object Kyc1LifetimeLimit : ErrorMessage() {
             override fun toString(context: Context) = context.getString(
-                R.string.Swap_Input_Error_Kyc1LifetimeLimit
+                R.string.ErrorMessages_overLifetimeLimit //todo: amount
             )
         }
 
         object Kyc2DailyLimit : ErrorMessage() {
             override fun toString(context: Context) = context.getString(
-                R.string.Swap_Input_Error_Kyc2DailyLimit
+                R.string.ErrorMessages_overDailyLimit //todo: amount
             )
         }
     }
