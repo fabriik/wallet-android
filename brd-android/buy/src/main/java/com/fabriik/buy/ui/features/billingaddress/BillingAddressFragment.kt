@@ -166,8 +166,8 @@ class BillingAddressFragment : Fragment(),
                     )
                 )
 
-            is BillingAddressContract.Effect.ShowToast ->
-                FabriikToastUtil.showInfo(
+            is BillingAddressContract.Effect.ShowError ->
+                FabriikToastUtil.showError(
                     parentView = binding.root,
                     message = effect.message
                 )
