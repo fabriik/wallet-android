@@ -26,7 +26,7 @@ class BillingAddressContract : FabriikContract {
         object Dismiss : Effect()
         object CountrySelection : Effect()
         data class PaymentMethod(val flow: AddCardFlow) : Effect()
-        data class ShowToast(val message: String): Effect()
+        data class ShowError(val message: String): Effect()
         data class OpenWebsite(val url: String): Effect()
     }
 

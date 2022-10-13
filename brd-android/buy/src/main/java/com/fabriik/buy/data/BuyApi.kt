@@ -58,10 +58,19 @@ class BuyApi(
 
             Resource.success(data = response)
         } catch (ex: Exception) {
-            responseMapper.mapError(
+            val error: Resource<AddPaymentInstrumentResponse?> = responseMapper.mapError(
                 context = context,
                 exception = ex
             )
+
+            //todo: refactor in future
+            if (error.message?.contains("Access denied", true) == true) {
+                return Resource.error(
+                    message = context.getString(R.string.ErrorMessages_Kyc2AccessDenied)
+                )
+            } else {
+                error
+            }
         }
     }
 
@@ -132,9 +141,14 @@ class BuyApi(
                 exception = ex
             )
 
+            //todo: refactor in future
             if (error.message?.contains("expired quote", true) == true) {
                 return Resource.error(
                     message = context.getString(R.string.Swap_Input_Error_QuoteExpired)
+                )
+            } else if (error.message?.contains("Access denied", true) == true) {
+                return Resource.error(
+                    message = context.getString(R.string.ErrorMessages_Kyc2AccessDenied)
                 )
             } else {
                 error
