@@ -1960,4 +1960,8 @@ Do not forget your wallet PIN! It can only be reset by using your Recovery Phras
     <!-- Home screen verify dialog -->
     <string name="HomeScreen.VerifyDialog.Title">Get full access to your Fabriik wallet!</string>
 
+    <string name="dayFormat">DD</string>
+    <string name="yearFormat">YYYY</string>
+    <string name="monthFormat">MM</string>
+
 </resources>
