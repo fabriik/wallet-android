@@ -8,7 +8,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:title="@string/ProofOfIdentity.Title" />
+        app:title="@string/Account.ProofOfIdentity" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -30,7 +30,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/ProofOfIdentity.Section"
+                android:text="@string/AccountKYCLevelTwo.SelectOptions"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0"
@@ -52,7 +52,7 @@
                     android:layout_height="wrap_content"
                     android:drawablePadding="10dp"
                     android:gravity="center_vertical"
-                    android:text="@string/ProofOfIdentity.Passport"
+                    android:text="@string/AccountKYCLevelTwo.Passport"
                     app:drawableStartCompat="@drawable/ic_passport" />
 
             </com.google.android.material.card.MaterialCardView>
@@ -73,7 +73,7 @@
                     android:layout_height="wrap_content"
                     android:drawablePadding="10dp"
                     android:gravity="center_vertical"
-                    android:text="@string/ProofOfIdentity.NationalIdCard"
+                    android:text="@string/AccountKYCLevelTwo.NationalIdCard"
                     app:drawableStartCompat="@drawable/ic_national_id_card" />
 
             </com.google.android.material.card.MaterialCardView>
@@ -94,7 +94,7 @@
                     android:layout_height="wrap_content"
                     android:drawablePadding="10dp"
                     android:gravity="center_vertical"
-                    android:text="@string/ProofOfIdentity.DrivingLicence"
+                    android:text="@string/AccountKYCLevelTwo.DrivingLicence"
                     app:drawableStartCompat="@drawable/ic_driving_licence" />
 
             </com.google.android.material.card.MaterialCardView>
@@ -115,7 +115,7 @@
                     android:layout_height="wrap_content"
                     android:drawablePadding="10dp"
                     android:gravity="center_vertical"
-                    android:text="@string/ProofOfIdentity.ResidencePermit"
+                    android:text="@string/AccountKYCLevelTwo.ResidencePermit"
                     app:drawableStartCompat="@drawable/ic_residence_permit" />
 
             </com.google.android.material.card.MaterialCardView>

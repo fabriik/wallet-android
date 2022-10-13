@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         app:showBack="false"
         app:showDismiss="false"
-        app:title="@string/PostValidation.Title" />
+        app:title="@string/AccountKYCLevelTwo.InProgress" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="40dp"
-                android:text="@string/PostValidation.Subtitle"
+                android:text="@string/AccountKYCLevelTwo.DocumentsReview"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="40dp"
                 android:layout_marginTop="22dp"
-                app:contentText="@string/PostValidation.CheckedItem1"
+                app:contentText="@string/AccountKYCLevelTwo.UploadingPhoto"
                 app:iconImage="@drawable/ic_check_blue"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -56,7 +56,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="40dp"
                 android:layout_marginTop="16dp"
-                app:contentText="@string/PostValidation.CheckedItem2"
+                app:contentText="@string/AccountKYCLevelTwo.CheckingErrors"
                 app:iconImage="@drawable/ic_check_blue"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -68,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="40dp"
                 android:layout_marginTop="16dp"
-                app:contentText="@string/PostValidation.CheckedItem3"
+                app:contentText="@string/AccountKYCLevelTwo.SendingData"
                 app:iconImage="@drawable/ic_check_blue"
                 app:layout_constraintTop_toBottomOf="@id/checked_item_2" />
 
@@ -78,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="40dp"
                 android:layout_marginTop="16dp"
-                app:contentText="@string/PostValidation.CheckedItem4"
+                app:contentText="@string/AccountKYCLevelTwo.Verifying"
                 app:iconImage="@drawable/ic_check_blue"
                 app:layout_constraintTop_toBottomOf="@id/checked_item_3" />
 
@@ -89,7 +89,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
                 android:height="48dp"
-                android:text="@string/KYC.Continue"
+                android:text="@string/Button.continueAction"
                 app:layout_constraintBottom_toBottomOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

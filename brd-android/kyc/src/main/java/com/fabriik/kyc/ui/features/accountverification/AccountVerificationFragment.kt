@@ -178,8 +178,8 @@ class AccountVerificationFragment : Fragment(),
     private fun showInfoDialog() {
         val fm = requireActivity().supportFragmentManager
         val infoArgs = InfoDialogArgs(
-            title = R.string.AccountVerification_InfoView_title,
-            description = R.string.AccountVerification_InfoVIew_description,
+            title = R.string.Account_PersonalInformation,
+            description = R.string.Account_VerifyPersonalInformation,
         )
         InfoDialog(infoArgs).show(fm, "info_dialog")
     }

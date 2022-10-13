@@ -10,7 +10,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:title="@string/SubmitPhoto.Title" />
+        app:title="@string/Account.SubmitPhoto" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
-                android:text="@string/SubmitPhoto.Subtitle"
+                android:text="@string/Account.BeforeConfirm"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -83,7 +83,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="32dp"
                 android:layout_marginEnd="4dp"
-                android:text="@string/SubmitPhoto.RetakeButton"
+                android:text="@string/Account.RetakePhoto"
                 app:layout_constraintEnd_toEndOf="@id/horizontal_divider"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/iv_review_photo" />
@@ -96,7 +96,7 @@
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="32dp"
                 android:layout_marginEnd="16dp"
-                android:text="@string/KYC.ConfirmButton"
+                android:text="@string/Button.confirm"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@id/horizontal_divider"
                 app:layout_constraintTop_toBottomOf="@id/iv_review_photo" />
