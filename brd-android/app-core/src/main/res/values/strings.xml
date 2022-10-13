@@ -44,6 +44,7 @@
     <string name="Account.DataIssues">Oops! We had some issues processing your data</string>
     <!-- Date of birth label in create account -->
     <string name="Account.DateOfBirth">Date of birth</string>
+    <string name="Account.Declined">Declined</string>
     <!-- Delete account option in menu -->
     <string name="Account.DeleteAccount">Delete account</string>
     <!-- Delisted token alert banner message -->
@@ -62,12 +63,14 @@ You may still be able to send these tokens to another platform. For more details
     <string name="Account.loadingMessage">Loading Wallet</string>
     <!-- Verify your account to get full access to the wallet message -->
     <string name="Account.MessageVerifyAccount">Verify your account to get full access to your Fabriik wallet!</string>
+    <string name="Account.Pending">Pending</string>
     <!-- Account Personal Information title -->
     <string name="Account.PersonalInformation">Personal Information</string>
     <!-- Promotion and offers label when registering account -->
     <string name="Account.Promotion">I\'m ok with receiving future promotion, offers and communications</string>
     <!-- Proof of Identity title in add document for kyc2 -->
     <string name="Account.ProofOfIdentity">Proof of Identity</string>
+    <string name="Account.Resubmit">Resubmit</string>
     <!-- Retake photo button on create account -->
     <string name="Account.RetakePhoto">Retake photo</string>
     <!-- Submit your photo for document id title -->
@@ -81,6 +84,7 @@ Buy limit: $500 USD/day</string>
     <string name="Account.Verification">You need to be at least 18 years old to complete Level 1 verification</string>
     <!-- Why is the verification declined label in profile screen -->
     <string name="Account.VerificationDeclined">Why is my verification declined?</string>
+    <string name="Account.Verified">Verified</string>
     <!-- Verified account message on profile screen -->
     <string name="Account.VerifiedAccountMessage">We’ll let you know when your account is verified.</string>
     <!-- Verify account text in popup -->
