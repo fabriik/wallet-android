@@ -1,0 +1,16 @@
+---
+phrase:
+  access_token: "79533caf32708c2367d92dd040934044c42d201d57405b0823d086b729ca02ac"
+  file_format: "xml"
+  project_id: "a0c0e8919c43afc15bbee7679a3f17c9"
+  pull:
+    targets:
+    - file: "./brd-android/app-core/src/main/res/values/strings.xml"
+      params:
+        locale_id: "3ef6aa6856a1cb6d381cd58f6003acb4"
+  push:
+    sources:
+    - file: "./brd-android/fabriik-common/src/main/res/values/strings.xml"
+      params:
+        locale_id: "3ef6aa6856a1cb6d381cd58f6003acb4"
+        update_translations: true
