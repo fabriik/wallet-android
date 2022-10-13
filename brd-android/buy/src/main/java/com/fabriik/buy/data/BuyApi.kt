@@ -63,6 +63,7 @@ class BuyApi(
                 exception = ex
             )
 
+            //todo: refactor in future
             if (error.message?.contains("Access denied", true) == true) {
                 return Resource.error(
                     message = context.getString(R.string.ErrorMessages_Kyc2AccessDenied)
@@ -140,6 +141,7 @@ class BuyApi(
                 exception = ex
             )
 
+            //todo: refactor in future
             if (error.message?.contains("expired quote", true) == true) {
                 return Resource.error(
                     message = context.getString(R.string.Swap_Input_Error_QuoteExpired)
