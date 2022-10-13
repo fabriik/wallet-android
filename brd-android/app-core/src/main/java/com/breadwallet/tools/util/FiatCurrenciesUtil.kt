@@ -32,22 +32,22 @@ object FiatCurrenciesUtil {
     suspend fun waitUntilInitialized() = initLock.withLock { Unit }
 
     /**
-     * When the app first starts, fetch our local copy of tokens.json from the resource folder
+     * When the app first starts, fetch our local copy of fiatcurrencies.json from the resource folder
      *
      * @param context The Context of the caller
      */
     fun initialize(context: Context, forceLoad: Boolean) {
         FiatCurrenciesUtil.context = context
 
-        val tokensFile = File(context.filesDir, FIAT_FILENAME)
-        if (!tokensFile.exists() || forceLoad) {
+        val currenciesFile = File(context.filesDir, FIAT_FILENAME)
+        if (!currenciesFile.exists() || forceLoad) {
             try {
                 initLock.tryLock()
                 val currencies = context.resources
                     .openRawResource(R.raw.fiatcurrencies)
                     .reader().use { it.readText() }
 
-                // Copy the APK tokens.json to a file on internal storage
+                // Copy the APK fiatcurrencies.json to a file on internal storage
                 saveDataToFile(context, currencies, FIAT_FILENAME)
                 loadCurrencies(parseJsonToList(currencies))
                 initLock.unlock()
@@ -61,15 +61,14 @@ object FiatCurrenciesUtil {
     }
 
     /**
-     * This method can either fetch the list of supported tokens, or fetch a specific token by saleAddress
-     * Request the list of tokens we support from the /currencies endpoint
+     * Request the list of fiat currencies we support from the /fiat_currencies endpoint
      *
-     * @param tokenUrl The URL of the endpoint to get the token metadata from.
+     * @param url The URL of the endpoint to get the fiat currencies metadata from.
      */
-    private fun fetchCurrenciesFromServer(tokenUrl: String): BRResponse {
+    private fun fetchCurrenciesFromServer(url: String): BRResponse {
         val request = Request.Builder()
             .get()
-            .url(tokenUrl)
+            .url(url)
             .header(BRConstants.HEADER_CONTENT_TYPE, BRConstants.CONTENT_TYPE_JSON_CHARSET_UTF8)
             .header(BRConstants.HEADER_ACCEPT, BRConstants.CONTENT_TYPE_JSON)
             .build()
@@ -100,22 +99,22 @@ object FiatCurrenciesUtil {
                 }
             }
         } else {
-            logError("failed to fetch tokens: ${response.code}")
+            logError("failed to fetch fiat currencies: ${response.code}")
         }
     }
 
     private fun parseJsonToList(jsonString: String): ArrayList<FiatCurrency> {
-        val tokenJsonArray = try {
+        val currenciesJsonArray = try {
             JSONArray(jsonString)
         } catch (e: JSONException) {
-            BRReportsManager.error("Failed to parse Token list JSON.", e)
+            BRReportsManager.error("Failed to parse Fiat currencies list JSON.", e)
             JSONArray()
         }
-        return List(tokenJsonArray.length()) { i ->
+        return List(currenciesJsonArray.length()) { i ->
             try {
-                tokenJsonArray.getJSONObject(i).asFiatCurrency()
+                currenciesJsonArray.getJSONObject(i).asFiatCurrency()
             } catch (e: JSONException) {
-                BRReportsManager.error("Failed to parse Token JSON.", e)
+                BRReportsManager.error("Failed to parse Fiat currencies JSON.", e)
                 null
             }
         }.filterNotNull().run(::ArrayList)
@@ -125,7 +124,7 @@ object FiatCurrenciesUtil {
         try {
             File(context.filesDir.absolutePath, fileName).writeText(jsonResponse)
         } catch (e: IOException) {
-            BRReportsManager.error("Failed to write tokens.json file", e)
+            BRReportsManager.error("Failed to write fiat-currencies.json file", e)
         }
     }
 
@@ -133,7 +132,7 @@ object FiatCurrenciesUtil {
         val file = File(context.filesDir.path, FIAT_FILENAME)
         parseJsonToList(file.readText())
     } catch (e: IOException) {
-        BRReportsManager.error("Failed to read tokens.json file", e)
+        BRReportsManager.error("Failed to read fiat-currencies.json file", e)
         currencies
     }
 
