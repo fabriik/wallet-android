@@ -104,7 +104,7 @@ class AccountVerificationViewModel(
 
                 KycStatus.KYC2_SUBMITTED ->
                     AccountVerificationContract.Effect.ShowToast(
-                        getString(R.string.AccountVerification_Level2_PendingVerification)
+                        getString(R.string.AccountKYCLevelTwo_VerificationPending)
                     )
 
                 KycStatus.KYC2 ->
@@ -121,7 +121,7 @@ class AccountVerificationViewModel(
                 KycStatus.EMAIL_VERIFIED,
                 KycStatus.EMAIL_VERIFICATION_PENDING ->
                     AccountVerificationContract.Effect.ShowToast(
-                        getString(R.string.AccountVerification_Level2_CompleteLevel1First)
+                        getString(R.string.AccountKYCLevelTwo_CompleteLevelOneFirst)
                     )
 
 
@@ -133,12 +133,12 @@ class AccountVerificationViewModel(
 
                 KycStatus.KYC2_SUBMITTED ->
                     AccountVerificationContract.Effect.ShowToast(
-                        getString(R.string.AccountVerification_Level2_PendingVerification)
+                        getString(R.string.AccountKYCLevelTwo_VerificationPending)
                     )
 
                 KycStatus.KYC2 ->
                     AccountVerificationContract.Effect.ShowToast(
-                        getString(R.string.AccountVerification_Level2_UpdateLevel1IfDataChanged)
+                        getString(R.string.AccountKYCLevelTwo_updateLevelOne)
                     )
             }
         }

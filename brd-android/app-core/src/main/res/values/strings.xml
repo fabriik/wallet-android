@@ -168,6 +168,7 @@ We are sorry to see you go.</string>
     <string name="AccountKYCLevelTwo.CaptureFrontPage">Make sure to capture the entire front page of the document</string>
     <!-- Checking for errors label on KYC2 -->
     <string name="AccountKYCLevelTwo.CheckingErrors">Checking for errors</string>
+    <string name="AccountKYCLevelTwo.CompleteLevelOneFirst">Please complete Level 1 verification first.</string>
     <!-- Confirm ID label in KYC2 flow -->
     <string name="AccountKYCLevelTwo.ConfirmID">We need to confirm your ID</string>
     <!-- Document confirmation label for KYC2 -->
@@ -212,8 +213,11 @@ We are sorry to see you go.</string>
     <string name="AccountKYCLevelTwo.TakePhotos">Be prepared to take a selfie and photos of your ID</string>
     <string name="AccountKYCLevelTwo.TakeSelfieContent">Make sure your face is in the frame and it’s clearly visible.</string>
     <string name="AccountKYCLevelTwo.TakeSelfieTitle">Please take a selfie</string>
+    <string name="AccountKYCLevelTwo.updateLevelOne">If your personal information has changed, please first update Level 1 KYC and then continue with
+Level 2 KYC.</string>
     <!-- Uploading your photos label in KYC2 flow -->
     <string name="AccountKYCLevelTwo.UploadingPhoto">Uploading your photos</string>
+    <string name="AccountKYCLevelTwo.VerificationPending">Unavailable while KYC verification is pending.</string>
     <!-- Verifying label on KYC2 -->
     <string name="AccountKYCLevelTwo.Verifying">Verifying you</string>
     <!-- Third party keyboard warning -->
