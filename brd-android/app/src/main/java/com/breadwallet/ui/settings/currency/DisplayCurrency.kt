@@ -24,13 +24,14 @@
  */
 package com.breadwallet.ui.settings.currency
 
+import com.breadwallet.model.FiatCurrency
 import com.breadwallet.ui.navigation.NavigationEffect
 import com.breadwallet.ui.navigation.NavigationTarget
 import com.fabriik.support.pages.Topic
 
 object DisplayCurrency {
 
-    data class M(val currencies: List<String>, val selectedCurrency: String) {
+    data class M(val currencies: List<FiatCurrency>, val selectedCurrency: String) {
         companion object {
             fun createDefault(): M = M(emptyList(), "")
         }
@@ -42,7 +43,7 @@ object DisplayCurrency {
         data class OnCurrencySelected(val currencyCode: String) : E()
         data class OnCurrenciesLoaded(
             val selectedCurrencyCode: String,
-            val currencies: List<String>
+            val currencies: List<FiatCurrency>
         ) : E()
 
         data class OnSelectedCurrencyUpdated(val currencyCode: String) : E()
