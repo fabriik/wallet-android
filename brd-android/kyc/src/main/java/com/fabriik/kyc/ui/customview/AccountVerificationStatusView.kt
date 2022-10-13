@@ -101,25 +101,25 @@ class AccountVerificationStatusView @JvmOverloads constructor(
     ) {
 
         object Pending : StatusViewState(
-            text = R.string.ProfileStatusView_statusPending,
+            text = R.string.Account_Pending,
             textColor = R.color.light_contrast_01,
             backgroundTint = R.color.light_pending
         )
 
         object Verified : StatusViewState(
-            text = R.string.ProfileStatusView_statusVerified,
+            text = R.string.Account_Verified,
             textColor = R.color.light_contrast_02,
             backgroundTint = R.color.light_success
         )
 
         object Resubmit : StatusViewState(
-            text = R.string.ProfileStatusView_statusResubmit,
+            text = R.string.Account_Resubmit,
             textColor = R.color.light_contrast_02,
             backgroundTint = R.color.light_error
         )
 
         object Declined : StatusViewState(
-            text = R.string.ProfileStatusView_statusDeclined,
+            text = R.string.Account_Declined,
             textColor = R.color.light_contrast_02,
             backgroundTint = R.color.light_error
         )
@@ -134,41 +134,41 @@ class AccountVerificationStatusView @JvmOverloads constructor(
         val verificationDeclinedButtonVisible: Boolean = false
     ) {
         object Default : State(
-            title = R.string.ProfileStatusView_accountLimits,
-            subtitle = R.string.ProfileStatusView_statusSubtitleDefault,
+            title = R.string.Account_AccountLimits,
+            subtitle = R.string.Account_FullAccess,
             verifyAccountButtonVisible = true
         )
 
         object Level1Verified : State(
-            title = R.string.ProfileStatusView_accountLimits,
-            subtitle = R.string.ProfileStatusView_statusSubtitleLevel1Verified,
+            title = R.string.Account_AccountLimits,
+            subtitle = R.string.Account_CurrentLimit,
             statusView = StatusViewState.Verified,
             upgradeLimitsButtonVisible = true
         )
 
         object Level2Pending : State(
-            title = R.string.ProfileStatusView_accountLimits,
-            subtitle = R.string.ProfileStatusView_statusSubtitleLevel2Pending,
+            title = R.string.Account_AccountLimits,
+            subtitle = R.string.Account_VerifiedAccountMessage,
             statusView = StatusViewState.Pending
         )
 
         object Level2Resubmit : State(
-            title = R.string.ProfileStatusView_accountLimits,
-            subtitle = R.string.ProfileStatusView_statusSubtitleLevel2Failure,
+            title = R.string.Account_AccountLimits,
+            subtitle = R.string.Account_DataIssues,
             statusView = StatusViewState.Resubmit,
             verificationDeclinedButtonVisible = true
         )
 
         object Level2Declined : State(
-            title = R.string.ProfileStatusView_accountLimits,
-            subtitle = R.string.ProfileStatusView_statusSubtitleLevel2Failure,
+            title = R.string.Account_AccountLimits,
+            subtitle = R.string.Account_DataIssues,
             statusView = StatusViewState.Declined,
             verificationDeclinedButtonVisible = true
         )
 
         object Level2Verified : State(
-            title = R.string.ProfileStatusView_accountLimits,
-            subtitle = R.string.ProfileStatusView_statusSubtitleLevel2Verified,
+            title = R.string.Account_AccountLimits,
+            subtitle = R.string.Account_SwapAndBuyLimit,
             statusView = StatusViewState.Verified
         )
     }

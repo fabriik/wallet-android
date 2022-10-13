@@ -36,7 +36,7 @@
         app:layout_constraintEnd_toStartOf="@+id/btn_profile_info"
         app:layout_constraintTop_toTopOf="@+id/btn_profile_info"
         tools:backgroundTint="@color/light_pending"
-        tools:text="@string/ProfileStatusView.statusPending" />
+        tools:text="Pending" />
 
     <TextView
         android:id="@+id/tv_title"
@@ -46,15 +46,14 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:text="@string/ProfileStatusView.accountLimits"
+        android:text="@string/Account.AccountLimits"
         android:textAllCaps="true"
         android:textColor="@color/light_inverse_text_01"
         app:layout_constrainedWidth="true"
         app:layout_constraintEnd_toEndOf="@id/btn_verify_account"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Title" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_subtitle"
@@ -65,14 +64,13 @@
         android:layout_marginTop="12dp"
         android:layout_marginEnd="16dp"
         android:lineSpacingExtra="4sp"
-        android:text="@string/ProfileStatusView.getFullAccess"
+        android:text="@string/Account.FullAccess"
         android:textColor="@color/light_inverse_text_01"
         app:layout_constrainedWidth="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_title"
-        tools:text="Description" />
+        app:layout_constraintTop_toBottomOf="@id/tv_title" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_verify_account"
@@ -82,7 +80,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:text="@string/ProfileStatusView.verifyAccount"
+        android:text="@string/Account.AccountVerify"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -96,7 +94,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:text="@string/ProfileStatusView.upgradeLimits"
+        android:text="@string/Account.UpgradeLimits"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -110,7 +108,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:text="@string/ProfileStatusView.declinedVerificationButton"
+        android:text="@string/Account.VerificationDeclined"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
