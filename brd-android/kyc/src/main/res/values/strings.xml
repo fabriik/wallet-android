@@ -33,26 +33,4 @@ Level 2 KYC.</string>
     <string name="AccountVerification.InfoView.title">Personal information</string>
     <string name="AccountVerification.InfoVIew.description">We need to verify your personal information for compliance purposes. This information won’t be shared with outside sources unless required by law.</string>
 
-    <!-- Personal info screen
-    <string name="PersonalInformation.Title">Personal Information</string>
-    <string name="PersonalInformation.FirstName">First Name</string>
-    <string name="PersonalInformation.LastName">Last Name</string>
-    <string name="PersonalInformation.Confirm">Confirm</string>
-    <string name="PersonalInformation.Country">Country</string>
-    <string name="PersonalInformation.Section1">Write your name as it appears on your ID</string>
-    <string name="PersonalInformation.Section2">Date of birth</string>
-    <string name="PersonalInformation.Day">DD</string>
-    <string name="PersonalInformation.Month">MM</string>
-    <string name="PersonalInformation.Year">YYYY</string> -->
-
-    <!-- Take photo screen -->
-    <string name="TakePhoto.Passport.Title">Please take a photo of your passport.</string>
-    <string name="TakePhoto.Passport.Description">Make sure your passport is clear and readable and fits fully in the frame.</string>
-    <string name="TakePhoto.IdBack.Title">Please take a photo of your ID’s back page</string>
-    <string name="TakePhoto.IdBack.Description">Make sure your ID is clear and readable and fits fully in the frame</string>
-    <string name="TakePhoto.IdFront.Title">Please take a photo of your ID’s front page</string>
-    <string name="TakePhoto.IdFront.Description">Make sure your ID is clear and readable and fits fully in the frame</string>
-    <string name="TakePhoto.Selfie.Title">Please take a selfie</string>
-    <string name="TakePhoto.Selfie.Description">Make sure your face is in the frame and it’s clearly visible.</string>
-
 </resources>

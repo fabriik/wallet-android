@@ -146,21 +146,21 @@ class TakePhotoViewModel(
 
     private fun getTitle(documentType: DocumentType, documentSide: DocumentSide) =
         when (documentType) {
-            DocumentType.SELFIE -> R.string.TakePhoto_Selfie_Title
-            DocumentType.PASSPORT -> R.string.TakePhoto_Passport_Title
+            DocumentType.SELFIE -> R.string.AccountKYCLevelTwo_TakeSelfieTitle
+            DocumentType.PASSPORT -> R.string.AccountKYCLevelTwo_TakePhotoPassportTitle
             else -> when (documentSide) {
-                DocumentSide.BACK -> R.string.TakePhoto_IdBack_Title
-                DocumentSide.FRONT -> R.string.TakePhoto_IdFront_Title
+                DocumentSide.BACK -> R.string.AccountKYCLevelTwo_TakeIdBackPhotoTitle
+                DocumentSide.FRONT -> R.string.AccountKYCLevelTwo_TakeIdFrontPhotoTitle
             }
         }
 
     private fun getDescription(documentType: DocumentType, documentSide: DocumentSide) =
         when (documentType) {
-            DocumentType.SELFIE -> R.string.TakePhoto_Selfie_Description
-            DocumentType.PASSPORT -> R.string.TakePhoto_Passport_Description
+            DocumentType.SELFIE -> R.string.AccountKYCLevelTwo_TakeSelfieContent
+            DocumentType.PASSPORT -> R.string.AccountKYCLevelTwo_TakePhotoPassportContent
             else -> when (documentSide) {
-                DocumentSide.BACK -> R.string.TakePhoto_IdBack_Description
-                DocumentSide.FRONT -> R.string.TakePhoto_IdFront_Description
+                DocumentSide.BACK -> R.string.AccountKYCLevelTwo_TakeIdBackPhotoContent
+                DocumentSide.FRONT -> R.string.AccountKYCLevelTwo_TakeIdFrontPhotoContent
             }
         }
 }

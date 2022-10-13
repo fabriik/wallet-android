@@ -202,8 +202,16 @@ We are sorry to see you go.</string>
     <string name="AccountKYCLevelTwo.SelectOptions">Select one of the following options:</string>
     <!-- Sending your data label for verification on KYC2 -->
     <string name="AccountKYCLevelTwo.SendingData">Sending your data for verification</string>
+    <string name="AccountKYCLevelTwo.TakeIdBackPhotoContent">Make sure your ID is clear and readable and fits fully in the frame</string>
+    <string name="AccountKYCLevelTwo.TakeIdBackPhotoTitle">Please take a photo of your ID’s back page</string>
+    <string name="AccountKYCLevelTwo.TakeIdFrontPhotoContent">Make sure your ID is clear and readable and fits fully in the frame</string>
+    <string name="AccountKYCLevelTwo.TakeIdFrontPhotoTitle">Please take a photo of your ID’s front page</string>
+    <string name="AccountKYCLevelTwo.TakePhotoPassportContent">Make sure your passport is clear and readable and fits fully in the frame.</string>
+    <string name="AccountKYCLevelTwo.TakePhotoPassportTitle">Please take a photo of your passport.</string>
     <!-- Take photos label in KYC2 -->
     <string name="AccountKYCLevelTwo.TakePhotos">Be prepared to take a selfie and photos of your ID</string>
+    <string name="AccountKYCLevelTwo.TakeSelfieContent">Make sure your face is in the frame and it’s clearly visible.</string>
+    <string name="AccountKYCLevelTwo.TakeSelfieTitle">Please take a selfie</string>
     <!-- Uploading your photos label in KYC2 flow -->
     <string name="AccountKYCLevelTwo.UploadingPhoto">Uploading your photos</string>
     <!-- Verifying label on KYC2 -->
