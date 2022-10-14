@@ -471,6 +471,7 @@ class BreadApp : Application(), KodeinAware, CameraXConfig.Provider {
             BuyApi.create(
                 this@BreadApp,
                 instance(),
+                instance(),
                 instance()
             )
         }
