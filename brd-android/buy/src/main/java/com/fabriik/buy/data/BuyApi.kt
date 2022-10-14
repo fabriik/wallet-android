@@ -1,6 +1,7 @@
 package com.fabriik.buy.data
 
 import android.content.Context
+import com.breadwallet.tools.security.ProfileManager
 import com.fabriik.buy.R
 import com.fabriik.buy.data.enums.PaymentStatus
 import com.fabriik.common.data.model.PaymentInstrument
@@ -21,7 +22,8 @@ import java.util.concurrent.TimeUnit
 
 class BuyApi(
     private val context: Context,
-    private val service: BuyService
+    private val service: BuyService,
+    private val profileManager: ProfileManager
 ) {
 
     private val responseMapper = FabriikApiResponseMapper()
@@ -65,6 +67,7 @@ class BuyApi(
 
             //todo: refactor in future
             if (error.message?.contains("Access denied", true) == true) {
+                profileManager.updateProfile()
                 return Resource.error(
                     message = context.getString(R.string.ErrorMessages_Kyc2AccessDenied)
                 )
@@ -147,6 +150,7 @@ class BuyApi(
                     message = context.getString(R.string.Swap_Input_Error_QuoteExpired)
                 )
             } else if (error.message?.contains("Access denied", true) == true) {
+                profileManager.updateProfile()
                 return Resource.error(
                     message = context.getString(R.string.ErrorMessages_Kyc2AccessDenied)
                 )
@@ -158,7 +162,7 @@ class BuyApi(
 
     companion object {
 
-        fun create(context: Context, buyApiInterceptor: BuyApiInterceptor, moshiConverter: MoshiConverterFactory) =
+        fun create(context: Context, buyApiInterceptor: BuyApiInterceptor, moshiConverter: MoshiConverterFactory, profileManager: ProfileManager) =
             BuyApi(
                 context = context,
                 service = Retrofit.Builder()
@@ -174,7 +178,8 @@ class BuyApi(
                     .baseUrl(FabriikApiConstants.HOST_SWAP_API)
                     .addConverterFactory(moshiConverter)
                     .build()
-                    .create(BuyService::class.java)
+                    .create(BuyService::class.java),
+                profileManager = profileManager
             )
     }
 }
