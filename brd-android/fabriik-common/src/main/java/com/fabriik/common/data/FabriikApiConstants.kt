@@ -18,6 +18,7 @@ object FabriikApiConstants {
     const val HOST_BLOCKSATOSHI_API = "$BASE_URL/blocksatoshi"
 
     const val ENDPOINT_CURRENCIES = "$HOST_WALLET_API/currencies"
+    const val ENDPOINT_FIAT_CURRENCIES = "$HOST_WALLET_API/fiat_currencies"
 
     const val URL_SUPPORT_PAGE = "https://app-support.fabriik.com/"
     const val URL_PRIVACY_POLICY = "https://fabriik.com/privacy-policy/"

@@ -36,6 +36,7 @@ import com.bluelinelabs.conductor.RouterTransaction
 import com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler
 import com.breadwallet.databinding.ControllerIntroBinding
 import com.breadwallet.tools.util.EventUtils
+import com.breadwallet.tools.util.FiatCurrenciesUtil
 import com.breadwallet.tools.util.TokenUtil
 import com.breadwallet.ui.BaseController
 import com.breadwallet.ui.navigation.fragmentManager
@@ -99,6 +100,8 @@ class IntroController : BaseController() {
     private fun startAnimations() {
         viewAttachScope.launch(Dispatchers.IO) {
             TokenUtil.waitUntilInitialized()
+            FiatCurrenciesUtil.waitUntilInitialized()
+
             val icons = TokenUtil.getTokenItems()
                 .shuffled()
                 .take(ICONS_TO_SHOW)

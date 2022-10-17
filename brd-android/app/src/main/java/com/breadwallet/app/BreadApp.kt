@@ -471,6 +471,7 @@ class BreadApp : Application(), KodeinAware, CameraXConfig.Provider {
             BuyApi.create(
                 this@BreadApp,
                 instance(),
+                instance(),
                 instance()
             )
         }
@@ -569,6 +570,7 @@ class BreadApp : Application(), KodeinAware, CameraXConfig.Provider {
         applicationScope.launch {
             ServerBundlesHelper.extractBundlesIfNeeded(mInstance)
             TokenUtil.initialize(mInstance, false, !BuildConfig.BITCOIN_TESTNET)
+            FiatCurrenciesUtil.initialize(mInstance, false)
         }
 
         // Start our local server as soon as the application instance is created, since we need to

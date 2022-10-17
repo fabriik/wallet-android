@@ -25,6 +25,7 @@
 package com.breadwallet.util
 
 import android.net.Uri
+import androidx.annotation.VisibleForTesting
 import com.breadwallet.BuildConfig
 import com.breadwallet.breadbox.BreadBox
 import com.breadwallet.breadbox.addressFor
@@ -39,7 +40,8 @@ import com.breadwallet.tools.util.TokenUtil
 import com.breadwallet.tools.util.eth
 import kotlinx.coroutines.flow.first
 import java.math.BigDecimal
-import java.util.HashMap
+import java.text.DecimalFormat
+import java.util.*
 
 private const val AMOUNT = "amount"
 private const val VALUE = "value"
@@ -183,7 +185,7 @@ class CryptoUriParser(
             getQueryParameter(MESSAGE)?.run(builder::setMessage)
             try {
                 getQueryParameter(AMOUNT)
-                    ?.let(::BigDecimal)
+                    ?.let { amountToBigDecimal(it) }
                     ?.run(builder::setAmount)
             } catch (e: NumberFormatException) {
                 logError("Failed to parse amount string.", e)
@@ -195,6 +197,25 @@ class CryptoUriParser(
         }
 
         return builder.build()
+    }
+
+    @VisibleForTesting
+    fun amountToBigDecimal(amount: String?): BigDecimal? {
+        if (amount.isNullOrEmpty()) {
+            return null
+        }
+
+        val lastDotIndex = amount.lastIndexOf(".")
+        val lastCommaIndex = amount.lastIndexOf(",")
+        val trimmed = if (lastCommaIndex > lastDotIndex) {
+            // comma used as separator
+            amount.replace(".", "").replace(",", ".")
+        } else {
+            // dot used as separator
+            amount
+        }.trim()
+
+        return trimmed.toBigDecimalOrNull()
     }
 
     private fun pushUrlEvent(u: Uri?) {

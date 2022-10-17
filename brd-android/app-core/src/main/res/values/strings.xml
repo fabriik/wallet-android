@@ -22,208 +22,30 @@
     <string name="AccessibilityLabels.close">Close</string>
     <!-- Support center accessibiliy label -->
     <string name="AccessibilityLabels.faq">Support Center</string>
-    <!-- Account limits title in profile view -->
-    <string name="Account.AccountLimits">ACCOUNT LIMITS</string>
-    <!-- Account Verification screen title -->
-    <string name="Account.AccountVerification">Account Verification</string>
-    <!-- Verify your account label on profile screen -->
-    <string name="Account.AccountVerify">Verify your account</string>
     <!-- Account balance -->
     <string name="Account.balance">Balance</string>
-    <!-- Before confirm photo label in create account screen -->
-    <string name="Account.BeforeConfirm">Before you confirm, please:</string>
-    <!-- Change your email title on registration flow -->
-    <string name="Account.ChangeEmail">Change your email</string>
-    <!-- Country title label in select countries view -->
-    <string name="Account.Country">Country</string>
-    <!-- Create a Fabriik account by entering your email address label in registration flow -->
-    <string name="Account.CreateAccount">Create a Fabriik account by entering your email address.</string>
-    <!-- Current limit per day label in profile screen -->
-    <string name="Account.CurrentLimit">Current limit: $1,000/day</string>
-    <!-- Issues for processing your data label on profile screen -->
-    <string name="Account.DataIssues">Oops! We had some issues processing your data</string>
-    <!-- Date of birth label in create account -->
-    <string name="Account.DateOfBirth">Date of birth</string>
-    <string name="Account.Declined">Declined</string>
-    <!-- Delete account option in menu -->
-    <string name="Account.DeleteAccount">Delete account</string>
     <!-- Delisted token alert banner message -->
-    <string name="Account.delistedToken">This token has been delisted.
-
-You may still be able to send these tokens to another platform. For more details, visit our support page.</string>
-    <!-- Document confirmation label for KYC2 -->
-    <string name="Account.DocumentConfirmation">Make sure document details are clearly visible and within the frame</string>
+    <string name="Account.delistedToken">This token has been delisted. \n\nYou may still be able to send these tokens to another platform. For more details, visit our support page.</string>
     <!-- $10000 per BTC -->
     <string name="Account.exchangeRate">%1$s per %2$s</string>
-    <!-- Get full access for the Fabriik wallet label on profile screen -->
-    <string name="Account.FullAccess">Get full access to your Fabriik wallet</string>
-    <!-- ID Verification title on account screen -->
-    <string name="Account.IDVerification">ID Verification</string>
     <!-- Loading Wallet Message -->
     <string name="Account.loadingMessage">Loading Wallet</string>
-    <!-- Verify your account to get full access to the wallet message -->
-    <string name="Account.MessageVerifyAccount">Verify your account to get full access to your Fabriik wallet!</string>
-    <string name="Account.Pending">Pending</string>
-    <!-- Account Personal Information title -->
-    <string name="Account.PersonalInformation">Personal Information</string>
-    <!-- Promotion and offers label when registering account -->
-    <string name="Account.Promotion">I\'m ok with receiving future promotion, offers and communications</string>
-    <!-- Proof of Identity title in add document for kyc2 -->
-    <string name="Account.ProofOfIdentity">Proof of Identity</string>
-    <string name="Account.Resubmit">Resubmit</string>
-    <!-- Retake photo button on create account -->
-    <string name="Account.RetakePhoto">Retake photo</string>
-    <!-- Submit your photo for document id title -->
-    <string name="Account.SubmitPhoto">Submit your photo</string>
-    <!-- Swap and buy limit per day description label -->
-    <string name="Account.SwapAndBuyLimit">Swap limit: $10,000 USD/day
-Buy limit: $500 USD/day</string>
-    <!-- Upgrade your limits label in profile screen -->
-    <string name="Account.UpgradeLimits">Upgrade your limits</string>
-    <!-- You need to be at least 18 years old to complete Level 1 verification label in verify account -->
-    <string name="Account.Verification">You need to be at least 18 years old to complete Level 1 verification</string>
-    <!-- Why is the verification declined label in profile screen -->
-    <string name="Account.VerificationDeclined">Why is my verification declined?</string>
-    <string name="Account.Verified">Verified</string>
-    <!-- Verified account message on profile screen -->
-    <string name="Account.VerifiedAccountMessage">We’ll let you know when your account is verified.</string>
-    <!-- Verify account text in popup -->
-    <string name="Account.VerifyAccountText">If you verify your account, you are given access to:
-・Unlimited deposits/withdrawals
-・Enhanced security
-・Full asset support
-・Buy assets with credit card
-・24/7/365 live customer support</string>
-    <!-- Enter and verify your email address for your account label in registration flow -->
-    <string name="Account.VerifyEmail">Enter and verify your new email address for your Fabriik account.</string>
-    <string name="Account.VerifyIdentity">We need to verify your identity in order to buy/sell and swap crypto.</string>
-    <!-- Verify personal information text explanation -->
-    <string name="Account.VerifyPersonalInformation">We need to verify your personal information for compliance purposes. This information won’t be shared with outside sources unless required by law.</string>
-    <!-- Welcome title on registration screen -->
-    <string name="Account.Welcome">Welcome!</string>
-    <!-- Why verify my account title -->
-    <string name="Account.WhyVerify">Why should I verify my account?</string>
-    <!-- Write your name as it appears on your ID label in create account -->
-    <string name="Account.WriteYourName">Write your name as it appears on your ID</string>
     <!-- Confirm Account Creation mesage body -->
     <string name="AccountCreation.body">Only create a Hedera account if you intend on storing HBAR in your wallet.</string>
-    <!-- Change my email label -->
-    <string name="AccountCreation.ChangeEmail">Change my email</string>
-    <!-- Verification code sent message -->
-    <string name="AccountCreation.CodeSent">Verification code sent.</string>
     <!-- Create Account button label -->
     <string name="AccountCreation.create">Create Account</string>
     <!-- Creating Account progress Label -->
     <string name="AccountCreation.creating">Creating Account</string>
-    <!-- Enter the code message in create account flow -->
-    <string name="AccountCreation.EnterCode">Please enter the code we’ve sent to</string>
     <!-- Creating Account progress Label -->
     <string name="AccountCreation.error">An error occurred during account creation. Please try again later.</string>
     <!-- Not Now button label. -->
     <string name="AccountCreation.notNow">Not Now</string>
-    <!-- Re-send my code label -->
-    <string name="AccountCreation.ResendCode">Re-send my code</string>
     <!-- Creating Account progress Label -->
     <string name="AccountCreation.timeout">The Request timed out. Please try again later.</string>
     <!-- Confirm Account Creation Title -->
     <string name="AccountCreation.title">Confirm Account Creation</string>
-    <!-- Verify your email label -->
-    <string name="AccountCreation.VerifyEmail">Verify your email</string>
-    <!-- Why the wallet is disabled text -->
-    <string name="AccountCreation.WalletDisabled">If you enter an incorrect wallet PIN too many times, your wallet will become disabled for a certain amount of time.
-This is to prevent someone else from trying to guess your PIN by quickly making many guesses.
-If your wallet is disabled, wait until the time shown and you will be able to enter your PIN again.
-
-If you continue to enter the incorrect PIN, the amount of waiting time in between attempts will increase. Eventually, the app will reset and you can start a new wallet.
-
-If you have the recovery phrase for your wallet, you can use it to reset your PIN by clicking the “Reset PIN” button.</string>
-    <!-- Why is my wallet disabled title on popup -->
-    <string name="AccountCreation.WalletDisabledTitle">Why is my wallet disabled?</string>
-    <!-- Popup text when the account is deleted -->
-    <string name="AccountDelete.AccountDeletedPopup">Your account has been deleted.
-We are sorry to see you go.</string>
-    <!-- Delete account title  -->
-    <string name="AccountDelete.DeleteAccountTitle">You are about to delete your Fabriik account.</string>
-    <!-- Delete account explanation title -->
-    <string name="AccountDelete.DeleteWhatMean">What does this mean?</string>
-    <!-- Delete account explanation part one -->
-    <string name="AccountDelete.ExplanationOne">-You will no longer be able to use your email to sign in into Fabriik Wallet</string>
-    <!-- Delete account explanation part three -->
-    <string name="AccountDelete.ExplanationThree">-Your private keys are still yours, keep your security phrase in a safe place in case you need to restore your wallet.</string>
-    <!-- Delete account explanation part two -->
-    <string name="AccountDelete.ExplanationTwo">-You will no longer be able to user your KYC and registration status</string>
-    <!-- Recover wallet text after deleting account -->
-    <string name="AccountDelete.RecoverWallet">I understand that the only way to recover my wallet is by entering my recovery phrase</string>
     <!-- Default wallet name -->
     <string name="AccountHeader.defaultWalletName">My Fabriik</string>
-    <!-- Level one title on account screen -->
-    <string name="AccountKYCLevelOne.LevelOne">Level 1</string>
-    <!-- Account limi message on KYC1 -->
-    <string name="AccountKYCLevelOne.Limit">Account limit: $1,000/day ($10,000 lifetime)</string>
-    <!-- Back page of the document text instructions for KYC2 -->
-    <string name="AccountKYCLevelTwo.BackPageInstructions">You have captured the entire back page of the document</string>
-    <!-- Before start label  -->
-    <string name="AccountKYCLevelTwo.BeforeStart">Before you start, please:</string>
-    <!-- Buy limits on KYC2 account -->
-    <string name="AccountKYCLevelTwo.BuyLimits">Buy limits: $500 USD/day, no lifetime limit</string>
-    <!-- Capture back page of the document text -->
-    <string name="AccountKYCLevelTwo.CaptureBackPage">Make sure to capture the entire back page of the document</string>
-    <!-- Capture front page text label -->
-    <string name="AccountKYCLevelTwo.CaptureFrontPage">Make sure to capture the entire front page of the document</string>
-    <!-- Checking for errors label on KYC2 -->
-    <string name="AccountKYCLevelTwo.CheckingErrors">Checking for errors</string>
-    <string name="AccountKYCLevelTwo.CompleteLevelOneFirst">Please complete Level 1 verification first.</string>
-    <!-- Confirm ID label in KYC2 flow -->
-    <string name="AccountKYCLevelTwo.ConfirmID">We need to confirm your ID</string>
-    <!-- Document confirmation label for KYC2 -->
-    <string name="AccountKYCLevelTwo.DocumentConfirmation">You have captured the entire document</string>
-    <!-- Documents review label in KYC2 -->
-    <string name="AccountKYCLevelTwo.DocumentsReview">We are reviewing your documents and will let you know when your account has been verified.</string>
-    <string name="AccountKYCLevelTwo.DrivingLicence">Driver’s license</string>
-    <!-- Face capture instructions text on documents for KYC2 -->
-    <string name="AccountKYCLevelTwo.FaceCaptureInstructions">You have captured your entire face in the frame.</string>
-    <!-- Face is in the frame text for document on KYC2 -->
-    <string name="AccountKYCLevelTwo.FaceVisible">Make sure your face is in the frame and clearly visible</string>
-    <!-- Face is clearly visible confirmation text for documents on KYC2 -->
-    <string name="AccountKYCLevelTwo.FaceVisibleConfirmation">Your face is clearly visible.</string>
-    <!-- Front page of the document instructions text for KYC2 -->
-    <string name="AccountKYCLevelTwo.FrontPageInstructions">You have captured the entire front page of the document</string>
-    <!-- KYC Level Two status -->
-    <string name="AccountKYCLevelTwo.InProgress">Your ID verification is in progress</string>
-    <!-- Document instructions label for KYC2 -->
-    <string name="AccountKYCLevelTwo.Instructions">Make sure to capture the entire document</string>
-    <!-- Level two title in Account screen -->
-    <string name="AccountKYCLevelTwo.LevelTwo">Level 2</string>
-    <!-- Swap limits on KYC2 account -->
-    <string name="AccountKYCLevelTwo.Limits">Swap limits: $10,000 USD/day, no lifetime limit</string>
-    <!-- Make sure before photo label in KYC2 -->
-    <string name="AccountKYCLevelTwo.MakeSure">Make sure you are in a well-lit room</string>
-    <string name="AccountKYCLevelTwo.NationalIdCard">National ID card</string>
-    <string name="AccountKYCLevelTwo.Passport">Passport</string>
-    <!-- Prepare documents label in KYC2 -->
-    <string name="AccountKYCLevelTwo.PrepareDocument">Prepare a valid government-issued identity document (Passport, National ID card or Drivers license)</string>
-    <string name="AccountKYCLevelTwo.ResidencePermit">Residence permit</string>
-    <!-- Select documents  options text label in KYC2 -->
-    <string name="AccountKYCLevelTwo.SelectOptions">Select one of the following options:</string>
-    <!-- Sending your data label for verification on KYC2 -->
-    <string name="AccountKYCLevelTwo.SendingData">Sending your data for verification</string>
-    <string name="AccountKYCLevelTwo.TakeIdBackPhotoContent">Make sure your ID is clear and readable and fits fully in the frame</string>
-    <string name="AccountKYCLevelTwo.TakeIdBackPhotoTitle">Please take a photo of your ID’s back page</string>
-    <string name="AccountKYCLevelTwo.TakeIdFrontPhotoContent">Make sure your ID is clear and readable and fits fully in the frame</string>
-    <string name="AccountKYCLevelTwo.TakeIdFrontPhotoTitle">Please take a photo of your ID’s front page</string>
-    <string name="AccountKYCLevelTwo.TakePhotoPassportContent">Make sure your passport is clear and readable and fits fully in the frame.</string>
-    <string name="AccountKYCLevelTwo.TakePhotoPassportTitle">Please take a photo of your passport.</string>
-    <!-- Take photos label in KYC2 -->
-    <string name="AccountKYCLevelTwo.TakePhotos">Be prepared to take a selfie and photos of your ID</string>
-    <string name="AccountKYCLevelTwo.TakeSelfieContent">Make sure your face is in the frame and it’s clearly visible.</string>
-    <string name="AccountKYCLevelTwo.TakeSelfieTitle">Please take a selfie</string>
-    <string name="AccountKYCLevelTwo.updateLevelOne">If your personal information has changed, please first update Level 1 KYC and then continue with
-Level 2 KYC.</string>
-    <!-- Uploading your photos label in KYC2 flow -->
-    <string name="AccountKYCLevelTwo.UploadingPhoto">Uploading your photos</string>
-    <string name="AccountKYCLevelTwo.VerificationPending">Unavailable while KYC verification is pending.</string>
-    <!-- Verifying label on KYC2 -->
-    <string name="AccountKYCLevelTwo.Verifying">Verifying you</string>
     <!-- Third party keyboard warning -->
     <string name="Alert.customKeyboard.android">It looks like you are using a third-party keyboard, which can record what you type and steal your Recovery Phrase. Please switch to the default Android keyboard for extra protection.</string>
     <!-- Error alert title -->
@@ -327,8 +149,6 @@ Level 2 KYC.</string>
     <string name="Button.dismiss">Dismiss</string>
     <!-- Done button title -->
     <string name="Button.done">Done</string>
-    <!-- Finish button title -->
-    <string name="Button.Finish">Finish</string>
     <!-- Button to return to the "home" screen (the home screen is the top menu). -->
     <string name="Button.Home">Home</string>
     <!-- Ignore button label -->
@@ -347,7 +167,6 @@ Level 2 KYC.</string>
     <string name="Button.openSettings">Open Settings</string>
     <!-- receive button -->
     <string name="Button.receive">Receive</string>
-    <string name="Button.remove">Remove</string>
     <!-- Button label to open Security Settings. -->
     <string name="Button.securitySettings.android">Security Settings</string>
     <!-- Click this button to sell an asset -->
@@ -368,94 +187,6 @@ Level 2 KYC.</string>
     <string name="Button.wipe.android">Wipe</string>
     <!-- Yes button -->
     <string name="Button.yes">Yes</string>
-    <!-- 3D Secure label on buy flow -->
-    <string name="Buy.3DSecure">3D Secure</string>
-    <!-- Add card title for buy cryptos -->
-    <string name="Buy.AddCard">Add card</string>
-    <!-- Add a debit or credit card label on add card flow -->
-    <string name="Buy.AddDebitCreditCard">Add a debit or credit card</string>
-    <!-- Address label in billing address view on buy flow -->
-    <string name="Buy.Address">Address</string>
-    <!-- Billing address label on buy flow -->
-    <string name="Buy.BillingAddress">Billing address</string>
-    <!-- Buy min and max limit text -->
-    <string name="Buy.BuyLimits">Currently, minimum limit for buy is $%s USD and maximum limit is $%s USD/day.</string>
-    <!-- Card label on add card flow -->
-    <string name="Buy.Card">Card</string>
-    <!-- CVV label in add card flow -->
-    <string name="Buy.CardCVV">CVV</string>
-    <!-- Card fee message label in order preview screen -->
-    <string name="Buy.CardFee">This fee is charged to cover costs associated with payment processing.</string>
-    <!-- Card number label in add card flow -->
-    <string name="Buy.CardNumber">Card number</string>
-    <string name="Buy.CardNumberHint">XXXX XXXX XXXX XXXX</string>
-    <!-- Card removal failed error message on delete card flow -->
-    <string name="Buy.CardRemovalFailed">Card removal failed. Please try again.</string>
-    <!-- Card removed message on delete card flow -->
-    <string name="Buy.CardRemoved">Card removed</string>
-    <!-- City label in billing address view on buy flow -->
-    <string name="Buy.City">City</string>
-    <!-- Please confirm your CVV label in payment view -->
-    <string name="Buy.ConfirmCVV">Please confirm your CVV</string>
-    <string name="Buy.Country">Country</string>
-    <string name="Buy.CvvHint">XXX</string>
-    <!-- Buy details title -->
-    <string name="Buy.Details">Purchase details</string>
-    <!-- There was an error while processing your payment title in buy failure screen -->
-    <string name="Buy.ErrorProcessingPayment">There was an error while processing your payment</string>
-    <string name="Buy.ExpirationDate">Expiration date</string>
-    <!-- Failure transaction message on buy  -->
-    <string name="Buy.FailureTransactionMessage">Please contact your card issuer/bank or try again with a different payment method.</string>
-    <!-- First Name label in billing address view on buy flow -->
-    <string name="Buy.FirstName">First Name</string>
-    <string name="Buy.InvalidExpirationDate">Entered expiration date is not valid!</string>
-    <!-- Last Name label in billing address view on buy flow -->
-    <string name="Buy.LastName">Last Name</string>
-    <!-- Month and year label in add card flow -->
-    <string name="Buy.MonthYear">MM/YY</string>
-    <!-- Network fee message in order preview screen -->
-    <string name="Buy.NetworkFeeMessage">Network fee prices vary depending on the blockchain in which you are receiving your assets. This is an external fee to cover mining and transaction costs.</string>
-    <!-- Network fees label in order preview screen -->
-    <string name="Buy.NetworkFees">Network fees</string>
-    <!-- Order preview title -->
-    <string name="Buy.OrderPreview">Order preview</string>
-    <!-- Payment failed error message on order preview screen -->
-    <string name="Buy.PaymentFailed">Payment failed</string>
-    <!-- Payment method label in buy select card screen -->
-    <string name="Buy.PaymentMethod">Payment method</string>
-    <!-- Pay with label in buy flow -->
-    <string name="Buy.PayWith">Pay with</string>
-    <string name="Buy.ProcessingPayment">Processing payment</string>
-    <!-- Purchase success text in purchase details screen  -->
-    <string name="Buy.PurchaseSuccessText">This purchase will appear as ‘Fabriik Wallet’ on your bank statement.</string>
-    <!-- Your assets are on the way message in purchase details screen -->
-    <string name="Buy.PurchaseSuccessTitle">Your assets are on the way!</string>
-    <!-- Are you sure you want to remove this card title dialog -->
-    <string name="Buy.RemoveCard">Are you sure you want to remove card ending in</string>
-    <string name="Buy.RemoveCard.android">Are you sure you want to remove card ending in %s?</string>
-    <!-- You will no longer be able to use it to buy assets description on removing card dialog  -->
-    <string name="Buy.RemoveCardOption">You will no longer be able to use it to buy assets.</string>
-    <!-- Remove payment method action sheet option on profile screen -->
-    <string name="Buy.RemovePaymentMethod">Remove payment method</string>
-    <!-- Security code (CVV) label in add card flow -->
-    <string name="Buy.SecurityCode">Security code (CVV)</string>
-    <!-- Explanation of security code in popup -->
-    <string name="Buy.SecurityCodePopup">Please enter the 3 digit CVV number as it appears on the back of your card</string>
-    <!-- Select payment method title in buy flow -->
-    <string name="Buy.SelectPayment">Select payment method</string>
-    <string name="Buy.SelectPaymentMethod">Select a payment method</string>
-    <!-- State/Province label in billing address view on buy flow -->
-    <string name="Buy.StateProvince">State/Province</string>
-    <!-- By placing this order you agree to our terms message when ordering -->
-    <string name="Buy.Terms">By placing this order you agree to our</string>
-    <string name="Buy.Terms.android">By placing this order you agree to our %s</string>
-    <!-- Try a different payment method button title in failure buy screen -->
-    <string name="Buy.TryAnotherPayment">Try a different payment method</string>
-    <string name="Buy.txHashHeader">%s Transaction ID</string>
-    <!-- Your order label in buy flow -->
-    <string name="Buy.YourOrder">Your order:</string>
-    <!-- ZIP/Postal Code label in billing address view on buy flow -->
-    <string name="Buy.ZIPPostalCode">ZIP/Postal Code</string>
     <!-- Camera plugin instruction -->
     <string name="CameraPlugin.centerInstruction">Center your ID in the box</string>
     <string name="CloudBackup.backupDeleted">Backup Erased</string>
@@ -472,7 +203,7 @@ Level 2 KYC.</string>
     <string name="CloudBackup.mainTitle">iCloud Recovery Backup</string>
     <string name="CloudBackup.mainWarning">iCloud Keychain must be turned on in the iOS Settings app for this feature to work</string>
     <string name="CloudBackup.mainWarningConfirmation">Are you sure you want to disable iCloud Backup? This will delete your backup from all devices.</string>
-    <string name="CloudBackup.pinAttempts">Attempts remaining before erasing backup: %1$s</string>
+    <string name="CloudBackup.pinAttempts">Attempts remaining before erasing backup: %1$@</string>
     <string name="CloudBackup.recoverButton">Restore from Recovery Phrase</string>
     <string name="CloudBackup.recoverHeader">Enter PIN to unlock iCloud backup</string>
     <string name="CloudBackup.restoreButton">Restore from iCloud Backup</string>
@@ -482,7 +213,7 @@ Level 2 KYC.</string>
     <string name="CloudBackup.step3">Tap iCloud.</string>
     <string name="CloudBackup.step4">Verify that iCloud Keychain is ON</string>
     <string name="CloudBackup.understandText">I understand that this feature will not work unless iCloud Keychain is enabled.</string>
-    <string name="CloudBackup.warningBody">Your iCloud backup will be erased after %1$s more incorrect PIN attempts.</string>
+    <string name="CloudBackup.warningBody">Your iCloud backup will be erased after %1$@ more incorrect PIN attempts.</string>
     <!-- Amount to Send: ($1.00) -->
     <string name="Confirmation.amountLabel">Amount to Send:</string>
     <string name="Confirmation.destinationTag">Destination Tag</string>
@@ -550,76 +281,19 @@ Level 2 KYC.</string>
     <string name="EME.permissions.callRequest">Request %1$s smart contract call</string>
     <!-- Service capabilities description -->
     <string name="EME.permissions.paymentRequest">Request %1$s payment</string>
-    <!--
-  The currency amount is to high for exchange. Accepts 2 parameters:
-  - maxiumum amount
-  - currency code
-  -->
-    <string name="ErrorMessages.AmountTooHigh">The amount is higher than your daily limit of %s %s. Please enter a lower amount.</string>
-    <!--
-  The currency amount is to low for exchange. Accepts 2 parameters:
-  - minimum amount
-  - currency code
-  -->
-    <string name="ErrorMessages.amountTooLow">The amount is lower than the minimum of %s %s. Please enter a higher amount.</string>
-    <string name="ErrorMessages.authorizationFailed">Card authorization failed. Please contact your credit card issuer/bank or try another card.</string>
-    <!--
-  Accepts 3 parameters:
-  - currency code
-  - current balance
-  - (same) currency code
-  -->
-    <string name="ErrorMessages.balanceTooLow">"You need %s %s in your wallet to cover network fees. Please add more %s to your wallet. "</string>
-    <!-- Check your internet connection message -->
-    <string name="ErrorMessages.CheckInternet">Please, check your internet connection and try again later.</string>
     <!-- Email unavailable alert title -->
     <string name="ErrorMessages.emailUnavailableMessage">This device isn\'t configured to send email with the iOS mail app.</string>
     <!-- Email unavailable alert title -->
     <string name="ErrorMessages.emailUnavailableTitle">Email Unavailable</string>
-    <!-- Not enough ETH for transaction fee -->
-    <string name="ErrorMessages.ethBalanceLow">Insufficient Ethereum balance in your wallet to transfer this type of token.</string>
-    <string name="ErrorMessages.exchangeFailed">Swap failed. Reason: %s.</string>
-    <string name="ErrorMessages.ExchangeQuoteFailed">We are currently having issues making a swap between this pair of coins. Please try again later.</string>
-    <string name="ErrorMessages.Kyc.Underage">You must be at least 18 years old to complete Level 1 and 2 verification.</string>
+    <string name="ErrorMessages.Kyc2AccessDenied">You cannot purchase assets without completing Level 2 account verification. Upgrade your limits on the Profile screen.</string>
     <!-- Message that gets shown when we've detected the user has encountered the looping lock-screen bug. (preserve [ ] characters) -->
     <string name="ErrorMessages.loopingLockScreen.android">Fabriik can not be authenticated due to a bug in your version of Android. [Please tap here for more information.]</string>
     <!-- Messaging unavailable alert title -->
     <string name="ErrorMessages.messagingUnavailableMessage">This device isn\'t configured to send messages.</string>
     <!-- Messaging unavailable alert title -->
     <string name="ErrorMessages.messagingUnavailableTitle">Messaging Unavailable</string>
-    <string name="ErrorMessages.networkFee">This swap doesn\'t cover the included network fee. Please add more funds to your wallet or change the amount you\'re swapping.</string>
-    <!-- Temporary network issues error message -->
-    <string name="ErrorMessages.NetworkIssues">We are having temporary network issues. Please try again later.</string>
-    <!-- No selected currencies error message -->
-    <string name="ErrorMessages.NoCurrencies">No selected currencies.</string>
-    <string name="ErrorMessages.noFees">Failed to fetch network fees. Please try again later.</string>
-    <!--
-  Accepts 2 parameters:
-  - first currency code
-  - second currency code
-  -->
-    <string name="ErrorMessages.noQuoteForPair">No quote for currency pair %s-%s.</string>
-    <string name="ErrorMessages.notEnoughEthForFee">%s is an ERC-20 token on the Ethereum blockchain and requires ETH network fees. Please add ETH to your wallet.</string>
-    <string name="ErrorMessages.overDailyLimit">The amount is higher than your daily limit of %s USD. Please upgrade your account or enter a lower amount.</string>
-    <string name="ErrorMessages.overExchangeLimit">Over exchange limit.</string>
-    <string name="ErrorMessages.overLifetimeLimit">The amount is higher than your lifetime limit of %s USD. Please upgrade your account or enter a lower amount.</string>
-    <string name="ErrorMessages.overLifetimeLimitLevel2">The amount is higher than your daily limit of %s USD. Please enter a lower amount.</string>
-    <string name="ErrorMessages.pendingExchange">A maximum of one swap can be active for a currency at a time.</string>
-    <string name="ErrorMessages.pinConfirmationFailed">PIN Authentication failed.</string>
-    <string name="ErrorMessages.selectAssets">In order to successfully perform a swap, make sure you have two or more of our supported swap assets (BSV, BTC, ETH, BCH, SHIB, USDT) activated and funded within your wallet.</string>
-    <!-- Something went wrong message -->
-    <string name="ErrorMessages.SomethingWentWrong">Oops! Something went wrong, please try again later.</string>
-    <!--
-  Two parameters:
-  - maximum amount
-  - currency code
-  -->
-    <string name="ErrorMessages.swapAmountTooHigh">The amount is higher than the swap maximum of %s %s.</string>
-    <string name="ErrorMessages.temporaryNetworkIssues">We are having temporary issues connecting to our network. Please try again later.</string>
     <!-- Fingerprint was not recognized by the scanner, please try scanning again -->
     <string name="ErrorMessages.touchIdFailed.android">Fingerprint not recognized. Please try again.</string>
-    <!-- Unknown error text message -->
-    <string name="ErrorMessages.UnknownError">Unknown error.</string>
     <string name="ExportConfirmation.cancel">Cancel</string>
     <string name="ExportConfirmation.continue">Continue</string>
     <string name="ExportConfirmation.message">This will generate a CSV file including all completed transactions from all enabled wallets.</string>
@@ -700,7 +374,7 @@ Level 2 KYC.</string>
     <!-- This section lists the users wallets -->
     <string name="HomeScreen.portfolio">Wallets</string>
     <!-- Label for the total balance of all the user's assets (style is all lower case if your language permits) -->
-    <string name="HomeScreen.totalAssets">Balance</string>
+    <string name="HomeScreen.totalAssets">Total Assets</string>
     <!-- (Tap here to) trade (your assets for other assets) -->
     <string name="HomeScreen.trade">Swap</string>
     <!-- Home screen toolbar 'balance' button -->
@@ -752,8 +426,6 @@ Level 2 KYC.</string>
     <string name="Import.warning">Importing a wallet does not include transaction history or other details.</string>
     <!-- Wrong password alert message -->
     <string name="Import.wrongPassword">Wrong password, please try again.</string>
-    <!-- Input view invalid code -->
-    <string name="InputView.InvalidCode">Invalid code</string>
     <!-- Close app button -->
     <string name="JailbreakWarnings.close">Close</string>
     <!-- Ignore jailbreak warning button -->
@@ -866,7 +538,7 @@ Level 2 KYC.</string>
     <!-- Onboarding screen Page 4 title -->
     <string name="OnboardingPageFour.title">Start investing today with as little as $50!</string>
     <!-- Onboarding screen Page 1 title -->
-    <string name="OnboardingPageOne.title">Empowering you in the emerging digital asset economy</string>
+    <string name="OnboardingPageOne.title">Welcome to your new digital asset wallet!</string>
     <!-- Onboarding screen Page 3 subtitle -->
     <string name="OnboardingPageThree.subtitle">Invest and diversify with Fabriik, easily and securely.</string>
     <!-- Onboarding screen Page 3 title -->
@@ -877,14 +549,8 @@ Level 2 KYC.</string>
     <string name="OnboardingPageTwo.title">Join people around the world who trust Fabriik.</string>
     <!-- Eg. Send 1.0Eth to purchase CCC -->
     <string name="PaymentConfirmation.amountText">Send %1$s to purchase %2$s</string>
-    <!-- Payment expired message -->
-    <string name="PaymentConfirmation.PaymentExpired">The payment has expired due to inactivity. Please try again with the same card, or use a different card.</string>
-    <!-- Payment verification timeout message -->
-    <string name="PaymentConfirmation.PaymentTimeout">Payment verification timeout</string>
     <!-- Payment confirmation view title -->
     <string name="PaymentConfirmation.title">Confirmation</string>
-    <!-- Try again button title in payment view -->
-    <string name="PaymentConfirmation.TryAgain">Try again</string>
     <!-- Bad Payment request alert title -->
     <string name="PaymentProtocol.Errors.badPaymentRequest">Bad Payment Request</string>
     <!-- Error opening payment protocol file message -->
@@ -1042,7 +708,7 @@ Level 2 KYC.</string>
     <!-- Title for a button that takes the user to the wallet after setting up the recovery key. -->
     <string name="RecoveryKeyFlow.goToWalletButtonTitle">Go to Wallet</string>
     <!-- Hint text for recovery key intro page, e.g., Step 2 -->
-    <string name="RecoveryKeyFlow.howItWorksStep">How it works - Step %1$s</string>
+    <string name="RecoveryKeyFlow.howItWorksStep">How it works - Step %1$@</string>
     <!-- Error text displayed when the user enters an incorrect recovery phrase -->
     <string name="RecoveryKeyFlow.invalidPhrase">Some of the words you entered do not match your recovery phrase. Please try again.</string>
     <!-- Title for recovery key intro page -->
@@ -1090,7 +756,7 @@ Level 2 KYC.</string>
     <!-- Title for the write recovery phrase screen -->
     <string name="RecoveryKeyFlow.writeKeyScreenTitle">Your Recovery Phrase</string>
     <!-- Title for the step number when the user pages through the recovery words -->
-    <string name="RecoveryKeyFlow.writeKeyStepTitle">%1$s of %2$s</string>
+    <string name="RecoveryKeyFlow.writeKeyStepTitle">%1$@ of %2$@</string>
     <!-- No amount entered error message. -->
     <string name="RequestAnAmount.noAmount">Please enter an amount first.</string>
     <!-- Request a specific amount of bitcoin -->
@@ -1126,7 +792,7 @@ Level 2 KYC.</string>
     <!-- Scan bitcoin address camera flash toggle -->
     <string name="Scanner.flashButtonLabel">Camera Flash</string>
     <!-- (alert dialog message) Would you like to send a [Bitcoin / Bitcoin Cash / Ethereum] payment to this address?") -->
-    <string name="Scanner.paymentPromptMessage">Would you like to send a %1$s payment to this address?</string>
+    <string name="Scanner.paymentPromptMessage">Would you like to send a %1$@ payment to this address?</string>
     <!-- alert dialog title -->
     <string name="Scanner.paymentPromptTitle">Send Payment</string>
     <!-- Complete filter label -->
@@ -1403,7 +1069,7 @@ Level 2 KYC.</string>
     <!-- button label -->
     <string name="StartPaperPhrase.buttonTitle">Write Down Recovery Phrase</string>
     <!-- Argument is date; date should be on a new line -->
-    <string name="StartPaperPhrase.date">Last written down on\n %1$s</string>
+    <string name="StartPaperPhrase.date">Last written down on\n %1$@</string>
     <!-- button label -->
     <string name="StartViewController.createButton">Create New Wallet</string>
     <!-- Start view message -->
@@ -1414,78 +1080,6 @@ Level 2 KYC.</string>
     <string name="SupportForm.helpUsImprove">Help us improve</string>
     <string name="SupportForm.notNow">Not now</string>
     <string name="SupportForm.pleaseDescribe">Please describe your experience</string>
-    <!-- Add item label in swap flow -->
-    <string name="Swap.AddItem">Add item!</string>
-    <!-- Amount purchased label in detail swap screen -->
-    <string name="Swap.AmountPurchased">Amount purchased</string>
-    <string name="Swap.AmountPurchased.android">Amount purchased:</string>
-    <!-- Back to Home button -->
-    <string name="Swap.BackToHome">Back to Home</string>
-    <!-- Balance text on swap -->
-    <string name="Swap.Balance">I have %s %s</string>
-    <!-- Card fee label in swap details screen -->
-    <string name="Swap.CardFee">Card fee</string>
-    <string name="Swap.CardFee.android">Card fee:</string>
-    <!-- Title on check your assets popup -->
-    <string name="Swap.CheckAssets">Check your assets!</string>
-    <!-- Text body in check your assets popup -->
-    <string name="Swap.CheckAssetsBody">In order to successfully perform a swap, make sure you have two or more of our supported swap assets (BSV, BTC, ETH, BCH, SHIB, USDT) activated and funded within your wallet.</string>
-    <!-- Swap details title -->
-    <string name="Swap.Details">Swap details</string>
-    <!-- There was an error while processing your transaction title in failure swap screen -->
-    <string name="Swap.ErrorProcessingTransaction">There was an error while processing your transaction</string>
-    <!-- Error swap message on Failure screen -->
-    <string name="Swap.FailureSwapMessage">Please try swapping again or come back later.</string>
-    <!-- Popup button got it -->
-    <string name="Swap.GotItButton">Got it!</string>
-    <!-- Swap and Buy I want label from currency -->
-    <string name="Swap.iWant">I want</string>
-    <!-- Mining network fee label in swap details screen -->
-    <string name="Swap.MiningNetworkFee">Mining network fee</string>
-    <string name="Swap.MiningNetworkFee.android">Mining network fee:</string>
-    <!-- Not a valid pair -->
-    <string name="Swap.NotValidPair">Not a valid pair</string>
-    <!-- Paid with label in swap details screen -->
-    <string name="Swap.PaidWith">Paid with</string>
-    <!-- Exchange label rate -->
-    <string name="Swap.Rate">Rate:</string>
-    <!-- Rate label in swap screen -->
-    <string name="Swap.RateValue">Rate</string>
-    <!-- Receiving network fee text label on Swap screen -->
-    <string name="Swap.ReceiveNetworkFee">Receiving network fee
-(included)</string>
-    <!-- Receiving fee label on Swap screen -->
-    <string name="Swap.ReceivingFee">Receiving fee
-</string>
-    <string name="Swap.RequestTimedOut">Your swap request timed out. Please try again.</string>
-    <!-- Select assets title in swap flow -->
-    <string name="Swap.SelectAssets">Select assets</string>
-    <!-- Sending fee label on swap screen -->
-    <string name="Swap.SendingFee">Sending fee
-</string>
-    <!-- Sending network fee text label on Swap screen -->
-    <string name="Swap.SendNetworkFee">Sending network fee
-(included)</string>
-    <!-- Send network fee not included label on swap -->
-    <string name="Swap.sendNetworkFeeNotIncluded">Sending network fee
-(not included)</string>
-    <!-- Swap again button title in swap failure screen -->
-    <string name="Swap.SwapAgain">Swap again</string>
-    <!-- Swap min and max limit text -->
-    <string name="Swap.SwapLimits">Currently, minimum limit for swap is $%s USD and maximum limit is $%s USD/day.</string>
-    <string name="Swap.Swapping">Swapping %1$s/%2$s</string>
-    <!-- Swap status message on swap flow -->
-    <string name="Swap.SwapStatus">Your %s is estimated to arrive in 30 minutes. You can continue to use your wallet. We\'ll let you know when your swap has finished.</string>
-    <string name="Swap.temporarilyUnavailable">Swap is temporarily unavailable</string>
-    <!-- Timestamp label in swap details screen -->
-    <string name="Swap.Timestamp">Timestamp</string>
-    <!-- Total label in swap details screen -->
-    <string name="Swap.Total">Total:</string>
-    <string name="Swap.transactionFrom">From %1$s</string>
-    <!-- Transaction ID label in swap details screen -->
-    <string name="Swap.TransactionID">Fabriik Transaction ID</string>
-    <string name="Swap.transactionInEthereumNetwork">It seems that your transaction takes place in the Ethereum network, please keep in mind that network fees will be charged in ETH</string>
-    <string name="Swap.transactionTo">To %1$s</string>
     <!-- Syncing view done syncing state header text -->
     <string name="SyncingView.activity">Activity</string>
     <!-- Syncing view connectiong state header text -->
@@ -1574,28 +1168,16 @@ Level 2 KYC.</string>
     <string name="Transaction.exchangeOnDaySent">Exchange rate when sent:</string>
     <!-- Transaction failed status text -->
     <string name="Transaction.failed">Failed</string>
-    <!-- Failed swap label in transaction view -->
-    <string name="Transaction.FailedSwap">Failed swap</string>
     <!-- (b600 fee) -->
     <string name="Transaction.fee">(%1$s fee)</string>
     <!-- Invalid transaction -->
     <string name="Transaction.invalid">INVALID</string>
     <!-- Timestamp label for event that just happened -->
     <string name="Transaction.justNow">just now</string>
-    <string name="Transaction.ManuallySettled">Manually settled</string>
     <!-- Transaction is pending status text -->
     <string name="Transaction.pending">Pending</string>
-    <!-- Pending purchase label in transaction view -->
-    <string name="Transaction.PendingPurchase">Pending purchase</string>
-    <!-- Pending swap label in transaction view -->
-    <string name="Transaction.PendingSwap">Pending swap</string>
-    <!-- Purchased label in transaction view -->
-    <string name="Transaction.Purchased">Purchased</string>
-    <!-- Purchase failed label in transaction view -->
-    <string name="Transaction.PurchaseFailed">Purchase failed</string>
     <!-- Receive status text: 'In progress: 20%' -->
     <string name="Transaction.receivedStatus">In progress: %1$s</string>
-    <string name="Transaction.refunded">Refunded</string>
     <!-- Send status text: 'In progress: 20%' -->
     <string name="Transaction.sendingStatus">In progress: %1$s</string>
     <!-- sending to <address> -->
@@ -1605,15 +1187,7 @@ Level 2 KYC.</string>
     <string name="Transaction.stakingTo">staking to %1$s</string>
     <!-- eg. Starting balance: $50.00 -->
     <string name="Transaction.starting">Starting balance: %1$s</string>
-    <string name="Transaction.swapFromFailed">Swap from %s failed</string>
-    <!-- Swapped transaction label -->
-    <string name="Transaction.Swapped">Swapped</string>
-    <string name="Transaction.swappedFrom">Swapped from %s</string>
-    <string name="Transaction.swappedTo">Swapped to %s</string>
-    <string name="Transaction.swappingFrom">Swapping from %s</string>
-    <string name="Transaction.swappingTo">Swapping to %s</string>
-    <string name="Transaction.swapToFailed">Swap to %s failed</string>
-    <!-- e.g. "[The money you paid was a] Fee for token transfer: BRD" (BRD is the token that was transfered) -->
+    <!-- e.g. "[The money you paid was a] Fee for token transfer: Fabriik" (Fabriik is the token that was transfered) -->
     <string name="Transaction.tokenTransfer">Fee for token transfer: %1$s</string>
     <string name="Transaction.toRecipient">to %1$s</string>
     <!-- Waiting to be confirmed string -->
@@ -1745,54 +1319,24 @@ Level 2 KYC.</string>
     <string name="UnlockScreen.touchIdTitle.android">Authentication required</string>
     <!-- Update PIN caption text -->
     <string name="UpdatePin.caption">Remember this PIN. If you forget it, you won\'t be able to access your assets.</string>
-    <!-- Contact Support button on update pin view -->
-    <string name="UpdatePin.ContactSupport">Contact Support</string>
     <!-- PIN creation info. -->
-    <string name="UpdatePin.createInstruction">Your PIN will be used to unlock your Fabriik Wallet and send money</string>
+    <string name="UpdatePin.createInstruction">Your PIN will be used to unlock your Fabriik and send money.</string>
     <!-- Update PIN title -->
     <string name="UpdatePin.createTitle">Set PIN</string>
     <!-- Update PIN title -->
-    <string name="UpdatePin.createTitleConfirm">Confirm your new PIN</string>
-    <!-- Disabled until text on disabled wallet view -->
-    <string name="UpdatePin.DisabledUntil">Disabled until:</string>
+    <string name="UpdatePin.createTitleConfirm">Re-Enter PIN</string>
     <!-- Enter current PIN instruction -->
     <string name="UpdatePin.enterCurrent">Enter your current PIN.</string>
     <!-- Enter new PIN instruction -->
     <string name="UpdatePin.enterNew">Enter your new PIN.</string>
-    <!-- Enter your PIN label to finish the transaction -->
-    <string name="UpdatePin.EnterPin">Please enter your PIN to confirm the transaction</string>
-    <!-- Enter PIN instruction -->
-    <string name="UpdatePin.enterYourPin">Enter your PIN</string>
-    <!-- Incorrect PIN popup message -->
-    <string name="UpdatePin.IncorrectPin">Incorrect PIN. The wallet will get disabled for 6 minutes after</string>
-    <!-- Number of attempts left on pin entry screen -->
-    <string name="UpdatePin.OneAttempt">1 more failed attempt.</string>
     <!-- Re-Enter new PIN instruction -->
     <string name="UpdatePin.reEnterNew">Re-Enter your new PIN.</string>
-    <!-- Attempts remaining on pin entry screen -->
-    <string name="UpdatePin.RemainingAttempts">Attempts remaining:</string>
-    <!-- Your PIN was reset successfully message -->
-    <string name="UpdatePin.ResetPinSuccess">Your PIN was reset successfully!</string>
-    <!-- Enter PIN header -->
-    <string name="UpdatePin.securedWallet">Secured wallet</string>
-    <!-- Update PIN title -->
-    <string name="UpdatePin.setNewPinTitle">Set your new PIN</string>
     <!-- Update PIN failure error message. -->
     <string name="UpdatePin.setPinError">Sorry, could not update PIN.</string>
     <!-- Update PIN failure alert view title -->
     <string name="UpdatePin.setPinErrorTitle">Update PIN Error</string>
-    <!-- Number of attempts left on pin entry screen -->
-    <string name="UpdatePin.TwoAttempts">2 more failed attempts.</string>
-    <!-- Update pin popup explanation when pressing "?" button -->
-    <string name="UpdatePin.UpdatePinPopup">The Fabriik Wallet app requires you to set a PIN to secure your wallet, separate from your device passcode.
-
-You will be required to enter the PIN to view your balance or send money, which keeps your wallet private even if you let someone use your phone or if your phone is stolen by someone who knows your device passcode.
-
-Do not forget your wallet PIN! It can only be reset by using your Recovery Phrase. If you forget your PIN and lose your Recovery Phrase, your wallet will be lost.</string>
     <!-- Update PIN title -->
     <string name="UpdatePin.updateTitle">Update PIN</string>
-    <!-- Why do I need a PIN title explanation popup -->
-    <string name="UpdatePin.WhyPIN">Why do I need a PIN?</string>
     <!-- Authorize to copy wallet addresses alert message -->
     <string name="URLHandling.addressaddressListAlertMessage">Copy wallet addresses to clipboard?</string>
     <!-- Authorize to copy wallet address PIN view prompt. -->
@@ -1973,8 +1517,28 @@ Do not forget your wallet PIN! It can only be reset by using your Recovery Phras
         <item quantity="other">attempts</item>
     </plurals>
 
-    <string name="dayFormat">DD</string>
-    <string name="yearFormat">YYYY</string>
-    <string name="monthFormat">MM</string>
+    <!-- Home screen verify dialog -->
+    <string name="HomeScreen.VerifyDialog.Title">Get full access to your Fabriik wallet!</string>
 
+    <!-- Transaction item custom view -->
+    <string name="Swap.TransactionItem.SwappedFrom">Swapped from %s</string>
+    <string name="Swap.TransactionItem.SwappedTo">Swapped to %s</string>
+    <string name="Swap.TransactionItem.SwappingFrom">Swapping from %s</string>
+    <string name="Swap.TransactionItem.SwappingTo">Swapping to %s</string>
+    <string name="Swap.TransactionItem.SwapFromFailed">Swap from %s failed</string>
+    <string name="Swap.TransactionItem.SwapToFailed">Swap to %s failed</string>
+    <string name="Swap.TransactionItem.Purchased">Purchased</string>
+    <string name="Swap.TransactionItem.PurchaseFailed">Purchase failed</string>
+    <string name="Swap.TransactionItem.PurchasePending">Pending purchase</string>
+    <string name="Swap.TransactionItem.Refunded">Refunded</string>
+
+    <!-- Delete account screen -->
+    <string name="DeleteAccountInfo.Title">You are about to delete your Fabriik account.</string>
+    <string name="DeleteAccountInfo.Subtitle">What does this mean?</string>
+    <string name="DeleteAccountInfo.Description">- You will no longer be able to use your email to sign in into Fabriik Wallet\n\n- You will no longer be able to user your KYC and registration status\n\n- Your private keys are still yours, keep your security phrase in a safe place in case you need to restore your wallet.</string>
+    <string name="DeleteAccountInfo.Checkbox">I understand that the only way to recover my wallet is by entering my recovery phrase</string>
+
+    <!-- Delete account dialog -->
+    <string name="DeleteAccountDialog.Title">Your account has been deleted. We are sorry to see you go.</string>
+    <string name="DeleteAccountDialog.Finish">Finish</string>
 </resources>
