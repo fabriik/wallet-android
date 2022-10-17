@@ -38,7 +38,7 @@ android {
     defaultConfig {
         versionCode = BrdRelease.versionCode
         versionName = BrdRelease.versionName
-        applicationId = "com.fabriik.app"
+        applicationId = "com.rockwallet.app"
         minSdkVersion(BrdRelease.ANDROID_MINIMUM_SDK)
         targetSdkVersion(BrdRelease.ANDROID_TARGET_SDK)
         buildConfigField("int", "BUILD_VERSION", "${BrdRelease.buildVersion}")
