@@ -5,7 +5,7 @@ android {
     productFlavors {
         productionMainnet {
             dimension "environment"
-            resValue "string", "app_name", "Fabriik"
+            resValue "string", "app_name", "RockWallet"
             buildConfigField "String", "SERVER_HOST", "\"api.fabriikw.com\""
             buildConfigField "boolean", "BITCOIN_TESTNET", "false"
 
@@ -15,7 +15,7 @@ android {
         }
         stagingMainnet {
             dimension "environment"
-            resValue "string", "app_name", "Fabriik Stg Mainnet"
+            resValue "string", "app_name", "RockWallet Stg Mainnet"
             buildConfigField "String", "SERVER_HOST", "\"api-stg.fabriikw.com\""
             buildConfigField "boolean", "BITCOIN_TESTNET", "false"
 
@@ -25,7 +25,7 @@ android {
         }
         developmentMainnet {
             dimension "environment"
-            resValue "string", "app_name", "Fabriik Dev Mainnet"
+            resValue "string", "app_name", "RockWallet Dev Mainnet"
             buildConfigField "String", "SERVER_HOST", "\"one-dev.moneybutton.io\""
             buildConfigField "boolean", "BITCOIN_TESTNET", "false"
 
@@ -35,7 +35,7 @@ android {
         }
         developmentTestnet {
             dimension "environment"
-            resValue "string", "app_name", "Fabriik Dev Testnet"
+            resValue "string", "app_name", "RockWallet Dev Testnet"
             buildConfigField "String", "SERVER_HOST", "\"one-dev.moneybutton.io\""
             buildConfigField "boolean", "BITCOIN_TESTNET", "true"
 
