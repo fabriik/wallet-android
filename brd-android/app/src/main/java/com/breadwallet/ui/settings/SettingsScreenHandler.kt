@@ -239,6 +239,7 @@ class SettingsScreenHandler(
             SettingsSection.PREFERENCES -> preferences
             SettingsSection.SECURITY -> securitySettings(profileManager.getProfile())
             SettingsSection.DEVELOPER_OPTION -> getDeveloperOptions()
+            SettingsSection.BSV_SETTINGS -> bsvOptions
             SettingsSection.BTC_SETTINGS -> btcOptions
             SettingsSection.BCH_SETTINGS -> bchOptions
             SettingsSection.HIDDEN -> getHiddenOptions()
@@ -334,6 +335,10 @@ class SettingsScreenHandler(
             context.getString(R.string.Settings_currency),
             SettingsOption.CURRENCY,
             addOn = BRSharedPrefs.getPreferredFiatIso()
+        ),
+        SettingsItem(
+            "BSV ${context.getString(R.string.Settings_title)}", // TODO move Bitcoin to a constant
+            SettingsOption.BSV_MENU
         ),
         SettingsItem(
             "BTC ${context.getString(R.string.Settings_title)}", // TODO move Bitcoin to a constant
@@ -506,6 +511,17 @@ class SettingsScreenHandler(
             }
             add(segWitOption)
         }
+
+    private val bsvOptions = listOf(
+        SettingsItem(
+            context.getString(R.string.Settings_importTitle),
+            SettingsOption.REDEEM_PRIVATE_KEY
+        ),
+        SettingsItem(
+            context.getString(R.string.ReScan_header),
+            SettingsOption.SYNC_BLOCKCHAIN_BSV
+        )
+    )
 
     private val bchOptions = listOf(
         SettingsItem(

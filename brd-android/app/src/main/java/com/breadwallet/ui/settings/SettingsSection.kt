@@ -29,6 +29,7 @@ enum class SettingsSection {
     HIDDEN,
     SECURITY,
     PREFERENCES,
+    BSV_SETTINGS,
     BTC_SETTINGS,
     BCH_SETTINGS,
     DEVELOPER_OPTION

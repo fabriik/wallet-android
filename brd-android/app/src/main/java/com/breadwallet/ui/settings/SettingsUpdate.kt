@@ -25,6 +25,7 @@
 package com.breadwallet.ui.settings
 
 import com.breadwallet.tools.util.bch
+import com.breadwallet.tools.util.bsv
 import com.breadwallet.tools.util.btc
 import com.breadwallet.ui.settings.SettingsScreen.E
 import com.breadwallet.ui.settings.SettingsScreen.F
@@ -133,11 +134,13 @@ object SettingsUpdate : Update<M, E, F>, SettingsScreenUpdateSpec {
                     SettingsOption.ATM_FINDER -> F.SendAtmFinderRequest
                     SettingsOption.DEVELOPER_OPTIONS -> F.GoToSection(SettingsSection.DEVELOPER_OPTION)
                     SettingsOption.CURRENCY -> F.GoToDisplayCurrency
+                    SettingsOption.BSV_MENU -> F.GoToSection(SettingsSection.BSV_SETTINGS)
                     SettingsOption.BTC_MENU -> F.GoToSection(SettingsSection.BTC_SETTINGS)
                     SettingsOption.BCH_MENU -> F.GoToSection(SettingsSection.BCH_SETTINGS)
                     SettingsOption.SHARE_ANONYMOUS_DATA -> F.GoToShareData
                     SettingsOption.NOTIFICATIONS -> F.GoToNotificationsSettings
                     SettingsOption.REDEEM_PRIVATE_KEY -> F.GoToImportWallet
+                    SettingsOption.SYNC_BLOCKCHAIN_BSV -> F.GoToSyncBlockchain(bsv)
                     SettingsOption.SYNC_BLOCKCHAIN_BTC -> F.GoToSyncBlockchain(btc)
                     SettingsOption.SYNC_BLOCKCHAIN_BCH -> F.GoToSyncBlockchain(bch)
                     SettingsOption.ENABLE_SEG_WIT -> F.GoToEnableSegWit
