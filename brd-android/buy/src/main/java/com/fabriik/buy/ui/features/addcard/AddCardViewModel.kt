@@ -63,12 +63,12 @@ class AddCardViewModel(
 
                 override fun onError(error: CardTokenisationFail) {
                     setState { copy(loadingIndicatorVisible = false) }
-                    setEffect { AddCardContract.Effect.ShowError(getString(R.string.FabriikApi_DefaultError)) }
+                    setEffect { AddCardContract.Effect.ShowError(getString(R.string.Api_DefaultError)) }
                 }
 
                 override fun onNetworkError(error: NetworkError) {
                     setState { copy(loadingIndicatorVisible = false) }
-                    setEffect { AddCardContract.Effect.ShowError(getString(R.string.FabriikApi_DefaultError)) }
+                    setEffect { AddCardContract.Effect.ShowError(getString(R.string.Api_DefaultError)) }
                 }
             })
 

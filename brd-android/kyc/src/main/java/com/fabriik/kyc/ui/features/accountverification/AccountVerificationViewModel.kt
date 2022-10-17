@@ -67,7 +67,7 @@ class AccountVerificationViewModel(
                 if (profile == null) {
                     setEffect {
                         AccountVerificationContract.Effect.ShowToast(
-                            getString(R.string.FabriikApi_DefaultError)
+                            getString(R.string.Api_DefaultError)
                         )
                     }
                     setState { AccountVerificationContract.State.Empty(false) }
@@ -176,13 +176,13 @@ class AccountVerificationViewModel(
             KycStatus.KYC2_DECLINED -> AccountVerificationContract.Level2State(
                 isEnabled = true,
                 statusState = AccountVerificationStatusView.StatusViewState.Declined,
-                verificationError = kycFailureReason ?: getString(R.string.FabriikApi_DefaultError)
+                verificationError = kycFailureReason ?: getString(R.string.Api_DefaultError)
             )
 
             KycStatus.KYC2_RESUBMISSION_REQUESTED -> AccountVerificationContract.Level2State(
                 isEnabled = true,
                 statusState = AccountVerificationStatusView.StatusViewState.Resubmit,
-                verificationError = kycFailureReason ?: getString(R.string.FabriikApi_DefaultError)
+                verificationError = kycFailureReason ?: getString(R.string.Api_DefaultError)
             )
 
             KycStatus.KYC2_SUBMITTED -> AccountVerificationContract.Level2State(

@@ -146,7 +146,7 @@ class PaymentMethodViewModel(
                     Status.ERROR ->
                         setEffect {
                             PaymentMethodContract.Effect.ShowError(
-                                it.message ?: getString(R.string.FabriikApi_DefaultError)
+                                it.message ?: getString(R.string.Api_DefaultError)
                             )
                         }
                 }

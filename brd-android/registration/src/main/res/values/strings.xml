@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="Registration.EnterEmail.Title">Welcome!</string>
-    <string name="Registration.EnterEmail.Subtitle">Create a Fabriik account by entering your email address.</string>
+    <string name="Registration.EnterEmail.Subtitle">Create a RockWallet account by entering your email address.</string>
     <string name="Registration.EnterEmail.Email">Email</string>
     <string name="Registration.EnterEmail.Promotions">I’m ok with receiving future promotion, offers and communications</string>
     <string name="Registration.EnterEmail.Next">Next</string>

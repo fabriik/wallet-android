@@ -640,7 +640,7 @@ class SwapInputViewModel(
                 val destinationAddress =
                     helper.loadAddress(state.destinationCryptoCurrency)
                         ?: return@callApi Resource.error(
-                            message = getString(R.string.FabriikApi_DefaultError)
+                            message = getString(R.string.Api_DefaultError)
                         )
 
                 swapApi.createOrder(
@@ -659,7 +659,7 @@ class SwapInputViewModel(
                         setEffect {
                             SwapInputContract.Effect.ShowError(
                                 it.message ?: getString(
-                                    R.string.FabriikApi_DefaultError
+                                    R.string.Api_DefaultError
                                 )
                             )
                         }
@@ -714,7 +714,7 @@ class SwapInputViewModel(
             if (feeBasisResponse !is TransferFeeBasis) {
                 setEffect {
                     SwapInputContract.Effect.ShowToast(
-                        getString(R.string.FabriikApi_DefaultError)
+                        getString(R.string.Api_DefaultError)
                     )
                 }
                 return@launch
@@ -801,7 +801,7 @@ class SwapInputViewModel(
 
         setEffect {
             SwapInputContract.Effect.ShowToast(
-                getString(R.string.FabriikApi_DefaultError)
+                getString(R.string.Api_DefaultError)
             )
         }
     }

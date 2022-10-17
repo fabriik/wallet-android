@@ -72,7 +72,7 @@ class SubmitPhotoViewModel(
         if (documentData.size != TWO_PHOTOS) {
             setEffect {
                 SubmitPhotoContract.Effect.ShowToast(
-                    getString(R.string.FabriikApi_DefaultError)
+                    getString(R.string.Api_DefaultError)
                 )
             }
             return
@@ -95,7 +95,7 @@ class SubmitPhotoViewModel(
         if (documentData.size != ONE_PHOTO) {
             setEffect {
                 SubmitPhotoContract.Effect.ShowToast(
-                    getString(R.string.FabriikApi_DefaultError)
+                    getString(R.string.Api_DefaultError)
                 )
             }
             return
@@ -118,7 +118,7 @@ class SubmitPhotoViewModel(
         if (documentData.size != ONE_PHOTO) {
             setEffect {
                 SubmitPhotoContract.Effect.ShowToast(
-                    getString(R.string.FabriikApi_DefaultError)
+                    getString(R.string.Api_DefaultError)
                 )
             }
             return
@@ -151,7 +151,7 @@ class SubmitPhotoViewModel(
                     Status.ERROR ->
                         setEffect {
                             SubmitPhotoContract.Effect.ShowToast(
-                                it.message ?: getString(R.string.FabriikApi_DefaultError)
+                                it.message ?: getString(R.string.Api_DefaultError)
                             )
                         }
                 }
@@ -171,7 +171,7 @@ class SubmitPhotoViewModel(
 
                     Status.ERROR -> setEffect {
                         SubmitPhotoContract.Effect.ShowToast(
-                            it.message ?: getString(R.string.FabriikApi_DefaultError)
+                            it.message ?: getString(R.string.Api_DefaultError)
                         )
                     }
                 }

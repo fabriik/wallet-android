@@ -109,7 +109,7 @@ class OrderPreviewViewModel(
             action = {
                 val destinationAddress =
                     helper.loadAddress(currentState.cryptoCurrency)?.toString() ?: return@callApi Resource.error(
-                        message = getString(R.string.FabriikApi_DefaultError)
+                        message = getString(R.string.Api_DefaultError)
                     )
 
                 buyApi.createOrder(
@@ -143,7 +143,7 @@ class OrderPreviewViewModel(
                                 OrderPreviewContract.Effect.TimeoutScreen
                             } else {
                                 OrderPreviewContract.Effect.ShowError(
-                                    it.message ?: getString(R.string.FabriikApi_DefaultError)
+                                    it.message ?: getString(R.string.Api_DefaultError)
                                 )
                             }
                         }

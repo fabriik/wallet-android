@@ -75,7 +75,7 @@ class TakePhotoViewModel(
     override fun onTakePhotoFailed() {
         setEffect {
             TakePhotoContract.Effect.ShowToast(
-                getString(R.string.FabriikApi_DefaultError)
+                getString(R.string.Api_DefaultError)
             )
         }
     }

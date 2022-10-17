@@ -55,7 +55,7 @@ class BuyDetailsViewModel(
                         setState { BuyDetailsContract.State.Error }
                         setEffect {
                             BuyDetailsContract.Effect.ShowToast(
-                                it.message ?: getString(R.string.FabriikApi_DefaultError)
+                                it.message ?: getString(R.string.Api_DefaultError)
                             )
                         }
                     }

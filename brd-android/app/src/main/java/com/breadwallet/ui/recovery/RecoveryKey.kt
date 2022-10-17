@@ -190,7 +190,7 @@ object RecoveryKey {
             override val navigationTarget = NavigationTarget.FabriikToast(
                 type = NavigationTarget.FabriikToast.Type.ERROR,
                 message = message,
-                messageRes = if (message == null) R.string.FabriikApi_DefaultError else null
+                messageRes = if (message == null) R.string.Api_DefaultError else null
             )
         }
 

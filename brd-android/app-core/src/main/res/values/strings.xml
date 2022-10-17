@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
     <!-- App name -->
-    <string name="About.appName.android">Fabriik</string>
+    <string name="About.appName.android">RockWallet</string>
     <!-- About screen blog label -->
     <string name="About.blog">Blog</string>
     <!-- About screen footer -->
-    <string name="About.footer">Made by the global Fabriik team.\nVersion %1$s Build %2$s</string>
+    <string name="About.footer">Made by the global RockWallet team.\nVersion %1$s Build %2$s</string>
     <!-- Privay Policy button label -->
     <string name="About.privacy">Privacy Policy</string>
     <!-- About screen reddit label -->
@@ -17,7 +17,7 @@
     <!-- About screen twitter label -->
     <string name="About.twitter">Twitter</string>
     <!-- About screen wallet ID label -->
-    <string name="About.walletID">Fabriik Rewards ID</string>
+    <string name="About.walletID">RockWallet Rewards ID</string>
     <!-- Close modal button accessibility label -->
     <string name="AccessibilityLabels.close">Close</string>
     <!-- Support center accessibiliy label -->
@@ -49,11 +49,11 @@
     <string name="AccountDelete.AccountDeletedPopup">Your account has been deleted.
 We are sorry to see you go.</string>
     <!-- Delete account title  -->
-    <string name="AccountDelete.DeleteAccountTitle">You are about to delete your Fabriik account.</string>
+    <string name="AccountDelete.DeleteAccountTitle">You are about to delete your RockWallet account.</string>
     <!-- Delete account explanation title -->
     <string name="AccountDelete.DeleteWhatMean">What does this mean?</string>
     <!-- Delete account explanation part one -->
-    <string name="AccountDelete.ExplanationOne">-You will no longer be able to use your email to sign in into Fabriik Wallet</string>
+    <string name="AccountDelete.ExplanationOne">-You will no longer be able to use your email to sign in into RockWallet Wallet</string>
     <!-- Delete account explanation part three -->
     <string name="AccountDelete.ExplanationThree">-Your private keys are still yours, keep your security phrase in a safe place in case you need to restore your wallet.</string>
     <!-- Delete account explanation part two -->
@@ -61,19 +61,19 @@ We are sorry to see you go.</string>
     <!-- Recover wallet text after deleting account -->
     <string name="AccountDelete.RecoverWallet">I understand that the only way to recover my wallet is by entering my recovery phrase</string>
     <!-- Default wallet name -->
-    <string name="AccountHeader.defaultWalletName">My Fabriik</string>
+    <string name="AccountHeader.defaultWalletName">My RockWallet</string>
     <!-- Third party keyboard warning -->
     <string name="Alert.customKeyboard.android">It looks like you are using a third-party keyboard, which can record what you type and steal your Recovery Phrase. Please switch to the default Android keyboard for extra protection.</string>
     <!-- Error alert title -->
     <string name="Alert.error">Error</string>
     <!-- Keystore error -->
-    <string name="Alert.keystore.generic.android">There is a problem with your Android OS keystore, please contact hello@fabriik.com</string>
+    <string name="Alert.keystore.generic.android">There is a problem with your Android OS keystore, please contact hello@rockwallet.com</string>
     <!-- KeyStore error, keys are invalidated -->
-    <string name="Alert.keystore.invalidated.android">Your Fabriik encrypted data was recently invalidated because your Android lock screen was disabled.</string>
+    <string name="Alert.keystore.invalidated.android">Your RockWallet encrypted data was recently invalidated because your Android lock screen was disabled.</string>
     <!-- Warn user key store data has been invalidate because the user changed their security settings. The user must uninstall. -->
-    <string name="Alert.keystore.invalidated.uninstall.android">We can\'t proceed because your screen lock settings have been changed (e.g. password was disabled, fingerprints were changed). For security purposes, Android has permanently locked your key store. Therefore, your Fabriik app data must be wiped by uninstalling.\n\nDon’t worry, your funds are still secure! Reinstall the app and recover your wallet using your recovery phrase.</string>
+    <string name="Alert.keystore.invalidated.uninstall.android">We can\'t proceed because your screen lock settings have been changed (e.g. password was disabled, fingerprints were changed). For security purposes, Android has permanently locked your key store. Therefore, your RockWallet app data must be wiped by uninstalling.\n\nDon’t worry, your funds are still secure! Reinstall the app and recover your wallet using your recovery phrase.</string>
     <!-- Warn user key store data has been invalidate because the user changed their security settings. The user must wipe their app data. -->
-    <string name="Alert.keystore.invalidated.wipe.android">We can\'t proceed because your screen lock settings have been changed (e.g. password was disabled, fingerprints were changed). For security purposes, Android has permanently locked your key store. Therefore, your Fabriik app data must be wiped.\n\nDon’t worry, your funds are still secure! Recover your wallet using your recovery phrase.</string>
+    <string name="Alert.keystore.invalidated.wipe.android">We can\'t proceed because your screen lock settings have been changed (e.g. password was disabled, fingerprints were changed). For security purposes, Android has permanently locked your key store. Therefore, your RockWallet app data must be wiped.\n\nDon’t worry, your funds are still secure! Recover your wallet using your recovery phrase.</string>
     <!-- Keystore error title -->
     <string name="Alert.keystore.title.android">Android Key Store Error</string>
     <!-- No internet alert message -->
@@ -103,11 +103,11 @@ We are sorry to see you go.</string>
     <!-- Fingerprint was recognized by the scanner -->
     <string name="Alerts.touchIdSucceeded.android">Fingerprint recognized</string>
     <!-- Tell the user where they can enable permissions to access device storage. -->
-    <string name="Android.allowFileSystemAccess">Please enable storage permissions in your device settings: \"Settings\" &gt; \"Apps\" &gt; \"Fabriik\" &gt; \"Permissions\".</string>
+    <string name="Android.allowFileSystemAccess">Please enable storage permissions in your device settings: \"Settings\" &gt; \"Apps\" &gt; \"RockWallet\" &gt; \"Permissions\".</string>
     <!-- The "home" screen is the name of the top level menu for the app. -->
     <string name="Android.BCH.welcome.message">Any BCH in your wallet can be accessed through the home screen.</string>
     <!-- Warning about using apps that can alter the screen -->
-    <string name="Android.screenAlteringMessage">We\'ve detected an app that is incompatible with Fabriik running on your device. For security reasons, please disable any screen altering or light filtering apps to proceed.</string>
+    <string name="Android.screenAlteringMessage">We\'ve detected an app that is incompatible with RockWallet running on your device. For security reasons, please disable any screen altering or light filtering apps to proceed.</string>
     <!-- An app that alters the screen ("screen-altering app") has been detected. -->
     <string name="Android.screenAlteringTitle">Screen Altering App Detected</string>
     <!-- JSON Serialization error message -->
@@ -265,7 +265,7 @@ We are sorry to see you go.</string>
     <string name="Buy.PayWith">Pay with</string>
     <string name="Buy.ProcessingPayment">Processing payment</string>
     <!-- Purchase success text in purchase details screen  -->
-    <string name="Buy.PurchaseSuccessText">This purchase will appear as ‘Fabriik Wallet’ on your bank statement.</string>
+    <string name="Buy.PurchaseSuccessText">This purchase will appear as ‘RockWallet Wallet’ on your bank statement.</string>
     <!-- Your assets are on the way message in purchase details screen -->
     <string name="Buy.PurchaseSuccessTitle">Your assets are on the way!</string>
     <!-- Are you sure you want to remove this card title dialog -->
@@ -352,7 +352,7 @@ We are sorry to see you go.</string>
     <string name="CreateGift.amountLabel">Choose amount ($USD)</string>
     <string name="CreateGift.create">Create</string>
     <string name="CreateGift.customAmountHint">Custom amount ($500 max)</string>
-    <string name="CreateGift.description">We\'ll create what\'s called a "paper wallet" with a qr code and instructions for installing Fabriik that you can email or text to friends and family.</string>
+    <string name="CreateGift.description">We\'ll create what\'s called a "paper wallet" with a qr code and instructions for installing RockWallet that you can email or text to friends and family.</string>
     <string name="CreateGift.inputAmountError">You must select a gift amount.</string>
     <string name="CreateGift.inputRecipientNameError">You must enter the name of the recipient.</string>
     <string name="CreateGift.insufficientBalanceError">You have insufficient funds to send a gift.</string>
@@ -420,7 +420,7 @@ We are sorry to see you go.</string>
     <string name="ErrorMessages.ExchangeQuoteFailed">We are currently having issues making a swap between this pair of coins. Please try again later.</string>
     <string name="ErrorMessages.Kyc2AccessDenied">You cannot purchase assets without completing Level 2 account verification. Upgrade your limits on the Profile screen.</string>
     <!-- Message that gets shown when we've detected the user has encountered the looping lock-screen bug. (preserve [ ] characters) -->
-    <string name="ErrorMessages.loopingLockScreen.android">Fabriik can not be authenticated due to a bug in your version of Android. [Please tap here for more information.]</string>
+    <string name="ErrorMessages.loopingLockScreen.android">RockWallet can not be authenticated due to a bug in your version of Android. [Please tap here for more information.]</string>
     <!-- Messaging unavailable alert title -->
     <string name="ErrorMessages.messagingUnavailableMessage">This device isn\'t configured to send messages.</string>
     <!-- Messaging unavailable alert title -->
@@ -474,14 +474,14 @@ We are sorry to see you go.</string>
     <string name="ExportTransfers.header">Export transactions?</string>
     <!-- You can customize your Face ID Spending Limit from the [menu] -->
     <string name="FaceIDSettings.customizeText">You can customize your Face ID spending limit from the %1$s.</string>
-    <!-- Text describing the purpose of the Face ID settings in the Fabriik app. -->
-    <string name="FaceIDSettings.explanatoryText">Use Face ID to unlock your Fabriik app and send money.</string>
+    <!-- Text describing the purpose of the Face ID settings in the RockWallet app. -->
+    <string name="FaceIDSettings.explanatoryText">Use Face ID to unlock your RockWallet app and send money.</string>
     <!-- Face Id screen label -->
-    <string name="FaceIDSettings.label">Use your face to unlock your Fabriik and send money up to a set limit.</string>
+    <string name="FaceIDSettings.label">Use your face to unlock your RockWallet and send money up to a set limit.</string>
     <!-- Title of the screen for setting the Face ID Spending Limit -->
     <string name="FaceIDSettings.linkText">Face ID Spending Limit Screen</string>
-    <!-- Setting to turn on Face ID for Fabriik -->
-    <string name="FaceIDSettings.switchLabel">Enable Face ID for Fabriik</string>
+    <!-- Setting to turn on Face ID for RockWallet -->
+    <string name="FaceIDSettings.switchLabel">Enable Face ID for RockWallet</string>
     <!-- Face ID settings view title -->
     <string name="FaceIDSettings.title">Face ID</string>
     <!-- Text label for a toggle that enables Face ID for sending money. -->
@@ -490,8 +490,8 @@ We are sorry to see you go.</string>
     <string name="FaceIDSettings.unavailableAlertMessage">You have not set up Face ID on this device. Go to Settings-&gt;Face ID &amp; Passcode to set it up now.</string>
     <!-- Face ID unavailable alert title -->
     <string name="FaceIDSettings.unavailableAlertTitle">Face ID Not Set Up</string>
-    <!-- Text label for a toggle that enables Face ID for unlocking the Fabriik app. -->
-    <string name="FaceIDSettings.unlockTitleText">Enable Face ID to unlock Fabriik</string>
+    <!-- Text label for a toggle that enables Face ID for unlocking the RockWallet app. -->
+    <string name="FaceIDSettings.unlockTitleText">Enable Face ID to unlock RockWallet</string>
     <!-- Face Id spending limit screen title -->
     <string name="FaceIDSpendingLimit.title">Face ID Spending Limit</string>
     <!-- Economy fee -->
@@ -518,13 +518,13 @@ We are sorry to see you go.</string>
     <!-- Label for the Android file chooser when we need to prompt the user to select an image file. -->
     <string name="FileChooser.selectImageSource.android">Select Image Source</string>
     <!-- Fingerprint authentication settings screen description -->
-    <string name="FingerprintSettings.description">Use your fingerprint to unlock your Fabriik app and send transactions.</string>
+    <string name="FingerprintSettings.description">Use your fingerprint to unlock your RockWallet app and send transactions.</string>
     <!-- Switch label to enable fingerprint authentication to send money -->
     <string name="FingerprintSettings.sendMoney">Use fingerprint to send money</string>
     <!-- Fingerprint authentication settings sceen title -->
     <string name="FingerprintSettings.title">Fingerprint</string>
-    <!-- Switch label to enable fingerprint authentication to unlock Fabriik app -->
-    <string name="FingerprintSettings.unlockApp">Use fingerprint to unlock Fabriik</string>
+    <!-- Switch label to enable fingerprint authentication to unlock RockWallet app -->
+    <string name="FingerprintSettings.unlockApp">Use fingerprint to unlock RockWallet</string>
     <!-- This is the section that allows administration of the user's wallet -->
     <string name="HomeScreen.admin">Admin</string>
     <!-- Home screen menu button to buy some bitcoin -->
@@ -546,8 +546,8 @@ We are sorry to see you go.</string>
     <!-- Home screen toolbar 'home' button -->
     <string name="HomeScreen.home">Home</string>
     <string name="HomeScreen.partnershipNoteTitle">Partnership note</string>
-    <string name="HomeScreen.partnershipNoteBuyDescription">Fabriik is providing Buy functionality through Wyre, a third-party API provider.</string>
-    <string name="HomeScreen.partnershipNoteSwapDescription">Fabriik is providing Swap functionality through Changelly, a third-party API provider.</string>
+    <string name="HomeScreen.partnershipNoteBuyDescription">RockWallet is providing Buy functionality through Wyre, a third-party API provider.</string>
+    <string name="HomeScreen.partnershipNoteSwapDescription">RockWallet is providing Swap functionality through Changelly, a third-party API provider.</string>
     <!-- Checking private key balance progress view text -->
     <string name="Import.checking">Checking private key balance...</string>
     <!-- Sweep private key confirmation message -->
@@ -569,13 +569,13 @@ We are sorry to see you go.</string>
     <!-- Caption for graphics -->
     <string name="Import.leftCaption">Wallet to be imported</string>
     <!-- Import wallet intro screen message -->
-    <string name="Import.message">Importing a wallet transfers all the money from your other wallet into your Fabriik wallet using a single transaction.</string>
+    <string name="Import.message">Importing a wallet transfers all the money from your other wallet into your RockWallet wallet using a single transaction.</string>
     <!-- Enter password alert view title -->
     <string name="Import.password">This private key is password protected.</string>
     <!-- password textfield placeholder -->
     <string name="Import.passwordPlaceholder">password</string>
     <!-- Caption for graphics -->
-    <string name="Import.rightCaption">Your Fabriik Wallet</string>
+    <string name="Import.rightCaption">Your RockWallet Wallet</string>
     <!-- Scan Private key button label -->
     <string name="Import.scan">Scan Private Key</string>
     <!-- Import wallet success alert title -->
@@ -595,9 +595,9 @@ We are sorry to see you go.</string>
     <!-- Ignore jailbreak warning button -->
     <string name="JailbreakWarnings.ignore">Ignore</string>
     <!-- Jailbreak warning message -->
-    <string name="JailbreakWarnings.messageWithBalance">DEVICE SECURITY COMPROMISED\n Any \'jailbreak\' app can access Fabriik\'s keychain data and steal your bitcoin! Wipe this wallet immediately and restore on a secure device.</string>
+    <string name="JailbreakWarnings.messageWithBalance">DEVICE SECURITY COMPROMISED\n Any \'jailbreak\' app can access RockWallet\'s keychain data and steal your bitcoin! Wipe this wallet immediately and restore on a secure device.</string>
     <!-- Jailbreak warning message -->
-    <string name="JailbreakWarnings.messageWithoutBalance">DEVICE SECURITY COMPROMISED\n Any \'jailbreak\' app can access Fabriik\'s keychain data and steal your bitcoin. Please only use Fabriik on a non-jailbroken device.</string>
+    <string name="JailbreakWarnings.messageWithoutBalance">DEVICE SECURITY COMPROMISED\n Any \'jailbreak\' app can access RockWallet\'s keychain data and steal your bitcoin. Please only use RockWallet on a non-jailbroken device.</string>
     <!-- Jailbreak warning title -->
     <string name="JailbreakWarnings.title">WARNING</string>
     <!-- Wipe wallet button -->
@@ -619,7 +619,7 @@ We are sorry to see you go.</string>
     <!-- Location services disabled error -->
     <string name="LocationPlugin.disabled">Location services are disabled.</string>
     <!-- No permissions for location services -->
-    <string name="LocationPlugin.notAuthorized">Fabriik does not have permission to access location services.</string>
+    <string name="LocationPlugin.notAuthorized">RockWallet does not have permission to access location services.</string>
     <!-- Wallet creation date prefix -->
     <string name="ManageWallet.creationDatePrefix">You created your wallet on %1$s</string>
     <!-- Manage wallet description text -->
@@ -704,13 +704,13 @@ We are sorry to see you go.</string>
     <!-- Onboarding screen Page 1 title -->
     <string name="OnboardingPageOne.title">Empowering you in the emerging digital asset economy</string>
     <!-- Onboarding screen Page 3 subtitle -->
-    <string name="OnboardingPageThree.subtitle">Invest and diversify with Fabriik, easily and securely.</string>
+    <string name="OnboardingPageThree.subtitle">Invest and diversify with RockWallet, easily and securely.</string>
     <!-- Onboarding screen Page 3 title -->
     <string name="OnboardingPageThree.title">Buy and trade bitcoin, tokens, and other digital currencies.</string>
     <!-- Onboarding screen Page 2 subtitle -->
     <string name="OnboardingPageTwo.subtitle">We have over $6 billion USD worth of assets under protection.</string>
     <!-- Onboarding screen Page 2 title -->
-    <string name="OnboardingPageTwo.title">Join people around the world who trust Fabriik.</string>
+    <string name="OnboardingPageTwo.title">Join people around the world who trust RockWallet.</string>
     <!-- Eg. Send 1.0Eth to purchase CCC -->
     <string name="PaymentConfirmation.amountText">Send %1$s to purchase %2$s</string>
     <!-- Payment expired message -->
@@ -759,8 +759,8 @@ We are sorry to see you go.</string>
     <!-- An action is required (You must do this action). -->
     <string name="Prompts.PaperKey.title">Action Required</string>
     <string name="Prompts.RateApp.dontShow">Don\'t ask again</string>
-    <string name="Prompts.RateApp.enjoyingBrd">Enjoying Fabriik?</string>
-    <string name="Prompts.RateApp.googlePlayReview">Your review helps grow the Fabriik community.</string>
+    <string name="Prompts.RateApp.enjoyingBrd">Enjoying RockWallet?</string>
+    <string name="Prompts.RateApp.googlePlayReview">Your review helps grow the RockWallet community.</string>
     <string name="Prompts.RateApp.noThanks">No thanks</string>
     <string name="Prompts.RateApp.rateUs">Review us</string>
     <!-- Transaction rejected prompt body -->
@@ -768,7 +768,7 @@ We are sorry to see you go.</string>
     <!-- Transaction rejected prompt title -->
     <string name="Prompts.RecommendRescan.title">Transaction Rejected</string>
     <!-- Share data prompt body -->
-    <string name="Prompts.ShareData.body">Help improve Fabriik by sharing your anonymous data with us</string>
+    <string name="Prompts.ShareData.body">Help improve RockWallet by sharing your anonymous data with us</string>
     <!-- Share data prompt title -->
     <string name="Prompts.ShareData.title">Share Anonymous Data</string>
     <!-- Enable touch ID prompt body -->
@@ -782,7 +782,7 @@ We are sorry to see you go.</string>
     <!-- Button on fingerprint prompt so the user can enter their PIN instead -->
     <string name="Prompts.TouchId.usePin.android">PIN</string>
     <!-- Upgrade PIN prompt body. -->
-    <string name="Prompts.UpgradePin.body">Fabriik has upgraded to using a 6-digit PIN. Tap Continue to upgrade.</string>
+    <string name="Prompts.UpgradePin.body">RockWallet has upgraded to using a 6-digit PIN. Tap Continue to upgrade.</string>
     <!-- Upgrade PIN prompt title. -->
     <string name="Prompts.UpgradePin.title">Upgrade PIN</string>
     <!-- Body text for the push notifications prompt. -->
@@ -790,11 +790,11 @@ We are sorry to see you go.</string>
     <!-- Push notifications are disabled alert title" -->
     <string name="PushNotifications.disabled">Notifications Disabled</string>
     <!-- Body text when push notifications are disabled. -->
-    <string name="PushNotifications.disabledBody">Turn on notifications to receive special offers and updates from Fabriik.</string>
+    <string name="PushNotifications.disabledBody">Turn on notifications to receive special offers and updates from RockWallet.</string>
     <!-- Body text when push notifications are enabled. -->
-    <string name="PushNotifications.enabledBody">You’re receiving special offers and updates from Fabriik.</string>
-    <!-- Instructions to enable push notifications for Fabriik in the phone's system settings. -->
-    <string name="PushNotifications.enableInstructions">Looks like notifications are turned off. Please go to Settings to enable notifications from Fabriik.</string>
+    <string name="PushNotifications.enabledBody">You’re receiving special offers and updates from RockWallet.</string>
+    <!-- Instructions to enable push notifications for RockWallet in the phone's system settings. -->
+    <string name="PushNotifications.enableInstructions">Looks like notifications are turned off. Please go to Settings to enable notifications from RockWallet.</string>
     <!-- Push notifications toggle switch label -->
     <string name="PushNotifications.label">Receive Push Notifications</string>
     <!-- Push notifications are off label -->
@@ -810,9 +810,9 @@ We are sorry to see you go.</string>
     <!-- Google play review prompt, revivew button -->
     <string name="RateAppPrompt.Button.Dismiss.Android">No Thanks</string>
     <!-- Google play review prompt, dismiss button -->
-    <string name="RateAppPrompt.Button.RateApp.Android">Rate Fabriik</string>
+    <string name="RateAppPrompt.Button.RateApp.Android">Rate RockWallet</string>
     <!-- Google play review prompt title -->
-    <string name="RateAppPrompt.Title.Android">Rate Fabriik</string>
+    <string name="RateAppPrompt.Title.Android">Rate RockWallet</string>
     <!-- Address copied message. -->
     <string name="Receive.copied">Copied to clipboard.</string>
     <!-- Share via email button label -->
@@ -835,7 +835,7 @@ We are sorry to see you go.</string>
     <!-- Enter paper key instruction -->
     <string name="RecoverWallet.instruction">Enter Recovery Phrase</string>
     <!-- Recover wallet intro -->
-    <string name="RecoverWallet.intro">Recover your Fabriik with your recovery phrase.</string>
+    <string name="RecoverWallet.intro">Recover your RockWallet with your recovery phrase.</string>
     <!-- Invalid paper key message -->
     <string name="RecoverWallet.invalid">Invalid recovery phrase. Please double-check each word and try again.</string>
     <!-- Previous button accessibility label -->
@@ -899,14 +899,14 @@ We are sorry to see you go.</string>
     <string name="RecoveryKeyFlow.rememberToWriteDownReminder">Remember to write these words down. Swipe back if you forgot.</string>
     <!-- Instruction displayed when the user is resetting the PIN, which requires the recovery phrase to be entered -->
     <string name="RecoveryKeyFlow.resetPINInstruction">Please enter your recovery phrase to reset your PIN.</string>
-    <!-- Assures the user that Fabriik will keep the user's funds secure. -->
+    <!-- Assures the user that RockWallet will keep the user's funds secure. -->
     <string name="RecoveryKeyFlow.securityAssurance">Buy and trade knowing that your funds are protected by the best security and privacy in the business.</string>
     <!-- Recommends that the user stores the recovery key in a secure location -->
-    <string name="RecoveryKeyFlow.storeSecurelyRecommendation">Store your key in a secure location. This is the only way to recover your wallet. Fabriik does not keep a copy.</string>
+    <string name="RecoveryKeyFlow.storeSecurelyRecommendation">Store your key in a secure location. This is the only way to recover your wallet. RockWallet does not keep a copy.</string>
     <!-- Title for the success page after the recovery phrase has been set up -->
     <string name="RecoveryKeyFlow.successHeading">Congratulations! You completed your recovery phrase setup.</string>
     <!-- Subtitle for the success page after the recovery key has been set up -->
-    <string name="RecoveryKeyFlow.successSubheading">You\'re all set to deposit, trade, and buy crypto from your Fabriik wallet.</string>
+    <string name="RecoveryKeyFlow.successSubheading">You\'re all set to deposit, trade, and buy crypto from your RockWallet wallet.</string>
     <!-- Title displayed to the user on the intro screen when unlinking a wallet -->
     <string name="RecoveryKeyFlow.unlinkWallet">Unlink your wallet from this device.</string>
     <!-- Subtitle displayed to the user on the intro screen when unlinking a wallet. -->
@@ -940,7 +940,7 @@ We are sorry to see you go.</string>
     <!-- extimated time -->
     <string name="ReScan.body1">20-45 minutes</string>
     <!-- Syncing explanation -->
-    <string name="ReScan.body2">If a transaction shows as completed on the network but not in your Fabriik.</string>
+    <string name="ReScan.body2">If a transaction shows as completed on the network but not in your RockWallet.</string>
     <!-- Syncing explanation -->
     <string name="ReScan.body3">You repeatedly get an error saying your transaction was rejected.</string>
     <!-- Start Sync button label -->
@@ -956,7 +956,7 @@ We are sorry to see you go.</string>
     <!-- Rewards view expanded body. -->
     <string name="RewardsView.expandedBody">Learn how you can save on trading fees and unlock future rewards</string>
     <!-- Rewards view expanded title. -->
-    <string name="RewardsView.expandedTitle">Introducing Fabriik Rewards.</string>
+    <string name="RewardsView.expandedTitle">Introducing RockWallet Rewards.</string>
     <!-- Rewards view title -->
     <string name="RewardsView.normalTitle">Rewards</string>
     <!-- Scan bitcoin address camera flash toggle -->
@@ -987,11 +987,11 @@ We are sorry to see you go.</string>
     <!-- Paper Key button title -->
     <string name="SecurityCenter.paperKeyTitle.android">Recovery Phrase</string>
     <!-- PIN button description -->
-    <string name="SecurityCenter.pinDescription">Protects your Fabriik from unauthorized users.</string>
+    <string name="SecurityCenter.pinDescription">Protects your RockWallet from unauthorized users.</string>
     <!-- PIN button title -->
     <string name="SecurityCenter.pinTitle">6-Digit PIN</string>
     <!-- Touch ID button description -->
-    <string name="SecurityCenter.touchIdDescription">Conveniently unlock your Fabriik and send money up to a set limit.</string>
+    <string name="SecurityCenter.touchIdDescription">Conveniently unlock your RockWallet and send money up to a set limit.</string>
     <!-- Touch ID button title -->
     <string name="SecurityCenter.touchIdTitle">Touch ID</string>
     <!-- Security center fingerprint authentication button -->
@@ -1016,13 +1016,13 @@ We are sorry to see you go.</string>
     <!-- Balance: $4.00 for iOS, the balance can't have a parameter -->
     <string name="Send.balanceString">Balance: </string>
     <!-- Instructions how to allow the camera access for the app -->
-    <string name="Send.cameraUnavailabeMessage.android">Allow camera access in \"Settings\" &gt; \"Apps\" &gt; \"Fabriik\" &gt; \"Permissions\"</string>
+    <string name="Send.cameraUnavailabeMessage.android">Allow camera access in \"Settings\" &gt; \"Apps\" &gt; \"RockWallet\" &gt; \"Permissions\"</string>
     <!-- Permission required to access camera -->
-    <string name="Send.cameraUnavailabeTitle.android">Fabriik is not allowed to access the camera</string>
+    <string name="Send.cameraUnavailabeTitle.android">RockWallet is not allowed to access the camera</string>
     <!-- Camera not allowed message -->
     <string name="Send.cameraunavailableMessage">Go to Settings to allow camera access.</string>
     <!-- Camera not allowed alert title -->
-    <string name="Send.cameraUnavailableTitle">Fabriik is not allowed to access the camera</string>
+    <string name="Send.cameraUnavailableTitle">RockWallet is not allowed to access the camera</string>
     <!-- Warning when sending to self. -->
     <string name="Send.containsAddress">The destination is your own address. You cannot send to yourself.</string>
     <!-- Could not create transaction alert title -->
@@ -1131,7 +1131,7 @@ We are sorry to see you go.</string>
     <!-- Enable segwit. -->
     <string name="Settings.EnableSegwit">Enable Segwit</string>
     <!-- Are you enjoying bread alert message body -->
-    <string name="Settings.enjoying">Are you enjoying Fabriik?</string>
+    <string name="Settings.enjoying">Are you enjoying RockWallet?</string>
     <!-- Export transaction history menu item -->
     <string name="Settings.exportTransfers">Export transaction history to CSV</string>
     <!-- Face ID spending limit label -->
@@ -1180,14 +1180,14 @@ We are sorry to see you go.</string>
     <!-- Unlink an account from the wallet. -->
     <string name="Settings.deleteAccount">Delete account</string>
     <!-- Share data view body -->
-    <string name="ShareData.body">Help improve Fabriik by sharing your anonymous data with us. This does not include any financial information. We respect your financial privacy.</string>
+    <string name="ShareData.body">Help improve RockWallet by sharing your anonymous data with us. This does not include any financial information. We respect your financial privacy.</string>
     <!-- Share data header -->
     <string name="ShareData.header">Share Data?</string>
     <!-- Share data switch label. -->
     <string name="ShareData.toggleLabel">Share Anonymous Data?</string>
     <string name="ShareGift.approximateTotal">Approximate Total</string>
     <string name="ShareGift.footerMessage1">A network fee will be deducted from the total when claimed.\nActual value depends on current price of bitcoin.</string>
-    <string name="ShareGift.footerMessage2">Download the Fabriik app for iPhone or Android.\nFor more information visit Fabriik.com/gift</string>
+    <string name="ShareGift.footerMessage2">Download the RockWallet app for iPhone or Android.\nFor more information visit RockWallet.com/gift</string>
     <string name="ShareGift.tagLine">Someone gifted you bitcoin!</string>
     <string name="ShareGift.walletName">Bitcoin</string>
     <!-- Button label: select a baker -->
@@ -1233,9 +1233,9 @@ We are sorry to see you go.</string>
     <!-- button label -->
     <string name="StartPaperPhrase.againButtonTitle">Write Down Recovery Phrase Again</string>
     <!-- Paper key explanation text. -->
-    <string name="StartPaperPhrase.body">Your recovery phrase is the only way to restore your Fabriik if your phone is lost, stolen, broken, or upgraded.\n\nWe will show you a list of words to write down on a piece of paper and keep safe.</string>
+    <string name="StartPaperPhrase.body">Your recovery phrase is the only way to restore your RockWallet if your phone is lost, stolen, broken, or upgraded.\n\nWe will show you a list of words to write down on a piece of paper and keep safe.</string>
     <!-- Paper key explanation text (Android-version) -->
-    <string name="StartPaperPhrase.Body.Android">Your recovery phrase is the only way to restore your Fabriik if your phone is lost, stolen, broken, or upgraded.\n\nYour recovery phrase is also required if you change the security settings on your device.\n\nWe will show you a list of words to write down on a piece of paper and keep safe.</string>
+    <string name="StartPaperPhrase.Body.Android">Your recovery phrase is the only way to restore your RockWallet if your phone is lost, stolen, broken, or upgraded.\n\nYour recovery phrase is also required if you change the security settings on your device.\n\nWe will show you a list of words to write down on a piece of paper and keep safe.</string>
     <!-- button label -->
     <string name="StartPaperPhrase.buttonTitle">Write Down Recovery Phrase</string>
     <!-- Argument is date; date should be on a new line -->
@@ -1319,7 +1319,7 @@ We are sorry to see you go.</string>
     <string name="Swap.Total">Total:</string>
     <string name="Swap.transactionFrom">From %1$s</string>
     <!-- Transaction ID label in swap details screen -->
-    <string name="Swap.TransactionID">Fabriik Transaction ID</string>
+    <string name="Swap.TransactionID">RockWallet Transaction ID</string>
     <string name="Swap.transactionInEthereumNetwork">It seems that your transaction takes place in the Ethereum network, please keep in mind that network fees will be charged in ETH</string>
     <string name="Swap.transactionTo">To %1$s</string>
     <!-- Syncing view done syncing state header text -->
@@ -1364,16 +1364,16 @@ We are sorry to see you go.</string>
     <string name="TouchIdSettings.disabledWarning.body.android">You have not enabled fingerprint authentication on this device. Go to Settings -&gt; Security to set up fingerprint authentication.</string>
     <!-- Fingerprint Is Not Setup -->
     <string name="TouchIdSettings.disabledWarning.title.android">Fingerprint Authentication Not Enabled</string>
-    <!-- Text that describes the purpose of the Touch ID settings in the Fabriik app. -->
-    <string name="TouchIdSettings.explanatoryText">Use Touch ID to unlock your Fabriik app and send money.</string>
+    <!-- Text that describes the purpose of the Touch ID settings in the RockWallet app. -->
+    <string name="TouchIdSettings.explanatoryText">Use Touch ID to unlock your RockWallet app and send money.</string>
     <!-- Touch Id screen label -->
-    <string name="TouchIdSettings.label">Use your fingerprint to unlock your Fabriik and send money up to a set limit.</string>
+    <string name="TouchIdSettings.label">Use your fingerprint to unlock your RockWallet and send money up to a set limit.</string>
     <!-- Link Text (see TouchIdSettings.customizeText) -->
     <string name="TouchIdSettings.linkText">Touch ID Spending Limit Screen</string>
     <!-- Spending Limit: b100,000 ($100) -->
     <string name="TouchIdSettings.spendingLimit">Spending limit: %1$s (%2$s)</string>
     <!-- Touch id switch label. -->
-    <string name="TouchIdSettings.switchLabel">Enable Touch ID for Fabriik</string>
+    <string name="TouchIdSettings.switchLabel">Enable Touch ID for RockWallet</string>
     <!-- Enable fingerprint for this wallet called Bread -->
     <string name="TouchIdSettings.switchLabel.android">Enable Fingerprint Authentication</string>
     <!-- Touch ID settings view title -->
@@ -1386,8 +1386,8 @@ We are sorry to see you go.</string>
     <string name="TouchIdSettings.unavailableAlertMessage">You have not set up Touch ID on this device. Go to Settings-&gt;Touch ID &amp; Passcode to set it up now.</string>
     <!-- Touch ID unavailable alert title -->
     <string name="TouchIdSettings.unavailableAlertTitle">Touch ID Not Set Up</string>
-    <!-- Text label for the toggle that enables Touch ID for unlocking the Fabriik app. -->
-    <string name="TouchIdSettings.unlockTitleText">Enable Touch ID to unlock Fabriik</string>
+    <!-- Text label for the toggle that enables Touch ID for unlocking the RockWallet app. -->
+    <string name="TouchIdSettings.unlockTitleText">Enable Touch ID to unlock RockWallet</string>
     <!-- Always require passcode option -->
     <string name="TouchIdSpendingLimit">Always require passcode</string>
     <!-- Touch ID spending limit screen body -->
@@ -1572,7 +1572,7 @@ We are sorry to see you go.</string>
     <!-- Instruction to touch the sensor for fingerprint authentication -->
     <string name="UnlockScreen.touchIdInstructions.android">Touch Sensor</string>
     <!-- TouchID prompt text -->
-    <string name="UnlockScreen.touchIdPrompt">Unlock your Fabriik.</string>
+    <string name="UnlockScreen.touchIdPrompt">Unlock your RockWallet.</string>
     <!-- Device authentication body -->
     <string name="UnlockScreen.touchIdPrompt.android">Please unlock your Android device to continue.</string>
     <!-- Unlock with TouchID accessibility label -->
@@ -1584,7 +1584,7 @@ We are sorry to see you go.</string>
     <!-- Contact Support button on update pin view -->
     <string name="UpdatePin.ContactSupport">Contact Support</string>
     <!-- PIN creation info. -->
-    <string name="UpdatePin.createInstruction">Your PIN will be used to unlock your Fabriik Wallet and send money</string>
+    <string name="UpdatePin.createInstruction">Your PIN will be used to unlock your RockWallet Wallet and send money</string>
     <!-- Update PIN title -->
     <string name="UpdatePin.createTitle">Set PIN</string>
     <!-- Update PIN title -->
@@ -1620,7 +1620,7 @@ We are sorry to see you go.</string>
     <!-- Number of attempts left on pin entry screen -->
     <string name="UpdatePin.TwoAttempts">2 more failed attempts.</string>
     <!-- Update pin popup explanation when pressing "?" button -->
-    <string name="UpdatePin.UpdatePinPopup">The Fabriik Wallet app requires you to set a PIN to secure your wallet, separate from your device passcode.
+    <string name="UpdatePin.UpdatePinPopup">The RockWallet Wallet app requires you to set a PIN to secure your wallet, separate from your device passcode.
 
 You will be required to enter the PIN to view your balance or send money, which keeps your wallet private even if you let someone use your phone or if your phone is stolen by someone who knows your device passcode.
 
@@ -1670,7 +1670,7 @@ Do not forget your wallet PIN! It can only be reset by using your Recovery Phras
     <!-- Wallet connection settings view title -->
     <string name="WalletConnectionSettings.viewTitle">Fastsync</string>
     <!-- 'No wallet' warning for watch app -->
-    <string name="Watch.noWalletWarning">Open the Fabriik iPhone app to set up your wallet.</string>
+    <string name="Watch.noWalletWarning">Open the RockWallet iPhone app to set up your wallet.</string>
     <!-- Dismiss button label -->
     <string name="Webview.dismiss">Dismiss</string>
     <!-- Webview loading error message -->
@@ -1678,9 +1678,9 @@ Do not forget your wallet PIN! It can only be reset by using your Recovery Phras
     <!-- Updating webview message -->
     <string name="Webview.updating">Updating...</string>
     <!-- Welcome screen text. (?) will be replaced with the help icon users should look for. -->
-    <string name="Welcome.body">Breadwallet has changed its name to Fabriik, with a brand new look and some new features.\n\nIf you need help, look for the (?) in the top right of most screens.</string>
+    <string name="Welcome.body">Breadwallet has changed its name to RockWallet, with a brand new look and some new features.\n\nIf you need help, look for the (?) in the top right of most screens.</string>
     <!-- Top title of welcome screen -->
-    <string name="Welcome.title">Welcome to Fabriik!</string>
+    <string name="Welcome.title">Welcome to RockWallet!</string>
     <!-- Single asset widget description -->
     <string name="Widget.assetDescription">Stay up to date with your favorite crypto asset</string>
     <!-- Asset list widget description -->
@@ -1752,7 +1752,7 @@ Do not forget your wallet PIN! It can only be reset by using your Recovery Phras
     <!-- Enter phrase to wipe wallet instruction. (Important to explain it is the CURRENT [this wallet's] paper key that needs to be entered). -->
     <string name="WipeWallet.instruction">Please enter your recovery phrase to wipe this wallet from your device.</string>
     <!-- Instructions for unlinking the wallet -->
-    <string name="WipeWallet.startMessage">Starting or recovering another wallet allows you to access and manage a different Fabriik wallet on this device.</string>
+    <string name="WipeWallet.startMessage">Starting or recovering another wallet allows you to access and manage a different RockWallet wallet on this device.</string>
     <!-- Start wipe wallet view warning -->
     <string name="WipeWallet.startWarning">Your current wallet will be removed from this device. If you wish to restore it in the future, you will need to enter your Recovery Phrase.</string>
     <!-- Unlink this wallet from this device. -->
@@ -1776,7 +1776,7 @@ Do not forget your wallet PIN! It can only be reset by using your Recovery Phras
 
     <string name="Scanner.noCamera" translatable="false">No camera found</string>
 
-    <string name="Feedback.subject">Fabriik - Feedback</string>
+    <string name="Feedback.subject">RockWallet - Feedback</string>
     <string name="Feedback.noEmailClient">Email client not found</string>
 
     <!-- Profile info dialog -->
@@ -1785,7 +1785,7 @@ Do not forget your wallet PIN! It can only be reset by using your Recovery Phras
     <string name="Profile.InfoDialog.description">If you verify your account, you are given access to:\n\t\u2022 Unlimited deposits/withdrawals\n\t\u2022 Enhanced security\n\t\u2022 Full asset support\n\t\u2022 Buy assets with credit card\n\t\u2022 24/7/365 live customer support</string>
 
     <!-- Verify account screen -->
-    <string name="VerifyAccount.Title">Verify your account to get full access to your Fabriik wallet!</string>
+    <string name="VerifyAccount.Title">Verify your account to get full access to your RockWallet wallet!</string>
     <string name="VerifyAccount.Subtitle">We need to verify your identity in order to buy/sell and swap crypto.</string>
     <string name="VerifyAccount.Button">Verify your account</string>
 
@@ -1798,7 +1798,7 @@ Do not forget your wallet PIN! It can only be reset by using your Recovery Phras
     <string name="ResetPin.title">Reset PIN</string>
     <string name="ResetPin.subtitleNewPin">Set your new PIN</string>
     <string name="ResetPin.subtitleConfirmNewPin">Confirm your new PIN</string>
-    <string name="ResetPin.description">Your PIN will be used to unlock your Fabriik Wallet and send money</string>
+    <string name="ResetPin.description">Your PIN will be used to unlock your RockWallet Wallet and send money</string>
 
     <!-- Pin reset completed screen -->
     <string name="PinResetCompleted.title">Your PIN was reset successfully!</string>
@@ -1810,6 +1810,6 @@ Do not forget your wallet PIN! It can only be reset by using your Recovery Phras
     </plurals>
 
     <!-- Home screen verify dialog -->
-    <string name="HomeScreen.VerifyDialog.Title">Get full access to your Fabriik wallet!</string>
+    <string name="HomeScreen.VerifyDialog.Title">Get full access to your RockWallet wallet!</string>
 
 </resources>

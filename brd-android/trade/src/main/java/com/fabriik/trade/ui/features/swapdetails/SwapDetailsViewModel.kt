@@ -51,7 +51,7 @@ class SwapDetailsViewModel(
                         setState { SwapDetailsContract.State.Error }
                         setEffect {
                             SwapDetailsContract.Effect.ShowToast(
-                                it.message ?: getString(R.string.FabriikApi_DefaultError)
+                                it.message ?: getString(R.string.Api_DefaultError)
                             )
                         }
                     }

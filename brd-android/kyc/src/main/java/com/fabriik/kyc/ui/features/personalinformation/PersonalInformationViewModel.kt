@@ -120,7 +120,7 @@ class PersonalInformationViewModel(
                     Status.ERROR -> {
                         setEffect {
                             PersonalInformationContract.Effect.ShowToast(
-                                it.message ?: getString(R.string.FabriikApi_DefaultError)
+                                it.message ?: getString(R.string.Api_DefaultError)
                             )
                         }
                     }
