@@ -238,4 +238,8 @@ dependencies {
 
     detektPlugins(Libs.Detekt.Formatting)
     implementation("com.airbnb.android:lottie:4.2.0")
+
+    testImplementation(Libs.JUnit.Core)
+    testImplementation(Libs.Mockito.Core)
+    testImplementation(Libs.Robolectric.Core)
 }

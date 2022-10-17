@@ -30,6 +30,7 @@ import com.breadwallet.logger.logError
 import com.breadwallet.tools.manager.BRSharedPrefs
 import com.breadwallet.tools.manager.BRSharedPrefs.putPreferredFiatIso
 import com.breadwallet.tools.manager.COINGECKO_API_URL
+import com.breadwallet.tools.util.FiatCurrenciesUtil
 import com.breadwallet.ui.settings.currency.DisplayCurrency.E
 import com.breadwallet.ui.settings.currency.DisplayCurrency.F
 import drewcarlson.mobius.flow.subtypeEffectHandler
@@ -59,11 +60,7 @@ fun createDisplayCurrencyHandler(
     addTransformer<F.LoadCurrencies> { effects ->
         effects.transform {
             val selectedCurrency = BRSharedPrefs.getPreferredFiatIso()
-            val fiatCurrencies = context.resources
-                .openRawResource(R.raw.fiatcurrencies)
-                .use { it.reader().readText() }
-                .toFiatCurrencies()
-
+            val fiatCurrencies = FiatCurrenciesUtil.getFiatCurrencies()
             emit(E.OnCurrenciesLoaded(selectedCurrency, fiatCurrencies))
         }
     }

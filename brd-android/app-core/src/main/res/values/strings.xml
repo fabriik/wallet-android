@@ -418,6 +418,7 @@ We are sorry to see you go.</string>
     <string name="ErrorMessages.ethBalanceLow">Insufficient Ethereum balance in your wallet to transfer this type of token.</string>
     <string name="ErrorMessages.exchangeFailed">Swap failed. Reason: %s.</string>
     <string name="ErrorMessages.ExchangeQuoteFailed">We are currently having issues making a swap between this pair of coins. Please try again later.</string>
+    <string name="ErrorMessages.Kyc2AccessDenied">You cannot purchase assets without completing Level 2 account verification. Upgrade your limits on the Profile screen.</string>
     <!-- Message that gets shown when we've detected the user has encountered the looping lock-screen bug. (preserve [ ] characters) -->
     <string name="ErrorMessages.loopingLockScreen.android">Fabriik can not be authenticated due to a bug in your version of Android. [Please tap here for more information.]</string>
     <!-- Messaging unavailable alert title -->

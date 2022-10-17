@@ -22,6 +22,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.breadwallet.ui.settings.currency
+package com.breadwallet.model
 
 data class FiatCurrency(val code: String, val name: String)
