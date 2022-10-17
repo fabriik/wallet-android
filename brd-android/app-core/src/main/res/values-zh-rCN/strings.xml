@@ -51,7 +51,7 @@
     <!-- Error alert title -->
     <string name="Alert.error">错误</string>
     <!-- Keystore error -->
-    <string name="Alert.keystore.generic.android">您的安卓操作系统密钥库存在问题，请联系hello@fabriik.com</string>
+    <string name="Alert.keystore.generic.android">您的安卓操作系统密钥库存在问题，请联系hello@rockwallet.com</string>
     <!-- KeyStore error, keys are invalidated -->
     <string name="Alert.keystore.invalidated.android">您的 BRD 加密数据最近因为您的安卓系统屏幕锁定被禁用而失效。</string>
     <!-- Warn user key store data has been invalidate because the user changed their security settings. The user must uninstall. -->

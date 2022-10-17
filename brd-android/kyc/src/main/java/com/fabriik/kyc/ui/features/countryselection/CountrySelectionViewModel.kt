@@ -73,7 +73,7 @@ class CountrySelectionViewModel(
                     Status.ERROR ->
                         setEffect {
                             CountrySelectionContract.Effect.ShowToast(
-                                response.message ?: getString(R.string.FabriikApi_DefaultError)
+                                response.message ?: getString(R.string.Api_DefaultError)
                             )
                         }
                 }

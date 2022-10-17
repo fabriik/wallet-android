@@ -91,8 +91,8 @@ class OrderPreviewViewModelTest {
         viewModel.testEffect(
             action = { viewModel.onCreditInfoClicked() },
             targetEffect = OrderPreviewContract.Effect.ShowInfoDialog(
-                title = R.string.Buy_OrderPreview_CardFeesDialog_Title,
-                description = R.string.Buy_OrderPreview_CardFeesDialog_Content
+                title = R.string.Swap_CardFee,
+                description = R.string.Buy_CardFee
             )
         )
     }
@@ -102,8 +102,8 @@ class OrderPreviewViewModelTest {
         viewModel.testEffect(
             action = { viewModel.onNetworkInfoClicked() },
             targetEffect = OrderPreviewContract.Effect.ShowInfoDialog(
-                title = R.string.Buy_OrderPreview_NetworkFeesDialog_Title,
-                description = R.string.Buy_OrderPreview_NetworkFeesDialog_Content
+                title = R.string.Buy_NetworkFees,
+                description = R.string.Buy_NetworkFeeMessage
             )
         )
     }
@@ -114,8 +114,8 @@ class OrderPreviewViewModelTest {
             action = { viewModel.onSecurityCodeInfoClicked() },
             targetEffect = OrderPreviewContract.Effect.ShowInfoDialog(
                 image = R.drawable.ic_info_cvv,
-                title = R.string.Buy_AddCard_CvvDialog_Title,
-                description = R.string.Buy_AddCard_CvvDialog_Content
+                title = R.string.Buy_SecurityCode,
+                description = R.string.Buy_SecurityCodePopup
             )
         )
     }

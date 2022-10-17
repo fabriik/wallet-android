@@ -79,7 +79,7 @@ class ProofOfIdentityViewModel(
                     Status.ERROR ->
                         setEffect {
                             ProofOfIdentityContract.Effect.ShowToast(
-                                it.message ?: getString(R.string.FabriikApi_DefaultError)
+                                it.message ?: getString(R.string.Api_DefaultError)
                             )
                         }
                 }

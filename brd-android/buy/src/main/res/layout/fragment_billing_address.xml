@@ -10,7 +10,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:title="@string/Buy.BillingAdress.Title"
+        app:title="@string/Buy.BillingAddress"
         app:titleType="small" />
 
     <ScrollView
@@ -41,7 +41,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="4dp"
-                        android:hint="@string/Buy.BillingAddress.FirstName"
+                        android:hint="@string/Buy.FirstName"
                         app:layout_constraintEnd_toStartOf="@id/til_last_name"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
@@ -61,7 +61,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
-                        android:hint="@string/Buy.BillingAddress.LastName"
+                        android:hint="@string/Buy.LastName"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/til_name"
                         app:layout_constraintTop_toTopOf="@id/til_name">
@@ -81,7 +81,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:hint="@string/Buy.BillingAddress.Country"
+                        android:hint="@string/Buy.Country"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/til_name">
@@ -100,7 +100,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:hint="@string/Buy.BillingAddress.StateProvince"
+                        android:hint="@string/Buy.StateProvince"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/til_country">
@@ -121,7 +121,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:layout_marginEnd="4dp"
-                        android:hint="@string/Buy.BillingAddress.City"
+                        android:hint="@string/Buy.City"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintEnd_toStartOf="@id/til_postal_code"
                         app:layout_constraintStart_toStartOf="parent"
@@ -143,7 +143,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
                         android:layout_marginTop="16dp"
-                        android:hint="@string/Buy.BillingAddress.PostalCode"
+                        android:hint="@string/Buy.ZIPPostalCode"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/til_city"
                         app:layout_constraintTop_toBottomOf="@id/til_state">
@@ -163,7 +163,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:hint="@string/Buy.BillingAddress.Address"
+                        android:hint="@string/Buy.Address"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/til_city">
@@ -182,7 +182,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="24dp"
-                        android:text="@string/FabriikButton.Confirm"
+                        android:text="@string/Button.confirm"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/til_address" />

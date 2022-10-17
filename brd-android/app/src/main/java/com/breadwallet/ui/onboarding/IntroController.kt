@@ -94,7 +94,7 @@ class IntroController : BaseController() {
     override fun onAttach(view: View) {
         super.onAttach(view)
         EventUtils.pushEvent(EventUtils.EVENT_LANDING_PAGE_APPEARED)
-        startAnimations()
+//        startAnimations()
     }
 
     private fun startAnimations() {
@@ -109,7 +109,7 @@ class IntroController : BaseController() {
                     TokenUtil.getTokenIconPath(token.symbol, false)
                 }
 
-            Main { loadViewsAndAnimate(icons) }
+           // Main { loadViewsAndAnimate(icons) }
         }
     }
 

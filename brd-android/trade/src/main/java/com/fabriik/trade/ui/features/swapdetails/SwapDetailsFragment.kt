@@ -125,13 +125,13 @@ class SwapDetailsFragment : Fragment(),
             tvOrderId.text = data.orderId
 
             binding.root.post {
-                tvSwapTo.text = getString(R.string.Swap_Details_To, data.destination.currency.toUpperCase(Locale.getDefault()))
+                tvSwapTo.text = getString(R.string.Swap_transactionTo, data.destination.currency.uppercase())
                 tvSwapToIdTitle.text = getString(
-                    R.string.Swap_Details_TransactionIdTo_Title, data.destination.currency.toUpperCase(Locale.getDefault())
+                    R.string.Buy_txHashHeader, data.destination.currency.uppercase()
                 )
 
                 if (data.destination.transactionId.isNullOrEmpty()) {
-                    tvSwapToId.text = getString(R.string.Swap_Details_Status_Pending)
+                    tvSwapToId.text = getString(R.string.Transaction_pending)
                     tvSwapToId.setCompoundDrawablesRelative(null, null, null, null)
                     tvSwapToId.setTextColor(ContextCompat.getColor(requireContext(), R.color.light_text_02))
                 } else {
@@ -148,13 +148,13 @@ class SwapDetailsFragment : Fragment(),
                 val formatCryptoTo = data.destination.currencyAmount.formatCryptoForUi(null)
                 tvToCurrencyValue.text = "$formatCryptoTo / $formatFiatTo"
 
-                tvSwapFrom.text = getString(R.string.Swap_Details_From, data.source.currency.toUpperCase(Locale.getDefault()))
+                tvSwapFrom.text = getString(R.string.Swap_transactionFrom, data.source.currency.uppercase())
                 tvSwapFromIdTitle.text = getString(
-                    R.string.Swap_Details_TransactionIdFrom_Title, data.source.currency.toUpperCase(Locale.getDefault())
+                    R.string.Buy_txHashHeader, data.source.currency.uppercase()
                 )
 
                 if (data.source.transactionId.isNullOrEmpty()) {
-                    tvSwapFromId.text = getString(R.string.Swap_Details_Status_Pending)
+                    tvSwapFromId.text = getString(R.string.Transaction_pending)
                     tvSwapFromId.setCompoundDrawablesRelative(null, null, null, null)
                     tvSwapFromId.setTextColor(ContextCompat.getColor(requireContext(), R.color.light_text_02))
                 } else {
@@ -195,11 +195,11 @@ class SwapDetailsFragment : Fragment(),
 
     private fun setStatusTitle(status: ExchangeOrderStatus): Int {
         return when (status) {
-            ExchangeOrderStatus.PENDING -> R.string.Swap_Details_Status_Pending
-            ExchangeOrderStatus.COMPLETE -> R.string.Swap_Details_Status_Complete
-            ExchangeOrderStatus.FAILED -> R.string.Swap_Details_Status_Failed
-            ExchangeOrderStatus.REFUNDED -> R.string.Swap_Details_Status_Refunded
-            ExchangeOrderStatus.MANUALLY_SETTLED ->R.string.Swap_Details_Status_Manually_Settled
+            ExchangeOrderStatus.PENDING -> R.string.Transaction_pending
+            ExchangeOrderStatus.COMPLETE -> R.string.Transaction_complete
+            ExchangeOrderStatus.FAILED -> R.string.Transaction_failed
+            ExchangeOrderStatus.REFUNDED -> R.string.Transaction_refunded
+            ExchangeOrderStatus.MANUALLY_SETTLED ->R.string.Transaction_ManuallySettled
         }
     }
 
@@ -207,7 +207,7 @@ class SwapDetailsFragment : Fragment(),
         BRClipboardManager.putClipboard(data)
 
         FabriikToastUtil.showInfo(
-            binding.root, getString(R.string.Swap_Details_Copied)
+            binding.root, getString(R.string.Receive_copied)
         )
     }
 }

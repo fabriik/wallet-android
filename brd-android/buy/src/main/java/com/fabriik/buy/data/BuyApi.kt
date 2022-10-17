@@ -147,7 +147,7 @@ class BuyApi(
             //todo: refactor in future
             if (error.message?.contains("expired quote", true) == true) {
                 return Resource.error(
-                    message = context.getString(R.string.Swap_Input_Error_QuoteExpired)
+                    message = context.getString(R.string.Swap_RequestTimedOut)
                 )
             } else if (error.message?.contains("Access denied", true) == true) {
                 profileManager.updateProfile()

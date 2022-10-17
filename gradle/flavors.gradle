@@ -5,42 +5,42 @@ android {
     productFlavors {
         productionMainnet {
             dimension "environment"
-            resValue "string", "app_name", "Fabriik"
+            resValue "string", "app_name", "RockWallet"
             buildConfigField "String", "SERVER_HOST", "\"api.fabriikw.com\""
             buildConfigField "boolean", "BITCOIN_TESTNET", "false"
 
             if (isAppModule) {
-                applicationId "com.fabriik.app"
+                applicationId "com.rockwallet.app"
             }
         }
         stagingMainnet {
             dimension "environment"
-            resValue "string", "app_name", "Fabriik Stg Mainnet"
+            resValue "string", "app_name", "RockWallet Stg Mainnet"
             buildConfigField "String", "SERVER_HOST", "\"api-stg.fabriikw.com\""
             buildConfigField "boolean", "BITCOIN_TESTNET", "false"
 
             if (isAppModule) {
-                applicationId "com.fabriik.app.stg.mainnet"
+                applicationId "com.rockwallet.app.stg.mainnet"
             }
         }
         developmentMainnet {
             dimension "environment"
-            resValue "string", "app_name", "Fabriik Dev Mainnet"
+            resValue "string", "app_name", "RockWallet Dev Mainnet"
             buildConfigField "String", "SERVER_HOST", "\"one-dev.moneybutton.io\""
             buildConfigField "boolean", "BITCOIN_TESTNET", "false"
 
             if (isAppModule) {
-                applicationId "com.fabriik.app.dev.mainnet"
+                applicationId "com.rockwallet.app.dev.mainnet"
             }
         }
         developmentTestnet {
             dimension "environment"
-            resValue "string", "app_name", "Fabriik Dev Testnet"
+            resValue "string", "app_name", "RockWallet Dev Testnet"
             buildConfigField "String", "SERVER_HOST", "\"one-dev.moneybutton.io\""
             buildConfigField "boolean", "BITCOIN_TESTNET", "true"
 
             if (isAppModule) {
-                applicationId "com.fabriik.app.dev.testnet"
+                applicationId "com.rockwallet.app.dev.testnet"
             }
         }
     }

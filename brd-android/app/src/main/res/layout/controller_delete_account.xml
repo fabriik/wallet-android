@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="42dp"
-            android:text="@string/DeleteAccountInfo.Title"
+            android:text="@string/AccountDelete.DeleteAccountTitle"
             android:textColor="@color/light_text_01"
             app:layout_constrainedWidth="true"
             app:layout_constraintEnd_toEndOf="parent"
@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="24dp"
-            android:text="@string/DeleteAccountInfo.Subtitle"
+            android:text="@string/AccountDelete.DeleteWhatMean"
             android:textColor="@color/light_text_01"
             app:layout_constrainedWidth="true"
             app:layout_constraintEnd_toEndOf="parent"
@@ -53,19 +53,49 @@
             app:layout_constraintTop_toBottomOf="@id/tv_title" />
 
         <TextView
-            android:id="@+id/tv_description"
+            android:id="@+id/tv_description_1"
             style="@style/TextStyle.Body1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="32dp"
-            android:text="@string/DeleteAccountInfo.Description"
+            android:text="@string/AccountDelete.ExplanationOne"
             android:textColor="@color/light_text_02"
             app:layout_constrainedWidth="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_subtitle" />
+
+        <TextView
+            android:id="@+id/tv_description_2"
+            style="@style/TextStyle.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/AccountDelete.ExplanationTwo"
+            android:textColor="@color/light_text_02"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_description_1" />
+
+        <TextView
+            android:id="@+id/tv_description_3"
+            style="@style/TextStyle.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/light_text_02"
+            android:text="@string/AccountDelete.ExplanationThree"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_description_2" />
 
         <CheckBox
             android:id="@+id/cb_confirmation"
@@ -75,12 +105,12 @@
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="42dp"
             android:buttonTint="@color/bg_checkbox_appcompat_button_tint"
-            android:text="@string/DeleteAccountInfo.Checkbox"
+            android:text="@string/AccountDelete.RecoverWallet"
             android:textColor="@color/light_text_01"
             android:lineSpacingExtra="4sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_description" />
+            app:layout_constraintTop_toBottomOf="@id/tv_description_3" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_continue"

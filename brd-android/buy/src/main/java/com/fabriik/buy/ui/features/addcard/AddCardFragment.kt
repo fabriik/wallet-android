@@ -126,8 +126,8 @@ class AddCardFragment : Fragment(), FabriikView<AddCardContract.State, AddCardCo
         val fm = parentFragmentManager
         val args = InfoDialogArgs(
             image = R.drawable.ic_info_cvv,
-            title = R.string.Buy_AddCard_CvvDialog_Title,
-            description = R.string.Buy_AddCard_CvvDialog_Content
+            title = R.string.Buy_SecurityCode,
+            description = R.string.Buy_SecurityCodePopup
         )
 
         InfoDialog(args).show(fm, InfoDialog.TAG)

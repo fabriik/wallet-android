@@ -12,7 +12,7 @@
         android:id="@+id/dialog_header"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:background="@color/dark_blue_fabriik"
+        android:background="@color/light_green_background"
         android:orientation="vertical">
 
         <ImageButton
@@ -21,7 +21,7 @@
             android:layout_height="24dp"
             android:layout_centerInParent="true"
             android:layout_marginTop="10dp"
-            android:background="@drawable/ic_flower" />
+            android:background="@drawable/ic_rockwallet_icon" />
 
         <ImageButton
             android:id="@+id/help_icon"

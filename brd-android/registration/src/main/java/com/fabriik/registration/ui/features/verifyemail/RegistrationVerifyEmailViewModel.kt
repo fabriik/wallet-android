@@ -73,7 +73,7 @@ class RegistrationVerifyEmailViewModel(
         if (currentSession.isDefaultSession()) {
             setEffect {
                 RegistrationVerifyEmailContract.Effect.ShowToast(
-                    getString(R.string.FabriikApi_DefaultError)
+                    getString(R.string.Api_DefaultError)
                 )
             }
             return

@@ -19,7 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
-        android:text="@string/Swap.PinAuth.Title"
+        android:text="@string/UpdatePin.enterYourPin"
         app:layout_constrainedWidth="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,7 +33,7 @@
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="16dp"
         android:gravity="center"
-        android:text="@string/Swap.PinAuth.Subtitle"
+        android:text="@string/UpdatePin.EnterPin"
         app:layout_constrainedWidth="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -52,8 +52,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_subtitle"
         app:layout_constraintVertical_bias="0.15"
-        app:pinDigitsResId="@drawable/ic_pin_dot_empty_blue"
-        app:pinFilledDotResId="@drawable/ic_pin_dot_filled_blue" />
+        app:pinDigitsResId="@drawable/ic_pin_dot_empty_green"
+        app:pinFilledDotResId="@drawable/ic_pin_dot_filled_green" />
 
     <com.breadwallet.legacy.presenter.customviews.BRKeyboard
         android:id="@+id/keyboard"

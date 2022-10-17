@@ -32,16 +32,16 @@ private val ciTag = (System.getenv("CI_COMMIT_TAG") ?: System.getenv("CIRCLE_TAG
 
 object BrdRelease {
     /** Major version. Usually affected by marketing. Maximum value: 99 */
-    private val marketing = ciTag?.firstOrNull() ?: 4
+    private val marketing = ciTag?.firstOrNull() ?: 5
 
     /** Minor version. Usually affected by product. Maximum value: 99 */
-    private val product = ciTag?.get(1) ?: 15
+    private val product = ciTag?.get(1) ?: 0
 
     /** Hot fix version. Usually affected by engineering. Maximum value: 9 */
     private val engineering = ciTag?.get(2) ?: 0
 
     /** Build version. Increase for each new build. Maximum value: 999 */
-    private val build = ciTag?.lastOrNull() ?: 6
+    private val build = ciTag?.lastOrNull() ?: 5
 
     init {
         check(marketing in 0..99)

@@ -85,25 +85,27 @@ interface BuyInputContract {
 
         object NetworkIssues : ErrorMessage() {
             override fun toString(context: Context) = context.getString(
-                R.string.Swap_Input_Error_Network
+                R.string.ErrorMessages_NetworkIssues
             )
         }
 
         class MinBuyAmount(private val minFiatAmount: BigDecimal, val fiatCurrency: String): ErrorMessage() {
             override fun toString(context: Context) = context.getString(
-                R.string.Buy_Input_Error_MinAmount, minFiatAmount.formatFiatForUi(
+                R.string.ErrorMessages_amountTooLow, minFiatAmount.formatFiatForUi(
                     currencyCode = fiatCurrency,
-                    showCurrencyName = true
-                )
+                    showCurrencyName = true,
+                    showCurrencySymbol = false
+                ), fiatCurrency
             )
         }
 
         class MaxBuyAmount(private val maxFiatAmount: BigDecimal, private val fiatCurrency: String) : ErrorMessage() {
             override fun toString(context: Context) = context.getString(
-                R.string.Buy_Input_Error_MaxAmount, maxFiatAmount.formatFiatForUi(
+                R.string.ErrorMessages_AmountTooHigh, maxFiatAmount.formatFiatForUi(
                     currencyCode = fiatCurrency,
-                    showCurrencyName = true
-                )
+                    showCurrencyName = true,
+                    showCurrencySymbol = false
+                ),fiatCurrency
             )
         }
     }

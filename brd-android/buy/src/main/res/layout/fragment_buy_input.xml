@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:showBack="false"
-            app:title="@string/Buy.Input.Title" />
+            app:title="@string/HomeScreen.buy" />
 
         <ScrollView
             android:id="@+id/content"
@@ -35,7 +35,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
-                    android:text="@string/Buy.Input.Rate"
+                    android:text="@string/Swap.Rate"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -70,12 +70,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="8dp"
-                    android:text="@string/Buy.Input.LimitsDisclaimer"
                     app:layout_constrainedWidth="true"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_rate_title" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_rate_title"
+                    tools:text="@string/Buy.BuyLimits" />
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cv_crypto_input"
@@ -92,7 +92,7 @@
                         android:id="@+id/view_crypto_input"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:title="@string/Buy.Input.IWant" />
+                        app:title="@string/Swap.iWant" />
 
                 </com.google.android.material.card.MaterialCardView>
 
@@ -117,7 +117,7 @@
                             style="@style/TextStyle.Caption"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/Buy.Input.PayWith"
+                            android:text="@string/Buy.PayWith"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -127,7 +127,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="14dp"
-                            android:text="@string/Buy.Input.SelectPaymentMethod"
+                            android:text="@string/Buy.SelectPaymentMethod"
                             app:layout_constrainedWidth="true"
                             app:layout_constraintEnd_toStartOf="@+id/iv_chevron"
                             app:layout_constraintHorizontal_bias="0"
@@ -180,7 +180,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
-                    android:text="@string/Buy.Input.Continue"
+                    android:text="@string/Button.continueAction"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

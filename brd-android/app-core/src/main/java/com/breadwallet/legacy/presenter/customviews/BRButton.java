@@ -67,7 +67,7 @@ public class BRButton extends Button {
     private static final float SHADOW_PRESSED = 0.88f;
     private static final float SHADOW_UNPRESSED = 0.95f;
     private float shadowOffSet = SHADOW_UNPRESSED;
-    private static final int ROUND_PIXELS = 8;
+    private static final int ROUND_PIXELS = 100;
     private boolean isBreadButton; //meaning is has the special animation and shadow
     private boolean hasShadow; // allows us to add/remove the drop shadow from the button without affecting the animation
     private ViewTreeObserver.OnGlobalLayoutListener layoutListener;
@@ -203,7 +203,7 @@ public class BRButton extends Button {
             modifiedWidth = width - 10;
             modifiedHeight = height - height / 4 - 5;
             bRect.set(5, 5, modifiedWidth, modifiedHeight + 5);
-            if (type == 2 || type == 3)
+            if (type == 2 || type == 3 ||  type == 6)
                 canvas.drawRoundRect(bRect, ROUND_PIXELS, ROUND_PIXELS, bPaintStroke);
             if (type == 8 || type == 9) {
                 canvas.drawRoundRect(bRect, 22, 22, bPaint);
@@ -272,7 +272,6 @@ public class BRButton extends Button {
             bPaint.setColor(getContext().getColor(buttonColorValue.resourceId));
             bPaint.setStyle(Paint.Style.FILL);
         }
-
         // Recover wallet button
         else if (type == 7) {
             setHasShadow(false);

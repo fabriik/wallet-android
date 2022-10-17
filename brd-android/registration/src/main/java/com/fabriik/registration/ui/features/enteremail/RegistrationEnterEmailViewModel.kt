@@ -50,7 +50,7 @@ class RegistrationEnterEmailViewModel(
             if (token.isNullOrBlank()) {
                 setEffect {
                     RegistrationEnterEmailContract.Effect.ShowToast(
-                        getString(R.string.FabriikApi_DefaultError)
+                        getString(R.string.Api_DefaultError)
                     )
                 }
                 return@launch
@@ -89,7 +89,7 @@ class RegistrationEnterEmailViewModel(
                         Status.ERROR ->
                             setEffect {
                                 RegistrationEnterEmailContract.Effect.ShowToast(
-                                    it.message ?: getString(R.string.FabriikApi_DefaultError)
+                                    it.message ?: getString(R.string.Api_DefaultError)
                                 )
                             }
                     }

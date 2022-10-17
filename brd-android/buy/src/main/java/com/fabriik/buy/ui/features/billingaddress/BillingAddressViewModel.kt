@@ -78,7 +78,7 @@ class BillingAddressViewModel(
                     Status.ERROR ->
                         setEffect {
                             BillingAddressContract.Effect.ShowError(
-                                it.message ?: getString(R.string.FabriikApi_DefaultError)
+                                it.message ?: getString(R.string.Api_DefaultError)
                             )
                         }
                 }

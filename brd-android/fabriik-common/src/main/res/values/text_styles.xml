@@ -78,7 +78,7 @@
     </style>
 
     <style name="TextStyle.BottomTab.Active">
-        <item name="android:textColor">@color/light_primary</item>
+        <item name="android:textColor">@color/fabriik_blue_700</item>
     </style>
 
 </resources>

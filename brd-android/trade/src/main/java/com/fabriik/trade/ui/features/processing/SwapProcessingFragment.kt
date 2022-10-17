@@ -56,8 +56,8 @@ class SwapProcessingFragment : Fragment(),
 
     override fun render(state: SwapProcessingContract.State) {
         with(binding) {
-            tvProcessingTitle.text = getString(R.string.Swap_Process_Header, state.originCurrency, state.destinationCurrency)
-            tvProcessingBody.text = getString(R.string.Swap_Process_Body, state.destinationCurrency)
+            tvProcessingTitle.text = getString(R.string.Swap_Swapping, state.originCurrency, state.destinationCurrency)
+            tvProcessingBody.text = getString(R.string.Swap_SwapStatus, state.destinationCurrency)
 
             btnHome.setOnClickListener {
                 viewModel.setEvent(

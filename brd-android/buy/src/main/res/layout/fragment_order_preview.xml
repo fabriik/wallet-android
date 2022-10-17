@@ -9,7 +9,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:title="@string/Buy.OrderPreview.Title"
+        app:title="@string/Buy.OrderPreview"
         app:titleType="small" />
 
     <ScrollView
@@ -43,7 +43,7 @@
                         style="@style/TextStyle.Body2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/Buy.OrderPreview.YourOrder"
+                        android:text="@string/Buy.YourOrder"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -73,7 +73,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
-                        android:text="@string/Buy.OrderPreview.Rate"
+                        android:text="@string/Swap.Rate"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tv_crypto_amount"
                         tools:text="Rate:" />
@@ -106,7 +106,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:text="@string/Buy.OrderPreview.Amount"
+                        android:text="@string/Swap.AmountPurchased.android"
                         android:textColor="@color/light_text_01"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/view_line_1" />
@@ -130,7 +130,7 @@
                         android:textColor="@color/light_text_01"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tv_amount_title"
-                        tools:text="@string/Buy.OrderPreview.CreditCardFee" />
+                        tools:text="@string/Swap.CardFee"/>
 
                     <ImageView
                         android:id="@+id/iv_info_credit"
@@ -159,7 +159,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:text="@string/Buy.OrderPreview.MiningNetworkFee"
+                        android:text="@string/Swap.MiningNetworkFee"
                         android:textColor="@color/light_text_01"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tv_credit_fee_title" />
@@ -201,7 +201,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="@string/Buy.OrderPreview.Total"
+                        android:text="@string/Swap.Total"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/view_line_2" />
 
@@ -232,7 +232,7 @@
                         style="@style/TextStyle.Caption"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/BUy.OrderPreview.PaymentMethod"
+                        android:text="@string/Buy.PaymentMethod"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -251,7 +251,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:text="@string/Buy.OrderPreview.CVVConfirmation"
+                        android:text="@string/Buy.ConfirmCVV"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0"
                         app:layout_constraintStart_toStartOf="parent"
@@ -286,7 +286,7 @@
                             android:layout_height="wrap_content"
                             android:imeOptions="actionNext"
                             android:inputType="numberPassword"
-                            android:hint="@string/Buy.OrderPreview.CVV"
+                            android:hint="@string/Buy.CardCVV"
                             android:maxLength="3" />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -312,7 +312,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="@string/FabriikButton.Confirm" />
+                android:text="@string/Button.Confirm" />
 
         </LinearLayout>
     </ScrollView>

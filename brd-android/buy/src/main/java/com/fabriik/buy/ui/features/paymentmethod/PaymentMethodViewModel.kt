@@ -71,9 +71,9 @@ class PaymentMethodViewModel(
             PaymentMethodContract.Effect.ShowConfirmationDialog(
                 FabriikGenericDialogArgs(
                     requestKey = REQUEST_CONFIRMATION_DIALOG,
-                    title = getString(R.string.Buy_SelectPaymentMethod_RemovalConfirmationDialog_Title, paymentInstrument.last4Numbers),
+                    title = getString(R.string.Buy_RemoveCard_android, paymentInstrument.last4Numbers),
                     positive = FabriikGenericDialogArgs.ButtonData(
-                        titleRes = R.string.Buy_SelectPaymentMethod_RemovalConfirmationDialog_Remove,
+                        titleRes = R.string.Button_remove,
                         resultKey = RESULT_CONFIRMATION_DIALOG_REMOVE
                     ),
                     negative = FabriikGenericDialogArgs.ButtonData(
@@ -121,11 +121,11 @@ class PaymentMethodViewModel(
                 setEffect {
                     if (it.status == Status.SUCCESS) {
                         PaymentMethodContract.Effect.ShowToast(
-                            getString(R.string.Buy_SelectPaymentMethod_CardRemoved)
+                            getString(R.string.Buy_CardRemoved)
                         )
                     } else {
                         PaymentMethodContract.Effect.ShowError(
-                            getString(R.string.Buy_SelectPaymentMethod_CardRemovalFailed)
+                            getString(R.string.Buy_CardRemovalFailed)
                         )
                     }
                 }
@@ -146,7 +146,7 @@ class PaymentMethodViewModel(
                     Status.ERROR ->
                         setEffect {
                             PaymentMethodContract.Effect.ShowError(
-                                it.message ?: getString(R.string.FabriikApi_DefaultError)
+                                it.message ?: getString(R.string.Api_DefaultError)
                             )
                         }
                 }

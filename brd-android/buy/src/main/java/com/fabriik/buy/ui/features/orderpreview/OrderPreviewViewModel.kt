@@ -63,8 +63,8 @@ class OrderPreviewViewModel(
     override fun onCreditInfoClicked() {
         setEffect {
             OrderPreviewContract.Effect.ShowInfoDialog(
-                title = R.string.Buy_OrderPreview_CardFeesDialog_Title,
-                description = R.string.Buy_OrderPreview_CardFeesDialog_Content
+                title = R.string.Swap_CardFee,
+                description = R.string.Buy_CardFee
             )
         }
     }
@@ -72,8 +72,8 @@ class OrderPreviewViewModel(
     override fun onNetworkInfoClicked() {
         setEffect {
             OrderPreviewContract.Effect.ShowInfoDialog(
-                title = R.string.Buy_OrderPreview_NetworkFeesDialog_Title,
-                description = R.string.Buy_OrderPreview_NetworkFeesDialog_Content
+                title = R.string.Buy_NetworkFees,
+                description = R.string.Buy_NetworkFeeMessage
             )
         }
     }
@@ -82,8 +82,8 @@ class OrderPreviewViewModel(
         setEffect {
             OrderPreviewContract.Effect.ShowInfoDialog(
                 image = R.drawable.ic_info_cvv,
-                title = R.string.Buy_AddCard_CvvDialog_Title,
-                description = R.string.Buy_AddCard_CvvDialog_Content
+                title = R.string.Buy_SecurityCode,
+                description = R.string.Buy_SecurityCodePopup
             )
         }
     }
@@ -109,7 +109,7 @@ class OrderPreviewViewModel(
             action = {
                 val destinationAddress =
                     helper.loadAddress(currentState.cryptoCurrency)?.toString() ?: return@callApi Resource.error(
-                        message = getString(R.string.FabriikApi_DefaultError)
+                        message = getString(R.string.Api_DefaultError)
                     )
 
                 buyApi.createOrder(
@@ -139,11 +139,11 @@ class OrderPreviewViewModel(
                     Status.ERROR -> {
                         setState { copy(confirmButtonEnabled = false) }
                         setEffect {
-                            if (getString(R.string.Swap_Input_Error_QuoteExpired) == it.message) {
+                            if (getString(R.string.Swap_RequestTimedOut) == it.message) {
                                 OrderPreviewContract.Effect.TimeoutScreen
                             } else {
                                 OrderPreviewContract.Effect.ShowError(
-                                    it.message ?: getString(R.string.FabriikApi_DefaultError)
+                                    it.message ?: getString(R.string.Api_DefaultError)
                                 )
                             }
                         }

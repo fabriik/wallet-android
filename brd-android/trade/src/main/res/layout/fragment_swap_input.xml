@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:showBack="false"
-            app:title="@string/Swap.Input.Title" />
+            app:title="@string/HomeScreen.trade" />
 
         <ScrollView
             android:id="@+id/content"
@@ -50,7 +50,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
-                    android:text="@string/Swap.Input.Rate"
+                    android:text="@string/Swap.Rate"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
 
@@ -105,7 +105,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
-                    android:text="@string/Swap.Input.Confirm"
+                    android:text="@string/Button.confirm"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

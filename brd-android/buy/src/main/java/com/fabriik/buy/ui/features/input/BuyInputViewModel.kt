@@ -276,7 +276,7 @@ class BuyInputViewModel(
 
                     setEffect {
                         BuyInputContract.Effect.ShowError(
-                            getString(R.string.Buy_Input_Error_Network)
+                            getString(R.string.ErrorMessages_NetworkIssues)
                         )
                     }
                 }
@@ -304,7 +304,7 @@ class BuyInputViewModel(
         setState { BuyInputContract.State.Error }
         setEffect {
             BuyInputContract.Effect.ShowError(
-                getString(R.string.Buy_Input_Error_Network)
+                getString(R.string.ErrorMessages_NetworkIssues)
             )
         }
     }

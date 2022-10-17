@@ -11,7 +11,6 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.ResponseBody
 import retrofit2.HttpException
 import retrofit2.Response
-import java.io.EOFException
 
 class FabriikApiResponseMapper(
     private val moshi: Moshi = Moshi.Builder()
@@ -35,7 +34,7 @@ class FabriikApiResponseMapper(
             Resource.success(data = null)
         } else {
             val message = getErrorMessage(response.errorBody())
-            Resource.error(message = message ?: context.getString(R.string.FabriikApi_DefaultError))
+            Resource.error(message = message ?: context.getString(R.string.Api_DefaultError))
         }
     }
 
@@ -49,7 +48,7 @@ class FabriikApiResponseMapper(
         }
 
         return Resource.error(
-            message = errorMessage ?: context.getString(R.string.FabriikApi_DefaultError)
+            message = errorMessage ?: context.getString(R.string.Api_DefaultError)
         )
     }
 
