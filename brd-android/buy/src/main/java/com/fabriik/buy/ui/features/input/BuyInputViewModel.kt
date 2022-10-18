@@ -11,6 +11,7 @@ import com.fabriik.buy.data.BuyApi
 import com.fabriik.buy.ui.features.paymentmethod.PaymentMethodFragment
 import com.fabriik.common.data.model.PaymentInstrument
 import com.fabriik.common.data.Status
+import com.fabriik.common.data.model.isKyc2
 import com.fabriik.common.ui.base.FabriikViewModel
 import com.fabriik.common.utils.getString
 import com.fabriik.trade.utils.EstimateReceivingFee
@@ -285,6 +286,8 @@ class BuyInputViewModel(
     }
 
     private fun validate(state: BuyInputContract.State.Loaded) = when {
+        state.profile?.isKyc2() == false ->
+            BuyInputContract.ErrorMessage.Kyc2Required
         state.networkFee == null ->
             BuyInputContract.ErrorMessage.NetworkIssues
         state.fiatAmount < state.minFiatAmount ->

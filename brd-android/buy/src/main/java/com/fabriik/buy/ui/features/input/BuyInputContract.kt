@@ -83,6 +83,12 @@ interface BuyInputContract {
 
         abstract fun toString(context: Context): String
 
+        object Kyc2Required : ErrorMessage() {
+            override fun toString(context: Context) = context.getString(
+                R.string.ErrorMessages_Kyc2AccessDenied
+            )
+        }
+
         object NetworkIssues : ErrorMessage() {
             override fun toString(context: Context) = context.getString(
                 R.string.Swap_Input_Error_Network
