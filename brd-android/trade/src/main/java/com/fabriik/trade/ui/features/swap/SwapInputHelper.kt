@@ -63,7 +63,7 @@ class SwapInputHelper(
         if (wallet.containsAddress(address)) return SwapInputContract.ErrorMessage.NetworkIssues
 
         val amount = Amount.create(orderAmount.toDouble(), wallet.unit)
-        val networkFee = wallet.feeForSpeed(TransferSpeed.Economy(currency))
+        val networkFee = wallet.feeForSpeed(TransferSpeed.Regular(currency))
 
         return try {
             val data = wallet.estimateFee(address, amount, networkFee)
