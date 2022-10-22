@@ -39,6 +39,7 @@ enum class SettingsOption {
 
     // PREFERENCES
     CURRENCY,
+    BSV_MENU,
     BTC_MENU,
     BCH_MENU,
     SHARE_ANONYMOUS_DATA,
@@ -70,6 +71,7 @@ enum class SettingsOption {
 
     // BTC
     REDEEM_PRIVATE_KEY,
+    SYNC_BLOCKCHAIN_BSV,
     SYNC_BLOCKCHAIN_BTC,
     SYNC_BLOCKCHAIN_BCH,
     BTC_NODES,
